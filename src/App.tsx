@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Comparativa from "./pages/Comparativa";
 
 const queryClient = new QueryClient();
 
@@ -17,8 +18,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/comparativa" element={<Comparativa />} />
           {/* Routes to be implemented later according to the architecture */}
-          <Route path="/comparativa" element={<NotFound />} />
           <Route path="/reseñas/:slug" element={<NotFound />} />
           <Route path="/benchmark" element={<NotFound />} />
           <Route path="/guia-elegir-hosting" element={<NotFound />} />
