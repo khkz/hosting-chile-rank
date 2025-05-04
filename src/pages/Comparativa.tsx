@@ -215,7 +215,7 @@ const ComparativaPage = () => {
                 checked={filters.lowPrice}
                 onCheckedChange={() => handleFilterChange('lowPrice')}
               />
-              <Label htmlFor="price">Precio < $4.000</Label>
+              <Label htmlFor="price">Precio menor a $4.000</Label>
             </div>
           </div>
         </div>
