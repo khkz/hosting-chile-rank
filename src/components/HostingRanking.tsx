@@ -1,101 +1,104 @@
 
 import React from 'react';
-import HostingCard, { HostingInfo } from './HostingCard';
+import HostingCard from './HostingCard';
 
-const hostingProviders: HostingInfo[] = [
+const hostingData = [
   {
     position: 1,
-    name: "HostingPlus",
-    domain: "hostingplus.cl",
-    slug: "hostingplus",
+    name: "HostingPlus.cl",
+    logo: "/logo-hostingplus.svg",
     rating: 9.9,
     features: [
       "Datacenter propio en Santiago (IP CL)",
       "LiteSpeed Enterprise + BitNinja + JetBackup",
       "0 reclamos en Reclamos.cl (2020-2025)",
       "Soporte 24/7 y creador web IA gratis"
-    ]
+    ],
+    url: "https://www.hostingplus.cl/"
   },
   {
     position: 2,
-    name: "EcoHosting",
-    domain: "ecohosting.cl",
-    slug: "ecohosting",
+    name: "EcoHosting.cl",
+    logo: "/logo-ecohosting.svg",
     rating: 9.6,
     features: [
-      "Servidores en Chile, energía 100% renovable",
+      "Servidores en Chile, energía 100 % renovable",
       "MagicSpam y backups JetBackup incluidos",
       "Soporte local 24/7",
       "Dominio .CL gratis 1 año"
-    ]
+    ],
+    url: "https://www.ecohosting.cl/"
   },
   {
     position: 3,
-    name: "1Hosting",
-    domain: "1hosting.cl",
-    slug: "1hosting",
+    name: "1Hosting.cl",
+    logo: "/logo-1hosting.svg",
     rating: 9.2,
     features: [
-      "12 años de experiencia, 30.000 sitios",
+      "12 años de experiencia, 30 000 sitios",
       "Almacenamiento NVMe y SSL gratis",
       "Backups RAID diarios",
       "Creador web fácil de usar"
-    ]
+    ],
+    url: "https://www.1hosting.cl/"
   },
   {
     position: 4,
     name: "Hosting.cl",
-    domain: "hosting.cl",
-    slug: "hostingcl",
+    logo: "/logo-hostingcl.svg",
     rating: 9.0,
     features: [
-      "Servidores en Chile",
+      "Alojamiento web en Chile",
+      "Certificado SSL gratis",
       "Panel de control intuitivo",
-      "Soporte técnico por teléfono",
-      "SSL gratis en todos los planes"
-    ]
+      "Asistencia técnica local"
+    ],
+    url: "https://www.hosting.cl/"
   },
   {
     position: 5,
-    name: "PlanetaHosting",
-    domain: "planetahosting.cl",
-    slug: "planetahosting",
+    name: "PlanetaHosting.cl",
+    logo: "/logo-planetahosting.svg",
     rating: 8.7,
     features: [
-      "25 años de experiencia en el mercado",
-      "Data centers en Santiago y USA",
-      "Planes específicos para WordPress",
-      "Respaldo diario de datos"
-    ]
+      "Soluciones de hosting en Chile",
+      "Respaldos automáticos",
+      "Soporte técnico 24/7",
+      "Migración gratuita"
+    ],
+    url: "https://www.planetahosting.cl/"
   },
   {
     position: 6,
-    name: "NinjaHosting",
-    domain: "ninjahosting.cl",
-    slug: "ninjahosting",
+    name: "NinjaHosting.cl",
+    logo: "/logo-ninjahosting.svg",
     rating: 8.3,
     features: [
-      "Planes económicos para emprendedores",
-      "Optimizado para WordPress y WooCommerce",
-      "Migración gratuita de sitios web",
-      "Certificado SSL incluido"
-    ]
+      "Hosting optimizado para WordPress",
+      "Protección anti-malware",
+      "Servidor CDN incluido",
+      "Configuración asistida"
+    ],
+    url: "https://www.ninjahosting.cl/"
   }
 ];
 
 const HostingRanking = () => {
   return (
-    <section className="py-12 bg-white" id="ranking">
-      {/* <!-- section 2: Ranking Cards --> */}
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-primary">
-          Ranking de Hosting en Chile (2025)
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {hostingProviders.map(provider => (
-            <HostingCard key={provider.slug} hosting={provider} />
-          ))}
-        </div>
+    <section id="ranking" className="py-16 container mx-auto px-4">
+      <h2 className="text-3xl font-semibold text-center mb-8">Ranking de Proveedores de Hosting</h2>
+      <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+        {hostingData.map((hosting) => (
+          <HostingCard
+            key={hosting.position}
+            position={hosting.position}
+            name={hosting.name}
+            logo={hosting.logo}
+            rating={hosting.rating}
+            features={hosting.features}
+            url={hosting.url}
+          />
+        ))}
       </div>
     </section>
   );

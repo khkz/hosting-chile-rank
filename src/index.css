@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -99,6 +99,49 @@
   }
 
   body {
-    @apply bg-background text-foreground font-montserrat;
+    @apply bg-background text-[#333] font-montserrat;
   }
+  
+  /* Optimize for Core Web Vitals */
+  img, video {
+    @apply max-w-full h-auto;
+  }
+  
+  /* Improve accessibility */
+  a:focus, button:focus, input:focus, textarea:focus, select:focus {
+    @apply outline-none ring-2 ring-accent ring-offset-2;
+  }
+  
+  /* Improve animations */
+  .transition-all {
+    @apply transition-[all] duration-300 ease-in-out;
+  }
+  
+  /* Animations for content appearance */
+  .animate-fade-in {
+    @apply animate-fade-in;
+  }
+}
+
+/* Critical CSS kept inline */
+.critical-css {
+  display: block;
+  content-visibility: auto;
+}
+
+/* For optimal LCP and CLS */
+.img-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+}
+
+.img-container > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

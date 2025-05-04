@@ -1,25 +1,23 @@
 
 import React from 'react';
+import { Button } from '@/components/ui/button';
 
 const FinalCTA = () => {
   return (
-    <section className="py-12 bg-background" id="cta">
-      {/* <!-- section 5: CTA Final --> */}
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
-          ¿Listo para probar el Top 1?
-        </h2>
-        <p className="text-lg mb-6 max-w-xl mx-auto text-primary/80">
-          Contrata HostingPlus con 30 días de garantía.
+    <section className="py-20 bg-[#F7F9FC] text-center">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-[#2B2D42]">¿Listo para probar el Nº 1 sin riesgo?</h2>
+        <p className="mt-4 text-lg text-[#555] max-w-2xl mx-auto">
+          Contrata HostingPlus con 30 días de garantía total. Si no estás satisfecho, te devolvemos tu dinero.
         </p>
-        <a 
-          href="https://hostingplus.cl" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="inline-block bg-accent hover:bg-accent/90 text-white font-medium px-6 py-3 rounded-lg transition-all shadow-lg"
+        <Button 
+          asChild
+          className="mt-6 inline-block bg-[#EF233C] text-white px-6 py-3 rounded-lg hover:bg-red-700"
         >
-          Empezar ahora
-        </a>
+          <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
+            Empieza ahora
+          </a>
+        </Button>
       </div>
     </section>
   );

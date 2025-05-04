@@ -1,70 +1,57 @@
 
 import React from 'react';
-import { cn } from '@/lib/utils';
-
-export interface HostingInfo {
-  position: number;
-  name: string;
-  domain: string;
-  slug: string;
-  rating: number;
-  features: string[];
-}
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface HostingCardProps {
-  hosting: HostingInfo;
+  position: number;
+  name: string;
+  logo: string;
+  rating: number;
+  features: string[];
+  url: string;
 }
 
-const HostingCard: React.FC<HostingCardProps> = ({ hosting }) => {
-  const { position, name, domain, slug, rating, features } = hosting;
-  const isTopRanked = position === 1;
-  
+const HostingCard: React.FC<HostingCardProps> = ({ position, name, logo, rating, features, url }) => {
+  const isTopRated = position === 1;
+
   return (
-    <div 
-      className={cn(
-        "shadow-lg rounded-2xl p-6 mb-6 transition-transform hover:-translate-y-1",
-        isTopRanked ? "bg-card-highlight border-2 border-accent" : "bg-white"
-      )}
+    <Card 
+      className={`shadow-lg rounded-2xl p-6 transition-transform hover:-translate-y-1 ${
+        isTopRated ? 'bg-[#EDF2F4] border border-[#EF233C]' : 'bg-white'
+      }`}
     >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <span className="text-3xl font-bold text-primary mr-3">{position}</span>
-          <img 
-            src={`/logo-${slug}.svg`} 
-            alt={`${name} logo`} 
-            className="h-12" 
-            loading="lazy"
-          />
-        </div>
-        <div className="flex items-center">
-          <span className="text-lg font-semibold mr-1">★</span>
-          <span className="text-lg font-bold">{rating}/10</span>
+      <div className="flex items-center mb-4">
+        <span className={`text-4xl font-black ${isTopRated ? 'text-[#EF233C]' : 'text-[#2B2D42]'}`}>
+          {position}
+        </span>
+        <div className="w-32 h-12 ml-4">
+          <AspectRatio ratio={2.5/1} className="bg-white rounded">
+            <img 
+              src={logo} 
+              alt={name} 
+              className="h-full w-full object-contain p-1" 
+              loading="lazy" 
+            />
+          </AspectRatio>
         </div>
       </div>
-      
-      <ul className="mb-6 text-primary/80">
+      <h3 className="text-2xl font-semibold text-[#2B2D42]">
+        {name} <span className="font-bold">★ {rating}/10</span>
+      </h3>
+      <ul className="list-disc list-inside mt-4 text-sm text-[#555] space-y-1">
         {features.map((feature, index) => (
-          <li key={index} className="mb-2 flex">
-            <span className="text-accent font-bold mr-2">✓</span>
-            <span>{feature}</span>
-          </li>
+          <li key={index}>{feature}</li>
         ))}
       </ul>
-      
-      <a 
-        href={`https://${domain}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cn(
-          "block w-full text-center py-2 px-4 rounded-lg font-medium transition-colors",
-          isTopRanked 
-            ? "bg-accent text-white hover:bg-accent/90" 
-            : "bg-primary text-white hover:bg-primary/90"
-        )}
+      <Button 
+        asChild
+        className="mt-6 inline-block bg-[#2B2D42] text-white px-5 py-2 rounded-lg hover:bg-[#222]"
       >
-        Visitar Hosting
-      </a>
-    </div>
+        <a href={url} target="_blank" rel="noopener noreferrer">Visitar Hosting</a>
+      </Button>
+    </Card>
   );
 };
 

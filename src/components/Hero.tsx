@@ -1,25 +1,21 @@
 
 import React from 'react';
+import { Button } from '@/components/ui/button';
 
 const Hero = () => {
   return (
-    <section className="bg-background py-12 md:py-20">
-      {/* <!-- section 1: Hero --> */}
-      <div className="container mx-auto px-4 text-center">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-primary">
-          Mejor Hosting Chileno 2025: ranking independiente
-        </h1>
-        <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-primary/80">
-          Analizamos velocidad, soporte, seguridad y reputación. Descubre cuál te conviene.
+    <section className="bg-[#F7F9FC] py-20 text-center">
+      <div className="container mx-auto px-4">
+        <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42]">Ranking Hosting Chile 2025</h1>
+        <p className="mt-4 text-lg text-[#555] max-w-2xl mx-auto">
+          Comparamos velocidad, soporte, seguridad y precio. ¡Elige con datos!
         </p>
-        <a 
-          href="https://hostingplus.cl" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="inline-block bg-accent hover:bg-accent/90 text-white font-medium px-6 py-3 rounded-lg transition-all shadow-lg"
+        <Button 
+          asChild
+          className="mt-6 inline-block bg-[#EF233C] text-white px-6 py-3 rounded-lg transition hover:bg-red-700"
         >
-          Ir al Nº 1 (HostingPlus)
-        </a>
+          <a href="#ranking">Ir al Nº 1 (HostingPlus)</a>
+        </Button>
       </div>
     </section>
   );
