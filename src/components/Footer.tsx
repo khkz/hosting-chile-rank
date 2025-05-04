@@ -23,9 +23,9 @@ const Footer = () => {
         
         {/* NAP Information */}
         <div className="mt-4 text-xs opacity-80">
-          <p>Eligetuhosting.cl</p>
-          <p>Av. Providencia 1208, Santiago, Chile</p>
-          <p>+56 2 2714 5000</p>
+          <p>EligeTuHosting SpA</p>
+          <p>Av. Providencia 1650, Of. 303, Santiago, Chile</p>
+          <p>+56 9 1234 5678</p>
         </div>
         
         {/* GA4 placeholder comment */}

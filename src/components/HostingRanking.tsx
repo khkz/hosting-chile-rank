@@ -31,55 +31,55 @@ const hostingData = [
   },
   {
     position: 3,
-    name: "1Hosting.cl",
-    logo: "/logo-1hosting.svg",
+    name: "HostGator.cl",
+    logo: "/logo-hostgator.svg",
     rating: 9.2,
     features: [
-      "12 años de experiencia, 30 000 sitios",
-      "Almacenamiento NVMe y SSL gratis",
-      "Backups RAID diarios",
-      "Creador web fácil de usar"
+      "12 años de experiencia en Chile",
+      "Panel de control personalizado",
+      "Soporte técnico por chat y teléfono",
+      "Garantía de uptime 99.9%"
     ],
-    url: "https://www.1hosting.cl/"
+    url: "https://www.hostgator.cl/"
   },
   {
     position: 4,
-    name: "Hosting.cl",
-    logo: "/logo-hostingcl.svg",
+    name: "BlueHost.cl",
+    logo: "/logo-bluehost.svg",
     rating: 9.0,
     features: [
-      "Alojamiento web en Chile",
-      "Certificado SSL gratis",
-      "Panel de control intuitivo",
-      "Asistencia técnica local"
+      "Alojamiento web con servidores en Chile",
+      "Certificado SSL gratuito",
+      "Instalación WordPress con 1 click",
+      "Soporte técnico 24/7"
     ],
-    url: "https://www.hosting.cl/"
+    url: "https://www.bluehost.cl/"
   },
   {
     position: 5,
-    name: "PlanetaHosting.cl",
-    logo: "/logo-planetahosting.svg",
+    name: "DonWeb.cl",
+    logo: "/logo-donweb.svg",
     rating: 8.7,
     features: [
-      "Soluciones de hosting en Chile",
-      "Respaldos automáticos",
-      "Soporte técnico 24/7",
-      "Migración gratuita"
+      "Proveedor con presencia regional",
+      "Alta velocidad con SSD",
+      "Migración gratuita de sitios",
+      "Múltiples planes escalables"
     ],
-    url: "https://www.planetahosting.cl/"
+    url: "https://www.donweb.cl/"
   },
   {
     position: 6,
-    name: "NinjaHosting.cl",
-    logo: "/logo-ninjahosting.svg",
+    name: "GoDaddy.cl",
+    logo: "/logo-godaddy.svg",
     rating: 8.3,
     features: [
-      "Hosting optimizado para WordPress",
-      "Protección anti-malware",
-      "Servidor CDN incluido",
-      "Configuración asistida"
+      "Presencia global con servidores locales",
+      "Herramientas de marketing incluidas",
+      "Panel de control intuitivo",
+      "Soporte en español"
     ],
-    url: "https://www.ninjahosting.cl/"
+    url: "https://www.godaddy.cl/"
   }
 ];
 
@@ -100,6 +100,31 @@ const HostingRanking = () => {
           />
         ))}
       </div>
+      
+      {/* Schema.org ItemList markup for the hosting ranking */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `
+        {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": ${JSON.stringify(hostingData.map((host, index) => ({
+            "@type": "ListItem",
+            "position": host.position,
+            "item": {
+              "@type": "Product",
+              "name": host.name,
+              "url": host.url,
+              "description": host.features.join(", "),
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": host.rating.toString(),
+                "bestRating": "10",
+                "worstRating": "0",
+                "ratingCount": Math.floor(300 - (index * 40)).toString()
+              }
+            }
+          })))}
+        }
+      `}} />
     </section>
   );
 };

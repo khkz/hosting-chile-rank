@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,7 +17,16 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* Other routes will be added here in future updates */}
+          {/* Routes to be implemented later according to the architecture */}
+          <Route path="/comparativa" element={<NotFound />} />
+          <Route path="/reseñas/:slug" element={<NotFound />} />
+          <Route path="/benchmark" element={<NotFound />} />
+          <Route path="/guia-elegir-hosting" element={<NotFound />} />
+          <Route path="/cotiza-tu-hosting" element={<NotFound />} />
+          <Route path="/vota-por-tu-hosting" element={<NotFound />} />
+          <Route path="/contacto" element={<NotFound />} />
+          <Route path="/blog" element={<NotFound />} />
+          <Route path="/blog/:slug" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
