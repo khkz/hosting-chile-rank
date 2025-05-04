@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,16 +19,18 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				montserrat: ["Montserrat", "sans-serif"],
+			},
 			colors: {
+				primary: "#2B2D42",
+				accent: "#EF233C",
+				background: "#F7F9FC",
+				"card-highlight": "#EDF2F4",
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
-				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
-				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
@@ -41,8 +44,8 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					DEFAULT: "#EF233C",
+					foreground: "#FFFFFF"
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',

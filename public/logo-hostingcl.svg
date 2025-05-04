@@ -1,0 +1,12 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
+  <defs>
+    <style>
+      .text { font-family: Arial, sans-serif; font-weight: bold; }
+      .primary { fill: #2B2D42; }
+      .accent { fill: #FFC107; }
+    </style>
+  </defs>
+  <text x="10" y="35" class="text primary" font-size="24">Hosting</text>
+  <text x="100" y="35" class="text accent" font-size="24">.cl</text>
+</svg>
