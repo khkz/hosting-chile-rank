@@ -1,58 +1,45 @@
 name: NIC crawl
 
-# ──────────── DISPARADORES ────────────
 on:
   schedule:
     - cron: '0 * * * *'          # cada hora (UTC)
   workflow_dispatch:
 
-# ──────────── PERMISOS ────────────
 permissions:
-  contents: write                # permite hacer git push
+  contents: write
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
-
     steps:
-      # 1) Checkout con historial completo
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+        with: { fetch-depth: 0 }
 
-      # 2) Instalar dependencias del scraper
       - name: Instalar dependencias
-        run: |
-          npm install --no-save fast-xml-parser node-fetch@3 jsdom
+        run: npm install --no-save fast-xml-parser@4 node-fetch@3 jsdom
 
-      # 3) Crear carpeta de salida
       - name: Crear carpeta data
         run: mkdir -p public/data
 
-      # 4) Ejecutar scraper
       - name: Ejecutar scraper NIC.cl
         run: node scripts/nic-to-json.mjs
 
-      # 5) DEBUG ─ mostrar primeras líneas y diff
-      - name: Verificar latest.json (debug)
+      - name: Diff rápido
         run: |
-          echo "Primeras 5 líneas:"
-          head -5 public/data/latest.json
-          echo
-          echo "Diff contra HEAD:"
+          echo "HEAD:"
+          head -3 public/data/latest.json
           git diff --color -- public/data/latest.json | head || true
 
-      # 6) Commit y push SOLO si hay cambios
-      - name: Commit y push si hay cambios
+      - name: Commit y push si cambia
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
-
           git add public/data/latest.json
           if ! git diff --cached --quiet; then
             git commit -m "chore(domains): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             git push
             echo "✅ Cambios subidos."
           else
-            echo "ℹ️  latest.json sin cambios; no se hace push."
+            echo "ℹ️  Sin cambios; no se hace push."
           fi
+
