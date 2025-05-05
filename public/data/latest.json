@@ -1,8 +1,8 @@
 
 {
   "meta": {
-    "lastUpdate": "2025-05-05T14:30:00Z",
-    "lastAttempt": "2025-05-05T16:00:00Z", 
+    "lastUpdate": "2025-05-05T20:30:00Z",
+    "lastAttempt": "2025-05-05T20:30:00Z", 
     "count": 10,
     "status": "success",
     "source": "fallback"
@@ -10,43 +10,43 @@
   "domains": [
     {
       "d": "hostingplus.cl",
-      "date": "2025-05-05T14:10:39Z"
+      "date": "2025-05-05T20:25:39Z"
     },
     {
       "d": "ecohosting.cl",
-      "date": "2025-05-05T14:08:20Z"
+      "date": "2025-05-05T20:20:20Z"
     },
     {
       "d": "webhosting.cl",
-      "date": "2025-05-05T14:05:40Z"
+      "date": "2025-05-05T20:15:40Z"
     },
     {
       "d": "planetahosting.cl",
-      "date": "2025-05-05T14:04:13Z"
+      "date": "2025-05-05T20:10:13Z"
     },
     {
       "d": "hostgator.cl",
-      "date": "2025-05-05T14:03:11Z"
+      "date": "2025-05-05T20:05:11Z"
     },
     {
       "d": "hosting24.cl",
-      "date": "2025-05-05T13:50:16Z"
+      "date": "2025-05-05T19:50:16Z"
     },
     {
       "d": "nethosting.cl",
-      "date": "2025-05-05T13:41:34Z"
+      "date": "2025-05-05T19:41:34Z"
     },
     {
       "d": "ninjahosting.cl",
-      "date": "2025-05-05T13:40:54Z"
+      "date": "2025-05-05T19:40:54Z"
     },
     {
       "d": "ziphosting.cl",
-      "date": "2025-05-05T13:35:58Z"
+      "date": "2025-05-05T19:35:58Z"
     },
     {
       "d": "fullhosting.cl",
-      "date": "2025-05-05T13:31:25Z"
+      "date": "2025-05-05T19:31:25Z"
     }
   ]
 }
