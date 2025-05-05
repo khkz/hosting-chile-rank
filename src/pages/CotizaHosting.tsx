@@ -32,8 +32,8 @@ const formSchema = z.object({
   urgencia: z.enum(["baja", "media", "alta"], {
     required_error: "Selecciona el nivel de urgencia",
   }),
-  condiciones: z.literal(true, {
-    errorMap: () => ({ message: "Debes aceptar las condiciones" }),
+  condiciones: z.boolean().refine(val => val === true, {
+    message: "Debes aceptar las condiciones",
   }),
 });
 

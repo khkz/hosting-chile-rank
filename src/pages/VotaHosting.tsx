@@ -43,8 +43,8 @@ const formSchema = z.object({
   nombre: z.string().min(2, {
     message: "Por favor ingresa tu nombre",
   }),
-  autorizacion: z.literal(true, {
-    errorMap: () => ({ message: "Debes autorizar la publicación de tu reseña" }),
+  autorizacion: z.boolean().refine(val => val === true, {
+    message: "Debes autorizar la publicación de tu reseña",
   }),
 });
 

@@ -145,7 +145,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[0, 100]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={<CustomTooltip unit="/100" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props} unit="/100" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#EF233C" name="Velocidad" radius={[0, 4, 4, 0]}>
                         {benchmarkData.velocidad.map((entry, index) => (
@@ -172,7 +172,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[0, 1]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={<CustomTooltip unit="segundos" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props} unit="segundos" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#3366CC" name="Tiempo" radius={[0, 4, 4, 0]}>
                         {benchmarkData.tiempoCarga.map((entry, index) => (
@@ -199,7 +199,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[0, 350]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={<CustomTooltip unit="ms" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props} unit="ms" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#329933" name="TTFB" radius={[0, 4, 4, 0]}>
                         {benchmarkData.tiempoRespuestaServidor.map((entry, index) => (
@@ -226,7 +226,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[99.8, 100]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={<CustomTooltip unit="%" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props} unit="%" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#FF9933" name="Uptime" radius={[0, 4, 4, 0]}>
                         {benchmarkData.uptime.map((entry, index) => (
