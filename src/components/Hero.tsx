@@ -23,6 +23,7 @@ const Hero = () => {
     isChile: false
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const Hero = () => {
     if (!domain) return;
     
     setIsLoading(true);
+    setPreviewLoaded(false);
     
     try {
       // Consulta IP via Google DNS
@@ -59,6 +61,16 @@ const Hero = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleImageError = () => {
+    console.log("Image loading failed");
+    setPreviewLoaded(false);
+  };
+
+  const handleImageLoad = () => {
+    console.log("Image loaded successfully");
+    setPreviewLoaded(true);
   };
 
   return (
@@ -156,12 +168,44 @@ const Hero = () => {
             </dl>
             <div>
               {domainInfo.domain && (
-                <img 
-                  src={`https://image.thum.io/get/png/noanimate/width/300/${domainInfo.domain}`}
-                  className="rounded shadow w-full h-auto"
-                  alt="Preview del sitio"
-                />
+                <div className="relative">
+                  {!previewLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded">
+                      <p className="text-sm text-gray-500">Cargando vista previa...</p>
+                    </div>
+                  )}
+                  <img 
+                    src={`https://image.thum.io/get/width/300/png/${domainInfo.domain}`}
+                    className={`rounded shadow w-full h-auto ${!previewLoaded ? 'opacity-0' : 'opacity-100'}`}
+                    alt="Vista previa del sitio"
+                    onError={handleImageError}
+                    onLoad={handleImageLoad}
+                  />
+                </div>
               )}
+            </div>
+          </div>
+          
+          {/* Recommendation section */}
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <h4 className="font-medium text-blue-800">Recomendación</h4>
+            <p className="text-sm mt-1 mb-3">
+              Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:
+            </p>
+            <div className="flex items-center gap-2">
+              <img src="/logo-hostingplus-new.svg" alt="HostingPlus.cl" className="h-6" />
+              <div>
+                <p className="font-medium">HostingPlus.cl - Nº1 en Chile</p>
+                <p className="text-xs text-gray-600">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>
+              </div>
+              <Button 
+                asChild 
+                className="ml-auto bg-[#EF233C] hover:bg-[#b3001b] text-white text-xs py-1 px-3 h-auto"
+              >
+                <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
+                  Visitar
+                </a>
+              </Button>
             </div>
           </div>
           
