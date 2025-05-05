@@ -20,6 +20,8 @@ const Hero = () => {
     ip: '',
     nameservers: '',
     location: '',
+    provider: '',
+    organization: '',
     isChile: false
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -36,23 +38,48 @@ const Hero = () => {
     setPreviewLoaded(false);
     
     try {
-      // Consulta IP via Google DNS
+      // 1️⃣ IP A-record
       const aRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
       const ip = aRes.Answer ? aRes.Answer[0].data : '–';
       
-      // Consulta NS
+      // 2️⃣ Nameservers
       const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
       const ns = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data).join('\n') : '–';
       
-      // Geo IP (ipapi.co)
-      const geo = ip !== '–' ? await fetch(`https://ipapi.co/${ip}/country_name/`).then(r => r.text()) : '–';
+      // 3️⃣ Geo + ASN + Org (ipinfo.io)
+      let geo = '–', asn = '–', org = '–';
+      let isChile = false;
+      
+      if (ip !== '–') {
+        try {
+          const info = await fetch(`https://ipinfo.io/${ip}/json?token=free`).then(r => r.json());
+          isChile = info.country === 'CL';
+          geo = isChile ? '🇨🇱 Chile' : `🌐 ${info.country || '–'}`;
+          asn = info.asn ? info.asn : (info.org || '–');
+          org = info.org || '–';
+        } catch (error) {
+          console.error('Error fetching IP info:', error);
+        }
+      }
+      
+      // 4️⃣ RDAP owner (fallback)
+      if (org === '–' && ip !== '–') {
+        try {
+          const rdap = await fetch(`https://rdap.org/ip/${ip}`).then(r => r.json());
+          org = rdap && rdap.name ? rdap.name : '–';
+        } catch (error) {
+          console.error('Error fetching RDAP:', error);
+        }
+      }
       
       setDomainInfo({
         domain,
         ip,
         nameservers: ns,
         location: geo,
-        isChile: geo.includes('Chile')
+        provider: asn,
+        organization: org,
+        isChile
       });
       
       setIsOpen(true);
@@ -161,9 +188,15 @@ const Hero = () => {
               </div>
               <div>
                 <dt className="font-medium inline">Ubicación IP: </dt>
-                <dd className="ml-1 inline">
-                  {domainInfo.isChile ? '🇨🇱 Chile' : `🌐 ${domainInfo.location}`}
-                </dd>
+                <dd className="ml-1 inline">{domainInfo.location}</dd>
+              </div>
+              <div>
+                <dt className="font-medium inline">Proveedor de hosting: </dt>
+                <dd className="ml-1 inline">{domainInfo.provider}</dd>
+              </div>
+              <div>
+                <dt className="font-medium inline">Org./Propietario IP: </dt>
+                <dd className="ml-1 inline">{domainInfo.organization}</dd>
               </div>
             </dl>
             <div>
