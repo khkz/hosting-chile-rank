@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { useNavigate } from 'react-router-dom';
 
+const SUPABASE_FUNC = 'https://oegvwjxrlmtwortyhsrv.functions.supabase.co/save-search';
+
 const Hero = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [domainInfo, setDomainInfo] = useState({
@@ -77,9 +79,9 @@ const Hero = () => {
       
       setIsOpen(true);
 
-      // Call the Supabase function to save the search
+      // Call the Supabase function to save the search with improved error handling
       try {
-        await fetch('https://oegvwjxrlmtwortyhsrv.functions.supabase.co/save-search', {
+        const res = await fetch(SUPABASE_FUNC, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -90,7 +92,13 @@ const Hero = () => {
             asn: '-'
           })
         });
-        console.log('Search sent to Supabase function');
+        
+        if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
+          const data = await res.json();
+          console.log('Supabase function response:', data);
+        } else {
+          console.warn('Unexpected response from Supabase function:', await res.text());
+        }
         
         // After 90 seconds, try to redirect to the newly created page
         setTimeout(() => {
