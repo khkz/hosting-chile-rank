@@ -1,64 +1,58 @@
 name: NIC crawl
 
-# ──────────────────── DISPARADORES ────────────────────
+# ──────────── DISPARADORES ────────────
 on:
   schedule:
-    - cron:  '0 * * * *'           # cada hora exacta (UTC)
-  workflow_dispatch:               # botón manual
+    - cron: '0 * * * *'          # cada hora (UTC)
+  workflow_dispatch:
 
-# ──────────────────── PERMISOS ─────────────────────────
-#  ▼  IMPORTANTE: habilita push a la rama
+# ──────────── PERMISOS ────────────
 permissions:
-  contents: write
+  contents: write                # permite hacer git push
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Clona el repo con historial completo (para git diff)
+      # 1) Checkout con historial completo
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          # opcional, pero ayuda si tu rama principal no es 'main'
-          # ref: main
 
-      # 2) Instala dependencias necesarias para el scraper
+      # 2) Instalar dependencias del scraper
       - name: Instalar dependencias
         run: |
           npm install --no-save fast-xml-parser node-fetch@3 jsdom
 
-      # 3) Garantiza que exista la carpeta de salida
+      # 3) Crear carpeta de salida
       - name: Crear carpeta data
         run: mkdir -p public/data
 
-      # 4) Ejecuta tu script que genera public/data/latest.json
+      # 4) Ejecutar scraper
       - name: Ejecutar scraper NIC.cl
         run: node scripts/nic-to-json.mjs
-        
-- name: Verificar qué hay en latest.json (debug)
-  run: |
-    echo "Primeras 5 líneas del nuevo archivo:"
-    head -5 public/data/latest.json
-    echo "   "
-    echo "Diferencia contra HEAD:"
-    git diff --color -- public/data/latest.json | head
 
-      # 5) Commit y push ÚNICAMENTE si latest.json cambió
+      # 5) DEBUG ─ mostrar primeras líneas y diff
+      - name: Verificar latest.json (debug)
+        run: |
+          echo "Primeras 5 líneas:"
+          head -5 public/data/latest.json
+          echo
+          echo "Diff contra HEAD:"
+          git diff --color -- public/data/latest.json | head || true
+
+      # 6) Commit y push SOLO si hay cambios
       - name: Commit y push si hay cambios
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
 
-          # añade el archivo al staging
           git add public/data/latest.json
-
-          # ¿Hubo modificaciones?  (diff --cached devuelve 1 si hay cambios)
           if ! git diff --cached --quiet; then
             git commit -m "chore(domains): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             git push
-            echo "✅ Cambios subidos al repositorio."
+            echo "✅ Cambios subidos."
           else
             echo "ℹ️  latest.json sin cambios; no se hace push."
           fi
-          
