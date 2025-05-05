@@ -28,3 +28,7 @@ Sitemap: https://eligetuhosting.cl/sitemap.xml
 
 # Crawl delay to prevent server overload
 Crawl-delay: 1
+
+# Domain information pages - allow all
+Allow: /whois/
+Allow: /ultimos-dominios/

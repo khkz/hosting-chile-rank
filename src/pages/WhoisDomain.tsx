@@ -1,15 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Check, RefreshCw, Globe, Server } from 'lucide-react';
+import { Check, RefreshCw, Globe, Server, AlertTriangle, CloudOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet';
 import RecentSearches from '@/components/RecentSearches';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 // Fallback domain data for when the actual data file doesn't exist
 const getFallbackData = (domainName: string) => {
@@ -263,7 +263,7 @@ const WhoisDomain = () => {
         document.head.appendChild(metaDescription);
       }
       metaDescription.setAttribute('content', 
-        `Datos de hosting para ${domainName}: IP, nameservers, proveedor, ASN y recomendaciones de hosting chileno.`
+        `Datos de hosting para ${domainName}: IP, nameservers, proveedor, ASN y más información para mejorar tu presencia en línea.` 
       );
     }
   }, [domainName]);
@@ -354,6 +354,19 @@ const WhoisDomain = () => {
               </div>
             )}
             
+            {/* New warning for non-Chilean IPs */}
+            {domainData.ip && !domainData.ip_chile && (
+              <Alert variant="destructive" className="mb-6 bg-red-50 border-red-200">
+                <AlertTriangle className="h-5 w-5 text-red-600" />
+                <AlertTitle className="text-red-700">Alojamiento fuera de Chile</AlertTitle>
+                <AlertDescription className="text-red-700">
+                  Este sitio web tiene una IP extranjera, lo que puede representar riesgos para la soberanía de 
+                  datos chilenos, afectar velocidad de carga en Chile y podría estar sujeto a leyes de privacidad 
+                  diferentes. Se recomienda alojar contenido chileno en servidores locales.
+                </AlertDescription>
+              </Alert>
+            )}
+            
             <div className="grid md:grid-cols-2 gap-8 mt-8">
               <Card className="shadow-md overflow-hidden">
                 <CardHeader className="bg-white py-5">
@@ -367,9 +380,13 @@ const WhoisDomain = () => {
                     <div>
                       <span className="font-medium">Dirección IP:</span> 
                       <span className="ml-2">{domainData.ip}</span>
-                      {domainData.ip_chile && (
+                      {domainData.ip_chile ? (
                         <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           🇨🇱 IP Chilena
+                        </span>
+                      ) : (
+                        <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          <CloudOff className="h-3 w-3 mr-1" /> IP Extranjera
                         </span>
                       )}
                     </div>
