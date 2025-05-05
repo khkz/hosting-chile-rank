@@ -1,12 +1,6 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
-  <defs>
-    <style>
-      .text { font-family: Arial, sans-serif; font-weight: bold; }
-      .primary { fill: #2B2D42; }
-      .accent { fill: #673AB7; }
-    </style>
-  </defs>
-  <text x="10" y="35" class="text accent" font-size="20">Planeta</text>
-  <text x="80" y="35" class="text primary" font-size="20">Hosting</text>
+  <rect x="0" y="0" width="200" height="60" fill="#ffffff" />
+  <text x="10" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="#673AB7">Planeta</text>
+  <text x="80" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="#2B2D42">Hosting</text>
 </svg>

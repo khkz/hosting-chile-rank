@@ -1,4 +1,6 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
-  <image href="/lovable-uploads/674175cc-d66a-4d79-83c5-bd9f248bfe70.png" width="200" height="60" preserveAspectRatio="xMidYMid meet" />
+  <rect x="0" y="0" width="200" height="60" fill="#ffffff" />
+  <text x="10" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#3282F6">Blue</text>
+  <text x="80" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#2B2D42">Host</text>
 </svg>

@@ -1,4 +1,6 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
-  <image href="/lovable-uploads/c03b619b-f1c4-48c7-8dd3-7c601b2705c4.png" width="200" height="60" preserveAspectRatio="xMidYMid meet" />
+  <rect x="0" y="0" width="200" height="60" fill="#ffffff" />
+  <text x="10" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#00A4A6">Go</text>
+  <text x="50" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#2B2D42">Daddy</text>
 </svg>
