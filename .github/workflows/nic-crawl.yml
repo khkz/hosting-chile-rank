@@ -1,31 +1,55 @@
-
 name: NIC crawl
+
+# ──────────────────── DISPARADORES ────────────────────
 on:
   schedule:
-    - cron:  '0 * * * *'   # cada hora en punto
-  workflow_dispatch:       # permite ejecutar manualmente
+    - cron:  '0 * * * *'           # cada hora exacta (UTC)
+  workflow_dispatch:               # botón manual
+
+# ──────────────────── PERMISOS ─────────────────────────
+#  ▼  IMPORTANTE: habilita push a la rama
+permissions:
+  contents: write
 
 jobs:
   crawl:
     runs-on: ubuntu-latest
+
     steps:
+      # 1) Clona el repo con historial completo (para git diff)
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          # opcional, pero ayuda si tu rama principal no es 'main'
+          # ref: main
 
-      - name: Instalar deps
+      # 2) Instala dependencias necesarias para el scraper
+      - name: Instalar dependencias
         run: |
-          npm init -y
-          npm install fast-xml-parser node-fetch@3 jsdom
+          npm install --no-save fast-xml-parser node-fetch@3 jsdom
 
-      - name: Crear directorio de datos
+      # 3) Garantiza que exista la carpeta de salida
+      - name: Crear carpeta data
         run: mkdir -p public/data
 
-      - name: Ejecutar script
+      # 4) Ejecuta tu script que genera public/data/latest.json
+      - name: Ejecutar scraper NIC.cl
         run: node scripts/nic-to-json.mjs
 
+      # 5) Commit y push ÚNICAMENTE si latest.json cambió
       - name: Commit y push si hay cambios
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
+
+          # añade el archivo al staging
           git add public/data/latest.json
-          git diff --cached --quiet || git commit -m "chore: update latest domains"
-          git push
+
+          # ¿Hubo modificaciones?  (diff --cached devuelve 1 si hay cambios)
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(domains): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            git push
+            echo "✅ Cambios subidos al repositorio."
+          else
+            echo "ℹ️  latest.json sin cambios; no se hace push."
+          fi
