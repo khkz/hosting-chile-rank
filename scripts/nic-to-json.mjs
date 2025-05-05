@@ -13,8 +13,8 @@ if (!existsSync(dataDir)) {
 // Function to fetch domains from NIC.cl
 async function fetchDomainsFromNic() {
   try {
-    // This is the URL you provided that shows recent domains
-    const response = await fetch("https://www.nic.cl/registry/Ultimos.do?t=1w");
+    // This is the URL for the latest domains (last day)
+    const response = await fetch("https://www.nic.cl/registry/Ultimos.do?t=1d");
     
     if (!response.ok) {
       throw new Error(`Failed to fetch domains: ${response.status} ${response.statusText}`);
@@ -24,32 +24,55 @@ async function fetchDomainsFromNic() {
     const dom = new JSDOM(html);
     const document = dom.window.document;
     
-    // Find all the domain rows in the table
-    const rows = document.querySelectorAll("table.tablesorter tbody tr");
+    // Find the domains in the content
+    const content = document.body.textContent;
     
-    const domains = [];
+    // Count total domains mentioned in the page (usually in a header text)
+    const domainCountMatch = content.match(/(\d+)\s+Dominios\s+Inscritos/i);
+    const totalDomains = domainCountMatch ? parseInt(domainCountMatch[1]) : 0;
+    console.log(`Found header indicating ${totalDomains} domains`);
     
-    rows.forEach(row => {
-      const cells = row.querySelectorAll("td");
-      if (cells.length >= 2) {
-        // First cell contains domain name, second cell contains date
-        const domain = cells[0].textContent.trim();
-        const dateStr = cells[1].textContent.trim();
+    // Extract domain entries using regex pattern matching
+    // Pattern matches: domainname.cl followed by a date
+    const domainEntries = [];
+    const pattern = /([a-z0-9-]+\.cl)([^\n]*?)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d+)/g;
+    
+    let match;
+    while ((match = pattern.exec(content)) !== null) {
+      const domain = match[1].trim();
+      const dateStr = match[3].trim();
+      
+      // Parse date string to standard ISO format
+      const dateParts = dateStr.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\.(\d+)/);
+      if (dateParts) {
+        const year = dateParts[1];
+        const month = dateParts[2];
+        const day = dateParts[3];
+        const hour = dateParts[4];
+        const minute = dateParts[5];
+        const second = dateParts[6];
         
-        // Parse the date (format is DD-MM-YYYY)
-        const [day, month, year] = dateStr.split("-");
-        const date = new Date(`${year}-${month}-${day}`);
+        const isoDate = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
         
-        domains.push({
-          d: domain.toLowerCase(),
-          date: date.toISOString()
+        domainEntries.push({
+          d: domain,
+          date: isoDate
         });
       }
-    });
+    }
     
-    return domains;
+    console.log(`Extracted ${domainEntries.length} domains with their registration dates`);
+    
+    if (domainEntries.length === 0) {
+      throw new Error("Could not extract domain entries from the page");
+    }
+    
+    // Sort by date (newest first)
+    domainEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    return domainEntries;
   } catch (error) {
-    console.error("Error fetching domains:", error);
+    console.error("Error fetching domains from NIC.cl:", error);
     // Return empty array in case of error
     return [];
   }
@@ -83,7 +106,7 @@ async function main() {
   // Try to fetch from the HTML page first
   let domains = await fetchDomainsFromNic();
   
-  // If HTML fetching failed, try XML as fallback
+  // If HTML fetching failed or returned no domains, try XML as fallback
   if (domains.length === 0) {
     console.log("Falling back to XML feed...");
     domains = await fetchDomainsFromXml();
@@ -96,10 +119,13 @@ async function main() {
   
   console.log(`Successfully fetched ${domains.length} domains.`);
   
-  // Write to a JSON file in the public directory
-  writeFileSync(`${dataDir}/latest.json`, JSON.stringify(domains, null, 2));
+  // Limit to a reasonable number for performance (e.g., 200)
+  const domainsToSave = domains.slice(0, 400);
   
-  console.log(`Guardados ${domains.length} dominios recientes de NIC.cl en ${dataDir}/latest.json`);
+  // Write to a JSON file in the public directory
+  writeFileSync(`${dataDir}/latest.json`, JSON.stringify(domainsToSave, null, 2));
+  
+  console.log(`Guardados ${domainsToSave.length} dominios recientes de NIC.cl en ${dataDir}/latest.json`);
 }
 
 // Run the script
