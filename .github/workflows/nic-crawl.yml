@@ -35,6 +35,14 @@ jobs:
       # 4) Ejecuta tu script que genera public/data/latest.json
       - name: Ejecutar scraper NIC.cl
         run: node scripts/nic-to-json.mjs
+        
+- name: Verificar qué hay en latest.json (debug)
+  run: |
+    echo "Primeras 5 líneas del nuevo archivo:"
+    head -5 public/data/latest.json
+    echo "   "
+    echo "Diferencia contra HEAD:"
+    git diff --color -- public/data/latest.json | head
 
       # 5) Commit y push ÚNICAMENTE si latest.json cambió
       - name: Commit y push si hay cambios
@@ -53,3 +61,4 @@ jobs:
           else
             echo "ℹ️  latest.json sin cambios; no se hace push."
           fi
+          
