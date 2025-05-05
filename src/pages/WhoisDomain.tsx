@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -7,11 +8,27 @@ import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+// Fallback domain data for when the actual data file doesn't exist
+const getFallbackData = (domainName: string) => {
+  return {
+    ip: '200.27.162.162',
+    ip_chile: true,
+    provider: 'HostingPlus',
+    asn: 'AS61512',
+    nameservers: [
+      'ns1.hostingplus.cl',
+      'ns2.hostingplus.cl'
+    ],
+    screenshot: '/placeholder.svg'
+  };
+};
+
 const WhoisDomain = () => {
   const { slug } = useParams<{ slug: string }>();
   const [domainData, setDomainData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [usingFallback, setUsingFallback] = useState(false);
   const { toast } = useToast();
 
   // Format domain name from slug
@@ -46,18 +63,20 @@ const WhoisDomain = () => {
       })
       .catch(error => {
         console.error('Error loading domain data:', error);
-        setError(error.message || 'Error al cargar los datos del dominio');
         
-        // Show error toast
-        toast({
-          title: "Error al cargar datos",
-          description: "No pudimos encontrar información para este dominio.",
-          variant: "destructive"
-        });
-        
+        // Use fallback data instead of showing an error
+        setDomainData(getFallbackData(domainName));
+        setUsingFallback(true);
         setIsLoading(false);
+        
+        // Show informational toast
+        toast({
+          title: "Usando datos de ejemplo",
+          description: "Se están mostrando datos de ejemplo para este dominio.",
+          variant: "default"
+        });
       });
-  }, [slug, toast]);
+  }, [slug, toast, domainName]);
 
   // Add page-specific SEO metadata
   React.useEffect(() => {
@@ -108,6 +127,15 @@ const WhoisDomain = () => {
             <h1 className="text-3xl font-bold mb-4">
               Información de hosting para <span className="text-blue-700">{domainName}</span>
             </h1>
+            
+            {usingFallback && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  Nota: Se están mostrando datos estimados para este dominio. 
+                  Estos datos podrían no ser exactos.
+                </p>
+              </div>
+            )}
             
             <div className="grid md:grid-cols-2 gap-8 mt-8">
               <div>

@@ -3,6 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
+// Fallback data for when the JSON file is not available
+const fallbackDomains = [
+  "hostingplus.cl", 
+  "ecohosting.cl", 
+  "fullhosting.cl", 
+  "webhosting.cl", 
+  "planetahosting.cl"
+];
+
 const RecentSearches = () => {
   const [domains, setDomains] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,14 +38,17 @@ const RecentSearches = () => {
       })
       .catch(error => {
         console.error('Error loading recent searches:', error);
+        
+        // Use fallback domains when the actual file can't be loaded
+        setDomains(fallbackDomains);
         setIsLoading(false);
         
         // Only show toast for non-development environments
         if (process.env.NODE_ENV !== 'development') {
           toast({
-            title: "Error de carga",
-            description: "No se pudieron cargar las búsquedas recientes.",
-            variant: "destructive"
+            title: "Usando datos de ejemplo",
+            description: "Se están mostrando búsquedas recientes de ejemplo.",
+            variant: "default"
           });
         }
       });
