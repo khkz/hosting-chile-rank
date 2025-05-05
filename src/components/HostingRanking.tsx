@@ -45,7 +45,7 @@ const hostingData = [
   {
     position: 4,
     name: "BlueHost.cl",
-    logo: "https://logo.clearbit.com/bluehost.cl",
+    logo: "https://www.bluehost.com/resources/images/bluehost-logo-new.svg",
     rating: 9.0,
     features: [
       "Alojamiento web con servidores en Chile",
@@ -71,7 +71,7 @@ const hostingData = [
   {
     position: 6,
     name: "GoDaddy.cl",
-    logo: "https://logo.clearbit.com/godaddy.cl",
+    logo: "https://img1.wsimg.com/isetup/brand/logos/economy/godaddy-venture/gdv-logo-flat-notagline-3c.svg",
     rating: 8.3,
     features: [
       "Presencia global con servidores locales",

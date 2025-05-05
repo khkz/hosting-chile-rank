@@ -54,7 +54,10 @@ const benchmarkData = {
 };
 
 // Custom tooltip para los gráficos
-interface CustomTooltipProps extends TooltipProps<number, string> {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number; name: string; dataKey: string; color: string }>;
+  label?: string;
   unit: string;
 }
 

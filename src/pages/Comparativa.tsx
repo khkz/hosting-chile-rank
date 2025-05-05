@@ -77,7 +77,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'bluehost',
     name: 'BlueHost.cl',
-    logo: 'https://logo.clearbit.com/bluehost.cl',
+    logo: 'https://www.bluehost.com/resources/images/bluehost-logo-new.svg',
     velocidad: '9.0/10',
     seguridad: '8.9/10',
     backups: 'Semanales',
@@ -105,7 +105,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'godaddy',
     name: 'GoDaddy.cl',
-    logo: 'https://logo.clearbit.com/godaddy.cl',
+    logo: 'https://img1.wsimg.com/isetup/brand/logos/economy/godaddy-venture/gdv-logo-flat-notagline-3c.svg',
     velocidad: '8.3/10',
     seguridad: '8.5/10',
     backups: 'Mensuales',
