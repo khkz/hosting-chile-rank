@@ -1,0 +1,25 @@
+name: NIC crawl
+on:
+  schedule:
+    - cron:  '0 * * * *'   # cada hora en punto
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar deps
+        run: |
+          npm init -y
+          npm install fast-xml-parser node-fetch@3
+
+      - name: Ejecutar script
+        run: node scripts/nic-to-json.mjs
+
+      - name: Commit y push si hay cambios
+        run: |
+          git config user.name  "NIC Bot"
+          git config user.email "bot@eligetuhosting.cl"
+          git add public/data/latest.json
+          git diff --cached --quiet || git commit -m "chore: update latest domains"
+          git push
