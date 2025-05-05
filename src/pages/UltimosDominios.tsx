@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -5,7 +6,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Globe, Search, RefreshCw, ExternalLink, AlertCircle } from 'lucide-react';
+import { Globe, Search, RefreshCw, ExternalLink, AlertCircle, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -52,64 +53,100 @@ interface Domain {
   date: string;
 }
 
+interface ApiResponse {
+  updated: string;
+  domains: Domain[];
+}
+
 const UltimosDominios = () => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [domainsPerPage] = useState(30);
+  const [domainsPerPage] = useState(50); // Updated to show 50 domains per page
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Manual "run script" function for development
+  // Format date to DD-MM-YYYY HH:mm format
+  const formatDateString = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      
+      return `${day}-${month}-${year} ${hours}:${minutes}`;
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  // Format date to YYYY-MM-DD HH:mm format for table
+  const formatTableDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  // Manual refresh function
   const runFetchScript = async () => {
     setRefreshing(true);
     setError(null);
     
     try {
       // In production, this would call an API endpoint
-      // For development, show a message that this is only for demonstration
       toast({
-        title: "Función solo disponible en producción",
-        description: "La actualización automática está disponible solo en el servidor de producción.",
+        title: "Actualizando datos",
+        description: "Intentando obtener los últimos dominios registrados.",
         variant: "default"
       });
       
-      // Simulate a delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Try to load the domains after the simulated refresh
+      // Try to load the domains after the toast
       await loadDomains();
     } catch (error) {
       console.error('Error running fetch script:', error);
-      setError('No se pudo ejecutar el script de actualización.');
+      setError('No se pudo ejecutar la actualización de dominios.');
     } finally {
       setRefreshing(false);
     }
   };
 
-  // Load domains from NIC.cl JSON
+  // Load domains from GitHub JSON with timestamp to avoid cache
   const loadDomains = async () => {
     setIsLoading(true);
     setError(null);
     
     try {
-      // Try to fetch the data from our JSON file
-      const response = await fetch('/data/latest.json');
+      // Add timestamp to URL to avoid cache
+      const timestamp = Date.now();
+      const response = await fetch(`https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json?ts=${timestamp}`);
       
       if (!response.ok) {
         throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
       }
       
-      const data = await response.json();
+      const data: ApiResponse = await response.json();
       
-      if (Array.isArray(data) && data.length > 0) {
-        setDomains(data);
+      if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
+        setDomains(data.domains);
+        setLastUpdated(data.updated);
         
         toast({
           title: "Dominios actualizados",
-          description: `Se han cargado ${data.length} dominios recientes.`,
+          description: `Se han cargado ${data.domains.length} dominios recientes.`,
           variant: "default"
         });
       } else {
@@ -119,10 +156,10 @@ const UltimosDominios = () => {
       console.error('Error loading domains:', error);
       // Use fallback domains when the API is not available
       setDomains(fallbackDomains);
-      setError('Usando datos de ejemplo porque no se pudieron cargar los datos reales.');
+      setError('No pudimos cargar los últimos dominios en este momento. Intenta nuevamente en unos minutos.');
       toast({
-        title: "Usando datos de ejemplo",
-        description: "No se pudieron obtener datos reales. Mostrando ejemplos.",
+        title: "Error al cargar dominios",
+        description: "Usando datos de ejemplo porque no se pudieron cargar los datos reales.",
         variant: "default"
       });
     } finally {
@@ -134,7 +171,7 @@ const UltimosDominios = () => {
     loadDomains();
     
     // Add console log to help with debugging
-    console.log("💡 UltimosDominios: Intentando cargar dominios de /data/latest.json");
+    console.log("💡 UltimosDominios: Intentando cargar dominios desde GitHub");
   }, []);
 
   // Filter domains based on search term
@@ -148,38 +185,10 @@ const UltimosDominios = () => {
   const currentDomains = filteredDomains.slice(indexOfFirstDomain, indexOfLastDomain);
   const totalPages = Math.ceil(filteredDomains.length / domainsPerPage);
 
-  // Group domains by date
-  const groupedDomains = currentDomains.reduce((groups, domain) => {
-    const date = new Date(domain.date).toISOString().split('T')[0];
-    if (!groups[date]) {
-      groups[date] = [];
-    }
-    groups[date].push(domain);
-    return groups;
-  }, {} as Record<string, Domain[]>);
-
-  // Get dates sorted by newest first
-  const dates = Object.keys(groupedDomains).sort((a, b) => 
-    new Date(b).getTime() - new Date(a).getTime()
-  );
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Format date to Spanish locale
-  const formatDate = (dateString: string) => {
-    try {
-      return new Date(dateString).toLocaleDateString('es-CL', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    } catch (e) {
-      return dateString;
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
+    <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
       <Helmet>
         <title>Últimos dominios registrados en NIC.cl — eligetuhosting.cl</title>
         <meta 
@@ -208,6 +217,12 @@ const UltimosDominios = () => {
             <p className="text-gray-600 mb-4">
               Monitoreo en tiempo real de los registros más recientes de dominios .cl
             </p>
+            {lastUpdated && (
+              <p className="text-sm text-gray-500 flex items-center">
+                <Calendar className="h-4 w-4 mr-1" />
+                Datos actualizados: {formatDateString(lastUpdated)} (hora UTC)
+              </p>
+            )}
           </div>
           
           <div className="flex gap-2 mt-4 md:mt-0">
@@ -233,9 +248,9 @@ const UltimosDominios = () => {
         </div>
         
         {error && (
-          <Alert variant="default" className="mb-6">
+          <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Nota</AlertTitle>
+            <AlertTitle>Error</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
@@ -288,15 +303,15 @@ const UltimosDominios = () => {
                   </TableHeader>
                   <TableBody>
                     {currentDomains.map((domain) => (
-                      <TableRow key={domain.d}>
-                        <TableCell className="font-medium">
+                      <TableRow key={domain.d} className="hover:bg-[#F8F9FA]">
+                        <TableCell className="font-medium border-b border-[#E5E7EB]">
                           <div className="flex items-center gap-2">
                             <Globe className="h-4 w-4 text-blue-600" />
                             {domain.d}
                           </div>
                         </TableCell>
-                        <TableCell>{formatDate(domain.date)}</TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="border-b border-[#E5E7EB]">{formatTableDate(domain.date)}</TableCell>
+                        <TableCell className="text-right border-b border-[#E5E7EB]">
                           <div className="flex justify-end space-x-2">
                             <Link 
                               to={`/whois/${domain.d.replace(/\./g, '-')}/`}
