@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Check } from 'lucide-react';
+import { Check, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 // Fallback domain data for when the actual data file doesn't exist
@@ -29,10 +29,105 @@ const WhoisDomain = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [usingFallback, setUsingFallback] = useState(false);
+  const [usingLiveData, setUsingLiveData] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
 
   // Format domain name from slug
   const domainName = slug ? slug.replace(/-/g, '.') : '';
+
+  // Function to fetch live DNS data
+  const fetchLiveDomainData = async (domain: string) => {
+    setRefreshing(true);
+    try {
+      // Fetch A record (IP address)
+      const aRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
+      const ip = aRes.Answer ? aRes.Answer[0].data : '–';
+      
+      // Fetch nameservers
+      const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
+      const nameservers = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data) : [];
+      
+      // Determine if it's a Chilean IP (simplified check)
+      // This is a simplified check and should be improved with a more comprehensive IP database
+      const ip_chile = ip.startsWith('200.27') || ip.startsWith('200.6') || ip.startsWith('190.98');
+      
+      // Try to determine provider from nameservers (simplified)
+      let provider = 'Desconocido';
+      if (nameservers.some((ns: string) => ns.includes('hostingplus'))) {
+        provider = 'HostingPlus';
+      } else if (nameservers.some((ns: string) => ns.includes('ecohosting'))) {
+        provider = 'Ecohosting';
+      } else if (nameservers.some((ns: string) => ns.includes('netlify'))) {
+        provider = 'Netlify';
+      }
+      
+      const liveData = {
+        ip,
+        ip_chile,
+        provider,
+        asn: 'Consultando...',
+        nameservers,
+        screenshot: `/placeholder.svg`
+      };
+      
+      setDomainData(liveData);
+      setUsingLiveData(true);
+      setUsingFallback(false);
+      
+      // Try to get a screenshot
+      try {
+        // Use thum.io for live screenshots
+        const screenshotUrl = `https://image.thum.io/get/width/600/png/${domain}`;
+        // Check if screenshot is available by making a HEAD request
+        const screenshotRes = await fetch(screenshotUrl, { method: 'HEAD' });
+        if (screenshotRes.ok) {
+          setDomainData(prevData => ({
+            ...prevData,
+            screenshot: screenshotUrl
+          }));
+        }
+      } catch (err) {
+        console.error('Error fetching screenshot:', err);
+      }
+      
+      toast({
+        title: "Datos en vivo",
+        description: "Mostrando información actual del dominio.",
+        variant: "default"
+      });
+      
+      // Try calling the Supabase function to save this search for future reference
+      try {
+        const res = await fetch('https://oegvwjxrlmtwortyhsrv.functions.supabase.co/save-search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            domain,
+            ip,
+            ns: nameservers,
+            provider,
+            asn: '-'
+          })
+        });
+        
+        if (res.ok) {
+          console.log('Domain data saved successfully');
+        }
+      } catch (error) {
+        console.error('Error saving domain data:', error);
+      }
+    } catch (error) {
+      console.error('Error fetching live domain data:', error);
+      toast({
+        title: "Error al obtener datos en vivo",
+        description: "No pudimos obtener información actualizada para este dominio.",
+        variant: "destructive"
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     if (!slug) {
@@ -41,8 +136,7 @@ const WhoisDomain = () => {
       return;
     }
 
-    // This would need to be replaced with your actual data fetching logic
-    // In a real scenario, this would load the MDX data or fetch it from your API
+    // First try to load static data file
     fetch(`/content/domains/${slug}.json`)
       .then(response => {
         if (!response.ok) {
@@ -64,16 +158,21 @@ const WhoisDomain = () => {
       .catch(error => {
         console.error('Error loading domain data:', error);
         
-        // Use fallback data instead of showing an error
-        setDomainData(getFallbackData(domainName));
-        setUsingFallback(true);
-        setIsLoading(false);
-        
-        // Show informational toast
-        toast({
-          title: "Usando datos de ejemplo",
-          description: "Se están mostrando datos de ejemplo para este dominio.",
-          variant: "default"
+        // If static file loading fails, try to fetch live data
+        fetchLiveDomainData(domainName).catch(liveError => {
+          console.error('Error fetching live data:', liveError);
+          
+          // If both static and live data fail, use fallback
+          setDomainData(getFallbackData(domainName));
+          setUsingFallback(true);
+          
+          toast({
+            title: "Usando datos de ejemplo",
+            description: "Se están mostrando datos estimados para este dominio.",
+            variant: "default"
+          });
+        }).finally(() => {
+          setIsLoading(false);
         });
       });
   }, [slug, toast, domainName]);
@@ -95,6 +194,12 @@ const WhoisDomain = () => {
       );
     }
   }, [domainName]);
+
+  const handleRefresh = () => {
+    if (domainName) {
+      fetchLiveDomainData(domainName);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
@@ -124,15 +229,36 @@ const WhoisDomain = () => {
           </div>
         ) : domainData ? (
           <div>
-            <h1 className="text-3xl font-bold mb-4">
-              Información de hosting para <span className="text-blue-700">{domainName}</span>
-            </h1>
+            <div className="flex justify-between items-center">
+              <h1 className="text-3xl font-bold mb-4">
+                Información de hosting para <span className="text-blue-700">{domainName}</span>
+              </h1>
+              
+              <Button 
+                onClick={handleRefresh} 
+                variant="outline" 
+                disabled={refreshing}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                {refreshing ? 'Actualizando...' : 'Actualizar datos'}
+              </Button>
+            </div>
             
             {usingFallback && (
               <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <p className="text-sm text-blue-800">
                   Nota: Se están mostrando datos estimados para este dominio. 
                   Estos datos podrían no ser exactos.
+                </p>
+              </div>
+            )}
+            
+            {usingLiveData && (
+              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-800">
+                  Nota: Se están mostrando datos en vivo para este dominio.
+                  Esta información fue obtenida en tiempo real y podría variar.
                 </p>
               </div>
             )}

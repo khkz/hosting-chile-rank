@@ -18,6 +18,7 @@ const RecentSearches = () => {
   const { toast } = useToast();
   
   useEffect(() => {
+    // First try to fetch from the JSON file
     fetch('/recent.json')
       .then(response => {
         if (!response.ok) {
@@ -33,7 +34,14 @@ const RecentSearches = () => {
         return response.json();
       })
       .then(data => {
-        setDomains(data);
+        // If data is valid and not empty, use it
+        if (Array.isArray(data) && data.length > 0) {
+          setDomains(data);
+        } else {
+          // If data is empty or not an array, fall back to example domains
+          console.warn('Recent searches JSON was empty or invalid, using fallback data');
+          setDomains(fallbackDomains);
+        }
         setIsLoading(false);
       })
       .catch(error => {
