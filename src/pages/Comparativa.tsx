@@ -35,7 +35,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'hostingplus',
     name: 'HostingPlus.cl',
-    logo: '/logo-hostingplus.svg',
+    logo: '/logo-hostingplus-new.svg',
     velocidad: '9.9/10',
     seguridad: '9.9/10',
     backups: 'Diarios (JetBackup)',
@@ -49,7 +49,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'ecohosting',
     name: 'EcoHosting.cl',
-    logo: '/logo-ecohosting.svg',
+    logo: '/logo-ecohosting-new.svg',
     velocidad: '9.6/10',
     seguridad: '9.7/10',
     backups: 'Diarios (JetBackup)',
@@ -77,7 +77,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'bluehost',
     name: 'BlueHost.cl',
-    logo: 'https://www.bluehost.com/resources/images/bluehost-logo-new.svg',
+    logo: '/logo-bluehost.svg',
     velocidad: '9.0/10',
     seguridad: '8.9/10',
     backups: 'Semanales',
@@ -105,7 +105,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'godaddy',
     name: 'GoDaddy.cl',
-    logo: 'https://img1.wsimg.com/isetup/brand/logos/economy/godaddy-venture/gdv-logo-flat-notagline-3c.svg',
+    logo: '/logo-godaddy.svg',
     velocidad: '8.3/10',
     seguridad: '8.5/10',
     backups: 'Mensuales',

@@ -6,7 +6,7 @@ const hostingData = [
   {
     position: 1,
     name: "HostingPlus.cl",
-    logo: "/logo-hostingplus.svg",
+    logo: "/logo-hostingplus-new.svg",
     rating: 9.9,
     features: [
       "Datacenter propio en Santiago (IP CL)",
@@ -19,7 +19,7 @@ const hostingData = [
   {
     position: 2,
     name: "EcoHosting.cl",
-    logo: "/logo-ecohosting.svg",
+    logo: "/logo-ecohosting-new.svg",
     rating: 9.6,
     features: [
       "Servidores en Chile, energía 100 % renovable",
@@ -45,7 +45,7 @@ const hostingData = [
   {
     position: 4,
     name: "BlueHost.cl",
-    logo: "https://www.bluehost.com/resources/images/bluehost-logo-new.svg",
+    logo: "/logo-bluehost.svg",
     rating: 9.0,
     features: [
       "Alojamiento web con servidores en Chile",
@@ -71,7 +71,7 @@ const hostingData = [
   {
     position: 6,
     name: "GoDaddy.cl",
-    logo: "https://img1.wsimg.com/isetup/brand/logos/economy/godaddy-venture/gdv-logo-flat-notagline-3c.svg",
+    logo: "/logo-godaddy.svg",
     rating: 8.3,
     features: [
       "Presencia global con servidores locales",
