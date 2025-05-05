@@ -32,7 +32,7 @@ const hostingData = [
   {
     position: 3,
     name: "HostGator.cl",
-    logo: "/logo-hostgator.svg",
+    logo: "https://logo.clearbit.com/hostgator.cl",
     rating: 9.2,
     features: [
       "12 años de experiencia en Chile",
@@ -45,7 +45,7 @@ const hostingData = [
   {
     position: 4,
     name: "BlueHost.cl",
-    logo: "/logo-bluehost.svg",
+    logo: "https://logo.clearbit.com/bluehost.cl",
     rating: 9.0,
     features: [
       "Alojamiento web con servidores en Chile",
@@ -58,7 +58,7 @@ const hostingData = [
   {
     position: 5,
     name: "DonWeb.cl",
-    logo: "/logo-donweb.svg",
+    logo: "https://logo.clearbit.com/donweb.cl",
     rating: 8.7,
     features: [
       "Proveedor con presencia regional",
@@ -71,7 +71,7 @@ const hostingData = [
   {
     position: 6,
     name: "GoDaddy.cl",
-    logo: "/logo-godaddy.svg",
+    logo: "https://logo.clearbit.com/godaddy.cl",
     rating: 8.3,
     features: [
       "Presencia global con servidores locales",

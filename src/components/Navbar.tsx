@@ -23,9 +23,6 @@ const Navbar = () => {
             <Link to="/guia-elegir-hosting" className="hover:text-[#EF233C] transition-colors">
               Guía
             </Link>
-            <Link to="/blog" className="hover:text-[#EF233C] transition-colors">
-              Blog
-            </Link>
             <Link 
               to="/cotiza-tu-hosting" 
               className="bg-[#EF233C] text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"

@@ -13,8 +13,6 @@ import GuiaElegirHosting from "./pages/GuiaElegirHosting";
 import CotizaHosting from "./pages/CotizaHosting";
 import VotaHosting from "./pages/VotaHosting";
 import Contacto from "./pages/Contacto";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -33,8 +31,6 @@ const App = () => (
           <Route path="/cotiza-tu-hosting" element={<CotizaHosting />} />
           <Route path="/vota-por-tu-hosting" element={<VotaHosting />} />
           <Route path="/contacto" element={<Contacto />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

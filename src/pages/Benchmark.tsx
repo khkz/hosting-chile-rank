@@ -5,51 +5,63 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts';
+import { 
+  Bar, 
+  BarChart, 
+  CartesianGrid, 
+  Legend, 
+  ResponsiveContainer, 
+  Tooltip, 
+  TooltipProps, 
+  XAxis, 
+  YAxis 
+} from 'recharts';
 
 // Datos para los benchmarks
 const benchmarkData = {
   velocidad: [
     { name: 'HostingPlus', valor: 98, color: '#EF233C' },
     { name: 'EcoHosting', valor: 95, color: '#329933' },
-    { name: 'Hosting.cl', valor: 87, color: '#3366CC' },
-    { name: '1Hosting', valor: 90, color: '#FF9933' },
-    { name: 'NinjaHosting', valor: 83, color: '#663399' },
-    { name: 'PlanetaHosting', valor: 85, color: '#FF6600' },
+    { name: 'HostGator', valor: 92, color: '#FF9933' },
+    { name: 'BlueHost', valor: 90, color: '#3366CC' },
+    { name: 'DonWeb', valor: 87, color: '#663399' },
+    { name: 'GoDaddy', valor: 83, color: '#FF6600' },
   ],
   tiempoCarga: [
     { name: 'HostingPlus', valor: 0.42, color: '#EF233C' },
     { name: 'EcoHosting', valor: 0.55, color: '#329933' },
-    { name: 'Hosting.cl', valor: 0.68, color: '#3366CC' },
-    { name: '1Hosting', valor: 0.62, color: '#FF9933' },
-    { name: 'NinjaHosting', valor: 0.73, color: '#663399' },
-    { name: 'PlanetaHosting', valor: 0.71, color: '#FF6600' },
+    { name: 'HostGator', valor: 0.58, color: '#FF9933' },
+    { name: 'BlueHost', valor: 0.62, color: '#3366CC' },
+    { name: 'DonWeb', valor: 0.68, color: '#663399' },
+    { name: 'GoDaddy', valor: 0.73, color: '#FF6600' },
   ],
   tiempoRespuestaServidor: [
     { name: 'HostingPlus', valor: 187, color: '#EF233C' },
     { name: 'EcoHosting', valor: 212, color: '#329933' },
-    { name: 'Hosting.cl', valor: 253, color: '#3366CC' },
-    { name: '1Hosting', valor: 231, color: '#FF9933' },
-    { name: 'NinjaHosting', valor: 302, color: '#663399' },
-    { name: 'PlanetaHosting', valor: 278, color: '#FF6600' },
+    { name: 'HostGator', valor: 224, color: '#FF9933' },
+    { name: 'BlueHost', valor: 231, color: '#3366CC' },
+    { name: 'DonWeb', valor: 253, color: '#663399' },
+    { name: 'GoDaddy', valor: 278, color: '#FF6600' },
   ],
   uptime: [
     { name: 'HostingPlus', valor: 99.98, color: '#EF233C' },
     { name: 'EcoHosting', valor: 99.95, color: '#329933' },
-    { name: 'Hosting.cl', valor: 99.91, color: '#3366CC' },
-    { name: '1Hosting', valor: 99.95, color: '#FF9933' },
-    { name: 'NinjaHosting', valor: 99.85, color: '#663399' },
-    { name: 'PlanetaHosting', valor: 99.89, color: '#FF6600' },
+    { name: 'HostGator', valor: 99.93, color: '#FF9933' },
+    { name: 'BlueHost', valor: 99.91, color: '#3366CC' },
+    { name: 'DonWeb', valor: 99.89, color: '#663399' },
+    { name: 'GoDaddy', valor: 99.85, color: '#FF6600' },
   ]
 };
 
 // Custom tooltip para los gráficos
-const CustomTooltip = ({ 
-  active, 
-  payload, 
-  label, 
-  unit 
-}: TooltipProps<number, string> & { unit: string }) => {
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number; color: string }>;
+  label?: string;
+  unit: string;
+}
+
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label, unit }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded">
@@ -267,7 +279,7 @@ const Benchmark = () => {
                   en uptime, donde alcanza un 99.95% de disponibilidad.
                 </li>
                 <li>
-                  <strong>1Hosting</strong> ofrece un buen equilibrio en todas las métricas, destacando en la relación 
+                  <strong>HostGator</strong> ofrece un buen equilibrio en todas las métricas, destacando en la relación 
                   rendimiento/precio como una de las opciones más económicas.
                 </li>
                 <li>
@@ -282,7 +294,7 @@ const Benchmark = () => {
               
               <p>
                 Basándonos en estos resultados técnicos, nuestra recomendación se inclina hacia HostingPlus 
-                para proyectos que requieran máximo rendimiento, mientras que 1Hosting representa una excelente 
+                para proyectos que requieran máximo rendimiento, mientras que HostGator representa una excelente 
                 alternativa para proyectos con presupuesto limitado.
               </p>
             </div>

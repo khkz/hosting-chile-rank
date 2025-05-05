@@ -34,9 +34,9 @@ interface HostingProvider {
 const hostingProviders: HostingProvider[] = [
   {
     id: 'hostingplus',
-    name: 'HostingPlus',
+    name: 'HostingPlus.cl',
     logo: '/logo-hostingplus.svg',
-    velocidad: '9.8/10',
+    velocidad: '9.9/10',
     seguridad: '9.9/10',
     backups: 'Diarios (JetBackup)',
     reclamos: '0 en 5 años',
@@ -48,9 +48,9 @@ const hostingProviders: HostingProvider[] = [
   },
   {
     id: 'ecohosting',
-    name: 'EcoHosting',
+    name: 'EcoHosting.cl',
     logo: '/logo-ecohosting.svg',
-    velocidad: '9.5/10',
+    velocidad: '9.6/10',
     seguridad: '9.7/10',
     backups: 'Diarios (JetBackup)',
     reclamos: '2 en 5 años',
@@ -61,24 +61,24 @@ const hostingProviders: HostingProvider[] = [
     reseñaUrl: '/reseñas/ecohosting'
   },
   {
-    id: '1hosting',
-    name: '1Hosting',
-    logo: '/logo-1hosting.svg',
-    velocidad: '9.0/10',
-    seguridad: '8.8/10',
+    id: 'hostgator',
+    name: 'HostGator.cl',
+    logo: 'https://logo.clearbit.com/hostgator.cl',
+    velocidad: '9.2/10',
+    seguridad: '9.0/10',
     backups: 'Diarios (RAID)',
     reclamos: '5 en 5 años',
     hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
     price: 3490,
-    reseñaUrl: '/reseñas/1hosting'
+    reseñaUrl: '/reseñas/hostgator'
   },
   {
-    id: 'hostingcl',
-    name: 'Hosting.cl',
-    logo: '/logo-hostingcl.svg',
-    velocidad: '8.7/10',
+    id: 'bluehost',
+    name: 'BlueHost.cl',
+    logo: 'https://logo.clearbit.com/bluehost.cl',
+    velocidad: '9.0/10',
     seguridad: '8.9/10',
     backups: 'Semanales',
     reclamos: '8 en 5 años',
@@ -86,13 +86,13 @@ const hostingProviders: HostingProvider[] = [
     hasWAF: true,
     hasBackups: true,
     price: 5990,
-    reseñaUrl: '/reseñas/hostingcl'
+    reseñaUrl: '/reseñas/bluehost'
   },
   {
-    id: 'planetahosting',
-    name: 'PlanetaHosting',
-    logo: '/logo-planetahosting.svg',
-    velocidad: '8.5/10',
+    id: 'donweb',
+    name: 'DonWeb.cl',
+    logo: 'https://logo.clearbit.com/donweb.cl',
+    velocidad: '8.7/10',
     seguridad: '8.6/10',
     backups: 'Semanales',
     reclamos: '12 en 5 años',
@@ -100,21 +100,21 @@ const hostingProviders: HostingProvider[] = [
     hasWAF: true,
     hasBackups: true,
     price: 4490,
-    reseñaUrl: '/reseñas/planetahosting'
+    reseñaUrl: '/reseñas/donweb'
   },
   {
-    id: 'ninjahosting',
-    name: 'NinjaHosting',
-    logo: '/logo-ninjahosting.svg',
+    id: 'godaddy',
+    name: 'GoDaddy.cl',
+    logo: 'https://logo.clearbit.com/godaddy.cl',
     velocidad: '8.3/10',
     seguridad: '8.5/10',
     backups: 'Mensuales',
-    reclamos: '7 en 5 años',
+    reclamos: '15 en 5 años',
     hasLiteSpeed: false,
     hasWAF: false,
     hasBackups: true,
     price: 3990,
-    reseñaUrl: '/reseñas/ninjahosting'
+    reseñaUrl: '/reseñas/godaddy'
   }
 ];
 
@@ -309,9 +309,6 @@ const ComparativaPage = () => {
 
       <StickyCTA />
       <Footer />
-
-      {/* GA4 placeholder */}
-      {/* GA4 aquí */}
     </>
   );
 };
