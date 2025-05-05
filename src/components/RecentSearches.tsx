@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const RecentSearches = () => {
   const [domains, setDomains] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
   
   useEffect(() => {
     fetch('/recent.json')
@@ -12,6 +14,13 @@ const RecentSearches = () => {
         if (!response.ok) {
           throw new Error('Failed to load recent searches');
         }
+        
+        // Check if the response is HTML (common error case)
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+          throw new Error('El archivo recent.json no existe o no está en formato JSON');
+        }
+        
         return response.json();
       })
       .then(data => {
@@ -21,8 +30,17 @@ const RecentSearches = () => {
       .catch(error => {
         console.error('Error loading recent searches:', error);
         setIsLoading(false);
+        
+        // Only show toast for non-development environments
+        if (process.env.NODE_ENV !== 'development') {
+          toast({
+            title: "Error de carga",
+            description: "No se pudieron cargar las búsquedas recientes.",
+            variant: "destructive"
+          });
+        }
       });
-  }, []);
+  }, [toast]);
 
   if (isLoading || domains.length === 0) {
     return null;

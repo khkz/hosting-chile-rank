@@ -1,17 +1,18 @@
-
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const WhoisDomain = () => {
   const { slug } = useParams<{ slug: string }>();
   const [domainData, setDomainData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   // Format domain name from slug
   const domainName = slug ? slug.replace(/-/g, '.') : '';
@@ -30,6 +31,13 @@ const WhoisDomain = () => {
         if (!response.ok) {
           throw new Error('No se encontró información para este dominio');
         }
+        
+        // Check if the response is HTML (common error case)
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+          throw new Error('El archivo de datos no existe o no está en formato JSON');
+        }
+        
         return response.json();
       })
       .then(data => {
@@ -38,10 +46,18 @@ const WhoisDomain = () => {
       })
       .catch(error => {
         console.error('Error loading domain data:', error);
-        setError(error.message);
+        setError(error.message || 'Error al cargar los datos del dominio');
+        
+        // Show error toast
+        toast({
+          title: "Error al cargar datos",
+          description: "No pudimos encontrar información para este dominio.",
+          variant: "destructive"
+        });
+        
         setIsLoading(false);
       });
-  }, [slug]);
+  }, [slug, toast]);
 
   // Add page-specific SEO metadata
   React.useEffect(() => {
@@ -81,8 +97,10 @@ const WhoisDomain = () => {
             <h1 className="text-2xl font-bold text-red-600 mb-2">Error</h1>
             <p>{error}</p>
             <p className="mt-4">
-              Puedes buscar información sobre este dominio utilizando nuestro buscador en la 
-              <a href="/" className="text-blue-600 underline ml-1">página principal</a>.
+              Puedes buscar información sobre este dominio utilizando nuestro buscador en la{' '}
+              <Link to="/" className="text-blue-600 underline">
+                página principal
+              </Link>.
             </p>
           </div>
         ) : domainData ? (
