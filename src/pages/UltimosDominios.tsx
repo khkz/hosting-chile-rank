@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -71,12 +70,11 @@ const UltimosDominios = () => {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Format date to DD-MM-YYYY HH:mm format in GMT-4 (Chile timezone)
+  // Format date to DD-MM-YYYY HH:mm format keeping original time
   const formatDateString = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      // Adjust to GMT-4 (Chile timezone)
-      date.setHours(date.getHours() - 4);
+      // No timezone adjustment to show the original time
       
       const day = date.getDate().toString().padStart(2, '0');
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -90,12 +88,11 @@ const UltimosDominios = () => {
     }
   };
 
-  // Format date to YYYY-MM-DD HH:mm format for table in GMT-4
+  // Format date to YYYY-MM-DD HH:mm format for table keeping original time
   const formatTableDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      // Adjust to GMT-4 (Chile timezone)
-      date.setHours(date.getHours() - 4);
+      // No timezone adjustment to show the original time
       
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');

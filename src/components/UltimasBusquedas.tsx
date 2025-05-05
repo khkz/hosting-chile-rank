@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { History, Search } from 'lucide-react';
+import { History, Search, House, Cpu, Server, Shield } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Fallback domains for when the JSON file is not available
@@ -69,13 +69,38 @@ const UltimasBusquedas = () => {
     loadDomains();
   }, []);
   
+  // Define servicios with Lucide icons 
+  const servicios = [
+    { 
+      icon: <House className="h-5 w-5 text-blue-600" />, 
+      title: "Hosting", 
+      path: "/guia-elegir-hosting" 
+    },
+    { 
+      icon: <Cpu className="h-5 w-5 text-green-600" />, 
+      title: "VPS", 
+      path: "/guia-elegir-vps" 
+    },
+    { 
+      icon: <Server className="h-5 w-5 text-red-600" />, 
+      title: "Dedicado", 
+      path: "/guia-elegir-servidor-dedicado" 
+    },
+    { 
+      icon: <Shield className="h-5 w-5 text-purple-600" />, 
+      title: "SSL", 
+      path: "/guia-elegir-ssl" 
+    }
+  ];
+  
   if (isLoading || domains.length === 0) {
     return null;
   }
   
   return (
     <section className="mb-8">
-      <Card className="bg-white shadow-sm">
+      {/* Recent searches/domains card */}
+      <Card className="bg-white shadow-sm mb-4">
         <CardHeader className="pb-2 pt-4">
           <CardTitle className="text-xl font-semibold flex items-center">
             <History className="h-5 w-5 mr-2 text-[#EF233C]" />
@@ -92,6 +117,31 @@ const UltimasBusquedas = () => {
               >
                 <Search className="h-4 w-4 mr-1 text-gray-500" />
                 {domain}
+              </Link>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Recommendation section */}
+      <Card className="bg-white shadow-sm">
+        <CardHeader className="pb-2 pt-4">
+          <CardTitle className="text-xl font-semibold">
+            Recomendaciones para tu dominio
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+            {servicios.map((servicio, index) => (
+              <Link 
+                key={index} 
+                to={servicio.path} 
+                className="flex flex-col items-center gap-2 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow w-[120px]"
+              >
+                <div className="bg-gray-50 p-3 rounded-full">
+                  {servicio.icon}
+                </div>
+                <span className="text-sm font-medium text-center">{servicio.title}</span>
               </Link>
             ))}
           </div>
