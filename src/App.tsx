@@ -7,6 +7,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Comparativa from "./pages/Comparativa";
+import Resena from "./pages/Resena";
+import Benchmark from "./pages/Benchmark";
+import GuiaElegirHosting from "./pages/GuiaElegirHosting";
+import CotizaHosting from "./pages/CotizaHosting";
+import VotaHosting from "./pages/VotaHosting";
+import Contacto from "./pages/Contacto";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -19,15 +27,14 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/comparativa" element={<Comparativa />} />
-          {/* Routes to be implemented later according to the architecture */}
-          <Route path="/reseñas/:slug" element={<NotFound />} />
-          <Route path="/benchmark" element={<NotFound />} />
-          <Route path="/guia-elegir-hosting" element={<NotFound />} />
-          <Route path="/cotiza-tu-hosting" element={<NotFound />} />
-          <Route path="/vota-por-tu-hosting" element={<NotFound />} />
-          <Route path="/contacto" element={<NotFound />} />
-          <Route path="/blog" element={<NotFound />} />
-          <Route path="/blog/:slug" element={<NotFound />} />
+          <Route path="/reseñas/:slug" element={<Resena />} />
+          <Route path="/benchmark" element={<Benchmark />} />
+          <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
+          <Route path="/cotiza-tu-hosting" element={<CotizaHosting />} />
+          <Route path="/vota-por-tu-hosting" element={<VotaHosting />} />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
