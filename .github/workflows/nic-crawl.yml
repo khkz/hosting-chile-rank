@@ -10,85 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
+      - name: Instalar deps
+        run: |
+          npm init -y
+          npm install fast-xml-parser node-fetch@3 jsdom
 
-      - name: Create data directory
+      - name: Crear directorio de datos
         run: mkdir -p public/data
 
-      - name: Verify if latest.json exists
-        id: check_file
-        run: |
-          if [ -f "public/data/latest.json" ]; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            cp public/data/latest.json public/data/latest.backup.json
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
+      - name: Ejecutar script
+        run: node scripts/nic-to-json.mjs
 
-      - name: Install dependencies
-        run: |
-          npm ci || npm install
-          npm install fast-xml-parser@4.2.7 node-fetch@3.3.2 jsdom@26.1.0 --save
-
-      - name: Run script
-        id: run_script
-        run: |
-          node scripts/nic-to-json.mjs
-          echo "script_exit_code=$?" >> $GITHUB_OUTPUT
-        continue-on-error: true
-
-      - name: Restore backup if script fails
-        if: steps.run_script.outputs.script_exit_code != '0' && steps.check_file.outputs.exists == 'true'
-        run: |
-          echo "Script failed, restoring backup..."
-          cp public/data/latest.backup.json public/data/latest.json
-          # Update JSON to indicate it's a backup
-          node -e "
-            const fs = require('fs');
-            const data = JSON.parse(fs.readFileSync('public/data/latest.json'));
-            if (!data.meta) data.meta = {};
-            data.meta.lastAttempt = new Date().toISOString();
-            data.meta.status = 'error';
-            data.meta.message = 'Failed automatic update, using backup data';
-            fs.writeFileSync('public/data/latest.json', JSON.stringify(data, null, 2));
-          "
-
-      - name: Validate JSON
-        id: validate_json
-        run: |
-          if [ -f "public/data/latest.json" ]; then
-            # Check if the JSON file is valid
-            cat public/data/latest.json | jq empty && echo "✅ JSON is valid" || exit 1
-            echo "json_valid=true" >> $GITHUB_OUTPUT
-          else
-            echo "❌ JSON file does not exist"
-            echo "json_valid=false" >> $GITHUB_OUTPUT
-            exit 1
-          fi
-
-      - name: Commit and push if changes
-        if: steps.validate_json.outputs.json_valid == 'true'
+      - name: Commit y push si hay cambios
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
           git add public/data/latest.json
-          git diff --cached --quiet || git commit -m "chore: update latest domains [skip ci]"
-          git push || echo "No changes to push"
-
-      - name: Notify on failure
-        if: failure() || steps.run_script.outputs.script_exit_code != '0'
-        run: |
-          echo "Domain update script failed. Please check the logs."
-          # Create notification file for the website to detect issues
-          mkdir -p public/status
-          echo "{\"lastError\":\"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",\"message\":\"Failed automatic update\"}" > public/status/nic-crawler.json
-          git add public/status/nic-crawler.json
-          git diff --cached --quiet || git commit -m "chore: update status after failure [skip ci]"
-          git push || echo "Could not push status"
+          git diff --cached --quiet || git commit -m "chore: update latest domains"
+          git push

@@ -4,15 +4,12 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Check, RefreshCw, Globe, Server, AlertTriangle, CloudOff, Calendar, Info } from 'lucide-react';
+import { Check, RefreshCw, Globe, Server, AlertTriangle, CloudOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet';
 import RecentSearches from '@/components/RecentSearches';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { Separator } from '@/components/ui/separator';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 // Fallback domain data for when the actual data file doesn't exist
 const getFallbackData = (domainName: string) => {
@@ -34,10 +31,6 @@ const lookupASN = async (ip: string): Promise<string> => {
   try {
     // Try to fetch ASN data from IPAPI
     const response = await fetch(`https://ipapi.co/${ip}/json/`);
-    if (!response.ok) {
-      throw new Error(`IPAPI returned ${response.status}`);
-    }
-    
     const data = await response.json();
     
     if (data && data.asn) {
@@ -52,193 +45,11 @@ const lookupASN = async (ip: string): Promise<string> => {
   }
 };
 
-// Cache for WHOIS data to avoid repeated requests
-const whoisCache: Record<string, {data: any, timestamp: number}> = {};
-const CACHE_EXPIRY = 3600000; // 1 hour in milliseconds
-
-// Helper function to implement fetch with timeout
-const fetchWithTimeout = async (resource: string, options: RequestInit = {}, timeout = 10000): Promise<Response> => {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-  
-  const response = await fetch(resource, {
-    ...options,
-    signal: controller.signal
-  });
-  
-  clearTimeout(id);
-  
-  return response;
-};
-
-// Function to fetch WHOIS data for a domain using multiple CORS proxies
-const fetchWhoisData = async (domain: string) => {
-  try {
-    // Check cache first
-    const now = Date.now();
-    if (whoisCache[domain] && (now - whoisCache[domain].timestamp < CACHE_EXPIRY)) {
-      console.log(`Using cached WHOIS data for ${domain}`);
-      return whoisCache[domain].data;
-    }
-    
-    console.log(`Fetching WHOIS data for ${domain}`);
-    
-    // Use an array of CORS proxies for redundancy
-    const corsProxies = [
-      (url: string) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-      (url: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-      (url: string) => `https://cors-anywhere.herokuapp.com/${url}`,
-      (url: string) => `https://cors-proxy.htmldriven.com/?url=${encodeURIComponent(url)}`,
-      (url: string) => `https://thingproxy.freeboard.io/fetch/${url}`
-    ];
-    
-    // Target RDAP API
-    const rdapUrl = `https://rdap.nic.cl/domain/${domain}`;
-    
-    // Try each CORS proxy in sequence
-    let lastError = null;
-    
-    for (let i = 0; i < corsProxies.length; i++) {
-      try {
-        const proxyUrl = corsProxies[i](rdapUrl);
-        console.log(`Trying CORS proxy #${i+1}: ${proxyUrl.substring(0, 60)}...`);
-        
-        const response = await fetchWithTimeout(proxyUrl, {
-          headers: {
-            'Accept': 'application/json'
-          }
-        }, 10000);
-        
-        if (!response.ok) {
-          throw new Error(`Proxy #${i+1} request failed with status: ${response.status}`);
-        }
-        
-        const contentType = response.headers.get('content-type') || '';
-        if (!contentType.includes('application/json') && !contentType.includes('text/json')) {
-          console.warn(`Proxy #${i+1} returned non-JSON content type: ${contentType}`);
-          // We'll try to parse it anyway in case the content-type header is wrong
-        }
-        
-        const data = await response.json();
-        console.log('RDAP response received');
-        
-        // Extract the relevant information from the RDAP response
-        const whoisData = {
-          registrationDate: data.events?.find((e: any) => e.eventAction === 'registration')?.eventDate || 'Desconocido',
-          expirationDate: data.events?.find((e: any) => e.eventAction === 'expiration')?.eventDate || 'Desconocido',
-          lastChangedDate: data.events?.find((e: any) => e.eventAction === 'last changed')?.eventDate || 'Desconocido',
-          status: data.status || ['active'],
-          registrar: data.entities?.find((e: any) => e.roles?.includes('registrar'))?.vcardArray?.[1]?.find((v: any) => v[0] === 'fn')?.[3] || 'NIC Chile',
-          hasPrivacyProtection: !data.entities?.some((e: any) => e.roles?.includes('registrant')),
-          nameservers: data.nameservers?.map((ns: any) => ns.ldhName) || []
-        };
-        
-        // Store in cache
-        whoisCache[domain] = {
-          data: whoisData,
-          timestamp: now
-        };
-        
-        return whoisData;
-      } catch (error) {
-        console.error(`CORS proxy #${i+1} failed:`, error);
-        lastError = error;
-        // Continue to next proxy
-      }
-    }
-    
-    // If we get here, all proxies failed
-    throw new Error(`All CORS proxies failed: ${lastError?.message}`);
-    
-  } catch (error) {
-    console.error('Error fetching WHOIS data:', error);
-    
-    // Try to fetch from the server's static data (if available)
-    try {
-      console.log('Trying to fetch from static file');
-      const slug = domain.replace(/\./g, '-');
-      const staticResponse = await fetch(`/content/whois/${slug}.json`);
-      
-      if (staticResponse.ok) {
-        const staticData = await staticResponse.json();
-        return staticData;
-      }
-    } catch (staticError) {
-      console.error('Static data fetch failed:', staticError);
-    }
-    
-    // Last resort: return dynamic example data that at least looks different per domain
-    const domainComponents = domain.split('.');
-    const domainName = domainComponents[0];
-    
-    // Generate some variation based on the domain name
-    const registrationYear = 2010 + (domainName.length % 10);
-    const expirationYear = 2025 + (domainName.length % 5);
-    
-    console.log('Using generated fallback data for', domain);
-    
-    return {
-      registrationDate: `${registrationYear}-05-15T14:30:00Z`,
-      expirationDate: `${expirationYear}-05-15T14:30:00Z`,
-      lastChangedDate: '2023-12-10T09:15:00Z',
-      status: ['active'],
-      registrar: 'NIC Chile',
-      hasPrivacyProtection: domainName.length % 2 === 0,
-      nameservers: []
-    };
-  }
-};
-
-// Helper function to format dates from ISO to readable format
-const formatDate = (isoDate: string): string => {
-  if (!isoDate || isoDate === 'Desconocido') return 'Desconocido';
-  
-  try {
-    const date = new Date(isoDate);
-    return date.toLocaleDateString('es-CL', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  } catch (e) {
-    return isoDate;
-  }
-};
-
-// Helper to translate WHOIS status codes to Spanish
-const translateStatus = (status: string[]): string => {
-  const statusMap: {[key: string]: string} = {
-    'active': 'Activo',
-    'inactive': 'Inactivo',
-    'locked': 'Bloqueado',
-    'pendingCreate': 'Pendiente de creación',
-    'pendingRenew': 'Pendiente de renovación',
-    'pendingTransfer': 'Pendiente de transferencia',
-    'pendingUpdate': 'Pendiente de actualización',
-    'pendingDelete': 'Pendiente de eliminación',
-    'redemptionPeriod': 'Período de redención',
-    'renewPeriod': 'Período de renovación',
-    'serverUpdateProhibited': 'Actualización prohibida',
-    'serverTransferProhibited': 'Transferencia prohibida',
-    'serverDeleteProhibited': 'Eliminación prohibida',
-    'clientUpdateProhibited': 'Actualización prohibida por cliente',
-    'clientTransferProhibited': 'Transferencia prohibida por cliente',
-    'clientDeleteProhibited': 'Eliminación prohibida por cliente'
-  };
-  
-  return status.map(s => statusMap[s] || s).join(', ');
-};
-
 const WhoisDomain = () => {
   const { slug } = useParams<{ slug: string }>();
   const [domainData, setDomainData] = useState<any>(null);
-  const [whoisData, setWhoisData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isWhoisLoading, setIsWhoisLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [whoisError, setWhoisError] = useState<string | null>(null);
   const [usingFallback, setUsingFallback] = useState(false);
   const [usingLiveData, setUsingLiveData] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -254,52 +65,14 @@ const WhoisDomain = () => {
     setRefreshing(true);
     setPreviewLoaded(false);
     setPreviewError(false);
-    setIsWhoisLoading(true);
-    setWhoisError(null); // Reset WHOIS error
     
     try {
-      // Try multiple DNS providers for redundancy
-      const dnsProviders = [
-        "https://dns.google/resolve",
-        "https://cloudflare-dns.com/dns-query"
-      ];
-      
-      // Helper function to fetch from DNS providers
-      const fetchDnsData = async (type: string, attempt = 0): Promise<any> => {
-        if (attempt >= dnsProviders.length) {
-          throw new Error(`All DNS providers failed for ${type} lookup`);
-        }
-        
-        try {
-          const headers: HeadersInit = {
-            'Accept': 'application/dns-json'
-          };
-          
-          // Add special handling for Cloudflare
-          if (dnsProviders[attempt].includes('cloudflare')) {
-            headers['Accept'] = 'application/dns-json';
-          }
-          
-          const url = `${dnsProviders[attempt]}?name=${domain}&type=${type}`;
-          const response = await fetch(url, { headers });
-          
-          if (!response.ok) {
-            throw new Error(`DNS provider ${attempt} returned ${response.status}`);
-          }
-          
-          return await response.json();
-        } catch (error) {
-          console.error(`DNS provider ${attempt} failed:`, error);
-          return fetchDnsData(type, attempt + 1);
-        }
-      };
-      
       // Fetch A record (IP address)
-      const aRes = await fetchDnsData('A');
+      const aRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
       const ip = aRes.Answer ? aRes.Answer[0].data : '–';
       
       // Fetch nameservers
-      const nsRes = await fetchDnsData('NS');
+      const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
       const nameservers = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data) : [];
       
       // Determine if it's a Chilean IP (improved check)
@@ -352,30 +125,7 @@ const WhoisDomain = () => {
         }));
       });
       
-      // Fetch WHOIS data with improved error handling
-      fetchWhoisData(domain)
-        .then(whois => {
-          console.log('WHOIS data received:', whois);
-          
-          setWhoisData(whois);
-          
-          // Update nameservers if they were found in WHOIS but not in DNS
-          if (whois.nameservers && whois.nameservers.length > 0 && (!nameservers || nameservers.length === 0)) {
-            setDomainData(prevData => ({
-              ...prevData,
-              nameservers: whois.nameservers
-            }));
-          }
-        })
-        .catch(whoisErr => {
-          console.error('Error fetching WHOIS data:', whoisErr);
-          setWhoisError('No se pudo obtener información de registro para este dominio');
-        })
-        .finally(() => {
-          setIsWhoisLoading(false);
-        });
-      
-      // Try to get a screenshot with multiple fallbacks
+      // Try to get a screenshot
       try {
         // Use multiple screenshot services for redundancy
         const screenshotServices = [
@@ -420,30 +170,33 @@ const WhoisDomain = () => {
         variant: "default"
       });
       
+      // Try calling the Supabase function to save this search for future reference
+      try {
+        const res = await fetch('https://oegvwjxrlmtwortyhsrv.functions.supabase.co/save-search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            domain,
+            ip,
+            ns: nameservers,
+            provider,
+            asn: '-'
+          })
+        });
+        
+        if (res.ok) {
+          console.log('Domain data saved successfully');
+        }
+      } catch (error) {
+        console.error('Error saving domain data:', error);
+      }
     } catch (error) {
       console.error('Error fetching live domain data:', error);
       toast({
         title: "Error al obtener datos en vivo",
-        description: "Usando datos de respaldo para este dominio.",
-        variant: "default"
+        description: "No pudimos obtener información actualizada para este dominio.",
+        variant: "destructive"
       });
-      
-      // Use fallback data if live data fails
-      setDomainData(getFallbackData(domain));
-      setUsingFallback(true);
-      
-      // Still try to get WHOIS data
-      fetchWhoisData(domain)
-        .then(whois => {
-          setWhoisData(whois);
-        })
-        .catch(whoisErr => {
-          console.error('Fallback WHOIS data error:', whoisErr);
-          setWhoisError('No se pudo obtener información de registro para este dominio');
-        })
-        .finally(() => {
-          setIsWhoisLoading(false);
-        });
     } finally {
       setRefreshing(false);
     }
@@ -474,30 +227,6 @@ const WhoisDomain = () => {
       .then(data => {
         setDomainData(data);
         setIsLoading(false);
-        
-        // Also try to get WHOIS data for this domain
-        console.log('Fetching WHOIS data for static domain:', domainName);
-        fetchWhoisData(domainName)
-          .then(whoisData => {
-            console.log('WHOIS data received for static domain:', whoisData);
-            setWhoisData(whoisData);
-            
-            // Update nameservers if they were found in WHOIS but not in DNS
-            if (whoisData.nameservers && whoisData.nameservers.length > 0 && 
-                (!data.nameservers || data.nameservers.length === 0)) {
-              setDomainData(prevData => ({
-                ...prevData,
-                nameservers: whoisData.nameservers
-              }));
-            }
-            
-            setIsWhoisLoading(false);
-          })
-          .catch(whoisErr => {
-            console.error('Error fetching WHOIS data for static domain:', whoisErr);
-            setWhoisError('No se pudo obtener información de registro para este dominio');
-            setIsWhoisLoading(false);
-          });
       })
       .catch(error => {
         console.error('Error loading domain data:', error);
@@ -551,20 +280,6 @@ const WhoisDomain = () => {
 
   const handleImageError = () => {
     setPreviewError(true);
-  };
-
-  // Helper function to calculate days until expiration
-  const getDaysUntilExpiration = (expirationDate: string): number | null => {
-    if (!expirationDate || expirationDate === 'Desconocido') return null;
-    
-    try {
-      const expDate = new Date(expirationDate);
-      const today = new Date();
-      const diffTime = expDate.getTime() - today.getTime();
-      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    } catch (e) {
-      return null;
-    }
   };
 
   return (
@@ -653,207 +368,61 @@ const WhoisDomain = () => {
             )}
             
             <div className="grid md:grid-cols-2 gap-8 mt-8">
-              <div className="space-y-8">
-                <Card className="shadow-md overflow-hidden">
-                  <CardHeader className="bg-white py-5">
-                    <CardTitle className="flex items-center text-xl">
-                      <Server className="h-5 w-5 mr-2 text-blue-700" />
-                      Datos técnicos
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-5">
-                    <div className="space-y-4">
-                      <div>
-                        <span className="font-medium">Dirección IP:</span> 
-                        <span className="ml-2">{domainData.ip}</span>
-                        {domainData.ip_chile ? (
-                          <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            🇨🇱 IP Chilena
-                          </span>
-                        ) : (
-                          <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            <CloudOff className="h-3 w-3 mr-1" /> IP Extranjera
-                          </span>
-                        )}
-                      </div>
-                      
-                      <div>
-                        <span className="font-medium">Proveedor:</span> 
-                        <span className="ml-2">{domainData.provider}</span>
-                      </div>
-                      
-                      <div>
-                        <span className="font-medium">ASN:</span> 
-                        <span className="ml-2">{domainData.asn || 'Consultando...'}</span>
-                      </div>
-                      
-                      <div>
-                        <span className="font-medium">Nameservers:</span>
-                        <ul className="ml-6 mt-1 list-disc">
-                          {domainData.nameservers && domainData.nameservers.map((ns: string, index: number) => (
-                            <li key={index} className="text-sm">{ns}</li>
-                          ))}
-                        </ul>
-                      </div>
+              <Card className="shadow-md overflow-hidden">
+                <CardHeader className="bg-white py-5">
+                  <CardTitle className="flex items-center text-xl">
+                    <Server className="h-5 w-5 mr-2 text-blue-700" />
+                    Datos técnicos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-5">
+                  <div className="space-y-4">
+                    <div>
+                      <span className="font-medium">Dirección IP:</span> 
+                      <span className="ml-2">{domainData.ip}</span>
+                      {domainData.ip_chile ? (
+                        <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          🇨🇱 IP Chilena
+                        </span>
+                      ) : (
+                        <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          <CloudOff className="h-3 w-3 mr-1" /> IP Extranjera
+                        </span>
+                      )}
                     </div>
                     
-                    <div className="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-lg">
-                      <h3 className="font-medium text-blue-800 mb-2">¿Tu IP no es chilena?</h3>
-                      <p className="text-sm">
-                        Mejora tu velocidad y SEO local 
-                        <a href="/cotiza-hosting" className="text-red-600 underline ml-1">
-                          migrando gratis
-                        </a> 
-                        a HostingPlus (30 días garantía).
-                      </p>
+                    <div>
+                      <span className="font-medium">Proveedor:</span> 
+                      <span className="ml-2">{domainData.provider}</span>
                     </div>
-                  </CardContent>
-                </Card>
-
-                {/* New WHOIS information card */}
-                <Card className="shadow-md overflow-hidden">
-                  <CardHeader className="bg-white py-5">
-                    <CardTitle className="flex items-center text-xl">
-                      <Info className="h-5 w-5 mr-2 text-blue-700" />
-                      Información de registro
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-5">
-                    {isWhoisLoading ? (
-                      <div className="space-y-4">
-                        <Skeleton className="h-6 w-full" />
-                        <Skeleton className="h-6 w-full" />
-                        <Skeleton className="h-6 w-full" />
-                        <Skeleton className="h-6 w-full" />
-                      </div>
-                    ) : whoisError ? (
-                      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <p className="text-sm text-yellow-800">
-                          {whoisError}
-                        </p>
-                      </div>
-                    ) : whoisData ? (
-                      <div>
-                        <Table>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell className="font-medium w-1/3 py-3">Fecha de registro</TableCell>
-                              <TableCell className="py-3">{formatDate(whoisData.registrationDate)}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="font-medium w-1/3 py-3">Fecha de vencimiento</TableCell>
-                              <TableCell className="py-3">
-                                {formatDate(whoisData.expirationDate)}
-                                {getDaysUntilExpiration(whoisData.expirationDate) !== null && (
-                                  <span className={`ml-2 text-xs rounded-full px-2 py-1 ${
-                                    getDaysUntilExpiration(whoisData.expirationDate)! < 30 
-                                      ? 'bg-red-100 text-red-800' 
-                                      : getDaysUntilExpiration(whoisData.expirationDate)! < 90 
-                                        ? 'bg-yellow-100 text-yellow-800'
-                                        : 'bg-green-100 text-green-800'
-                                  }`}>
-                                    {getDaysUntilExpiration(whoisData.expirationDate)! < 0 
-                                      ? '¡Expirado!' 
-                                      : `${getDaysUntilExpiration(whoisData.expirationDate)} días restantes`
-                                    }
-                                  </span>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="font-medium w-1/3 py-3">Última actualización</TableCell>
-                              <TableCell className="py-3">{formatDate(whoisData.lastChangedDate)}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="font-medium w-1/3 py-3">Estado</TableCell>
-                              <TableCell className="py-3">{translateStatus(whoisData.status)}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="font-medium w-1/3 py-3">Registrador</TableCell>
-                              <TableCell className="py-3">{whoisData.registrar}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="font-medium w-1/3 py-3">Privacidad</TableCell>
-                              <TableCell className="py-3">
-                                {whoisData.hasPrivacyProtection ? (
-                                  <span className="text-green-700 flex items-center">
-                                    <Check className="h-4 w-4 mr-1" />
-                                    Protegida
-                                  </span>
-                                ) : (
-                                  <span className="text-yellow-700">No protegida</span>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-
-                        {/* Information box about expiration */}
-                        {getDaysUntilExpiration(whoisData.expirationDate) !== null && 
-                         getDaysUntilExpiration(whoisData.expirationDate)! < 90 && (
-                          <div className={`mt-4 p-4 rounded-lg ${
-                            getDaysUntilExpiration(whoisData.expirationDate)! < 30 
-                              ? 'bg-red-50 border border-red-200' 
-                              : 'bg-yellow-50 border border-yellow-200'
-                          }`}>
-                            <p className={`text-sm ${
-                              getDaysUntilExpiration(whoisData.expirationDate)! < 30 
-                                ? 'text-red-800' 
-                                : 'text-yellow-800'
-                            }`}>
-                              {getDaysUntilExpiration(whoisData.expirationDate)! < 0 
-                                ? '¡Este dominio ha expirado! Contacta con NIC Chile para recuperarlo.' 
-                                : getDaysUntilExpiration(whoisData.expirationDate)! < 30 
-                                  ? `¡Alerta! El dominio vence en menos de 30 días. Renuévalo pronto.` 
-                                  : `Recomendamos renovar este dominio pronto para evitar perderlo.`
-                              }
-                            </p>
-                          </div>
-                        )}
-
-                        {/* WHOIS information modal */}
-                        <div className="mt-4">
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button variant="outline" size="sm" className="text-xs">
-                                ¿Qué es esta información?
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Información de registro de dominio</DialogTitle>
-                                <DialogDescription>
-                                  <p className="mt-2">
-                                    Esta información proviene del sistema WHOIS/RDAP que mantiene datos sobre el registro 
-                                    y propiedad de dominios en internet.
-                                  </p>
-                                  <ul className="mt-4 space-y-2 list-disc pl-5">
-                                    <li>
-                                      <span className="font-medium">Fecha de registro:</span> Cuando se registró el dominio por primera vez.
-                                    </li>
-                                    <li>
-                                      <span className="font-medium">Fecha de vencimiento:</span> Cuando expirará el dominio si no se renueva.
-                                    </li>
-                                    <li>
-                                      <span className="font-medium">Estado:</span> El estado actual del dominio (activo, bloqueado, etc.).
-                                    </li>
-                                    <li>
-                                      <span className="font-medium">Registrador:</span> La empresa a través de la cual se registró el dominio.
-                                    </li>
-                                    <li>
-                                      <span className="font-medium">Privacidad:</span> Si la información del propietario está protegida.
-                                    </li>
-                                  </ul>
-                                </DialogDescription>
-                              </DialogHeader>
-                            </DialogContent>
-                          </Dialog>
-                        </div>
-                      </div>
-                    ) : null}
-                  </CardContent>
-                </Card>
-              </div>
+                    
+                    <div>
+                      <span className="font-medium">ASN:</span> 
+                      <span className="ml-2">{domainData.asn || 'Consultando...'}</span>
+                    </div>
+                    
+                    <div>
+                      <span className="font-medium">Nameservers:</span>
+                      <ul className="ml-6 mt-1 list-disc">
+                        {domainData.nameservers && domainData.nameservers.map((ns: string, index: number) => (
+                          <li key={index} className="text-sm">{ns}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                    <h3 className="font-medium text-blue-800 mb-2">¿Tu IP no es chilena?</h3>
+                    <p className="text-sm">
+                      Mejora tu velocidad y SEO local 
+                      <a href="/cotiza-hosting" className="text-red-600 underline ml-1">
+                        migrando gratis
+                      </a> 
+                      a HostingPlus (30 días garantía).
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
               
               <div>
                 <h2 className="text-xl font-bold mb-4 flex items-center">
