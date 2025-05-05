@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { History, Search } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Fallback data for when the JSON file is not available
 const fallbackDomains = [
@@ -9,7 +11,12 @@ const fallbackDomains = [
   "ecohosting.cl", 
   "fullhosting.cl", 
   "webhosting.cl", 
-  "planetahosting.cl"
+  "planetahosting.cl",
+  "hostgator.cl",
+  "hosting24.cl",
+  "nethosting.cl",
+  "ninjahosting.cl",
+  "ziphosting.cl"
 ];
 
 const RecentSearches = () => {
@@ -67,20 +74,28 @@ const RecentSearches = () => {
   }
 
   return (
-    <div className="mt-6">
-      <h3 className="text-sm font-medium mb-2">Búsquedas recientes:</h3>
-      <div className="flex flex-wrap gap-3 justify-center">
-        {domains.slice(0, 15).map(domain => (
-          <Link 
-            key={domain} 
-            to={`/whois/${domain.replace(/\./g, '-')}/`}
-            className="text-xs hover:underline text-[#EDF2F4]/80 hover:text-[#EDF2F4]"
-          >
-            {domain}
-          </Link>
-        ))}
-      </div>
-    </div>
+    <Card className="bg-white shadow-sm">
+      <CardHeader className="pb-2 pt-4">
+        <CardTitle className="text-sm font-medium flex items-center">
+          <History className="h-4 w-4 mr-2 text-blue-600" />
+          Búsquedas recientes
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <div className="flex flex-wrap gap-2">
+          {domains.slice(0, 10).map(domain => (
+            <Link 
+              key={domain} 
+              to={`/whois/${domain.replace(/\./g, '-')}/`}
+              className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 transition-colors flex items-center"
+            >
+              <Search className="h-3 w-3 mr-1 text-gray-500" />
+              {domain}
+            </Link>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
