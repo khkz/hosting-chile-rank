@@ -17,6 +17,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableCaption,
 } from "@/components/ui/table";
 import {
   Pagination,
@@ -64,7 +65,7 @@ const UltimosDominios = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [domainsPerPage] = useState(50); // Updated to show 50 domains per page
+  const [domainsPerPage] = useState(50); // Show 50 domains per page
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const { toast } = useToast();
@@ -107,7 +108,6 @@ const UltimosDominios = () => {
     setError(null);
     
     try {
-      // In production, this would call an API endpoint
       toast({
         title: "Actualizando datos",
         description: "Intentando obtener los últimos dominios registrados.",
@@ -124,15 +124,15 @@ const UltimosDominios = () => {
     }
   };
 
-  // Load domains from GitHub JSON with timestamp to avoid cache
+  // Load domains from local JSON with timestamp to avoid cache
   const loadDomains = async () => {
     setIsLoading(true);
     setError(null);
     
     try {
-      // Add timestamp to URL to avoid cache
+      // Add timestamp to URL to avoid cache - using local file as specified
       const timestamp = Date.now();
-      const response = await fetch(`https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json?ts=${timestamp}`);
+      const response = await fetch(`/data/latest.json?ts=${timestamp}`);
       
       if (!response.ok) {
         throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
@@ -141,7 +141,12 @@ const UltimosDominios = () => {
       const data: ApiResponse = await response.json();
       
       if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
-        setDomains(data.domains);
+        // Sort domains by date in descending order
+        const sortedDomains = [...data.domains].sort((a, b) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        
+        setDomains(sortedDomains);
         setLastUpdated(data.updated);
         
         toast({
@@ -171,7 +176,7 @@ const UltimosDominios = () => {
     loadDomains();
     
     // Add console log to help with debugging
-    console.log("💡 UltimosDominios: Intentando cargar dominios desde GitHub");
+    console.log("💡 UltimosDominios: Intentando cargar dominios desde archivo local");
   }, []);
 
   // Filter domains based on search term
@@ -220,7 +225,7 @@ const UltimosDominios = () => {
             {lastUpdated && (
               <p className="text-sm text-gray-500 flex items-center">
                 <Calendar className="h-4 w-4 mr-1" />
-                Datos actualizados: {formatDateString(lastUpdated)} (hora UTC)
+                Datos actualizados: {formatDateString(lastUpdated)} UTC
               </p>
             )}
           </div>
@@ -288,48 +293,54 @@ const UltimosDominios = () => {
           </div>
         ) : (
           <>
-            <Card className="mb-8">
+            <Card className="mb-8 overflow-auto">
               <CardHeader>
                 <CardTitle>Últimos dominios registrados</CardTitle>
               </CardHeader>
               <CardContent>
-                <Table>
+                <Table className="w-full text-sm text-[#2B2D42]">
+                  <TableCaption className="text-xs text-gray-500 mt-2">
+                    Listado de últimos dominios .CL registrados en las últimas 24 h
+                  </TableCaption>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Dominio</TableHead>
-                      <TableHead>Fecha de registro</TableHead>
-                      <TableHead className="text-right">Acciones</TableHead>
+                      <TableHead scope="col" className="bg-white sticky top-0 shadow">N°</TableHead>
+                      <TableHead scope="col" className="bg-white sticky top-0 shadow">Dominio</TableHead>
+                      <TableHead scope="col" className="bg-white sticky top-0 shadow">Fecha de registro</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {currentDomains.map((domain) => (
+                    {currentDomains.map((domain, index) => (
                       <TableRow key={domain.d} className="hover:bg-[#F8F9FA]">
                         <TableCell className="font-medium border-b border-[#E5E7EB]">
+                          {indexOfFirstDomain + index + 1}
+                        </TableCell>
+                        <TableCell className="border-b border-[#E5E7EB]">
                           <div className="flex items-center gap-2">
                             <Globe className="h-4 w-4 text-blue-600" />
-                            {domain.d}
+                            <span>{domain.d}</span>
+                            <div className="flex ml-auto space-x-2">
+                              <Link 
+                                to={`/whois/${domain.d.replace(/\./g, '-')}/`}
+                                className="text-blue-600 hover:text-blue-800"
+                                title="Analizar dominio"
+                              >
+                                <Search className="h-4 w-4" />
+                              </Link>
+                              <a 
+                                href={`https://${domain.d}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-600 hover:text-gray-800"
+                                title="Visitar sitio"
+                              >
+                                <ExternalLink className="h-4 w-4" />
+                              </a>
+                            </div>
                           </div>
                         </TableCell>
-                        <TableCell className="border-b border-[#E5E7EB]">{formatTableDate(domain.date)}</TableCell>
-                        <TableCell className="text-right border-b border-[#E5E7EB]">
-                          <div className="flex justify-end space-x-2">
-                            <Link 
-                              to={`/whois/${domain.d.replace(/\./g, '-')}/`}
-                              className="text-blue-600 hover:text-blue-800"
-                              title="Analizar dominio"
-                            >
-                              <Search className="h-4 w-4" />
-                            </Link>
-                            <a 
-                              href={`https://${domain.d}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-600 hover:text-gray-800"
-                              title="Visitar sitio"
-                            >
-                              <ExternalLink className="h-4 w-4" />
-                            </a>
-                          </div>
+                        <TableCell className="border-b border-[#E5E7EB]">
+                          {formatTableDate(domain.date)}
                         </TableCell>
                       </TableRow>
                     ))}
