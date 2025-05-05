@@ -12,25 +12,27 @@ if (!existsSync(dataDir)) {
 // Function to fetch domains from NIC.cl
 async function fetchDomainsFromNic() {
   try {
+    console.log("Attempting to fetch from NIC.cl main source...");
     // This is the URL for the latest domains (last day)
     const response = await fetch("https://www.nic.cl/registry/Ultimos.do?t=1d", {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; EligeTuHostingBot/1.0; +https://eligetuhosting.cl/)'
-      }
+      },
+      timeout: 30000 // 30 second timeout
     });
     
     if (!response.ok) {
+      console.error(`Failed to fetch domains: ${response.status} ${response.statusText}`);
       throw new Error(`Failed to fetch domains: ${response.status} ${response.statusText}`);
     }
     
     const html = await response.text();
+    
+    // Log a sample of the HTML to help with debugging
+    console.log("Sample of HTML response (first 500 chars):", html.substring(0, 500));
+    
     const dom = new JSDOM(html);
     const document = dom.window.document;
-    
-    // Find the domains in the content
-    const content = document.body.textContent;
-    
-    // Try different parsing strategies
     
     // Strategy 1: Parse table directly if available
     const domainRows = document.querySelectorAll("table tr");
@@ -53,14 +55,14 @@ async function fetchDomainsFromNic() {
               const [day, month, year] = datePart.split('-');
               const [hour, minute, second] = timePart ? timePart.split(':') : ['00', '00', '00'];
               
-              const isoDate = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
+              const isoDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:${second ? second.padStart(2, '0') : '00'}Z`;
               
               domainEntries.push({
                 d: domain,
                 date: isoDate
               });
             } catch (e) {
-              console.warn(`Could not parse date for ${domain}: ${dateStr}`);
+              console.warn(`Could not parse date for ${domain}: ${dateStr}`, e);
               domainEntries.push({
                 d: domain,
                 date: new Date().toISOString() // Use current date as fallback
@@ -76,67 +78,100 @@ async function fetchDomainsFromNic() {
       }
     }
     
-    // Strategy 2: Extract domain entries using regex pattern matching (original approach)
+    // Strategy 2: Extract domain entries using regex pattern matching
     const domainEntries = [];
     console.log("Table strategy failed, trying regex pattern matching");
     
-    // More flexible pattern to match domain followed by date
-    const pattern = /([a-z0-9-]+\.cl)([^\n]*?)(\d{2,4}[-\/]\d{1,2}[-\/]\d{1,4}\s+\d{1,2}:\d{1,2}(:\d{1,2})?(\.\d+)?)/g;
+    // Get the content of the page
+    const content = document.body.textContent || html;
     
-    let match;
-    while ((match = pattern.exec(content)) !== null) {
-      const domain = match[1].trim();
-      let dateStr = match[3].trim();
+    // More flexible pattern to match domain followed by date (updated for more formats)
+    const patterns = [
+      // Pattern 1: Standard format
+      /([a-z0-9-]+\.cl)[^\n]*?(\d{2})[-\/](\d{2})[-\/](\d{4})\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/g,
+      // Pattern 2: Alternative format with year first
+      /([a-z0-9-]+\.cl)[^\n]*?(\d{4})[-\/](\d{2})[-\/](\d{2})\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/g,
+      // Pattern 3: Simple domain with nearby date
+      /([a-z0-9-]+\.cl)(?:[^\n]*?)(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})/g
+    ];
+    
+    // Try each pattern until we find domains
+    for (const pattern of patterns) {
+      let match;
+      pattern.lastIndex = 0; // Reset the regex state
       
-      // Parse date string to standard ISO format
-      try {
-        let year, month, day, hour, minute, second;
-        // Handle DD-MM-YYYY and YYYY-MM-DD formats
-        if (dateStr.match(/^\d{2}[-\/]\d{2}[-\/]\d{4}/)) {
-          // DD-MM-YYYY format
-          const dateParts = dateStr.match(/^(\d{2})[-\/](\d{2})[-\/](\d{4})\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);
-          if (dateParts) {
-            day = dateParts[1];
-            month = dateParts[2];
-            year = dateParts[3];
-            hour = dateParts[4].padStart(2, '0');
-            minute = dateParts[5].padStart(2, '0');
-            second = dateParts[6] ? dateParts[6].padStart(2, '0') : '00';
-          }
-        } else {
-          // YYYY-MM-DD format or other
-          const dateParts = dateStr.match(/^(\d{4})[-\/](\d{2})[-\/](\d{2})\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);
-          if (dateParts) {
-            year = dateParts[1];
-            month = dateParts[2];
-            day = dateParts[3];
-            hour = dateParts[4].padStart(2, '0');
-            minute = dateParts[5].padStart(2, '0');
-            second = dateParts[6] ? dateParts[6].padStart(2, '0') : '00';
-          }
-        }
+      while ((match = pattern.exec(content)) !== null) {
+        const domain = match[1].trim();
         
-        if (year && month && day) {
-          const isoDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour}:${minute}:${second}Z`;
+        try {
+          let isoDate;
+          
+          if (match.length >= 7) {
+            // Full date and time capture
+            if (match[4].length === 4) {
+              // YYYY-MM-DD format (Pattern 2)
+              const year = match[2];
+              const month = match[3].padStart(2, '0');
+              const day = match[4].padStart(2, '0');
+              const hour = match[5] ? match[5].padStart(2, '0') : '00';
+              const minute = match[6] ? match[6].padStart(2, '0') : '00';
+              const second = match[7] ? match[7].padStart(2, '0') : '00';
+              
+              isoDate = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
+            } else {
+              // DD-MM-YYYY format (Pattern 1)
+              const day = match[2].padStart(2, '0');
+              const month = match[3].padStart(2, '0');
+              const year = match[4];
+              const hour = match[5] ? match[5].padStart(2, '0') : '00';
+              const minute = match[6] ? match[6].padStart(2, '0') : '00';
+              const second = match[7] ? match[7].padStart(2, '0') : '00';
+              
+              isoDate = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
+            }
+          } else if (match.length >= 5) {
+            // Simple date format (Pattern 3)
+            let day, month, year;
+            
+            // Try to determine the date format
+            if (match[4].length === 4) {
+              // DD/MM/YYYY
+              day = match[2].padStart(2, '0');
+              month = match[3].padStart(2, '0');
+              year = match[4];
+            } else {
+              // Handle 2-digit year
+              day = match[2].padStart(2, '0');
+              month = match[3].padStart(2, '0');
+              year = match[4].length === 2 ? `20${match[4]}` : match[4];
+            }
+            
+            isoDate = `${year}-${month}-${day}T00:00:00Z`;
+          } else {
+            // Fallback if we can't parse the date
+            throw new Error("Insufficient date parts captured");
+          }
           
           domainEntries.push({
             d: domain,
             date: isoDate
           });
-        } else {
-          throw new Error(`Invalid date format: ${dateStr}`);
+        } catch (e) {
+          console.warn(`Could not parse date for ${domain}:`, e);
+          domainEntries.push({
+            d: domain,
+            date: new Date().toISOString() // Use current date as fallback
+          });
         }
-      } catch (e) {
-        console.warn(`Could not parse date for ${domain}: ${dateStr}, error: ${e.message}`);
-        // Add domain with current date as fallback
-        domainEntries.push({
-          d: domain,
-          date: new Date().toISOString()
-        });
+      }
+      
+      if (domainEntries.length > 0) {
+        console.log(`Found ${domainEntries.length} domains using pattern index ${patterns.indexOf(pattern)}`);
+        break;
       }
     }
     
-    console.log(`Extracted ${domainEntries.length} domains with their registration dates using regex`);
+    console.log(`Extracted ${domainEntries.length} domains using regex`);
     
     if (domainEntries.length === 0) {
       throw new Error("Could not extract domain entries from the page. Site format may have changed.");
@@ -148,51 +183,147 @@ async function fetchDomainsFromNic() {
     return domainEntries;
   } catch (error) {
     console.error("Error fetching domains from NIC.cl:", error);
-    // Return empty array in case of error
-    return [];
+    throw error; // Re-throw to be handled by the caller
   }
 }
 
 // Alternative: Fetch from the XML feed as backup
 async function fetchDomainsFromXml() {
   try {
+    console.log("Attempting to fetch from NIC.cl XML feed...");
     const { parse } = await import("fast-xml-parser");
     const FEED = "https://www.nic.cl/registry/UltimosDominios.xml";
     const xml = await fetch(FEED, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; EligeTuHostingBot/1.0; +https://eligetuhosting.cl/)'
-      }
+      },
+      timeout: 30000 // 30 second timeout
     }).then(r => r.text());
+    
+    // Log a sample of the XML to help with debugging
+    console.log("Sample of XML response (first 500 chars):", xml.substring(0, 500));
+    
     const feed = parse(xml, { ignoreAttributes: false });
 
-    const domains = (feed.rss?.channel?.item || [])
-      .map(i => ({ 
-        d: i.title.toLowerCase(), 
-        date: i.pubDate 
-      }));
+    if (!feed.rss || !feed.rss.channel || !feed.rss.channel.item) {
+      console.error("XML feed has unexpected structure:", JSON.stringify(feed).substring(0, 200) + "...");
+      throw new Error("XML feed has unexpected structure");
+    }
+
+    const items = Array.isArray(feed.rss.channel.item) ? feed.rss.channel.item : [feed.rss.channel.item];
+    console.log(`Found ${items.length} items in XML feed`);
+
+    const domains = items.map(i => ({ 
+      d: i.title.toLowerCase(), 
+      date: i.pubDate 
+    }));
     
     return domains;
   } catch (error) {
     console.error("Error fetching domains from XML:", error);
-    return [];
+    throw error; // Re-throw to be handled by the caller
+  }
+}
+
+// Try to scrape from the recent domains page as another method
+async function scrapeRecentDomains() {
+  try {
+    console.log("Attempting to scrape recent domains directly...");
+    const response = await fetch("https://www.nic.cl/registry/Ultimos.do", {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; EligeTuHostingBot/1.0; +https://eligetuhosting.cl/)'
+      },
+      timeout: 30000 // 30 second timeout
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch from Ultimos.do: ${response.status}`);
+    }
+    
+    const html = await response.text();
+    const dom = new JSDOM(html);
+    const document = dom.window.document;
+    
+    // Try finding domains in any links or text content
+    const domainPattern = /([a-z0-9-]+\.cl)/g;
+    const textContent = document.body.textContent || '';
+    const domainSet = new Set();
+    
+    let match;
+    while ((match = domainPattern.exec(textContent)) !== null) {
+      const domain = match[1].trim();
+      if (domain && domain !== "nic.cl") {
+        domainSet.add(domain);
+      }
+    }
+    
+    // Also check for domains in links
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+      const href = link.getAttribute('href') || '';
+      const match = href.match(domainPattern);
+      if (match) {
+        domainSet.add(match[0]);
+      }
+    });
+    
+    const now = new Date().toISOString();
+    const domains = Array.from(domainSet).map(d => ({ 
+      d: d, 
+      date: now 
+    }));
+    
+    console.log(`Scraped ${domains.length} domains from the page`);
+    return domains;
+  } catch (error) {
+    console.error("Error scraping recent domains:", error);
+    throw error;
   }
 }
 
 // Main function to run the script
 async function main() {
-  console.log("Fetching domains from NIC.cl...");
+  console.log("Starting domain fetch process...");
+  console.log("Date:", new Date().toISOString());
   
-  // Try to fetch from the HTML page first
-  let domains = await fetchDomainsFromNic();
+  let domains = [];
+  let sourceName = "unknown";
+  let errorMessage = null;
   
-  // If HTML fetching failed or returned no domains, try XML as fallback
-  if (domains.length === 0) {
-    console.log("Falling back to XML feed...");
-    domains = await fetchDomainsFromXml();
+  // Try each method in sequence until we get domains
+  try {
+    // First try: HTML parsing
+    domains = await fetchDomainsFromNic();
+    sourceName = "html";
+    console.log("Successfully fetched domains from main HTML source");
+  } catch (error1) {
+    console.error("First method failed:", error1.message);
+    errorMessage = `HTML parsing failed: ${error1.message}`;
+    
+    try {
+      // Second try: XML feed
+      domains = await fetchDomainsFromXml();
+      sourceName = "xml";
+      console.log("Successfully fetched domains from XML feed");
+    } catch (error2) {
+      console.error("Second method failed:", error2.message);
+      errorMessage = `${errorMessage}; XML parsing failed: ${error2.message}`;
+      
+      try {
+        // Third try: Direct scraping
+        domains = await scrapeRecentDomains();
+        sourceName = "scrape";
+        console.log("Successfully scraped domains");
+      } catch (error3) {
+        console.error("All methods failed");
+        errorMessage = `${errorMessage}; Scraping failed: ${error3.message}`;
+        // Let all methods fail before giving up
+      }
+    }
   }
   
   if (domains.length === 0) {
-    console.error("Failed to fetch domains from both sources.");
+    console.error("Failed to fetch domains from all sources.");
     
     // If we already have a file, keep the old data but mark it as stale
     if (existsSync(`${dataDir}/latest.json`)) {
@@ -201,14 +332,17 @@ async function main() {
         
         // Add update metadata
         const metaData = {
+          lastUpdate: oldData.meta?.lastUpdate || new Date().toISOString(),
           lastAttempt: new Date().toISOString(),
+          count: oldData.domains?.length || 0,
           status: "error",
-          message: "Failed to fetch fresh data, using cached data"
+          source: oldData.meta?.source || "unknown",
+          message: errorMessage || "Failed to fetch fresh data, using cached data"
         };
         
         writeFileSync(`${dataDir}/latest.json`, JSON.stringify({
           meta: metaData,
-          domains: oldData.domains || oldData
+          domains: oldData.domains || []
         }, null, 2));
         
         console.log(`Kept old domain data and marked as stale at ${metaData.lastAttempt}`);
@@ -229,10 +363,22 @@ async function main() {
   // Add metadata about the update
   const metaData = {
     lastUpdate: new Date().toISOString(),
+    lastAttempt: new Date().toISOString(),
     count: domainsToSave.length,
     status: "success",
-    source: domains.length === 0 ? "xml" : "html"
+    source: sourceName
   };
+  
+  // Create a backup of the current file if it exists
+  if (existsSync(`${dataDir}/latest.json`)) {
+    try {
+      const oldData = readFileSync(`${dataDir}/latest.json`, 'utf8');
+      writeFileSync(`${dataDir}/latest.backup.json`, oldData);
+      console.log("Created backup of existing latest.json");
+    } catch (e) {
+      console.warn("Could not create backup of existing file:", e);
+    }
+  }
   
   // Write to a JSON file in the public directory
   writeFileSync(`${dataDir}/latest.json`, JSON.stringify({

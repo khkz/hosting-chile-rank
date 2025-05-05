@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -35,6 +34,10 @@ const lookupASN = async (ip: string): Promise<string> => {
   try {
     // Try to fetch ASN data from IPAPI
     const response = await fetch(`https://ipapi.co/${ip}/json/`);
+    if (!response.ok) {
+      throw new Error(`IPAPI returned ${response.status}`);
+    }
+    
     const data = await response.json();
     
     if (data && data.asn) {
@@ -53,7 +56,7 @@ const lookupASN = async (ip: string): Promise<string> => {
 const whoisCache: Record<string, {data: any, timestamp: number}> = {};
 const CACHE_EXPIRY = 3600000; // 1 hour in milliseconds
 
-// Function to fetch WHOIS data for a domain using a CORS proxy
+// Function to fetch WHOIS data for a domain using multiple CORS proxies
 const fetchWhoisData = async (domain: string) => {
   try {
     // Check cache first
@@ -65,113 +68,110 @@ const fetchWhoisData = async (domain: string) => {
     
     console.log(`Fetching WHOIS data for ${domain}`);
     
-    // First try using a CORS proxy to access the RDAP service
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(`https://rdap.nic.cl/domain/${domain}`)}`;
-    console.log(`Trying CORS proxy: ${proxyUrl}`);
+    // Use an array of CORS proxies for redundancy
+    const corsProxies = [
+      (url: string) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+      (url: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      (url: string) => `https://cors-anywhere.herokuapp.com/${url}`,
+      (url: string) => `https://cors-proxy.htmldriven.com/?url=${encodeURIComponent(url)}`,
+      (url: string) => `https://thingproxy.freeboard.io/fetch/${url}`
+    ];
     
-    const response = await fetch(proxyUrl, {
-      headers: {
-        'Accept': 'application/json'
+    // Target RDAP API
+    const rdapUrl = `https://rdap.nic.cl/domain/${domain}`;
+    
+    // Try each CORS proxy in sequence
+    let lastError = null;
+    
+    for (let i = 0; i < corsProxies.length; i++) {
+      try {
+        const proxyUrl = corsProxies[i](rdapUrl);
+        console.log(`Trying CORS proxy #${i+1}: ${proxyUrl.substring(0, 60)}...`);
+        
+        const response = await fetch(proxyUrl, {
+          headers: {
+            'Accept': 'application/json'
+          },
+          timeout: 10000 // 10 second timeout
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Proxy #${i+1} request failed with status: ${response.status}`);
+        }
+        
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json') && !contentType.includes('text/json')) {
+          console.warn(`Proxy #${i+1} returned non-JSON content type: ${contentType}`);
+          // We'll try to parse it anyway in case the content-type header is wrong
+        }
+        
+        const data = await response.json();
+        console.log('RDAP response received');
+        
+        // Extract the relevant information from the RDAP response
+        const whoisData = {
+          registrationDate: data.events?.find((e: any) => e.eventAction === 'registration')?.eventDate || 'Desconocido',
+          expirationDate: data.events?.find((e: any) => e.eventAction === 'expiration')?.eventDate || 'Desconocido',
+          lastChangedDate: data.events?.find((e: any) => e.eventAction === 'last changed')?.eventDate || 'Desconocido',
+          status: data.status || ['active'],
+          registrar: data.entities?.find((e: any) => e.roles?.includes('registrar'))?.vcardArray?.[1]?.find((v: any) => v[0] === 'fn')?.[3] || 'NIC Chile',
+          hasPrivacyProtection: !data.entities?.some((e: any) => e.roles?.includes('registrant')),
+          nameservers: data.nameservers?.map((ns: any) => ns.ldhName) || []
+        };
+        
+        // Store in cache
+        whoisCache[domain] = {
+          data: whoisData,
+          timestamp: now
+        };
+        
+        return whoisData;
+      } catch (error) {
+        console.error(`CORS proxy #${i+1} failed:`, error);
+        lastError = error;
+        // Continue to next proxy
       }
-    });
-    
-    if (!response.ok) {
-      console.warn(`CORS proxy request failed with status: ${response.status}`);
-      throw new Error(`No se pudo obtener información WHOIS para ${domain} (${response.status})`);
     }
     
-    const data = await response.json();
-    console.log('RDAP response:', data);
+    // If we get here, all proxies failed
+    throw new Error(`All CORS proxies failed: ${lastError?.message}`);
     
-    // Extract the relevant information from the RDAP response
-    const whoisData = {
-      registrationDate: data.events?.find((e: any) => e.eventAction === 'registration')?.eventDate || 'Desconocido',
-      expirationDate: data.events?.find((e: any) => e.eventAction === 'expiration')?.eventDate || 'Desconocido',
-      lastChangedDate: data.events?.find((e: any) => e.eventAction === 'last changed')?.eventDate || 'Desconocido',
-      status: data.status || ['active'],
-      registrar: data.entities?.find((e: any) => e.roles?.includes('registrar'))?.vcardArray?.[1]?.find((v: any) => v[0] === 'fn')?.[3] || 'NIC Chile',
-      hasPrivacyProtection: !data.entities?.some((e: any) => e.roles?.includes('registrant')),
-      nameservers: data.nameservers?.map((ns: any) => ns.ldhName) || []
-    };
-    
-    // Store in cache
-    whoisCache[domain] = {
-      data: whoisData,
-      timestamp: now
-    };
-    
-    return whoisData;
   } catch (error) {
     console.error('Error fetching WHOIS data:', error);
     
-    // Try a second CORS proxy as fallback
+    // Try to fetch from the server's static data (if available)
     try {
-      console.log('Trying alternative CORS proxy');
-      const altProxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://rdap.nic.cl/domain/${domain}`)}`;
+      console.log('Trying to fetch from static file');
+      const slug = domain.replace(/\./g, '-');
+      const staticResponse = await fetch(`/content/whois/${slug}.json`);
       
-      const response = await fetch(altProxyUrl);
-      if (!response.ok) {
-        console.warn(`Alternative CORS proxy request failed with status: ${response.status}`);
-        throw new Error(`Fallo secundario al obtener información WHOIS`);
+      if (staticResponse.ok) {
+        const staticData = await staticResponse.json();
+        return staticData;
       }
-      
-      const data = await response.json();
-      
-      // Extract the relevant information from the RDAP response
-      const whoisData = {
-        registrationDate: data.events?.find((e: any) => e.eventAction === 'registration')?.eventDate || 'Desconocido',
-        expirationDate: data.events?.find((e: any) => e.eventAction === 'expiration')?.eventDate || 'Desconocido',
-        lastChangedDate: data.events?.find((e: any) => e.eventAction === 'last changed')?.eventDate || 'Desconocido',
-        status: data.status || ['active'],
-        registrar: data.entities?.find((e: any) => e.roles?.includes('registrar'))?.vcardArray?.[1]?.find((v: any) => v[0] === 'fn')?.[3] || 'NIC Chile',
-        hasPrivacyProtection: !data.entities?.some((e: any) => e.roles?.includes('registrant')),
-        nameservers: data.nameservers?.map((ns: any) => ns.ldhName) || []
-      };
-      
-      // Store in cache
-      whoisCache[domain] = {
-        data: whoisData,
-        timestamp: Date.now()
-      };
-      
-      return whoisData;
-    } catch (fallbackError) {
-      console.error('Even fallback CORS proxy failed:', fallbackError);
-      
-      // Try to fetch from the server's static data (if available)
-      try {
-        console.log('Trying to fetch from static file');
-        const slug = domain.replace(/\./g, '-');
-        const staticResponse = await fetch(`/content/whois/${slug}.json`);
-        
-        if (staticResponse.ok) {
-          const staticData = await staticResponse.json();
-          return staticData;
-        }
-      } catch (staticError) {
-        console.error('Static data fetch failed:', staticError);
-      }
-      
-      // Last resort: return dynamic example data that at least looks different per domain
-      const domainComponents = domain.split('.');
-      const domainName = domainComponents[0];
-      
-      // Generate some variation based on the domain name
-      const registrationYear = 2010 + (domainName.length % 10);
-      const expirationYear = 2025 + (domainName.length % 5);
-      
-      console.log('Using generated data for', domain);
-      
-      return {
-        registrationDate: `${registrationYear}-05-15T14:30:00Z`,
-        expirationDate: `${expirationYear}-05-15T14:30:00Z`,
-        lastChangedDate: '2023-12-10T09:15:00Z',
-        status: ['active'],
-        registrar: 'NIC Chile',
-        hasPrivacyProtection: domainName.length % 2 === 0,
-        nameservers: []
-      };
+    } catch (staticError) {
+      console.error('Static data fetch failed:', staticError);
     }
+    
+    // Last resort: return dynamic example data that at least looks different per domain
+    const domainComponents = domain.split('.');
+    const domainName = domainComponents[0];
+    
+    // Generate some variation based on the domain name
+    const registrationYear = 2010 + (domainName.length % 10);
+    const expirationYear = 2025 + (domainName.length % 5);
+    
+    console.log('Using generated fallback data for', domain);
+    
+    return {
+      registrationDate: `${registrationYear}-05-15T14:30:00Z`,
+      expirationDate: `${expirationYear}-05-15T14:30:00Z`,
+      lastChangedDate: '2023-12-10T09:15:00Z',
+      status: ['active'],
+      registrar: 'NIC Chile',
+      hasPrivacyProtection: domainName.length % 2 === 0,
+      nameservers: []
+    };
   }
 };
 
@@ -241,14 +241,51 @@ const WhoisDomain = () => {
     setPreviewLoaded(false);
     setPreviewError(false);
     setIsWhoisLoading(true);
+    setWhoisError(null); // Reset WHOIS error
     
     try {
+      // Try multiple DNS providers for redundancy
+      const dnsProviders = [
+        "https://dns.google/resolve",
+        "https://cloudflare-dns.com/dns-query"
+      ];
+      
+      // Helper function to fetch from DNS providers
+      const fetchDnsData = async (type: string, attempt = 0): Promise<any> => {
+        if (attempt >= dnsProviders.length) {
+          throw new Error(`All DNS providers failed for ${type} lookup`);
+        }
+        
+        try {
+          const headers: HeadersInit = {
+            'Accept': 'application/dns-json'
+          };
+          
+          // Add special handling for Cloudflare
+          if (dnsProviders[attempt].includes('cloudflare')) {
+            headers['Accept'] = 'application/dns-json';
+          }
+          
+          const url = `${dnsProviders[attempt]}?name=${domain}&type=${type}`;
+          const response = await fetch(url, { headers });
+          
+          if (!response.ok) {
+            throw new Error(`DNS provider ${attempt} returned ${response.status}`);
+          }
+          
+          return await response.json();
+        } catch (error) {
+          console.error(`DNS provider ${attempt} failed:`, error);
+          return fetchDnsData(type, attempt + 1);
+        }
+      };
+      
       // Fetch A record (IP address)
-      const aRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
+      const aRes = await fetchDnsData('A');
       const ip = aRes.Answer ? aRes.Answer[0].data : '–';
       
       // Fetch nameservers
-      const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
+      const nsRes = await fetchDnsData('NS');
       const nameservers = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data) : [];
       
       // Determine if it's a Chilean IP (improved check)
@@ -301,30 +338,30 @@ const WhoisDomain = () => {
         }));
       });
       
-      // Fetch WHOIS data with better error handling
-      try {
-        console.log('Fetching WHOIS data for', domain);
-        const whois = await fetchWhoisData(domain);
-        console.log('WHOIS data received:', whois);
-        
-        setWhoisData(whois);
-        
-        // Update nameservers if they were found in WHOIS but not in DNS
-        if (whois.nameservers && whois.nameservers.length > 0 && (!nameservers || nameservers.length === 0)) {
-          setDomainData(prevData => ({
-            ...prevData,
-            nameservers: whois.nameservers
-          }));
-        }
-        
-        setIsWhoisLoading(false);
-      } catch (whoisErr) {
-        console.error('Error fetching WHOIS data:', whoisErr);
-        setWhoisError('No se pudo obtener información de registro para este dominio');
-        setIsWhoisLoading(false);
-      }
+      // Fetch WHOIS data with improved error handling
+      fetchWhoisData(domain)
+        .then(whois => {
+          console.log('WHOIS data received:', whois);
+          
+          setWhoisData(whois);
+          
+          // Update nameservers if they were found in WHOIS but not in DNS
+          if (whois.nameservers && whois.nameservers.length > 0 && (!nameservers || nameservers.length === 0)) {
+            setDomainData(prevData => ({
+              ...prevData,
+              nameservers: whois.nameservers
+            }));
+          }
+        })
+        .catch(whoisErr => {
+          console.error('Error fetching WHOIS data:', whoisErr);
+          setWhoisError('No se pudo obtener información de registro para este dominio');
+        })
+        .finally(() => {
+          setIsWhoisLoading(false);
+        });
       
-      // Try to get a screenshot
+      // Try to get a screenshot with multiple fallbacks
       try {
         // Use multiple screenshot services for redundancy
         const screenshotServices = [
@@ -369,33 +406,30 @@ const WhoisDomain = () => {
         variant: "default"
       });
       
-      // Try calling the Supabase function to save this search for future reference
-      try {
-        const res = await fetch('https://oegvwjxrlmtwortyhsrv.functions.supabase.co/save-search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            domain,
-            ip,
-            ns: nameservers,
-            provider,
-            asn: '-'
-          })
-        });
-        
-        if (res.ok) {
-          console.log('Domain data saved successfully');
-        }
-      } catch (error) {
-        console.error('Error saving domain data:', error);
-      }
     } catch (error) {
       console.error('Error fetching live domain data:', error);
       toast({
         title: "Error al obtener datos en vivo",
-        description: "No pudimos obtener información actualizada para este dominio.",
-        variant: "destructive"
+        description: "Usando datos de respaldo para este dominio.",
+        variant: "default"
       });
+      
+      // Use fallback data if live data fails
+      setDomainData(getFallbackData(domain));
+      setUsingFallback(true);
+      
+      // Still try to get WHOIS data
+      fetchWhoisData(domain)
+        .then(whois => {
+          setWhoisData(whois);
+        })
+        .catch(whoisErr => {
+          console.error('Fallback WHOIS data error:', whoisErr);
+          setWhoisError('No se pudo obtener información de registro para este dominio');
+        })
+        .finally(() => {
+          setIsWhoisLoading(false);
+        });
     } finally {
       setRefreshing(false);
     }

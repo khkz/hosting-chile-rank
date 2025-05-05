@@ -19,15 +19,54 @@ jobs:
       - name: Crear directorio de datos
         run: mkdir -p public/data
 
+      - name: Verificar si ya existe latest.json
+        id: check_file
+        run: |
+          if [ -f "public/data/latest.json" ]; then
+            echo "::set-output name=exists::true"
+            cp public/data/latest.json public/data/latest.backup.json
+          else
+            echo "::set-output name=exists::false"
+          fi
+
       - name: Ejecutar script
-        run: node scripts/nic-to-json.mjs
+        id: run_script
+        run: |
+          node scripts/nic-to-json.mjs
+          echo "::set-output name=script_exit_code::$?"
+        continue-on-error: true
+
+      - name: Restaurar backup si el script falla
+        if: steps.run_script.outputs.script_exit_code != '0' && steps.check_file.outputs.exists == 'true'
+        run: |
+          echo "El script falló, restaurando backup..."
+          cp public/data/latest.backup.json public/data/latest.json
+          # Actualizar el JSON para indicar que es un backup antiguo
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('public/data/latest.json'));
+            if (!data.meta) data.meta = {};
+            data.meta.lastAttempt = new Date().toISOString();
+            data.meta.status = 'error';
+            data.meta.message = 'Falló la actualización automática, usando datos de respaldo';
+            fs.writeFileSync('public/data/latest.json', JSON.stringify(data, null, 2));
+          "
 
       - name: Validar JSON
+        id: validate_json
         run: |
-          # Check if the JSON file is valid
-          cat public/data/latest.json | jq empty && echo "✅ JSON is valid" || exit 1
+          if [ -f "public/data/latest.json" ]; then
+            # Check if the JSON file is valid
+            cat public/data/latest.json | jq empty && echo "✅ JSON is valid" || exit 1
+            echo "::set-output name=json_valid::true"
+          else
+            echo "❌ JSON file does not exist"
+            echo "::set-output name=json_valid::false"
+            exit 1
+          fi
 
       - name: Commit y push si hay cambios
+        if: steps.validate_json.outputs.json_valid == 'true'
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
@@ -36,8 +75,12 @@ jobs:
           git push
 
       - name: Notificar en caso de fallo
-        if: failure()
+        if: failure() || steps.run_script.outputs.script_exit_code != '0'
         run: |
           echo "El script de actualización de dominios ha fallado. Por favor, revisa los logs."
-          # Aquí se podría agregar una notificación por correo electrónico o Discord
-          # por ejemplo usando curl para llamar a un webhook
+          # Creamos un archivo de notificación para que la web pueda detectar que hubo un problema
+          mkdir -p public/status
+          echo "{\"lastError\":\"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",\"message\":\"Falló la actualización automática\"}" > public/status/nic-crawler.json
+          git add public/status/nic-crawler.json
+          git diff --cached --quiet || git commit -m "chore: update status after failure [skip ci]"
+          git push || echo "No se pudo subir el estado"

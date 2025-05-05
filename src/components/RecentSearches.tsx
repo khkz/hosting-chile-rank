@@ -207,15 +207,17 @@ const RecentSearches = () => {
         </div>
         
         {lastUpdateTime && (
-          <CardDescription className="text-xs flex items-center">
+          <div className="flex items-center text-xs text-gray-500">
             <Clock className="h-3 w-3 mr-1" />
-            Actualizado: {formatRegistrationDate(lastUpdateTime)}
+            <span>Actualizado: {formatRegistrationDate(lastUpdateTime)}</span>
             {isDataStale && (
-              <Badge variant="outline" className="ml-2 py-0 px-1 h-4 text-[10px] bg-yellow-50 text-yellow-800 border-yellow-200">
-                Antiguo
-              </Badge>
+              <span className="ml-2">
+                <Badge variant="outline" className="py-0 px-1 h-4 text-[10px] bg-yellow-50 text-yellow-800 border-yellow-200">
+                  Antiguo
+                </Badge>
+              </span>
             )}
-          </CardDescription>
+          </div>
         )}
       </CardHeader>
       <CardContent className="pt-0">
