@@ -120,7 +120,7 @@ async function main() {
   console.log(`Successfully fetched ${domains.length} domains.`);
   
   // Limit to a reasonable number for performance (e.g., 200)
-  const domainsToSave = domains.slice(0, 400);
+  const domainsToSave = domains.slice(0, 800);
   
   // Write to a JSON file in the public directory
   writeFileSync(`${dataDir}/latest.json`, JSON.stringify(domainsToSave, null, 2));
