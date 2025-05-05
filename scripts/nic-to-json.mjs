@@ -1,8 +1,6 @@
 /**
- * nic-to-json.mjs
- * Extrae los dominios registrados en las últimas 24 h desde NIC Chile
- * y guarda un JSON en public/data/latest.json
- * — actualizado 2025-05-05 —
+ * nic-to-json.mjs  –  versión 2
+ * Corrige: captura de fecha después del <a> y fallback usando regex.
  */
 
 import { writeFileSync, mkdirSync, existsSync } from "fs";
@@ -10,99 +8,92 @@ import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
 import { XMLParser } from "fast-xml-parser";
 
-/*───────────────────────────────────────────────*
- * 0. Asegurar carpeta de salida
- *───────────────────────────────────────────────*/
+/*──────────────── 0. Crear carpeta ────────────────*/
 const dataDir = "public/data";
-if (!existsSync(dataDir)) {
-  mkdirSync(dataDir, { recursive: true });
-  console.log(`Created directory: ${dataDir}`);
-}
+if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
 
-/*───────────────────────────────────────────────*
- * 1. Scraping HTML de NIC.cl
- *───────────────────────────────────────────────*/
+/*──────────────── 1. HTML NIC.cl ──────────────────*/
 async function fetchDomainsFromNic() {
   const URL = "https://www.nic.cl/registry/Ultimos.do?t=1d";
   const res = await fetch(URL, {
-    headers: { "User-Agent": "Mozilla/5.0 (EligetuBot/1.0)" }
+    headers: { "User-Agent": "EligetuBot/1.0 (+https://eligetuhosting.cl)" }
   });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
 
-  const dom = new JSDOM(await res.text());
+  const html = await res.text();
+  const dom = new JSDOM(html);
   const anchors = [
     ...dom.window.document.querySelectorAll('a[href*="Whois.do?d="]')
   ];
-  console.log(`Encontradas ${anchors.length} anclas en el HTML`);
+  console.log(`Anclas encontradas: ${anchors.length}`);
 
   const rows = [];
-  for (const a of anchors) {
-    const domain = a.textContent.trim().toLowerCase();
-    const sibling = (a.nextSibling?.textContent || "").trim();
-    const m = sibling.match(
-      /(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d+)/
-    );
-    if (!m) continue;
 
-    const isoDate = m[1].replace(" ", "T").replace(/\.\d+$/, "") + "Z";
-    rows.push({ d: domain, date: isoDate });
+  // 1-A. Recorrer anclas y buscar la fecha saltando nodos vacíos
+  const dateRe = /\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d+/;
+  for (const a of anchors) {
+    let node = a.nextSibling;
+    while (node && !dateRe.test(node.textContent)) node = node.nextSibling;
+    if (!node) continue;
+
+    const iso = node.textContent
+      .match(dateRe)[0]
+      .replace(" ", "T")
+      .replace(/\.\d+$/, "") + "Z";
+
+    rows.push({ d: a.textContent.trim().toLowerCase(), date: iso });
   }
 
-  console.log(`Extraídos ${rows.length} dominios del HTML`);
+  // 1-B. Si por alguna razón quedaron 0, usa regex sobre todo el HTML
+  if (rows.length === 0) {
+    console.log("Nodo hermano vacío; usando regex global…");
+    const re = /Whois\.do\?d=([a-z0-9-]+\.cl)[\s\S]{0,120}?(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d+)/gi;
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      const iso = m[2].replace(" ", "T").replace(/\.\d+$/, "") + "Z";
+      rows.push({ d: m[1], date: iso });
+    }
+    console.log(`Regex capturó ${rows.length} dominios`);
+  }
+
   rows.sort((a, b) => new Date(b.date) - new Date(a.date));
   return rows;
 }
 
-/*───────────────────────────────────────────────*
- * 2. Backup: XML feed
- *───────────────────────────────────────────────*/
+/*──────────────── 2. XML Backup ───────────────────*/
 async function fetchDomainsFromXml() {
   const FEED = "https://www.nic.cl/registry/UltimosDominios.xml";
   const xml = await fetch(FEED).then(r => r.text());
   const parser = new XMLParser({ ignoreAttributes: false });
-  const feed = parser.parse(xml);
-  const items = feed?.rss?.channel?.item || [];
-
-  const rows = items.map(i => ({
+  const items = parser.parse(xml)?.rss?.channel?.item || [];
+  return items.map(i => ({
     d: i.title.toLowerCase(),
     date: new Date(i.pubDate).toISOString()
   }));
-
-  console.log(`Extraídos ${rows.length} dominios del XML`);
-  rows.sort((a, b) => new Date(b.date) - new Date(a.date));
-  return rows;
 }
 
-/*───────────────────────────────────────────────*
- * 3. Main
- *───────────────────────────────────────────────*/
+/*──────────────── 3. Main ─────────────────────────*/
 async function main() {
-  console.log("Fetching domains from NIC.cl…");
-
+  console.log("Fetching NIC.cl…");
   let domains = await fetchDomainsFromNic();
   if (domains.length === 0) {
-    console.log("Fallback al XML…");
+    console.log("Fallback XML…");
     domains = await fetchDomainsFromXml();
   }
-  if (domains.length === 0) throw new Error("No domains found");
+  if (domains.length === 0) throw new Error("No domains found.");
 
   const payload = {
-    updated: new Date().toISOString(), // fuerza diff para el commit
-    domains: domains.slice(0, 800)     // guarda los últimos 800
+    updated: new Date().toISOString(),
+    domains: domains.slice(0, 800)
   };
-
   writeFileSync(
     `${dataDir}/latest.json`,
     JSON.stringify(payload, null, 2)
   );
-  console.log(
-    `💾 Guardados ${payload.domains.length} dominios en ${dataDir}/latest.json`
-  );
+  console.log(`💾 Guardados ${payload.domains.length} dominios`);
 }
 
-/*───────────────────────────────────────────────*/
 main().catch(err => {
   console.error("Script failed:", err);
   process.exit(1);
 });
-
