@@ -10,12 +10,25 @@ const Hero = () => {
         <p className="mt-4 text-lg text-[#555] max-w-2xl mx-auto">
           Análisis de velocidad, soporte, seguridad y precio.
         </p>
-        <Button 
-          asChild
-          className="mt-6 inline-block bg-[#EF233C] text-white px-6 py-3 rounded-lg transition hover:bg-red-700"
-        >
-          <a href="#ranking">Ver ranking</a>
-        </Button>
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Button 
+            asChild
+            className="inline-block bg-[#EF233C] text-white px-6 py-3 rounded-lg transition hover:bg-red-700"
+          >
+            <a href="#ranking">Ver ranking</a>
+          </Button>
+          
+          {/* Trust Badge Pill */}
+          <div className="bg-[#EDF2F4] border border-[#EF233C]/20 text-[#2B2D42] py-1 px-4 rounded-full flex items-center animate-pulse">
+            <span className="mr-2 text-lg">💡</span>
+            <span className="font-medium text-sm">0 reclamos en 5 años</span>
+          </div>
+        </div>
+        
+        {/* Price hint - part of suggested improvements */}
+        <p className="mt-3 text-sm text-[#555]">
+          <span className="font-medium">Desde $4.000 CLP/mes</span> con 30 días de garantía
+        </p>
       </div>
     </section>
   );
