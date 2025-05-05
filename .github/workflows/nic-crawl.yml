@@ -14,7 +14,7 @@ jobs:
       - name: Instalar deps
         run: |
           npm init -y
-          npm install fast-xml-parser node-fetch@3
+          npm install fast-xml-parser node-fetch@3 jsdom
 
       - name: Crear directorio de datos
         run: mkdir -p public/data

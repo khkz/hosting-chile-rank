@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Globe, Search, RefreshCw, ExternalLink } from 'lucide-react';
+import { Globe, Search, RefreshCw, ExternalLink, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -25,70 +25,101 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Fallback domains for when API is not available
 const fallbackDomains = [
-  { d: "example-domain-1.cl", date: "2025-05-05" },
-  { d: "ejemplo-dominio-2.cl", date: "2025-05-05" },
-  { d: "dominio-ejemplo-3.cl", date: "2025-05-04" },
-  { d: "test-domain-4.cl", date: "2025-05-04" },
-  { d: "dominio-test-5.cl", date: "2025-05-04" },
-  { d: "nuevo-sitio-6.cl", date: "2025-05-03" },
-  { d: "misitio-7.cl", date: "2025-05-03" },
-  { d: "tienda-online-8.cl", date: "2025-05-03" },
-  { d: "consultora-9.cl", date: "2025-05-02" },
-  { d: "agencia-10.cl", date: "2025-05-02" },
-  { d: "emprendimiento-11.cl", date: "2025-05-01" },
-  { d: "startup-12.cl", date: "2025-05-01" },
-  { d: "tecnologia-13.cl", date: "2025-05-01" },
-  { d: "servicios-14.cl", date: "2025-04-30" },
-  { d: "productos-15.cl", date: "2025-04-30" },
+  { d: "ejemplo-dominio-cl.cl", date: "2025-05-05T12:00:00Z" },
+  { d: "nuevodominio2025.cl", date: "2025-05-05T11:30:00Z" },
+  { d: "tiendaonlinechile.cl", date: "2025-05-04T15:45:00Z" },
+  { d: "desarrolloweb-cl.cl", date: "2025-05-04T14:20:00Z" },
+  { d: "hostingchileno.cl", date: "2025-05-04T10:15:00Z" },
+  { d: "nuevositioweb.cl", date: "2025-05-03T16:30:00Z" },
+  { d: "misitiopersonal.cl", date: "2025-05-03T13:45:00Z" },
+  { d: "tiendaonline-cl.cl", date: "2025-05-03T09:20:00Z" },
+  { d: "consultoradigital.cl", date: "2025-05-02T18:10:00Z" },
+  { d: "agenciamarketing.cl", date: "2025-05-02T14:30:00Z" },
+  { d: "emprendimientochile.cl", date: "2025-05-01T17:00:00Z" },
+  { d: "startupchilena.cl", date: "2025-05-01T12:45:00Z" },
+  { d: "tecnologiaweb.cl", date: "2025-05-01T09:15:00Z" },
+  { d: "serviciosempresa.cl", date: "2025-04-30T16:20:00Z" },
+  { d: "productosdigitales.cl", date: "2025-04-30T11:30:00Z" },
 ];
 
+// Type definition for domain data
+interface Domain {
+  d: string;
+  date: string;
+}
+
 const UltimosDominios = () => {
-  const [domains, setDomains] = useState<{ d: string, date: string }[]>([]);
+  const [domains, setDomains] = useState<Domain[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [domainsPerPage] = useState(30);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+
+  // Manual "run script" function for development
+  const runFetchScript = async () => {
+    setRefreshing(true);
+    setError(null);
+    
+    try {
+      // In production, this would call an API endpoint
+      // For development, show a message that this is only for demonstration
+      toast({
+        title: "Función solo disponible en producción",
+        description: "La actualización automática está disponible solo en el servidor de producción.",
+        variant: "default"
+      });
+      
+      // Simulate a delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Try to load the domains after the simulated refresh
+      await loadDomains();
+    } catch (error) {
+      console.error('Error running fetch script:', error);
+      setError('No se pudo ejecutar el script de actualización.');
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // Load domains from NIC.cl JSON
   const loadDomains = async () => {
-    setRefreshing(true);
     setIsLoading(true);
+    setError(null);
     
     try {
+      // Try to fetch the data from our JSON file
       const response = await fetch('/data/latest.json');
       
       if (!response.ok) {
-        throw new Error('No se pudieron cargar los dominios recientes');
+        throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
       }
       
       const data = await response.json();
       
       if (Array.isArray(data) && data.length > 0) {
-        // Transform data to match our expected format
-        const formattedData = data.map(item => ({
-          d: item.d,
-          date: item.date
-        }));
-        
-        setDomains(formattedData);
+        setDomains(data);
         
         toast({
           title: "Dominios actualizados",
-          description: `Se han cargado ${formattedData.length} dominios recientes.`,
+          description: `Se han cargado ${data.length} dominios recientes.`,
           variant: "default"
         });
       } else {
-        throw new Error('Datos de dominios inválidos');
+        throw new Error('Datos de dominios inválidos o vacíos');
       }
     } catch (error) {
       console.error('Error loading domains:', error);
       // Use fallback domains when the API is not available
       setDomains(fallbackDomains);
+      setError('Usando datos de ejemplo porque no se pudieron cargar los datos reales.');
       toast({
         title: "Usando datos de ejemplo",
         description: "No se pudieron obtener datos reales. Mostrando ejemplos.",
@@ -96,12 +127,14 @@ const UltimosDominios = () => {
       });
     } finally {
       setIsLoading(false);
-      setRefreshing(false);
     }
   };
 
   useEffect(() => {
     loadDomains();
+    
+    // Add console log to help with debugging
+    console.log("💡 UltimosDominios: Intentando cargar dominios de /data/latest.json");
   }, []);
 
   // Filter domains based on search term
@@ -123,7 +156,7 @@ const UltimosDominios = () => {
     }
     groups[date].push(domain);
     return groups;
-  }, {} as Record<string, typeof domains>);
+  }, {} as Record<string, Domain[]>);
 
   // Get dates sorted by newest first
   const dates = Object.keys(groupedDomains).sort((a, b) => 
@@ -131,6 +164,19 @@ const UltimosDominios = () => {
   );
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Format date to Spanish locale
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString('es-CL', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (e) {
+      return dateString;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
@@ -164,15 +210,35 @@ const UltimosDominios = () => {
             </p>
           </div>
           
-          <Button 
-            onClick={loadDomains}
-            disabled={refreshing}
-            className="flex items-center gap-2 mt-4 md:mt-0"
-          >
-            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-            {refreshing ? 'Actualizando...' : 'Actualizar datos'}
-          </Button>
+          <div className="flex gap-2 mt-4 md:mt-0">
+            <Button 
+              onClick={loadDomains}
+              disabled={refreshing || isLoading}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+              Recargar
+            </Button>
+            
+            <Button 
+              onClick={runFetchScript}
+              disabled={refreshing}
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Actualizando...' : 'Actualizar datos'}
+            </Button>
+          </div>
         </div>
+        
+        {error && (
+          <Alert variant="default" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Nota</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         
         <Card className="mb-8">
           <CardContent className="pt-6">
@@ -229,7 +295,7 @@ const UltimosDominios = () => {
                             {domain.d}
                           </div>
                         </TableCell>
-                        <TableCell>{new Date(domain.date).toLocaleDateString('es-CL')}</TableCell>
+                        <TableCell>{formatDate(domain.date)}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end space-x-2">
                             <Link 
