@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts';
 
 // Datos para los benchmarks
 const benchmarkData = {
@@ -44,7 +44,12 @@ const benchmarkData = {
 };
 
 // Custom tooltip para los gráficos
-const CustomTooltip = ({ active, payload, label, unit }) => {
+const CustomTooltip = ({ 
+  active, 
+  payload, 
+  label, 
+  unit 
+}: TooltipProps<number, string> & { unit: string }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded">
