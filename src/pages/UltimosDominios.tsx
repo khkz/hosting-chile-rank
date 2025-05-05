@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -5,7 +6,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Globe, Search, RefreshCw, AlertCircle, Calendar } from 'lucide-react';
+import { Globe, Search, RefreshCw, AlertCircle, Calendar, Server, Cpu, Shield, House } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -27,6 +28,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import UltimasBusquedas from '@/components/UltimasBusquedas';
 
 // Fallback domains for when API is not available
 const fallbackDomains = [
@@ -69,10 +71,13 @@ const UltimosDominios = () => {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Format date to DD-MM-YYYY HH:mm format
+  // Format date to DD-MM-YYYY HH:mm format in GMT-4 (Chile timezone)
   const formatDateString = (dateString: string) => {
     try {
       const date = new Date(dateString);
+      // Adjust to GMT-4 (Chile timezone)
+      date.setHours(date.getHours() - 4);
+      
       const day = date.getDate().toString().padStart(2, '0');
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
@@ -85,10 +90,13 @@ const UltimosDominios = () => {
     }
   };
 
-  // Format date to YYYY-MM-DD HH:mm format for table
+  // Format date to YYYY-MM-DD HH:mm format for table in GMT-4
   const formatTableDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
+      // Adjust to GMT-4 (Chile timezone)
+      date.setHours(date.getHours() - 4);
+      
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const day = date.getDate().toString().padStart(2, '0');
@@ -191,6 +199,30 @@ const UltimosDominios = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  // Icons for recommendations
+  const servicios = [
+    { 
+      icon: <House className="h-5 w-5 text-blue-600" />, 
+      title: "Hosting", 
+      path: "/guia-elegir-hosting" 
+    },
+    { 
+      icon: <Cpu className="h-5 w-5 text-green-600" />, 
+      title: "VPS", 
+      path: "/guia-elegir-vps" 
+    },
+    { 
+      icon: <Server className="h-5 w-5 text-red-600" />, 
+      title: "Dedicado", 
+      path: "/guia-elegir-servidor-dedicado" 
+    },
+    { 
+      icon: <Shield className="h-5 w-5 text-purple-600" />, 
+      title: "SSL", 
+      path: "/guia-elegir-ssl" 
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
       <Helmet>
@@ -224,7 +256,7 @@ const UltimosDominios = () => {
             {lastUpdated && (
               <p className="text-sm text-gray-500 flex items-center">
                 <Calendar className="h-4 w-4 mr-1" />
-                Datos actualizados: {formatDateString(lastUpdated)} UTC
+                Datos actualizados: {formatDateString(lastUpdated)} (GMT-4)
               </p>
             )}
           </div>
@@ -273,6 +305,32 @@ const UltimosDominios = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Recomendaciones de servicios */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-xl">Recomendaciones para tu nuevo dominio</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              {servicios.map((servicio, index) => (
+                <Link 
+                  key={index} 
+                  to={servicio.path} 
+                  className="flex flex-col items-center gap-2 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow w-[120px]"
+                >
+                  <div className="bg-gray-50 p-3 rounded-full">
+                    {servicio.icon}
+                  </div>
+                  <span className="text-sm font-medium text-center">{servicio.title}</span>
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Mostrar últimas búsquedas */}
+        <UltimasBusquedas />
         
         {isLoading ? (
           <div className="space-y-4">
@@ -305,7 +363,7 @@ const UltimosDominios = () => {
                     <TableRow>
                       <TableHead scope="col" className="bg-white sticky top-0 shadow">N°</TableHead>
                       <TableHead scope="col" className="bg-white sticky top-0 shadow">Dominio</TableHead>
-                      <TableHead scope="col" className="bg-white sticky top-0 shadow">Fecha de registro (UTC)</TableHead>
+                      <TableHead scope="col" className="bg-white sticky top-0 shadow">Fecha de registro (GMT-4)</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

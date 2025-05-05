@@ -4,50 +4,87 @@ import { Link } from 'react-router-dom';
 import { History, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+// Fallback domains for when the JSON file is not available
+const fallbackDomains = [
+  "ejemplo-dominio-cl.cl", 
+  "nuevodominio2025.cl", 
+  "tiendaonlinechile.cl", 
+  "desarrolloweb-cl.cl", 
+  "hostingchileno.cl",
+  "nuevositioweb.cl",
+  "misitiopersonal.cl",
+  "tiendaonline-cl.cl",
+  "consultoradigital.cl",
+  "agenciamarketing.cl",
+  "emprendimientochile.cl",
+  "startupchilena.cl",
+  "tecnologiaweb.cl",
+  "serviciosempresa.cl",
+  "productosdigitales.cl",
+  "dominiocl.cl",
+  "webagency.cl",
+  "chilehosting.cl",
+  "marketingdigital.cl",
+  "construyetuwebcl.cl"
+];
+
 const UltimasBusquedas = () => {
-  const [searches, setSearches] = useState<string[]>([]);
+  const [domains, setDomains] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // Retrieve searches from localStorage
-    const KEY = 'busquedasDominios';
-    const loadSearches = () => {
+    // Try to load the domains from latest.json for recently registered domains
+    const loadDomains = async () => {
       try {
-        const data = JSON.parse(localStorage.getItem(KEY) || '[]');
-        setSearches(Array.isArray(data) ? data.slice(0, 5) : []);
+        // Add timestamp to URL to avoid cache
+        const timestamp = Date.now();
+        const response = await fetch(`/data/latest.json?ts=${timestamp}`);
+        
+        if (!response.ok) {
+          throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
+          // Sort domains by date in descending order and take first 20
+          const sortedDomains = [...data.domains]
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .slice(0, 20)
+            .map(item => item.d);
+          
+          setDomains(sortedDomains);
+        } else {
+          throw new Error('Datos de dominios inválidos o vacíos');
+        }
       } catch (error) {
-        console.error('Error loading searches:', error);
-        setSearches([]);
+        console.error('Error loading domains:', error);
+        // Use fallback domains when the API is not available
+        setDomains(fallbackDomains);
+      } finally {
+        setIsLoading(false);
       }
     };
     
-    // Initial load
-    loadSearches();
-    
-    // Listen for the custom event that will be dispatched when a new search is made
-    const handleSearchUpdate = () => loadSearches();
-    window.addEventListener('domainSearched', handleSearchUpdate);
-    
-    return () => {
-      window.removeEventListener('domainSearched', handleSearchUpdate);
-    };
+    loadDomains();
   }, []);
   
-  if (searches.length === 0) {
+  if (isLoading || domains.length === 0) {
     return null;
   }
   
   return (
-    <section className="container mx-auto py-8 px-4">
+    <section className="mb-8">
       <Card className="bg-white shadow-sm">
         <CardHeader className="pb-2 pt-4">
           <CardTitle className="text-xl font-semibold flex items-center">
             <History className="h-5 w-5 mr-2 text-[#EF233C]" />
-            Últimas búsquedas
+            Búsquedas recientes
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
           <div className="flex flex-wrap gap-2">
-            {searches.map((domain, index) => (
+            {domains.map((domain, index) => (
               <Link 
                 key={index} 
                 to={`/whois/${domain.replace(/\./g, '-')}/`}
