@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { History, Search } from 'lucide-react';
+import { History, Search, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Fallback data for when the JSON file is not available
@@ -25,7 +24,7 @@ interface Domain {
 }
 
 const RecentSearches = () => {
-  const [domains, setDomains] = useState<string[]>([]);
+  const [domains, setDomains] = useState<Domain[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   
@@ -48,13 +47,12 @@ const RecentSearches = () => {
       .then((data: Domain[]) => {
         // If data is valid and not empty, extract domain names
         if (Array.isArray(data) && data.length > 0) {
-          // Extract just the domain names from the domain objects
-          const domainNames = data.slice(0, 10).map(item => item.d);
-          setDomains(domainNames);
+          // Take the first 10 domain entries
+          setDomains(data.slice(0, 10));
         } else {
           // If data is empty or not an array, fall back to example domains
           console.warn('Recent domains JSON was empty or invalid, using fallback data');
-          setDomains(fallbackDomains);
+          setDomains(fallbackDomains.map(d => ({ d, date: new Date().toISOString() })));
         }
         setIsLoading(false);
       })
@@ -62,7 +60,7 @@ const RecentSearches = () => {
         console.error('Error loading recent domains:', error);
         
         // Use fallback domains when the actual file can't be loaded
-        setDomains(fallbackDomains);
+        setDomains(fallbackDomains.map(d => ({ d, date: new Date().toISOString() })));
         setIsLoading(false);
         
         // Only show toast for non-development environments
@@ -80,6 +78,36 @@ const RecentSearches = () => {
     return null;
   }
 
+  // Helper function to format registration date
+  const formatRegistrationDate = (isoDate: string): string => {
+    if (!isoDate) return '';
+    
+    try {
+      const date = new Date(isoDate);
+      
+      // If today, show "Hoy"
+      const today = new Date();
+      if (date.toDateString() === today.toDateString()) {
+        return 'Hoy';
+      }
+      
+      // If yesterday, show "Ayer"
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (date.toDateString() === yesterday.toDateString()) {
+        return 'Ayer';
+      }
+      
+      // Otherwise, show date in format "5 may"
+      return date.toLocaleDateString('es-CL', { 
+        day: 'numeric', 
+        month: 'short'
+      });
+    } catch (e) {
+      return '';
+    }
+  };
+
   return (
     <Card className="bg-white shadow-sm">
       <CardHeader className="pb-2 pt-4">
@@ -92,12 +120,19 @@ const RecentSearches = () => {
         <div className="flex flex-wrap gap-2">
           {domains.map(domain => (
             <Link 
-              key={domain} 
-              to={`/whois/${domain.replace(/\./g, '-')}/`}
+              key={domain.d} 
+              to={`/whois/${domain.d.replace(/\./g, '-')}/`}
               className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 transition-colors flex items-center"
+              title={`Registrado: ${new Date(domain.date).toLocaleDateString('es-CL')}`}
             >
               <Search className="h-3 w-3 mr-1 text-gray-500" />
-              {domain}
+              {domain.d}
+              {domain.date && (
+                <span className="ml-1 text-xs text-gray-500 flex items-center">
+                  <Calendar className="h-2 w-2 mr-1" />
+                  {formatRegistrationDate(domain.date)}
+                </span>
+              )}
             </Link>
           ))}
         </div>
