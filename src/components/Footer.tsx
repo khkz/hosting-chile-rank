@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+import RecentSearches from './RecentSearches';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,6 +21,9 @@ const Footer = () => {
             Contacto
           </Link>
         </div>
+        
+        {/* Recent Domain Searches */}
+        <RecentSearches />
         
         {/* NAP Information */}
         <div className="mt-4 text-xs opacity-80">

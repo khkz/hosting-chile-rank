@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Search } from 'lucide-react';
@@ -72,6 +71,7 @@ const Hero = () => {
         }
       }
       
+      // Set domain info for the dialog
       setDomainInfo({
         domain,
         ip,
@@ -83,6 +83,26 @@ const Hero = () => {
       });
       
       setIsOpen(true);
+
+      // Send search data to serverless function to create static page
+      try {
+        await fetch('/api/save-search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            domain,
+            ip,
+            ns: ns.split('\n'),
+            asn,
+            provider: org,
+            screenshot: `https://image.thum.io/get/png/noanimate/width/600/${domain}`
+          })
+        });
+        console.log('Search saved for SEO page generation');
+      } catch (error) {
+        console.error('Error saving search:', error);
+        // Non-blocking - we continue even if this fails
+      }
     } catch (error) {
       console.error('Error fetching domain information:', error);
     } finally {

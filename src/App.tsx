@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +18,7 @@ import CatalogoDetalle from "./pages/CatalogoDetalle";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Ranking from "./pages/Ranking";
+import WhoisDomain from "./pages/WhoisDomain";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,7 @@ function App() {
             <Route path="/vota-hosting" element={<VotaHosting />} />
             <Route path="/resena/:slug" element={<Resena />} />
             <Route path="/ranking" element={<Ranking />} />
+            <Route path="/whois/:slug" element={<WhoisDomain />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
