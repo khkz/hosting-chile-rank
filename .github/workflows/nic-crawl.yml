@@ -1,7 +1,10 @@
+
 name: NIC crawl
 on:
   schedule:
     - cron:  '0 * * * *'   # cada hora en punto
+  workflow_dispatch:       # permite ejecutar manualmente
+
 jobs:
   crawl:
     runs-on: ubuntu-latest
@@ -12,6 +15,9 @@ jobs:
         run: |
           npm init -y
           npm install fast-xml-parser node-fetch@3
+
+      - name: Crear directorio de datos
+        run: mkdir -p public/data
 
       - name: Ejecutar script
         run: node scripts/nic-to-json.mjs

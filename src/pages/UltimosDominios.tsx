@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -10,40 +9,58 @@ import { Globe, Search, RefreshCw, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 // Fallback domains for when API is not available
 const fallbackDomains = [
-  { dominio: "example-domain-1.cl", fecha: "2025-05-05" },
-  { dominio: "ejemplo-dominio-2.cl", fecha: "2025-05-05" },
-  { dominio: "dominio-ejemplo-3.cl", fecha: "2025-05-04" },
-  { dominio: "test-domain-4.cl", fecha: "2025-05-04" },
-  { dominio: "dominio-test-5.cl", fecha: "2025-05-04" },
-  { dominio: "nuevo-sitio-6.cl", fecha: "2025-05-03" },
-  { dominio: "misitio-7.cl", fecha: "2025-05-03" },
-  { dominio: "tienda-online-8.cl", fecha: "2025-05-03" },
-  { dominio: "consultora-9.cl", fecha: "2025-05-02" },
-  { dominio: "agencia-10.cl", fecha: "2025-05-02" },
-  { dominio: "emprendimiento-11.cl", fecha: "2025-05-01" },
-  { dominio: "startup-12.cl", fecha: "2025-05-01" },
-  { dominio: "tecnologia-13.cl", fecha: "2025-05-01" },
-  { dominio: "servicios-14.cl", fecha: "2025-04-30" },
-  { dominio: "productos-15.cl", fecha: "2025-04-30" },
+  { d: "example-domain-1.cl", date: "2025-05-05" },
+  { d: "ejemplo-dominio-2.cl", date: "2025-05-05" },
+  { d: "dominio-ejemplo-3.cl", date: "2025-05-04" },
+  { d: "test-domain-4.cl", date: "2025-05-04" },
+  { d: "dominio-test-5.cl", date: "2025-05-04" },
+  { d: "nuevo-sitio-6.cl", date: "2025-05-03" },
+  { d: "misitio-7.cl", date: "2025-05-03" },
+  { d: "tienda-online-8.cl", date: "2025-05-03" },
+  { d: "consultora-9.cl", date: "2025-05-02" },
+  { d: "agencia-10.cl", date: "2025-05-02" },
+  { d: "emprendimiento-11.cl", date: "2025-05-01" },
+  { d: "startup-12.cl", date: "2025-05-01" },
+  { d: "tecnologia-13.cl", date: "2025-05-01" },
+  { d: "servicios-14.cl", date: "2025-04-30" },
+  { d: "productos-15.cl", date: "2025-04-30" },
 ];
 
 const UltimosDominios = () => {
-  const [domains, setDomains] = useState<{ dominio: string, fecha: string }[]>([]);
+  const [domains, setDomains] = useState<{ d: string, date: string }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [domainsPerPage] = useState(30);
   const { toast } = useToast();
 
-  // Load domains from API
+  // Load domains from NIC.cl JSON
   const loadDomains = async () => {
     setRefreshing(true);
+    setIsLoading(true);
+    
     try {
-      // In a real implementation, this would be a call to the NIC.cl API or our own API
-      // that scans or provides recent domains
-      const response = await fetch('/api/latest-domains');
+      const response = await fetch('/data/latest.json');
       
       if (!response.ok) {
         throw new Error('No se pudieron cargar los dominios recientes');
@@ -52,10 +69,17 @@ const UltimosDominios = () => {
       const data = await response.json();
       
       if (Array.isArray(data) && data.length > 0) {
-        setDomains(data);
+        // Transform data to match our expected format
+        const formattedData = data.map(item => ({
+          d: item.d,
+          date: item.date
+        }));
+        
+        setDomains(formattedData);
+        
         toast({
           title: "Dominios actualizados",
-          description: `Se han cargado ${data.length} dominios recientes.`,
+          description: `Se han cargado ${formattedData.length} dominios recientes.`,
           variant: "default"
         });
       } else {
@@ -82,12 +106,18 @@ const UltimosDominios = () => {
 
   // Filter domains based on search term
   const filteredDomains = domains.filter(domain => 
-    domain.dominio.toLowerCase().includes(searchTerm.toLowerCase())
+    domain.d.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Pagination
+  const indexOfLastDomain = currentPage * domainsPerPage;
+  const indexOfFirstDomain = indexOfLastDomain - domainsPerPage;
+  const currentDomains = filteredDomains.slice(indexOfFirstDomain, indexOfLastDomain);
+  const totalPages = Math.ceil(filteredDomains.length / domainsPerPage);
+
   // Group domains by date
-  const groupedDomains = filteredDomains.reduce((groups, domain) => {
-    const date = domain.fecha;
+  const groupedDomains = currentDomains.reduce((groups, domain) => {
+    const date = new Date(domain.date).toISOString().split('T')[0];
     if (!groups[date]) {
       groups[date] = [];
     }
@@ -100,13 +130,15 @@ const UltimosDominios = () => {
     new Date(b).getTime() - new Date(a).getTime()
   );
 
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
   return (
     <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Helmet>
-        <title>Últimos 1000 dominios registrados en NIC.cl — eligetuhosting.cl</title>
+        <title>Últimos dominios registrados en NIC.cl — eligetuhosting.cl</title>
         <meta 
           name="description" 
-          content="Monitoreo de los dominios .cl más recientes registrados en NIC.cl. Consulta los últimos sitios web creados en Chile."
+          content="Monitoreo en tiempo real de los dominios .cl más recientes registrados en NIC.cl. Consulta los últimos sitios web creados en Chile."
         />
         <meta 
           property="og:title" 
@@ -126,9 +158,9 @@ const UltimosDominios = () => {
       <main className="container mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Últimos dominios registrados</h1>
+            <h1 className="text-3xl font-bold mb-2">Últimos dominios registrados en NIC.cl</h1>
             <p className="text-gray-600 mb-4">
-              Monitoreo de los registros más recientes de dominios .cl en NIC.cl
+              Monitoreo en tiempo real de los registros más recientes de dominios .cl
             </p>
           </div>
           
@@ -160,8 +192,8 @@ const UltimosDominios = () => {
         {isLoading ? (
           <div className="space-y-4">
             <Skeleton className="h-8 w-48" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 9 }).map((_, index) => (
+            <div className="grid grid-cols-1 gap-4">
+              {Array.from({ length: 10 }).map((_, index) => (
                 <Skeleton key={index} className="h-16 w-full" />
               ))}
             </div>
@@ -174,43 +206,41 @@ const UltimosDominios = () => {
             </p>
           </div>
         ) : (
-          <div className="space-y-8">
-            {dates.map(date => (
-              <div key={date}>
-                <h2 className="text-xl font-semibold mb-4 flex items-center">
-                  <span className="mr-2">📅</span>
-                  {new Date(date).toLocaleDateString('es-CL', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {groupedDomains[date].map(domain => (
-                    <Card key={domain.dominio} className="hover:shadow-md transition-shadow">
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            <Globe className="h-5 w-5 text-blue-600 mr-3" />
-                            <div>
-                              <p className="font-medium">{domain.dominio}</p>
-                              <p className="text-xs text-gray-500">
-                                Registrado: {new Date(domain.fecha).toLocaleDateString('es-CL')}
-                              </p>
-                            </div>
+          <>
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Últimos dominios registrados</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Dominio</TableHead>
+                      <TableHead>Fecha de registro</TableHead>
+                      <TableHead className="text-right">Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {currentDomains.map((domain) => (
+                      <TableRow key={domain.d}>
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-2">
+                            <Globe className="h-4 w-4 text-blue-600" />
+                            {domain.d}
                           </div>
-                          <div className="flex space-x-2">
+                        </TableCell>
+                        <TableCell>{new Date(domain.date).toLocaleDateString('es-CL')}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end space-x-2">
                             <Link 
-                              to={`/whois/${domain.dominio.replace(/\./g, '-')}/`}
+                              to={`/whois/${domain.d.replace(/\./g, '-')}/`}
                               className="text-blue-600 hover:text-blue-800"
                               title="Analizar dominio"
                             >
                               <Search className="h-4 w-4" />
                             </Link>
                             <a 
-                              href={`https://${domain.dominio}`}
+                              href={`https://${domain.d}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-gray-600 hover:text-gray-800"
@@ -219,14 +249,54 @@ const UltimosDominios = () => {
                               <ExternalLink className="h-4 w-4" />
                             </a>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Pagination className="mb-8">
+              <PaginationContent>
+                {currentPage > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious onClick={() => paginate(currentPage - 1)} />
+                  </PaginationItem>
+                )}
+                
+                {Array.from({ length: Math.min(5, totalPages) }).map((_, index) => {
+                  let pageNumber;
+                  if (totalPages <= 5) {
+                    pageNumber = index + 1;
+                  } else if (currentPage <= 3) {
+                    pageNumber = index + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNumber = totalPages - 4 + index;
+                  } else {
+                    pageNumber = currentPage - 2 + index;
+                  }
+                  
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationLink
+                        onClick={() => paginate(pageNumber)}
+                        isActive={currentPage === pageNumber}
+                      >
+                        {pageNumber}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
+                
+                {currentPage < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext onClick={() => paginate(currentPage + 1)} />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
+          </>
         )}
         
         <div className="text-center mt-12 py-6 bg-white rounded-lg shadow-sm">

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -36,6 +37,7 @@ const Navbar = () => {
         <NavLink to="/catalogo" className={navLinkClasses}>Catálogo</NavLink>
         <NavLink to="/comparativa" className={navLinkClasses}>Comparativa</NavLink>
         <NavLink to="/blog" className={navLinkClasses}>Blog</NavLink>
+        <NavLink to="/ultimos-dominios" className={navLinkClasses}>Dominios</NavLink>
         <NavLink to="/cotiza-hosting" className={navLinkClasses}>Cotizar</NavLink>
       </div>
       
@@ -76,6 +78,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink to="/blog" className={navLinkClasses} onClick={closeMobileMenu}>
               Blog
+            </NavLink>
+            <NavLink to="/ultimos-dominios" className={navLinkClasses} onClick={closeMobileMenu}>
+              Dominios
             </NavLink>
             <NavLink to="/cotiza-hosting" className={navLinkClasses} onClick={closeMobileMenu}>
               Cotizar
