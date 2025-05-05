@@ -10,7 +10,7 @@ interface BenefitCardProps {
 
 const BenefitCard: React.FC<BenefitCardProps> = ({ icon: Icon, title, description }) => {
   return (
-    <div className="flex flex-col items-center text-center p-4">
+    <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm">
       <div className="text-[#EF233C] mb-3">
         <Icon size={32} />
       </div>

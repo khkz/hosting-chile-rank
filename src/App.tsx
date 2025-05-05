@@ -1,9 +1,8 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Comparativa from "./pages/Comparativa";
@@ -15,31 +14,39 @@ import VotaHosting from "./pages/VotaHosting";
 import Contacto from "./pages/Contacto";
 import Catalogo from "./pages/Catalogo";
 import CatalogoDetalle from "./pages/CatalogoDetalle";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import Ranking from "./pages/Ranking";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/comparativa" element={<Comparativa />} />
-          <Route path="/reseñas/:slug" element={<Resena />} />
-          <Route path="/benchmark" element={<Benchmark />} />
-          <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
-          <Route path="/cotiza-tu-hosting" element={<CotizaHosting />} />
-          <Route path="/vota-por-tu-hosting" element={<VotaHosting />} />
-          <Route path="/contacto" element={<Contacto />} />
-          <Route path="/catalogo" element={<Catalogo />} />
-          <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/catalogo" element={<Catalogo />} />
+            <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
+            <Route path="/comparativa" element={<Comparativa />} />
+            <Route path="/contacto" element={<Contacto />} />
+            <Route path="/cotiza-hosting" element={<CotizaHosting />} />
+            <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
+            <Route path="/benchmark" element={<Benchmark />} />
+            <Route path="/vota-hosting" element={<VotaHosting />} />
+            <Route path="/resena/:slug" element={<Resena />} />
+            <Route path="/ranking" element={<Ranking />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

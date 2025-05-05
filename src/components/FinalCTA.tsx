@@ -1,20 +1,39 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
-const FinalCTA = () => {
+interface FinalCTAProps {
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  buttonLink?: string;
+}
+
+export const FinalCTA: React.FC<FinalCTAProps> = ({ 
+  title = "¿Listo para despegar tu web?",
+  subtitle = "Contrata HostingPlus con 30 días de garantía.",
+  buttonText = "Ir al Nº 1 Ahora",
+  buttonLink = "https://www.hostingplus.cl/"
+}) => {
   return (
     <section className="bg-[#2B2D42] text-white text-center py-12">
       <div className="container mx-auto px-4">
-        <h3 className="text-2xl font-semibold">¿Listo para despegar tu web?</h3>
-        <p className="mt-2">Contrata HostingPlus con 30 días de garantía.</p>
+        <h3 className="text-2xl font-semibold">{title}</h3>
+        <p className="mt-2">{subtitle}</p>
         <Button 
           asChild
           className="mt-4 bg-[#EF233C] hover:bg-[#b3001b] px-8 py-3 rounded-lg font-medium"
         >
-          <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
-            Ir al Nº 1 Ahora
-          </a>
+          {buttonLink.startsWith('http') ? (
+            <a href={buttonLink} target="_blank" rel="noopener noreferrer">
+              {buttonText}
+            </a>
+          ) : (
+            <Link to={buttonLink}>
+              {buttonText}
+            </Link>
+          )}
         </Button>
       </div>
     </section>
