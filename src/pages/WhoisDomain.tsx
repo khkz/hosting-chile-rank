@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import { Check } from 'lucide-react';
 
 const WhoisDomain = () => {
   const { slug } = useParams<{ slug: string }>();
