@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -6,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Globe, Search, RefreshCw, ExternalLink, AlertCircle, Calendar } from 'lucide-react';
+import { Globe, Search, RefreshCw, AlertCircle, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -306,7 +305,7 @@ const UltimosDominios = () => {
                     <TableRow>
                       <TableHead scope="col" className="bg-white sticky top-0 shadow">N°</TableHead>
                       <TableHead scope="col" className="bg-white sticky top-0 shadow">Dominio</TableHead>
-                      <TableHead scope="col" className="bg-white sticky top-0 shadow">Fecha de registro</TableHead>
+                      <TableHead scope="col" className="bg-white sticky top-0 shadow">Fecha de registro (UTC)</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -327,15 +326,6 @@ const UltimosDominios = () => {
                               >
                                 <Search className="h-4 w-4" />
                               </Link>
-                              <a 
-                                href={`https://${domain.d}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-600 hover:text-gray-800"
-                                title="Visitar sitio"
-                              >
-                                <ExternalLink className="h-4 w-4" />
-                              </a>
                             </div>
                           </div>
                         </TableCell>
