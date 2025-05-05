@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { ChevronDown, ChevronUp, Check } from 'lucide-react';
 
 interface HostingCardProps {
   position: number;
@@ -13,6 +14,8 @@ interface HostingCardProps {
   url: string;
   isPodium?: boolean;
   isTopRated?: boolean;
+  isRecommended?: boolean;
+  specs?: string[];
 }
 
 const HostingCard: React.FC<HostingCardProps> = ({ 
@@ -23,8 +26,12 @@ const HostingCard: React.FC<HostingCardProps> = ({
   features, 
   url,
   isPodium = false,
-  isTopRated = false
+  isTopRated = false,
+  isRecommended = false,
+  specs = []
 }) => {
+  const [showSpecs, setShowSpecs] = useState(false);
+  
   // Determine styling based on position
   let positionColor = '';
   let cardBg = '';
@@ -84,6 +91,32 @@ const HostingCard: React.FC<HostingCardProps> = ({
           <li key={index}>{feature}</li>
         ))}
       </ul>
+      
+      {/* Toggle specs button */}
+      {specs && specs.length > 0 && (
+        <Button 
+          variant="outline"
+          onClick={() => setShowSpecs(!showSpecs)}
+          className="w-full mt-4 text-sm justify-between"
+        >
+          {showSpecs ? 'Ocultar especificaciones' : 'Ver especificaciones'}
+          {showSpecs ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </Button>
+      )}
+      
+      {/* Specs content */}
+      {showSpecs && specs && (
+        <div className="mt-3 p-3 bg-[#F7F9FC] rounded-lg">
+          <ul className="space-y-2">
+            {specs.map((spec, index) => (
+              <li key={index} className="text-sm flex items-center">
+                <Check size={16} className="text-[#EF233C] mr-2" /> {spec}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
       <Button 
         asChild
         className={`mt-6 inline-block ${isTopRated ? 'bg-[#EF233C]' : 'bg-[#2B2D42]'} text-white px-5 py-2 rounded-lg hover:opacity-90 transition-opacity w-full justify-center`}

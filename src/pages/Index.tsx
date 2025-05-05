@@ -4,11 +4,17 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import StatsTicker from '@/components/StatsTicker';
 import HostingRanking from '@/components/HostingRanking';
-import Methodology from '@/components/Methodology';
-import FAQ from '@/components/FAQ';
+import Benefits from '@/components/Benefits';
+import Testimonial from '@/components/Testimonial';
+import Migration from '@/components/Migration';
+import Categories from '@/components/Categories';
+import SimpleFAQ from '@/components/SimpleFAQ';
+import BlogTeaser from '@/components/BlogTeaser';
 import FinalCTA from '@/components/FinalCTA';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
+import MiniNav from '@/components/MiniNav';
+import ExitModal from '@/components/ExitModal';
 
 const Index = () => {
   // Add page-specific SEO metadata
@@ -42,26 +48,44 @@ const Index = () => {
     <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Navbar />
       <main>
-        {/* <!-- section 1: Hero --> */}
+        {/* section 1: Hero */}
         <Hero />
         
-        {/* <!-- section 2: Stats ticker --> */}
+        {/* section 2: Stats ticker */}
         <StatsTicker />
         
-        {/* <!-- section 3: Ranking cards --> */}
+        {/* section 3: Ranking cards */}
         <HostingRanking />
         
-        {/* <!-- section 4: Methodology --> */}
-        <Methodology />
+        {/* section 4: Benefits */}
+        <Benefits />
         
-        {/* <!-- section 5: FAQ --> */}
-        <FAQ />
+        {/* section 5: Testimonial + Partners */}
+        <Testimonial />
         
-        {/* <!-- section 6: Final CTA --> */}
+        {/* section 6: Migration CTA */}
+        <Migration />
+        
+        {/* section 7: Categories */}
+        <Categories />
+        
+        {/* section 8: FAQ */}
+        <SimpleFAQ />
+        
+        {/* section 9: Blog Teaser */}
+        <BlogTeaser />
+        
+        {/* section 10: Final CTA */}
         <FinalCTA />
         
-        {/* <!-- section 5: CTA sticky mobile --> */}
+        {/* Mini Nav sticky */}
+        <MiniNav />
+        
+        {/* CTA sticky mobile */}
         <StickyCTA />
+        
+        {/* Exit Intent Modal */}
+        <ExitModal />
       </main>
       <Footer />
     </div>
