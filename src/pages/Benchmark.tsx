@@ -56,7 +56,7 @@ const benchmarkData = {
 // Custom tooltip para los gráficos
 interface CustomTooltipProps {
   active?: boolean;
-  payload?: Array<{ value: number; name: string; dataKey: string; color: string }>;
+  payload?: any[];
   label?: string;
   unit: string;
 }
@@ -162,7 +162,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[0, 100]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props} unit="/100" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="/100" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#EF233C" name="Velocidad" radius={[0, 4, 4, 0]}>
                         {benchmarkData.velocidad.map((entry, index) => (
@@ -189,7 +189,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[0, 1]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props} unit="segundos" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="segundos" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#3366CC" name="Tiempo" radius={[0, 4, 4, 0]}>
                         {benchmarkData.tiempoCarga.map((entry, index) => (
@@ -216,7 +216,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[0, 350]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props} unit="ms" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="ms" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#329933" name="TTFB" radius={[0, 4, 4, 0]}>
                         {benchmarkData.tiempoRespuestaServidor.map((entry, index) => (
@@ -243,7 +243,7 @@ const Benchmark = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" domain={[99.8, 100]} />
                       <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props} unit="%" />} />
+                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="%" />} />
                       <Legend />
                       <Bar dataKey="valor" fill="#FF9933" name="Uptime" radius={[0, 4, 4, 0]}>
                         {benchmarkData.uptime.map((entry, index) => (
