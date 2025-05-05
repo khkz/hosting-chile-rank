@@ -18,6 +18,9 @@ jobs:
       - name: Instalar dependencias
         run: npm install --no-save fast-xml-parser@4 node-fetch@3 jsdom
 
+      - name: Marcar el proyecto como ES Modules      # ← nuevo
+        run: npm pkg set type=module
+
       - name: Crear carpeta data
         run: mkdir -p public/data
 
