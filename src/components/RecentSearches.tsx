@@ -31,11 +31,11 @@ const RecentSearches = () => {
   return (
     <div className="mt-6">
       <h3 className="text-sm font-medium mb-2">Búsquedas recientes:</h3>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 justify-center">
         {domains.slice(0, 15).map(domain => (
           <Link 
             key={domain} 
-            to={`/whois/${domain.replace(/\./g, '-')}`}
+            to={`/whois/${domain.replace(/\./g, '-')}/`}
             className="text-xs hover:underline text-[#EDF2F4]/80 hover:text-[#EDF2F4]"
           >
             {domain}
