@@ -22,10 +22,22 @@ jobs:
       - name: Ejecutar script
         run: node scripts/nic-to-json.mjs
 
+      - name: Validar JSON
+        run: |
+          # Check if the JSON file is valid
+          cat public/data/latest.json | jq empty && echo "✅ JSON is valid" || exit 1
+
       - name: Commit y push si hay cambios
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
           git add public/data/latest.json
-          git diff --cached --quiet || git commit -m "chore: update latest domains"
+          git diff --cached --quiet || git commit -m "chore: update latest domains [skip ci]"
           git push
+
+      - name: Notificar en caso de fallo
+        if: failure()
+        run: |
+          echo "El script de actualización de dominios ha fallado. Por favor, revisa los logs."
+          # Aquí se podría agregar una notificación por correo electrónico o Discord
+          # por ejemplo usando curl para llamar a un webhook
