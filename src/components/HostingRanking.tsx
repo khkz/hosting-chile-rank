@@ -4,15 +4,17 @@ import HostingCard from './HostingCard';
 import { Trophy, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 const hostingData = [
   {
     position: 1,
     name: "HostingPlus.cl",
+    displayName: { first: "Hosting", second: "Plus", firstColor: "text-[#2B2D42]", secondColor: "text-[#EF233C]" },
     logo: "/logo-hostingplus-new.svg",
     rating: 9.9,
-    speedRating: 9.8, // Added speed rating
-    priceRating: 9.5, // Added price rating
+    speedRating: 9.8,
+    priceRating: 9.5,
     features: [
       "Datacenter propio en Santiago (IP CL)",
       "LiteSpeed Enterprise + BitNinja + JetBackup",
@@ -26,15 +28,18 @@ const hostingData = [
       "JetBackup"
     ],
     url: "https://www.hostingplus.cl/",
-    isRecommended: true
+    isRecommended: true,
+    buttonColor: "bg-[#EF233C]",
+    borderColor: "border-[#EF233C]"
   },
   {
     position: 2,
     name: "EcoHosting.cl",
+    displayName: { first: "Eco", second: "Hosting", firstColor: "text-green-600", secondColor: "text-[#2B2D42]" },
     logo: "/logo-ecohosting-new.svg",
     rating: 9.6,
-    speedRating: 9.6, // Added speed rating
-    priceRating: 9.7, // Added price rating
+    speedRating: 9.6,
+    priceRating: 9.7,
     features: [
       "Servidores en Chile, energía 100 % renovable",
       "MagicSpam y backups JetBackup incluidos",
@@ -47,15 +52,18 @@ const hostingData = [
       "IP Chile",
       "JetBackup"
     ],
-    url: "https://www.ecohosting.cl/"
+    url: "https://www.ecohosting.cl/",
+    buttonColor: "bg-[#2B2D42]",
+    borderColor: "border-gray-200"
   },
   {
     position: 3,
     name: "HostGator.cl",
+    displayName: { first: "Host", second: "Gator", firstColor: "text-orange-500", secondColor: "text-[#2B2D42]" },
     logo: "/logo-hostgator.svg",
     rating: 9.2,
-    speedRating: 8.9, // Added speed rating
-    priceRating: 9.4, // Added price rating
+    speedRating: 8.9,
+    priceRating: 9.4,
     features: [
       "12 años de experiencia en Chile",
       "Panel de control personalizado",
@@ -68,7 +76,9 @@ const hostingData = [
       "IP Chile",
       "Backups diarios"
     ],
-    url: "https://www.hostgator.cl/"
+    url: "https://www.hostgator.cl/",
+    buttonColor: "bg-[#2B2D42]",
+    borderColor: "border-gray-200"
   }
 ];
 
@@ -115,108 +125,164 @@ const HostingRanking = () => {
       <h2 className="text-3xl font-semibold text-center mb-6">Top 3 Proveedores de Hosting</h2>
       
       <div className="flex justify-center mb-8">
-        <div className="inline-flex rounded-md shadow-sm">
-          <Button 
-            variant={sortCriteria === 'overall' ? 'default' : 'outline'} 
-            onClick={() => setSortCriteria('overall')}
-            className="rounded-r-none"
-          >
+        <ToggleGroup type="single" value={sortCriteria} onValueChange={(value) => value && setSortCriteria(value)}>
+          <ToggleGroupItem value="overall" variant="outline" className={sortCriteria === 'overall' ? 'bg-[#2B2D42] text-white' : ''}>
             General
-          </Button>
-          <Button 
-            variant={sortCriteria === 'speed' ? 'default' : 'outline'} 
-            onClick={() => setSortCriteria('speed')}
-            className="rounded-none border-x-0"
-          >
+          </ToggleGroupItem>
+          <ToggleGroupItem value="speed" variant="outline" className={sortCriteria === 'speed' ? 'bg-[#2B2D42] text-white' : ''}>
             Velocidad
-          </Button>
-          <Button 
-            variant={sortCriteria === 'price' ? 'default' : 'outline'} 
-            onClick={() => setSortCriteria('price')}
-            className="rounded-l-none"
-          >
+          </ToggleGroupItem>
+          <ToggleGroupItem value="price" variant="outline" className={sortCriteria === 'price' ? 'bg-[#2B2D42] text-white' : ''}>
             Precio
-          </Button>
-        </div>
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
       
       {/* Podium layout for top 3 */}
       <div className="mb-8">
         <div className="flex flex-col md:flex-row w-full justify-center items-end gap-4 md:gap-8">
           {/* Second place - left */}
-          <div className="order-2 md:order-1 w-full md:w-1/3 transform transition-all duration-300 hover:scale-105">
-            <div className="relative">
-              <div className="absolute -top-7 left-0 right-0 mx-auto w-full text-center">
-                <span className="inline-flex items-center justify-center w-14 h-14 bg-[#C0C0C0] text-white rounded-full shadow-lg font-black text-2xl">2</span>
+          <div className="order-2 md:order-1 w-full md:w-1/3">
+            <div className="relative text-center pb-4">
+              <div className="inline-flex items-center justify-center">
+                <span className="inline-flex items-center justify-center w-14 h-14 bg-gray-300 text-white rounded-full shadow-lg font-black text-2xl">
+                  {sortedHostingData[1].sortPosition}
+                </span>
               </div>
-              <div className="pt-10">
-                <HostingCard
-                  key={sortedHostingData[1].position}
-                  position={sortedHostingData[1].sortPosition}
-                  name={sortedHostingData[1].name}
-                  logo={sortedHostingData[1].logo}
-                  rating={parseFloat(getRatingLabel(sortedHostingData[1]))}
-                  features={sortedHostingData[1].features}
-                  specs={sortedHostingData[1].specs}
-                  url={sortedHostingData[1].url}
-                  isPodium={true}
-                />
+            </div>
+            <div className="border rounded-lg overflow-hidden bg-white h-full">
+              <div className="p-6 flex flex-col h-full">
+                <div className="mb-2">
+                  <h3 className="text-2xl font-bold">
+                    <span className={sortedHostingData[1].displayName.firstColor}>{sortedHostingData[1].displayName.first}</span>
+                    <span className={sortedHostingData[1].displayName.secondColor}>{sortedHostingData[1].displayName.second}</span>
+                  </h3>
+                </div>
+                <ul className="list-disc list-inside mb-6 text-sm text-gray-700 space-y-2 flex-grow">
+                  {sortedHostingData[1].features.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                  ))}
+                </ul>
+                <Button 
+                  variant="outline" 
+                  onClick={() => document.getElementById(`specs-${sortedHostingData[1].position}`)?.classList.toggle('hidden')} 
+                  className="w-full mb-4 text-sm justify-between border-gray-300"
+                >
+                  Ver especificaciones
+                  <span>⌄</span>
+                </Button>
+                <div id={`specs-${sortedHostingData[1].position}`} className="hidden mb-4 p-3 bg-gray-50 rounded-lg">
+                  <ul className="space-y-2">
+                    {sortedHostingData[1].specs.map((spec, index) => (
+                      <li key={index} className="text-sm flex items-center">
+                        <Check size={16} className="text-green-600 mr-2" /> {spec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Button asChild className={`${sortedHostingData[1].buttonColor} hover:opacity-90`}>
+                  <a href={sortedHostingData[1].url} target="_blank" rel="noopener noreferrer">Visitar Hosting</a>
+                </Button>
               </div>
             </div>
           </div>
           
           {/* First place - center */}
-          <div className="order-1 md:order-2 w-full md:w-1/3 transform transition-all duration-300 hover:scale-105 z-10">
-            <div className="relative">
-              <div className="absolute -top-12 left-0 right-0 mx-auto w-full text-center">
-                <div className="inline-flex items-center justify-center">
-                  <span className="inline-flex items-center justify-center w-16 h-16 bg-[#FFD700] text-white rounded-full shadow-lg font-black text-3xl">1</span>
-                  <Trophy className="w-8 h-8 ml-2 text-[#FFD700]" />
-                </div>
+          <div className="order-1 md:order-2 w-full md:w-1/3 z-10">
+            <div className="relative text-center pb-4">
+              <div className="inline-flex items-center justify-center">
+                <span className="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-white rounded-full shadow-lg font-black text-3xl">
+                  {sortedHostingData[0].sortPosition}
+                </span>
+                <Trophy className="w-8 h-8 ml-2 text-yellow-400" />
               </div>
-              <div className="absolute -top-3 right-5">
-                {sortedHostingData[0].isRecommended && (
-                  <div className="bg-[#EF233C] text-white text-xs px-3 py-1 rounded-full flex items-center">
+              {sortedHostingData[0].isRecommended && (
+                <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
+                  <div className="bg-[#EF233C] text-white text-xs px-4 py-1 rounded-full flex items-center whitespace-nowrap">
                     <Check size={12} className="mr-1" /> Recomendado
                   </div>
-                )}
-              </div>
-              <div className="pt-10 transform md:scale-110">
-                <HostingCard
-                  key={sortedHostingData[0].position}
-                  position={sortedHostingData[0].sortPosition}
-                  name={sortedHostingData[0].name}
-                  logo={sortedHostingData[0].logo}
-                  rating={parseFloat(getRatingLabel(sortedHostingData[0]))}
-                  features={sortedHostingData[0].features}
-                  specs={sortedHostingData[0].specs}
-                  url={sortedHostingData[0].url}
-                  isPodium={true}
-                  isTopRated={true}
-                  isRecommended={sortedHostingData[0].isRecommended}
-                />
+                </div>
+              )}
+            </div>
+            <div className={`border-2 ${sortedHostingData[0].borderColor} rounded-lg overflow-hidden bg-white shadow-lg transform md:scale-105 h-full`}>
+              <div className="p-6 flex flex-col h-full">
+                <div className="mb-2">
+                  <h3 className="text-2xl font-bold">
+                    <span className={sortedHostingData[0].displayName.firstColor}>{sortedHostingData[0].displayName.first}</span>
+                    <span className={sortedHostingData[0].displayName.secondColor}>{sortedHostingData[0].displayName.second}</span>
+                  </h3>
+                </div>
+                <ul className="list-disc list-inside mb-6 text-sm text-gray-700 space-y-2 flex-grow">
+                  {sortedHostingData[0].features.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                  ))}
+                </ul>
+                <Button 
+                  variant="outline" 
+                  onClick={() => document.getElementById(`specs-${sortedHostingData[0].position}`)?.classList.toggle('hidden')} 
+                  className="w-full mb-4 text-sm justify-between border-gray-300"
+                >
+                  Ver especificaciones
+                  <span>⌄</span>
+                </Button>
+                <div id={`specs-${sortedHostingData[0].position}`} className="hidden mb-4 p-3 bg-gray-50 rounded-lg">
+                  <ul className="space-y-2">
+                    {sortedHostingData[0].specs.map((spec, index) => (
+                      <li key={index} className="text-sm flex items-center">
+                        <Check size={16} className="text-[#EF233C] mr-2" /> {spec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Button asChild className={`${sortedHostingData[0].buttonColor} hover:opacity-90`}>
+                  <a href={sortedHostingData[0].url} target="_blank" rel="noopener noreferrer">Visitar Hosting</a>
+                </Button>
               </div>
             </div>
           </div>
           
           {/* Third place - right */}
-          <div className="order-3 w-full md:w-1/3 transform transition-all duration-300 hover:scale-105">
-            <div className="relative">
-              <div className="absolute -top-7 left-0 right-0 mx-auto w-full text-center">
-                <span className="inline-flex items-center justify-center w-14 h-14 bg-[#CD7F32] text-white rounded-full shadow-lg font-black text-2xl">3</span>
+          <div className="order-3 w-full md:w-1/3">
+            <div className="relative text-center pb-4">
+              <div className="inline-flex items-center justify-center">
+                <span className="inline-flex items-center justify-center w-14 h-14 bg-amber-700 text-white rounded-full shadow-lg font-black text-2xl">
+                  {sortedHostingData[2].sortPosition}
+                </span>
               </div>
-              <div className="pt-10">
-                <HostingCard
-                  key={sortedHostingData[2].position}
-                  position={sortedHostingData[2].sortPosition}
-                  name={sortedHostingData[2].name}
-                  logo={sortedHostingData[2].logo}
-                  rating={parseFloat(getRatingLabel(sortedHostingData[2]))}
-                  features={sortedHostingData[2].features}
-                  specs={sortedHostingData[2].specs}
-                  url={sortedHostingData[2].url}
-                  isPodium={true}
-                />
+            </div>
+            <div className="border rounded-lg overflow-hidden bg-white h-full">
+              <div className="p-6 flex flex-col h-full">
+                <div className="mb-2">
+                  <h3 className="text-2xl font-bold">
+                    <span className={sortedHostingData[2].displayName.firstColor}>{sortedHostingData[2].displayName.first}</span>
+                    <span className={sortedHostingData[2].displayName.secondColor}>{sortedHostingData[2].displayName.second}</span>
+                  </h3>
+                </div>
+                <ul className="list-disc list-inside mb-6 text-sm text-gray-700 space-y-2 flex-grow">
+                  {sortedHostingData[2].features.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                  ))}
+                </ul>
+                <Button 
+                  variant="outline" 
+                  onClick={() => document.getElementById(`specs-${sortedHostingData[2].position}`)?.classList.toggle('hidden')} 
+                  className="w-full mb-4 text-sm justify-between border-gray-300"
+                >
+                  Ver especificaciones
+                  <span>⌄</span>
+                </Button>
+                <div id={`specs-${sortedHostingData[2].position}`} className="hidden mb-4 p-3 bg-gray-50 rounded-lg">
+                  <ul className="space-y-2">
+                    {sortedHostingData[2].specs.map((spec, index) => (
+                      <li key={index} className="text-sm flex items-center">
+                        <Check size={16} className="text-amber-700 mr-2" /> {spec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Button asChild className={`${sortedHostingData[2].buttonColor} hover:opacity-90`}>
+                  <a href={sortedHostingData[2].url} target="_blank" rel="noopener noreferrer">Visitar Hosting</a>
+                </Button>
               </div>
             </div>
           </div>
