@@ -9,7 +9,8 @@ import Testimonial from '@/components/Testimonial';
 import Migration from '@/components/Migration';
 import Categories from '@/components/Categories';
 import SimpleFAQ from '@/components/SimpleFAQ';
-import BlogTeaser from '@/components/BlogTeaser';
+import UltimasBusquedas from '@/components/UltimasBusquedas';
+import TransparencyNotice from '@/components/TransparencyNotice';
 import FinalCTA from '@/components/FinalCTA';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
@@ -57,25 +58,28 @@ const Index = () => {
         {/* section 3: Ranking cards */}
         <HostingRanking />
         
-        {/* section 4: Benefits */}
+        {/* section 4: Transparency Notice */}
+        <TransparencyNotice />
+        
+        {/* section 5: Benefits */}
         <Benefits />
         
-        {/* section 5: Testimonial + Partners */}
+        {/* section 6: Testimonials + Partners */}
         <Testimonial />
         
-        {/* section 6: Migration CTA */}
+        {/* section 7: Last Searches */}
+        <UltimasBusquedas />
+        
+        {/* section 8: Migration CTA */}
         <Migration />
         
-        {/* section 7: Categories */}
+        {/* section 9: Categories */}
         <Categories />
         
-        {/* section 8: FAQ */}
+        {/* section 10: FAQ */}
         <SimpleFAQ />
         
-        {/* section 9: Blog Teaser */}
-        <BlogTeaser />
-        
-        {/* section 10: Final CTA */}
+        {/* section 11: Final CTA */}
         <FinalCTA />
         
         {/* Mini Nav sticky */}

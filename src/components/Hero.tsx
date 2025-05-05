@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Search } from 'lucide-react';
@@ -37,6 +36,19 @@ const Hero = () => {
     const domain = formData.get('domain')?.toString().trim().toLowerCase();
     
     if (!domain) return;
+    
+    // Save search to localStorage and dispatch event
+    try {
+      const KEY = 'busquedasDominios';
+      const currentSearches = JSON.parse(localStorage.getItem(KEY) || '[]');
+      const updatedSearches = [domain, ...currentSearches.filter((d: string) => d !== domain)];
+      localStorage.setItem(KEY, JSON.stringify(updatedSearches.slice(0, 10)));
+      
+      // Dispatch custom event
+      window.dispatchEvent(new CustomEvent('domainSearched'));
+    } catch (error) {
+      console.error('Error saving search:', error);
+    }
     
     setIsLoading(true);
     setPreviewLoaded(false);

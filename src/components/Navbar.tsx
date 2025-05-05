@@ -36,7 +36,6 @@ const Navbar = () => {
         <NavLink to="/ranking" className={navLinkClasses}>Ranking</NavLink>
         <NavLink to="/catalogo" className={navLinkClasses}>Catálogo</NavLink>
         <NavLink to="/comparativa" className={navLinkClasses}>Comparativa</NavLink>
-        <NavLink to="/blog" className={navLinkClasses}>Blog</NavLink>
         <NavLink to="/ultimos-dominios" className={navLinkClasses}>Dominios</NavLink>
         <NavLink to="/cotiza-hosting" className={navLinkClasses}>Cotizar</NavLink>
       </div>
@@ -75,9 +74,6 @@ const Navbar = () => {
             </NavLink>
             <NavLink to="/comparativa" className={navLinkClasses} onClick={closeMobileMenu}>
               Comparativa
-            </NavLink>
-            <NavLink to="/blog" className={navLinkClasses} onClick={closeMobileMenu}>
-              Blog
             </NavLink>
             <NavLink to="/ultimos-dominios" className={navLinkClasses} onClick={closeMobileMenu}>
               Dominios
