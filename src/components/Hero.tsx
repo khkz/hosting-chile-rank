@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Search } from 'lucide-react';
@@ -11,6 +12,7 @@ import {
   DialogFooter, 
   DialogClose 
 } from "@/components/ui/dialog";
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +27,7 @@ const Hero = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,70 +40,64 @@ const Hero = () => {
     setPreviewLoaded(false);
     
     try {
+      // Check if the page already exists
+      const slug = domain.replace(/\./g, '-');
+      try {
+        const pageExists = await fetch(`/whois/${slug}/`, { method: 'HEAD' })
+          .then(r => r.ok)
+          .catch(() => false);
+          
+        if (pageExists) {
+          navigate(`/whois/${slug}/`);
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking if page exists:', error);
+      }
+      
       // 1️⃣ IP A-record
       const aRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
       const ip = aRes.Answer ? aRes.Answer[0].data : '–';
       
       // 2️⃣ Nameservers
       const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
-      const ns = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data).join('\n') : '–';
-      
-      // 3️⃣ Geo + ASN + Org (ipinfo.io)
-      let geo = '–', asn = '–', org = '–';
-      let isChile = false;
-      
-      if (ip !== '–') {
-        try {
-          const info = await fetch(`https://ipinfo.io/${ip}/json?token=free`).then(r => r.json());
-          isChile = info.country === 'CL';
-          geo = isChile ? '🇨🇱 Chile' : `🌐 ${info.country || '–'}`;
-          asn = info.asn ? info.asn : (info.org || '–');
-          org = info.org || '–';
-        } catch (error) {
-          console.error('Error fetching IP info:', error);
-        }
-      }
-      
-      // 4️⃣ RDAP owner (fallback)
-      if (org === '–' && ip !== '–') {
-        try {
-          const rdap = await fetch(`https://rdap.org/ip/${ip}`).then(r => r.json());
-          org = rdap && rdap.name ? rdap.name : '–';
-        } catch (error) {
-          console.error('Error fetching RDAP:', error);
-        }
-      }
+      const ns = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data) : [];
+      const nsText = ns.join('\n');
       
       // Set domain info for the dialog
       setDomainInfo({
         domain,
         ip,
-        nameservers: ns,
-        location: geo,
-        provider: asn,
-        organization: org,
-        isChile
+        nameservers: nsText,
+        location: 'Generando...',
+        provider: 'Generando...',
+        organization: 'Generando...',
+        isChile: false
       });
       
       setIsOpen(true);
 
-      // Send search data to serverless function to create static page
+      // Call the Supabase function to save the search
       try {
-        await fetch('/api/save-search', {
+        await fetch('https://oegvwjxrlmtwortyhsrv.functions.supabase.co/save-search', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             domain,
             ip,
-            ns: ns.split('\n'),
-            asn,
-            provider: org,
-            screenshot: `https://image.thum.io/get/png/noanimate/width/600/${domain}`
+            ns,
+            provider: '-',
+            asn: '-'
           })
         });
-        console.log('Search saved for SEO page generation');
+        console.log('Search sent to Supabase function');
+        
+        // After 90 seconds, try to redirect to the newly created page
+        setTimeout(() => {
+          navigate(`/whois/${slug}/`);
+        }, 90000);
       } catch (error) {
-        console.error('Error saving search:', error);
+        console.error('Error calling Supabase function:', error);
         // Non-blocking - we continue even if this fails
       }
     } catch (error) {
@@ -127,8 +124,7 @@ const Hero = () => {
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42]">Mejor Hosting Chileno 2025</h1>
           <p className="mt-4 text-lg text-[#555] max-w-2xl mx-auto">
-            Análisis de velocidad, soporte, seguridad y precio.
-            Obtenga información sobre IP chilena, nameservers y una vista previa de cualquier dominio.
+            Informe instantáneo de IP, proveedor, nameservers y soberanía digital.
           </p>
           
           {/* Domain search box */}
@@ -177,7 +173,7 @@ const Hero = () => {
             </span>
           </div>
           
-          {/* Price hint - already implemented */}
+          {/* Price hint */}
           <p className="mt-3 text-sm text-[#555]">
             <span className="font-medium">Desde $4.000 CLP/mes</span> con 30 días de garantía
           </p>
@@ -207,16 +203,8 @@ const Hero = () => {
                 <dd className="ml-1 leading-tight whitespace-pre-wrap">{domainInfo.nameservers}</dd>
               </div>
               <div>
-                <dt className="font-medium inline">Ubicación IP: </dt>
-                <dd className="ml-1 inline">{domainInfo.location}</dd>
-              </div>
-              <div>
                 <dt className="font-medium inline">Proveedor de hosting: </dt>
                 <dd className="ml-1 inline">{domainInfo.provider}</dd>
-              </div>
-              <div>
-                <dt className="font-medium inline">Org./Propietario IP: </dt>
-                <dd className="ml-1 inline">{domainInfo.organization}</dd>
               </div>
             </dl>
             <div>
