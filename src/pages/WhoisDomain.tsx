@@ -56,6 +56,21 @@ const lookupASN = async (ip: string): Promise<string> => {
 const whoisCache: Record<string, {data: any, timestamp: number}> = {};
 const CACHE_EXPIRY = 3600000; // 1 hour in milliseconds
 
+// Helper function to implement fetch with timeout
+const fetchWithTimeout = async (resource: string, options: RequestInit = {}, timeout = 10000): Promise<Response> => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  
+  const response = await fetch(resource, {
+    ...options,
+    signal: controller.signal
+  });
+  
+  clearTimeout(id);
+  
+  return response;
+};
+
 // Function to fetch WHOIS data for a domain using multiple CORS proxies
 const fetchWhoisData = async (domain: string) => {
   try {
@@ -88,12 +103,11 @@ const fetchWhoisData = async (domain: string) => {
         const proxyUrl = corsProxies[i](rdapUrl);
         console.log(`Trying CORS proxy #${i+1}: ${proxyUrl.substring(0, 60)}...`);
         
-        const response = await fetch(proxyUrl, {
+        const response = await fetchWithTimeout(proxyUrl, {
           headers: {
             'Accept': 'application/json'
-          },
-          timeout: 10000 // 10 second timeout
-        });
+          }
+        }, 10000);
         
         if (!response.ok) {
           throw new Error(`Proxy #${i+1} request failed with status: ${response.status}`);
