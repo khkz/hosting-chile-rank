@@ -13,6 +13,8 @@ import GuiaElegirHosting from "./pages/GuiaElegirHosting";
 import CotizaHosting from "./pages/CotizaHosting";
 import VotaHosting from "./pages/VotaHosting";
 import Contacto from "./pages/Contacto";
+import Catalogo from "./pages/Catalogo";
+import CatalogoDetalle from "./pages/CatalogoDetalle";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ const App = () => (
           <Route path="/cotiza-tu-hosting" element={<CotizaHosting />} />
           <Route path="/vota-por-tu-hosting" element={<VotaHosting />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -20,6 +20,9 @@ const Navbar = () => {
             <Link to="/benchmark" className="hover:text-[#EF233C] transition-colors">
               Benchmark
             </Link>
+            <Link to="/catalogo" className="hover:text-[#EF233C] transition-colors">
+              Catálogo
+            </Link>
             <Link to="/guia-elegir-hosting" className="hover:text-[#EF233C] transition-colors">
               Guía
             </Link>
