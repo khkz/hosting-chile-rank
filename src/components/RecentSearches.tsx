@@ -2,12 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { History, Search, Calendar, Clock, RefreshCw } from 'lucide-react';
+import { History, Search, Calendar, Clock, RefreshCw, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-// Fallback data for when the JSON file is not available
+// Datos de respaldo para cuando el archivo JSON no está disponible
 const fallbackDomains = [
   "hostingplus.cl", 
   "ecohosting.cl", 
@@ -46,7 +52,7 @@ const RecentSearches = () => {
   const { toast } = useToast();
   
   const loadDomains = async (forceRefresh = false) => {
-    // Don't reload data if we already have it and not forcing refresh
+    // No recargar datos si ya los tenemos y no estamos forzando la actualización
     if (!forceRefresh && domains.length > 0) {
       return;
     }
@@ -57,17 +63,17 @@ const RecentSearches = () => {
       setIsLoading(true);
     }
     
-    // Fetch from the latest.json file that contains NIC.cl domain data
+    // Obtener datos del archivo latest.json que contiene datos de dominios de NIC.cl
     try {
-      // Add cache busting parameter for forced refresh
+      // Añadir parámetro para evitar caché en caso de actualización forzada
       const cacheBuster = forceRefresh ? `?t=${Date.now()}` : '';
       const response = await fetch(`/data/latest.json${cacheBuster}`);
       
       if (!response.ok) {
-        throw new Error('Failed to load recent domains');
+        throw new Error('Error al cargar dominios recientes');
       }
       
-      // Check if the response is HTML (common error case)
+      // Verificar si la respuesta es HTML (caso de error común)
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('text/html')) {
         throw new Error('El archivo latest.json no existe o no está en formato JSON');
@@ -76,27 +82,27 @@ const RecentSearches = () => {
       const data: DomainData = await response.json();
       setDomainData(data);
       
-      // Check if we have the new format with metadata
+      // Verificar si tenemos el nuevo formato con metadatos
       if (data.meta) {
-        // Take the first 10 domain entries
+        // Tomar las primeras 10 entradas de dominios
         setDomains(data.domains.slice(0, 10) || []);
         setLastUpdateTime(data.meta.lastUpdate);
         
-        // Check if data is stale (older than 6 hours)
+        // Verificar si los datos son antiguos (más de 6 horas)
         const lastUpdateDate = new Date(data.meta.lastUpdate);
         const now = new Date();
         const hoursSinceUpdate = (now.getTime() - lastUpdateDate.getTime()) / (1000 * 60 * 60);
         setIsDataStale(hoursSinceUpdate > 6 || data.meta.status !== 'success');
       } else if (Array.isArray(data)) {
-        // Handle old format (array of domains)
+        // Manejar formato antiguo (array de dominios)
         setDomains(data.slice(0, 10));
         setLastUpdateTime(null);
       } else if (Array.isArray(data.domains)) {
-        // Handle another possible format
+        // Manejar otro posible formato
         setDomains(data.domains.slice(0, 10));
         setLastUpdateTime(null);
       } else {
-        throw new Error('Format of latest.json is not recognized');
+        throw new Error('El formato de latest.json no es reconocido');
       }
       
       if (forceRefresh) {
@@ -107,13 +113,13 @@ const RecentSearches = () => {
         });
       }
     } catch (error) {
-      console.error('Error loading recent domains:', error);
+      console.error('Error cargando dominios recientes:', error);
       
-      // Use fallback domains when the actual file can't be loaded
+      // Usar dominios de respaldo cuando no se puede cargar el archivo real
       setDomains(fallbackDomains.map(d => ({ d, date: new Date().toISOString() })));
       setIsDataStale(true);
       
-      // Only show toast for non-development environments or forced refresh
+      // Solo mostrar toast para entornos que no sean desarrollo o actualización forzada
       if (process.env.NODE_ENV !== 'development' || forceRefresh) {
         toast({
           title: "Usando datos de ejemplo",
@@ -129,7 +135,10 @@ const RecentSearches = () => {
 
   useEffect(() => {
     loadDomains();
-  }, [toast]);
+    
+    // Log para depuración
+    console.log("Cargando dominios recientes para RecentSearches");
+  }, []);
 
   if (isLoading) {
     return (
@@ -155,27 +164,27 @@ const RecentSearches = () => {
     return null;
   }
 
-  // Helper function to format registration date
+  // Función auxiliar para formatear fecha de registro
   const formatRegistrationDate = (isoDate: string): string => {
     if (!isoDate) return '';
     
     try {
       const date = new Date(isoDate);
       
-      // If today, show "Hoy"
+      // Si es hoy, mostrar "Hoy"
       const today = new Date();
       if (date.toDateString() === today.toDateString()) {
         return 'Hoy';
       }
       
-      // If yesterday, show "Ayer"
+      // Si es ayer, mostrar "Ayer"
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       if (date.toDateString() === yesterday.toDateString()) {
         return 'Ayer';
       }
       
-      // Otherwise, show date in format "5 may"
+      // En otro caso, mostrar fecha en formato "5 may"
       return date.toLocaleDateString('es-CL', { 
         day: 'numeric', 
         month: 'short'
@@ -223,31 +232,61 @@ const RecentSearches = () => {
       <CardContent className="pt-0">
         <div className="flex flex-wrap gap-2">
           {domains.map(domain => (
-            <Link 
-              key={domain.d} 
-              to={`/whois/${domain.d.replace(/\./g, '-')}/`}
-              className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 transition-colors flex items-center"
-              title={`Registrado: ${new Date(domain.date).toLocaleDateString('es-CL')}`}
-            >
-              <Search className="h-3 w-3 mr-1 text-gray-500" />
-              {domain.d}
-              {domain.date && (
-                <span className="ml-1 text-xs text-gray-500 flex items-center">
-                  <Calendar className="h-2 w-2 mr-1" />
-                  {formatRegistrationDate(domain.date)}
-                </span>
-              )}
-            </Link>
+            <TooltipProvider key={domain.d}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link 
+                    to={`/whois/${domain.d.replace(/\./g, '-')}/`}
+                    className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 transition-colors flex items-center"
+                  >
+                    <Search className="h-3 w-3 mr-1 text-gray-500" />
+                    {domain.d}
+                    {domain.date && (
+                      <span className="ml-1 text-xs text-gray-500 flex items-center">
+                        <Calendar className="h-2 w-2 mr-1" />
+                        {formatRegistrationDate(domain.date)}
+                      </span>
+                    )}
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Ver información WHOIS de {domain.d}</p>
+                  <p className="text-xs text-gray-500">Registrado: {new Date(domain.date).toLocaleDateString('es-CL')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           ))}
         </div>
         
-        <div className="mt-2 text-center">
+        <div className="mt-3 flex justify-between items-center">
           <Link 
             to="/ultimos-dominios" 
             className="text-xs text-blue-600 hover:underline"
           >
             Ver todos los dominios recientes
           </Link>
+          
+          <div className="flex space-x-1">
+            {domains.map((domain, index) => index < 3 && (
+              <TooltipProvider key={domain.d}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a 
+                      href={`https://${domain.d}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-xs p-1 bg-gray-50 hover:bg-gray-100 rounded text-gray-600 transition-colors"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Visitar {domain.d}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

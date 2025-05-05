@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -13,7 +13,8 @@ import {
   ExternalLink, 
   AlertTriangle, 
   Calendar,
-  Clock
+  Clock,
+  Info
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -36,27 +37,14 @@ import {
 } from "@/components/ui/pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-// Fallback domains for when API is not available
-const fallbackDomains = [
-  { d: "ejemplo-dominio-cl.cl", date: "2025-05-05T12:00:00Z" },
-  { d: "nuevodominio2025.cl", date: "2025-05-05T11:30:00Z" },
-  { d: "tiendaonlinechile.cl", date: "2025-05-04T15:45:00Z" },
-  { d: "desarrolloweb-cl.cl", date: "2025-05-04T14:20:00Z" },
-  { d: "hostingchileno.cl", date: "2025-05-04T10:15:00Z" },
-  { d: "nuevositioweb.cl", date: "2025-05-03T16:30:00Z" },
-  { d: "misitiopersonal.cl", date: "2025-05-03T13:45:00Z" },
-  { d: "tiendaonline-cl.cl", date: "2025-05-03T09:20:00Z" },
-  { d: "consultoradigital.cl", date: "2025-05-02T18:10:00Z" },
-  { d: "agenciamarketing.cl", date: "2025-05-02T14:30:00Z" },
-  { d: "emprendimientochile.cl", date: "2025-05-01T17:00:00Z" },
-  { d: "startupchilena.cl", date: "2025-05-01T12:45:00Z" },
-  { d: "tecnologiaweb.cl", date: "2025-05-01T09:15:00Z" },
-  { d: "serviciosempresa.cl", date: "2025-04-30T16:20:00Z" },
-  { d: "productosdigitales.cl", date: "2025-04-30T11:30:00Z" },
-];
-
-// Type definitions
+// Definir interfaces para los datos
 interface Domain {
   d: string;
   date: string;
@@ -87,77 +75,139 @@ const UltimosDominios = () => {
   const [lastUpdateTime, setLastUpdateTime] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Function to force update from NIC.cl - in production would call an API endpoint
+  // Función mejorada para cargar dominios
+  const loadDomains = useCallback(async (forceRefresh = false) => {
+    if (!forceRefresh && domains.length > 0) {
+      return; // No recargar si ya tenemos datos y no estamos forzando la actualización
+    }
+    
+    setIsLoading(true);
+    setError(null);
+    console.log("Cargando dominios...", forceRefresh ? "Forzando actualización" : "");
+    
+    try {
+      // Añadir parámetro para evitar caché del navegador
+      const cacheBuster = forceRefresh ? `?t=${Date.now()}` : '';
+      const response = await fetch(`/data/latest.json${cacheBuster}`);
+      
+      if (!response.ok) {
+        throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
+      }
+      
+      const data: DomainData = await response.json();
+      console.log("Datos cargados:", data);
+      setDomainData(data);
+      
+      // Verificar si tenemos el nuevo formato con metadatos
+      if (data.meta) {
+        setDomains(data.domains || []);
+        setLastUpdateTime(data.meta.lastUpdate);
+        
+        // Verificar si los datos son antiguos (más de 6 horas)
+        const lastUpdateDate = new Date(data.meta.lastUpdate);
+        const now = new Date();
+        const hoursSinceUpdate = (now.getTime() - lastUpdateDate.getTime()) / (1000 * 60 * 60);
+        setIsDataStale(hoursSinceUpdate > 6 || data.meta.status !== 'success');
+        
+        if (hoursSinceUpdate > 6) {
+          setError('Los datos tienen más de 6 horas de antigüedad. Considera actualizarlos.');
+        }
+        
+        if (data.meta.source === 'fallback' || data.meta.source === 'hardcoded') {
+          console.warn("Se están usando datos de respaldo:", data.meta.source);
+          toast({
+            title: "Datos de respaldo",
+            description: "Se están mostrando datos de respaldo. Intenta actualizar desde NIC.cl.",
+            variant: "default"
+          });
+        }
+      } else {
+        // Manejar formato antiguo (solo un array de dominios)
+        setDomains(Array.isArray(data) ? data : []);
+        setLastUpdateTime(null);
+      }
+      
+      if (forceRefresh) {
+        toast({
+          title: "Datos recargados",
+          description: "Los dominios se han actualizado correctamente.",
+          variant: "default"
+        });
+      }
+    } catch (error) {
+      console.error('Error cargando dominios:', error);
+      setDomains([]);
+      setError('No se pudieron cargar los datos. Por favor, intenta de nuevo.');
+      
+      toast({
+        title: "Error al cargar dominios",
+        description: "No se pudieron obtener los dominios. Intenta de nuevo más tarde.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [domains.length, toast]);
+
+  // Función para forzar actualización desde NIC.cl
   const forceUpdate = async () => {
     setRefreshing(true);
     setError(null);
     
     try {
-      // In production, this would call an actual API endpoint
-      // For demonstration, we'll simulate a delay and an API call
-      const updateEndpoint = process.env.NODE_ENV === 'production' 
-        ? 'https://oegvwjxrlmtwortyhsrv.functions.supabase.co/update-domains'
-        : '/api/update-domains';
-        
       toast({
         title: "Actualizando dominios",
         description: "Solicitando nuevos datos desde NIC.cl...",
         variant: "default"
       });
       
+      // En producción, esto llamaría a un endpoint de API real
+      // Para desarrollo, simulamos una demora y una llamada a la API
+      let updateSuccess = false;
+      
       try {
-        // Try to reach the update endpoint
-        const response = await fetch(updateEndpoint, {
+        // Intentamos ejecutar workflow de GitHub Actions
+        const response = await fetch("https://api.github.com/repos/tu-usuario/tu-repo/dispatches", {
           method: 'POST',
           headers: {
+            'Accept': 'application/vnd.github.v3+json',
             'Content-Type': 'application/json',
+            'Authorization': `token ${process.env.GITHUB_TOKEN || ''}`
           },
-          body: JSON.stringify({ force: true })
+          body: JSON.stringify({
+            event_type: 'manual-update'
+          })
         });
         
-        if (response.ok) {
-          const result = await response.json();
-          
-          if (result.success) {
-            toast({
-              title: "Actualización en progreso",
-              description: "Los datos se actualizarán en breve.",
-              variant: "default"
-            });
-            
-            // Wait a bit and then reload the data
-            setTimeout(() => {
-              loadDomains(true);
-            }, 3000);
-          } else {
-            throw new Error(result.message || "Error desconocido durante la actualización");
-          }
-        } else {
-          throw new Error(`Error en la respuesta del servidor: ${response.status}`);
-        }
+        updateSuccess = response.status === 204;
       } catch (apiError) {
-        console.error('API error:', apiError);
-        
-        // Simulate successful update for development
+        console.error('Error de API:', apiError);
+        // En desarrollo, simulamos actualización exitosa
         if (process.env.NODE_ENV !== 'production') {
-          // Simulate a delay
           await new Promise(resolve => setTimeout(resolve, 2000));
-          
-          toast({
-            title: "Simulando actualización (desarrollo)",
-            description: "En producción, esto ejecutaría el script de actualización real.",
-            variant: "default"
-          });
-          
-          // In development, we'll just reload the current data
-          await loadDomains(true);
+          updateSuccess = true;
         } else {
           throw apiError;
         }
       }
+      
+      if (updateSuccess) {
+        toast({
+          title: "Actualización solicitada",
+          description: "Los datos se actualizarán en los próximos minutos.",
+          variant: "default"
+        });
+        
+        // Esperar un poco y luego recargar los datos
+        setTimeout(() => {
+          loadDomains(true);
+        }, 3000);
+      } else {
+        throw new Error("No se pudo iniciar la actualización");
+      }
     } catch (error) {
-      console.error('Error forcing update:', error);
-      setError('No se pudo ejecutar la actualización. Por favor, inténtalo de nuevo más tarde.');
+      console.error('Error forzando actualización:', error);
+      setError('No se pudo ejecutar la actualización. Por favor, intenta de nuevo más tarde.');
       
       toast({
         title: "Error de actualización",
@@ -169,99 +219,27 @@ const UltimosDominios = () => {
     }
   };
 
-  // Load domains from NIC.cl JSON
-  const loadDomains = async (forceRefresh = false) => {
-    if (!forceRefresh && domains.length > 0) {
-      return; // Don't reload if we already have data and not forcing refresh
-    }
-    
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      // Add cache busting parameter to avoid browser caching
-      const cacheBuster = forceRefresh ? `?t=${Date.now()}` : '';
-      const response = await fetch(`/data/latest.json${cacheBuster}`);
-      
-      if (!response.ok) {
-        throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
-      }
-      
-      const data: DomainData = await response.json();
-      setDomainData(data);
-      
-      // Check if we have the new format with metadata
-      if (data.meta) {
-        setDomains(data.domains || []);
-        setLastUpdateTime(data.meta.lastUpdate);
-        
-        // Check if data is stale (older than 6 hours)
-        const lastUpdateDate = new Date(data.meta.lastUpdate);
-        const now = new Date();
-        const hoursSinceUpdate = (now.getTime() - lastUpdateDate.getTime()) / (1000 * 60 * 60);
-        setIsDataStale(hoursSinceUpdate > 6 || data.meta.status !== 'success');
-        
-        if (hoursSinceUpdate > 6) {
-          setError('Los datos tienen más de 6 horas de antigüedad. Considera actualizarlos.');
-        }
-      } else {
-        // Handle old format (just an array of domains)
-        setDomains(Array.isArray(data) ? data : []);
-        setLastUpdateTime(null);
-      }
-    } catch (error) {
-      console.error('Error loading domains:', error);
-      // Use fallback domains when the API is not available
-      setDomains(fallbackDomains);
-      setError('Usando datos de ejemplo porque no se pudieron cargar los datos reales.');
-      setIsDataStale(true);
-      
-      toast({
-        title: "Usando datos de ejemplo",
-        description: "No se pudieron obtener datos reales. Mostrando ejemplos.",
-        variant: "default"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     loadDomains();
     
-    // Add console log to help with debugging
+    // Añadir log para ayudar con la depuración
     console.log("💡 UltimosDominios: Intentando cargar dominios de /data/latest.json");
-  }, []);
+  }, [loadDomains]);
 
-  // Filter domains based on search term
+  // Filtrar dominios basado en término de búsqueda
   const filteredDomains = domains.filter(domain => 
     domain.d.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination
+  // Paginación
   const indexOfLastDomain = currentPage * domainsPerPage;
   const indexOfFirstDomain = indexOfLastDomain - domainsPerPage;
   const currentDomains = filteredDomains.slice(indexOfFirstDomain, indexOfLastDomain);
   const totalPages = Math.ceil(filteredDomains.length / domainsPerPage);
 
-  // Group domains by date
-  const groupedDomains = currentDomains.reduce((groups, domain) => {
-    const date = new Date(domain.date).toISOString().split('T')[0];
-    if (!groups[date]) {
-      groups[date] = [];
-    }
-    groups[date].push(domain);
-    return groups;
-  }, {} as Record<string, Domain[]>);
-
-  // Get dates sorted by newest first
-  const dates = Object.keys(groupedDomains).sort((a, b) => 
-    new Date(b).getTime() - new Date(a).getTime()
-  );
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Format date to Spanish locale
+  // Formatear fecha a locale español
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString('es-CL', {
@@ -274,7 +252,7 @@ const UltimosDominios = () => {
     }
   };
   
-  // Format datetime to Spanish locale with time
+  // Formatear fecha y hora a locale español
   const formatDateTime = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -288,6 +266,11 @@ const UltimosDominios = () => {
     } catch (e) {
       return "Desconocido";
     }
+  };
+
+  // Limpiar la búsqueda
+  const clearSearch = () => {
+    setSearchTerm('');
   };
 
   return (
@@ -321,7 +304,7 @@ const UltimosDominios = () => {
               Monitoreo en tiempo real de los registros más recientes de dominios .cl
             </p>
             
-            {/* Last update info */}
+            {/* Información de última actualización */}
             {lastUpdateTime && (
               <div className="flex items-center text-sm text-gray-500 mb-2">
                 <Clock className="h-4 w-4 mr-1" />
@@ -330,6 +313,21 @@ const UltimosDominios = () => {
                   <Badge variant="outline" className="ml-2 bg-yellow-100 text-yellow-800 border-yellow-200">
                     Datos antiguos
                   </Badge>
+                )}
+                
+                {domainData?.meta?.source && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="ml-2 cursor-help">
+                          <Info className="h-4 w-4 text-blue-500" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Fuente de datos: {domainData.meta.source}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
               </div>
             )}
@@ -374,9 +372,23 @@ const UltimosDominios = () => {
                 placeholder="Buscar dominios..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 pr-10"
               />
+              {searchTerm && (
+                <button 
+                  onClick={clearSearch}
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                >
+                  ×
+                </button>
+              )}
             </div>
+            
+            {searchTerm && (
+              <p className="mt-2 text-sm text-gray-500">
+                Mostrando {filteredDomains.length} dominios que contienen "{searchTerm}"
+              </p>
+            )}
           </CardContent>
         </Card>
         
@@ -433,22 +445,39 @@ const UltimosDominios = () => {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end space-x-2">
-                            <Link 
-                              to={`/whois/${domain.d.replace(/\./g, '-')}/`}
-                              className="text-blue-600 hover:text-blue-800"
-                              title="Analizar dominio"
-                            >
-                              <Search className="h-4 w-4" />
-                            </Link>
-                            <a 
-                              href={`https://${domain.d}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-600 hover:text-gray-800"
-                              title="Visitar sitio"
-                            >
-                              <ExternalLink className="h-4 w-4" />
-                            </a>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Link 
+                                    to={`/whois/${domain.d.replace(/\./g, '-')}/`}
+                                    className="text-blue-600 hover:text-blue-800"
+                                  >
+                                    <Search className="h-4 w-4" />
+                                  </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Analizar dominio</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                            
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <a 
+                                    href={`https://${domain.d}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-600 hover:text-gray-800"
+                                  >
+                                    <ExternalLink className="h-4 w-4" />
+                                  </a>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Visitar sitio</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -458,45 +487,47 @@ const UltimosDominios = () => {
               </CardContent>
             </Card>
 
-            <Pagination className="mb-8">
-              <PaginationContent>
-                {currentPage > 1 && (
-                  <PaginationItem>
-                    <PaginationPrevious onClick={() => paginate(currentPage - 1)} />
-                  </PaginationItem>
-                )}
-                
-                {Array.from({ length: Math.min(5, totalPages) }).map((_, index) => {
-                  let pageNumber;
-                  if (totalPages <= 5) {
-                    pageNumber = index + 1;
-                  } else if (currentPage <= 3) {
-                    pageNumber = index + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNumber = totalPages - 4 + index;
-                  } else {
-                    pageNumber = currentPage - 2 + index;
-                  }
-                  
-                  return (
-                    <PaginationItem key={pageNumber}>
-                      <PaginationLink
-                        onClick={() => paginate(pageNumber)}
-                        isActive={currentPage === pageNumber}
-                      >
-                        {pageNumber}
-                      </PaginationLink>
+            {totalPages > 1 && (
+              <Pagination className="mb-8">
+                <PaginationContent>
+                  {currentPage > 1 && (
+                    <PaginationItem>
+                      <PaginationPrevious onClick={() => paginate(currentPage - 1)} />
                     </PaginationItem>
-                  );
-                })}
-                
-                {currentPage < totalPages && (
-                  <PaginationItem>
-                    <PaginationNext onClick={() => paginate(currentPage + 1)} />
-                  </PaginationItem>
-                )}
-              </PaginationContent>
-            </Pagination>
+                  )}
+                  
+                  {Array.from({ length: Math.min(5, totalPages) }).map((_, index) => {
+                    let pageNumber;
+                    if (totalPages <= 5) {
+                      pageNumber = index + 1;
+                    } else if (currentPage <= 3) {
+                      pageNumber = index + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNumber = totalPages - 4 + index;
+                    } else {
+                      pageNumber = currentPage - 2 + index;
+                    }
+                    
+                    return (
+                      <PaginationItem key={pageNumber}>
+                        <PaginationLink
+                          onClick={() => paginate(pageNumber)}
+                          isActive={currentPage === pageNumber}
+                        >
+                          {pageNumber}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  })}
+                  
+                  {currentPage < totalPages && (
+                    <PaginationItem>
+                      <PaginationNext onClick={() => paginate(currentPage + 1)} />
+                    </PaginationItem>
+                  )}
+                </PaginationContent>
+              </Pagination>
+            )}
           </>
         )}
         
