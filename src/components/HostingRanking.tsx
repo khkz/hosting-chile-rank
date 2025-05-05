@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import HostingCard from './HostingCard';
 import { Trophy, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,8 @@ const hostingData = [
     name: "HostingPlus.cl",
     logo: "/logo-hostingplus-new.svg",
     rating: 9.9,
+    speedRating: 9.8, // Added speed rating
+    priceRating: 9.5, // Added price rating
     features: [
       "Datacenter propio en Santiago (IP CL)",
       "LiteSpeed Enterprise + BitNinja + JetBackup",
@@ -31,6 +33,8 @@ const hostingData = [
     name: "EcoHosting.cl",
     logo: "/logo-ecohosting-new.svg",
     rating: 9.6,
+    speedRating: 9.6, // Added speed rating
+    priceRating: 9.7, // Added price rating
     features: [
       "Servidores en Chile, energía 100 % renovable",
       "MagicSpam y backups JetBackup incluidos",
@@ -50,6 +54,8 @@ const hostingData = [
     name: "HostGator.cl",
     logo: "/logo-hostgator.svg",
     rating: 9.2,
+    speedRating: 8.9, // Added speed rating
+    priceRating: 9.4, // Added price rating
     features: [
       "12 años de experiencia en Chile",
       "Panel de control personalizado",
@@ -68,6 +74,41 @@ const hostingData = [
 
 const HostingRanking = () => {
   const [sortCriteria, setSortCriteria] = useState('overall');
+  
+  // Sort hosting data based on selected criteria
+  const sortedHostingData = useMemo(() => {
+    let sortedData = [...hostingData];
+    
+    switch (sortCriteria) {
+      case 'speed':
+        sortedData.sort((a, b) => b.speedRating - a.speedRating);
+        break;
+      case 'price':
+        sortedData.sort((a, b) => b.priceRating - a.priceRating);
+        break;
+      default: // 'overall'
+        sortedData.sort((a, b) => b.rating - a.rating);
+        break;
+    }
+    
+    // Update position based on sort order
+    return sortedData.map((provider, index) => ({
+      ...provider,
+      sortPosition: index + 1
+    }));
+  }, [sortCriteria]);
+  
+  // Get rating label based on sort criteria
+  const getRatingLabel = (provider) => {
+    switch (sortCriteria) {
+      case 'speed':
+        return `${provider.speedRating}/10`;
+      case 'price':
+        return `${provider.priceRating}/10`;
+      default:
+        return `${provider.rating}/10`;
+    }
+  };
   
   return (
     <section id="ranking" className="py-16 container mx-auto px-4">
@@ -110,14 +151,14 @@ const HostingRanking = () => {
               </div>
               <div className="pt-10">
                 <HostingCard
-                  key={hostingData[1].position}
-                  position={hostingData[1].position}
-                  name={hostingData[1].name}
-                  logo={hostingData[1].logo}
-                  rating={hostingData[1].rating}
-                  features={hostingData[1].features}
-                  specs={hostingData[1].specs}
-                  url={hostingData[1].url}
+                  key={sortedHostingData[1].position}
+                  position={sortedHostingData[1].sortPosition}
+                  name={sortedHostingData[1].name}
+                  logo={sortedHostingData[1].logo}
+                  rating={parseFloat(getRatingLabel(sortedHostingData[1]))}
+                  features={sortedHostingData[1].features}
+                  specs={sortedHostingData[1].specs}
+                  url={sortedHostingData[1].url}
                   isPodium={true}
                 />
               </div>
@@ -134,23 +175,25 @@ const HostingRanking = () => {
                 </div>
               </div>
               <div className="absolute -top-3 right-5">
-                <div className="bg-[#EF233C] text-white text-xs px-3 py-1 rounded-full flex items-center">
-                  <Check size={12} className="mr-1" /> Recomendado
-                </div>
+                {sortedHostingData[0].isRecommended && (
+                  <div className="bg-[#EF233C] text-white text-xs px-3 py-1 rounded-full flex items-center">
+                    <Check size={12} className="mr-1" /> Recomendado
+                  </div>
+                )}
               </div>
               <div className="pt-10 transform md:scale-110">
                 <HostingCard
-                  key={hostingData[0].position}
-                  position={hostingData[0].position}
-                  name={hostingData[0].name}
-                  logo={hostingData[0].logo}
-                  rating={hostingData[0].rating}
-                  features={hostingData[0].features}
-                  specs={hostingData[0].specs}
-                  url={hostingData[0].url}
+                  key={sortedHostingData[0].position}
+                  position={sortedHostingData[0].sortPosition}
+                  name={sortedHostingData[0].name}
+                  logo={sortedHostingData[0].logo}
+                  rating={parseFloat(getRatingLabel(sortedHostingData[0]))}
+                  features={sortedHostingData[0].features}
+                  specs={sortedHostingData[0].specs}
+                  url={sortedHostingData[0].url}
                   isPodium={true}
                   isTopRated={true}
-                  isRecommended={hostingData[0].isRecommended}
+                  isRecommended={sortedHostingData[0].isRecommended}
                 />
               </div>
             </div>
@@ -164,14 +207,14 @@ const HostingRanking = () => {
               </div>
               <div className="pt-10">
                 <HostingCard
-                  key={hostingData[2].position}
-                  position={hostingData[2].position}
-                  name={hostingData[2].name}
-                  logo={hostingData[2].logo}
-                  rating={hostingData[2].rating}
-                  features={hostingData[2].features}
-                  specs={hostingData[2].specs}
-                  url={hostingData[2].url}
+                  key={sortedHostingData[2].position}
+                  position={sortedHostingData[2].sortPosition}
+                  name={sortedHostingData[2].name}
+                  logo={sortedHostingData[2].logo}
+                  rating={parseFloat(getRatingLabel(sortedHostingData[2]))}
+                  features={sortedHostingData[2].features}
+                  specs={sortedHostingData[2].specs}
+                  url={sortedHostingData[2].url}
                   isPodium={true}
                 />
               </div>
