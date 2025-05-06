@@ -1,54 +1,47 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
-import path from 'node:path';
 import providers from './providers.json' assert { type: 'json' };
 
 const ROOT   = 'https://eligetuhosting.cl';
 const NOW    = new Date().toISOString().split('T')[0];   // YYYY-MM-DD
-const PRIOR  = '0.7';                                    // prioridad base
 
-// Carga últimos dominios (por si los incluyes)
-const domains = JSON.parse(
-  readFileSync('public/data/latest.json', 'utf8')
-);
-
-// ----­ helpers -------------------------------------------------------------
-
-const urlTag = (loc, priority = PRIOR) => `
+/* ---------- helpers ---------------------------------------------------- */
+const urlTag = (loc, prio = '0.7') => `
   <url>
     <loc>${loc}</loc>
     <lastmod>${NOW}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>${priority}</priority>
+    <priority>${prio}</priority>
   </url>`;
 
-// ----­ arma el XML ---------------------------------------------------------
-
+/* ---------- rutas estáticas (home, ranking, etc) ----------------------- */
 const staticUrls = [
-  '/', '/ranking', '/comparativa/', '/cotiza-hosting',
-  '/ultimos-dominios', '/guia-elegir-hosting', '/contacto', '/faq'
+  '/', '/ranking', '/comparativa', '/cotiza-hosting',
+  '/ultimos-dominios', '/contacto', '/faq'
 ].map(p => urlTag(`${ROOT}${p}`, '0.9')).join('');
 
+/* ---------- páginas “VS” de proveedores -------------------------------- */
 const providerUrls = providers
   .map(slug => urlTag(`${ROOT}/comparativa/${slug}`))
   .join('');
 
-const domainUrls = domains    // por ejemplo, los 400 más recientes
-  .slice(0, 400)
+/* ---------- últimos dominios (.whois/) --------------------------------- */
+let raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
+const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);     // <-- aquí el cambio
+const domainUrls = domainsArr
+  .slice(0, 400)                                                      // 400 más recientes
   .map(({ d }) => urlTag(`${ROOT}/whois/${d}`, '0.6'))
   .join('');
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>` +      // ⚠ sin \n delante
-`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+/* ---------- compone el XML -------------------------------------------- */
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticUrls}
 ${providerUrls}
 ${domainUrls}
-</urlset>`;
+</urlset>`.trimStart();
 
-// ----­ guarda --------------------------------------------------------------
-
+/* ---------- escribe ---------------------------------------------------- */
 await fs.mkdir('public', { recursive: true });
-await fs.writeFile('public/sitemap.xml', xml.trimStart(), 'utf8');
-
-console.log('✅  Sitemap regenerado -> public/sitemap.xml');
-
+await fs.writeFile('public/sitemap.xml', sitemap, 'utf8');
+console.log('✅  Sitemap regenerado (static + providers + whois)');
