@@ -1,0 +1,33 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Últimos Dominios Registrados - EligeTuHosting.cl</title>
+    <description>Lista de los últimos dominios .cl registrados en Chile</description>
+    <link>https://eligetuhosting.cl</link>
+    <atom:link href="https://eligetuhosting.cl/feeds/latest-domains.xml" rel="self" type="application/rss+xml" />
+    <language>es-cl</language>
+    <lastBuildDate>Tue, 06 May 2025 12:00:00 GMT</lastBuildDate>
+    <item>
+      <title>example1.cl</title>
+      <link>https://eligetuhosting.cl/whois/example1.cl</link>
+      <description>Nuevo dominio example1.cl registrado recientemente</description>
+      <pubDate>Tue, 06 May 2025 10:00:00 GMT</pubDate>
+      <guid>example1.cl</guid>
+    </item>
+    <item>
+      <title>example2.cl</title>
+      <link>https://eligetuhosting.cl/whois/example2.cl</link>
+      <description>Nuevo dominio example2.cl registrado recientemente</description>
+      <pubDate>Tue, 06 May 2025 09:30:00 GMT</pubDate>
+      <guid>example2.cl</guid>
+    </item>
+    <item>
+      <title>example3.cl</title>
+      <link>https://eligetuhosting.cl/whois/example3.cl</link>
+      <description>Nuevo dominio example3.cl registrado recientemente</description>
+      <pubDate>Tue, 06 May 2025 09:00:00 GMT</pubDate>
+      <guid>example3.cl</guid>
+    </item>
+  </channel>
+</rss>

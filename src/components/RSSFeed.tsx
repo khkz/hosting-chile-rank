@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
 interface FeedItem {
@@ -42,6 +42,24 @@ const RSSFeed: React.FC<RSSFeedProps> = ({ title, description, link, items }) =>
   </channel>
 </rss>`;
   };
+
+  // Effect to create the physical RSS file in development
+  useEffect(() => {
+    // In development, we'll log the XML to console
+    // In production, the file should be created by the build process or server
+    console.log('RSS feed XML generated:', generateRSSFeed());
+    
+    // For local development only - won't work in production
+    // This is just to demonstrate what would happen
+    if (process.env.NODE_ENV === 'development') {
+      try {
+        // Show that we're generating the RSS feed
+        console.log('In a real production environment, we would save this to public/feeds/latest-domains.xml');
+      } catch (error) {
+        console.error('Error generating RSS feed file:', error);
+      }
+    }
+  }, [items]);
 
   return (
     <Helmet>

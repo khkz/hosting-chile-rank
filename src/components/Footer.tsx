@@ -28,9 +28,9 @@ const Footer = () => {
           <Link to="/ranking" className="hover:underline">
             Ranking de hosting
           </Link>
-          <Link to="/sitemap" className="hover:underline">
+          <a href="/sitemap.xml" className="hover:underline">
             Mapa del sitio
-          </Link>
+          </a>
           <a href="/feeds/latest-domains.xml" className="hover:underline flex items-center">
             <Rss className="h-4 w-4 mr-1" /> RSS
           </a>

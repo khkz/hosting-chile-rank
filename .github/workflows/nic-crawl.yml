@@ -1,3 +1,4 @@
+
 name: NIC crawl
 
 on:
@@ -21,11 +22,50 @@ jobs:
       - name: Marcar el proyecto como ES Modules      # ← nuevo
         run: npm pkg set type=module
 
-      - name: Crear carpeta data
-        run: mkdir -p public/data
+      - name: Crear carpeta data y feeds
+        run: |
+          mkdir -p public/data
+          mkdir -p public/feeds
 
       - name: Ejecutar scraper NIC.cl
         run: node scripts/nic-to-json.mjs
+
+      - name: Generar RSS feed
+        run: |
+          node -e "
+          const fs = require('fs');
+          const data = require('./public/data/latest.json');
+          
+          // Transform the domains data to RSS items
+          const items = data.domains.slice(0, 20).map(domain => {
+            return \`
+            <item>
+              <title>\${domain.name}</title>
+              <link>https://eligetuhosting.cl/whois/\${domain.name}</link>
+              <description>Nuevo dominio \${domain.name} registrado \${domain.date}</description>
+              <pubDate>\${new Date(domain.date).toUTCString()}</pubDate>
+              <guid>\${domain.name}</guid>
+            </item>\`;
+          }).join('');
+          
+          // Generate the full RSS XML
+          const rssXml = \`<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+          <rss version=\\"2.0\\" xmlns:atom=\\"http://www.w3.org/2005/Atom\\">
+            <channel>
+              <title>Últimos Dominios Registrados - EligeTuHosting.cl</title>
+              <description>Lista de los últimos dominios .cl registrados en Chile</description>
+              <link>https://eligetuhosting.cl</link>
+              <atom:link href=\\"https://eligetuhosting.cl/feeds/latest-domains.xml\\" rel=\\"self\\" type=\\"application/rss+xml\\" />
+              <language>es-cl</language>
+              <lastBuildDate>\${new Date().toUTCString()}</lastBuildDate>
+              \${items}
+            </channel>
+          </rss>\`;
+          
+          // Write the RSS feed to file
+          fs.writeFileSync('./public/feeds/latest-domains.xml', rssXml);
+          console.log('RSS feed generated successfully');
+          "
 
       - name: Diff rápido
         run: |
@@ -37,7 +77,7 @@ jobs:
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
-          git add public/data/latest.json
+          git add public/data/latest.json public/feeds/latest-domains.xml
           if ! git diff --cached --quiet; then
             git commit -m "chore(domains): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             git push
@@ -45,4 +85,3 @@ jobs:
           else
             echo "ℹ️  Sin cambios; no se hace push."
           fi
-
