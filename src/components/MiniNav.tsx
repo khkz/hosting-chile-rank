@@ -29,12 +29,8 @@ const MiniNav = () => {
   }, []);
   return <>
       <nav className={`hidden md:flex flex-col gap-3 fixed right-6 top-1/3 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-        <a href="#ranking" className={`px-3 py-1 rounded-full text-sm ${activeSection === 'ranking' ? 'bg-[#EF233C] text-white' : 'bg-white text-[#2B2D42]'} shadow-md`}>
-          Ranking
-        </a>
-        <a href="#faq" className={`px-3 py-1 rounded-full text-sm ${activeSection === 'faq' ? 'bg-[#EF233C] text-white' : 'bg-white text-[#2B2D42]'} shadow-md`}>
-          FAQ
-        </a>
+        
+        
         
       </nav>
       

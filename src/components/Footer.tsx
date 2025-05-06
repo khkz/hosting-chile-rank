@@ -11,24 +11,7 @@ const Footer = () => {
         </p>
         <p>Puntajes basados en métricas públicas y pruebas internas.</p>
         
-        <div className="flex flex-wrap justify-center gap-4 mt-4">
-          
-          <Link to="/contacto" className="hover:underline">
-            Contacto
-          </Link>
-          <Link to="/ultimos-dominios" className="hover:underline">
-            Últimos dominios
-          </Link>
-          <Link to="/ranking" className="hover:underline">
-            Ranking de hosting
-          </Link>
-          <a href="/sitemap.xml" className="hover:underline">
-            Mapa del sitio
-          </a>
-          <a href="/feeds/latest-domains.xml" className="hover:underline flex items-center">
-            <Rss className="h-4 w-4 mr-1" /> RSS
-          </a>
-        </div>
+        
         
         {/* Recent Domain Searches */}
         <RecentSearches />
