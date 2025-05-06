@@ -1,60 +1,56 @@
 // scripts/generate-sitemap.mjs
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+// Genera public/sitemap.xml con:
+//   • 800 dominios más recientes de latest.json
+//   • 100 proveedores (providers.json)
 
-const SITE = 'https://eligetuhosting.cl';           // dominio raíz
-const OUT  = resolve('public', 'sitemap.xml');      // ruta destino
+import { readFileSync, writeFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-// lee los últimos dominios que ya genera nic-to-json.mjs
-const dataPath = resolve('public', 'data', 'latest.json');
-const domains  = JSON.parse(readFileSync(dataPath, 'utf8'));
+// ─── Utiles de ruta ───────────────────────────────────────────────────────────
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = dirname(__filename);
+const resolve    = (...p) => join(__dirname, ...p);
 
-// lista base de URL fijas que siempre quieres indexar
-const staticUrls = [
-  '/',
-  '/ranking',
-  '/comparativa',
-  '/ultimos-dominios',
-  '/cotiza-hosting',
-  // añade aquí otras rutas internas…
-];
+// ─── Cargar datos ─────────────────────────────────────────────────────────────
+const rawLatest   = JSON.parse(readFileSync(resolve('../public/data/latest.json'), 'utf8'));
+const providers   = JSON.parse(readFileSync(resolve('./providers.json'), 'utf8'));
 
-// Helper para generar cada <url>
-const urlTag = (loc, lastmod = new Date()) => `
+// latest.json puede ser:
+//  A) [ { d, date }, … ]
+//  B) { domains: [ … ] }
+const domainsArr = Array.isArray(rawLatest)           ? rawLatest :
+                   Array.isArray(rawLatest.domains)   ? rawLatest.domains :
+                   [];
+
+const recent400  = domainsArr.slice(0, 800);           // máx 800
+
+// ─── Construir nodos <url> ────────────────────────────────────────────────────
+const url = (loc, lastmod = new Date().toISOString()) => `
   <url>
-    <loc>${SITE}${loc}</loc>
-    <lastmod>${lastmod.toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>`;
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>`.trim();
 
-// 1) URLs fijas
-let urlsXml = staticUrls.map(p => urlTag(p)).join('');
+const domainUrls = recent400.map(({ d, date }) =>
+  url(`https://eligetuhosting.cl/whois/${d}`, new Date(date).toISOString())
+).join('\n');
 
-// 2) páginas “/whois/:slug” de los últimos dominios
-urlsXml += domains
-  .slice(0, 400)               // los 400 más recientes
-  .map(({ d, date }) => urlTag(`/whois/${d}`, new Date(date)))
-  .join('');
+const providerUrls = providers.map(p =>
+  url(`https://eligetuhosting.cl/comparativa/${p}`)
+).join('\n');
 
-// 3) (opcional) páginas “/vs/:competidor-vs-hostingplus”
-import providers from './providers.json' assert { type: 'json' }; // lista de 50 hostings
-urlsXml += providers
-  .map(name => urlTag(`/comparativa/${name}-vs-hostingplus`))
-  .join('');
+// ─── Sitemap completo ─────────────────────────────────────────────────────────
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${domainUrls}
+${providerUrls}
+</urlset>
+`.trim();
 
-// Ensambla el XML completo (sin salto de línea antes de la cabecera)
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-${urlsXml}
-</urlset>`;
-
-// asegúrate de que public/ exista (GitHub Runner lo tiene, pero para local)
-if (!existsSync('public')) mkdirSync('public', { recursive: true });
-
-writeFileSync(OUT, xml);
-console.log('✅  sitemap.xml generado:', OUT);
+// ─── Guardar ──────────────────────────────────────────────────────────────────
+writeFileSync(resolve('../public/sitemap.xml'), sitemap);
+console.log('✅  public/sitemap.xml actualizado con',
+            recent400.length, 'dominios y', providers.length, 'proveedores.');
