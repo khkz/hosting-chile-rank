@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -76,15 +75,17 @@ const WhoisDomain = () => {
       const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
       const nameservers = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data) : [];
       
-      // Determine if it's a Chilean IP (improved check)
-      const ip_chile = ip.startsWith('200.27') || 
-                       ip.startsWith('200.6') || 
-                       ip.startsWith('190.98') || 
-                       ip.startsWith('200.14') || 
-                       ip.startsWith('200.29') ||
-                       ip.startsWith('200.54') ||
-                       ip.startsWith('190.196') ||
-                       ip.startsWith('186.67');
+      // Determine if it's a Chilean IP (improved and expanded check)
+      const chileanIPRanges = [
+        '200.27', '200.6', '190.98', '200.14', '200.29', '200.54', '190.196', '186.67',
+        '190.95', '190.114', '190.151', '190.160', '190.121', '190.110', '190.101', '190.82',
+        '186.64', '186.10', '191.98', '191.101', '191.102', '152.139', '152.172', '152.231',
+        '152.74', '181.43', '181.72', '181.162', '181.199', '186.9', '186.11', '186.20',
+        '186.78', '201.214', '201.215', '201.220', '201.221', '201.222', '201.241', '201.239',
+        '179.0', '179.1', '179.2', '179.3', '179.4', '179.5', '179.6'
+      ];
+      
+      const ip_chile = chileanIPRanges.some(range => ip.startsWith(range));
       
       // Try to determine provider from nameservers (improved)
       let provider = 'Desconocido';
