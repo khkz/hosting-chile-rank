@@ -31,6 +31,9 @@ jobs:
         run: node scripts/nic-to-json.mjs
 
       - name: Generar RSS feed
+        run: node scripts/generate-rss.mjs 
+
+      - name: Generar RSS feed
         run: |
           node -e "
           const fs = require('fs');
