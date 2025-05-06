@@ -84,21 +84,7 @@ const UltimasBusquedas = () => {
       
       
       {/* Recommendation section */}
-      <Card className="bg-white shadow-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-medium">Servicios recomendados</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-            {servicios.map((servicio, index) => <Link key={index} to={servicio.path} className="flex flex-col items-center gap-1 bg-white p-3 rounded-lg border border-gray-100 hover:shadow-md transition-shadow w-[100px]">
-                <div className="bg-gray-50 p-2 rounded-full">
-                  {servicio.icon}
-                </div>
-                <span className="text-xs font-medium text-center">{servicio.title}</span>
-              </Link>)}
-          </div>
-        </CardContent>
-      </Card>
+      
     </section>;
 };
 export default UltimasBusquedas;
