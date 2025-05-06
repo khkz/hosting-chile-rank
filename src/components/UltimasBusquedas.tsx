@@ -61,20 +61,8 @@ const UltimasBusquedas = () => {
   return <section className="mb-8">
       {/* Recent searches/domains card */}
       <Card className="bg-white shadow-sm mb-4">
-        <CardHeader className="pb-2 pt-4">
-          <CardTitle className="text-xl font-semibold flex items-center">
-            <History className="h-5 w-5 mr-2 text-[#EF233C]" />
-            Búsquedas recientes
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <div className="flex flex-wrap gap-2">
-            {domains.map((domain, index) => <Link key={index} to={`/whois/${domain.replace(/\./g, '-')}/`} className="text-sm px-3 py-1 bg-[#EDF2F4] hover:bg-gray-200 rounded-full text-[#2B2D42] transition-colors flex items-center">
-                <Search className="h-4 w-4 mr-1 text-gray-500" />
-                {domain}
-              </Link>)}
-          </div>
-        </CardContent>
+        
+        
       </Card>
       
       {/* Recommendation section */}
