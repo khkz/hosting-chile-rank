@@ -36,6 +36,18 @@ jobs:
       - name: Generar sitemap
         run: node scripts/generate-sitemap.mjs
 
+      - name: Commit y push si cambia
+        run: |
+          git config user.name  "NIC Bot"
+          git config user.email "bot@eligetuhosting.cl"
+          git add public/data/latest.json public/feed/latest-domains.xml public/sitemap.xml
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update feeds & sitemap $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            git push
+          else
+            echo "Sin cambios."
+          fi
+
       - name: Diff rápido
         run: |
           echo "HEAD:"
