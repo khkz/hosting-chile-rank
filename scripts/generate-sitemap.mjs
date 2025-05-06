@@ -1,3 +1,4 @@
+
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import providers from './providers.json' assert { type: 'json' };
@@ -20,8 +21,14 @@ const staticUrls = [
   '/ultimos-dominios', '/contacto', '/faq'
 ].map(p => urlTag(`${ROOT}${p}`, '0.9')).join('');
 
-/* ---------- páginas “VS” de proveedores -------------------------------- */
+/* ---------- páginas "VS" de proveedores -------------------------------- */
 const providerUrls = providers
+  .filter(slug => slug !== 'hostingplus') // Exclude hostingplus from comparison with itself
+  .map(slug => urlTag(`${ROOT}/comparativa/hostingplus-vs/${slug}`))
+  .join('');
+
+/* ---------- páginas "comparativa" de proveedores ----------------------- */
+const comparativeUrls = providers
   .map(slug => urlTag(`${ROOT}/comparativa/${slug}`))
   .join('');
 
@@ -38,10 +45,11 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticUrls}
 ${providerUrls}
+${comparativeUrls}
 ${domainUrls}
 </urlset>`.trimStart();
 
 /* ---------- escribe ---------------------------------------------------- */
 await fs.mkdir('public', { recursive: true });
 await fs.writeFile('public/sitemap.xml', sitemap, 'utf8');
-console.log('✅  Sitemap regenerado (static + providers + whois)');
+console.log('✅  Sitemap regenerado (static + providers + vs-pages + whois)');

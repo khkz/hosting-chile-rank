@@ -12,6 +12,7 @@ import GuiaElegirHosting from './pages/GuiaElegirHosting';
 import GuiaElegirVPS from './pages/GuiaElegirVPS';
 import GuiaElegirServidorDedicado from './pages/GuiaElegirServidorDedicado';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
+import HostingVsPage from './pages/HostingVsPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<Index />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/comparativa" element={<Comparativa />} />
+          <Route path="/comparativa/hostingplus-vs/:slug" element={<HostingVsPage />} />
           <Route path="/cotiza-hosting" element={<CotizaHosting />} />
           <Route path="/whois/:slug" element={<WhoisDomain />} />
           <Route path="/ultimos-dominios" element={<UltimosDominios />} />
