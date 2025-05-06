@@ -12,10 +12,6 @@ import GuiaElegirHosting from './pages/GuiaElegirHosting';
 import GuiaElegirVPS from './pages/GuiaElegirVPS';
 import GuiaElegirServidorDedicado from './pages/GuiaElegirServidorDedicado';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
-import HostingVsPage from './pages/HostingVsPage';
-import Catalogo from './pages/Catalogo';
-import CatalogoDetalle from './pages/CatalogoDetalle';
-import Resena from './pages/Resena';
 
 function App() {
   return (
@@ -26,8 +22,6 @@ function App() {
           <Route path="/" element={<Index />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/comparativa" element={<Comparativa />} />
-          <Route path="/comparativa/hostingplus-vs/:slug" element={<HostingVsPage />} />
-          <Route path="/comparativa/:slug" element={<CatalogoDetalle />} />
           <Route path="/cotiza-hosting" element={<CotizaHosting />} />
           <Route path="/whois/:slug" element={<WhoisDomain />} />
           <Route path="/ultimos-dominios" element={<UltimosDominios />} />
@@ -35,9 +29,6 @@ function App() {
           <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />
           <Route path="/guia-elegir-servidor-dedicado" element={<GuiaElegirServidorDedicado />} />
           <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
-          <Route path="/catalogo" element={<Catalogo />} />
-          <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
-          <Route path="/resena/:slug" element={<Resena />} />
         </Routes>
       </Router>
     </>

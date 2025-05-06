@@ -87,11 +87,6 @@ const CatalogoPage = () => {
                       Ver Detalles
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="sm" className="w-full sm:w-auto">
-                    <Link to={`/comparativa/${company.id}`}>
-                      Comparativa
-                    </Link>
-                  </Button>
                   <Button asChild variant="outline" size="sm" className="w-full sm:w-auto gap-1">
                     <a href={company.website} target="_blank" rel="noopener noreferrer">
                       Sitio Web <ExternalLink size={14} />

@@ -1,9 +1,6 @@
-
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import providers from './providers.json' assert { type: 'json' };
-// Importamos directamente los datos de las empresas de hosting
-import { hostingCompanies } from '../src/data/hostingCompanies.js';
 
 const ROOT   = 'https://eligetuhosting.cl';
 const NOW    = new Date().toISOString().split('T')[0];   // YYYY-MM-DD
@@ -20,35 +17,17 @@ const urlTag = (loc, prio = '0.7') => `
 /* ---------- rutas estáticas (home, ranking, etc) ----------------------- */
 const staticUrls = [
   '/', '/ranking', '/comparativa', '/cotiza-hosting',
-  '/ultimos-dominios', '/contacto', '/faq', '/catalogo'
+  '/ultimos-dominios', '/contacto', '/faq'
 ].map(p => urlTag(`${ROOT}${p}`, '0.9')).join('');
 
-/* ---------- páginas "VS" de proveedores -------------------------------- */
-// Ahora usamos las claves del objeto hostingCompanies en lugar de providers.json
-const availableProviders = Object.keys(hostingCompanies);
-
-const providerUrls = availableProviders
-  .filter(slug => slug !== 'hostingplus') // Exclude hostingplus from comparison with itself
-  .map(slug => urlTag(`${ROOT}/comparativa/hostingplus-vs/${slug}`))
-  .join('');
-
-/* ---------- páginas "comparativa" y "catalogo" de proveedores ---------- */
-const comparativeUrls = availableProviders
+/* ---------- páginas “VS” de proveedores -------------------------------- */
+const providerUrls = providers
   .map(slug => urlTag(`${ROOT}/comparativa/${slug}`))
-  .join('');
-
-const catalogUrls = availableProviders
-  .map(slug => urlTag(`${ROOT}/catalogo/${slug}`))
-  .join('');
-
-/* ---------- páginas "reseña" de proveedores ---------------------------- */
-const resenaUrls = availableProviders
-  .map(slug => urlTag(`${ROOT}/resena/${slug}`))
   .join('');
 
 /* ---------- últimos dominios (.whois/) --------------------------------- */
 let raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
-const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
+const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);     // <-- aquí el cambio
 const domainUrls = domainsArr
   .slice(0, 400)                                                      // 400 más recientes
   .map(({ d }) => urlTag(`${ROOT}/whois/${d}`, '0.6'))
@@ -59,13 +38,10 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticUrls}
 ${providerUrls}
-${comparativeUrls}
-${catalogUrls}
-${resenaUrls}
 ${domainUrls}
 </urlset>`.trimStart();
 
 /* ---------- escribe ---------------------------------------------------- */
 await fs.mkdir('public', { recursive: true });
 await fs.writeFile('public/sitemap.xml', sitemap, 'utf8');
-console.log('✅  Sitemap regenerado (static + providers con datos completos + vs-pages + whois + catalog + resena)');
+console.log('✅  Sitemap regenerado (static + providers + whois)');
