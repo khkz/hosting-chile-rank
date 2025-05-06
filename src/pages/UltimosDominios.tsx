@@ -16,54 +16,52 @@ import UltimasBusquedas from '@/components/UltimasBusquedas';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 
 // Fallback domains for when API is not available
-const fallbackDomains = [
-  {
-    d: "ejemplo-dominio-cl.cl",
-    date: "2025-05-05T12:00:00Z"
-  }, {
-    d: "nuevodominio2025.cl",
-    date: "2025-05-05T11:30:00Z"
-  }, {
-    d: "tiendaonlinechile.cl",
-    date: "2025-05-04T15:45:00Z"
-  }, {
-    d: "desarrolloweb-cl.cl",
-    date: "2025-05-04T14:20:00Z"
-  }, {
-    d: "hostingchileno.cl",
-    date: "2025-05-04T10:15:00Z"
-  }, {
-    d: "nuevositioweb.cl",
-    date: "2025-05-03T16:30:00Z"
-  }, {
-    d: "misitiopersonal.cl",
-    date: "2025-05-03T13:45:00Z"
-  }, {
-    d: "tiendaonline-cl.cl",
-    date: "2025-05-03T09:20:00Z"
-  }, {
-    d: "consultoradigital.cl",
-    date: "2025-05-02T18:10:00Z"
-  }, {
-    d: "agenciamarketing.cl",
-    date: "2025-05-02T14:30:00Z"
-  }, {
-    d: "emprendimientochile.cl",
-    date: "2025-05-01T17:00:00Z"
-  }, {
-    d: "startupchilena.cl",
-    date: "2025-05-01T12:45:00Z"
-  }, {
-    d: "tecnologiaweb.cl",
-    date: "2025-05-01T09:15:00Z"
-  }, {
-    d: "serviciosempresa.cl",
-    date: "2025-04-30T16:20:00Z"
-  }, {
-    d: "productosdigitales.cl",
-    date: "2025-04-30T11:30:00Z"
-  }
-];
+const fallbackDomains = [{
+  d: "ejemplo-dominio-cl.cl",
+  date: "2025-05-05T12:00:00Z"
+}, {
+  d: "nuevodominio2025.cl",
+  date: "2025-05-05T11:30:00Z"
+}, {
+  d: "tiendaonlinechile.cl",
+  date: "2025-05-04T15:45:00Z"
+}, {
+  d: "desarrolloweb-cl.cl",
+  date: "2025-05-04T14:20:00Z"
+}, {
+  d: "hostingchileno.cl",
+  date: "2025-05-04T10:15:00Z"
+}, {
+  d: "nuevositioweb.cl",
+  date: "2025-05-03T16:30:00Z"
+}, {
+  d: "misitiopersonal.cl",
+  date: "2025-05-03T13:45:00Z"
+}, {
+  d: "tiendaonline-cl.cl",
+  date: "2025-05-03T09:20:00Z"
+}, {
+  d: "consultoradigital.cl",
+  date: "2025-05-02T18:10:00Z"
+}, {
+  d: "agenciamarketing.cl",
+  date: "2025-05-02T14:30:00Z"
+}, {
+  d: "emprendimientochile.cl",
+  date: "2025-05-01T17:00:00Z"
+}, {
+  d: "startupchilena.cl",
+  date: "2025-05-01T12:45:00Z"
+}, {
+  d: "tecnologiaweb.cl",
+  date: "2025-05-01T09:15:00Z"
+}, {
+  d: "serviciosempresa.cl",
+  date: "2025-04-30T16:20:00Z"
+}, {
+  d: "productosdigitales.cl",
+  date: "2025-04-30T11:30:00Z"
+}];
 
 // Type definition for domain data
 interface Domain {
@@ -74,7 +72,6 @@ interface ApiResponse {
   updated: string;
   domains: Domain[];
 }
-
 const UltimosDominios = () => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,7 +101,6 @@ const UltimosDominios = () => {
       return dateString;
     }
   };
-
   const formatTableDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -124,7 +120,6 @@ const UltimosDominios = () => {
   // Generate structured data for Schema.org
   const generateSchemaData = () => {
     if (domains.length === 0 || isLoading) return null;
-    
     const listItems = filteredDomains.slice(0, 50).map((domain, index) => ({
       "@type": "ListItem",
       "position": index + 1,
@@ -135,7 +130,6 @@ const UltimosDominios = () => {
         "dateCreated": domain.date
       }
     }));
-    
     const schemaData = {
       "@context": "https://schema.org",
       "@type": "ItemList",
@@ -143,7 +137,6 @@ const UltimosDominios = () => {
       "numberOfItems": listItems.length,
       "itemListOrder": "https://schema.org/ItemListOrderDescending"
     };
-    
     return JSON.stringify(schemaData);
   };
 
@@ -178,11 +171,9 @@ const UltimosDominios = () => {
       // Add timestamp to URL to avoid cache
       const timestamp = Date.now();
       const response = await fetch(`${githubRawUrl}?ts=${timestamp}`);
-      
       if (!response.ok) {
         throw new Error(`No se pudieron cargar los dominios desde GitHub: ${response.status} ${response.statusText}`);
       }
-      
       const data: ApiResponse = await response.json();
       if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
         // Sort domains by date in descending order
@@ -229,33 +220,29 @@ const UltimosDominios = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Icons for recommendations
-  const servicios = [
-    {
-      icon: <House className="h-5 w-5 text-blue-600" />,
-      title: "Hosting",
-      path: "/guia-elegir-hosting"
-    }, {
-      icon: <Cpu className="h-5 w-5 text-green-600" />,
-      title: "VPS",
-      path: "/guia-elegir-vps"
-    }, {
-      icon: <Server className="h-5 w-5 text-red-600" />,
-      title: "Dedicado",
-      path: "/guia-elegir-servidor-dedicado"
-    }, {
-      icon: <Shield className="h-5 w-5 text-purple-600" />,
-      title: "SSL",
-      path: "/guia-elegir-ssl"
-    }
-  ];
+  const servicios = [{
+    icon: <House className="h-5 w-5 text-blue-600" />,
+    title: "Hosting",
+    path: "/guia-elegir-hosting"
+  }, {
+    icon: <Cpu className="h-5 w-5 text-green-600" />,
+    title: "VPS",
+    path: "/guia-elegir-vps"
+  }, {
+    icon: <Server className="h-5 w-5 text-red-600" />,
+    title: "Dedicado",
+    path: "/guia-elegir-servidor-dedicado"
+  }, {
+    icon: <Shield className="h-5 w-5 text-purple-600" />,
+    title: "SSL",
+    path: "/guia-elegir-ssl"
+  }];
 
   // Prepare breadcrumbs for this page
-  const breadcrumbItems = [
-    { label: 'Últimos Dominios' }
-  ];
-
-  return (
-    <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
+  const breadcrumbItems = [{
+    label: 'Últimos Dominios'
+  }];
+  return <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
       <Helmet>
         <title>Últimos dominios registrados en NIC.cl — eligetuhosting.cl</title>
         <meta name="description" content="Monitoreo en tiempo real de los dominios .cl más recientes registrados en NIC.cl. Consulta los últimos sitios web creados en Chile." />
@@ -425,19 +412,17 @@ const UltimosDominios = () => {
             </Pagination>
           </>}
         
-        <div className="text-center mt-12 py-6 bg-white rounded-lg shadow-sm">
+        <div className="text-center mt-12 py-6 rounded-lg shadow-sm bg-zinc-50 mx-0">
           <p className="text-gray-600 mb-2">
             ¿Quieres registrar tu propio dominio .cl?
           </p>
           <Button asChild>
-            <a href="https://www.hostingplus.cl/dominios" target="_blank" rel="noopener noreferrer" className="mt-2">Registrar un dominio</a>
+            <a href="https://www.hostingplus.cl/dominios" target="_blank" rel="noopener noreferrer" className="mt-2 mx-0 my-0 py-0 px-[37px] text-red-600">Registrar un dominio</a>
           </Button>
         </div>
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default UltimosDominios;
