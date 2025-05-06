@@ -1,56 +1,54 @@
-// scripts/generate-sitemap.mjs
-// Genera public/sitemap.xml con:
-//   • 800 dominios más recientes de latest.json
-//   • 100 proveedores (providers.json)
+import fs from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import providers from './providers.json' assert { type: 'json' };
 
-import { readFileSync, writeFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+const ROOT   = 'https://eligetuhosting.cl';
+const NOW    = new Date().toISOString().split('T')[0];   // YYYY-MM-DD
+const PRIOR  = '0.7';                                    // prioridad base
 
-// ─── Utiles de ruta ───────────────────────────────────────────────────────────
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = dirname(__filename);
-const resolve    = (...p) => join(__dirname, ...p);
+// Carga últimos dominios (por si los incluyes)
+const domains = JSON.parse(
+  readFileSync('public/data/latest.json', 'utf8')
+);
 
-// ─── Cargar datos ─────────────────────────────────────────────────────────────
-const rawLatest   = JSON.parse(readFileSync(resolve('../public/data/latest.json'), 'utf8'));
-const providers   = JSON.parse(readFileSync(resolve('./providers.json'), 'utf8'));
+// ----­ helpers -------------------------------------------------------------
 
-// latest.json puede ser:
-//  A) [ { d, date }, … ]
-//  B) { domains: [ … ] }
-const domainsArr = Array.isArray(rawLatest)           ? rawLatest :
-                   Array.isArray(rawLatest.domains)   ? rawLatest.domains :
-                   [];
-
-const recent400  = domainsArr.slice(0, 800);           // máx 800
-
-// ─── Construir nodos <url> ────────────────────────────────────────────────────
-const url = (loc, lastmod = new Date().toISOString()) => `
+const urlTag = (loc, priority = PRIOR) => `
   <url>
     <loc>${loc}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <lastmod>${NOW}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>`.trim();
+    <priority>${priority}</priority>
+  </url>`;
 
-const domainUrls = recent400.map(({ d, date }) =>
-  url(`https://eligetuhosting.cl/whois/${d}`, new Date(date).toISOString())
-).join('\n');
+// ----­ arma el XML ---------------------------------------------------------
 
-const providerUrls = providers.map(p =>
-  url(`https://eligetuhosting.cl/comparativa/${p}`)
-).join('\n');
+const staticUrls = [
+  '/', '/ranking', '/comparativa/', '/cotiza-hosting',
+  '/ultimos-dominios', '/guia-elegir-hosting', '/contacto', '/faq'
+].map(p => urlTag(`${ROOT}${p}`, '0.9')).join('');
 
-// ─── Sitemap completo ─────────────────────────────────────────────────────────
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${domainUrls}
+const providerUrls = providers
+  .map(slug => urlTag(`${ROOT}/comparativa/${slug}`))
+  .join('');
+
+const domainUrls = domains    // por ejemplo, los 400 más recientes
+  .slice(0, 400)
+  .map(({ d }) => urlTag(`${ROOT}/whois/${d}`, '0.6'))
+  .join('');
+
+const xml = `<?xml version="1.0" encoding="UTF-8"?>` +      // ⚠ sin \n delante
+`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${staticUrls}
 ${providerUrls}
-</urlset>
-`.trim();
+${domainUrls}
+</urlset>`;
 
-// ─── Guardar ──────────────────────────────────────────────────────────────────
-writeFileSync(resolve('../public/sitemap.xml'), sitemap);
-console.log('✅  public/sitemap.xml actualizado con',
-            recent400.length, 'dominios y', providers.length, 'proveedores.');
+// ----­ guarda --------------------------------------------------------------
+
+await fs.mkdir('public', { recursive: true });
+await fs.writeFile('public/sitemap.xml', xml.trimStart(), 'utf8');
+
+console.log('✅  Sitemap regenerado -> public/sitemap.xml');
+
