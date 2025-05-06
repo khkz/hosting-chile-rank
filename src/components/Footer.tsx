@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="mt-4 text-xs opacity-80">
           <p>EligeTuHosting.cl</p>
           <p>Av. Providencia 1650, Of. 305, Santiago, Chile</p>
-          <p itemProp="telephone">+56 2 2951 5100</p>
+          
         </div>
         
         {/* GA4 placeholder comment */}
