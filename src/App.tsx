@@ -12,26 +12,28 @@ import GuiaElegirHosting from './pages/GuiaElegirHosting';
 import GuiaElegirVPS from './pages/GuiaElegirVPS';
 import GuiaElegirServidorDedicado from './pages/GuiaElegirServidorDedicado';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
+import Resena from './pages/Resena';
+import CatalogoDetalle from './pages/CatalogoDetalle';
 
 function App() {
   return (
-    <>
-      <Router>
-        <Toaster />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/comparativa" element={<Comparativa />} />
-          <Route path="/cotiza-hosting" element={<CotizaHosting />} />
-          <Route path="/whois/:slug" element={<WhoisDomain />} />
-          <Route path="/ultimos-dominios" element={<UltimosDominios />} />
-          <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
-          <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />
-          <Route path="/guia-elegir-servidor-dedicado" element={<GuiaElegirServidorDedicado />} />
-          <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Toaster />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/ranking" element={<Ranking />} />
+        <Route path="/comparativa" element={<Comparativa />} />
+        <Route path="/cotiza-hosting" element={<CotizaHosting />} />
+        <Route path="/whois/:slug" element={<WhoisDomain />} />
+        <Route path="/ultimos-dominios" element={<UltimosDominios />} />
+        <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
+        <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />
+        <Route path="/guia-elegir-servidor-dedicado" element={<GuiaElegirServidorDedicado />} />
+        <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
+        <Route path="/reseñas/:slug" element={<Resena />} />
+        <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
+      </Routes>
+    </Router>
   );
 }
 
