@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet';
 import RecentSearches from '@/components/RecentSearches';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { isChileanIP, isChileanASN } from '@/utils/ipDetection';
 
 // Fallback domain data for when the actual data file doesn't exist
 const getFallbackData = (domainName: string) => {
@@ -75,17 +76,8 @@ const WhoisDomain = () => {
       const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
       const nameservers = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data) : [];
       
-      // Determine if it's a Chilean IP (improved and expanded check)
-      const chileanIPRanges = [
-        '200.27', '200.6', '190.98', '200.14', '200.29', '200.54', '190.196', '186.67',
-        '190.95', '190.114', '190.151', '190.160', '190.121', '190.110', '190.101', '190.82',
-        '186.64', '186.10', '191.98', '191.101', '191.102', '152.139', '152.172', '152.231',
-        '152.74', '181.43', '181.72', '181.162', '181.199', '186.9', '186.11', '186.20',
-        '186.78', '201.214', '201.215', '201.220', '201.221', '201.222', '201.241', '201.239',
-        '179.0', '179.1', '179.2', '179.3', '179.4', '179.5', '179.6'
-      ];
-      
-      const ip_chile = chileanIPRanges.some(range => ip.startsWith(range));
+      // Use our enhanced Chilean IP detection
+      const ip_chile = isChileanIP(ip);
       
       // Try to determine provider from nameservers (improved)
       let provider = 'Desconocido';
@@ -121,9 +113,13 @@ const WhoisDomain = () => {
       
       // Try to get ASN information
       lookupASN(ip).then(asnInfo => {
+        // Update data with ASN info and double-check if it's Chilean using ASN
+        const isChileanByASN = isChileanASN(asnInfo);
         setDomainData(prevData => ({
           ...prevData,
-          asn: asnInfo
+          asn: asnInfo,
+          // If IP detection didn't identify as Chilean but ASN does, update the flag
+          ip_chile: prevData.ip_chile || isChileanByASN
         }));
       });
       
