@@ -2,6 +2,8 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import providers from './providers.json' assert { type: 'json' };
+// Importamos directamente los datos de las empresas de hosting
+import { hostingCompanies } from '../src/data/hostingCompanies.js';
 
 const ROOT   = 'https://eligetuhosting.cl';
 const NOW    = new Date().toISOString().split('T')[0];   // YYYY-MM-DD
@@ -22,22 +24,25 @@ const staticUrls = [
 ].map(p => urlTag(`${ROOT}${p}`, '0.9')).join('');
 
 /* ---------- páginas "VS" de proveedores -------------------------------- */
-const providerUrls = providers
+// Ahora usamos las claves del objeto hostingCompanies en lugar de providers.json
+const availableProviders = Object.keys(hostingCompanies);
+
+const providerUrls = availableProviders
   .filter(slug => slug !== 'hostingplus') // Exclude hostingplus from comparison with itself
   .map(slug => urlTag(`${ROOT}/comparativa/hostingplus-vs/${slug}`))
   .join('');
 
 /* ---------- páginas "comparativa" y "catalogo" de proveedores ---------- */
-const comparativeUrls = providers
+const comparativeUrls = availableProviders
   .map(slug => urlTag(`${ROOT}/comparativa/${slug}`))
   .join('');
 
-const catalogUrls = providers
+const catalogUrls = availableProviders
   .map(slug => urlTag(`${ROOT}/catalogo/${slug}`))
   .join('');
 
 /* ---------- páginas "reseña" de proveedores ---------------------------- */
-const resenaUrls = providers
+const resenaUrls = availableProviders
   .map(slug => urlTag(`${ROOT}/resena/${slug}`))
   .join('');
 
@@ -63,4 +68,4 @@ ${domainUrls}
 /* ---------- escribe ---------------------------------------------------- */
 await fs.mkdir('public', { recursive: true });
 await fs.writeFile('public/sitemap.xml', sitemap, 'utf8');
-console.log('✅  Sitemap regenerado (static + providers + vs-pages + whois + catalog + resena)');
+console.log('✅  Sitemap regenerado (static + providers con datos completos + vs-pages + whois + catalog + resena)');
