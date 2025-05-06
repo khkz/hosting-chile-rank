@@ -44,26 +44,26 @@ const getCompetitorStats = (competitor: any) => {
   const cons: string[] = [];
   
   // Generate based on data
-  if (competitor.price < 5000) {
+  if (competitor.plans && competitor.plans[0] && competitor.plans[0].price < 5000) {
     pros.push("Precio económico");
   } else {
     cons.push("Precio superior al promedio del mercado");
   }
   
-  if (competitor.datacenter && competitor.datacenter.includes("Chile")) {
+  if (competitor.contactInfo && competitor.contactInfo.address && competitor.contactInfo.address.includes("Santiago")) {
+    pros.push("Oficina en Santiago");
+  }
+  
+  if (competitor.datacenterLocation && competitor.datacenterLocation.includes("Chile")) {
     pros.push("Datacenter en Chile");
   } else {
     cons.push("Datacenter fuera de Chile (mayor latencia)");
   }
   
-  if (competitor.years > 5) {
-    pros.push(`${competitor.years} años de experiencia en el mercado`);
+  if (competitor.yearFounded && (2025 - competitor.yearFounded) > 5) {
+    pros.push(`${2025 - competitor.yearFounded} años de experiencia en el mercado`);
   } else {
     cons.push("Empresa relativamente nueva en el mercado");
-  }
-  
-  if (competitor.reclamos && competitor.reclamos > 50) {
-    cons.push(`Alto número de reclamos (${competitor.reclamos}) en Reclamos.cl`);
   }
   
   // Always add some generic ones to have enough content
@@ -230,12 +230,12 @@ const HostingVsPage = () => {
                 <TableRow>
                   <TableCell>Precio anual</TableCell>
                   <TableCell>
-                    {formatPrice(competitor.plans?.[0]?.price || competitor.price || 0)}
+                    {formatPrice(competitor.plans?.[0]?.price || 0)}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Velocidad (GTmetrix)</TableCell>
-                  <TableCell>{competitor.speed || "8.0"}/10</TableCell>
+                  <TableCell>{competitor.rating ? (competitor.rating / 10).toFixed(1) : "8.0"}/10</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Uptime</TableCell>
@@ -244,10 +244,7 @@ const HostingVsPage = () => {
                 <TableRow>
                   <TableCell>Reclamos.cl</TableCell>
                   <TableCell>
-                    {competitor.reclamos || "N/A"}
-                    {competitor.reclamos && competitor.reclamos > 100 && (
-                      <div className="text-sm text-amber-700">⚠ Alta cantidad de reclamos últimos 3 años</div>
-                    )}
+                    N/A
                   </TableCell>
                 </TableRow>
                 <TableRow>
