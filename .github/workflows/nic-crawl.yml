@@ -25,7 +25,7 @@ jobs:
       - name: Crear carpeta data y feeds
         run: |
           mkdir -p public/data
-          mkdir -p public/feeds
+          mkdir -p public/feed
 
       - name: Ejecutar scraper NIC.cl
         run: node scripts/nic-to-json.mjs
@@ -58,7 +58,7 @@ jobs:
               <title>Últimos Dominios Registrados - EligeTuHosting.cl</title>
               <description>Lista de los últimos dominios .cl registrados en Chile</description>
               <link>https://eligetuhosting.cl</link>
-              <atom:link href=\\"https://eligetuhosting.cl/feeds/latest-domains.xml\\" rel=\\"self\\" type=\\"application/rss+xml\\" />
+              <atom:link href=\\"https://eligetuhosting.cl/feed/latest-domains.xml\\" rel=\\"self\\" type=\\"application/rss+xml\\" />
               <language>es-cl</language>
               <lastBuildDate>\${new Date().toUTCString()}</lastBuildDate>
               \${items}
@@ -66,7 +66,7 @@ jobs:
           </rss>\`;
           
           // Write the RSS feed to file
-          fs.writeFileSync('./public/feeds/latest-domains.xml', rssXml);
+          fs.writeFileSync('./public/feed/latest-domains.xml', rssXml);
           console.log('RSS feed generated successfully');
           "
 
@@ -80,7 +80,7 @@ jobs:
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
-          git add public/data/latest.json public/feeds/latest-domains.xml
+          git add public/data/latest.json public/feed/latest-domains.xml
           if ! git diff --cached --quiet; then
             git commit -m "chore(domains): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             git push
