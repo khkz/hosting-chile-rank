@@ -379,9 +379,7 @@ const UltimosDominios = () => {
             ¿Quieres registrar tu propio dominio .cl?
           </p>
           <Button asChild>
-            <a href="https://www.hostingplus.cl/dominios" target="_blank" rel="noopener noreferrer" className="mt-2">
-              Registrar un dominio
-            </a>
+            <a href="https://www.hostingplus.cl/dominios" target="_blank" rel="noopener noreferrer" className="mt-2">Registrar un dominio</a>
           </Button>
         </div>
       </main>
