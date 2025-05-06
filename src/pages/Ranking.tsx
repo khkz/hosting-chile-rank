@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -12,6 +11,7 @@ import {
   Globe,
   ExternalLink
 } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 import {
   Accordion,
   AccordionContent,
@@ -30,6 +30,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import Footer from '@/components/Footer';
 
 // Host provider data
 const hostProviders = [
@@ -175,141 +176,6 @@ const Section = ({ children, id, className = "" }) => (
   </section>
 );
 
-const Header = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <header className={`sticky top-0 z-50 w-full transition-all duration-200 ${scrolled ? 'bg-white/90 backdrop-blur shadow-sm' : 'bg-white'}`}>
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center">
-          <img src="/logo-hostingplus-new.svg" alt="HostingPlus" className="h-8" />
-        </div>
-
-        {/* Desktop menu */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <a href="#hero" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Inicio</a>
-          <a href="#ranking" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Ranking</a>
-          <a href="#testimonials" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Testimonios</a>
-          <a href="#faq" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">FAQ</a>
-          <a href="#contact" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Contacto</a>
-          
-          <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34] ml-2">
-            <a href="https://clientes.hostingplus.cl/cart.php?gid=13">
-              Contratar ahora
-            </a>
-          </Button>
-        </nav>
-
-        {/* Mobile menu button */}
-        <Button 
-          variant="ghost" 
-          className="md:hidden" 
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menú"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {menuOpen ? (
-              <path d="M18 6L6 18M6 6l12 12" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </Button>
-      </div>
-
-      {/* Mobile menu dropdown */}
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 py-2">
-          <div className="max-w-6xl mx-auto px-4 flex flex-col space-y-3 py-3">
-            <a 
-              href="#hero" 
-              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
-              onClick={() => setMenuOpen(false)}
-            >
-              Inicio
-            </a>
-            <a 
-              href="#ranking" 
-              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
-              onClick={() => setMenuOpen(false)}
-            >
-              Ranking
-            </a>
-            <a 
-              href="#testimonials" 
-              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
-              onClick={() => setMenuOpen(false)}
-            >
-              Testimonios
-            </a>
-            <a 
-              href="#faq" 
-              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
-              onClick={() => setMenuOpen(false)}
-            >
-              FAQ
-            </a>
-            <a 
-              href="#contact" 
-              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
-              onClick={() => setMenuOpen(false)}
-            >
-              Contacto
-            </a>
-            <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34] w-full mt-2">
-              <a href="https://clientes.hostingplus.cl/cart.php?gid=13">
-                Contratar ahora
-              </a>
-            </Button>
-          </div>
-        </div>
-      )}
-    </header>
-  );
-};
-
-const Footer = () => (
-  <footer className="bg-[#2B2D42] text-white text-sm">
-    <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-3">EligeTuHosting.cl</h3>
-        <p>Av. Providencia 1650, Of. 305<br/>Providencia, Santiago</p>
-        <p className="mt-4 text-xs">
-          Este ranking incluye marcas de nuestra propiedad y enlaces de afiliado.
-        </p>
-      </div>
-
-      <nav className="flex flex-col gap-2 md:items-end">
-        <a href="/terminos" className="hover:opacity-80">Términos</a>
-        <a href="/privacidad" className="hover:opacity-80">Privacidad</a>
-        <a href="/afiliados" className="hover:opacity-80">Afiliados</a>
-      </nav>
-    </div>
-    <div className="text-center bg-[#1F2232] py-3 text-xs">
-      © {new Date().getFullYear()} EligeTuHosting.cl — Todos los derechos reservados
-    </div>
-  </footer>
-);
-
 const RankingPage = () => {
   const [latestDomains, setLatestDomains] = useState([]);
   const [domainUpdateTime, setDomainUpdateTime] = useState('');
@@ -414,7 +280,7 @@ const RankingPage = () => {
         `}</style>
       </Helmet>
 
-      <Header />
+      <Navbar />
 
       {/* Hero Section */}
       <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[60vh]">

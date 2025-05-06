@@ -7,9 +7,9 @@ import {
   ChevronDown,
   Home,
   BarChart2,
-  FileText,
   ShoppingCart,
-  Globe 
+  Globe,
+  FileText 
 } from 'lucide-react';
 import Logo from './Logo';
 import {
@@ -77,16 +77,6 @@ const Navbar = () => {
           >
             <BarChart2 className="h-4 w-4 mr-1" />
             Comparativa
-          </NavLink>
-          
-          <NavLink 
-            to="/blog" 
-            className={({ isActive }) => 
-              `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2`
-            }
-          >
-            <FileText className="h-4 w-4 mr-1" />
-            Blog
           </NavLink>
           
           <NavLink 
@@ -216,16 +206,6 @@ const Navbar = () => {
                 >
                   <BarChart2 className="h-5 w-5 mr-2" />
                   Comparativa
-                </NavLink>
-                
-                <NavLink 
-                  to="/blog" 
-                  className={({ isActive }) => 
-                    `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
-                  }
-                >
-                  <FileText className="h-5 w-5 mr-2" />
-                  Blog
                 </NavLink>
                 
                 <NavLink 
