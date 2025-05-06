@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { 
-  Globe, 
-  ShieldCheck, 
-  Headphones, 
-  Check, 
-  X 
+  Server, 
+  Package, 
+  ShoppingCart, 
+  Layers, 
+  Cloud, 
+  Cpu, 
+  Globe,
+  ExternalLink
 } from 'lucide-react';
 import {
   Accordion,
@@ -24,352 +27,609 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { FinalCTA } from '@/components/FinalCTA';
-import BenefitCard from '@/components/BenefitCard';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
-// Datos de los proveedores de hosting
-const hostingProviders = [
+// Host provider data
+const hostProviders = [
   {
-    position: 1,
-    name: 'HostingPlus',
+    id: 1,
+    name: "HostingPlus",
+    logo: "/logo-hostingplus-new.svg",
     rating: 9.9,
-    chileanIp: true,
-    ipLocation: 'IP Santiago',
-    security: 'LiteSpeed+BitNinja+JetBackup',
-    support: '24/7 local',
-    url: 'https://www.hostingplus.cl/',
-    logo: '/logo-hostingplus-new.svg'
+    price: "Desde $3.990/mes",
+    speed: "9.9/10",
+    uptime: "99.98%",
+    features: [
+      "LiteSpeed Enterprise",
+      "Datacenter en Santiago",
+      "IP chilena",
+      "Soporte 24/7 local"
+    ],
+    url: "https://clientes.hostingplus.cl/cart.php?gid=13"
   },
   {
-    position: 2,
-    name: 'EcoHosting',
+    id: 2,
+    name: "EcoHosting",
+    logo: "/logo-ecohosting-new.svg",
     rating: 9.6,
-    chileanIp: true,
-    ipLocation: 'IP Providencia',
-    security: 'LiteSpeed+MagicSpam+JetBackup',
-    support: '24/7 local',
-    url: 'https://www.ecohosting.cl/',
-    logo: '/logo-ecohosting-new.svg'
+    price: "Desde $4.990/mes",
+    speed: "9.7/10",
+    uptime: "99.96%",
+    features: [
+      "Apache Optimizado",
+      "Datacenter en Providencia",
+      "IP chilena",
+      "Energía 100% renovable"
+    ],
+    url: "https://www.ecohosting.cl/"
   },
   {
-    position: 3,
-    name: '1Hosting.cl',
+    id: 3,
+    name: "1Hosting",
+    logo: "/logo-1hosting.svg",
     rating: 9.2,
-    chileanIp: true,
-    ipLocation: 'IP Las Condes',
-    security: 'Backups RAID+SSL',
-    support: 'Soporte Chile',
-    url: 'https://1hosting.cl/',
-    logo: '/logo-1hosting.svg'
-  },
-  {
-    position: 4,
-    name: 'HostGator',
-    rating: 9.0,
-    chileanIp: false,
-    ipLocation: 'USA',
-    security: 'CodeGuard (pago)',
-    support: '24/7 EN/ES',
-    url: 'https://www.hostgator.com/',
-    logo: '/logo-hostgator.svg'
-  },
-  {
-    position: 5,
-    name: 'BlueHost',
-    rating: 8.9,
-    chileanIp: false,
-    ipLocation: 'USA',
-    security: 'SiteLock (pago)',
-    support: '24/7 EN',
-    url: 'https://www.bluehost.com/',
-    logo: '/logo-bluehost.svg'
-  },
-  {
-    position: 6,
-    name: 'DonWeb',
-    rating: 8.7,
-    chileanIp: false,
-    ipLocation: 'Argentina',
-    security: 'CloudLinux+Backups diarios',
-    support: 'Soporte LATAM',
-    url: 'https://www.donweb.com/',
-    logo: '/placeholder.svg'
-  },
-  {
-    position: 7,
-    name: 'GoDaddy',
-    rating: 8.5,
-    chileanIp: false,
-    ipLocation: 'USA/EU',
-    security: 'SiteBackup (pago)',
-    support: '24/7 global',
-    url: 'https://www.godaddy.com/',
-    logo: '/logo-godaddy.svg'
-  },
-  {
-    position: 8,
-    name: 'SolucionHost',
-    rating: 8.4,
-    chileanIp: true,
-    ipLocation: 'IP Santiago',
-    security: 'SSL+Backups autom.',
-    support: 'Soporte local',
-    url: 'https://www.solucionhost.cl/',
-    logo: '/placeholder.svg'
-  },
-  {
-    position: 9,
-    name: 'Hostinger',
-    rating: 8.3,
-    chileanIp: false,
-    ipLocation: 'LT/USA',
-    security: 'hPanel+LiteSpeed cache',
-    support: '24/7 global',
-    url: 'https://www.hostinger.com/',
-    logo: '/placeholder.svg'
+    price: "Desde $3.490/mes",
+    speed: "9.5/10",
+    uptime: "99.93%",
+    features: [
+      "SSD NVMe",
+      "Datacenter en Las Condes",
+      "IP chilena",
+      "Backups diarios"
+    ],
+    url: "https://1hosting.cl/"
   }
 ];
 
-const Ranking: React.FC = () => {
-  const [showOnlyChileanIp, setShowOnlyChileanIp] = useState(false);
-  
-  // Filtrar los proveedores según la selección
-  const filteredProviders = showOnlyChileanIp 
-    ? hostingProviders.filter(provider => provider.chileanIp) 
-    : hostingProviders;
-  
+// Categories data
+const categories = [
+  {
+    title: "Web Hosting SSD",
+    icon: <Server className="h-8 w-8 text-blue-600" />,
+    bgColor: "bg-blue-50",
+    url: "https://clientes.hostingplus.cl/cart.php?gid=13"
+  },
+  {
+    title: "WordPress Turbo",
+    icon: <Package className="h-8 w-8 text-indigo-600" />,
+    bgColor: "bg-indigo-50",
+    url: "https://clientes.hostingplus.cl/cart.php?gid=14"
+  },
+  {
+    title: "e-Commerce",
+    icon: <ShoppingCart className="h-8 w-8 text-emerald-600" />,
+    bgColor: "bg-emerald-50",
+    url: "https://clientes.hostingplus.cl/cart.php?gid=15"
+  },
+  {
+    title: "Reseller",
+    icon: <Layers className="h-8 w-8 text-teal-600" />,
+    bgColor: "bg-teal-50",
+    url: "https://clientes.hostingplus.cl/cart.php?gid=16"
+  },
+  {
+    title: "VPS Cloud",
+    icon: <Cloud className="h-8 w-8 text-orange-600" />,
+    bgColor: "bg-orange-50",
+    url: "https://clientes.hostingplus.cl/cart.php?gid=17"
+  },
+  {
+    title: "Servidor Dedicado",
+    icon: <Cpu className="h-8 w-8 text-yellow-600" />,
+    bgColor: "bg-yellow-50",
+    url: "https://clientes.hostingplus.cl/cart.php?gid=18"
+  },
+  {
+    title: "Dominios .CL/.COM",
+    icon: <Globe className="h-8 w-8 text-pink-600" />,
+    bgColor: "bg-pink-50",
+    url: "https://clientes.hostingplus.cl/cart.php?a=add&domain=register"
+  }
+];
+
+// Testimonials data
+const testimonials = [
+  {
+    quote: "Migré mi tienda desde GoDaddy y la velocidad mejoró un 300%. El soporte es increíblemente rápido y eficiente.",
+    author: "Carolina Pérez, Tienda Online"
+  },
+  {
+    quote: "La diferencia de tener mi sitio en un servidor con IP chilena es notable. Mi posicionamiento en Google mejoró notablemente.",
+    author: "Sebastián Muñoz, Blog de Viajes"
+  },
+  {
+    quote: "Llevo 3 años con ellos y nunca he tenido caídas. El panel de control es intuitivo y el soporte siempre responde en minutos.",
+    author: "Andrea Soto, Agencia Marketing"
+  },
+  {
+    quote: "La migración fue gratuita y sin complicaciones. Me sorprendió lo fácil que fue el proceso completo.",
+    author: "Rodrigo Vega, Desarrollador"
+  }
+];
+
+// FAQ data
+const faqItems = [
+  {
+    question: "¿Cómo se elabora el ranking?",
+    answer: "Nuestro equipo realiza pruebas de rendimiento utilizando herramientas como GTmetrix, Pingdom y LoadImpact. Evaluamos tiempo de carga, TTFB, estabilidad, seguridad y soporte técnico. Cada servidor es sometido a las mismas pruebas bajo idénticas condiciones."
+  },
+  {
+    question: "¿Qué ventaja tiene un hosting con IP chilena?",
+    answer: "Un hosting con IP chilena ofrece menor latencia para visitantes locales, mejor posicionamiento SEO en búsquedas geográficas de Chile, y mayor protección legal al estar bajo jurisdicción chilena (Ley 19.628)."
+  },
+  {
+    question: "¿Incluyen migración gratuita?",
+    answer: "Sí, los tres proveedores del Top 3 ofrecen migración gratuita desde cualquier otro hosting. El proceso es realizado por sus técnicos y generalmente toma menos de 24 horas sin interrupciones de servicio."
+  },
+  {
+    question: "¿Por qué HostingPlus lidera el ranking?",
+    answer: "HostingPlus combina la mejor velocidad (LiteSpeed Enterprise), estabilidad superior (99.98% uptime), seguridad avanzada (BitNinja), y un soporte técnico excepcional con tiempos de respuesta promedio de 5 minutos."
+  }
+];
+
+const Section = ({ children, id, className = "" }) => (
+  <section id={id} className={`py-8 lg:py-12 max-w-6xl mx-auto px-4 ${className}`}>
+    {children}
+  </section>
+);
+
+const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <header className={`sticky top-0 z-50 w-full transition-all duration-200 ${scrolled ? 'bg-white/90 backdrop-blur shadow-sm' : 'bg-white'}`}>
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="flex items-center">
+          <img src="/logo-hostingplus-new.svg" alt="HostingPlus" className="h-8" />
+        </div>
+
+        {/* Desktop menu */}
+        <nav className="hidden md:flex items-center space-x-6">
+          <a href="#hero" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Inicio</a>
+          <a href="#ranking" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Ranking</a>
+          <a href="#testimonials" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Testimonios</a>
+          <a href="#faq" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">FAQ</a>
+          <a href="#contact" className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]">Contacto</a>
+          
+          <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34] ml-2">
+            <a href="https://clientes.hostingplus.cl/cart.php?gid=13">
+              Contratar ahora
+            </a>
+          </Button>
+        </nav>
+
+        {/* Mobile menu button */}
+        <Button 
+          variant="ghost" 
+          className="md:hidden" 
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menú"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {menuOpen ? (
+              <path d="M18 6L6 18M6 6l12 12" />
+            ) : (
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </Button>
+      </div>
+
+      {/* Mobile menu dropdown */}
+      {menuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 py-2">
+          <div className="max-w-6xl mx-auto px-4 flex flex-col space-y-3 py-3">
+            <a 
+              href="#hero" 
+              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Inicio
+            </a>
+            <a 
+              href="#ranking" 
+              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Ranking
+            </a>
+            <a 
+              href="#testimonials" 
+              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Testimonios
+            </a>
+            <a 
+              href="#faq" 
+              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
+              onClick={() => setMenuOpen(false)}
+            >
+              FAQ
+            </a>
+            <a 
+              href="#contact" 
+              className="text-sm font-medium text-[#2B2D42] hover:text-[#EF233C]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Contacto
+            </a>
+            <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34] w-full mt-2">
+              <a href="https://clientes.hostingplus.cl/cart.php?gid=13">
+                Contratar ahora
+              </a>
+            </Button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+const Footer = () => (
+  <footer className="bg-[#2B2D42] text-white text-sm">
+    <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 className="text-lg font-semibold mb-3">EligeTuHosting.cl</h3>
+        <p>Av. Providencia 1650, Of. 305<br/>Providencia, Santiago</p>
+        <p className="mt-4 text-xs">
+          Este ranking incluye marcas de nuestra propiedad y enlaces de afiliado.
+        </p>
+      </div>
+
+      <nav className="flex flex-col gap-2 md:items-end">
+        <a href="/terminos" className="hover:opacity-80">Términos</a>
+        <a href="/privacidad" className="hover:opacity-80">Privacidad</a>
+        <a href="/afiliados" className="hover:opacity-80">Afiliados</a>
+      </nav>
+    </div>
+    <div className="text-center bg-[#1F2232] py-3 text-xs">
+      © {new Date().getFullYear()} EligeTuHosting.cl — Todos los derechos reservados
+    </div>
+  </footer>
+);
+
+const RankingPage = () => {
+  const [latestDomains, setLatestDomains] = useState([]);
+  const [domainUpdateTime, setDomainUpdateTime] = useState('');
+  const [domainsLoading, setDomainsLoading] = useState(true);
+  const [domainsError, setDomainsError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const domainsPerPage = 10;
+
+  useEffect(() => {
+    const fetchLatestDomains = async () => {
+      setDomainsLoading(true);
+      try {
+        const timestamp = Date.now();
+        const response = await fetch(`/data/latest.json?ts=${timestamp}`);
+        if (!response.ok) {
+          throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.domains && Array.isArray(data.domains)) {
+          setLatestDomains(data.domains);
+          setDomainUpdateTime(data.updated || new Date().toISOString());
+        } else {
+          throw new Error('Formato de datos no válido');
+        }
+      } catch (error) {
+        console.error('Error fetching domains:', error);
+        setDomainsError(error.message);
+      } finally {
+        setDomainsLoading(false);
+      }
+    };
+
+    fetchLatestDomains();
+  }, []);
+
+  // Pagination logic
+  const indexOfLastDomain = currentPage * domainsPerPage;
+  const indexOfFirstDomain = indexOfLastDomain - domainsPerPage;
+  const currentDomains = latestDomains.slice(indexOfFirstDomain, indexOfLastDomain);
+  const totalPages = Math.ceil(latestDomains.length / domainsPerPage);
+
+  // Render pagination controls
+  const renderPagination = () => {
+    const pageNumbers = [];
+    
+    // Only show 5 page numbers around current page
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, startPage + 4);
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => setCurrentPage(i)}
+          className={`px-3 py-1 mx-1 rounded ${
+            currentPage === i 
+              ? 'bg-[#EF233C] text-white' 
+              : 'bg-gray-100 hover:bg-gray-200'
+          }`}
+        >
+          {i}
+        </button>
+      );
+    }
+    
+    return (
+      <div className="flex justify-center items-center mt-4">
+        <button
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="px-3 py-1 bg-gray-100 rounded mr-2 disabled:opacity-50"
+        >
+          &laquo;
+        </button>
+        
+        {pageNumbers}
+        
+        <button
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 bg-gray-100 rounded ml-2 disabled:opacity-50"
+        >
+          &raquo;
+        </button>
+      </div>
+    );
+  };
+
   return (
     <>
       <Helmet>
-        <title>Ranking hosting Chile 2025 — Soberanía digital e IP chilena</title>
-        <meta 
-          name="description" 
-          content="Consulta el ranking completo de hosting con IP chilena y conoce por qué la soberanía digital favorece tu velocidad y seguridad." 
-        />
-        <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "itemListElement": [
-                ${hostingProviders.map((provider, index) => `
-                  {
-                    "@type": "ListItem",
-                    "position": ${provider.position},
-                    "item": {
-                      "@type": "Product",
-                      "name": "${provider.name}",
-                      "url": "${provider.url}",
-                      "sameAs": "${provider.url}",
-                      "aggregateRating": {
-                        "@type": "AggregateRating",
-                        "ratingValue": "${provider.rating}",
-                        "bestRating": "10",
-                        "worstRating": "1",
-                        "ratingCount": "1"
-                      }
-                    }
-                  }${index < hostingProviders.length - 1 ? ',' : ''}
-                `).join('')}
-              ]
-            }
-          `}
-        </script>
+        <title>Ranking de Hosting Chile 2025 | Comparativa Oficial</title>
+        <meta name="description" content="Comparativa actualizada de los mejores hosting en Chile. Evaluamos velocidad, soporte local y seguridad para tu sitio web." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <style type="text/css">{`
+          /* Critical CSS */
+          .critical-css {
+            display: block;
+            content-visibility: auto;
+          }
+        `}</style>
       </Helmet>
 
-      {/* <!-- section Hero --> */}
-      <section className="bg-[#2B2D42] text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Ranking completo de hosting en Chile 2025</h1>
-          <p className="text-xl mb-8">Comparamos velocidad, soporte, seguridad y soberanía digital</p>
-          <Button 
-            asChild
-            className="bg-[#EF233C] hover:bg-[#b3001b] px-8 py-6 text-lg rounded-lg font-medium"
-          >
-            <Link to="/cotiza-tu-hosting">Cotiza tu hosting</Link>
+      <Header />
+
+      {/* Hero Section */}
+      <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[60vh]">
+        <h1 className="text-3xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
+          Ranking Hosting Chile 2025
+        </h1>
+        <p className="text-gray-600 max-w-lg mx-auto mb-8">
+          Analizamos los mejores proveedores de hosting en Chile según velocidad, 
+          soporte técnico, seguridad y soberanía digital.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34]">
+            <a href="#ranking">Comparar ahora</a>
+          </Button>
+          <Button asChild variant="outline">
+            <a href="#methodology">Metodología</a>
           </Button>
         </div>
-      </section>
+      </Section>
 
-      {/* <!-- section Tabla Ranking --> */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="mb-6 flex flex-col md:flex-row justify-between items-center">
-            <h2 className="text-2xl font-semibold mb-4 md:mb-0">Ranking 2025: Los mejores proveedores</h2>
-            <div className="flex items-center">
-              <label htmlFor="filter" className="mr-3 text-sm font-medium">Filtrar por:</label>
-              <select 
-                id="filter"
-                className="border rounded-md p-2 bg-white"
-                value={showOnlyChileanIp ? "chilean" : "all"}
-                onChange={(e) => setShowOnlyChileanIp(e.target.value === "chilean")}
-              >
-                <option value="all">Todos los proveedores</option>
-                <option value="chilean">Solo IP Chilena</option>
-              </select>
+      <div className="h-0.5 bg-gray-200 w-full my-8" />
+
+      {/* Top 3 Ranking */}
+      <Section id="ranking">
+        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+          Top 3 proveedores de hosting
+        </h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {hostProviders.map((provider, index) => (
+            <div key={provider.id} className={`
+              bg-white rounded-lg overflow-hidden
+              ${index === 0 
+                ? 'ring-2 ring-[#EF233C] shadow-lg transform md:scale-105' 
+                : 'opacity-90 scale-95'}
+            `}>
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-[#2B2D42] font-bold mr-3">
+                      {provider.id}
+                    </span>
+                    <img src={provider.logo} alt={provider.name} className="h-8" loading="lazy" />
+                  </div>
+                  <div className="text-xl font-bold">{provider.rating}/10</div>
+                </div>
+                
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
+                    {provider.price}
+                  </Badge>
+                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
+                    Velocidad: {provider.speed}
+                  </Badge>
+                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
+                    Uptime: {provider.uptime}
+                  </Badge>
+                </div>
+                
+                <ul className="mb-6 text-sm space-y-2">
+                  {provider.features.map((feature, i) => (
+                    <li key={i} className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button asChild className={`w-full ${index === 0 ? 'bg-[#EF233C] hover:bg-[#d01d34]' : 'bg-[#2B2D42]'}`}>
+                  <a href={provider.url} target="_blank" rel="noopener noreferrer">
+                    Visitar sitio
+                    <ExternalLink className="ml-1 h-4 w-4" />
+                  </a>
+                </Button>
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
+      </Section>
 
-          <div className="overflow-x-auto">
-            <Table className="table-auto w-full text-sm">
-              <TableCaption>Actualizado: Mayo 2025</TableCaption>
-              <TableHeader>
-                <TableRow className="bg-[#F7F9FC]">
-                  <TableHead className="w-12">Puesto</TableHead>
-                  <TableHead className="w-36">Proveedor</TableHead>
-                  <TableHead className="w-24">Puntaje</TableHead>
-                  <TableHead className="w-28">
-                    <div className="flex items-center">
-                      <Globe className="mr-1 h-4 w-4" /> IP chilena
-                    </div>
-                  </TableHead>
-                  <TableHead className="w-48">
-                    <div className="flex items-center">
-                      <ShieldCheck className="mr-1 h-4 w-4" /> Seguridad/Backups
-                    </div>
-                  </TableHead>
-                  <TableHead className="w-28">
-                    <div className="flex items-center">
-                      <Headphones className="mr-1 h-4 w-4" /> Soporte
-                    </div>
-                  </TableHead>
-                  <TableHead className="w-28 text-right">Visitar</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredProviders.map((provider) => (
-                  <TableRow key={provider.position} className="border-b hover:bg-gray-50">
-                    <TableCell className="font-medium">
-                      <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${provider.position <= 3 ? 'bg-[#EF233C] text-white' : 'bg-gray-100'}`}>
-                        {provider.position}
-                      </span>
-                    </TableCell>
-                    <TableCell className="font-semibold">
-                      <div className="flex items-center">
-                        <img 
-                          src={provider.logo} 
-                          alt={provider.name}
-                          className="h-6 mr-2"
-                        />
-                        {provider.name}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="font-bold">{provider.rating}</span> ★
-                    </TableCell>
-                    <TableCell>
-                      {provider.chileanIp ? (
-                        <span className="text-[#16a34a] font-semibold flex items-center">
-                          <Check size={16} className="mr-1" /> Sí ({provider.ipLocation})
-                        </span>
-                      ) : (
-                        <span className="text-[#dc2626] font-semibold flex items-center">
-                          <X size={16} className="mr-1" /> No ({provider.ipLocation})
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell>{provider.security}</TableCell>
-                    <TableCell>{provider.support}</TableCell>
-                    <TableCell className="text-right">
-                      <Button 
-                        asChild 
-                        variant="outline" 
-                        size="sm" 
-                        className="border-[#2B2D42] hover:bg-[#2B2D42] hover:text-white"
-                      >
-                        <a href={provider.url} target="_blank" rel="noopener noreferrer">
-                          Visitar sitio
-                        </a>
-                      </Button>
-                    </TableCell>
+      <div className="h-0.5 bg-gray-200 w-full my-8" />
+
+      {/* Categories */}
+      <Section id="categories">
+        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+          Explora por tipo de servicio
+        </h2>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {categories.map((category, index) => (
+            <a 
+              key={index} 
+              href={category.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block hover:shadow-lg transition-shadow rounded-lg overflow-hidden"
+            >
+              <Card className={`${category.bgColor} h-full flex flex-col items-center justify-center p-6 text-center`}>
+                <div className="mb-4">
+                  {category.icon}
+                </div>
+                <h3 className="font-medium text-[#2B2D42]">{category.title}</h3>
+              </Card>
+            </a>
+          ))}
+        </div>
+      </Section>
+
+      <div className="h-0.5 bg-gray-200 w-full my-8" />
+
+      {/* Testimonials */}
+      <Section id="testimonials">
+        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+          Lo que dicen nuestros usuarios
+        </h2>
+        <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-6">
+          {testimonials.map((testimonial, index) => (
+            <Card key={index} className="p-4 shadow-sm hover:shadow transition-shadow">
+              <blockquote className="italic text-gray-600 mb-4">
+                "{testimonial.quote}"
+              </blockquote>
+              <footer className="text-sm font-medium">— {testimonial.author}</footer>
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      <div className="h-0.5 bg-gray-200 w-full my-8" />
+
+      {/* Latest Domains */}
+      <Section id="domains">
+        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-2">
+          Últimos dominios .CL registrados
+        </h2>
+        <p className="text-center text-gray-600 mb-6">
+          Datos actualizados: {domainUpdateTime ? new Date(domainUpdateTime).toLocaleString() : 'Cargando...'} UTC
+        </p>
+        
+        <Card className="max-w-5xl mx-auto overflow-x-auto p-4 shadow-sm">
+          {domainsLoading ? (
+            <div className="flex justify-center items-center p-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#EF233C]"></div>
+              <span className="ml-2">Cargando dominios...</span>
+            </div>
+          ) : domainsError ? (
+            <div className="text-center p-8 text-red-500">
+              <p>Error al cargar los dominios: {domainsError}</p>
+              <p className="mt-2 text-sm">Por favor, intenta recargar la página</p>
+            </div>
+          ) : (
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-16">N°</TableHead>
+                    <TableHead>Dominio</TableHead>
+                    <TableHead className="text-right">Fecha</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </section>
+                </TableHeader>
+                <TableBody>
+                  {currentDomains.map((item, index) => (
+                    <TableRow key={indexOfFirstDomain + index}>
+                      <TableCell className="font-medium">{indexOfFirstDomain + index + 1}</TableCell>
+                      <TableCell>{item.d}</TableCell>
+                      <TableCell className="text-right">{new Date(item.date).toLocaleString()}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableCaption>
+                  Listado de dominios .CL recientemente registrados
+                </TableCaption>
+              </Table>
+              {renderPagination()}
+            </>
+          )}
+        </Card>
+      </Section>
 
-      {/* <!-- section Soberanía Digital --> */}
-      <section className="bg-[#F7F9FC] py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-semibold mb-6 text-center">¿Qué es la soberanía digital y por qué importa?</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <BenefitCard 
-              icon={Globe}
-              title="SEO Local Mejorado" 
-              description="Alojar en servidores chilenos mejora tu posicionamiento en búsquedas locales de Google.cl"
-            />
-            <BenefitCard 
-              icon={ShieldCheck}
-              title="Protección Legal" 
-              description="Tus datos quedan protegidos bajo la Ley 19.628, fuera del alcance del CLOUD Act extranjero"
-            />
-            <BenefitCard 
-              icon={Headphones}
-              title="Baja Latencia" 
-              description="Reduce la latencia a 5-8 ms, ofreciendo una experiencia más rápida a usuarios chilenos"
-            />
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <p className="text-sm leading-relaxed">
-              Alojar tu sitio en un datacenter chileno con IP geolocalizada mejora el SEO local, 
-              reduce la latencia a 5-8 ms y mantiene tus datos bajo la Ley 19.628, fuera de legislaciones 
-              extranjeras como el <em>CLOUD Act</em>. Los tres primeros proveedores de nuestro ranking 
-              cumplen con esta exigencia, ofreciendo verdadera soberanía digital para tus proyectos web.
-            </p>
-          </div>
-        </div>
-      </section>
+      <div className="h-0.5 bg-gray-200 w-full my-8" />
 
-      {/* <!-- section FAQ --> */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-semibold mb-6">Preguntas frecuentes</h2>
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-left">
-                ¿Cómo verificamos la IP chilena?
-              </AccordionTrigger>
-              <AccordionContent>
-                Para nuestro análisis utilizamos las bases de datos de geolocalización MaxMind GeoIP2 y realizamos 
-                pruebas de traceroute desde Santiago para verificar la ruta y latencia. Adicionalmente, 
-                confirmamos la ubicación física de los datacenters con cada proveedor.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger className="text-left">
-                ¿Puedo migrar si mi hosting actual es extranjero?
-              </AccordionTrigger>
-              <AccordionContent>
-                Sí, HostingPlus y EcoHosting ofrecen migración gratuita en menos de 24 horas. 
-                El proceso es sencillo: contrata el nuevo plan, proporciona los accesos a tu hosting actual, 
-                y ellos se encargan de todo el proceso de migración sin interrupciones ni pérdida de datos.
-              </AccordionContent>
-            </AccordionItem>
+      {/* FAQ Section */}
+      <Section id="faq">
+        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+          Preguntas frecuentes
+        </h2>
+        <div className="max-w-3xl mx-auto space-y-3">
+          <Accordion type="single" collapsible>
+            {faqItems.map((item, index) => (
+              <AccordionItem key={index} value={`item-${index}`}>
+                <AccordionTrigger className="text-left font-medium">{item.question}</AccordionTrigger>
+                <AccordionContent>{item.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </div>
-      </section>
+      </Section>
 
-      {/* <!-- section CTA Final --> */}
-      <section className="bg-[#F7F9FC] py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-semibold mb-4">¿Listo para disfrutar de IP chilena y soporte local?</h3>
-          <p className="mb-6">Migra gratis hoy mismo y mejora tu presencia digital.</p>
-          <Button 
-            asChild
-            className="bg-[#EF233C] hover:bg-[#b3001b] px-8 py-3 rounded-lg font-medium"
-          >
-            <Link to="/cotiza-tu-hosting">Solicitar migración</Link>
-          </Button>
-        </div>
-      </section>
+      <div className="h-0.5 bg-gray-200 w-full my-8" />
 
-      {/* <!-- analytics here --> */}
+      {/* Contact Section */}
+      <Section id="contact" className="text-center">
+        <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">
+          ¿Necesitas ayuda para elegir?
+        </h2>
+        <p className="mb-6 max-w-lg mx-auto">
+          Nuestro equipo de expertos puede ayudarte a encontrar la solución perfecta para tu proyecto.
+        </p>
+        <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34]">
+          <a href="mailto:contacto@eligetuhosting.cl">Contáctanos</a>
+        </Button>
+      </Section>
+
+      <Footer />
     </>
   );
 };
 
-export default Ranking;
+export default RankingPage;
