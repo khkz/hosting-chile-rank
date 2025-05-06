@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import emailjs from "@emailjs/browser";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet';
@@ -15,6 +16,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+
+// EmailJS configuration
+const SERVICE_ID = "service_rlq4gaf";
+const TEMPLATE_ID = "template_uzxrs2d";
+const PUBLIC_KEY = "9wS_UPfV9q3-ZJeBZ";
 
 // Schema de validación para el formulario
 const formSchema = z.object({
@@ -73,28 +79,28 @@ const CotizaHosting = () => {
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
-    
-    // Simulación de envío de formulario
     try {
-      // En un caso real, aquí harías un fetch o axios.post a tu API
-      console.log("Datos del formulario:", data);
-      
-      // Simulamos una demora en el proceso
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          ...data,
+          caracteristicas: (data.caracteristicas || []).join(", "),
+        },
+        PUBLIC_KEY
+      );
       toast({
         title: "¡Cotización enviada con éxito!",
-        description: "Te contactaremos en las próximas 24 horas con las mejores opciones personalizadas.",
+        description: "Te responderemos en las próximas 24 h con opciones personalizadas.",
       });
-      
       form.reset();
-    } catch (error) {
+    } catch (err) {
       toast({
-        title: "Error al enviar el formulario",
-        description: "Por favor intenta nuevamente más tarde.",
-        variant: "destructive"
+        title: "Error al enviar",
+        description: "Intenta nuevamente más tarde.",
+        variant: "destructive",
       });
-      console.error("Error al enviar formulario:", error);
+      console.error(err);
     } finally {
       setIsSubmitting(false);
     }
