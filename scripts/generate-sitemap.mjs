@@ -18,7 +18,7 @@ const urlTag = (loc, prio = '0.7') => `
 /* ---------- rutas estáticas (home, ranking, etc) ----------------------- */
 const staticUrls = [
   '/', '/ranking', '/comparativa', '/cotiza-hosting',
-  '/ultimos-dominios', '/contacto', '/faq'
+  '/ultimos-dominios', '/contacto', '/faq', '/catalogo'
 ].map(p => urlTag(`${ROOT}${p}`, '0.9')).join('');
 
 /* ---------- páginas "VS" de proveedores -------------------------------- */
@@ -27,14 +27,23 @@ const providerUrls = providers
   .map(slug => urlTag(`${ROOT}/comparativa/hostingplus-vs/${slug}`))
   .join('');
 
-/* ---------- páginas "comparativa" de proveedores ----------------------- */
+/* ---------- páginas "comparativa" y "catalogo" de proveedores ---------- */
 const comparativeUrls = providers
   .map(slug => urlTag(`${ROOT}/comparativa/${slug}`))
   .join('');
 
+const catalogUrls = providers
+  .map(slug => urlTag(`${ROOT}/catalogo/${slug}`))
+  .join('');
+
+/* ---------- páginas "reseña" de proveedores ---------------------------- */
+const resenaUrls = providers
+  .map(slug => urlTag(`${ROOT}/resena/${slug}`))
+  .join('');
+
 /* ---------- últimos dominios (.whois/) --------------------------------- */
 let raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
-const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);     // <-- aquí el cambio
+const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
 const domainUrls = domainsArr
   .slice(0, 400)                                                      // 400 más recientes
   .map(({ d }) => urlTag(`${ROOT}/whois/${d}`, '0.6'))
@@ -46,10 +55,12 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${staticUrls}
 ${providerUrls}
 ${comparativeUrls}
+${catalogUrls}
+${resenaUrls}
 ${domainUrls}
 </urlset>`.trimStart();
 
 /* ---------- escribe ---------------------------------------------------- */
 await fs.mkdir('public', { recursive: true });
 await fs.writeFile('public/sitemap.xml', sitemap, 'utf8');
-console.log('✅  Sitemap regenerado (static + providers + vs-pages + whois)');
+console.log('✅  Sitemap regenerado (static + providers + vs-pages + whois + catalog + resena)');
