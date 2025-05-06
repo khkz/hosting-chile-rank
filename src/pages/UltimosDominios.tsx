@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -139,17 +140,21 @@ const UltimosDominios = () => {
     }
   };
 
-  // Load domains from local JSON with timestamp to avoid cache
+  // Load domains from GitHub raw content
   const loadDomains = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // Add timestamp to URL to avoid cache - using local file as specified
+      // GitHub raw URL for the latest.json file
+      const githubRawUrl = "https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json";
+      // Add timestamp to URL to avoid cache
       const timestamp = Date.now();
-      const response = await fetch(`/data/latest.json?ts=${timestamp}`);
+      const response = await fetch(`${githubRawUrl}?ts=${timestamp}`);
+      
       if (!response.ok) {
-        throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
+        throw new Error(`No se pudieron cargar los dominios desde GitHub: ${response.status} ${response.statusText}`);
       }
+      
       const data: ApiResponse = await response.json();
       if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
         // Sort domains by date in descending order
@@ -165,7 +170,7 @@ const UltimosDominios = () => {
         throw new Error('Datos de dominios inválidos o vacíos');
       }
     } catch (error) {
-      console.error('Error loading domains:', error);
+      console.error('Error loading domains from GitHub:', error);
       // Use fallback domains when the API is not available
       setDomains(fallbackDomains);
       setError('No pudimos cargar los últimos dominios en este momento. Intenta nuevamente en unos minutos.');
@@ -182,7 +187,7 @@ const UltimosDominios = () => {
     loadDomains();
 
     // Add console log to help with debugging
-    console.log("💡 UltimosDominios: Intentando cargar dominios desde archivo local");
+    console.log("💡 UltimosDominios: Intentando cargar dominios desde GitHub");
   }, []);
 
   // Filter domains based on search term
@@ -387,4 +392,5 @@ const UltimosDominios = () => {
       <Footer />
     </div>;
 };
+
 export default UltimosDominios;

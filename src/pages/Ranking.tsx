@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -188,11 +189,16 @@ const RankingPage = () => {
     const fetchLatestDomains = async () => {
       setDomainsLoading(true);
       try {
+        // GitHub raw URL for the latest.json file
+        const githubRawUrl = "https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json";
+        // Add timestamp to URL to avoid cache
         const timestamp = Date.now();
-        const response = await fetch(`/data/latest.json?ts=${timestamp}`);
+        const response = await fetch(`${githubRawUrl}?ts=${timestamp}`);
+        
         if (!response.ok) {
-          throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
+          throw new Error(`No se pudieron cargar los dominios desde GitHub: ${response.status}`);
         }
+        
         const data = await response.json();
         if (data.domains && Array.isArray(data.domains)) {
           setLatestDomains(data.domains);
@@ -201,7 +207,7 @@ const RankingPage = () => {
           throw new Error('Formato de datos no válido');
         }
       } catch (error) {
-        console.error('Error fetching domains:', error);
+        console.error('Error fetching domains from GitHub:', error);
         setDomainsError(error.message);
       } finally {
         setDomainsLoading(false);
