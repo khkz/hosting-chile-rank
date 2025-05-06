@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { History, Search, House, Cpu, Server, Shield, Info, ExternalLink } from 'lucide-react';
+import { History, Search, House, Cpu, Server, Shield, Info, ExternalLink, Globe } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
