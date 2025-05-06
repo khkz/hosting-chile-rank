@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet';
 import RecentSearches from '@/components/RecentSearches';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { isChileanIP, isChileanASN } from '@/utils/ipDetection';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 
 // Fallback domain data for when the actual data file doesn't exist
 const getFallbackData = (domainName: string) => {
@@ -41,6 +42,7 @@ const lookupASN = async (ip: string): Promise<string> => {
     return 'No disponible';
   }
 };
+
 const WhoisDomain = () => {
   const {
     slug
@@ -61,6 +63,49 @@ const WhoisDomain = () => {
 
   // Format domain name from slug
   const domainName = slug ? slug.replace(/-/g, '.') : '';
+
+  // Generate structured data for Schema.org
+  const generateSchemaData = () => {
+    if (!domainData) return null;
+    
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": `Información de hosting para ${domainName}`,
+      "description": `Análisis técnico de ${domainName}: IP, nameservers, proveedor de hosting, ASN y más información para mejorar tu presencia en línea.`,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://eligetuhosting.cl/whois/${slug}/`
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "eligetuhosting.cl"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "eligetuhosting.cl",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://eligetuhosting.cl/logo.png"
+        }
+      },
+      "datePublished": new Date().toISOString(),
+      "dateModified": new Date().toISOString(),
+      "about": {
+        "@type": "WebSite",
+        "name": domainName,
+        "url": `https://${domainName}`
+      },
+      "technicalSpecifications": {
+        "ip": domainData.ip,
+        "nameservers": domainData.nameservers?.join(", "),
+        "provider": domainData.provider,
+        "location": domainData.ip_chile ? "Chile" : "Internacional"
+      }
+    };
+    
+    return JSON.stringify(schemaData);
+  };
 
   // Function to fetch live DNS data
   const fetchLiveDomainData = async (domain: string) => {
@@ -194,6 +239,7 @@ const WhoisDomain = () => {
       setRefreshing(false);
     }
   };
+
   useEffect(() => {
     if (!slug) {
       setError('No se encontró información para este dominio');
@@ -252,18 +298,29 @@ const WhoisDomain = () => {
       metaDescription.setAttribute('content', `Datos de hosting para ${domainName}: IP, nameservers, proveedor, ASN y más información para mejorar tu presencia en línea.`);
     }
   }, [domainName]);
+
+  // Prepare breadcrumbs for this page
+  const breadcrumbItems = [
+    { label: 'Dominios', href: '/ultimos-dominios/' },
+    { label: domainName }
+  ];
+
   const handleRefresh = () => {
     if (domainName) {
       fetchLiveDomainData(domainName);
     }
   };
+
   const handleImageLoad = () => {
     setPreviewLoaded(true);
   };
+
   const handleImageError = () => {
     setPreviewError(true);
   };
-  return <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
+
+  return (
+    <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Helmet>
         <title>Información de hosting para {domainName} — eligetuhosting.cl</title>
         <meta name="description" content={`Análisis técnico de ${domainName}: IP, nameservers, proveedor de hosting, ASN y más información para mejorar tu presencia en línea.`} />
@@ -272,9 +329,23 @@ const WhoisDomain = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://eligetuhosting.cl/whois/${slug}/`} />
         <link rel="canonical" href={`https://eligetuhosting.cl/whois/${slug}/`} />
+        {domainData && <script type="application/ld+json">{generateSchemaData()}</script>}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`Datos de hosting: ${domainName} — eligetuhosting.cl`} />
+        <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre su proveedor de hosting, IP, nameservers y más.`} />
+        {previewLoaded && !previewError && <meta name="twitter:image" content={domainData?.screenshot} />}
+        <meta name="robots" content="index, follow" />
+        <meta property="article:modified_time" content={new Date().toISOString()} />
       </Helmet>
+      
       <Navbar />
+      
       <main className="container mx-auto px-4 py-12">
+        {/* Breadcrumbs */}
+        {!isLoading && !error && domainData && (
+          <SEOBreadcrumbs items={breadcrumbItems} />
+        )}
+        
         {isLoading ? <div className="space-y-4">
             <Skeleton className="h-10 w-3/4" />
             <Skeleton className="h-6 w-1/2" />
@@ -471,7 +542,10 @@ const WhoisDomain = () => {
             </div>
           </div> : null}
       </main>
+      
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default WhoisDomain;

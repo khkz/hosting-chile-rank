@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import HostingCard from './HostingCard';
 import { Trophy, Check } from 'lucide-react';
@@ -120,9 +119,53 @@ const HostingRanking = () => {
     }
   };
   
+  // Generate structured data for Schema.org
+  const generateSchemaData = () => {
+    const items = sortedHostingData.map((provider, index) => ({
+      "@type": "Product",
+      "name": provider.name,
+      "description": provider.features.join(". "),
+      "url": provider.url,
+      "image": provider.logo,
+      "brand": {
+        "@type": "Brand",
+        "name": provider.name
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": provider.url,
+        "availability": "https://schema.org/InStock"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": sortCriteria === 'speed' ? provider.speedRating : 
+                       (sortCriteria === 'price' ? provider.priceRating : provider.rating),
+        "bestRating": "10",
+        "worstRating": "0",
+        "ratingCount": "1"
+      },
+      "position": index + 1
+    }));
+    
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": items.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": item
+      })),
+      "numberOfItems": items.length
+    };
+    
+    return JSON.stringify(schemaData);
+  };
+  
   return (
     <section id="ranking" className="py-16 container mx-auto px-4">
       <h2 className="text-3xl font-semibold text-center mb-6">Top 3 Proveedores de Hosting</h2>
+      
+      <script type="application/ld+json">{generateSchemaData()}</script>
       
       <div className="flex justify-center mb-8">
         <ToggleGroup type="single" value={sortCriteria} onValueChange={(value) => value && setSortCriteria(value)}>

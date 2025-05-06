@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -14,54 +13,57 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCap
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import UltimasBusquedas from '@/components/UltimasBusquedas';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 
 // Fallback domains for when API is not available
-const fallbackDomains = [{
-  d: "ejemplo-dominio-cl.cl",
-  date: "2025-05-05T12:00:00Z"
-}, {
-  d: "nuevodominio2025.cl",
-  date: "2025-05-05T11:30:00Z"
-}, {
-  d: "tiendaonlinechile.cl",
-  date: "2025-05-04T15:45:00Z"
-}, {
-  d: "desarrolloweb-cl.cl",
-  date: "2025-05-04T14:20:00Z"
-}, {
-  d: "hostingchileno.cl",
-  date: "2025-05-04T10:15:00Z"
-}, {
-  d: "nuevositioweb.cl",
-  date: "2025-05-03T16:30:00Z"
-}, {
-  d: "misitiopersonal.cl",
-  date: "2025-05-03T13:45:00Z"
-}, {
-  d: "tiendaonline-cl.cl",
-  date: "2025-05-03T09:20:00Z"
-}, {
-  d: "consultoradigital.cl",
-  date: "2025-05-02T18:10:00Z"
-}, {
-  d: "agenciamarketing.cl",
-  date: "2025-05-02T14:30:00Z"
-}, {
-  d: "emprendimientochile.cl",
-  date: "2025-05-01T17:00:00Z"
-}, {
-  d: "startupchilena.cl",
-  date: "2025-05-01T12:45:00Z"
-}, {
-  d: "tecnologiaweb.cl",
-  date: "2025-05-01T09:15:00Z"
-}, {
-  d: "serviciosempresa.cl",
-  date: "2025-04-30T16:20:00Z"
-}, {
-  d: "productosdigitales.cl",
-  date: "2025-04-30T11:30:00Z"
-}];
+const fallbackDomains = [
+  {
+    d: "ejemplo-dominio-cl.cl",
+    date: "2025-05-05T12:00:00Z"
+  }, {
+    d: "nuevodominio2025.cl",
+    date: "2025-05-05T11:30:00Z"
+  }, {
+    d: "tiendaonlinechile.cl",
+    date: "2025-05-04T15:45:00Z"
+  }, {
+    d: "desarrolloweb-cl.cl",
+    date: "2025-05-04T14:20:00Z"
+  }, {
+    d: "hostingchileno.cl",
+    date: "2025-05-04T10:15:00Z"
+  }, {
+    d: "nuevositioweb.cl",
+    date: "2025-05-03T16:30:00Z"
+  }, {
+    d: "misitiopersonal.cl",
+    date: "2025-05-03T13:45:00Z"
+  }, {
+    d: "tiendaonline-cl.cl",
+    date: "2025-05-03T09:20:00Z"
+  }, {
+    d: "consultoradigital.cl",
+    date: "2025-05-02T18:10:00Z"
+  }, {
+    d: "agenciamarketing.cl",
+    date: "2025-05-02T14:30:00Z"
+  }, {
+    d: "emprendimientochile.cl",
+    date: "2025-05-01T17:00:00Z"
+  }, {
+    d: "startupchilena.cl",
+    date: "2025-05-01T12:45:00Z"
+  }, {
+    d: "tecnologiaweb.cl",
+    date: "2025-05-01T09:15:00Z"
+  }, {
+    d: "serviciosempresa.cl",
+    date: "2025-04-30T16:20:00Z"
+  }, {
+    d: "productosdigitales.cl",
+    date: "2025-04-30T11:30:00Z"
+  }
+];
 
 // Type definition for domain data
 interface Domain {
@@ -72,6 +74,7 @@ interface ApiResponse {
   updated: string;
   domains: Domain[];
 }
+
 const UltimosDominios = () => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,7 +88,7 @@ const UltimosDominios = () => {
     toast
   } = useToast();
 
-  // Format date to DD-MM-YYYY HH:mm format keeping original time
+  // Format date helpers
   const formatDateString = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -102,7 +105,6 @@ const UltimosDominios = () => {
     }
   };
 
-  // Format date to YYYY-MM-DD HH:mm format for table keeping original time
   const formatTableDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -117,6 +119,32 @@ const UltimosDominios = () => {
     } catch (e) {
       return dateString;
     }
+  };
+
+  // Generate structured data for Schema.org
+  const generateSchemaData = () => {
+    if (domains.length === 0 || isLoading) return null;
+    
+    const listItems = filteredDomains.slice(0, 50).map((domain, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "WebSite",
+        "name": domain.d,
+        "url": `https://${domain.d}`,
+        "dateCreated": domain.date
+      }
+    }));
+    
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": listItems,
+      "numberOfItems": listItems.length,
+      "itemListOrder": "https://schema.org/ItemListOrderDescending"
+    };
+    
+    return JSON.stringify(schemaData);
   };
 
   // Manual refresh function
@@ -201,24 +229,33 @@ const UltimosDominios = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   // Icons for recommendations
-  const servicios = [{
-    icon: <House className="h-5 w-5 text-blue-600" />,
-    title: "Hosting",
-    path: "/guia-elegir-hosting"
-  }, {
-    icon: <Cpu className="h-5 w-5 text-green-600" />,
-    title: "VPS",
-    path: "/guia-elegir-vps"
-  }, {
-    icon: <Server className="h-5 w-5 text-red-600" />,
-    title: "Dedicado",
-    path: "/guia-elegir-servidor-dedicado"
-  }, {
-    icon: <Shield className="h-5 w-5 text-purple-600" />,
-    title: "SSL",
-    path: "/guia-elegir-ssl"
-  }];
-  return <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
+  const servicios = [
+    {
+      icon: <House className="h-5 w-5 text-blue-600" />,
+      title: "Hosting",
+      path: "/guia-elegir-hosting"
+    }, {
+      icon: <Cpu className="h-5 w-5 text-green-600" />,
+      title: "VPS",
+      path: "/guia-elegir-vps"
+    }, {
+      icon: <Server className="h-5 w-5 text-red-600" />,
+      title: "Dedicado",
+      path: "/guia-elegir-servidor-dedicado"
+    }, {
+      icon: <Shield className="h-5 w-5 text-purple-600" />,
+      title: "SSL",
+      path: "/guia-elegir-ssl"
+    }
+  ];
+
+  // Prepare breadcrumbs for this page
+  const breadcrumbItems = [
+    { label: 'Últimos Dominios' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
       <Helmet>
         <title>Últimos dominios registrados en NIC.cl — eligetuhosting.cl</title>
         <meta name="description" content="Monitoreo en tiempo real de los dominios .cl más recientes registrados en NIC.cl. Consulta los últimos sitios web creados en Chile." />
@@ -227,11 +264,20 @@ const UltimosDominios = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://eligetuhosting.cl/ultimos-dominios/" />
         <link rel="canonical" href="https://eligetuhosting.cl/ultimos-dominios/" />
+        {!isLoading && domains.length > 0 && <script type="application/ld+json">{generateSchemaData()}</script>}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Últimos dominios registrados en Chile — eligetuhosting.cl" />
+        <meta name="twitter:description" content="Lista actualizada de los últimos dominios .cl registrados. Encuentra los sitios web más recientes de Chile." />
+        <link rel="alternate" type="application/rss+xml" title="Últimos dominios registrados en Chile" href="/feeds/latest-domains.xml" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
       </Helmet>
       
       <Navbar />
       
       <main className="container mx-auto px-4 py-12">
+        {/* Breadcrumbs */}
+        <SEOBreadcrumbs items={breadcrumbItems} />
+        
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Últimos dominios registrados en NIC.cl</h1>
@@ -390,7 +436,8 @@ const UltimosDominios = () => {
       </main>
       
       <Footer />
-    </div>;
+    </div>
+  );
 };
 
 export default UltimosDominios;
