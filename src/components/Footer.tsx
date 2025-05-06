@@ -1,14 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import RecentSearches from './RecentSearches';
 import { Rss } from 'lucide-react';
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
-  return (
-    <footer className="bg-[#2B2D42] text-[#EDF2F4] py-8">
+  return <footer className="bg-[#2B2D42] text-[#EDF2F4] py-8">
       <div className="container mx-auto px-4 text-sm text-center space-y-3">
         <p>
           © {currentYear} eligetuhosting.cl | Algunos enlaces pueden generar una comisión sin costo para ti.
@@ -16,9 +12,7 @@ const Footer = () => {
         <p>Puntajes basados en métricas públicas y pruebas internas.</p>
         
         <div className="flex flex-wrap justify-center gap-4 mt-4">
-          <Link to="/politica-privacidad" className="hover:underline">
-            Política de privacidad
-          </Link>
+          
           <Link to="/contacto" className="hover:underline">
             Contacto
           </Link>
@@ -49,8 +43,6 @@ const Footer = () => {
         {/* GA4 placeholder comment */}
         {/* GA4 aquí */}
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
