@@ -12,44 +12,42 @@ const RecentSearches = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // First try to fetch from the JSON file
-    fetch('/recent.json').then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to load recent searches');
-      }
-
-      // Check if the response is HTML (common error case)
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('text/html')) {
-        throw new Error('El archivo recent.json no existe o no está en formato JSON');
-      }
-      return response.json();
-    }).then(data => {
-      // If data is valid and not empty, use it
-      if (Array.isArray(data) && data.length > 0) {
-        setDomains(data);
-      } else {
-        // If data is empty or not an array, fall back to example domains
-        console.warn('Recent searches JSON was empty or invalid, using fallback data');
+    // Try to load the domains from latest.json (same as UltimasBusquedas)
+    const loadDomains = async () => {
+      try {
+        // Add timestamp to URL to avoid cache
+        const timestamp = Date.now();
+        const response = await fetch(`/data/latest.json?ts=${timestamp}`);
+        if (!response.ok) {
+          throw new Error(`No se pudieron cargar los dominios: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
+          // Sort domains by date in descending order and take first 20
+          const sortedDomains = [...data.domains]
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .slice(0, 10)  // Show only 10 domains for this component (smaller than UltimasBusquedas)
+            .map(item => item.d);
+          setDomains(sortedDomains);
+        } else {
+          throw new Error('Datos de dominios inválidos o vacíos');
+        }
+      } catch (error) {
+        console.error('Error loading domains:', error);
+        // Use fallback domains when the API is not available
         setDomains(fallbackDomains);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    }).catch(error => {
-      console.error('Error loading recent searches:', error);
-
-      // Use fallback domains when the actual file can't be loaded
-      setDomains(fallbackDomains);
-      setIsLoading(false);
-      
-      // Removed toast notification to prevent the "Usando datos de ejemplo" message
-    });
+    };
+    
+    loadDomains();
   }, []);
 
   if (isLoading || domains.length === 0) {
     return null;
   }
 
-  // Add proper return statement with JSX content
   return (
     <Card className="bg-white shadow-sm mt-4">
       <CardHeader className="pb-2 pt-4">
