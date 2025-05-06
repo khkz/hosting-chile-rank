@@ -1,6 +1,10 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
-  <rect x="0" y="0" width="200" height="60" fill="#ffffff" />
-  <text x="10" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#2B2D42">Hosting</text>
-  <text x="100" y="36" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#EF233C">Plus</text>
+  <rect x="0" y="0" width="200" height="60" fill="white" fill-opacity="0"/>
+  <g>
+    <path d="M30 15C20 15 12 23 12 33S20 51 30 51s18-8 18-18-8-18-18-18zm0 34c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16z" fill="#0056b3"/>
+    <ellipse cx="30" cy="33" rx="20" ry="8" fill="none" stroke="#FF6600" stroke-width="2" transform="rotate(-30 30 33)"/>
+    <ellipse cx="30" cy="33" rx="20" ry="8" fill="none" stroke="#FF6600" stroke-width="2" transform="rotate(30 30 33)"/>
+    <text x="55" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#0056b3">hostingplus</text>
+  </g>
 </svg>
