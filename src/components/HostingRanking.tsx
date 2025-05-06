@@ -133,6 +133,8 @@ const HostingRanking = () => {
       },
       "offers": {
         "@type": "Offer",
+        "price": "3990",
+        "priceCurrency": "CLP",
         "url": provider.url,
         "availability": "https://schema.org/InStock"
       },
