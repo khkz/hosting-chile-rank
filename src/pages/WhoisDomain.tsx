@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -365,6 +366,24 @@ const WhoisDomain = () => {
                   diferentes. Se recomienda alojar contenido chileno en servidores locales.
                 </AlertDescription>
               </Alert>
+            )}
+            
+            {/* New intelligent call-out for domains without hosting */}
+            {(!domainData.ip || domainData.ip === '–') && 
+             (!domainData.nameservers || domainData.nameservers.length === 0) && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 my-6 flex flex-col gap-3">
+                <h3 className="text-lg font-semibold">¿Aún sin hosting?</h3>
+                <p className="text-sm">
+                  Te recomendamos <strong>HostingPlus</strong>, Nº 1 en nuestro ranking
+                  por velocidad y soporte. ¡Contrátalo ahora con descuento!
+                </p>
+                <a
+                  href="https://clientes.hostingplus.cl/cart.php?gid=13&promocode=EXIT20"
+                  className="inline-flex items-center justify-center bg-[#EF233C] hover:bg-red-600 text-white text-sm font-medium rounded-md px-4 py-2 w-fit"
+                >
+                  Contratar 20 % DSCTO
+                </a>
+              </div>
             )}
             
             <div className="grid md:grid-cols-2 gap-8 mt-8">
