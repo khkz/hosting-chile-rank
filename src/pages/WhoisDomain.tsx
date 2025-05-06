@@ -19,10 +19,7 @@ const getFallbackData = (domainName: string) => {
     ip_chile: true,
     provider: 'HostingPlus',
     asn: 'AS61512',
-    nameservers: [
-      'ns1.hostingplus.cl',
-      'ns2.hostingplus.cl'
-    ],
+    nameservers: ['ns1.hostingplus.cl', 'ns2.hostingplus.cl'],
     screenshot: '/placeholder.svg'
   };
 };
@@ -33,11 +30,10 @@ const lookupASN = async (ip: string): Promise<string> => {
     // Try to fetch ASN data from IPAPI
     const response = await fetch(`https://ipapi.co/${ip}/json/`);
     const data = await response.json();
-    
     if (data && data.asn) {
       return `${data.asn} (${data.org || 'Desconocido'})`;
     }
-    
+
     // Fallback if IPAPI doesn't return ASN
     return 'Consultando...';
   } catch (error) {
@@ -45,9 +41,12 @@ const lookupASN = async (ip: string): Promise<string> => {
     return 'No disponible';
   }
 };
-
 const WhoisDomain = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const {
+    slug
+  } = useParams<{
+    slug: string;
+  }>();
   const [domainData, setDomainData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +55,9 @@ const WhoisDomain = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
   const [previewError, setPreviewError] = useState(false);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
 
   // Format domain name from slug
   const domainName = slug ? slug.replace(/-/g, '.') : '';
@@ -66,19 +67,18 @@ const WhoisDomain = () => {
     setRefreshing(true);
     setPreviewLoaded(false);
     setPreviewError(false);
-    
     try {
       // Fetch A record (IP address)
       const aRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`).then(r => r.json());
       const ip = aRes.Answer ? aRes.Answer[0].data : '–';
-      
+
       // Fetch nameservers
       const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`).then(r => r.json());
       const nameservers = nsRes.Answer ? nsRes.Answer.map((x: any) => x.data) : [];
-      
+
       // Use our enhanced Chilean IP detection
       const ip_chile = isChileanIP(ip);
-      
+
       // Try to determine provider from nameservers (improved)
       let provider = 'Desconocido';
       if (nameservers.some((ns: string) => ns.includes('hostingplus'))) {
@@ -96,7 +96,7 @@ const WhoisDomain = () => {
       } else if (nameservers.some((ns: string) => ns.includes('azure'))) {
         provider = 'Microsoft Azure';
       }
-      
+
       // Initialize data with what we have
       const liveData = {
         ip,
@@ -106,11 +106,10 @@ const WhoisDomain = () => {
         nameservers,
         screenshot: `/placeholder.svg`
       };
-      
       setDomainData(liveData);
       setUsingLiveData(true);
       setUsingFallback(false);
-      
+
       // Try to get ASN information
       lookupASN(ip).then(asnInfo => {
         // Update data with ASN info and double-check if it's Chilean using ASN
@@ -122,57 +121,54 @@ const WhoisDomain = () => {
           ip_chile: prevData.ip_chile || isChileanByASN
         }));
       });
-      
+
       // Try to get a screenshot
       try {
         // Use multiple screenshot services for redundancy
-        const screenshotServices = [
-          `https://image.thum.io/get/width/600/png/${domain}`,
-          `https://s.wordpress.com/mshots/v1/${encodeURIComponent(`https://${domain}`)}?w=600`,
-          `https://api.urlbox.io/v1/screenshot?url=${domain}&width=600&format=png`
-        ];
-        
+        const screenshotServices = [`https://image.thum.io/get/width/600/png/${domain}`, `https://s.wordpress.com/mshots/v1/${encodeURIComponent(`https://${domain}`)}?w=600`, `https://api.urlbox.io/v1/screenshot?url=${domain}&width=600&format=png`];
+
         // Try the first service
-        fetch(screenshotServices[0], { method: 'HEAD' })
-          .then(response => {
-            if (response.ok) {
-              setDomainData(prevData => ({
-                ...prevData,
-                screenshot: screenshotServices[0]
-              }));
-              setPreviewLoaded(true);
-            } else {
-              // If first service fails, try second service
-              console.log('First screenshot service failed, trying second service');
-              setDomainData(prevData => ({
-                ...prevData,
-                screenshot: screenshotServices[1]
-              }));
-            }
-          })
-          .catch(err => {
-            console.error('Error with first screenshot service:', err);
+        fetch(screenshotServices[0], {
+          method: 'HEAD'
+        }).then(response => {
+          if (response.ok) {
+            setDomainData(prevData => ({
+              ...prevData,
+              screenshot: screenshotServices[0]
+            }));
+            setPreviewLoaded(true);
+          } else {
+            // If first service fails, try second service
+            console.log('First screenshot service failed, trying second service');
             setDomainData(prevData => ({
               ...prevData,
               screenshot: screenshotServices[1]
             }));
-          });
+          }
+        }).catch(err => {
+          console.error('Error with first screenshot service:', err);
+          setDomainData(prevData => ({
+            ...prevData,
+            screenshot: screenshotServices[1]
+          }));
+        });
       } catch (err) {
         console.error('Error fetching screenshot:', err);
         setPreviewError(true);
       }
-      
       toast({
         title: "Datos en vivo",
         description: "Mostrando información actual del dominio.",
         variant: "default"
       });
-      
+
       // Try calling the Supabase function to save this search for future reference
       try {
         const res = await fetch('https://oegvwjxrlmtwortyhsrv.functions.supabase.co/save-search', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({
             domain,
             ip,
@@ -181,7 +177,6 @@ const WhoisDomain = () => {
             asn: '-'
           })
         });
-        
         if (res.ok) {
           console.log('Domain data saved successfully');
         }
@@ -199,7 +194,6 @@ const WhoisDomain = () => {
       setRefreshing(false);
     }
   };
-
   useEffect(() => {
     if (!slug) {
       setError('No se encontró información para este dominio');
@@ -208,51 +202,46 @@ const WhoisDomain = () => {
     }
 
     // First try to load static data file
-    fetch(`/content/domains/${slug}.json`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('No se encontró información para este dominio');
-        }
-        
-        // Check if the response is HTML (common error case)
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('text/html')) {
-          throw new Error('El archivo de datos no existe o no está en formato JSON');
-        }
-        
-        return response.json();
-      })
-      .then(data => {
-        setDomainData(data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('Error loading domain data:', error);
-        
-        // If static file loading fails, try to fetch live data
-        fetchLiveDomainData(domainName).catch(liveError => {
-          console.error('Error fetching live data:', liveError);
-          
-          // If both static and live data fail, use fallback
-          setDomainData(getFallbackData(domainName));
-          setUsingFallback(true);
-          
-          toast({
-            title: "Usando datos de ejemplo",
-            description: "Se están mostrando datos estimados para este dominio.",
-            variant: "default"
-          });
-        }).finally(() => {
-          setIsLoading(false);
+    fetch(`/content/domains/${slug}.json`).then(response => {
+      if (!response.ok) {
+        throw new Error('No se encontró información para este dominio');
+      }
+
+      // Check if the response is HTML (common error case)
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('text/html')) {
+        throw new Error('El archivo de datos no existe o no está en formato JSON');
+      }
+      return response.json();
+    }).then(data => {
+      setDomainData(data);
+      setIsLoading(false);
+    }).catch(error => {
+      console.error('Error loading domain data:', error);
+
+      // If static file loading fails, try to fetch live data
+      fetchLiveDomainData(domainName).catch(liveError => {
+        console.error('Error fetching live data:', liveError);
+
+        // If both static and live data fail, use fallback
+        setDomainData(getFallbackData(domainName));
+        setUsingFallback(true);
+        toast({
+          title: "Usando datos de ejemplo",
+          description: "Se están mostrando datos estimados para este dominio.",
+          variant: "default"
         });
+      }).finally(() => {
+        setIsLoading(false);
       });
+    });
   }, [slug, toast, domainName]);
 
   // Add page-specific SEO metadata
   React.useEffect(() => {
     if (domainName) {
       document.title = `Información de hosting para ${domainName} — eligetuhosting.cl`;
-      
+
       // Create meta description
       let metaDescription = document.querySelector('meta[name="description"]');
       if (!metaDescription) {
@@ -260,28 +249,21 @@ const WhoisDomain = () => {
         metaDescription.setAttribute('name', 'description');
         document.head.appendChild(metaDescription);
       }
-      metaDescription.setAttribute('content', 
-        `Datos de hosting para ${domainName}: IP, nameservers, proveedor, ASN y más información para mejorar tu presencia en línea.` 
-      );
+      metaDescription.setAttribute('content', `Datos de hosting para ${domainName}: IP, nameservers, proveedor, ASN y más información para mejorar tu presencia en línea.`);
     }
   }, [domainName]);
-
   const handleRefresh = () => {
     if (domainName) {
       fetchLiveDomainData(domainName);
     }
   };
-
   const handleImageLoad = () => {
     setPreviewLoaded(true);
   };
-
   const handleImageError = () => {
     setPreviewError(true);
   };
-
-  return (
-    <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
+  return <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Helmet>
         <title>Información de hosting para {domainName} — eligetuhosting.cl</title>
         <meta name="description" content={`Análisis técnico de ${domainName}: IP, nameservers, proveedor de hosting, ASN y más información para mejorar tu presencia en línea.`} />
@@ -293,8 +275,7 @@ const WhoisDomain = () => {
       </Helmet>
       <Navbar />
       <main className="container mx-auto px-4 py-12">
-        {isLoading ? (
-          <div className="space-y-4">
+        {isLoading ? <div className="space-y-4">
             <Skeleton className="h-10 w-3/4" />
             <Skeleton className="h-6 w-1/2" />
             <div className="grid md:grid-cols-2 gap-8 mt-8">
@@ -303,9 +284,7 @@ const WhoisDomain = () => {
               </div>
               <Skeleton className="h-60 w-full" />
             </div>
-          </div>
-        ) : error ? (
-          <div className="text-center py-12">
+          </div> : error ? <div className="text-center py-12">
             <h1 className="text-2xl font-bold text-red-600 mb-2">Error</h1>
             <p>{error}</p>
             <p className="mt-4">
@@ -314,47 +293,35 @@ const WhoisDomain = () => {
                 página principal
               </Link>.
             </p>
-          </div>
-        ) : domainData ? (
-          <div>
+          </div> : domainData ? <div>
             <div className="flex justify-between items-center">
               <h1 className="text-3xl font-bold mb-4">
                 Información de hosting para <span className="text-blue-700">{domainName}</span>
               </h1>
               
-              <Button 
-                onClick={handleRefresh} 
-                variant="outline" 
-                disabled={refreshing}
-                className="flex items-center gap-2"
-              >
+              <Button onClick={handleRefresh} variant="outline" disabled={refreshing} className="flex items-center gap-2">
                 <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
                 {refreshing ? 'Actualizando...' : 'Actualizar datos'}
               </Button>
             </div>
             
-            {usingFallback && (
-              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            {usingFallback && <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <p className="text-sm text-blue-800">
                   Nota: Se están mostrando datos estimados para este dominio. 
                   Estos datos podrían no ser exactos.
                 </p>
-              </div>
-            )}
+              </div>}
             
-            {usingLiveData && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            {usingLiveData && <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-sm text-green-800">
                   <Check className="inline-block h-4 w-4 mr-1 mb-1" />
                   Se están mostrando datos en vivo para este dominio.
                   Esta información fue obtenida en tiempo real y podría variar.
                 </p>
-              </div>
-            )}
+              </div>}
             
             {/* New warning for non-Chilean IPs */}
-            {domainData.ip && !domainData.ip_chile && (
-              <Alert variant="destructive" className="mb-6 bg-red-50 border-red-200">
+            {domainData.ip && !domainData.ip_chile && <Alert variant="destructive" className="mb-6 bg-red-50 border-red-200">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
                 <AlertTitle className="text-red-700">Alojamiento fuera de Chile</AlertTitle>
                 <AlertDescription className="text-red-700">
@@ -362,26 +329,19 @@ const WhoisDomain = () => {
                   datos chilenos, afectar velocidad de carga en Chile y podría estar sujeto a leyes de privacidad 
                   diferentes. Se recomienda alojar contenido chileno en servidores locales.
                 </AlertDescription>
-              </Alert>
-            )}
+              </Alert>}
             
             {/* New intelligent call-out for domains without hosting */}
-            {(!domainData.ip || domainData.ip === '–') && 
-             (!domainData.nameservers || domainData.nameservers.length === 0) && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 my-6 flex flex-col gap-3">
+            {(!domainData.ip || domainData.ip === '–') && (!domainData.nameservers || domainData.nameservers.length === 0) && <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 my-6 flex flex-col gap-3">
                 <h3 className="text-lg font-semibold">¿Aún sin hosting?</h3>
                 <p className="text-sm">
                   Te recomendamos <strong>HostingPlus</strong>, Nº 1 en nuestro ranking
                   por velocidad y soporte. ¡Contrátalo ahora con descuento!
                 </p>
-                <a
-                  href="https://clientes.hostingplus.cl/cart.php?gid=13&promocode=EXIT20"
-                  className="inline-flex items-center justify-center bg-[#EF233C] hover:bg-red-600 text-white text-sm font-medium rounded-md px-4 py-2 w-fit"
-                >
+                <a href="https://clientes.hostingplus.cl/cart.php?gid=13&promocode=EXIT20" className="inline-flex items-center justify-center bg-[#EF233C] hover:bg-red-600 text-white text-sm font-medium rounded-md px-4 py-2 w-fit">
                   Contratar 20 % DSCTO
                 </a>
-              </div>
-            )}
+              </div>}
             
             <div className="grid md:grid-cols-2 gap-8 mt-8">
               <Card className="shadow-md overflow-hidden">
@@ -396,15 +356,11 @@ const WhoisDomain = () => {
                     <div>
                       <span className="font-medium">Dirección IP:</span> 
                       <span className="ml-2">{domainData.ip}</span>
-                      {domainData.ip_chile ? (
-                        <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {domainData.ip_chile ? <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           🇨🇱 IP Chilena
-                        </span>
-                      ) : (
-                        <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        </span> : <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                           <CloudOff className="h-3 w-3 mr-1" /> IP Extranjera
-                        </span>
-                      )}
+                        </span>}
                     </div>
                     
                     <div>
@@ -420,9 +376,7 @@ const WhoisDomain = () => {
                     <div>
                       <span className="font-medium">Nameservers:</span>
                       <ul className="ml-6 mt-1 list-disc">
-                        {domainData.nameservers && domainData.nameservers.map((ns: string, index: number) => (
-                          <li key={index} className="text-sm">{ns}</li>
-                        ))}
+                        {domainData.nameservers && domainData.nameservers.map((ns: string, index: number) => <li key={index} className="text-sm">{ns}</li>)}
                       </ul>
                     </div>
                   </div>
@@ -431,9 +385,7 @@ const WhoisDomain = () => {
                     <h3 className="font-medium text-blue-800 mb-2">¿Tu IP no es chilena?</h3>
                     <p className="text-sm">
                       Mejora tu velocidad y SEO local 
-                      <a href="/cotiza-hosting" className="text-red-600 underline ml-1">
-                        migrando gratis
-                      </a> 
+                      <a href="/cotiza-hosting" className="text-red-600 underline ml-1">migrando gratis </a> 
                       a HostingPlus (30 días garantía).
                     </p>
                   </div>
@@ -447,54 +399,34 @@ const WhoisDomain = () => {
                 </h2>
                 <Card className="border overflow-hidden shadow-md bg-white">
                   <div className="h-[300px] relative overflow-hidden bg-gray-100">
-                    {!previewLoaded && !previewError && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                    {!previewLoaded && !previewError && <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
                         <div className="text-center">
                           <RefreshCw className="h-10 w-10 mx-auto animate-spin text-gray-400" />
                           <p className="mt-2 text-sm text-gray-500">Cargando vista previa...</p>
                         </div>
-                      </div>
-                    )}
+                      </div>}
                     
-                    {previewError && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                    {previewError && <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
                         <div className="text-center">
                           <p className="text-sm text-gray-500">No se pudo cargar la vista previa</p>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="mt-2"
-                            onClick={() => {
-                              setPreviewError(false);
-                              setPreviewLoaded(false);
-                              // Try to reload the image
-                              setDomainData(prevData => ({
-                                ...prevData,
-                                screenshot: `https://image.thum.io/get/width/600/png/${domainName}?cache=${Date.now()}`
-                              }));
-                            }}
-                          >
+                          <Button variant="outline" size="sm" className="mt-2" onClick={() => {
+                      setPreviewError(false);
+                      setPreviewLoaded(false);
+                      // Try to reload the image
+                      setDomainData(prevData => ({
+                        ...prevData,
+                        screenshot: `https://image.thum.io/get/width/600/png/${domainName}?cache=${Date.now()}`
+                      }));
+                    }}>
                             Reintentar
                           </Button>
                         </div>
-                      </div>
-                    )}
+                      </div>}
                     
-                    <img 
-                      src={domainData.screenshot} 
-                      alt={`Vista previa de ${domainName}`}
-                      className={`w-full h-full object-cover transition-opacity duration-300 ${previewLoaded ? 'opacity-100' : 'opacity-0'}`}
-                      onLoad={handleImageLoad}
-                      onError={handleImageError}
-                    />
+                    <img src={domainData.screenshot} alt={`Vista previa de ${domainName}`} className={`w-full h-full object-cover transition-opacity duration-300 ${previewLoaded ? 'opacity-100' : 'opacity-0'}`} onLoad={handleImageLoad} onError={handleImageError} />
                   </div>
                   <div className="p-3 bg-white border-t">
-                    <a 
-                      href={`https://${domainName}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-sm text-blue-600 hover:underline flex items-center"
-                    >
+                    <a href={`https://${domainName}`} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline flex items-center">
                       <Globe className="h-3 w-3 mr-1" />
                       Visitar sitio
                     </a>
@@ -530,22 +462,16 @@ const WhoisDomain = () => {
                     </li>
                   </ul>
                 </div>
-                <Button 
-                  asChild 
-                  className="ml-auto bg-[#EF233C] hover:bg-[#b3001b] text-white px-6"
-                >
+                <Button asChild className="ml-auto bg-[#EF233C] hover:bg-[#b3001b] text-white px-6">
                   <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
                     Contratar
                   </a>
                 </Button>
               </div>
             </div>
-          </div>
-        ) : null}
+          </div> : null}
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default WhoisDomain;
