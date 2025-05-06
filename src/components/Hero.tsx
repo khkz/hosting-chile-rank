@@ -123,7 +123,7 @@ const Hero = () => {
       {/* section 1: Hero with domain search */}
       <section className="py-20 text-center bg-[#F7F9FC]">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42]">Mejor Hosting Chileno 2025</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42]">Elige el Mejor Hosting Chileno 2025</h1>
           <p className="mt-4 text-lg text-[#555] max-w-2xl mx-auto">
             Informe instantáneo de IP, proveedor, nameservers y soberanía digital.
           </p>
