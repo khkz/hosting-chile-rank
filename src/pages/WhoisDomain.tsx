@@ -42,6 +42,12 @@ const lookupASN = async (ip: string): Promise<string> => {
     return 'No disponible';
   }
 };
+
+// Function to capitalize the first letter of a string
+const capitalizeFirstLetter = (string: string): string => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 const WhoisDomain = () => {
   const {
     slug
@@ -62,6 +68,7 @@ const WhoisDomain = () => {
 
   // Format domain name from slug
   const domainName = slug ? slug.replace(/-/g, '.') : '';
+  const capitalizedDomainName = capitalizeFirstLetter(domainName);
 
   // Generate structured data for Schema.org
   const generateSchemaData = () => {
@@ -69,7 +76,7 @@ const WhoisDomain = () => {
     const schemaData = {
       "@context": "https://schema.org",
       "@type": "TechArticle",
-      "headline": `Información de hosting para ${domainName}`,
+      "headline": `${capitalizedDomainName} - Información de hosting`,
       "description": `Análisis técnico de ${domainName}: IP, nameservers, proveedor de hosting, ASN y más información para mejorar tu presencia en línea.`,
       "mainEntityOfPage": {
         "@type": "WebPage",
@@ -282,7 +289,7 @@ const WhoisDomain = () => {
   // Add page-specific SEO metadata
   React.useEffect(() => {
     if (domainName) {
-      document.title = `Información de hosting para ${domainName} — eligetuhosting.cl`;
+      document.title = `${capitalizedDomainName} - Información de hosting — eligetuhosting.cl`;
 
       // Create meta description
       let metaDescription = document.querySelector('meta[name="description"]');
@@ -293,14 +300,14 @@ const WhoisDomain = () => {
       }
       metaDescription.setAttribute('content', `Datos de hosting para ${domainName}: IP, nameservers, proveedor, ASN y más información para mejorar tu presencia en línea.`);
     }
-  }, [domainName]);
+  }, [domainName, capitalizedDomainName]);
 
   // Prepare breadcrumbs for this page
   const breadcrumbItems = [{
     label: 'Dominios',
     href: '/ultimos-dominios/'
   }, {
-    label: domainName
+    label: capitalizedDomainName
   }];
   const handleRefresh = () => {
     if (domainName) {
@@ -315,16 +322,16 @@ const WhoisDomain = () => {
   };
   return <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Helmet>
-        <title>Información de hosting para {domainName} — eligetuhosting.cl</title>
+        <title>{capitalizedDomainName} - Información de hosting — eligetuhosting.cl</title>
         <meta name="description" content={`Análisis técnico de ${domainName}: IP, nameservers, proveedor de hosting, ASN y más información para mejorar tu presencia en línea.`} />
-        <meta property="og:title" content={`Datos de hosting: ${domainName} — eligetuhosting.cl`} />
+        <meta property="og:title" content={`${capitalizedDomainName} - Información de hosting — eligetuhosting.cl`} />
         <meta property="og:description" content={`Análisis técnico completo de ${domainName}. Descubre su proveedor de hosting, IP, nameservers y más.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://eligetuhosting.cl/whois/${slug}/`} />
         <link rel="canonical" href={`https://eligetuhosting.cl/whois/${slug}/`} />
         {domainData && <script type="application/ld+json">{generateSchemaData()}</script>}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`Datos de hosting: ${domainName} — eligetuhosting.cl`} />
+        <meta name="twitter:title" content={`${capitalizedDomainName} - Información de hosting — eligetuhosting.cl`} />
         <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre su proveedor de hosting, IP, nameservers y más.`} />
         {previewLoaded && !previewError && <meta name="twitter:image" content={domainData?.screenshot} />}
         <meta name="robots" content="index, follow" />
@@ -358,7 +365,7 @@ const WhoisDomain = () => {
           </div> : domainData ? <div>
             <div className="flex justify-between items-center">
               <h1 className="text-3xl font-bold mb-4">
-                Información de hosting para <span className="text-blue-700">{domainName}</span>
+                {capitalizedDomainName} <span className="text-blue-700">- Información de hosting</span>
               </h1>
               
               <Button onClick={handleRefresh} variant="outline" disabled={refreshing} className="flex items-center gap-2">

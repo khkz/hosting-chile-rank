@@ -9,7 +9,177 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      contact_history: {
+        Row: {
+          contact_date: string
+          contact_type: string
+          created_at: string
+          domain_id: string
+          id: string
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          contact_date?: string
+          contact_type: string
+          created_at?: string
+          domain_id: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          contact_date?: string
+          contact_type?: string
+          created_at?: string
+          domain_id?: string
+          id?: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_history_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dns_info: {
+        Row: {
+          created_at: string
+          domain_id: string
+          id: string
+          ip: string | null
+          ns: string[] | null
+          ns_status: string | null
+          updated_at: string
+          verified: boolean
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          domain_id: string
+          id?: string
+          ip?: string | null
+          ns?: string[] | null
+          ns_status?: string | null
+          updated_at?: string
+          verified?: boolean
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          domain_id?: string
+          id?: string
+          ip?: string | null
+          ns?: string[] | null
+          ns_status?: string | null
+          updated_at?: string
+          verified?: boolean
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dns_info_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      domains: {
+        Row: {
+          contacted: boolean
+          created_at: string
+          domain: string
+          extraction_method: string | null
+          id: string
+          source: string | null
+          timestamp: string
+          updated_at: string
+        }
+        Insert: {
+          contacted?: boolean
+          created_at?: string
+          domain: string
+          extraction_method?: string | null
+          id?: string
+          source?: string | null
+          timestamp?: string
+          updated_at?: string
+        }
+        Update: {
+          contacted?: boolean
+          created_at?: string
+          domain?: string
+          extraction_method?: string | null
+          id?: string
+          source?: string | null
+          timestamp?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      whois_info: {
+        Row: {
+          address: string | null
+          cached_at: string | null
+          created_at: string
+          created_date: string | null
+          domain_id: string
+          email: string | null
+          expires_date: string | null
+          id: string
+          organization: string | null
+          owner_name: string | null
+          phone: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          cached_at?: string | null
+          created_at?: string
+          created_date?: string | null
+          domain_id: string
+          email?: string | null
+          expires_date?: string | null
+          id?: string
+          organization?: string | null
+          owner_name?: string | null
+          phone?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          cached_at?: string | null
+          created_at?: string
+          created_date?: string | null
+          domain_id?: string
+          email?: string | null
+          expires_date?: string | null
+          id?: string
+          organization?: string | null
+          owner_name?: string | null
+          phone?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whois_info_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
