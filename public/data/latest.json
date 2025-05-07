@@ -1,6 +1,10 @@
 {
-  "updated": "2025-05-07T08:20:12.017Z",
+  "updated": "2025-05-07T09:15:49.170Z",
   "domains": [
+    {
+      "d": "fmart.cl",
+      "date": "2025-05-07T04:58:55Z"
+    },
     {
       "d": "bithosting.cl",
       "date": "2025-05-07T04:01:35Z"
@@ -2348,18 +2352,6 @@
     {
       "d": "valpoal100.cl",
       "date": "2025-05-06T05:48:59Z"
-    },
-    {
-      "d": "bal-le-duc.cl",
-      "date": "2025-05-06T04:58:00Z"
-    },
-    {
-      "d": "academiapowerperalta.cl",
-      "date": "2025-05-06T04:46:47Z"
-    },
-    {
-      "d": "trienal.cl",
-      "date": "2025-05-06T04:34:56Z"
     }
   ]
 }
