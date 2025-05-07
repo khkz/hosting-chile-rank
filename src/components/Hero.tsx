@@ -208,7 +208,7 @@ const Hero = () => {
               Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:
             </p>
             <div className="flex items-center gap-2">
-              <img src="/logo-hostingplus-new.svg" alt="HostingPlus.cl" className="h-6" />
+              <img src="/logo-hostingplus.png" alt="HostingPlus.cl" className="h-6" />
               <div>
                 <p className="font-medium">HostingPlus.cl - Nº1 en Chile</p>
                 <p className="text-xs text-gray-600">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>

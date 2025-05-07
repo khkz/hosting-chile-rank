@@ -517,7 +517,7 @@ const WhoisDomain = () => {
                 Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:
               </p>
               <div className="flex items-center gap-4 border p-4 rounded-lg hover:border-blue-200 transition-all">
-                <img src="/logo-hostingplus-new.svg" alt="HostingPlus.cl" className="h-10" />
+                <img src="/logo-hostingplus.png" alt="HostingPlus.cl" className="h-10" />
                 <div>
                   <p className="font-medium text-lg">HostingPlus.cl - Nº1 en Chile</p>
                   <p className="text-sm text-gray-600">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>
