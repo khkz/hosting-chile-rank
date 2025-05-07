@@ -42,7 +42,6 @@ const lookupASN = async (ip: string): Promise<string> => {
     return 'No disponible';
   }
 };
-
 const WhoisDomain = () => {
   const {
     slug
@@ -67,7 +66,6 @@ const WhoisDomain = () => {
   // Generate structured data for Schema.org
   const generateSchemaData = () => {
     if (!domainData) return null;
-    
     const schemaData = {
       "@context": "https://schema.org",
       "@type": "TechArticle",
@@ -103,7 +101,6 @@ const WhoisDomain = () => {
         "location": domainData.ip_chile ? "Chile" : "Internacional"
       }
     };
-    
     return JSON.stringify(schemaData);
   };
 
@@ -239,7 +236,6 @@ const WhoisDomain = () => {
       setRefreshing(false);
     }
   };
-
   useEffect(() => {
     if (!slug) {
       setError('No se encontró información para este dominio');
@@ -300,27 +296,24 @@ const WhoisDomain = () => {
   }, [domainName]);
 
   // Prepare breadcrumbs for this page
-  const breadcrumbItems = [
-    { label: 'Dominios', href: '/ultimos-dominios/' },
-    { label: domainName }
-  ];
-
+  const breadcrumbItems = [{
+    label: 'Dominios',
+    href: '/ultimos-dominios/'
+  }, {
+    label: domainName
+  }];
   const handleRefresh = () => {
     if (domainName) {
       fetchLiveDomainData(domainName);
     }
   };
-
   const handleImageLoad = () => {
     setPreviewLoaded(true);
   };
-
   const handleImageError = () => {
     setPreviewError(true);
   };
-
-  return (
-    <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
+  return <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Helmet>
         <title>Información de hosting para {domainName} — eligetuhosting.cl</title>
         <meta name="description" content={`Análisis técnico de ${domainName}: IP, nameservers, proveedor de hosting, ASN y más información para mejorar tu presencia en línea.`} />
@@ -342,9 +335,7 @@ const WhoisDomain = () => {
       
       <main className="container mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        {!isLoading && !error && domainData && (
-          <SEOBreadcrumbs items={breadcrumbItems} />
-        )}
+        {!isLoading && !error && domainData && <SEOBreadcrumbs items={breadcrumbItems} />}
         
         {isLoading ? <div className="space-y-4">
             <Skeleton className="h-10 w-3/4" />
@@ -517,7 +508,7 @@ const WhoisDomain = () => {
                 Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:
               </p>
               <div className="flex items-center gap-4 border p-4 rounded-lg hover:border-blue-200 transition-all">
-                <img src="/logo-hostingplus-new.svg" alt="HostingPlus.cl" className="h-10" />
+                <img alt="HostingPlus.cl" className="h-10" src="/lovable-uploads/4b9ad72f-ec68-4414-8b9f-5debe4d14d9f.png" />
                 <div>
                   <p className="font-medium text-lg">HostingPlus.cl - Nº1 en Chile</p>
                   <p className="text-sm text-gray-600">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>
@@ -544,8 +535,6 @@ const WhoisDomain = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default WhoisDomain;
