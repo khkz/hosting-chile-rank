@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -10,7 +11,7 @@ import { Helmet } from 'react-helmet';
 const hostingData = {
   'hostingplus': {
     name: 'HostingPlus',
-    logo: '/logo-hostingplus.png',
+    logo: '/logo-hostingplus-new.svg',
     rating: 9.8,
     description: 'HostingPlus ofrece una combinación única de rendimiento, seguridad y soporte técnico que lo posiciona como nuestra principal recomendación en el mercado chileno.',
     pros: [
@@ -28,7 +29,7 @@ const hostingData = {
   },
   'ecohosting': {
     name: 'EcoHosting',
-    logo: '/logo-ecohosting.png',
+    logo: '/logo-ecohosting-new.svg',
     rating: 9.3,
     description: 'EcoHosting destaca por su compromiso con el medio ambiente y su excelente rendimiento técnico, ofreciendo una alternativa confiable y responsable.',
     pros: [

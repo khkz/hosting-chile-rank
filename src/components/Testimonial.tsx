@@ -47,8 +47,8 @@ const Testimonial = () => {
       </div>
       
       <div className="flex flex-wrap justify-center gap-6 grayscale opacity-80 hover:opacity-100 transition">
-        <img src="/logo-hostingplus.png" className="h-8" alt="HostingPlus" />
-        <img src="/logo-ecohosting.png" className="h-8" alt="EcoHosting" />
+        <img src="/logo-hostingplus-new.svg" className="h-8" alt="HostingPlus" />
+        <img src="/logo-ecohosting-new.svg" className="h-8" alt="EcoHosting" />
         <img src="/logo-hostgator.svg" className="h-8" alt="HostGator" />
         <img src="/logo-godaddy.svg" className="h-8" alt="GoDaddy" />
       </div>

@@ -1,10 +1,11 @@
+
 import { HostingCompanyData } from "@/components/HostingCompanyInfo";
 
 export const hostingCompanies: Record<string, HostingCompanyData> = {
   "hostingplus": {
     id: "hostingplus",
     name: "HostingPlus.cl",
-    logo: "/logo-hostingplus.png",
+    logo: "/logo-hostingplus-new.svg",
     description: "HostingPlus es uno de los proveedores líderes de hosting en Chile, con servidores propios ubicados en Santiago. Ofrecen una combinación de alta velocidad, seguridad avanzada y soporte técnico 24/7.",
     rating: 9.9,
     yearFounded: 2013,
@@ -71,7 +72,7 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
   "ecohosting": {
     id: "ecohosting",
     name: "EcoHosting.cl",
-    logo: "/logo-ecohosting.png",
+    logo: "/logo-ecohosting-new.svg",
     description: "EcoHosting es un proveedor chileno que destaca por su compromiso con el medio ambiente, utilizando energía 100% renovable para sus servidores y ofreciendo soluciones de hosting confiables y de alta calidad.",
     rating: 9.6,
     yearFounded: 2015,
