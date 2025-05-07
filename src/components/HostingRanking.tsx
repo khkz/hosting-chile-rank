@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import HostingCard from './HostingCard';
 import { Trophy, Check } from 'lucide-react';
@@ -10,7 +11,7 @@ const hostingData = [
     position: 1,
     name: "HostingPlus.cl",
     displayName: { first: "Hosting", second: "Plus", firstColor: "text-[#2B2D42]", secondColor: "text-[#EF233C]" },
-    logo: "/logo-hostingplus-new.svg",
+    logo: "/logo-hostingplus.png",
     rating: 9.9,
     speedRating: 9.8,
     priceRating: 9.5,
@@ -35,7 +36,7 @@ const hostingData = [
     position: 2,
     name: "EcoHosting.cl",
     displayName: { first: "Eco", second: "Hosting", firstColor: "text-green-600", secondColor: "text-[#2B2D42]" },
-    logo: "/logo-ecohosting-new.svg",
+    logo: "/logo-ecohosting.png",
     rating: 9.6,
     speedRating: 9.6,
     priceRating: 9.7,

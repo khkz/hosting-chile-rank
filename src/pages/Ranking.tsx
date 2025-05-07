@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -38,7 +37,7 @@ const hostProviders = [
   {
     id: 1,
     name: "HostingPlus",
-    logo: "/logo-hostingplus-new.svg",
+    logo: "/logo-hostingplus.png",
     rating: 9.9,
     price: "Desde $3.990/mes",
     speed: "9.9/10",
@@ -54,7 +53,7 @@ const hostProviders = [
   {
     id: 2,
     name: "EcoHosting",
-    logo: "/logo-ecohosting-new.svg",
+    logo: "/logo-ecohosting.png",
     rating: 9.6,
     price: "Desde $4.990/mes",
     speed: "9.7/10",

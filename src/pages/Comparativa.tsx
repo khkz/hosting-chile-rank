@@ -39,7 +39,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'hostingplus',
     name: 'HostingPlus.cl',
-    logo: '/logo-hostingplus-new.svg',
+    logo: '/logo-hostingplus.png',
     velocidad: '9.9/10',
     seguridad: '9.9/10',
     backups: 'Diarios (JetBackup)',
@@ -53,7 +53,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'ecohosting',
     name: 'EcoHosting.cl',
-    logo: '/logo-ecohosting-new.svg',
+    logo: '/logo-ecohosting.png',
     velocidad: '9.6/10',
     seguridad: '9.7/10',
     backups: 'Diarios (JetBackup)',
