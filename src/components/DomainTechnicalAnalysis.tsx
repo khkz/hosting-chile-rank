@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -6,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { InfoIcon, Server, Globe, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { detectTechnologies, checkSSL, estimateLoadingSpeed } from '@/utils/domainAnalysisUtils';
+import { toast } from '@/components/ui/use-toast';
 
 interface DomainTechnicalAnalysisProps {
   domainName: string;
@@ -22,9 +22,13 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
   const [sslInfo, setSSLInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [speedInfo, setSpeedInfo] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      
       try {
         // Fetch all the technical data in parallel
         const [techData, sslData, speedData] = await Promise.all([
@@ -38,12 +42,20 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
         setSpeedInfo(speedData);
       } catch (error) {
         console.error('Error fetching technical data:', error);
+        setError('No se pudieron cargar los datos técnicos. Por favor, inténtalo de nuevo más tarde.');
+        toast({
+          title: "Error al cargar datos técnicos",
+          description: "No se pudieron obtener los detalles técnicos del dominio.",
+          variant: "destructive"
+        });
       } finally {
         setLoading(false);
       }
     };
     
-    fetchData();
+    if (domainName) {
+      fetchData();
+    }
   }, [domainName, ip]);
 
   return (
@@ -67,6 +79,13 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
             </Card>
           ))}
         </div>
+      ) : error ? (
+        <Card className="shadow-sm">
+          <CardContent className="pt-4 flex flex-col items-center justify-center py-10">
+            <AlertTriangle className="h-12 w-12 text-amber-500 mb-4" />
+            <p className="text-center text-gray-700">{error}</p>
+          </CardContent>
+        </Card>
       ) : (
         <>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -164,6 +183,7 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
                       <Progress 
                         value={speedInfo.score} 
                         className="h-2" 
+                        // @ts-ignore - the Progress component may not have indicatorClassName in its types
                         indicatorClassName={`${
                           speedInfo.score > 75 ? 'bg-green-500' : 
                           speedInfo.score > 50 ? 'bg-yellow-500' : 

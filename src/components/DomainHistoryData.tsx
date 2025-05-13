@@ -5,8 +5,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
-import { History, Calendar, User, AlertTriangle, Mail, Globe } from 'lucide-react';
+import { History, Calendar, User, AlertTriangle, Mail, Globe, Info } from 'lucide-react';
 import { getDomainHistory, getSimilarDomains } from '@/utils/domainAnalysisUtils';
+import { toast } from '@/components/ui/use-toast';
 
 interface DomainHistoryDataProps {
   domainName: string;
@@ -15,6 +16,7 @@ interface DomainHistoryDataProps {
 const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => {
   const [historyData, setHistoryData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [similarDomains, setSimilarDomains] = useState<any[]>([]);
 
   // Mock WHOIS data - would come from an API in production
@@ -32,7 +34,11 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      
       try {
+        // Get domain history data
         const history = await getDomainHistory(domainName);
         setHistoryData(history);
         
@@ -41,12 +47,20 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
         setSimilarDomains(similar);
       } catch (error) {
         console.error('Error fetching domain history:', error);
+        setError('No se pudieron cargar los datos históricos del dominio.');
+        toast({
+          title: "Error al cargar datos históricos",
+          description: "No se pudieron obtener los detalles históricos del dominio.",
+          variant: "destructive"
+        });
       } finally {
         setLoading(false);
       }
     };
     
-    fetchData();
+    if (domainName) {
+      fetchData();
+    }
   }, [domainName]);
 
   const formatDate = (date: Date) => {
@@ -66,6 +80,13 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
           <Skeleton className="h-60 w-full" />
           <Skeleton className="h-40 w-full" />
         </div>
+      ) : error ? (
+        <Card className="shadow-sm">
+          <CardContent className="pt-4 flex flex-col items-center justify-center py-10">
+            <AlertTriangle className="h-12 w-12 text-amber-500 mb-4" />
+            <p className="text-center text-gray-700">{error}</p>
+          </CardContent>
+        </Card>
       ) : (
         <>
           {/* Domain Registration Info */}
@@ -110,6 +131,7 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
                       </span>
                     </p>
                     <p className="text-sm text-blue-800 mt-2">
+                      <Info className="h-4 w-4 inline mr-1" />
                       Los dominios con mayor antigüedad suelen tener mejor posicionamiento SEO.
                     </p>
                   </div>
