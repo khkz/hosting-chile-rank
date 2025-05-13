@@ -114,7 +114,7 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
       </div>
       
       {isEstimatedData && !loading && (
-        <Alert variant="warning" className="bg-amber-50 border-amber-200">
+        <Alert variant="default" className="bg-amber-50 border-amber-200">
           <AlertTriangle className="h-4 w-4 text-amber-600" />
           <AlertTitle className="text-amber-800 text-sm font-medium">Datos estimados</AlertTitle>
           <AlertDescription className="text-amber-700 text-xs">

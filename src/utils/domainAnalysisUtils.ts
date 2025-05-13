@@ -10,6 +10,26 @@ interface TechnologyDetection {
   icon?: string;
 }
 
+interface SSLInfo {
+  valid: boolean;
+  issuer?: string;
+  expiry?: Date;
+  grade?: string;
+}
+
+interface SpeedInfo {
+  score: number;
+  estimated_time: string;
+  location: string;
+}
+
+interface DomainHistoryInfo {
+  registrationDate: Date;
+  expirationDate: Date;
+  registrar: string;
+  statusHistory?: Array<{date: Date, status: string}>;
+}
+
 // Store cache in memory to reduce duplicate API calls
 const localCache = new Map();
 const CACHE_TTL = 3600000; // 1 hour
@@ -70,19 +90,19 @@ const getFallbackData = (endpoint: string, domain: string) => {
           { name: 'WordPress', confidence: 99, icon: 'layout' },
           { name: 'MySQL', confidence: 90, icon: 'database' },
           { name: 'PHP', confidence: 95, icon: 'file-code' },
-        ];
+        ] as TechnologyDetection[];
       } else if (domain.includes('shop') || domain.includes('store') || domain.includes('tienda')) {
         return [
           { name: 'WordPress', confidence: 99, icon: 'layout' },
           { name: 'WooCommerce', confidence: 98, icon: 'shopping-cart' },
           { name: 'MySQL', confidence: 90, icon: 'database' },
           { name: 'PHP', confidence: 95, icon: 'file-code' },
-        ];
+        ] as TechnologyDetection[];
       }
       return [
         { name: 'Apache', confidence: 85, icon: 'server' },
         { name: 'PHP', confidence: 90, icon: 'file-code' },
-      ];
+      ] as TechnologyDetection[];
       
     case 'ssl':
       return {
@@ -90,7 +110,7 @@ const getFallbackData = (endpoint: string, domain: string) => {
         issuer: 'Let\'s Encrypt Authority X3',
         expiry: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
         grade: 'A',
-      };
+      } as SSLInfo;
       
     case 'domain-history':
       // Create a more realistic fallback history based on the domain
@@ -124,7 +144,7 @@ const getFallbackData = (endpoint: string, domain: string) => {
           {date: new Date(now.getTime() - (regYearsAgo / 2) * 365 * 24 * 60 * 60 * 1000), 
            status: 'Actualización de nameservers'}
         ]
-      };
+      } as DomainHistoryInfo;
       
     case 'performance':
       const isChilean = domain.endsWith('.cl');
@@ -132,7 +152,7 @@ const getFallbackData = (endpoint: string, domain: string) => {
         score: isChilean ? Math.floor(Math.random() * 20) + 80 : Math.floor(Math.random() * 40) + 50,
         estimated_time: isChilean ? '0.8s - 1.2s' : '1.5s - 2.5s',
         location: isChilean ? 'Santiago, Chile' : 'Internacional'
-      };
+      } as SpeedInfo;
       
     default:
       return { error: 'No fallback data available' };
@@ -182,19 +202,14 @@ export const detectTechnologies = async (domain: string): Promise<TechnologyDete
     return transformTechnologiesData(data);
   } catch (error) {
     console.error('Error detecting technologies:', error);
-    return getFallbackData('technologies', domain);
+    return getFallbackData('technologies', domain) as TechnologyDetection[];
   }
 };
 
 /**
  * Check SSL certificate information for a domain
  */
-export const checkSSL = async (domain: string): Promise<{
-  valid: boolean;
-  issuer?: string;
-  expiry?: Date;
-  grade?: string;
-}> => {
+export const checkSSL = async (domain: string): Promise<SSLInfo> => {
   try {
     const data = await callDNSlyticsAPI('ssl', domain);
     
@@ -206,18 +221,14 @@ export const checkSSL = async (domain: string): Promise<{
     };
   } catch (error) {
     console.error('Error checking SSL:', error);
-    return getFallbackData('ssl', domain);
+    return getFallbackData('ssl', domain) as SSLInfo;
   }
 };
 
 /**
  * Estimate loading speed for a domain
  */
-export const estimateLoadingSpeed = async (domain: string, ip: string): Promise<{
-  score: number;
-  estimated_time: string;
-  location: string;
-}> => {
+export const estimateLoadingSpeed = async (domain: string, ip: string): Promise<SpeedInfo> => {
   try {
     const data = await callDNSlyticsAPI('performance', domain);
     const isChilean = isChileanIP(ip);
@@ -229,19 +240,14 @@ export const estimateLoadingSpeed = async (domain: string, ip: string): Promise<
     };
   } catch (error) {
     console.error('Error estimating loading speed:', error);
-    return getFallbackData('performance', domain);
+    return getFallbackData('performance', domain) as SpeedInfo;
   }
 };
 
 /**
  * Get domain history information
  */
-export const getDomainHistory = async (domain: string): Promise<{
-  registrationDate: Date;
-  expirationDate: Date;
-  registrar: string;
-  statusHistory?: Array<{date: Date, status: string}>;
-}> => {
+export const getDomainHistory = async (domain: string): Promise<DomainHistoryInfo> => {
   try {
     // Add retry mechanism for critical domain history data
     let retries = 0;
@@ -268,7 +274,7 @@ export const getDomainHistory = async (domain: string): Promise<{
     // If all retries failed or returned error data, use fallback
     if (!data || data.error) {
       console.log(`All ${maxRetries + 1} attempts failed for domain history, using fallback data`);
-      return getFallbackData('domain-history', domain);
+      return getFallbackData('domain-history', domain) as DomainHistoryInfo;
     }
     
     // Process valid data
@@ -286,7 +292,7 @@ export const getDomainHistory = async (domain: string): Promise<{
     };
   } catch (error) {
     console.error('Error getting domain history:', error);
-    return getFallbackData('domain-history', domain);
+    return getFallbackData('domain-history', domain) as DomainHistoryInfo;
   }
 };
 
