@@ -5,7 +5,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
-import { History, Calendar, User, AlertTriangle, Mail } from 'lucide-react';
+import { History, Calendar, User, AlertTriangle, Mail, Globe } from 'lucide-react';
 import { getDomainHistory, getSimilarDomains } from '@/utils/domainAnalysisUtils';
 
 interface DomainHistoryDataProps {
