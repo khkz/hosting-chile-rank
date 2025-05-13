@@ -2,7 +2,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const DNSLYTICS_API_KEY = Deno.env.get('DNSLYTICS_API_KEY') || '';
-const DNSLYTICS_API_BASE = 'https://api.dnslytics.com/v1';
+const DNSLYTICS_API_BASE = 'https://api.dnslytics.net/v1';
 
 // CORS headers for our API
 const corsHeaders = {
@@ -43,6 +43,15 @@ serve(async (req) => {
       );
     }
 
+    // Verify if API key is available
+    if (!DNSLYTICS_API_KEY) {
+      console.error('DNSLYTICS_API_KEY is not set');
+      return new Response(
+        JSON.stringify({ error: 'API key configuration error' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Create cache key from endpoint and domain
     const cacheKey = `${endpoint}:${domain}`;
     
@@ -60,19 +69,22 @@ serve(async (req) => {
     let apiEndpoint = '';
     switch (endpoint) {
       case 'domain-info':
-        apiEndpoint = `${DNSLYTICS_API_BASE}/domain/${domain}`;
+        apiEndpoint = `${DNSLYTICS_API_BASE}/domain?apikey=${DNSLYTICS_API_KEY}&domain=${domain}`;
         break;
       case 'domain-history':
-        apiEndpoint = `${DNSLYTICS_API_BASE}/domain/${domain}/history`;
+        apiEndpoint = `${DNSLYTICS_API_BASE}/domainhistory?apikey=${DNSLYTICS_API_KEY}&domain=${domain}`;
         break;
       case 'technologies':
-        apiEndpoint = `${DNSLYTICS_API_BASE}/domain/${domain}/technologies`;
+        apiEndpoint = `${DNSLYTICS_API_BASE}/technologies?apikey=${DNSLYTICS_API_KEY}&domain=${domain}`;
         break;
       case 'ssl':
-        apiEndpoint = `${DNSLYTICS_API_BASE}/domain/${domain}/ssl`;
+        apiEndpoint = `${DNSLYTICS_API_BASE}/ssl?apikey=${DNSLYTICS_API_KEY}&domain=${domain}`;
         break;
       case 'performance':
-        apiEndpoint = `${DNSLYTICS_API_BASE}/domain/${domain}/performance`;
+        apiEndpoint = `${DNSLYTICS_API_BASE}/performance?apikey=${DNSLYTICS_API_KEY}&domain=${domain}`;
+        break;
+      case 'account-info':
+        apiEndpoint = `${DNSLYTICS_API_BASE}/accountinfo?apikey=${DNSLYTICS_API_KEY}`;
         break;
       default:
         return new Response(
@@ -83,20 +95,49 @@ serve(async (req) => {
     
     // Make the request to DNSlytics API
     console.log(`Fetching data from DNSlytics for ${domain} (endpoint: ${endpoint})`);
-    const response = await fetch(apiEndpoint, {
-      headers: {
-        'Authorization': `Bearer ${DNSLYTICS_API_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    });
     
-    if (!response.ok) {
+    // Implement retry logic
+    const maxRetries = 3;
+    let retries = 0;
+    let response = null;
+    
+    while (retries < maxRetries) {
+      try {
+        response = await fetch(apiEndpoint, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) break;
+        
+        console.log(`Retry ${retries + 1}/${maxRetries}: API returned status ${response.status}`);
+        retries++;
+        
+        // Simple exponential backoff
+        if (retries < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retries)));
+        }
+      } catch (fetchError) {
+        console.error(`Fetch error on retry ${retries + 1}/${maxRetries}:`, fetchError);
+        retries++;
+        
+        if (retries < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retries)));
+        } else {
+          throw fetchError; // Re-throw the last error if all retries fail
+        }
+      }
+    }
+    
+    if (!response || !response.ok) {
       // Handle API errors
-      const errorText = await response.text();
-      console.error(`DNSlytics API error: ${response.status} ${errorText}`);
+      const errorText = response ? await response.text() : 'No response received';
+      console.error(`DNSlytics API error: ${response?.status || 'No response'} ${errorText}`);
       
       // If the error is due to rate limiting, try to use cached data if available
-      if (response.status === 429 && cachedData) {
+      if (response?.status === 429 && cachedData) {
         console.log(`Rate limited, using older cached data for ${cacheKey}`);
         return new Response(
           JSON.stringify(cachedData.data),
@@ -105,8 +146,12 @@ serve(async (req) => {
       }
       
       return new Response(
-        JSON.stringify({ error: `DNSlytics API error: ${response.status}`, details: errorText }),
-        { status: response.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ 
+          error: `DNSlytics API error: ${response?.status || 'Connection failed'}`, 
+          details: errorText,
+          endpoint: apiEndpoint.replace(DNSLYTICS_API_KEY, 'REDACTED') // Log the URL but hide the API key
+        }),
+        { status: response?.status || 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
     
