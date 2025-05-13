@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { History, Calendar, User, AlertTriangle, Mail, Globe, Info, RefreshCw } from 'lucide-react';
-import { getDomainHistory, getSimilarDomains } from '@/utils/domainAnalysisUtils';
+import { getDomainHistory, getSimilarDomains, verifyAPIAccount } from '@/utils/domainAnalysisUtils';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 
@@ -21,6 +21,7 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
   const [similarDomains, setSimilarDomains] = useState<any[]>([]);
   const [isEstimatedData, setIsEstimatedData] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [apiStatus, setApiStatus] = useState<{active: boolean, credits: number} | null>(null);
 
   // Mock WHOIS data - would come from an API in production
   const mockWhoisData = {
@@ -35,19 +36,43 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
     available: false
   };
 
+  const checkApiStatus = async () => {
+    try {
+      const status = await verifyAPIAccount();
+      setApiStatus(status);
+      return status.active;
+    } catch (error) {
+      console.error('Error checking API status:', error);
+      return false;
+    }
+  };
+
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     setRefreshing(true);
     
     try {
+      // Check API status first
+      const apiActive = await checkApiStatus();
+      
+      if (!apiActive) {
+        toast({
+          title: "API no disponible",
+          description: "Usando datos estimados ya que la API de DNSlytics no está disponible.",
+          variant: "warning"
+        });
+        setIsEstimatedData(true);
+      }
+      
       // Get domain history data
       const history = await getDomainHistory(domainName);
       setHistoryData(history);
       
       // Check if this is estimated data (we'd know from internal flags, timestamps, etc.)
       // For now, we'll assume it's estimated if data matches certain patterns
-      const isEstimated = !history.registrar || 
+      const isEstimated = !apiActive || 
+                         !history.registrar || 
                          history.statusHistory?.length <= 2 || 
                          history.statusHistory?.some(s => s.status.includes('nameserver'));
       
@@ -112,6 +137,16 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
           {refreshing ? 'Actualizando...' : 'Actualizar datos'}
         </Button>
       </div>
+      
+      {apiStatus && (
+        <div className="text-sm text-gray-500 flex items-center">
+          <span className={`inline-block w-2 h-2 rounded-full mr-2 ${apiStatus.active ? 'bg-green-500' : 'bg-amber-500'}`}></span>
+          API DNSlytics: {apiStatus.active ? 'Activa' : 'Limitada'}
+          {apiStatus.active && (
+            <span className="ml-2">({apiStatus.credits} créditos disponibles)</span>
+          )}
+        </div>
+      )}
       
       {isEstimatedData && !loading && (
         <Alert variant="default" className="bg-amber-50 border-amber-200">

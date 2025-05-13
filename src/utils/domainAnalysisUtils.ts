@@ -9,6 +9,7 @@ export interface TechnologyDetection {
   name: string;
   confidence: number;
   icon?: string;
+  details?: string;
 }
 
 export interface SSLInfo {
@@ -77,16 +78,36 @@ const callDNSlyticsAPI = async (endpoint: string, domain: string) => {
 };
 
 /**
+ * Verify DNSlytics API account status
+ */
+export const verifyAPIAccount = async (): Promise<{active: boolean, credits: number}> => {
+  try {
+    const data = await callDNSlyticsAPI('account-info', '');
+    
+    return {
+      active: data && data.status === 'active',
+      credits: data?.credits || 0
+    };
+  } catch (error) {
+    console.error('Error verifying API account:', error);
+    return {
+      active: false,
+      credits: 0
+    };
+  }
+};
+
+/**
  * Detect technologies used by a domain
  */
 export const detectTechnologies = async (domain: string): Promise<TechnologyDetection[]> => {
   try {
-    // Try the new endpoint name first
     let data: any;
     try {
       data = await callDNSlyticsAPI('domain-technology', domain);
     } catch (e) {
-      // Fallback to legacy endpoint name
+      console.error('Error with domain-technology endpoint:', e);
+      // Fallback to technologies endpoint for backward compatibility
       data = await callDNSlyticsAPI('technologies', domain);
     }
     
@@ -124,12 +145,12 @@ export const detectTechnologies = async (domain: string): Promise<TechnologyDete
  */
 export const checkSSL = async (domain: string): Promise<SSLInfo> => {
   try {
-    // Try the new endpoint name first
     let data: any;
     try {
       data = await callDNSlyticsAPI('domain-ssl', domain);
     } catch (e) {
-      // Fallback to legacy endpoint name
+      console.error('Error with domain-ssl endpoint:', e);
+      // Fallback to ssl endpoint for backward compatibility
       data = await callDNSlyticsAPI('ssl', domain);
     }
     
@@ -162,12 +183,12 @@ export const checkSSL = async (domain: string): Promise<SSLInfo> => {
  */
 export const estimateLoadingSpeed = async (domain: string, ip: string): Promise<SpeedInfo> => {
   try {
-    // Try the new endpoint name first
     let data: any;
     try {
       data = await callDNSlyticsAPI('domain-speed', domain);
     } catch (e) {
-      // Fallback to legacy endpoint name
+      console.error('Error with domain-speed endpoint:', e);
+      // Fallback to performance endpoint for backward compatibility
       data = await callDNSlyticsAPI('performance', domain);
     }
     
@@ -179,8 +200,8 @@ export const estimateLoadingSpeed = async (domain: string, ip: string): Promise<
     
     return {
       score: data.score || data.performance || (isChilean ? 85 : 65),
-      estimated_time: data.load_time || data.estimated_time || (isChilean ? '0.9s - 1.3s' : '1.8s - 2.2s'),
-      location: data.location || data.tested_from || (isChilean ? 'Santiago, Chile' : 'Internacional')
+      estimated_time: data.estimated_time || (isChilean ? '0.9s - 1.3s' : '1.8s - 2.2s'),
+      location: data.location || (isChilean ? 'Santiago, Chile' : 'Internacional')
     } as SpeedInfo;
   } catch (error) {
     console.error('Error estimating loading speed:', error);
@@ -207,12 +228,11 @@ export const getDomainHistory = async (domain: string): Promise<DomainHistoryInf
     
     while (retries <= maxRetries) {
       try {
-        // Try the new endpoint name first
         try {
           data = await callDNSlyticsAPI('domain-history', domain);
         } catch (e) {
-          // Fallback to legacy endpoint name
-          data = await callDNSlyticsAPI('domain-history', domain);
+          console.error('Error with domain-history endpoint:', e);
+          break; // No fallback available for this endpoint
         }
         
         if (data && !data.error) break;

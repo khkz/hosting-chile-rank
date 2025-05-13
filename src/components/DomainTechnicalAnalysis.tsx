@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { InfoIcon, Server, Globe, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
-import { detectTechnologies, checkSSL, estimateLoadingSpeed } from '@/utils/domainAnalysisUtils';
+import { detectTechnologies, checkSSL, estimateLoadingSpeed, verifyAPIAccount } from '@/utils/domainAnalysisUtils';
 import { toast } from '@/components/ui/use-toast';
 
 interface DomainTechnicalAnalysisProps {
@@ -23,6 +24,19 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
   const [loading, setLoading] = useState(true);
   const [speedInfo, setSpeedInfo] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isEstimatedData, setIsEstimatedData] = useState(false);
+  const [apiStatus, setApiStatus] = useState<{active: boolean, credits: number} | null>(null);
+  
+  const checkApiStatus = async () => {
+    try {
+      const status = await verifyAPIAccount();
+      setApiStatus(status);
+      return status.active;
+    } catch (error) {
+      console.error('Error checking API status:', error);
+      return false;
+    }
+  };
   
   useEffect(() => {
     const fetchData = async () => {
@@ -30,6 +44,18 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
       setError(null);
       
       try {
+        // Check API status first
+        const apiActive = await checkApiStatus();
+        
+        if (!apiActive) {
+          toast({
+            title: "API no disponible",
+            description: "Usando datos técnicos estimados ya que la API de DNSlytics no está disponible.",
+            variant: "warning"
+          });
+          setIsEstimatedData(true);
+        }
+        
         // Fetch all the technical data in parallel
         const [techData, sslData, speedData] = await Promise.all([
           detectTechnologies(domainName),
@@ -40,6 +66,21 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
         setTechnologies(techData);
         setSSLInfo(sslData);
         setSpeedInfo(speedData);
+        
+        // Check if we're using estimated data
+        const usingEstimatedData = !apiActive || 
+                                  technologies.length <= 2 || 
+                                  (technologies.some(t => t.name === 'Apache' && t.name === 'PHP'));
+        
+        setIsEstimatedData(usingEstimatedData);
+        
+        if (usingEstimatedData && apiActive) {
+          toast({
+            title: "Datos parcialmente estimados",
+            description: "Algunos datos técnicos son aproximados debido a limitaciones de la API.",
+            variant: "default"
+          });
+        }
       } catch (error) {
         console.error('Error fetching technical data:', error);
         setError('No se pudieron cargar los datos técnicos. Por favor, inténtalo de nuevo más tarde.');
@@ -60,7 +101,30 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Análisis técnico avanzado</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Análisis técnico avanzado</h2>
+        
+        {apiStatus && (
+          <div className="text-sm text-gray-500 flex items-center">
+            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${apiStatus.active ? 'bg-green-500' : 'bg-amber-500'}`}></span>
+            API DNSlytics: {apiStatus.active ? 'Activa' : 'Limitada'}
+            {apiStatus.active && (
+              <span className="ml-2">({apiStatus.credits} créditos disponibles)</span>
+            )}
+          </div>
+        )}
+      </div>
+      
+      {isEstimatedData && !loading && (
+        <Alert className="bg-amber-50 border-amber-200">
+          <AlertTriangle className="h-4 w-4 text-amber-600" />
+          <AlertTitle className="text-amber-800 text-sm font-medium">Datos estimados</AlertTitle>
+          <AlertDescription className="text-amber-700 text-xs">
+            Los datos técnicos mostrados son aproximados ya que no se pudieron obtener 
+            registros completos para este dominio.
+          </AlertDescription>
+        </Alert>
+      )}
       
       {loading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -107,6 +171,9 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
                           <span className="text-sm text-gray-600">{tech.confidence}%</span>
                         </div>
                         <Progress value={tech.confidence} className="h-2" />
+                        {tech.details && (
+                          <p className="text-xs text-gray-500 mt-1">{tech.details}</p>
+                        )}
                       </div>
                     ))}
                   </div>
