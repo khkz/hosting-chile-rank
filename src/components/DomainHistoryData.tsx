@@ -60,7 +60,7 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
         toast({
           title: "API no disponible",
           description: "Usando datos estimados ya que la API de DNSlytics no está disponible.",
-          variant: "default" // Changed from "warning" to "default"
+          variant: "default"
         });
         setIsEstimatedData(true);
       }

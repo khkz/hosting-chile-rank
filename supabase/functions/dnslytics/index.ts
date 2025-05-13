@@ -14,15 +14,19 @@ const corsHeaders = {
 const cache = new Map();
 const CACHE_TTL = 3600000; // 1 hour in milliseconds
 
-// Correctly map our internal endpoint names to DNSlytics API endpoints based on their actual API documentation
+// Correctly map our internal endpoint names to DNSlytics API endpoints based on their official documentation
 // https://dnslytics.com/api/
 const availableEndpoints = {
-  'domain-info': 'DomainSearch', // Domain info and search
+  'domain-info': 'DomainInfo', // Domain info
   'domain-history': 'HostingHistory', // IP/DNS history for domain
-  'domain-technology': 'DomainSearch', // We'll extract tech info from domain search
-  'domain-ssl': 'DomainSearch', // We'll extract SSL info from domain search
-  'domain-speed': 'DomainSearch', // We'll simulate speed data
-  'account-info': 'AccountInfo' // Account information - free endpoint
+  'domain-technology': 'DomainInfo', // We'll extract tech info from domain info
+  'domain-ssl': 'DomainInfo', // We'll extract SSL info from domain info
+  'domain-speed': 'DomainInfo', // We'll simulate speed data
+  'account-info': 'AccountInfo', // Account information - free endpoint
+  // Legacy support
+  'technologies': 'DomainInfo',
+  'ssl': 'DomainInfo',
+  'performance': 'DomainInfo'
 };
 
 // Transform DNSlytics domain data to our format
@@ -34,8 +38,9 @@ function transformDomainData(apiData, domain, endpoint) {
   
   try {
     switch (endpoint) {
+      case 'technologies':
       case 'domain-technology':
-        // Extract technology data from domain search results
+        // Extract technology data from domain info results
         const technologies = [];
         
         if (apiData.results && apiData.results.length > 0) {
@@ -55,6 +60,14 @@ function transformDomainData(apiData, domain, endpoint) {
             icon: 'file-text',
             details: domainData.cms 
           });
+          
+          // If we have hosting info, add it
+          if (domainData.hosting) technologies.push({
+            name: 'Hosting Provider',
+            confidence: 90,
+            icon: 'globe',
+            details: domainData.hosting
+          });
         }
         
         // Return extracted tech data or fallback to some estimated data
@@ -63,8 +76,9 @@ function transformDomainData(apiData, domain, endpoint) {
           { name: 'CMS/Framework', confidence: 80, icon: 'code' }
         ];
         
+      case 'ssl':
       case 'domain-ssl':
-        // Extract SSL data from domain search results
+        // Extract SSL data from domain info results
         let sslData = { valid: false, issuer: 'Unknown', grade: 'C' };
         
         if (apiData.results && apiData.results.length > 0) {
@@ -82,6 +96,7 @@ function transformDomainData(apiData, domain, endpoint) {
         
         return sslData;
         
+      case 'performance':
       case 'domain-speed':
         // Since DNSlytics doesn't have a direct speed API, we simulate this based on other data
         // This could be replaced with real data from a different source later
@@ -159,8 +174,11 @@ function transformDomainData(apiData, domain, endpoint) {
         
         return historyData;
         
-      case 'domain-info':
       case 'account-info':
+        // Return account info directly
+        return apiData;
+        
+      case 'domain-info':
       default:
         // Return raw API data for other endpoints
         return apiData;
@@ -226,16 +244,8 @@ serve(async (req) => {
     let apiEndpoint = availableEndpoints[endpoint];
     
     if (!apiEndpoint) {
-      if (endpoint === 'technologies') {
-        apiEndpoint = 'DomainSearch';
-      } else if (endpoint === 'ssl') {
-        apiEndpoint = 'DomainSearch';
-      } else if (endpoint === 'performance') {
-        apiEndpoint = 'DomainSearch';
-      } else {
-        console.log(`Unknown endpoint ${endpoint}, defaulting to 'DomainSearch'`);
-        apiEndpoint = 'DomainSearch';
-      }
+      console.log(`Unknown endpoint ${endpoint}, defaulting to 'DomainInfo'`);
+      apiEndpoint = 'DomainInfo';
     }
     
     // Construct the full API URL with API key
@@ -260,51 +270,48 @@ serve(async (req) => {
           }
         });
         
+        // Log the status for debugging
+        console.log(`DNSlytics API response status: ${response.status}`);
+        
+        // If response is not OK, throw an error
+        if (!response.ok) {
+          throw new Error(`API returned status ${response.status}`);
+        }
+        
         const text = await response.text();
         
         try {
           responseData = JSON.parse(text);
           
           // Log successful response for debugging
-          console.log(`DNSlytics API response status: ${response.status}`);
           console.log(`Response data type: ${typeof responseData}`);
           
-          if (response.ok) {
-            break;
-          } else {
-            console.error(`API error with status ${response.status}:`, responseData);
-            
-            // If we get an auth error, there's no point in retrying
-            if (response.status === 401) {
-              return new Response(
-                JSON.stringify({ 
-                  error: 'DNSlytics API authentication failed',
-                  details: 'Please check your API key'
-                }),
-                { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-              );
-            }
-          }
+          // If we get a valid response, break the retry loop
+          break;
         } catch (e) {
           console.error(`Error parsing JSON response: ${e.message}`);
           console.log(`Raw response: ${text.substring(0, 200)}...`);
-        }
-        
-        retries++;
-        
-        // Simple exponential backoff
-        if (retries < maxRetries) {
-          await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retries)));
-          console.log(`Retrying request ${retries}/${maxRetries}...`);
+          throw e; // Re-throw to trigger retry
         }
       } catch (fetchError) {
         console.error(`Fetch error on retry ${retries + 1}/${maxRetries}:`, fetchError);
         retries++;
         
         if (retries < maxRetries) {
+          // Simple exponential backoff
           await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retries)));
+          console.log(`Retrying request ${retries}/${maxRetries}...`);
         } else {
-          throw fetchError; // Re-throw the last error if all retries fail
+          // If we've exhausted retries, return an informative error
+          return new Response(
+            JSON.stringify({ 
+              error: 'Failed to retrieve data from DNSlytics API after multiple retries',
+              details: fetchError.message,
+              endpoint: apiEndpoint,
+              url: fullUrl.replace(DNSLYTICS_API_KEY, 'REDACTED')
+            }),
+            { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
         }
       }
     }

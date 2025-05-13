@@ -52,7 +52,7 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
           toast({
             title: "API no disponible",
             description: "Usando datos técnicos estimados ya que la API de DNSlytics no está disponible.",
-            variant: "default" // Changed from "warning" to "default"
+            variant: "default"
           });
           setIsEstimatedData(true);
         }
