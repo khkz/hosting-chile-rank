@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { InfoIcon, Server, Globe, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
 import { detectTechnologies, checkSSL, estimateLoadingSpeed, verifyAPIAccount } from '@/utils/domainAnalysisUtils';
@@ -51,7 +52,7 @@ const DomainTechnicalAnalysis: React.FC<DomainTechnicalAnalysisProps> = ({
           toast({
             title: "API no disponible",
             description: "Usando datos técnicos estimados ya que la API de DNSlytics no está disponible.",
-            variant: "warning"
+            variant: "default" // Changed from "warning" to "default"
           });
           setIsEstimatedData(true);
         }
