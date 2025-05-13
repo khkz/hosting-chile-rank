@@ -32,10 +32,8 @@ const callDNSlyticsAPI = async (endpoint: string, domain: string) => {
   try {
     console.log(`Calling DNSlytics API (${endpoint}) for domain: ${domain}`);
     const { data, error } = await supabase.functions.invoke('dnslytics', {
-      body: { domain },
-      query: { domain },
-      method: 'GET',
-      path: endpoint,
+      body: { domain, endpoint },
+      method: 'POST',
     });
     
     if (error) {

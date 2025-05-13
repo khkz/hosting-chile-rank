@@ -21,9 +21,20 @@ serve(async (req) => {
   }
 
   try {
-    const url = new URL(req.url);
-    const endpoint = url.pathname.split('/').pop();
-    const domain = url.searchParams.get('domain');
+    // Get the request body for POST method
+    let domain = '';
+    let endpoint = '';
+    
+    if (req.method === 'POST') {
+      const body = await req.json();
+      domain = body.domain;
+      endpoint = body.endpoint;
+    } else {
+      // Support for backwards compatibility with GET method
+      const url = new URL(req.url);
+      endpoint = url.pathname.split('/').pop() || '';
+      domain = url.searchParams.get('domain') || '';
+    }
     
     if (!domain) {
       return new Response(
