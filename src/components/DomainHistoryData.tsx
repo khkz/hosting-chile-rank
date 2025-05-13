@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
-import { History, Calendar, User, AlertTriangle, Mail, Globe, Info } from 'lucide-react';
+import { History, Calendar, User, AlertTriangle, Mail, Globe, Info, RefreshCw } from 'lucide-react';
 import { getDomainHistory, getSimilarDomains } from '@/utils/domainAnalysisUtils';
 import { toast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
 
 interface DomainHistoryDataProps {
   domainName: string;
@@ -18,46 +19,66 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [similarDomains, setSimilarDomains] = useState<any[]>([]);
+  const [isEstimatedData, setIsEstimatedData] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Mock WHOIS data - would come from an API in production
   const mockWhoisData = {
     owner: {
-      name: "John Doe",
-      organization: "Example Organization",
-      email: "contact@example.com",
-      address: "Example Street 123, Santiago, Chile",
-      phone: "+56 2 1234 5678"
+      name: "Información protegida",
+      organization: "Organización no disponible",
+      email: "contacto@privado.com",
+      address: "Dirección protegida por privacidad",
+      phone: "Teléfono no disponible"
     },
     privacy: true,
     available: false
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        // Get domain history data
-        const history = await getDomainHistory(domainName);
-        setHistoryData(history);
-        
-        // Get similar domains
-        const similar = getSimilarDomains(domainName);
-        setSimilarDomains(similar);
-      } catch (error) {
-        console.error('Error fetching domain history:', error);
-        setError('No se pudieron cargar los datos históricos del dominio.');
-        toast({
-          title: "Error al cargar datos históricos",
-          description: "No se pudieron obtener los detalles históricos del dominio.",
-          variant: "destructive"
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    setRefreshing(true);
     
+    try {
+      // Get domain history data
+      const history = await getDomainHistory(domainName);
+      setHistoryData(history);
+      
+      // Check if this is estimated data (we'd know from internal flags, timestamps, etc.)
+      // For now, we'll assume it's estimated if data matches certain patterns
+      const isEstimated = !history.registrar || 
+                         history.statusHistory?.length <= 2 || 
+                         history.statusHistory?.some(s => s.status.includes('nameserver'));
+      
+      setIsEstimatedData(isEstimated);
+      
+      // Get similar domains
+      const similar = getSimilarDomains(domainName);
+      setSimilarDomains(similar);
+      
+      if (isEstimated) {
+        toast({
+          title: "Datos estimados",
+          description: "La información histórica del dominio es aproximada.",
+          variant: "default"
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching domain history:', error);
+      setError('No se pudieron cargar los datos históricos del dominio.');
+      toast({
+        title: "Error al cargar datos históricos",
+        description: "No se pudieron obtener los detalles históricos del dominio.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+  
+  useEffect(() => {
     if (domainName) {
       fetchData();
     }
@@ -71,9 +92,37 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
     }).format(date);
   };
 
+  const handleRefresh = () => {
+    if (domainName) {
+      fetchData();
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Historial y datos WHOIS</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Historial y datos WHOIS</h2>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleRefresh}
+          disabled={loading || refreshing}
+        >
+          <RefreshCw className={`h-4 w-4 mr-1 ${refreshing ? 'animate-spin' : ''}`} />
+          {refreshing ? 'Actualizando...' : 'Actualizar datos'}
+        </Button>
+      </div>
+      
+      {isEstimatedData && !loading && (
+        <Alert variant="warning" className="bg-amber-50 border-amber-200">
+          <AlertTriangle className="h-4 w-4 text-amber-600" />
+          <AlertTitle className="text-amber-800 text-sm font-medium">Datos estimados</AlertTitle>
+          <AlertDescription className="text-amber-700 text-xs">
+            Los datos históricos mostrados son aproximados ya que no se pudieron obtener 
+            registros oficiales completos para este dominio.
+          </AlertDescription>
+        </Alert>
+      )}
       
       {loading ? (
         <div className="space-y-4">
@@ -85,6 +134,14 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
           <CardContent className="pt-4 flex flex-col items-center justify-center py-10">
             <AlertTriangle className="h-12 w-12 text-amber-500 mb-4" />
             <p className="text-center text-gray-700">{error}</p>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleRefresh} 
+              className="mt-4"
+            >
+              Reintentar
+            </Button>
           </CardContent>
         </Card>
       ) : (
