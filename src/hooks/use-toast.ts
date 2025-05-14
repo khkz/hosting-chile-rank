@@ -17,15 +17,17 @@ type ToastActionElement = React.ReactElement<{
   onClick: () => void;
 }>;
 
+// Update ToasterType to match the actual implementation
 type ToasterType = {
   toasts: ToasterToast[];
-  addToast: (data: {
+  toast: (data: {
     title?: React.ReactNode;
     description?: React.ReactNode;
     action?: ToastActionElement;
     variant?: "default" | "destructive" | "success" | "warning";
-  }) => void;
-  dismissToast: (id: string) => void;
+    duration?: number;
+  }) => { id: string; dismiss: () => void; update: (props: ToasterToast) => void };
+  dismiss: (id?: string) => void;
   dismissAll: () => void;
 };
 
@@ -232,7 +234,7 @@ toast.info = (title: string, description?: string) => {
   });
 };
 
-export function useToast() {
+export function useToast(): ToasterType {
   const [state, setState] = React.useState<State>(memoryState);
 
   React.useEffect(() => {
@@ -250,5 +252,5 @@ export function useToast() {
     toast,
     dismiss: (toastId?: string) => dispatch({ type: actionTypes.DISMISS_TOAST, toastId }),
     dismissAll: () => dispatch({ type: actionTypes.DISMISS_ALL }),
-  } as ToasterType;
+  };
 }
