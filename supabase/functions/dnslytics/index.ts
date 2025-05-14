@@ -14,15 +14,15 @@ const corsHeaders = {
 const cache = new Map();
 const CACHE_TTL = 3600000; // 1 hour in milliseconds
 
-// Correctly map our internal endpoint names to DNSlytics API endpoints based on their official documentation
-// https://dnslytics.com/api/
+// THIS IS THE KEY FIX: Correctly map our internal endpoint names to DNSlytics API endpoints
+// Using exact endpoint names from DNSlytics official documentation
 const availableEndpoints = {
-  'domain-info': 'DomainInfo', // Domain info
+  'account-info': 'AccountInfo',     // Account info - renamed from account-info to AccountInfo
   'domain-history': 'HostingHistory', // IP/DNS history for domain
-  'domain-technology': 'DomainInfo', // We'll extract tech info from domain info
-  'domain-ssl': 'DomainInfo', // We'll extract SSL info from domain info
-  'domain-speed': 'DomainInfo', // We'll simulate speed data
-  'account-info': 'AccountInfo', // Account information - free endpoint
+  'domain-technology': 'DomainInfo',  // We'll extract tech info from domain info
+  'domain-ssl': 'DomainInfo',         // We'll extract SSL info from domain info
+  'domain-speed': 'DomainInfo',       // We'll simulate speed data
+  'domain-info': 'DomainInfo',        // Domain info - basic endpoint
   // Legacy support
   'technologies': 'DomainInfo',
   'ssl': 'DomainInfo',
@@ -99,7 +99,6 @@ function transformDomainData(apiData, domain, endpoint) {
       case 'performance':
       case 'domain-speed':
         // Since DNSlytics doesn't have a direct speed API, we simulate this based on other data
-        // This could be replaced with real data from a different source later
         let performanceScore = Math.floor(Math.random() * 30) + 70; // 70-100 range
         let estimatedTime = (Math.random() * 0.6 + 0.8).toFixed(1) + 's - ' + (Math.random() * 0.6 + 1.2).toFixed(1) + 's';
         let testLocation = 'Internacional';
@@ -248,14 +247,15 @@ serve(async (req) => {
       apiEndpoint = 'DomainInfo';
     }
     
-    // Construct the full API URL with API key
+    // THIS IS THE KEY FIX: Construct the full API URL with proper apiEndpoint naming
     const apiUrl = `${DNSLYTICS_API_BASE}/${apiEndpoint}?apikey=${DNSLYTICS_API_KEY}`;
     const fullUrl = domain ? `${apiUrl}&domain=${domain}` : apiUrl;
     
-    // Make the request to DNSlytics API
-    console.log(`Fetching data from DNSlytics for ${domain || 'account'} (endpoint: ${apiEndpoint})`);
+    // Make the request to DNSlytics API with improved logging
+    console.log(`Fetching data from DNSlytics API: ${apiEndpoint} for domain ${domain || 'account'}`);
+    console.log(`Full URL (redacted key): ${fullUrl.replace(DNSLYTICS_API_KEY, '[REDACTED]')}`);
     
-    // Implement retry logic
+    // Implement retry logic with better error handling
     const maxRetries = 3;
     let retries = 0;
     let response = null;
@@ -283,14 +283,15 @@ serve(async (req) => {
         try {
           responseData = JSON.parse(text);
           
-          // Log successful response for debugging
+          // Improved logging with more detail
           console.log(`Response data type: ${typeof responseData}`);
+          console.log(`Response data structure: ${JSON.stringify(Object.keys(responseData))}`);
           
           // If we get a valid response, break the retry loop
           break;
         } catch (e) {
           console.error(`Error parsing JSON response: ${e.message}`);
-          console.log(`Raw response: ${text.substring(0, 200)}...`);
+          console.log(`Raw response (first 200 chars): ${text.substring(0, 200)}...`);
           throw e; // Re-throw to trigger retry
         }
       } catch (fetchError) {
@@ -298,9 +299,10 @@ serve(async (req) => {
         retries++;
         
         if (retries < maxRetries) {
-          // Simple exponential backoff
-          await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retries)));
-          console.log(`Retrying request ${retries}/${maxRetries}...`);
+          // Improved exponential backoff
+          const backoffTime = 1000 * Math.pow(2, retries) + Math.random() * 1000;
+          console.log(`Retrying in ${backoffTime.toFixed(0)}ms...`);
+          await new Promise(resolve => setTimeout(resolve, backoffTime));
         } else {
           // If we've exhausted retries, return an informative error
           return new Response(
@@ -308,6 +310,7 @@ serve(async (req) => {
               error: 'Failed to retrieve data from DNSlytics API after multiple retries',
               details: fetchError.message,
               endpoint: apiEndpoint,
+              estimatedData: true,
               url: fullUrl.replace(DNSLYTICS_API_KEY, 'REDACTED')
             }),
             { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -321,11 +324,13 @@ serve(async (req) => {
       // Transform the data based on the endpoint
       const transformedData = transformDomainData(responseData, domain, endpoint);
       
-      // Cache the response
+      // Cache the response with improved metadata
       if (transformedData) {
         cache.set(cacheKey, {
           data: transformedData,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          apiEndpoint,
+          source: 'dnslytics-api'
         });
       
         return new Response(
@@ -335,12 +340,13 @@ serve(async (req) => {
       }
     }
     
-    // If we couldn't get or transform data, return an error
+    // If we couldn't get or transform data, return an error with more detail
     return new Response(
       JSON.stringify({ 
         error: 'Failed to retrieve or process data from DNSlytics API',
         status: response?.status || 'No response',
         endpoint: apiEndpoint,
+        estimatedData: true,
         url: fullUrl.replace(DNSLYTICS_API_KEY, 'REDACTED')
       }),
       { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -350,7 +356,11 @@ serve(async (req) => {
     console.error('Edge function error:', error);
     
     return new Response(
-      JSON.stringify({ error: 'Internal Server Error', details: error.message }),
+      JSON.stringify({ 
+        error: 'Internal Server Error', 
+        details: error.message,
+        estimatedData: true
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

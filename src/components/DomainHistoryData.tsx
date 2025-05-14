@@ -57,46 +57,63 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
       const apiActive = await checkApiStatus();
       
       if (!apiActive) {
-        toast({
-          title: "API no disponible",
-          description: "Usando datos estimados ya que la API de DNSlytics no está disponible.",
-          variant: "default"
-        });
+        toast.warning(
+          "API no disponible",
+          "Usando datos estimados ya que la API de DNSlytics no está disponible."
+        );
         setIsEstimatedData(true);
       }
       
-      // Get domain history data
-      const history = await getDomainHistory(domainName);
-      setHistoryData(history);
+      // Get domain history data with retry logic
+      let retries = 0;
+      let history = null;
+      const maxRetries = 2;
       
-      // Check if this is estimated data (we'd know from internal flags, timestamps, etc.)
-      // For now, we'll assume it's estimated if data matches certain patterns
-      const isEstimated = !apiActive || 
-                         !history.registrar || 
-                         history.statusHistory?.length <= 2 || 
-                         history.statusHistory?.some(s => s.status.includes('nameserver'));
+      while (retries <= maxRetries) {
+        try {
+          history = await getDomainHistory(domainName);
+          if (history) break;
+        } catch (err) {
+          console.error(`Retry ${retries + 1}/${maxRetries + 1} failed:`, err);
+          // Wait before retrying with exponential backoff
+          if (retries < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retries)));
+          }
+        }
+        retries++;
+      }
       
-      setIsEstimatedData(isEstimated);
-      
-      // Get similar domains
-      const similar = getSimilarDomains(domainName);
-      setSimilarDomains(similar);
-      
-      if (isEstimated) {
-        toast({
-          title: "Datos estimados",
-          description: "La información histórica del dominio es aproximada.",
-          variant: "default"
-        });
+      if (history) {
+        setHistoryData(history);
+        
+        // Check if this is estimated data
+        const isEstimated = !apiActive || 
+                          !history.registrar || 
+                          history.statusHistory?.length <= 2 || 
+                          history.statusHistory?.some(s => s.status.includes('nameserver'));
+        
+        setIsEstimatedData(isEstimated);
+        
+        // Get similar domains
+        const similar = getSimilarDomains(domainName);
+        setSimilarDomains(similar);
+        
+        if (isEstimated && apiActive) {
+          toast.info(
+            "Datos estimados",
+            "La información histórica del dominio es aproximada."
+          );
+        }
+      } else {
+        throw new Error('No se pudieron obtener datos históricos después de múltiples intentos');
       }
     } catch (error) {
       console.error('Error fetching domain history:', error);
       setError('No se pudieron cargar los datos históricos del dominio.');
-      toast({
-        title: "Error al cargar datos históricos",
-        description: "No se pudieron obtener los detalles históricos del dominio.",
-        variant: "destructive"
-      });
+      toast.error(
+        "Error al cargar datos históricos",
+        "No se pudieron obtener los detalles históricos del dominio."
+      );
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -110,6 +127,10 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
   }, [domainName]);
 
   const formatDate = (date: Date) => {
+    if (!date || isNaN(date.getTime())) {
+      return 'Fecha desconocida';
+    }
+    
     return new Intl.DateTimeFormat('es-CL', {
       day: 'numeric',
       month: 'long',
@@ -132,8 +153,9 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
           size="sm" 
           onClick={handleRefresh}
           disabled={loading || refreshing}
+          className="flex items-center gap-1"
         >
-          <RefreshCw className={`h-4 w-4 mr-1 ${refreshing ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
           {refreshing ? 'Actualizando...' : 'Actualizar datos'}
         </Button>
       </div>
@@ -154,7 +176,7 @@ const DomainHistoryData: React.FC<DomainHistoryDataProps> = ({ domainName }) => 
           <AlertTitle className="text-amber-800 text-sm font-medium">Datos estimados</AlertTitle>
           <AlertDescription className="text-amber-700 text-xs">
             Los datos históricos mostrados son aproximados ya que no se pudieron obtener 
-            registros oficiales completos para este dominio.
+            registros oficiales completos para este dominio. <Button variant="link" className="h-auto p-0 text-amber-800 text-xs underline" onClick={handleRefresh}>Reintentar</Button>
           </AlertDescription>
         </Alert>
       )}
