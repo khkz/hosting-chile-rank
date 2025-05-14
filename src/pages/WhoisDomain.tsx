@@ -12,12 +12,6 @@ import RecentSearches from '@/components/RecentSearches';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { isChileanIP, isChileanASN } from '@/utils/ipDetection';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import DomainTechnicalAnalysis from '@/components/DomainTechnicalAnalysis';
-import DomainHistoryData from '@/components/DomainHistoryData';
-import PersonalizedRecommendations from '@/components/PersonalizedRecommendations';
-import PerformanceComparison from '@/components/PerformanceComparison';
-import EducationalResources from '@/components/EducationalResources';
 
 // Fallback domain data for when the actual data file doesn't exist
 const getFallbackData = (domainName: string) => {
@@ -68,7 +62,6 @@ const WhoisDomain = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
   const [previewError, setPreviewError] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
   const {
     toast
   } = useToast();
@@ -418,198 +411,133 @@ const WhoisDomain = () => {
                   Contratar 20 % DSCTO
                 </a>
               </div>}
-              
-            {/* Tabbed interface for all information */}
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-6">
-              <TabsList className="w-full grid grid-cols-2 md:grid-cols-5 bg-white border">
-                <TabsTrigger value="overview" className="text-sm">
-                  Resumen
-                </TabsTrigger>
-                <TabsTrigger value="technical" className="text-sm">
-                  Análisis técnico
-                </TabsTrigger>
-                <TabsTrigger value="history" className="text-sm">
-                  Historial
-                </TabsTrigger>
-                <TabsTrigger value="performance" className="text-sm">
-                  Rendimiento
-                </TabsTrigger>
-                <TabsTrigger value="resources" className="text-sm">
-                  Recursos
-                </TabsTrigger>
-              </TabsList>
-              
-              {/* Overview Tab Content */}
-              <TabsContent value="overview" className="mt-6">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <Card className="shadow-md overflow-hidden">
-                    <CardHeader className="bg-white py-5">
-                      <CardTitle className="flex items-center text-xl">
-                        <Server className="h-5 w-5 mr-2 text-blue-700" />
-                        Datos técnicos
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-5">
-                      <div className="space-y-4">
-                        <div>
-                          <span className="font-medium">Dirección IP:</span> 
-                          <span className="ml-2">{domainData.ip}</span>
-                          {domainData.ip_chile ? <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              🇨🇱 IP Chilena
-                            </span> : <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                              <CloudOff className="h-3 w-3 mr-1" /> IP Extranjera
-                            </span>}
-                        </div>
-                        
-                        <div>
-                          <span className="font-medium">Proveedor:</span> 
-                          <span className="ml-2">{domainData.provider}</span>
-                        </div>
-                        
-                        <div>
-                          <span className="font-medium">ASN:</span> 
-                          <span className="ml-2">{domainData.asn || 'Consultando...'}</span>
-                        </div>
-                        
-                        <div>
-                          <span className="font-medium">Nameservers:</span>
-                          <ul className="ml-6 mt-1 list-disc">
-                            {domainData.nameservers && domainData.nameservers.map((ns: string, index: number) => <li key={index} className="text-sm">{ns}</li>)}
-                          </ul>
-                        </div>
-                      </div>
-                      
-                      <div className="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-lg">
-                        <h3 className="font-medium text-blue-800 mb-2">¿Tu IP no es chilena?</h3>
-                        <p className="text-sm">
-                          Mejora tu velocidad y SEO local 
-                          <a href="/cotiza-hosting" className="text-red-600 underline ml-1">migrando gratis </a> 
-                          a HostingPlus (30 días garantía).
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <div>
-                    <h2 className="text-xl font-bold mb-4 flex items-center">
-                      <Globe className="h-5 w-5 mr-2 text-blue-700" />
-                      Vista previa del sitio
-                    </h2>
-                    <Card className="border overflow-hidden shadow-md bg-white">
-                      <div className="h-[300px] relative overflow-hidden bg-gray-100">
-                        {!previewLoaded && !previewError && <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                            <div className="text-center">
-                              <RefreshCw className="h-10 w-10 mx-auto animate-spin text-gray-400" />
-                              <p className="mt-2 text-sm text-gray-500">Cargando vista previa...</p>
-                            </div>
-                          </div>}
-                        
-                        {previewError && <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                            <div className="text-center">
-                              <p className="text-sm text-gray-500">No se pudo cargar la vista previa</p>
-                              <Button variant="outline" size="sm" className="mt-2" onClick={() => {
-                          setPreviewError(false);
-                          setPreviewLoaded(false);
-                          // Try to reload the image
-                          setDomainData(prevData => ({
-                            ...prevData,
-                            screenshot: `https://image.thum.io/get/width/600/png/${domainName}?cache=${Date.now()}`
-                          }));
-                        }}>
-                                Reintentar
-                              </Button>
-                            </div>
-                          </div>}
-                        
-                        <img src={domainData.screenshot} alt={`Vista previa de ${domainName}`} className={`w-full h-full object-cover transition-opacity duration-300 ${previewLoaded ? 'opacity-100' : 'opacity-0'}`} onLoad={handleImageLoad} onError={handleImageError} />
-                      </div>
-                      <div className="p-3 bg-white border-t">
-                        <a href={`https://${domainName}`} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline flex items-center">
-                          <Globe className="h-3 w-3 mr-1" />
-                          Visitar sitio
-                        </a>
-                      </div>
-                    </Card>
-                    
-                    <div className="mt-6">
-                      <RecentSearches />
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Recommendation section */}
-                <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-xl font-bold mb-4">Recomendación de hosting</h2>
-                  <p className="mb-4">
-                    Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:
-                  </p>
-                  <div className="flex items-center gap-4 border p-4 rounded-lg hover:border-blue-200 transition-all">
-                    <img alt="HostingPlus.cl" className="h-10" src="/lovable-uploads/4b9ad72f-ec68-4414-8b9f-5debe4d14d9f.png" />
+            
+            <div className="grid md:grid-cols-2 gap-8 mt-8">
+              <Card className="shadow-md overflow-hidden">
+                <CardHeader className="bg-white py-5">
+                  <CardTitle className="flex items-center text-xl">
+                    <Server className="h-5 w-5 mr-2 text-blue-700" />
+                    Datos técnicos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-5">
+                  <div className="space-y-4">
                     <div>
-                      <p className="font-medium text-lg">HostingPlus.cl - Nº1 en Chile</p>
-                      <p className="text-sm text-gray-600">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>
-                      <ul className="mt-2 text-sm">
-                        <li className="flex items-center gap-1">
-                          <Check className="h-4 w-4 text-green-500" /> Mejor velocidad en sitios chilenos
-                        </li>
-                        <li className="flex items-center gap-1">
-                          <Check className="h-4 w-4 text-green-500" /> Soporte técnico local 24/7
-                        </li>
-                        <li className="flex items-center gap-1">
-                          <Check className="h-4 w-4 text-green-500" /> Migración gratuita
-                        </li>
+                      <span className="font-medium">Dirección IP:</span> 
+                      <span className="ml-2">{domainData.ip}</span>
+                      {domainData.ip_chile ? <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          🇨🇱 IP Chilena
+                        </span> : <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          <CloudOff className="h-3 w-3 mr-1" /> IP Extranjera
+                        </span>}
+                    </div>
+                    
+                    <div>
+                      <span className="font-medium">Proveedor:</span> 
+                      <span className="ml-2">{domainData.provider}</span>
+                    </div>
+                    
+                    <div>
+                      <span className="font-medium">ASN:</span> 
+                      <span className="ml-2">{domainData.asn || 'Consultando...'}</span>
+                    </div>
+                    
+                    <div>
+                      <span className="font-medium">Nameservers:</span>
+                      <ul className="ml-6 mt-1 list-disc">
+                        {domainData.nameservers && domainData.nameservers.map((ns: string, index: number) => <li key={index} className="text-sm">{ns}</li>)}
                       </ul>
                     </div>
-                    <Button asChild className="ml-auto bg-[#EF233C] hover:bg-[#b3001b] text-white px-6">
-                      <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
-                        Contratar
-                      </a>
-                    </Button>
                   </div>
+                  
+                  <div className="mt-8 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                    <h3 className="font-medium text-blue-800 mb-2">¿Tu IP no es chilena?</h3>
+                    <p className="text-sm">
+                      Mejora tu velocidad y SEO local 
+                      <a href="/cotiza-hosting" className="text-red-600 underline ml-1">migrando gratis </a> 
+                      a HostingPlus (30 días garantía).
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <div>
+                <h2 className="text-xl font-bold mb-4 flex items-center">
+                  <Globe className="h-5 w-5 mr-2 text-blue-700" />
+                  Vista previa del sitio
+                </h2>
+                <Card className="border overflow-hidden shadow-md bg-white">
+                  <div className="h-[300px] relative overflow-hidden bg-gray-100">
+                    {!previewLoaded && !previewError && <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                        <div className="text-center">
+                          <RefreshCw className="h-10 w-10 mx-auto animate-spin text-gray-400" />
+                          <p className="mt-2 text-sm text-gray-500">Cargando vista previa...</p>
+                        </div>
+                      </div>}
+                    
+                    {previewError && <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                        <div className="text-center">
+                          <p className="text-sm text-gray-500">No se pudo cargar la vista previa</p>
+                          <Button variant="outline" size="sm" className="mt-2" onClick={() => {
+                      setPreviewError(false);
+                      setPreviewLoaded(false);
+                      // Try to reload the image
+                      setDomainData(prevData => ({
+                        ...prevData,
+                        screenshot: `https://image.thum.io/get/width/600/png/${domainName}?cache=${Date.now()}`
+                      }));
+                    }}>
+                            Reintentar
+                          </Button>
+                        </div>
+                      </div>}
+                    
+                    <img src={domainData.screenshot} alt={`Vista previa de ${domainName}`} className={`w-full h-full object-cover transition-opacity duration-300 ${previewLoaded ? 'opacity-100' : 'opacity-0'}`} onLoad={handleImageLoad} onError={handleImageError} />
+                  </div>
+                  <div className="p-3 bg-white border-t">
+                    <a href={`https://${domainName}`} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline flex items-center">
+                      <Globe className="h-3 w-3 mr-1" />
+                      Visitar sitio
+                    </a>
+                  </div>
+                </Card>
+                
+                <div className="mt-6">
+                  <RecentSearches />
                 </div>
-              </TabsContent>
-              
-              {/* Technical Analysis Tab Content */}
-              <TabsContent value="technical" className="mt-6">
-                <DomainTechnicalAnalysis 
-                  domainName={domainName} 
-                  ip={domainData.ip} 
-                  nameservers={domainData.nameservers || []} 
-                />
-              </TabsContent>
-              
-              {/* Domain History Tab Content */}
-              <TabsContent value="history" className="mt-6">
-                <DomainHistoryData domainName={domainName} />
-              </TabsContent>
-              
-              {/* Performance Comparison Tab Content */}
-              <TabsContent value="performance" className="mt-6">
-                <PerformanceComparison 
-                  domainName={domainName} 
-                  ipChile={!!domainData.ip_chile} 
-                />
-              </TabsContent>
-              
-              {/* Resources Tab Content */}
-              <TabsContent value="resources" className="mt-6">
-                <Tabs defaultValue="educational" className="w-full">
-                  <TabsList className="w-full grid grid-cols-2">
-                    <TabsTrigger value="educational">Recursos educativos</TabsTrigger>
-                    <TabsTrigger value="recommendations">Recomendaciones personalizadas</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="educational" className="mt-6">
-                    <EducationalResources />
-                  </TabsContent>
-                  <TabsContent value="recommendations" className="mt-6">
-                    <PersonalizedRecommendations 
-                      domainName={domainName} 
-                      ipChile={!!domainData.ip_chile} 
-                    />
-                  </TabsContent>
-                </Tabs>
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
+            
+            {/* Recommendation section */}
+            <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-bold mb-4">Recomendación de hosting</h2>
+              <p className="mb-4">
+                Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:
+              </p>
+              <div className="flex items-center gap-4 border p-4 rounded-lg hover:border-blue-200 transition-all">
+                <img alt="HostingPlus.cl" className="h-10" src="/lovable-uploads/4b9ad72f-ec68-4414-8b9f-5debe4d14d9f.png" />
+                <div>
+                  <p className="font-medium text-lg">HostingPlus.cl - Nº1 en Chile</p>
+                  <p className="text-sm text-gray-600">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>
+                  <ul className="mt-2 text-sm">
+                    <li className="flex items-center gap-1">
+                      <Check className="h-4 w-4 text-green-500" /> Mejor velocidad en sitios chilenos
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <Check className="h-4 w-4 text-green-500" /> Soporte técnico local 24/7
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <Check className="h-4 w-4 text-green-500" /> Migración gratuita
+                    </li>
+                  </ul>
+                </div>
+                <Button asChild className="ml-auto bg-[#EF233C] hover:bg-[#b3001b] text-white px-6">
+                  <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
+                    Contratar
+                  </a>
+                </Button>
+              </div>
+            </div>
           </div> : null}
       </main>
       

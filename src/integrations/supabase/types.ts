@@ -18,7 +18,6 @@ export type Database = {
           id: string
           notes: string | null
           updated_at: string
-          user_id: string | null
         }
         Insert: {
           contact_date?: string
@@ -28,7 +27,6 @@ export type Database = {
           id?: string
           notes?: string | null
           updated_at?: string
-          user_id?: string | null
         }
         Update: {
           contact_date?: string
@@ -38,7 +36,6 @@ export type Database = {
           id?: string
           notes?: string | null
           updated_at?: string
-          user_id?: string | null
         }
         Relationships: [
           {
@@ -59,7 +56,6 @@ export type Database = {
           ns: string[] | null
           ns_status: string | null
           updated_at: string
-          user_id: string | null
           verified: boolean
           verified_at: string | null
         }
@@ -71,7 +67,6 @@ export type Database = {
           ns?: string[] | null
           ns_status?: string | null
           updated_at?: string
-          user_id?: string | null
           verified?: boolean
           verified_at?: string | null
         }
@@ -83,7 +78,6 @@ export type Database = {
           ns?: string[] | null
           ns_status?: string | null
           updated_at?: string
-          user_id?: string | null
           verified?: boolean
           verified_at?: string | null
         }
@@ -107,7 +101,6 @@ export type Database = {
           source: string | null
           timestamp: string
           updated_at: string
-          user_id: string | null
         }
         Insert: {
           contacted?: boolean
@@ -118,7 +111,6 @@ export type Database = {
           source?: string | null
           timestamp?: string
           updated_at?: string
-          user_id?: string | null
         }
         Update: {
           contacted?: boolean
@@ -129,31 +121,6 @@ export type Database = {
           source?: string | null
           timestamp?: string
           updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string
-          id: string
-          updated_at: string
-          username: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string
-          id: string
-          updated_at?: string
-          username?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string
-          id?: string
-          updated_at?: string
-          username?: string | null
         }
         Relationships: []
       }
@@ -172,7 +139,6 @@ export type Database = {
           phone: string | null
           status: string | null
           updated_at: string
-          user_id: string | null
         }
         Insert: {
           address?: string | null
@@ -188,7 +154,6 @@ export type Database = {
           phone?: string | null
           status?: string | null
           updated_at?: string
-          user_id?: string | null
         }
         Update: {
           address?: string | null
@@ -204,7 +169,6 @@ export type Database = {
           phone?: string | null
           status?: string | null
           updated_at?: string
-          user_id?: string | null
         }
         Relationships: [
           {
