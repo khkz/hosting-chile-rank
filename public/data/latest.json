@@ -1,6 +1,182 @@
 {
-  "updated": "2025-05-26T20:15:34.297Z",
+  "updated": "2025-05-26T21:12:40.031Z",
   "domains": [
+    {
+      "d": "sigmanutrition.cl",
+      "date": "2025-05-26T17:11:21Z"
+    },
+    {
+      "d": "rjchronos.cl",
+      "date": "2025-05-26T17:09:35Z"
+    },
+    {
+      "d": "aguabanff.cl",
+      "date": "2025-05-26T17:09:17Z"
+    },
+    {
+      "d": "midam.cl",
+      "date": "2025-05-26T17:07:31Z"
+    },
+    {
+      "d": "firstresponse.cl",
+      "date": "2025-05-26T17:07:12Z"
+    },
+    {
+      "d": "torquelab.cl",
+      "date": "2025-05-26T17:06:41Z"
+    },
+    {
+      "d": "conceptomk-corp.cl",
+      "date": "2025-05-26T17:05:38Z"
+    },
+    {
+      "d": "fama-store.cl",
+      "date": "2025-05-26T17:05:35Z"
+    },
+    {
+      "d": "clubox.cl",
+      "date": "2025-05-26T17:04:23Z"
+    },
+    {
+      "d": "fitcargo.cl",
+      "date": "2025-05-26T17:02:23Z"
+    },
+    {
+      "d": "doggystyle.cl",
+      "date": "2025-05-26T17:01:19Z"
+    },
+    {
+      "d": "refugiohome.cl",
+      "date": "2025-05-26T17:00:50Z"
+    },
+    {
+      "d": "ceiaprofasoc.cl",
+      "date": "2025-05-26T17:00:36Z"
+    },
+    {
+      "d": "hazquecumpla.cl",
+      "date": "2025-05-26T16:58:32Z"
+    },
+    {
+      "d": "bty.cl",
+      "date": "2025-05-26T16:55:23Z"
+    },
+    {
+      "d": "manantialesdechiloe.cl",
+      "date": "2025-05-26T16:55:09Z"
+    },
+    {
+      "d": "cloudnets.cl",
+      "date": "2025-05-26T16:48:14Z"
+    },
+    {
+      "d": "aitechdata.cl",
+      "date": "2025-05-26T16:46:59Z"
+    },
+    {
+      "d": "busapp.cl",
+      "date": "2025-05-26T16:46:50Z"
+    },
+    {
+      "d": "ingenieroscomerciales.cl",
+      "date": "2025-05-26T16:45:11Z"
+    },
+    {
+      "d": "huellapositiva.cl",
+      "date": "2025-05-26T16:45:00Z"
+    },
+    {
+      "d": "galpon12.cl",
+      "date": "2025-05-26T16:44:56Z"
+    },
+    {
+      "d": "cctvision.cl",
+      "date": "2025-05-26T16:42:04Z"
+    },
+    {
+      "d": "megalexy.cl",
+      "date": "2025-05-26T16:41:18Z"
+    },
+    {
+      "d": "asesoriasvillar.cl",
+      "date": "2025-05-26T16:41:02Z"
+    },
+    {
+      "d": "gemchile.cl",
+      "date": "2025-05-26T16:39:29Z"
+    },
+    {
+      "d": "logyc.cl",
+      "date": "2025-05-26T16:36:35Z"
+    },
+    {
+      "d": "gude.cl",
+      "date": "2025-05-26T16:35:32Z"
+    },
+    {
+      "d": "hsglaserchile.cl",
+      "date": "2025-05-26T16:33:18Z"
+    },
+    {
+      "d": "inversioneslucasfinanzas.cl",
+      "date": "2025-05-26T16:32:13Z"
+    },
+    {
+      "d": "tallermecanicoexperto.cl",
+      "date": "2025-05-26T16:31:34Z"
+    },
+    {
+      "d": "fvrent.cl",
+      "date": "2025-05-26T16:27:53Z"
+    },
+    {
+      "d": "fvprop.cl",
+      "date": "2025-05-26T16:27:52Z"
+    },
+    {
+      "d": "easycrop.cl",
+      "date": "2025-05-26T16:27:28Z"
+    },
+    {
+      "d": "cpmakopernikus.cl",
+      "date": "2025-05-26T16:26:47Z"
+    },
+    {
+      "d": "forestitafc.cl",
+      "date": "2025-05-26T16:26:36Z"
+    },
+    {
+      "d": "fulgorcreaciones.cl",
+      "date": "2025-05-26T16:26:34Z"
+    },
+    {
+      "d": "contr4puntomusic.cl",
+      "date": "2025-05-26T16:22:01Z"
+    },
+    {
+      "d": "olvetrans.cl",
+      "date": "2025-05-26T16:21:29Z"
+    },
+    {
+      "d": "serviciosfyg.cl",
+      "date": "2025-05-26T16:20:55Z"
+    },
+    {
+      "d": "vici.cl",
+      "date": "2025-05-26T16:20:34Z"
+    },
+    {
+      "d": "gallinero.cl",
+      "date": "2025-05-26T16:19:58Z"
+    },
+    {
+      "d": "magiadeletras.cl",
+      "date": "2025-05-26T16:18:52Z"
+    },
+    {
+      "d": "demarytierra.cl",
+      "date": "2025-05-26T16:17:23Z"
+    },
     {
       "d": "mes13.cl",
       "date": "2025-05-26T16:13:41Z"
@@ -1828,50 +2004,6 @@
     {
       "d": "mediai.cl",
       "date": "2025-05-25T17:13:38Z"
-    },
-    {
-      "d": "tocco.cl",
-      "date": "2025-05-25T17:11:51Z"
-    },
-    {
-      "d": "bebelandiaboutique.cl",
-      "date": "2025-05-25T17:02:28Z"
-    },
-    {
-      "d": "fabricantesjunior.cl",
-      "date": "2025-05-25T16:59:41Z"
-    },
-    {
-      "d": "decodeptojardin.cl",
-      "date": "2025-05-25T16:55:35Z"
-    },
-    {
-      "d": "latincore.cl",
-      "date": "2025-05-25T16:41:27Z"
-    },
-    {
-      "d": "biodiversatech.cl",
-      "date": "2025-05-25T16:37:16Z"
-    },
-    {
-      "d": "brasesores.cl",
-      "date": "2025-05-25T16:35:52Z"
-    },
-    {
-      "d": "natabranttes.cl",
-      "date": "2025-05-25T16:20:01Z"
-    },
-    {
-      "d": "gotime.cl",
-      "date": "2025-05-25T16:17:46Z"
-    },
-    {
-      "d": "solucionescontablesaortiz.cl",
-      "date": "2025-05-25T16:17:11Z"
-    },
-    {
-      "d": "humankafterall.cl",
-      "date": "2025-05-25T16:15:34Z"
     }
   ]
 }
