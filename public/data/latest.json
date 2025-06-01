@@ -1,6 +1,10 @@
 {
-  "updated": "2025-06-01T08:18:06.326Z",
+  "updated": "2025-06-01T09:14:02.673Z",
   "domains": [
+    {
+      "d": "ogucia.cl",
+      "date": "2025-06-01T04:52:03Z"
+    },
     {
       "d": "sibuscasencuentras.cl",
       "date": "2025-06-01T04:01:37Z"
@@ -1148,10 +1152,6 @@
     {
       "d": "siberiano.cl",
       "date": "2025-05-31T05:43:56Z"
-    },
-    {
-      "d": "contaluca.cl",
-      "date": "2025-05-31T04:29:09Z"
     }
   ]
 }
