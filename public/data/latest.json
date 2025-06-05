@@ -1,6 +1,10 @@
 {
-  "updated": "2025-06-05T09:15:55.596Z",
+  "updated": "2025-06-05T10:16:38.631Z",
   "domains": [
+    {
+      "d": "faropolitico.cl",
+      "date": "2025-06-05T06:12:49Z"
+    },
     {
       "d": "georyittdev.cl",
       "date": "2025-06-05T05:14:38Z"
@@ -2908,10 +2912,6 @@
     {
       "d": "hostservice.cl",
       "date": "2025-06-04T06:46:21Z"
-    },
-    {
-      "d": "nortecaliente.cl",
-      "date": "2025-06-04T05:44:58Z"
     }
   ]
 }
