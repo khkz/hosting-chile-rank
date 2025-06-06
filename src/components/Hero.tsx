@@ -19,26 +19,13 @@ const Hero = () => {
           <div className="mt-8">
             <Button asChild className="bg-[#EF233C] hover:bg-[#b3001b] text-white px-8 py-4 text-lg rounded-lg">
               <Link to="/cotiza-hosting">
-                Cotiza tu hosting gratis
+                Cotiza tu hosting
               </Link>
             </Button>
           </div>
           
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild className="inline-block bg-[#EF233C] text-white px-6 py-3 rounded-lg transition hover:bg-red-700">
-              <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
-                Contratar HostingPlus
-                <span className="ml-2 text-xs font-medium text-white/80">(desde $4 158 CLP/mes)</span>
-              </a>
-            </Button>
-            
-            <a href="#ranking" className="text-[#2B2D42] underline text-sm hover:text-[#EF233C]">
-              Ver ranking completo
-            </a>
-          </div>
-          
           {/* Trust bar */}
-          <div className="flex items-center justify-center gap-4 mt-4">
+          <div className="flex items-center justify-center gap-4 mt-6">
             <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs">
               <Check className="h-3 w-3" />0 reclamos
             </span>
