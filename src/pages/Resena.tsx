@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -11,7 +10,7 @@ import { Helmet } from 'react-helmet';
 const hostingData = {
   'hostingplus': {
     name: 'HostingPlus',
-    logo: '/logo-hostingplus-new.svg',
+    logo: '/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png',
     rating: 9.8,
     description: 'HostingPlus ofrece una combinación única de rendimiento, seguridad y soporte técnico que lo posiciona como nuestra principal recomendación en el mercado chileno.',
     pros: [

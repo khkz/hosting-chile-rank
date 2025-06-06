@@ -37,7 +37,7 @@ const hostProviders = [
   {
     id: 1,
     name: "HostingPlus",
-    logo: "/logo-hostingplus.png",
+    logo: "/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png",
     rating: 9.9,
     price: "Desde $3.990/mes",
     speed: "9.9/10",
