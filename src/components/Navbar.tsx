@@ -158,7 +158,7 @@ const Navbar = () => {
             className="bg-[#EF233C] hover:bg-[#EF233C]/90 text-white"
           >
             <a href={CTA_URL} target="_blank" rel="noopener noreferrer">
-              Contratar ahora
+              Contratar ahora con el #1 del ranking
             </a>
           </Button>
         </div>
@@ -280,7 +280,7 @@ const Navbar = () => {
                   className="w-full bg-[#EF233C] hover:bg-[#EF233C]/90 text-white"
                 >
                   <a href={CTA_URL} target="_blank" rel="noopener noreferrer">
-                    Contratar ahora
+                    Contratar ahora con el #1
                   </a>
                 </Button>
               </div>
