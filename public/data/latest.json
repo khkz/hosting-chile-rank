@@ -1,6 +1,10 @@
 {
-  "updated": "2025-06-09T06:22:50.982Z",
+  "updated": "2025-06-09T07:15:51.055Z",
   "domains": [
+    {
+      "d": "colectividadcatalanachile.cl",
+      "date": "2025-06-09T03:08:26Z"
+    },
     {
       "d": "geodata.cl",
       "date": "2025-06-09T02:07:32Z"
@@ -1068,18 +1072,6 @@
     {
       "d": "edicionesonita.cl",
       "date": "2025-06-08T03:27:30Z"
-    },
-    {
-      "d": "doctormuller.cl",
-      "date": "2025-06-08T02:59:48Z"
-    },
-    {
-      "d": "sacmetal.cl",
-      "date": "2025-06-08T02:39:07Z"
-    },
-    {
-      "d": "escueladefortaleza.cl",
-      "date": "2025-06-08T02:34:42Z"
     }
   ]
 }
