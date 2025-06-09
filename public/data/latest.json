@@ -1,6 +1,22 @@
 {
-  "updated": "2025-06-09T05:16:23.792Z",
+  "updated": "2025-06-09T06:22:50.982Z",
   "domains": [
+    {
+      "d": "geodata.cl",
+      "date": "2025-06-09T02:07:32Z"
+    },
+    {
+      "d": "nestia.cl",
+      "date": "2025-06-09T01:44:07Z"
+    },
+    {
+      "d": "primesolar.cl",
+      "date": "2025-06-09T01:31:18Z"
+    },
+    {
+      "d": "prodaction.cl",
+      "date": "2025-06-09T01:29:40Z"
+    },
     {
       "d": "alisongarcia.cl",
       "date": "2025-06-09T01:16:14Z"
@@ -1064,34 +1080,6 @@
     {
       "d": "escueladefortaleza.cl",
       "date": "2025-06-08T02:34:42Z"
-    },
-    {
-      "d": "comunidup.cl",
-      "date": "2025-06-08T02:20:40Z"
-    },
-    {
-      "d": "llados.cl",
-      "date": "2025-06-08T02:17:25Z"
-    },
-    {
-      "d": "losjosesautomotriz.cl",
-      "date": "2025-06-08T02:03:00Z"
-    },
-    {
-      "d": "tropicaltree.cl",
-      "date": "2025-06-08T02:00:27Z"
-    },
-    {
-      "d": "bizionary.cl",
-      "date": "2025-06-08T02:00:26Z"
-    },
-    {
-      "d": "rentbyte.cl",
-      "date": "2025-06-08T01:41:20Z"
-    },
-    {
-      "d": "dewy.cl",
-      "date": "2025-06-08T01:31:47Z"
     }
   ]
 }
