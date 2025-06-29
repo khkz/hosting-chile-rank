@@ -46,9 +46,9 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
+    <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
       <Navbar />
-      <main>
+      <main className="relative">
         {/* section 1: Hero */}
         <Hero />
         
