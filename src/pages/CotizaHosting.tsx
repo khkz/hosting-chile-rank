@@ -480,7 +480,7 @@ const CotizaHosting = () => {
                 <CardContent className="space-y-4">
                   <div className="flex justify-center mb-4">
                     <img 
-                      src="/logo-hostingplus-new.svg" 
+                      src="/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png" 
                       alt="HostingPlus" 
                       className="h-12"
                       loading="lazy"
