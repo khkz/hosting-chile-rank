@@ -52,7 +52,7 @@ const Benefits = () => {
                 <div className="text-gray-300">Uptime garantizado</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-[#EF233C] mb-2">< 200ms</div>
+                <div className="text-4xl font-bold text-[#EF233C] mb-2">&lt;200ms</div>
                 <div className="text-gray-300">Tiempo de respuesta</div>
               </div>
               <div className="text-center">
