@@ -297,10 +297,17 @@ const RankingPage = () => {
           soporte técnico, seguridad y soberanía digital.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34]">
+          <Button 
+            asChild 
+            className="bg-[#EF233C] hover:bg-[#d01d34] text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          >
             <a href="#ranking">Comparar ahora</a>
           </Button>
-          <Button asChild variant="outline">
+          <Button 
+            asChild 
+            variant="outline" 
+            className="border-2 border-[#2B2D42] text-[#2B2D42] hover:bg-[#2B2D42] hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+          >
             <a href="#methodology">Metodología</a>
           </Button>
         </div>
@@ -316,20 +323,26 @@ const RankingPage = () => {
         <div className="grid md:grid-cols-3 gap-6">
           {hostProviders.map((provider, index) => (
             <div key={provider.id} className={`
-              bg-white rounded-lg overflow-hidden
+              bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300
               ${index === 0 
-                ? 'ring-2 ring-[#EF233C] shadow-lg transform md:scale-105' 
-                : 'opacity-90 scale-95'}
+                ? 'ring-2 ring-[#EF233C] transform md:scale-105' 
+                : 'hover:scale-105'}
             `}>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-[#2B2D42] font-bold mr-3">
+                    <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold mr-3 ${
+                      index === 0 
+                        ? 'bg-[#EF233C] text-white' 
+                        : 'bg-gray-100 text-[#2B2D42]'
+                    }`}>
                       {provider.id}
                     </span>
                     <img src={provider.logo} alt={provider.name} className="h-8" loading="lazy" />
                   </div>
-                  <div className="text-xl font-bold">{provider.rating}/10</div>
+                  <div className={`text-xl font-bold ${index === 0 ? 'text-[#EF233C]' : 'text-[#2B2D42]'}`}>
+                    {provider.rating}/10
+                  </div>
                 </div>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -347,7 +360,7 @@ const RankingPage = () => {
                 <ul className="mb-6 text-sm space-y-2">
                   {provider.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
-                      <svg className="w-5 h-5 text-green-500 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <svg className="w-5 h-5 text-green-500 mr-1.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                       </svg>
                       {feature}
@@ -355,10 +368,17 @@ const RankingPage = () => {
                   ))}
                 </ul>
                 
-                <Button asChild className={`w-full ${index === 0 ? 'bg-[#EF233C] hover:bg-[#d01d34]' : 'bg-[#2B2D42]'}`}>
-                  <a href={provider.url} target="_blank" rel="noopener noreferrer">
+                <Button 
+                  asChild 
+                  className={`w-full font-semibold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${
+                    index === 0 
+                      ? 'bg-[#EF233C] hover:bg-[#d01d34] text-white' 
+                      : 'bg-[#2B2D42] hover:bg-[#1a1c2e] text-white'
+                  }`}
+                >
+                  <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
                     Visitar sitio
-                    <ExternalLink className="ml-1 h-4 w-4" />
+                    <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
               </div>
@@ -381,9 +401,9 @@ const RankingPage = () => {
               href={category.url} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="block hover:shadow-lg transition-shadow rounded-lg overflow-hidden"
+              className="block hover:shadow-lg transition-all duration-300 rounded-lg overflow-hidden transform hover:scale-105"
             >
-              <Card className={`${category.bgColor} h-full flex flex-col items-center justify-center p-6 text-center`}>
+              <Card className={`${category.bgColor} h-full flex flex-col items-center justify-center p-6 text-center hover:shadow-xl transition-all duration-300`}>
                 <div className="mb-4">
                   {category.icon}
                 </div>
@@ -493,7 +513,10 @@ const RankingPage = () => {
         <p className="mb-6 max-w-lg mx-auto">
           Nuestro equipo de expertos puede ayudarte a encontrar la solución perfecta para tu proyecto.
         </p>
-        <Button asChild className="bg-[#EF233C] hover:bg-[#d01d34]">
+        <Button 
+          asChild 
+          className="bg-[#EF233C] hover:bg-[#d01d34] text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        >
           <a href="mailto:contacto@eligetuhosting.cl">Contáctanos</a>
         </Button>
       </Section>
