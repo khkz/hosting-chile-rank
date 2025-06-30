@@ -5,8 +5,9 @@ import Footer from '../components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, X, ExternalLink, Star, Zap, Shield, Clock, Headphones, MapPin } from 'lucide-react';
+import { Check, X, ExternalLink, Star, Zap, Shield, Clock, Headphones, MapPin, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getComplaintInfo, getComplaintBadge } from '../services/hostingComplaints';
 
 const MejorHostingChile2025 = () => {
   const hostingProviders = [
@@ -25,7 +26,9 @@ const MejorHostingChile2025 = () => {
       ssl: true,
       garantia: "30 días",
       destacado: true,
-      url: "https://www.hostingplus.cl/"
+      url: "https://www.hostingplus.cl/",
+      asn: "AS266879", // ASN for HostingPlus
+      complaints: getComplaintInfo("AS266879")
     },
     {
       name: "EcoHosting.cl",
@@ -42,7 +45,9 @@ const MejorHostingChile2025 = () => {
       ssl: true,
       garantia: "15 días",
       destacado: false,
-      url: "https://www.ecohosting.cl/"
+      url: "https://www.ecohosting.cl/",
+      asn: "AS266855", // ASN for EcoHosting
+      complaints: getComplaintInfo("AS266855")
     },
     {
       name: "HostGator.cl",
@@ -59,7 +64,9 @@ const MejorHostingChile2025 = () => {
       ssl: true,
       garantia: "45 días",
       destacado: false,
-      url: "https://www.hostgator.cl/"
+      url: "https://www.hostgator.cl/",
+      asn: "AS19871", // ASN for HostGator
+      complaints: getComplaintInfo("AS19871")
     },
     {
       name: "Hosting.cl",
@@ -76,7 +83,9 @@ const MejorHostingChile2025 = () => {
       ssl: true,
       garantia: "7 días",
       destacado: false,
-      url: "https://www.hosting.cl/"
+      url: "https://www.hosting.cl/",
+      asn: "AS265839", // ASN for Hosting.cl
+      complaints: getComplaintInfo("AS265839")
     },
     {
       name: "PlanetaHosting.cl",
@@ -93,7 +102,9 @@ const MejorHostingChile2025 = () => {
       ssl: true,
       garantia: "15 días",
       destacado: false,
-      url: "https://www.planetahosting.cl/"
+      url: "https://www.planetahosting.cl/",
+      asn: "AS52368", // ASN for PlanetaHosting/SolucionHost
+      complaints: getComplaintInfo("AS52368")
     }
   ];
 
@@ -122,6 +133,11 @@ const MejorHostingChile2025 = () => {
       icon: <MapPin className="w-6 h-6" />,
       title: "Infraestructura Local",
       description: "Servidores ubicados en Chile garantizan menor latencia para visitantes locales y mejor posicionamiento en búsquedas geográficas."
+    },
+    {
+      icon: <AlertTriangle className="w-6 h-6" />,
+      title: "Historial de Reclamos",
+      description: "Análisis de reclamos verificados en Reclamos.cl para evaluar la confiabilidad real del proveedor según experiencias de usuarios chilenos."
     }
   ];
 
@@ -149,6 +165,10 @@ const MejorHostingChile2025 = () => {
     {
       question: "¿Cuánto cuesta un hosting de calidad en Chile en 2025?",
       answer: "Un hosting de calidad profesional en Chile cuesta entre $3.000 y $6.000 CLP mensuales. Precios muy bajos suelen indicar recursos limitados o servicios deficientes."
+    },
+    {
+      question: "¿Cómo verificar los reclamos de un proveedor de hosting?",
+      answer: "Consulta Reclamos.cl para ver quejas verificadas de usuarios chilenos. Un proveedor con 0 reclamos en 5 años demuestra excelente servicio al cliente y confiabilidad comprobada."
     }
   ];
 
@@ -298,64 +318,88 @@ const MejorHostingChile2025 = () => {
                     <th className="p-4 text-center font-semibold">Uptime</th>
                     <th className="p-4 text-center font-semibold">Velocidad</th>
                     <th className="p-4 text-center font-semibold">Soporte</th>
+                    <th className="p-4 text-center font-semibold">Reclamos</th>
                     <th className="p-4 text-center font-semibold">Precio/mes</th>
                     <th className="p-4 text-center font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {hostingProviders.map((provider, index) => (
-                    <tr key={index} className={`border-b hover:bg-gray-50 ${provider.destacado ? 'bg-[#EF233C]/5 border-[#EF233C]/20' : ''}`}>
-                      <td className="p-4">
-                        <div className="flex items-center gap-3">
-                          {provider.destacado && (
-                            <Badge className="bg-[#EF233C] text-white text-xs">
-                              Recomendado
-                            </Badge>
-                          )}
-                          <img src={provider.logo} alt={provider.name} className="w-12 h-8 object-contain" />
-                          <div>
-                            <div className="font-medium text-[#2B2D42]">{provider.name}</div>
-                            <div className="text-xs text-gray-500">{provider.datacenter}</div>
+                  {hostingProviders.map((provider, index) => {
+                    const complaintBadge = provider.complaints ? getComplaintBadge(provider.complaints.level) : null;
+                    
+                    return (
+                      <tr key={index} className={`border-b hover:bg-gray-50 ${provider.destacado ? 'bg-[#EF233C]/5 border-[#EF233C]/20' : ''}`}>
+                        <td className="p-4">
+                          <div className="flex items-center gap-3">
+                            {provider.destacado && (
+                              <Badge className="bg-[#EF233C] text-white text-xs">
+                                Recomendado
+                              </Badge>
+                            )}
+                            <img src={provider.logo} alt={provider.name} className="w-12 h-8 object-contain" />
+                            <div>
+                              <div className="font-medium text-[#2B2D42]">{provider.name}</div>
+                              <div className="text-xs text-gray-500">{provider.datacenter}</div>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-semibold text-[#2B2D42]">{provider.rating}</span>
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <span className={`font-semibold ${parseFloat(provider.uptime) >= 99.95 ? 'text-green-600' : 'text-orange-600'}`}>
-                          {provider.uptime}
-                        </span>
-                      </td>
-                      <td className="p-4 text-center">
-                        <Badge variant={provider.velocidad.includes('A') ? 'default' : 'secondary'}>
-                          {provider.velocidad}
-                        </Badge>
-                      </td>
-                      <td className="p-4 text-center text-sm">{provider.soporte}</td>
-                      <td className="p-4 text-center font-semibold text-[#EF233C]">{provider.precio}</td>
-                      <td className="p-4 text-center">
-                        <Button asChild size="sm" className={provider.destacado ? "bg-[#EF233C] hover:bg-[#c41e3a]" : "bg-gray-600 hover:bg-gray-700"}>
-                          <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
-                            Ver Hosting
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="p-4 text-center">
+                          <div className="flex items-center justify-center gap-1">
+                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            <span className="font-semibold text-[#2B2D42]">{provider.rating}</span>
+                          </div>
+                        </td>
+                        <td className="p-4 text-center">
+                          <span className={`font-semibold ${parseFloat(provider.uptime) >= 99.95 ? 'text-green-600' : 'text-orange-600'}`}>
+                            {provider.uptime}
+                          </span>
+                        </td>
+                        <td className="p-4 text-center">
+                          <Badge variant={provider.velocidad.includes('A') ? 'default' : 'secondary'}>
+                            {provider.velocidad}
+                          </Badge>
+                        </td>
+                        <td className="p-4 text-center text-sm">{provider.soporte}</td>
+                        <td className="p-4 text-center">
+                          <div className="flex flex-col items-center gap-1">
+                            {complaintBadge && (
+                              <Badge className={`text-xs ${complaintBadge.color}`}>
+                                {complaintBadge.icon} {provider.complaints?.count || 0}
+                              </Badge>
+                            )}
+                            {provider.complaints && provider.complaints.reclamosUrl && (
+                              <a 
+                                href={provider.complaints.reclamosUrl} 
+                                target="_blank" 
+                                rel="nofollow"
+                                className="text-xs text-blue-600 hover:underline"
+                              >
+                                Ver en Reclamos.cl
+                              </a>
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-4 text-center font-semibold text-[#EF233C]">{provider.precio}</td>
+                        <td className="p-4 text-center">
+                          <Button asChild size="sm" className={provider.destacado ? "bg-[#EF233C] hover:bg-[#c41e3a]" : "bg-gray-600 hover:bg-gray-700"}>
+                            <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                              Ver Hosting
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
             
             <div className="mt-4 text-sm text-gray-600 space-y-2">
               <p>* Datos actualizados a Enero 2025. Uptime basado en monitoreo independiente durante 12 meses.</p>
+              <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (2020-2025)</p>
               <p>* Fuentes: <a href="https://uptimerobot.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">UptimeRobot</a>, 
-              <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline"> GTmetrix</a>, 
-              <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline"> Reclamos.cl</a></p>
+              <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline"> GTmetrix</a></p>
             </div>
           </section>
 
