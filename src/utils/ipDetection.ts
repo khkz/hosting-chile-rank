@@ -1,59 +1,70 @@
 
 /**
- * Utility functions for IP detection and analysis
+ * Utility functions for IP detection and analysis using official Chilean IP ranges
+ * Source: https://www.ipdeny.com/ipblocks/data/countries/cl.zone
  */
 
 /**
- * Comprehensive list of Chilean IP ranges
- * This list includes known IP prefixes allocated to Chile
+ * Official Chilean IP ranges in CIDR notation
+ * Updated from ipdeny.com official source
  */
-export const chileanIPRanges = [
-  // Original ranges
-  '200.27', '200.6', '190.98', '200.14', '200.29', '200.54', '190.196', '186.67',
-  '190.95', '190.114', '190.151', '190.160', '190.121', '190.110', '190.101', '190.82',
-  '186.64', '186.10', '191.98', '191.101', '191.102', '152.139', '152.172', '152.231',
-  '152.74', '181.43', '181.72', '181.162', '181.199', '186.9', '186.11', '186.20',
-  '186.78', '201.214', '201.215', '201.220', '201.221', '201.222', '201.241', '201.239',
-  '179.0', '179.1', '179.2', '179.3', '179.4', '179.5', '179.6',
-  
-  // Additional Chilean IP ranges
-  '138.117', '138.121', '138.186', '138.219', '138.255', '138.36', '138.84', '138.99',
-  '146.83', '152.230', '152.231', '158.170', '158.251', '161.131', '161.238', '161.25',
-  '163.247', '163.250', '164.77', '164.96', '164.98', '166.110', '166.75', '167.28',
-  '168.231', '170.18', '179.8', '179.9', '181.160', '181.161', '181.162', '181.163',
-  '181.172', '181.173', '181.190', '181.200', '181.201', '181.202', '181.203', '181.212',
-  '181.226', '181.42', '181.43', '181.72', '181.73', '181.74', '181.75', '186.20',
-  '186.21', '186.34', '186.35', '186.36', '186.37', '186.40', '186.41', '186.65',
-  '186.67', '186.78', '186.79', '186.9', '186.10', '186.11', '190.100', '190.101',
-  '190.108', '190.110', '190.113', '190.114', '190.121', '190.151', '190.153', '190.160',
-  '190.161', '190.162', '190.163', '190.196', '190.208', '190.209', '190.215', '190.54',
-  '190.82', '190.91', '190.95', '190.96', '190.97', '190.98', '190.99', '191.112',
-  '191.113', '191.114', '191.115', '191.116', '191.117', '191.118', '191.119', '191.124',
-  '191.125', '191.126', '191.127', '191.98', '191.101', '191.102', '200.10', '200.11',
-  '200.12', '200.13', '200.14', '200.2', '200.22', '200.27', '200.28', '200.29', '200.30',
-  '200.54', '200.6', '200.63', '200.68', '200.7', '200.72', '200.73', '200.74', '200.75',
-  '200.83', '200.86', '200.9', '201.214', '201.215', '201.220', '201.221', '201.222',
-  '201.236', '201.238', '201.239', '201.241', '201.246',
-  
-  // Additional ranges from the list
-  '104.132.186', '104.132.197', '104.132.202', '104.133.166', '104.133.94', '104.135.166',
-  '104.234.110', '104.234.7', '104.239.28', '104.239.44', '104.239.88', '104.250.176',
-  '104.252.176', '104.252.184', '104.252.188', '104.252.226', '104.252.233', '104.252.238',
-  '104.252.247', '104.252.250', '104.29.52', '107.151.184', '109.72.119', '110.238.64',
-  '119.8.144', '128.1.130', '128.201.116', '128.201.224', '128.77.117', '128.77.78',
-  '128.94.8', '129.148.152', '129.149.32', '129.151.96', '129.222.168', '129.222.180'
+export const chileanCIDRRanges = [
+  '138.0.0.0/8',
+  '146.83.0.0/16',
+  '152.172.0.0/14',
+  '158.170.0.0/15',
+  '161.131.0.0/16',
+  '163.247.0.0/16',
+  '179.0.0.0/13',
+  '181.40.0.0/14',
+  '181.160.0.0/11',
+  '186.64.0.0/14',
+  '190.96.0.0/13',
+  '190.110.0.0/15',
+  '190.151.0.0/16',
+  '190.196.0.0/14',
+  '191.96.0.0/13',
+  '200.6.0.0/15',
+  '200.27.0.0/16',
+  '200.54.0.0/15',
+  '201.214.0.0/15',
+  '201.238.0.0/15'
 ];
 
 /**
- * Checks if an IP address belongs to a Chilean range
+ * Convert IP address to 32-bit integer
+ */
+const ipToInt = (ip: string): number => {
+  const parts = ip.split('.').map(Number);
+  return (parts[0] << 24) + (parts[1] << 16) + (parts[2] << 8) + parts[3];
+};
+
+/**
+ * Check if an IP address is within a CIDR range
+ */
+const isIPInCIDR = (ip: string, cidr: string): boolean => {
+  const [network, prefixLength] = cidr.split('/');
+  const networkInt = ipToInt(network);
+  const ipInt = ipToInt(ip);
+  const mask = (0xffffffff << (32 - parseInt(prefixLength))) >>> 0;
+  
+  return (networkInt & mask) === (ipInt & mask);
+};
+
+/**
+ * Checks if an IP address belongs to Chile using official CIDR ranges
  * @param ip The IP address to check
  * @returns boolean indicating if the IP is Chilean
  */
 export const isChileanIP = (ip: string): boolean => {
   if (!ip || ip === '–' || ip === '-') return false;
   
-  // Check against our list of Chilean IP prefixes
-  return chileanIPRanges.some(range => ip.startsWith(range));
+  // Validate IP format
+  const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  if (!ipRegex.test(ip)) return false;
+  
+  // Check against official Chilean CIDR ranges
+  return chileanCIDRRanges.some(cidr => isIPInCIDR(ip, cidr));
 };
 
 /**
@@ -66,10 +77,24 @@ export const isChileanASN = (asn: string): boolean => {
   
   const chileanASNs = [
     'AS61512', 'AS27678', 'AS22047', 'AS7418', 'AS6429', 'AS28001', 
-    'AS14259', 'AS263702', 'AS263237', 'AS52468', 'AS263726'
+    'AS14259', 'AS263702', 'AS263237', 'AS52468', 'AS263726', 'AS265839'
   ];
   
   return chileanASNs.some(chileanAsn => asn.includes(chileanAsn)) || 
          asn.toLowerCase().includes('chile') ||
          asn.toLowerCase().includes('cl');
+};
+
+/**
+ * Get the specific CIDR range that contains the given IP
+ * @param ip The IP address to check
+ * @returns The CIDR range that contains the IP, or null if not found
+ */
+export const getChileanCIDRRange = (ip: string): string | null => {
+  if (!ip || ip === '–' || ip === '-') return null;
+  
+  const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  if (!ipRegex.test(ip)) return null;
+  
+  return chileanCIDRRanges.find(cidr => isIPInCIDR(ip, cidr)) || null;
 };
