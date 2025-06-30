@@ -16,7 +16,8 @@ import {
   ExternalLink,
   Calendar,
   User,
-  Building
+  Building,
+  MapPin
 } from 'lucide-react';
 import type { DomainAnalysisResult } from '@/services/domainAnalysis';
 
@@ -109,6 +110,19 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                 <span className="font-medium">ASN:</span>
                 <span className="ml-2">{data.basic.asn}</span>
               </div>
+              {data.basic.location && (
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-gray-500" />
+                  <span className="font-medium">Ubicación:</span>
+                  <span className="ml-2">{data.basic.location}</span>
+                </div>
+              )}
+              {data.basic.isp && data.basic.isp !== data.basic.provider && (
+                <div>
+                  <span className="font-medium">ISP:</span>
+                  <span className="ml-2">{data.basic.isp}</span>
+                </div>
+              )}
             </div>
             
             <div>

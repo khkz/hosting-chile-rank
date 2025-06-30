@@ -1,5 +1,5 @@
-
 import { supabase } from '@/integrations/supabase/client';
+import { lookupASN, isChileanIPEnhanced, type ASNInfo } from './asnLookup';
 
 export interface DomainAnalysisResult {
   basic: {
@@ -9,6 +9,8 @@ export interface DomainAnalysisResult {
     provider: string;
     asn: string;
     nameservers: string[];
+    location?: string;
+    isp?: string;
   };
   dns: {
     a_records: string[];
@@ -220,8 +222,8 @@ const fetchDNSRecords = async (domain: string) => {
   return dnsData;
 };
 
-// Enhanced technology detection with real analysis
-const detectTechStack = async (domain: string) => {
+// Enhanced technology detection with real analysis and improved hosting provider detection
+const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
   console.log(`🔍 Starting technology detection for: ${domain}`);
   
   const techStack = {
@@ -232,8 +234,8 @@ const detectTechStack = async (domain: string) => {
     analytics_tools: [],
     programming_language: 'No detectado',
     database_type: 'No detectado',
-    hosting_provider: 'No detectado',
-    country_location: 'No detectado'
+    hosting_provider: asnInfo.isp || 'No detectado',
+    country_location: asnInfo.country || 'No detectado'
   };
 
   try {
@@ -405,34 +407,42 @@ const detectTechStack = async (domain: string) => {
     console.error(`❌ Error in technology detection for ${domain}:`, error);
   }
 
-  // Enhanced provider detection based on nameservers
+  // Enhanced provider detection based on nameservers and ASN info
   try {
     const dnsRecords = await fetchDNSRecords(domain);
     const nameservers = dnsRecords.ns_records;
     
     console.log(`🔍 Analyzing nameservers for hosting provider:`, nameservers);
     
+    // First priority: Use ASN-detected ISP if it's reliable
+    if (asnInfo.isp && asnInfo.isp !== 'Desconocido') {
+      techStack.hosting_provider = asnInfo.isp;
+      console.log(`✅ Using ASN-detected hosting provider: ${asnInfo.isp}`);
+    }
+    
+    // Override with nameserver-specific detection if available
     if (nameservers.some(ns => ns.includes('hostingplus'))) {
       techStack.hosting_provider = 'HostingPlus';
-      techStack.country_location = 'Chile';
+    } else if (nameservers.some(ns => ns.includes('planetahosting'))) {
+      techStack.hosting_provider = 'Planeta Hosting';
     } else if (nameservers.some(ns => ns.includes('cloudflare'))) {
       techStack.hosting_provider = 'Cloudflare';
       techStack.cdn_provider = 'Cloudflare';
-      techStack.country_location = 'Global CDN';
     } else if (nameservers.some(ns => ns.includes('netlify'))) {
       techStack.hosting_provider = 'Netlify';
-      techStack.country_location = 'Global CDN';
     } else if (nameservers.some(ns => ns.includes('godaddy'))) {
       techStack.hosting_provider = 'GoDaddy';
-      techStack.country_location = 'Estados Unidos';
     } else if (nameservers.some(ns => ns.includes('bluehost'))) {
       techStack.hosting_provider = 'Bluehost';
-      techStack.country_location = 'Estados Unidos';
     } else if (nameservers.some(ns => ns.includes('hostgator'))) {
       techStack.hosting_provider = 'HostGator';
-      techStack.country_location = 'Estados Unidos';
-    } else if (nameservers.some(ns => ns.includes('cpanel') || ns.includes('whm'))) {
-      techStack.hosting_provider = 'Hosting con cPanel';
+    }
+
+    // Set location based on ASN info
+    if (asnInfo.city && asnInfo.city !== 'Desconocido') {
+      techStack.country_location = asnInfo.isChilean ? 
+        `${asnInfo.city}, Chile` : 
+        `${asnInfo.city}, ${asnInfo.country}`;
     }
 
   } catch (error) {
@@ -610,7 +620,7 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
   }
 };
 
-// Main analysis function with enhanced WHOIS handling and logging
+// Main analysis function with enhanced ASN lookup and real IP information
 export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResult> => {
   console.log(`🚀 STARTING comprehensive analysis for: ${domain}`);
 
@@ -620,11 +630,16 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   const primaryIP = dnsRecords.a_records[0] || '–';
   console.log(`📍 Primary IP found: ${primaryIP}`);
 
-  // Run parallel analyses with enhanced WHOIS fetching
+  // Perform ASN lookup for real IP information
+  console.log('🔍 Performing ASN lookup...');
+  const asnInfo = await lookupASN(primaryIP);
+  console.log(`📊 ASN Info:`, asnInfo);
+
+  // Run parallel analyses with enhanced information
   console.log('⚡ Starting parallel analyses...');
   const [sslInfo, techStack, whoisInfo] = await Promise.all([
     checkSSLStatus(domain),
-    detectTechStack(domain),
+    detectTechStack(domain, asnInfo),
     fetchWhoisData(domain, 3) // Increased to 3 retries
   ]);
 
@@ -632,16 +647,19 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   console.log('  - SSL Info:', sslInfo?.ssl_enabled ? 'SSL Enabled' : 'No SSL');
   console.log('  - Tech Stack:', techStack?.hosting_provider || 'Unknown provider');
   console.log('  - WHOIS Info:', whoisInfo ? 'Real data found' : 'Using fallback data');
+  console.log('  - ASN Info:', `${asnInfo.asn} (${asnInfo.isp})`);
 
-  // Create the comprehensive result with enhanced fallback logic
+  // Create the comprehensive result with real ASN information
   const analysisResult: DomainAnalysisResult = {
     basic: {
       domain,
       ip: primaryIP,
-      ip_chile: isChileanIP(primaryIP),
+      ip_chile: asnInfo.isChilean || isChileanIPEnhanced(primaryIP),
       provider: techStack.hosting_provider,
-      asn: 'AS61512 (HostingPlus)',
-      nameservers: dnsRecords.ns_records
+      asn: asnInfo.asn !== 'Desconocido' ? `${asnInfo.asn} (${asnInfo.isp})` : 'ASN no disponible',
+      nameservers: dnsRecords.ns_records,
+      location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : undefined,
+      isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined
     },
     dns: dnsRecords,
     whois: whoisInfo || {
@@ -670,7 +688,10 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
     whois_has_real_data: whoisInfo ? 'YES' : 'NO',
     whois_registrar: analysisResult.whois.registrar,
     whois_created: analysisResult.whois.created_date,
-    whois_owner: analysisResult.whois.owner_name
+    whois_owner: analysisResult.whois.owner_name,
+    asn_info: analysisResult.basic.asn,
+    hosting_provider: analysisResult.basic.provider,
+    location: analysisResult.basic.location
   });
 
   // Save to database for caching with enhanced error handling
@@ -740,17 +761,19 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
       owner_name: whoisInfo.owner_name
     });
 
-    // Transform cached data back to analysis result format
-    if (!dnsInfo) return null;
+    // For cached data, we'll perform a quick ASN lookup to get current info
+    const asnInfo = await lookupASN(dnsInfo.ip || '');
 
     return {
       basic: {
         domain,
         ip: dnsInfo.ip || '–',
-        ip_chile: isChileanIP(dnsInfo.ip || ''),
-        provider: techInfo?.hosting_provider || 'Desconocido',
-        asn: 'AS61512 (HostingPlus)',
-        nameservers: ensureArray(dnsInfo.ns)
+        ip_chile: asnInfo.isChilean || isChileanIPEnhanced(dnsInfo.ip || ''),
+        provider: techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
+        asn: asnInfo.asn !== 'Desconocido' ? `${asnInfo.asn} (${asnInfo.isp})` : techInfo?.hosting_provider || 'ASN no disponible',
+        nameservers: ensureArray(dnsInfo.ns),
+        location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : techInfo?.country_location,
+        isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined
       },
       dns: {
         a_records: [dnsInfo.ip || ''],
@@ -794,8 +817,8 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         analytics_tools: ensureArray(techInfo?.analytics_tools),
         programming_language: techInfo?.programming_language || 'Desconocido',
         database_type: techInfo?.database_type || 'Desconocido',
-        hosting_provider: techInfo?.hosting_provider || 'Desconocido',
-        country_location: techInfo?.country_location || 'Desconocido'
+        hosting_provider: techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
+        country_location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : techInfo?.country_location || 'Desconocido'
       }
     };
 
