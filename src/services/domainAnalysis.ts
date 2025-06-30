@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export interface DomainAnalysisResult {
@@ -56,6 +55,43 @@ export interface DomainAnalysisResult {
     country_location: string;
   };
 }
+
+// Helper functions for type conversion
+const ensureArray = (value: any): string[] => {
+  if (Array.isArray(value)) {
+    return value.filter(item => typeof item === 'string');
+  }
+  return [];
+};
+
+const ensureMxRecords = (value: any): Array<{ priority: number; exchange: string }> => {
+  if (Array.isArray(value)) {
+    return value.filter(item => 
+      item && typeof item === 'object' && 
+      typeof item.priority === 'number' && 
+      typeof item.exchange === 'string'
+    );
+  }
+  return [];
+};
+
+const ensureCnameRecords = (value: any): Array<{ name: string; value: string }> => {
+  if (Array.isArray(value)) {
+    return value.filter(item => 
+      item && typeof item === 'object' && 
+      typeof item.name === 'string' && 
+      typeof item.value === 'string'
+    );
+  }
+  return [];
+};
+
+const ensureSecurityHeaders = (value: any): Record<string, any> => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return value as Record<string, any>;
+  }
+  return {};
+};
 
 // Enhanced Chilean IP detection
 const isChileanIP = (ip: string): boolean => {
@@ -346,15 +382,15 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         ip_chile: isChileanIP(dnsInfo.ip || ''),
         provider: techInfo?.hosting_provider || 'Desconocido',
         asn: 'AS61512 (HostingPlus)',
-        nameservers: dnsInfo.ns || []
+        nameservers: ensureArray(dnsInfo.ns)
       },
       dns: {
         a_records: [dnsInfo.ip || ''],
-        aaaa_records: dnsInfo.aaaa_records || [],
-        mx_records: dnsInfo.mx_records || [],
-        txt_records: dnsInfo.txt_records || [],
-        cname_records: dnsInfo.cname_records || [],
-        ns_records: dnsInfo.ns || []
+        aaaa_records: ensureArray(dnsInfo.aaaa_records),
+        mx_records: ensureMxRecords(dnsInfo.mx_records),
+        txt_records: ensureArray(dnsInfo.txt_records),
+        cname_records: ensureCnameRecords(dnsInfo.cname_records),
+        ns_records: ensureArray(dnsInfo.ns)
       },
       whois: {
         registrar: 'NIC Chile',
@@ -372,7 +408,7 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         ssl_expires_date: sslInfo?.ssl_expires_date || '',
         ssl_grade: sslInfo?.ssl_grade || 'Desconocido',
         https_redirect: sslInfo?.https_redirect || false,
-        security_headers: sslInfo?.security_headers || {}
+        security_headers: ensureSecurityHeaders(sslInfo?.security_headers)
       },
       performance: {
         load_time_ms: Math.floor(Math.random() * 3000) + 500,
@@ -387,7 +423,7 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         cms_detected: techInfo?.cms_detected || 'Desconocido',
         framework_detected: techInfo?.framework_detected || 'Desconocido',
         cdn_provider: techInfo?.cdn_provider || 'Ninguno',
-        analytics_tools: techInfo?.analytics_tools || [],
+        analytics_tools: ensureArray(techInfo?.analytics_tools),
         programming_language: techInfo?.programming_language || 'Desconocido',
         database_type: techInfo?.database_type || 'Desconocido',
         hosting_provider: techInfo?.hosting_provider || 'Desconocido',
