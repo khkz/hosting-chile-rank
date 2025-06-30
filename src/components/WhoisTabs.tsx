@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +12,11 @@ import {
   Check,
   X,
   AlertTriangle,
-  CloudOff
+  CloudOff,
+  ExternalLink,
+  Calendar,
+  User,
+  Building
 } from 'lucide-react';
 import type { DomainAnalysisResult } from '@/services/domainAnalysis';
 
@@ -26,6 +29,20 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
   if (isLoading) {
     return <div className="text-center py-8">Cargando análisis completo...</div>;
   }
+
+  // Helper function to check if we have real WHOIS data
+  const hasRealWhoisData = (whoisData: any) => {
+    return whoisData.owner_name && 
+           whoisData.owner_name !== 'No disponible' && 
+           whoisData.owner_name !== 'Información privada' &&
+           !whoisData.owner_name.includes('Información privada');
+  };
+
+  // Format current date for disclaimer
+  const currentDate = new Date().toLocaleDateString('es-CL');
+  
+  // Generate NIC Chile official link
+  const nicChileLink = `https://nic.cl/registry/Whois.do?d=${data.basic.domain}`;
 
   return (
     <Tabs defaultValue="overview" className="w-full">
@@ -188,37 +205,115 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
-              Información WHOIS
+              Información WHOIS Pública
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <span className="font-medium">Registrador:</span>
-                <span className="ml-2">{data.whois.registrar}</span>
-              </div>
-              <div>
-                <span className="font-medium">Estado:</span>
-                <span className="ml-2">{data.whois.status}</span>
-              </div>
-              <div>
-                <span className="font-medium">Fecha de creación:</span>
-                <span className="ml-2">{data.whois.created_date}</span>
-              </div>
-              <div>
-                <span className="font-medium">Fecha de expiración:</span>
-                <span className="ml-2">{data.whois.expires_date}</span>
-              </div>
-              <div>
-                <span className="font-medium">DNSSEC:</span>
-                <span className="ml-2">{data.whois.dnssec_status}</span>
+            {/* Datos Públicos Disponibles */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h4 className="font-medium text-green-800 mb-3 flex items-center gap-2">
+                <Check className="h-4 w-4" />
+                Datos Públicos Disponibles
+              </h4>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-2">
+                  <Globe className="h-4 w-4 text-green-600" />
+                  <div>
+                    <span className="font-medium text-sm">Dominio:</span>
+                    <div className="font-mono text-sm">{data.basic.domain}</div>
+                  </div>
+                </div>
+
+                {hasRealWhoisData(data.whois) && (
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4 text-green-600" />
+                    <div>
+                      <span className="font-medium text-sm">Titular:</span>
+                      <div className="text-sm">{data.whois.owner_name}</div>
+                    </div>
+                  </div>
+                )}
+
+                {data.whois.organization && data.whois.organization !== 'No disponible' && (
+                  <div className="flex items-center gap-2">
+                    <Building className="h-4 w-4 text-green-600" />
+                    <div>
+                      <span className="font-medium text-sm">Organización:</span>
+                      <div className="text-sm">{data.whois.organization}</div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-green-600" />
+                  <div>
+                    <span className="font-medium text-sm">Fecha de creación:</span>
+                    <div className="text-sm">{data.whois.created_date}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-green-600" />
+                  <div>
+                    <span className="font-medium text-sm">Fecha de expiración:</span>
+                    <div className="text-sm">{data.whois.expires_date}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Server className="h-4 w-4 text-green-600" />
+                  <div>
+                    <span className="font-medium text-sm">Registrador:</span>
+                    <div className="text-sm">{data.whois.registrar}</div>
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* Nameservers */}
+            <div>
+              <h4 className="font-medium mb-2 flex items-center gap-2">
+                <Server className="h-4 w-4" />
+                Servidores DNS
+              </h4>
+              <ul className="space-y-1">
+                {data.basic.nameservers.map((ns, index) => (
+                  <li key={index} className="text-sm font-mono bg-gray-50 p-2 rounded">
+                    {ns}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Enlace al registro oficial */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-medium text-blue-800 mb-2">Información del Propietario</h4>
-              <p className="text-sm text-blue-700">
-                La información del propietario está protegida por las políticas de privacidad de NIC Chile.
+              <h4 className="font-medium text-blue-800 mb-2 flex items-center gap-2">
+                <ExternalLink className="h-4 w-4" />
+                Registro Oficial
+              </h4>
+              <p className="text-sm text-blue-700 mb-3">
+                Para información completa y actualizada, consulte el registro oficial de NIC Chile:
+              </p>
+              <a 
+                href={nicChileLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 underline text-sm font-medium"
+              >
+                Consultar en NIC Chile
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+
+            {/* Disclaimer legal */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <h4 className="font-medium text-gray-800 mb-2">Aviso Legal</h4>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Datos obtenidos el {currentDate} desde WHOIS de NIC Chile; uso exclusivo para fines 
+                informativos vinculados a la gestión del nombre de dominio. La información mostrada 
+                corresponde únicamente a los datos públicos disponibles. Para información completa 
+                y verificación oficial, consulte directamente el registro de NIC Chile.
               </p>
             </div>
           </CardContent>
