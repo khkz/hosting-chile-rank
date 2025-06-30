@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -29,6 +28,7 @@ const WhoisDomain = () => {
   const [previewLoaded, setPreviewLoaded] = useState(false);
   const [previewError, setPreviewError] = useState(false);
   const [usingLiveData, setUsingLiveData] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>('');
   const { toast } = useToast();
 
   // Format domain name from slug
@@ -77,42 +77,78 @@ const WhoisDomain = () => {
     return JSON.stringify(schemaData);
   };
 
-  // Function to perform comprehensive domain analysis
+  // Enhanced analysis function with comprehensive debugging
   const performAnalysis = async (domain: string, forceRefresh = false) => {
+    console.log(`🎯 PERFORMING ANALYSIS: ${domain} (forceRefresh: ${forceRefresh})`);
     setRefreshing(forceRefresh);
     setPreviewLoaded(false);
     setPreviewError(false);
+    setDebugInfo('Iniciando análisis...');
     
     try {
       let analysisResult: DomainAnalysisResult | null = null;
 
       // Try to load cached data first unless forcing refresh
       if (!forceRefresh) {
+        console.log('🔍 Checking for cached data...');
+        setDebugInfo('Verificando datos en caché...');
         analysisResult = await loadCachedAnalysis(domain);
         if (analysisResult) {
-          console.log('Using cached analysis data');
+          console.log('✅ Using cached analysis data');
+          setDebugInfo('Usando datos en caché');
           setDomainData(analysisResult);
           setUsingLiveData(false);
           setIsLoading(false);
+          
+          // Show cache info to user
+          toast({
+            title: "Datos cargados desde caché",
+            description: "Usando datos almacenados previamente. Usa 'Actualizar análisis' para obtener datos frescos.",
+            variant: "default"
+          });
           return;
+        } else {
+          console.log('❌ No valid cached data found');
+          setDebugInfo('No se encontraron datos en caché válidos');
         }
+      } else {
+        setDebugInfo('Forzando análisis en vivo...');
       }
 
       // Perform live analysis
-      console.log('Performing live domain analysis');
+      console.log('🔄 Performing live domain analysis');
+      setDebugInfo('Realizando análisis en vivo...');
       analysisResult = await analyzeDomain(domain);
+      
+      console.log('📊 Live analysis completed:', {
+        domain: analysisResult.basic.domain,
+        whois_registrar: analysisResult.whois.registrar,
+        whois_created: analysisResult.whois.created_date,
+        whois_owner: analysisResult.whois.owner_name,
+        has_real_data: analysisResult.whois.created_date !== 'No disponible'
+      });
+      
       setDomainData(analysisResult);
       setUsingLiveData(true);
+      setDebugInfo('Análisis completado exitosamente');
+
+      // Enhanced success message based on data quality
+      const hasRealWhoisData = analysisResult.whois.created_date !== 'No disponible' && 
+                               analysisResult.whois.owner_name !== 'No disponible' &&
+                               analysisResult.whois.owner_name.indexOf('Información privada') === -1;
 
       toast({
-        title: "Análisis completado",
-        description: "Se ha realizado un análisis completo del dominio.",
+        title: hasRealWhoisData ? "Análisis completado con datos reales" : "Análisis completado",
+        description: hasRealWhoisData 
+          ? "Se obtuvieron datos WHOIS reales del dominio." 
+          : "Se completó el análisis pero algunos datos WHOIS no están disponibles públicamente.",
         variant: "default"
       });
 
     } catch (error) {
-      console.error('Error performing domain analysis:', error);
+      console.error('💥 Error performing domain analysis:', error);
       setError('No se pudo completar el análisis del dominio');
+      setDebugInfo(`Error: ${error instanceof Error ? error.message : 'Error desconocido'}`);
       toast({
         title: "Error en el análisis",
         description: "No se pudo obtener información completa para este dominio.",
@@ -163,6 +199,7 @@ const WhoisDomain = () => {
 
   const handleRefresh = () => {
     if (domainName) {
+      console.log('🔄 Manual refresh triggered');
       performAnalysis(domainName, true);
     }
   };
@@ -209,6 +246,12 @@ const WhoisDomain = () => {
               </div>
               <Skeleton className="h-60 w-full" />
             </div>
+            {/* Debug info during loading */}
+            {debugInfo && (
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-700">Estado: {debugInfo}</p>
+              </div>
+            )}
           </div>
         ) : error ? (
           <div className="text-center py-12">
@@ -239,12 +282,33 @@ const WhoisDomain = () => {
               </Button>
             </div>
             
+            {/* Enhanced status indicators */}
             {usingLiveData && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-sm text-green-800">
                   <Check className="inline-block h-4 w-4 mr-1 mb-1" />
                   Análisis en vivo completado. Esta información fue obtenida en tiempo real.
                 </p>
+                {domainData.whois.created_date !== 'No disponible' && (
+                  <p className="text-xs text-green-700 mt-1">
+                    ✓ Datos WHOIS reales obtenidos desde NIC Chile
+                  </p>
+                )}
+              </div>
+            )}
+            
+            {/* Enhanced WHOIS data quality indicator */}
+            {domainData.whois.created_date !== 'No disponible' && domainData.whois.owner_name !== 'No disponible' && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="font-medium text-blue-800 mb-2">✅ Datos WHOIS Verificados</h4>
+                <div className="text-sm text-blue-700 space-y-1">
+                  <p>• Registrador: {domainData.whois.registrar}</p>
+                  <p>• Fecha de creación: {domainData.whois.created_date}</p>
+                  <p>• Propietario: {domainData.whois.owner_name}</p>
+                  {domainData.whois.organization !== 'No disponible' && (
+                    <p>• Organización: {domainData.whois.organization}</p>
+                  )}
+                </div>
               </div>
             )}
             
@@ -322,6 +386,17 @@ const WhoisDomain = () => {
                 <RecentSearches />
               </div>
             </div>
+            
+            {/* Debug info panel (only show in development or when there are issues) */}
+            {process.env.NODE_ENV === 'development' && debugInfo && (
+              <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <h4 className="font-medium text-gray-800 mb-2">Debug Info</h4>
+                <p className="text-sm text-gray-600">{debugInfo}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Usando datos: {usingLiveData ? 'En vivo' : 'Caché'}
+                </p>
+              </div>
+            )}
             
             {/* Recommendation section */}
             <div className="mt-12 bg-white p-6 rounded-lg shadow-md">

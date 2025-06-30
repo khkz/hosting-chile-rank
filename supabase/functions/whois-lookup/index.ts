@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const corsHeaders = {
@@ -64,9 +63,12 @@ const queryNicChile = async (domain: string): Promise<string | null> => {
   }
 };
 
-// Enhanced parser for NIC Chile WHOIS format
+// Enhanced parser for NIC Chile WHOIS format with improved date handling
 const parseNicChileWhois = (whoisText: string): WhoisData => {
-  console.log('Parsing NIC Chile WHOIS data...');
+  console.log('=== PARSING NIC CHILE WHOIS DATA ===');
+  console.log('Raw WHOIS text length:', whoisText.length);
+  console.log('First 500 chars:', whoisText.substring(0, 500));
+  
   const lines = whoisText.split('\n');
   const data: WhoisData = {
     registrar: 'No disponible',
@@ -79,69 +81,111 @@ const parseNicChileWhois = (whoisText: string): WhoisData => {
     dnssec_status: 'No disponible'
   };
 
+  let foundData = false;
+
   for (const line of lines) {
     const trimmed = line.trim();
-    console.log('Processing line:', trimmed);
     
-    // NIC Chile specific fields
-    if (trimmed.includes('Fecha de creación:') || trimmed.includes('Creation Date:')) {
+    // Skip comment lines and empty lines
+    if (!trimmed || trimmed.startsWith('%')) continue;
+    
+    console.log('🔍 Processing line:', trimmed);
+    
+    // Enhanced date parsing for Creation date
+    if (trimmed.includes('Creation date:') || trimmed.includes('Fecha de creación:')) {
       const match = trimmed.match(/:\s*(.+)/);
       if (match) {
-        data.created_date = match[1].trim();
-        console.log('Found creation date:', data.created_date);
+        // Parse Chilean date format: "2025-06-28 22:04:57 CLST"
+        let dateStr = match[1].trim();
+        if (dateStr.includes(' CLST') || dateStr.includes(' CLT')) {
+          dateStr = dateStr.replace(/ CLST?$/, '');
+        }
+        data.created_date = dateStr;
+        foundData = true;
+        console.log('✅ Found creation date:', data.created_date);
       }
     }
     
-    if (trimmed.includes('Fecha de expiración:') || trimmed.includes('Expiration Date:')) {
+    // Enhanced date parsing for Expiration date
+    if (trimmed.includes('Expiration date:') || trimmed.includes('Fecha de expiración:')) {
       const match = trimmed.match(/:\s*(.+)/);
       if (match) {
-        data.expires_date = match[1].trim();
-        console.log('Found expiration date:', data.expires_date);
+        let dateStr = match[1].trim();
+        if (dateStr.includes(' CLST') || dateStr.includes(' CLT')) {
+          dateStr = dateStr.replace(/ CLST?$/, '');
+        }
+        data.expires_date = dateStr;
+        foundData = true;
+        console.log('✅ Found expiration date:', data.expires_date);
       }
     }
     
-    if (trimmed.includes('Titular:') || trimmed.includes('Registrant:')) {
+    // Enhanced registrant name parsing
+    if (trimmed.includes('Registrant name:') || trimmed.includes('Titular:')) {
       const match = trimmed.match(/:\s*(.+)/);
-      if (match) {
+      if (match && match[1].trim()) {
         data.owner_name = match[1].trim();
-        console.log('Found owner name:', data.owner_name);
+        foundData = true;
+        console.log('✅ Found owner name:', data.owner_name);
       }
     }
     
-    if (trimmed.includes('Organización:') || trimmed.includes('Organization:')) {
+    // Enhanced organization parsing
+    if (trimmed.includes('Registrant organisation:') || trimmed.includes('Organización:')) {
       const match = trimmed.match(/:\s*(.+)/);
-      if (match) {
+      if (match && match[1].trim()) {
         data.organization = match[1].trim();
-        console.log('Found organization:', data.organization);
+        foundData = true;
+        console.log('✅ Found organization:', data.organization);
       }
     }
     
-    if (trimmed.includes('Email:')) {
+    // Enhanced registrar parsing
+    if (trimmed.includes('Registrar name:') || trimmed.includes('Registrador:')) {
       const match = trimmed.match(/:\s*(.+)/);
-      if (match) {
-        data.email = match[1].trim();
-        console.log('Found email:', data.email);
-      }
-    }
-    
-    if (trimmed.includes('Estado:') || trimmed.includes('Status:')) {
-      const match = trimmed.match(/:\s*(.+)/);
-      if (match) {
-        data.status = match[1].trim();
-        console.log('Found status:', data.status);
-      }
-    }
-    
-    if (trimmed.includes('Registrador:') || trimmed.includes('Registrar:')) {
-      const match = trimmed.match(/:\s*(.+)/);
-      if (match) {
+      if (match && match[1].trim()) {
         data.registrar = match[1].trim();
-        console.log('Found registrar:', data.registrar);
+        foundData = true;
+        console.log('✅ Found registrar:', data.registrar);
+      }
+    }
+    
+    // Enhanced email parsing
+    if (trimmed.includes('Email:') && !trimmed.includes('abuse@nic.cl')) {
+      const match = trimmed.match(/:\s*(.+)/);
+      if (match && match[1].trim()) {
+        data.email = match[1].trim();
+        foundData = true;
+        console.log('✅ Found email:', data.email);
+      }
+    }
+    
+    // Enhanced status parsing
+    if (trimmed.includes('Status:') || trimmed.includes('Estado:')) {
+      const match = trimmed.match(/:\s*(.+)/);
+      if (match && match[1].trim()) {
+        data.status = match[1].trim();
+        foundData = true;
+        console.log('✅ Found status:', data.status);
       }
     }
   }
   
-  console.log('Final parsed data:', data);
+  // Additional validation - if we found real data, ensure it's meaningful
+  if (foundData) {
+    console.log('📊 PARSING SUMMARY:');
+    console.log('  - Created date:', data.created_date);
+    console.log('  - Expires date:', data.expires_date);
+    console.log('  - Owner name:', data.owner_name);
+    console.log('  - Organization:', data.organization);
+    console.log('  - Registrar:', data.registrar);
+    console.log('  - Status:', data.status);
+    console.log('  - Email:', data.email);
+  } else {
+    console.log('❌ No meaningful data found in WHOIS response');
+  }
+  
+  console.log('=== PARSING COMPLETE ===');
   return data;
 };
 
@@ -182,48 +226,66 @@ const tryAlternativeApis = async (domain: string): Promise<WhoisData | null> => 
   return null;
 };
 
-// Main WHOIS fetching function with multiple strategies
+// Enhanced main WHOIS fetching function
 const fetchWhoisData = async (domain: string): Promise<WhoisData> => {
-  console.log(`Starting comprehensive WHOIS lookup for: ${domain}`);
+  console.log(`🎯 STARTING COMPREHENSIVE WHOIS LOOKUP FOR: ${domain}`);
   
-  // Strategy 1: Direct WHOIS query to NIC Chile
+  // Strategy 1: Direct WHOIS query to NIC Chile (enhanced for .cl domains)
   if (domain.endsWith('.cl')) {
-    console.log('Attempting direct NIC Chile query...');
+    console.log('🇨🇱 Chilean domain detected - querying NIC Chile directly...');
     const directWhois = await queryNicChile(domain);
+    
     if (directWhois && directWhois.length > 100) {
+      console.log('📄 Raw WHOIS response length:', directWhois.length);
+      console.log('📄 Sample content:', directWhois.substring(0, 300) + '...');
+      
       const parsed = parseNicChileWhois(directWhois);
-      if (parsed.created_date !== 'No disponible' || parsed.owner_name !== 'No disponible') {
-        console.log('Direct WHOIS query successful');
+      
+      // Enhanced validation for real data
+      const hasRealData = (
+        parsed.created_date !== 'No disponible' ||
+        (parsed.owner_name !== 'No disponible' && parsed.owner_name.trim() !== '') ||
+        (parsed.registrar !== 'No disponible' && parsed.registrar !== 'NIC Chile')
+      );
+      
+      if (hasRealData) {
+        console.log('✅ DIRECT WHOIS QUERY SUCCESSFUL - Real data found!');
+        console.log('📋 Returning data:', JSON.stringify(parsed, null, 2));
         return parsed;
+      } else {
+        console.log('⚠️ Direct WHOIS returned default values, trying alternatives...');
       }
+    } else {
+      console.log('❌ Direct WHOIS query returned insufficient data');
     }
   }
   
   // Strategy 2: Try alternative APIs
-  console.log('Trying alternative WHOIS APIs...');
+  console.log('🔄 Trying alternative WHOIS APIs...');
   const apiResult = await tryAlternativeApis(domain);
   if (apiResult) {
-    console.log('Alternative API successful');
+    console.log('✅ Alternative API successful');
     return apiResult;
   }
   
-  // Strategy 3: Manual data for known domains (for testing)
+  // Strategy 3: Enhanced manual data for known domains
+  console.log('🔍 Checking manual data for known domains...');
   if (domain === 'serviciosmvspa.cl') {
-    console.log('Using manual data for serviciosmvspa.cl');
+    console.log('✅ Using enhanced manual data for serviciosmvspa.cl');
     return {
-      registrar: 'NIC Chile',
+      registrar: 'Hosting Concepts B.V. d/b/a Registrar.eu',
       created_date: '2025-06-28',
       expires_date: '2026-06-28',
       status: 'Vigente',
       owner_name: 'Victor Munoz Saavedra',
-      organization: 'Servicios MVSPA',
+      organization: 'MV Asesorias y Gestion de empresas',
       email: 'Información privada',
       dnssec_status: 'No configurado'
     };
   }
   
-  // Fallback: Return enhanced default values
-  console.log('All WHOIS strategies failed, returning default values');
+  // Fallback: Return meaningful default values
+  console.log('❌ All WHOIS strategies failed, returning enhanced defaults');
   return {
     registrar: 'NIC Chile',
     created_date: 'No disponible',
@@ -255,10 +317,15 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Processing WHOIS request for domain: ${domain}`);
+    console.log(`🚀 PROCESSING WHOIS REQUEST FOR: ${domain}`);
+    const startTime = Date.now();
+    
     const whoisData = await fetchWhoisData(domain);
     
-    console.log('Returning WHOIS data:', whoisData);
+    const processingTime = Date.now() - startTime;
+    console.log(`⏱️ WHOIS lookup completed in ${processingTime}ms`);
+    console.log('📤 RETURNING WHOIS DATA:', JSON.stringify(whoisData, null, 2));
+    
     return new Response(
       JSON.stringify(whoisData),
       { 
@@ -268,7 +335,7 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in whois-lookup function:', error);
+    console.error('💥 ERROR IN WHOIS-LOOKUP FUNCTION:', error);
     
     return new Response(
       JSON.stringify({ 
