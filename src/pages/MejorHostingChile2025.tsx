@@ -172,6 +172,17 @@ const MejorHostingChile2025 = () => {
     }
   ];
 
+  // Function to get velocity badge color classes based on grade
+  const getVelocityBadgeClasses = (velocidad: string) => {
+    if (velocidad.includes('A')) {
+      return "bg-green-600 text-white border-green-600"; // A+ and A grades - green with white text
+    } else if (velocidad.includes('B')) {
+      return "bg-orange-500 text-white border-orange-500"; // B+ and B grades - orange with white text
+    } else {
+      return "bg-red-500 text-white border-red-500"; // C grades and others - red with white text
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -363,7 +374,7 @@ const MejorHostingChile2025 = () => {
                           </span>
                         </td>
                         <td className="p-4 text-center">
-                          <Badge variant={provider.velocidad.includes('A') ? 'default' : 'secondary'}>
+                          <Badge className={getVelocityBadgeClasses(provider.velocidad)}>
                             {provider.velocidad}
                           </Badge>
                         </td>
