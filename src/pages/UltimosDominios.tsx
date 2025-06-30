@@ -14,6 +14,8 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import UltimasBusquedas from '@/components/UltimasBusquedas';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import DomainAnalysisSearch from '@/components/DomainAnalysisSearch';
+import DomainListFilter from '@/components/DomainListFilter';
 
 // Fallback domains for when API is not available
 const fallbackDomains = [{
@@ -210,7 +212,9 @@ const UltimosDominios = () => {
   }, []);
 
   // Filter domains based on search term
-  const filteredDomains = domains.filter(domain => domain.d.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredDomains = domains.filter(domain => 
+    domain.d.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Pagination
   const indexOfLastDomain = currentPage * domainsPerPage;
@@ -239,9 +243,7 @@ const UltimosDominios = () => {
   }];
 
   // Prepare breadcrumbs for this page
-  const breadcrumbItems = [{
-    label: 'Últimos Dominios'
-  }];
+  const breadcrumbItems = [{ label: 'Últimos Dominios' }];
   return <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
       <Helmet>
         <title>Últimos dominios registrados en NIC.cl — eligetuhosting.cl</title>
@@ -269,7 +271,7 @@ const UltimosDominios = () => {
           <div>
             <h1 className="text-3xl font-bold mb-2">Últimos dominios registrados en NIC.cl</h1>
             <p className="text-gray-600 mb-4">
-              Monitoreo en tiempo real de los registros más recientes de dominios .cl
+              Analiza cualquier dominio o consulta los registros más recientes de dominios .cl
             </p>
             {lastUpdated && <p className="text-sm text-gray-500 flex items-center">
                 <Calendar className="h-4 w-4 mr-1" />
@@ -278,12 +280,21 @@ const UltimosDominios = () => {
           </div>
           
           <div className="flex gap-2 mt-4 md:mt-0">
-            <Button onClick={loadDomains} disabled={refreshing || isLoading} variant="outline" className="flex items-center gap-2">
+            <Button 
+              onClick={loadDomains} 
+              disabled={refreshing || isLoading} 
+              variant="outline" 
+              className="flex items-center gap-2"
+            >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
               Recargar
             </Button>
             
-            <Button onClick={runFetchScript} disabled={refreshing} className="flex items-center gap-2 text-zinc-50">
+            <Button 
+              onClick={runFetchScript} 
+              disabled={refreshing} 
+              className="flex items-center gap-2 text-zinc-50"
+            >
               <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
               {refreshing ? 'Actualizando...' : 'Actualizar datos'}
             </Button>
@@ -296,14 +307,8 @@ const UltimosDominios = () => {
             <AlertDescription>{error}</AlertDescription>
           </Alert>}
         
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input type="text" placeholder="Buscar dominios..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
-            </div>
-          </CardContent>
-        </Card>
+        {/* New domain analysis search */}
+        <DomainAnalysisSearch />
 
         {/* Recomendaciones de servicios */}
         <Card className="mb-8">
@@ -312,18 +317,33 @@ const UltimosDominios = () => {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              {servicios.map((servicio, index) => <Link key={index} to={servicio.path} className="flex flex-col items-center gap-2 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow w-[120px]">
+              {servicios.map((servicio, index) => (
+                <Link
+                  key={index}
+                  to={servicio.path}
+                  className="flex flex-col items-center gap-2 bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow w-[120px]"
+                >
                   <div className="bg-gray-50 p-3 rounded-full">
                     {servicio.icon}
                   </div>
                   <span className="text-sm font-medium text-center">{servicio.title}</span>
-                </Link>)}
+                </Link>
+              ))}
             </div>
           </CardContent>
         </Card>
         
-        {/* Mostrar últimas búsquedas */}
         <UltimasBusquedas />
+        
+        {/* Domain list filter */}
+        {!isLoading && domains.length > 0 && (
+          <DomainListFilter
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            totalDomains={domains.length}
+            filteredCount={filteredDomains.length}
+          />
+        )}
         
         {isLoading ? <div className="space-y-4">
             <Skeleton className="h-8 w-48" />
@@ -417,7 +437,14 @@ const UltimosDominios = () => {
             ¿Quieres registrar tu propio dominio .cl?
           </p>
           <Button asChild>
-            <a href="https://www.hostingplus.cl/dominios" target="_blank" rel="noopener noreferrer" className="mt-2 mx-0 my-0 py-0 px-[37px] text-red-600">Registrar un dominio</a>
+            <a 
+              href="https://www.hostingplus.cl/dominios" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="mt-2 mx-0 my-0 py-0 px-[37px] text-red-600"
+            >
+              Registrar un dominio
+            </a>
           </Button>
         </div>
       </main>
