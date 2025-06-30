@@ -17,7 +17,6 @@ const MejorHostingChile2025 = () => {
       rating: 9.9,
       uptime: "99.98%",
       velocidad: "A+",
-      soporte: "24/7",
       precio: "$3.469",
       datacenter: "Santiago, Chile",
       litespeed: true,
@@ -36,7 +35,6 @@ const MejorHostingChile2025 = () => {
       rating: 9.6,
       uptime: "99.95%",
       velocidad: "A",
-      soporte: "24/7",
       precio: "$19.900/año",
       datacenter: "Santiago, Chile",
       litespeed: true,
@@ -55,7 +53,6 @@ const MejorHostingChile2025 = () => {
       rating: 9.2,
       uptime: "99.93%",
       velocidad: "B+",
-      soporte: "24/7",
       precio: "$5.990",
       datacenter: "Santiago, Chile",
       litespeed: false,
@@ -74,7 +71,6 @@ const MejorHostingChile2025 = () => {
       rating: 8.9,
       uptime: "99.91%",
       velocidad: "B",
-      soporte: "L-V 9-18",
       precio: "$7.990",
       datacenter: "Santiago, Chile",
       litespeed: false,
@@ -93,7 +89,6 @@ const MejorHostingChile2025 = () => {
       rating: 8.5,
       uptime: "99.89%",
       velocidad: "B",
-      soporte: "L-V 9-18",
       precio: "$6.490",
       datacenter: "Santiago, Chile",
       litespeed: false,
@@ -317,7 +312,6 @@ const MejorHostingChile2025 = () => {
                     <th className="p-4 text-center font-semibold">Rating</th>
                     <th className="p-4 text-center font-semibold">Uptime</th>
                     <th className="p-4 text-center font-semibold">Velocidad</th>
-                    <th className="p-4 text-center font-semibold">Soporte</th>
                     <th className="p-4 text-center font-semibold">Reclamos</th>
                     <th className="p-4 text-center font-semibold">Precio/mes</th>
                     <th className="p-4 text-center font-semibold">Acciones</th>
@@ -359,7 +353,6 @@ const MejorHostingChile2025 = () => {
                             {provider.velocidad}
                           </Badge>
                         </td>
-                        <td className="p-4 text-center text-sm">{provider.soporte}</td>
                         <td className="p-4 text-center">
                           <div className="flex flex-col items-center gap-1">
                             {complaintBadge && (
