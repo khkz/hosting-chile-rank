@@ -14,6 +14,7 @@ import GuiaElegirServidorDedicado from './pages/GuiaElegirServidorDedicado';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
 import Resena from './pages/Resena';
 import CatalogoDetalle from './pages/CatalogoDetalle';
+import Benchmark from './pages/Benchmark';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
+        <Route path="/benchmark" element={<Benchmark />} />
       </Routes>
     </Router>
   );
