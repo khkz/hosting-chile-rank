@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { lookupASN, isChileanIPEnhanced, type ASNInfo } from './asnLookup';
+import type { ComplaintInfo } from './hostingComplaints';
 
 export interface DomainAnalysisResult {
   basic: {
@@ -11,6 +12,8 @@ export interface DomainAnalysisResult {
     nameservers: string[];
     location?: string;
     isp?: string;
+    complaintInfo?: ComplaintInfo | null;
+    detectedProvider?: string | null;
   };
   dns: {
     a_records: string[];
@@ -234,7 +237,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
     analytics_tools: [],
     programming_language: 'No detectado',
     database_type: 'No detectado',
-    hosting_provider: asnInfo.isp || 'No detectado',
+    hosting_provider: asnInfo.detectedProvider || asnInfo.isp || 'No detectado',
     country_location: asnInfo.country || 'No detectado'
   };
 
@@ -414,10 +417,13 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
     
     console.log(`🔍 Analyzing nameservers for hosting provider:`, nameservers);
     
-    // First priority: Use ASN-detected ISP if it's reliable
-    if (asnInfo.isp && asnInfo.isp !== 'Desconocido') {
+    // First priority: Use ASN-detected provider if it's reliable
+    if (asnInfo.detectedProvider) {
+      techStack.hosting_provider = asnInfo.detectedProvider;
+      console.log(`✅ Using ASN-detected hosting provider: ${asnInfo.detectedProvider}`);
+    } else if (asnInfo.isp && asnInfo.isp !== 'Desconocido') {
       techStack.hosting_provider = asnInfo.isp;
-      console.log(`✅ Using ASN-detected hosting provider: ${asnInfo.isp}`);
+      console.log(`✅ Using ASN-detected ISP: ${asnInfo.isp}`);
     }
     
     // Override with nameserver-specific detection if available
@@ -620,7 +626,7 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
   }
 };
 
-// Main analysis function with enhanced ASN lookup and real IP information
+// Main analysis function with enhanced ASN lookup and complaint information
 export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResult> => {
   console.log(`🚀 STARTING comprehensive analysis for: ${domain}`);
 
@@ -630,10 +636,10 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   const primaryIP = dnsRecords.a_records[0] || '–';
   console.log(`📍 Primary IP found: ${primaryIP}`);
 
-  // Perform ASN lookup for real IP information
-  console.log('🔍 Performing ASN lookup...');
+  // Perform ASN lookup for real IP information with complaint data
+  console.log('🔍 Performing ASN lookup with complaint detection...');
   const asnInfo = await lookupASN(primaryIP);
-  console.log(`📊 ASN Info:`, asnInfo);
+  console.log(`📊 ASN Info with complaints:`, asnInfo);
 
   // Run parallel analyses with enhanced information
   console.log('⚡ Starting parallel analyses...');
@@ -648,18 +654,21 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   console.log('  - Tech Stack:', techStack?.hosting_provider || 'Unknown provider');
   console.log('  - WHOIS Info:', whoisInfo ? 'Real data found' : 'Using fallback data');
   console.log('  - ASN Info:', `${asnInfo.asn} (${asnInfo.isp})`);
+  console.log('  - Complaint Info:', asnInfo.complaintInfo ? `${asnInfo.complaintInfo.level} (${asnInfo.complaintInfo.count} reclamos)` : 'None');
 
-  // Create the comprehensive result with real ASN information
+  // Create the comprehensive result with real ASN and complaint information
   const analysisResult: DomainAnalysisResult = {
     basic: {
       domain,
       ip: primaryIP,
       ip_chile: asnInfo.isChilean || isChileanIPEnhanced(primaryIP),
-      provider: techStack.hosting_provider,
+      provider: asnInfo.detectedProvider || techStack.hosting_provider,
       asn: asnInfo.asn !== 'Desconocido' ? `${asnInfo.asn} (${asnInfo.isp})` : 'ASN no disponible',
       nameservers: dnsRecords.ns_records,
       location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : undefined,
-      isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined
+      isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined,
+      complaintInfo: asnInfo.complaintInfo,
+      detectedProvider: asnInfo.detectedProvider
     },
     dns: dnsRecords,
     whois: whoisInfo || {
@@ -691,7 +700,9 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
     whois_owner: analysisResult.whois.owner_name,
     asn_info: analysisResult.basic.asn,
     hosting_provider: analysisResult.basic.provider,
-    location: analysisResult.basic.location
+    location: analysisResult.basic.location,
+    complaint_level: analysisResult.basic.complaintInfo?.level || 'none',
+    complaint_count: analysisResult.basic.complaintInfo?.count || 0
   });
 
   // Save to database for caching with enhanced error handling
@@ -707,7 +718,7 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   return analysisResult;
 };
 
-// Enhanced cache loading with improved data validation
+// Enhanced cache loading with improved data validation and complaint info
 export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysisResult | null> => {
   try {
     console.log(`🔍 Loading cached analysis for: ${domain}`);
@@ -761,7 +772,7 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
       owner_name: whoisInfo.owner_name
     });
 
-    // For cached data, we'll perform a quick ASN lookup to get current info
+    // For cached data, we'll perform a quick ASN lookup to get current complaint info
     const asnInfo = await lookupASN(dnsInfo.ip || '');
 
     return {
@@ -769,11 +780,13 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         domain,
         ip: dnsInfo.ip || '–',
         ip_chile: asnInfo.isChilean || isChileanIPEnhanced(dnsInfo.ip || ''),
-        provider: techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
+        provider: asnInfo.detectedProvider || techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
         asn: asnInfo.asn !== 'Desconocido' ? `${asnInfo.asn} (${asnInfo.isp})` : techInfo?.hosting_provider || 'ASN no disponible',
         nameservers: ensureArray(dnsInfo.ns),
         location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : techInfo?.country_location,
-        isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined
+        isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined,
+        complaintInfo: asnInfo.complaintInfo,
+        detectedProvider: asnInfo.detectedProvider
       },
       dns: {
         a_records: [dnsInfo.ip || ''],
@@ -817,7 +830,7 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         analytics_tools: ensureArray(techInfo?.analytics_tools),
         programming_language: techInfo?.programming_language || 'Desconocido',
         database_type: techInfo?.database_type || 'Desconocido',
-        hosting_provider: techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
+        hosting_provider: asnInfo.detectedProvider || techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
         country_location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : techInfo?.country_location || 'Desconocido'
       }
     };

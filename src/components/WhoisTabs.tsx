@@ -17,9 +17,11 @@ import {
   Calendar,
   User,
   Building,
-  MapPin
+  MapPin,
+  AlertCircle
 } from 'lucide-react';
 import type { DomainAnalysisResult } from '@/services/domainAnalysis';
+import { getComplaintBadge } from '@/services/hostingComplaints';
 
 interface WhoisTabsProps {
   data: DomainAnalysisResult;
@@ -44,6 +46,10 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
   
   // Generate NIC Chile official link
   const nicChileLink = `https://nic.cl/registry/Whois.do?d=${data.basic.domain}`;
+
+  // Get complaint info if available
+  const complaintInfo = data.basic.complaintInfo;
+  const complaintBadge = complaintInfo ? getComplaintBadge(complaintInfo.level) : null;
 
   return (
     <Tabs defaultValue="overview" className="w-full">
@@ -105,6 +111,11 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
               <div>
                 <span className="font-medium">Proveedor:</span>
                 <span className="ml-2">{data.basic.provider}</span>
+                {complaintBadge && (
+                  <Badge className={`ml-2 ${complaintBadge.color}`}>
+                    {complaintBadge.icon} {complaintBadge.text}
+                  </Badge>
+                )}
               </div>
               <div>
                 <span className="font-medium">ASN:</span>
@@ -133,6 +144,79 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                 ))}
               </ul>
             </div>
+
+            {/* Complaint Alert Section */}
+            {complaintInfo && (
+              <div className={`border rounded-lg p-4 ${
+                complaintInfo.level === 'critical' ? 'bg-red-50 border-red-200' :
+                complaintInfo.level === 'high' ? 'bg-red-50 border-red-200' :
+                complaintInfo.level === 'medium' ? 'bg-yellow-50 border-yellow-200' :
+                complaintInfo.level === 'low' ? 'bg-blue-50 border-blue-200' :
+                'bg-green-50 border-green-200'
+              }`}>
+                <div className="flex items-start gap-3">
+                  <AlertCircle className={`h-5 w-5 mt-0.5 ${
+                    complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-600' :
+                    complaintInfo.level === 'medium' ? 'text-yellow-600' :
+                    complaintInfo.level === 'low' ? 'text-blue-600' :
+                    'text-green-600'
+                  }`} />
+                  <div className="flex-1">
+                    <h4 className={`font-medium ${
+                      complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-800' :
+                      complaintInfo.level === 'medium' ? 'text-yellow-800' :
+                      complaintInfo.level === 'low' ? 'text-blue-800' :
+                      'text-green-800'
+                    }`}>
+                      {complaintInfo.level === 'none' ? 'Proveedor Confiable' : 'Alerta de Reclamos'}
+                    </h4>
+                    <p className={`text-sm mt-1 ${
+                      complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
+                      complaintInfo.level === 'medium' ? 'text-yellow-700' :
+                      complaintInfo.level === 'low' ? 'text-blue-700' :
+                      'text-green-700'
+                    }`}>
+                      <strong>{complaintInfo.count} reclamo{complaintInfo.count !== 1 ? 's' : ''}</strong>
+                      {complaintInfo.count > 0 && (
+                        <span> (último: {complaintInfo.lastComplaint})</span>
+                      )}
+                    </p>
+                    <p className={`text-sm mt-2 ${
+                      complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
+                      complaintInfo.level === 'medium' ? 'text-yellow-700' :
+                      complaintInfo.level === 'low' ? 'text-blue-700' :
+                      'text-green-700'
+                    }`}>
+                      {complaintInfo.description}
+                    </p>
+                    <p className={`text-sm mt-2 font-medium ${
+                      complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
+                      complaintInfo.level === 'medium' ? 'text-yellow-700' :
+                      complaintInfo.level === 'low' ? 'text-blue-700' :
+                      'text-green-700'
+                    }`}>
+                      {complaintInfo.recommendation}
+                    </p>
+                    {complaintInfo.reclamosUrl && (
+                      <a 
+                        href={complaintInfo.reclamosUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-1 text-sm mt-2 hover:underline ${
+                          complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-600' :
+                          complaintInfo.level === 'medium' ? 'text-yellow-600' :
+                          complaintInfo.level === 'low' ? 'text-blue-600' :
+                          'text-green-600'
+                        }`}
+                      >
+                        Ver reclamos en reclamos.cl
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {!data.basic.ip_chile && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">

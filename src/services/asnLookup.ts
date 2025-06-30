@@ -4,6 +4,7 @@
  */
 
 import { isChileanIP, isChileanASN } from '@/utils/ipDetection';
+import { getComplaintInfo, detectProviderFromASN, type ComplaintInfo } from './hostingComplaints';
 
 export interface ASNInfo {
   asn: string;
@@ -11,6 +12,8 @@ export interface ASNInfo {
   country: string;
   city: string;
   isChilean: boolean;
+  complaintInfo?: ComplaintInfo | null;
+  detectedProvider?: string | null;
 }
 
 /**
@@ -24,7 +27,9 @@ export const lookupASN = async (ip: string): Promise<ASNInfo> => {
     isp: 'Desconocido',
     country: 'Desconocido',
     city: 'Desconocido',
-    isChilean: false
+    isChilean: false,
+    complaintInfo: null,
+    detectedProvider: null
   };
 
   if (!ip || ip === '–' || ip === '-') {
@@ -43,12 +48,21 @@ export const lookupASN = async (ip: string): Promise<ASNInfo> => {
       const data = await response.json();
       console.log(`📊 IPInfo response for ${ip}:`, data);
       
+      const asnString = data.org ? data.org.split(' ')[0] : 'Desconocido';
+      const ispName = data.org ? data.org.substring(data.org.indexOf(' ') + 1) : 'Desconocido';
+      
+      // Detect provider and get complaint info
+      const detectedProvider = detectProviderFromASN(asnString, ispName);
+      const complaintInfo = getComplaintInfo(asnString);
+      
       const asnInfo: ASNInfo = {
-        asn: data.org ? data.org.split(' ')[0] : 'Desconocido',
-        isp: data.org ? data.org.substring(data.org.indexOf(' ') + 1) : 'Desconocido',
+        asn: asnString,
+        isp: ispName,
         country: data.country || 'Desconocido',
         city: data.city || 'Desconocido',
-        isChilean: isChileanByIP || data.country === 'CL' || isChileanASN(data.org || '')
+        isChilean: isChileanByIP || data.country === 'CL' || isChileanASN(data.org || ''),
+        complaintInfo,
+        detectedProvider
       };
       
       console.log(`✅ ASN lookup successful:`, asnInfo);
@@ -58,29 +72,37 @@ export const lookupASN = async (ip: string): Promise<ASNInfo> => {
     console.error('❌ Error with ipinfo.io lookup:', error);
   }
 
-  // Fallback: Try to determine based on known Chilean patterns
+  // Fallback: Try to determine based on known Chilean patterns with updated ASNs
   try {
     const knownChileanISPs = [
       { range: '201.148.104', asn: 'AS265839', isp: 'HOSTING.CL' },
-      { range: '200.27', asn: 'AS61512', isp: 'HostingPlus' },
+      { range: '186.64.115', asn: 'AS52368', isp: 'ZAM LTDA (SolucionHost)' },
+      { range: '200.27', asn: 'AS266879', isp: 'HostingPlus' }, // Updated ASN
       { range: '190.98', asn: 'AS22047', isp: 'VTR Banda Ancha' },
       { range: '200.54', asn: 'AS7418', isp: 'ENTEL Chile' },
       { range: '186.67', asn: 'AS28001', isp: 'Telmex Chile' },
       { range: '191.98', asn: 'AS27678', isp: 'NetUno' },
       { range: '138.117', asn: 'AS263702', isp: 'Universidad de Chile' },
       { range: '146.83', asn: 'AS263237', isp: 'Red Universitaria Nacional' },
-      { range: '152.172', asn: 'AS52468', isp: 'GTD Internet' }
+      { range: '152.172', asn: 'AS52468', isp: 'GTD Internet' },
+      { range: '109.72.119', asn: 'AS263702', isp: 'V2 Networks' }
     ];
 
     for (const provider of knownChileanISPs) {
       if (ip.startsWith(provider.range)) {
         console.log(`✅ Matched known Chilean ISP: ${provider.isp}`);
+        
+        const detectedProvider = detectProviderFromASN(provider.asn, provider.isp);
+        const complaintInfo = getComplaintInfo(provider.asn);
+        
         return {
           asn: provider.asn,
           isp: provider.isp,
           country: 'Chile',
           city: 'Santiago',
-          isChilean: true
+          isChilean: true,
+          complaintInfo,
+          detectedProvider
         };
       }
     }
@@ -93,7 +115,9 @@ export const lookupASN = async (ip: string): Promise<ASNInfo> => {
         isp: 'Proveedor Chileno',
         country: 'Chile',
         city: 'Chile',
-        isChilean: true
+        isChilean: true,
+        complaintInfo: null,
+        detectedProvider: null
       };
     }
   } catch (error) {
