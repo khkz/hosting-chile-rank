@@ -18,6 +18,7 @@ const MejorHostingChile2025 = () => {
       uptime: "99.98%",
       velocidad: "A+",
       precio: "$3.469",
+      precioDestacado: "Precio estable",
       datacenter: "Santiago, Chile",
       litespeed: true,
       waf: true,
@@ -26,7 +27,7 @@ const MejorHostingChile2025 = () => {
       garantia: "30 días",
       destacado: true,
       url: "https://www.hostingplus.cl/",
-      asn: "AS266879", // ASN for HostingPlus
+      asn: "AS266879",
       complaints: getComplaintInfo("AS266879")
     },
     {
@@ -35,7 +36,8 @@ const MejorHostingChile2025 = () => {
       rating: 9.6,
       uptime: "99.95%",
       velocidad: "A",
-      precio: "$19.900/año",
+      precio: "$3.316",
+      precioDestacado: "Promo inicial $1.658",
       datacenter: "Santiago, Chile",
       litespeed: true,
       waf: false,
@@ -44,7 +46,7 @@ const MejorHostingChile2025 = () => {
       garantia: "15 días",
       destacado: false,
       url: "https://www.ecohosting.cl/",
-      asn: "AS266855", // ASN for EcoHosting
+      asn: "AS266855",
       complaints: getComplaintInfo("AS266855")
     },
     {
@@ -53,7 +55,8 @@ const MejorHostingChile2025 = () => {
       rating: 9.2,
       uptime: "99.93%",
       velocidad: "B+",
-      precio: "$5.990",
+      precio: "$3.390",
+      precioDestacado: "Sube 144% en renovación",
       datacenter: "Santiago, Chile",
       litespeed: false,
       waf: true,
@@ -62,7 +65,7 @@ const MejorHostingChile2025 = () => {
       garantia: "45 días",
       destacado: false,
       url: "https://www.hostgator.cl/",
-      asn: "AS19871", // ASN for HostGator
+      asn: "AS19871",
       complaints: getComplaintInfo("AS19871")
     },
     {
@@ -71,7 +74,8 @@ const MejorHostingChile2025 = () => {
       rating: 8.9,
       uptime: "99.91%",
       velocidad: "B",
-      precio: "$7.990",
+      precio: "$7.995",
+      precioDestacado: "El más caro",
       datacenter: "Santiago, Chile",
       litespeed: false,
       waf: false,
@@ -80,7 +84,7 @@ const MejorHostingChile2025 = () => {
       garantia: "7 días",
       destacado: false,
       url: "https://www.hosting.cl/",
-      asn: "AS265839", // ASN for Hosting.cl
+      asn: "AS265839",
       complaints: getComplaintInfo("AS265839")
     },
     {
@@ -89,7 +93,8 @@ const MejorHostingChile2025 = () => {
       rating: 8.5,
       uptime: "99.89%",
       velocidad: "B",
-      precio: "$6.490",
+      precio: "$4.158",
+      precioDestacado: "Sin descuentos",
       datacenter: "Santiago, Chile",
       litespeed: false,
       waf: false,
@@ -98,7 +103,7 @@ const MejorHostingChile2025 = () => {
       garantia: "15 días",
       destacado: false,
       url: "https://www.planetahosting.cl/",
-      asn: "AS52368", // ASN for PlanetaHosting/SolucionHost
+      asn: "AS52368",
       complaints: getComplaintInfo("AS52368")
     }
   ];
@@ -234,17 +239,18 @@ const MejorHostingChile2025 = () => {
               <CardContent className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
                   Después de analizar exhaustivamente <strong>más de 15 proveedores de hosting en Chile</strong> durante 2024-2025, 
-                  evaluando criterios como uptime, velocidad de carga, calidad del soporte y infraestructura local, 
+                  evaluando criterios como uptime, velocidad de carga, calidad del soporte y <strong>transparencia en precios</strong>, 
                   <strong className="text-[#EF233C]">HostingPlus.cl emerge como el mejor hosting Chile 2025</strong>.
                 </p>
                 <p>
                   Con un impresionante <strong>99.98% de uptime verificado</strong>, tecnología LiteSpeed Enterprise, 
-                  servidores propios en Santiago y <strong>0 reclamos registrados en Reclamos.cl desde 2020</strong>, 
-                  HostingPlus establece el estándar para el hosting rápido SSD en Chile desde solo <strong>$3.469 mensuales</strong>.
+                  servidores propios en Santiago y <strong>precios honestos sin sorpresas en renovación</strong>, 
+                  HostingPlus establece el estándar para el hosting rápido SSD en Chile desde <strong>$3.469 mensuales estables</strong>.
                 </p>
                 <p>
-                  Esta guía presenta un análisis imparcial basado en métricas verificables, 
-                  pruebas de rendimiento independientes y experiencia real de usuarios chilenos durante el último año.
+                  <strong>EcoHosting.cl ocupa el segundo lugar</strong> con excelente relación calidad-precio inicial ($1.658/mes en promoción), 
+                  aunque el precio sube a $3.316/mes en renovación. Ambos superan ampliamente a proveedores con "precios trampa" 
+                  como HostGator (que sube 144% en renovación) o Hosting.cl (el más caro a $7.995/mes).
                 </p>
               </CardContent>
             </Card>
@@ -313,13 +319,21 @@ const MejorHostingChile2025 = () => {
                     <th className="p-4 text-center font-semibold">Uptime</th>
                     <th className="p-4 text-center font-semibold">Velocidad</th>
                     <th className="p-4 text-center font-semibold">Reclamos</th>
-                    <th className="p-4 text-center font-semibold">Precio/mes</th>
+                    <th className="p-4 text-center font-semibold">Precio real/mes</th>
                     <th className="p-4 text-center font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {hostingProviders.map((provider, index) => {
                     const complaintBadge = provider.complaints ? getComplaintBadge(provider.complaints.level) : null;
+                    
+                    // Función para determinar el color del badge de precio
+                    const getPriceBadgeColor = (destacado: string) => {
+                      if (destacado.includes("estable")) return "bg-green-100 text-green-800 border-green-300";
+                      if (destacado.includes("Promo")) return "bg-blue-100 text-blue-800 border-blue-300";
+                      if (destacado.includes("Sube") || destacado.includes("caro")) return "bg-red-100 text-red-800 border-red-300";
+                      return "bg-gray-100 text-gray-800 border-gray-300";
+                    };
                     
                     return (
                       <tr key={index} className={`border-b hover:bg-gray-50 ${provider.destacado ? 'bg-[#EF233C]/5 border-[#EF233C]/20' : ''}`}>
@@ -372,7 +386,14 @@ const MejorHostingChile2025 = () => {
                             )}
                           </div>
                         </td>
-                        <td className="p-4 text-center font-semibold text-[#EF233C]">{provider.precio}</td>
+                        <td className="p-4 text-center">
+                          <div className="flex flex-col items-center gap-1">
+                            <span className="font-semibold text-[#EF233C]">{provider.precio}</span>
+                            <Badge className={`text-xs border ${getPriceBadgeColor(provider.precioDestacado)}`}>
+                              {provider.precioDestacado}
+                            </Badge>
+                          </div>
+                        </td>
                         <td className="p-4 text-center">
                           <Button asChild size="sm" className={provider.destacado ? "bg-[#EF233C] hover:bg-[#c41e3a]" : "bg-gray-600 hover:bg-gray-700"}>
                             <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
@@ -389,8 +410,10 @@ const MejorHostingChile2025 = () => {
             </div>
             
             <div className="mt-4 text-sm text-gray-600 space-y-2">
-              <p>* Datos actualizados a Enero 2025. Uptime basado en monitoreo independiente durante 12 meses.</p>
-              <p>* Precios desde: HostingPlus $3.469/mes, EcoHosting $19.900/año (equiv. $1.658/mes), HostGator $5.990/mes, Hosting.cl $7.990/mes, PlanetaHosting $6.490/mes</p>
+              <p>* <strong>Precios de renovación</strong> mostrados para transparencia total. Datos actualizados a Enero 2025.</p>
+              <p>* <strong>Precios promocionales iniciales:</strong> EcoHosting $1.658/mes (primer año), HostGator desde $1.390/mes (36m, luego sube 144%)</p>
+              <p>* <strong>Precios estables sin sorpresas:</strong> HostingPlus $3.469/mes (plan 36m), mismo precio en renovación</p>
+              <p>* <strong>Ahorro vs competencia:</strong> HostingPlus ahorra $4.526/mes vs Hosting.cl, $689/mes vs PlanetaHosting</p>
               <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (2020-2025)</p>
               <p>* Fuentes: <a href="https://uptimerobot.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">UptimeRobot</a>, 
               <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline"> GTmetrix</a></p>
@@ -429,23 +452,23 @@ const MejorHostingChile2025 = () => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg text-[#2B2D42] mb-3">Confiabilidad Comprobada</h4>
+                    <h4 className="font-semibold text-lg text-[#2B2D42] mb-3">Transparencia en Precios</h4>
                     <ul className="space-y-2 text-gray-700">
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-green-500" />
-                        <span>99.98% uptime verificado (mejor de Chile)</span>
+                        <span>Precio estable: $3.469/mes sin cambios en renovación</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-green-500" />
-                        <span>0 reclamos en Reclamos.cl desde 2020</span>
+                        <span>Sin precios trampa ni aumentos sorpresa</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-green-500" />
-                        <span>Datacenter propio en Santiago</span>
+                        <span>Ahorra $4.526/mes vs Hosting.cl</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-green-500" />
-                        <span>Redundancia completa de infraestructura</span>
+                        <span>Mejor valor real a largo plazo</span>
                       </li>
                     </ul>
                   </div>
@@ -453,10 +476,17 @@ const MejorHostingChile2025 = () => {
                 
                 <div className="bg-[#EF233C]/5 p-4 rounded-lg">
                   <p className="text-sm text-gray-700">
-                    <strong>Mejor precio del mercado:</strong> Con solo $3.469 mensuales, HostingPlus.cl ofrece 
-                    la mejor relación calidad-precio del mercado chileno. Mientras que la competencia cobra entre 
-                    $5.990 y $7.990 mensuales, HostingPlus mantiene precios accesibles sin comprometer la calidad 
-                    del servicio. <strong>Ahorra hasta $4.521 mensuales</strong> comparado con Hosting.cl.
+                    <strong>¿Por qué EcoHosting.cl es segundo lugar?</strong> Ofrece la mejor promoción inicial ($1.658/mes), 
+                    pero el precio sube a $3.316/mes en renovación. Aún así, mantiene excelente calidad y 0 reclamos registrados. 
+                    <strong>Ideal para proyectos nuevos que buscan ahorrar el primer año</strong>.
+                  </p>
+                </div>
+                
+                <div className="bg-red-50 p-4 rounded-lg border-l-4 border-red-300">
+                  <p className="text-sm text-gray-700">
+                    <strong>⚠️ Cuidado con precios trampa:</strong> HostGator promociona desde $1.390/mes pero 
+                    <strong className="text-red-600"> sube 144% a $3.390/mes en renovación</strong>. Hosting.cl cobra 
+                    <strong className="text-red-600"> $7.995/mes incluso con descuentos</strong>, siendo el más caro del mercado chileno.
                   </p>
                 </div>
                 
@@ -502,7 +532,8 @@ const MejorHostingChile2025 = () => {
                   ¿Listo para contratar el mejor hosting Chile 2025?
                 </h3>
                 <p className="text-lg mb-6 opacity-90">
-                  Únete a miles de empresas que confían en HostingPlus.cl para su presencia web desde solo $3.469/mes. 
+                  Únete a miles de empresas que confían en HostingPlus.cl para su presencia web. 
+                  <strong>Precio estable $3.469/mes sin sorpresas en renovación.</strong> 
                   Garantía de devolución de 30 días sin preguntas.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
