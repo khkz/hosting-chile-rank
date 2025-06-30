@@ -103,26 +103,52 @@ const isChileanIP = (ip: string): boolean => {
   return chileanRanges.some(range => ip.startsWith(range));
 };
 
-// Fetch real WHOIS data
-const fetchWhoisData = async (domain: string) => {
-  try {
-    console.log(`Fetching WHOIS data for: ${domain}`);
-    
-    const { data, error } = await supabase.functions.invoke('whois-lookup', {
-      body: { domain }
-    });
+// Enhanced WHOIS data fetching with retry logic
+const fetchWhoisData = async (domain: string, retries = 2) => {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      console.log(`Fetching WHOIS data for: ${domain} (attempt ${attempt}/${retries})`);
+      
+      const { data, error } = await supabase.functions.invoke('whois-lookup', {
+        body: { domain }
+      });
 
-    if (error) {
-      console.error('Error fetching WHOIS data:', error);
-      return null;
+      if (error) {
+        console.error(`Error fetching WHOIS data (attempt ${attempt}):`, error);
+        if (attempt === retries) {
+          return null;
+        }
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        continue;
+      }
+
+      console.log(`WHOIS data received (attempt ${attempt}):`, data);
+      
+      // Validate that we have meaningful data
+      if (data && (
+        data.created_date !== 'No disponible' || 
+        data.owner_name !== 'No disponible' ||
+        data.registrar !== 'No disponible'
+      )) {
+        console.log('Valid WHOIS data found:', data);
+        return data;
+      }
+      
+      console.log('Received default WHOIS data, retrying...');
+      if (attempt < retries) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    } catch (error) {
+      console.error(`Error calling whois-lookup function (attempt ${attempt}):`, error);
+      if (attempt === retries) {
+        return null;
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
-
-    console.log('WHOIS data received:', data);
-    return data;
-  } catch (error) {
-    console.error('Error calling whois-lookup function:', error);
-    return null;
   }
+  
+  return null;
 };
 
 // Fetch comprehensive DNS records
@@ -249,32 +275,43 @@ const checkSSLStatus = async (domain: string) => {
   return sslInfo;
 };
 
-// Save data to Supabase
+// Enhanced save function with better error handling
 const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResult) => {
   try {
+    console.log(`Saving domain data for: ${domain}`);
+    
     // First, find or create the domain record
     let { data: domainRecord, error: domainError } = await supabase
       .from('domains')
       .select('id')
       .eq('domain', domain)
-      .single();
+      .maybeSingle();
 
-    if (domainError && domainError.code === 'PGRST116') {
-      // Domain doesn't exist, create it
+    if (domainError) {
+      console.error('Error fetching domain:', domainError);
+      throw domainError;
+    }
+
+    if (!domainRecord) {
+      console.log('Creating new domain record');
       const { data: newDomain, error: insertError } = await supabase
         .from('domains')
         .insert([{ domain }])
         .select('id')
         .single();
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.error('Error creating domain:', insertError);
+        throw insertError;
+      }
       domainRecord = newDomain;
     }
 
     const domainId = domainRecord.id;
+    console.log(`Using domain ID: ${domainId}`);
 
     // Save DNS info
-    await supabase
+    const { error: dnsError } = await supabase
       .from('dns_info')
       .upsert({
         domain_id: domainId,
@@ -287,8 +324,15 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
         updated_at: new Date().toISOString()
       }, { onConflict: 'domain_id' });
 
-    // Save WHOIS info
-    await supabase
+    if (dnsError) {
+      console.error('Error saving DNS info:', dnsError);
+    } else {
+      console.log('DNS info saved successfully');
+    }
+
+    // Save WHOIS info with enhanced logging
+    console.log('Saving WHOIS info:', analysisResult.whois);
+    const { error: whoisError } = await supabase
       .from('whois_info')
       .upsert({
         domain_id: domainId,
@@ -302,6 +346,12 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
         dnssec_status: analysisResult.whois.dnssec_status,
         updated_at: new Date().toISOString()
       }, { onConflict: 'domain_id' });
+
+    if (whoisError) {
+      console.error('Error saving WHOIS info:', whoisError);
+    } else {
+      console.log('WHOIS info saved successfully');
+    }
 
     // Save SSL info
     await supabase
@@ -335,10 +385,11 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
 
   } catch (error) {
     console.error('Error saving domain data to Supabase:', error);
+    throw error;
   }
 };
 
-// Main analysis function
+// Main analysis function with enhanced WHOIS handling
 export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResult> => {
   console.log(`Starting comprehensive analysis for domain: ${domain}`);
 
@@ -346,12 +397,15 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   const dnsRecords = await fetchDNSRecords(domain);
   const primaryIP = dnsRecords.a_records[0] || '–';
 
-  // Run parallel analyses including real WHOIS data
+  // Run parallel analyses with enhanced WHOIS fetching
+  console.log('Starting parallel analyses...');
   const [sslInfo, techStack, whoisInfo] = await Promise.all([
     checkSSLStatus(domain),
     detectTechStack(domain),
-    fetchWhoisData(domain)
+    fetchWhoisData(domain, 3) // Try up to 3 times
   ]);
+
+  console.log('All analyses completed. WHOIS result:', whoisInfo);
 
   const analysisResult: DomainAnalysisResult = {
     basic: {
@@ -364,13 +418,13 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
     },
     dns: dnsRecords,
     whois: whoisInfo || {
-      registrar: 'No disponible',
+      registrar: 'NIC Chile',
       created_date: 'No disponible',
       expires_date: 'No disponible',
       status: 'No disponible',
-      owner_name: 'Información privada',
-      organization: 'Información privada',
-      email: 'Información privada',
+      owner_name: 'Información privada (NIC Chile)',
+      organization: 'Información privada (NIC Chile)',
+      email: 'Información privada (NIC Chile)',
       dnssec_status: 'No configurado'
     },
     ssl: sslInfo,
@@ -386,7 +440,13 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   };
 
   // Save to database for caching
-  await saveDomainData(domain, analysisResult);
+  try {
+    await saveDomainData(domain, analysisResult);
+    console.log('Domain data saved successfully');
+  } catch (error) {
+    console.error('Failed to save domain data:', error);
+    // Continue even if saving fails
+  }
 
   return analysisResult;
 };
