@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import RecentSearches from './RecentSearches';
-import { Shield, Award, MapPin, Mail, Phone, Clock } from 'lucide-react';
+import { Shield, Award, MapPin, Mail, Clock } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -74,10 +74,6 @@ const Footer = () => {
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#EF233C]" />
                 <span>contacto@eligetuhosting.cl</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#EF233C]" />
-                <span>+56 2 2XXX XXXX</span>
               </div>
             </div>
           </div>
