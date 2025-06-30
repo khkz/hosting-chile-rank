@@ -330,7 +330,7 @@ const MejorHostingChile2025 = () => {
                     <th className="p-4 text-center font-semibold">Velocidad</th>
                     <th className="p-4 text-center font-semibold">Reclamos</th>
                     <th className="p-4 text-center font-semibold">Precio real/mes</th>
-                    <th className="p-4 text-center font-semibold">Acciones</th>
+                    <th className="p-3 text-center font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -399,10 +399,10 @@ const MejorHostingChile2025 = () => {
                             </Badge>
                           </div>
                         </td>
-                        <td className="p-4 text-center">
-                          <Button asChild size="sm" className={provider.destacado ? "bg-[#EF233C] hover:bg-[#c41e3a]" : "bg-gray-600 hover:bg-gray-700"}>
-                            <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
-                              Ver Hosting
+                        <td className="p-3 text-center">
+                          <Button asChild size="sm" className={`${provider.destacado ? "bg-[#EF233C] hover:bg-[#c41e3a] text-white" : "bg-gray-700 hover:bg-gray-800 text-white"} text-xs px-2 py-1 min-w-0`}>
+                            <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 whitespace-nowrap">
+                              Ver
                               <ExternalLink className="w-3 h-3" />
                             </a>
                           </Button>
