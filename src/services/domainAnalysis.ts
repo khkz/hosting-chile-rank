@@ -220,45 +220,226 @@ const fetchDNSRecords = async (domain: string) => {
   return dnsData;
 };
 
-// Detect technology stack
+// Enhanced technology detection with real analysis
 const detectTechStack = async (domain: string) => {
+  console.log(`🔍 Starting technology detection for: ${domain}`);
+  
   const techStack = {
-    server_software: 'Desconocido',
-    cms_detected: 'Desconocido',
-    framework_detected: 'Desconocido',
-    cdn_provider: 'Ninguno',
+    server_software: 'No detectado',
+    cms_detected: 'No detectado',
+    framework_detected: 'No detectado',
+    cdn_provider: 'No detectado',
     analytics_tools: [],
-    programming_language: 'Desconocido',
-    database_type: 'Desconocido',
-    hosting_provider: 'Desconocido',
-    country_location: 'Desconocido'
+    programming_language: 'No detectado',
+    database_type: 'No detectado',
+    hosting_provider: 'No detectado',
+    country_location: 'No detectado'
   };
 
   try {
-    // Fetch headers to detect server software
-    const response = await fetch(`https://${domain}`, { method: 'HEAD' });
-    const server = response.headers.get('server');
-    if (server) {
-      techStack.server_software = server;
+    // Try HTTPS first, then HTTP if needed
+    const protocols = ['https', 'http'];
+    let response = null;
+    let htmlContent = '';
+    
+    for (const protocol of protocols) {
+      try {
+        console.log(`🌐 Trying ${protocol}://${domain}`);
+        response = await fetch(`${protocol}://${domain}`, {
+          method: 'GET',
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; DomainAnalyzer/1.0)'
+          },
+          signal: AbortSignal.timeout(10000), // 10 second timeout
+          redirect: 'follow'
+        });
+        
+        if (response.ok) {
+          htmlContent = await response.text();
+          console.log(`✅ Successfully fetched content via ${protocol}`);
+          break;
+        }
+      } catch (error) {
+        console.log(`❌ Failed to fetch via ${protocol}:`, error.message);
+        continue;
+      }
     }
 
-    // Simple provider detection based on nameservers
-    const dnsRecords = await fetchDNSRecords(domain);
-    const nameservers = dnsRecords.ns_records;
+    if (!response || !response.ok) {
+      console.log(`❌ Could not fetch content for ${domain}`);
+      return techStack;
+    }
+
+    // Analyze HTTP headers
+    console.log('🔍 Analyzing HTTP headers...');
+    const headers = response.headers;
     
-    if (nameservers.some(ns => ns.includes('hostingplus'))) {
-      techStack.hosting_provider = 'HostingPlus';
-    } else if (nameservers.some(ns => ns.includes('cloudflare'))) {
+    // Server detection
+    const server = headers.get('server');
+    if (server) {
+      console.log(`🖥️ Server header found: ${server}`);
+      if (server.toLowerCase().includes('nginx')) {
+        techStack.server_software = 'Nginx';
+      } else if (server.toLowerCase().includes('apache')) {
+        techStack.server_software = 'Apache';
+      } else if (server.toLowerCase().includes('iis')) {
+        techStack.server_software = 'Microsoft IIS';
+      } else if (server.toLowerCase().includes('cloudflare')) {
+        techStack.server_software = 'Cloudflare';
+        techStack.cdn_provider = 'Cloudflare';
+      } else {
+        techStack.server_software = server;
+      }
+    }
+
+    // X-Powered-By detection
+    const poweredBy = headers.get('x-powered-by');
+    if (poweredBy) {
+      console.log(`⚡ X-Powered-By header found: ${poweredBy}`);
+      if (poweredBy.toLowerCase().includes('php')) {
+        techStack.programming_language = 'PHP';
+      } else if (poweredBy.toLowerCase().includes('asp.net')) {
+        techStack.programming_language = 'ASP.NET';
+        techStack.framework_detected = 'ASP.NET';
+      }
+    }
+
+    // CDN detection from headers
+    const cfRay = headers.get('cf-ray');
+    if (cfRay) {
       techStack.cdn_provider = 'Cloudflare';
-      techStack.hosting_provider = 'Cloudflare';
-    } else if (nameservers.some(ns => ns.includes('netlify'))) {
-      techStack.hosting_provider = 'Netlify';
+    }
+
+    // Analyze HTML content
+    console.log('🔍 Analyzing HTML content...');
+    const htmlLower = htmlContent.toLowerCase();
+    
+    // WordPress detection
+    if (htmlLower.includes('wp-content') || 
+        htmlLower.includes('wp-includes') || 
+        htmlLower.includes('wordpress') ||
+        htmlContent.includes('wp-json')) {
+      techStack.cms_detected = 'WordPress';
+      techStack.programming_language = 'PHP';
+      console.log('✅ WordPress detected');
+    }
+    
+    // Joomla detection
+    if (htmlLower.includes('joomla') || 
+        htmlLower.includes('/components/com_') ||
+        htmlLower.includes('joomla.css')) {
+      techStack.cms_detected = 'Joomla';
+      techStack.programming_language = 'PHP';
+      console.log('✅ Joomla detected');
+    }
+    
+    // Drupal detection
+    if (htmlLower.includes('drupal') || 
+        htmlLower.includes('sites/default/files') ||
+        htmlLower.includes('drupal.js')) {
+      techStack.cms_detected = 'Drupal';
+      techStack.programming_language = 'PHP';
+      console.log('✅ Drupal detected');
+    }
+
+    // React detection
+    if (htmlLower.includes('react') || 
+        htmlLower.includes('__react') ||
+        htmlLower.includes('react-dom')) {
+      techStack.framework_detected = 'React';
+      techStack.programming_language = 'JavaScript';
+      console.log('✅ React detected');
+    }
+    
+    // Vue.js detection
+    if (htmlLower.includes('vue.js') || 
+        htmlLower.includes('vue.min.js') ||
+        htmlLower.includes('__vue__')) {
+      techStack.framework_detected = 'Vue.js';
+      techStack.programming_language = 'JavaScript';
+      console.log('✅ Vue.js detected');
+    }
+    
+    // Angular detection
+    if (htmlLower.includes('angular') || 
+        htmlLower.includes('ng-app') ||
+        htmlLower.includes('angular.js')) {
+      techStack.framework_detected = 'Angular';
+      techStack.programming_language = 'JavaScript';
+      console.log('✅ Angular detected');
+    }
+
+    // Analytics detection
+    const analyticsTools = [];
+    if (htmlLower.includes('google-analytics') || htmlLower.includes('gtag') || htmlLower.includes('ga(')) {
+      analyticsTools.push('Google Analytics');
+      console.log('✅ Google Analytics detected');
+    }
+    if (htmlLower.includes('facebook.net') || htmlLower.includes('fbevents.js')) {
+      analyticsTools.push('Facebook Pixel');
+      console.log('✅ Facebook Pixel detected');
+    }
+    if (htmlLower.includes('hotjar')) {
+      analyticsTools.push('Hotjar');
+      console.log('✅ Hotjar detected');
+    }
+    techStack.analytics_tools = analyticsTools;
+
+    // Bootstrap detection
+    if (htmlLower.includes('bootstrap') || htmlLower.includes('bootstrap.css')) {
+      if (techStack.framework_detected === 'No detectado') {
+        techStack.framework_detected = 'Bootstrap';
+      }
+      console.log('✅ Bootstrap detected');
+    }
+
+    // jQuery detection
+    if (htmlLower.includes('jquery') || htmlLower.includes('jquery.js')) {
+      if (techStack.framework_detected === 'No detectado') {
+        techStack.framework_detected = 'jQuery';
+      }
+      console.log('✅ jQuery detected');
     }
 
   } catch (error) {
-    console.error('Error detecting tech stack:', error);
+    console.error(`❌ Error in technology detection for ${domain}:`, error);
   }
 
+  // Enhanced provider detection based on nameservers
+  try {
+    const dnsRecords = await fetchDNSRecords(domain);
+    const nameservers = dnsRecords.ns_records;
+    
+    console.log(`🔍 Analyzing nameservers for hosting provider:`, nameservers);
+    
+    if (nameservers.some(ns => ns.includes('hostingplus'))) {
+      techStack.hosting_provider = 'HostingPlus';
+      techStack.country_location = 'Chile';
+    } else if (nameservers.some(ns => ns.includes('cloudflare'))) {
+      techStack.hosting_provider = 'Cloudflare';
+      techStack.cdn_provider = 'Cloudflare';
+      techStack.country_location = 'Global CDN';
+    } else if (nameservers.some(ns => ns.includes('netlify'))) {
+      techStack.hosting_provider = 'Netlify';
+      techStack.country_location = 'Global CDN';
+    } else if (nameservers.some(ns => ns.includes('godaddy'))) {
+      techStack.hosting_provider = 'GoDaddy';
+      techStack.country_location = 'Estados Unidos';
+    } else if (nameservers.some(ns => ns.includes('bluehost'))) {
+      techStack.hosting_provider = 'Bluehost';
+      techStack.country_location = 'Estados Unidos';
+    } else if (nameservers.some(ns => ns.includes('hostgator'))) {
+      techStack.hosting_provider = 'HostGator';
+      techStack.country_location = 'Estados Unidos';
+    } else if (nameservers.some(ns => ns.includes('cpanel') || ns.includes('whm'))) {
+      techStack.hosting_provider = 'Hosting con cPanel';
+    }
+
+  } catch (error) {
+    console.error('Error analyzing nameservers:', error);
+  }
+
+  console.log(`📊 Technology detection completed for ${domain}:`, techStack);
   return techStack;
 };
 
@@ -398,7 +579,8 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
       }, { onConflict: 'domain_id' });
 
     // Save tech stack info
-    await supabase
+    console.log('💾 Saving tech stack data...');
+    const { error: techError } = await supabase
       .from('tech_stack')
       .upsert({
         domain_id: domainId,
@@ -413,6 +595,12 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
         country_location: analysisResult.tech_stack.country_location,
         detected_at: new Date().toISOString()
       }, { onConflict: 'domain_id' });
+
+    if (techError) {
+      console.error('❌ Error saving tech stack info:', techError);
+    } else {
+      console.log('✅ Tech stack info saved successfully');
+    }
 
     console.log(`✅ All data saved successfully for: ${domain}`);
 
