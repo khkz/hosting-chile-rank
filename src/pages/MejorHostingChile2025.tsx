@@ -327,7 +327,6 @@ const MejorHostingChile2025 = () => {
                   <tr>
                     <th className="p-4 text-left font-semibold">Proveedor</th>
                     <th className="p-4 text-center font-semibold">Rating</th>
-                    <th className="p-4 text-center font-semibold">Uptime</th>
                     <th className="p-4 text-center font-semibold">Velocidad</th>
                     <th className="p-4 text-center font-semibold">Reclamos</th>
                     <th className="p-4 text-center font-semibold">Precio real/mes</th>
@@ -367,11 +366,6 @@ const MejorHostingChile2025 = () => {
                             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                             <span className="font-semibold text-[#2B2D42]">{provider.rating}</span>
                           </div>
-                        </td>
-                        <td className="p-4 text-center">
-                          <span className={`font-semibold ${parseFloat(provider.uptime) >= 99.95 ? 'text-green-600' : 'text-orange-600'}`}>
-                            {provider.uptime}
-                          </span>
                         </td>
                         <td className="p-4 text-center">
                           <Badge className={getVelocityBadgeClasses(provider.velocidad)}>
@@ -426,8 +420,7 @@ const MejorHostingChile2025 = () => {
               <p>* <strong>Precios estables sin sorpresas:</strong> HostingPlus $3.469/mes (plan 36m), mismo precio en renovación</p>
               <p>* <strong>Ahorro vs competencia:</strong> HostingPlus ahorra $4.526/mes vs Hosting.cl, $689/mes vs PlanetaHosting</p>
               <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (2020-2025)</p>
-              <p>* Fuentes: <a href="https://uptimerobot.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">UptimeRobot</a>, 
-              <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline"> GTmetrix</a></p>
+              <p>* Fuentes: Datos de velocidad verificados con <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">GTmetrix</a></p>
             </div>
           </section>
 
