@@ -24,7 +24,7 @@ const asnComplaintMap: Record<string, ComplaintInfo> = {
     lastComplaint: '9-ene-2025',
     description: 'Triple cobro + IP extranjera (EE.UU.)',
     recommendation: 'Considerar migración urgente - Múltiples reclamos recientes',
-    reclamosUrl: 'https://www.reclamos.cl/empresa/hostgator'
+    reclamosUrl: 'https://www.reclamos.cl/busqueda?concepto=hostgator.cl'
   },
 
   // High level (25+ complaints)
@@ -34,7 +34,7 @@ const asnComplaintMap: Record<string, ComplaintInfo> = {
     lastComplaint: '2024',
     description: 'Caídas masivas del servicio, falta de respuesta',
     recommendation: 'Migración recomendada - Historial de problemas graves',
-    reclamosUrl: 'https://www.reclamos.cl/empresa/hosting-cl'
+    reclamosUrl: 'https://www.reclamos.cl/busqueda?concepto=hosting.cl'
   },
 
   'AS52368': {
@@ -43,7 +43,7 @@ const asnComplaintMap: Record<string, ComplaintInfo> = {
     lastComplaint: '7-abr-2024',
     description: 'Múltiples problemas: caídas prolongadas, soporte lento',
     recommendation: 'Migración recomendada - Múltiples proveedores con problemas',
-    reclamosUrl: 'https://www.reclamos.cl/empresa/solucionhost'
+    reclamosUrl: 'https://www.reclamos.cl/busqueda?concepto=solucionhost.cl'
   },
 
   // Medium level (2+ complaints)
@@ -53,7 +53,7 @@ const asnComplaintMap: Record<string, ComplaintInfo> = {
     lastComplaint: '28-ago-2024',
     description: 'Publicidad mentirosa + IP Argentina',
     recommendation: 'Evaluar alternativas - Problemas de transparencia',
-    reclamosUrl: 'https://www.reclamos.cl/empresa/donweb'
+    reclamosUrl: 'https://www.reclamos.cl/busqueda?concepto=donweb.com'
   },
 
   // Low level (1 historical complaint)
@@ -63,7 +63,7 @@ const asnComplaintMap: Record<string, ComplaintInfo> = {
     lastComplaint: '4-oct-2024',
     description: 'Baja de servicio sin reembolso',
     recommendation: 'Monitorear - Reclamo aislado reciente',
-    reclamosUrl: 'https://www.reclamos.cl/empresa/v2-networks'
+    reclamosUrl: 'https://www.reclamos.cl/busqueda?concepto=v2networks.cl'
   },
 
   'AS265831': {
@@ -72,7 +72,7 @@ const asnComplaintMap: Record<string, ComplaintInfo> = {
     lastComplaint: 'dic-2018',
     description: 'Problemas con correo (histórico)',
     recommendation: 'Riesgo bajo - Sin incidentes recientes',
-    reclamosUrl: 'https://www.reclamos.cl/empresa/cpanelhost'
+    reclamosUrl: 'https://www.reclamos.cl/busqueda?concepto=cpanelhost.cl'
   },
 
   // No complaints
