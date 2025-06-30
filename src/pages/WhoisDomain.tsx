@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -294,21 +295,6 @@ const WhoisDomain = () => {
                     ✓ Datos WHOIS reales obtenidos desde NIC Chile
                   </p>
                 )}
-              </div>
-            )}
-            
-            {/* Enhanced WHOIS data quality indicator */}
-            {domainData.whois.created_date !== 'No disponible' && domainData.whois.owner_name !== 'No disponible' && (
-              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h4 className="font-medium text-blue-800 mb-2">✅ Datos WHOIS Verificados</h4>
-                <div className="text-sm text-blue-700 space-y-1">
-                  <p>• Registrador: {domainData.whois.registrar}</p>
-                  <p>• Fecha de creación: {domainData.whois.created_date}</p>
-                  <p>• Propietario: {domainData.whois.owner_name}</p>
-                  {domainData.whois.organization !== 'No disponible' && (
-                    <p>• Organización: {domainData.whois.organization}</p>
-                  )}
-                </div>
               </div>
             )}
             
