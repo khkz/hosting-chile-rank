@@ -459,8 +459,10 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
   return techStack;
 };
 
-// Check SSL status
+// Enhanced SSL status checking with multiple validation methods
 const checkSSLStatus = async (domain: string) => {
+  console.log(`🔒 Starting comprehensive SSL analysis for: ${domain}`);
+  
   const sslInfo = {
     ssl_enabled: false,
     ssl_issuer: 'Desconocido',
@@ -470,23 +472,139 @@ const checkSSLStatus = async (domain: string) => {
     security_headers: {}
   };
 
+  // Method 1: Direct HTTPS test with comprehensive checks
   try {
-    const response = await fetch(`https://${domain}`, { method: 'HEAD' });
-    sslInfo.ssl_enabled = response.url.startsWith('https://');
-    sslInfo.https_redirect = response.redirected && response.url.startsWith('https://');
-
-    // Check security headers
-    const headers = ['strict-transport-security', 'x-frame-options', 'x-content-type-options'];
-    headers.forEach(header => {
-      const value = response.headers.get(header);
-      if (value) {
-        sslInfo.security_headers[header] = value;
-      }
+    console.log(`🔍 Method 1: Testing direct HTTPS connection for ${domain}`);
+    
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
+    const response = await fetch(`https://${domain}`, { 
+      method: 'HEAD',
+      signal: controller.signal,
+      redirect: 'manual' // Don't follow redirects automatically
     });
-
+    
+    clearTimeout(timeoutId);
+    
+    if (response.ok || response.status === 301 || response.status === 302) {
+      console.log(`✅ HTTPS connection successful for ${domain}`);
+      sslInfo.ssl_enabled = true;
+      
+      // Check for HTTPS redirect if we got a redirect response
+      if (response.status === 301 || response.status === 302) {
+        const location = response.headers.get('location');
+        if (location && location.startsWith('https://')) {
+          sslInfo.https_redirect = true;
+        }
+      }
+      
+      // Extract security headers
+      const securityHeaders = ['strict-transport-security', 'x-frame-options', 'x-content-type-options', 'content-security-policy'];
+      securityHeaders.forEach(header => {
+        const value = response.headers.get(header);
+        if (value) {
+          sslInfo.security_headers[header] = value;
+        }
+      });
+      
+    } else {
+      console.log(`⚠️ HTTPS connection returned status ${response.status} for ${domain}`);
+    }
+    
   } catch (error) {
-    console.error('Error checking SSL status:', error);
+    console.log(`❌ Method 1 failed for ${domain}:`, error.message);
   }
+
+  // Method 2: Test HTTP to HTTPS redirect if SSL wasn't detected
+  if (!sslInfo.ssl_enabled) {
+    try {
+      console.log(`🔍 Method 2: Testing HTTP to HTTPS redirect for ${domain}`);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      
+      const httpResponse = await fetch(`http://${domain}`, {
+        method: 'HEAD',
+        signal: controller.signal,
+        redirect: 'manual'
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (httpResponse.status === 301 || httpResponse.status === 302) {
+        const location = httpResponse.headers.get('location');
+        if (location && location.startsWith('https://')) {
+          console.log(`✅ HTTP to HTTPS redirect detected for ${domain}`);
+          sslInfo.ssl_enabled = true;
+          sslInfo.https_redirect = true;
+        }
+      }
+      
+    } catch (error) {
+      console.log(`❌ Method 2 failed for ${domain}:`, error.message);
+    }
+  }
+
+  // Method 3: Try alternative HTTPS test with different approach
+  if (!sslInfo.ssl_enabled) {
+    try {
+      console.log(`🔍 Method 3: Alternative HTTPS test for ${domain}`);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+      
+      // Try to fetch a simple resource
+      const response = await fetch(`https://${domain}/favicon.ico`, {
+        method: 'HEAD',
+        signal: controller.signal,
+        redirect: 'follow'
+      });
+      
+      clearTimeout(timeoutId);
+      
+      // Even if favicon doesn't exist, if we get a response, SSL is working
+      if (response.status < 500) {
+        console.log(`✅ Alternative HTTPS test successful for ${domain} (status: ${response.status})`);
+        sslInfo.ssl_enabled = true;
+      }
+      
+    } catch (error) {
+      console.log(`❌ Method 3 failed for ${domain}:`, error.message);
+    }
+  }
+
+  // Method 4: Use SSL Labs API for additional verification (optional, for critical cases)
+  if (!sslInfo.ssl_enabled && domain.includes('hostingplus')) {
+    try {
+      console.log(`🔍 Method 4: SSL Labs verification for critical domain ${domain}`);
+      
+      const sslLabsResponse = await fetch(`https://api.ssllabs.com/api/v3/analyze?host=${domain}&publish=off&all=done`, {
+        signal: AbortSignal.timeout(15000)
+      });
+      
+      if (sslLabsResponse.ok) {
+        const sslData = await sslLabsResponse.json();
+        if (sslData.status === 'READY' && sslData.endpoints && sslData.endpoints.length > 0) {
+          const endpoint = sslData.endpoints[0];
+          if (endpoint.grade) {
+            console.log(`✅ SSL Labs confirms SSL for ${domain} with grade ${endpoint.grade}`);
+            sslInfo.ssl_enabled = true;
+            sslInfo.ssl_grade = endpoint.grade;
+          }
+        }
+      }
+      
+    } catch (error) {
+      console.log(`❌ Method 4 (SSL Labs) failed for ${domain}:`, error.message);
+    }
+  }
+
+  console.log(`🔒 SSL analysis completed for ${domain}:`, {
+    ssl_enabled: sslInfo.ssl_enabled,
+    https_redirect: sslInfo.https_redirect,
+    security_headers_count: Object.keys(sslInfo.security_headers).length
+  });
 
   return sslInfo;
 };

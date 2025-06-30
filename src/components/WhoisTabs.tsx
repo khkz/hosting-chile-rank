@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   Globe, 
   Server, 
@@ -469,6 +470,57 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
               </div>
             </div>
 
+            {/* SSL Purchase CTA - Only show when SSL is not enabled */}
+            {!data.ssl.ssl_enabled && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-6 w-6 text-red-600 mt-1 flex-shrink-0" />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-red-800 text-lg mb-2">
+                      ⚠️ Tu sitio web no tiene SSL
+                    </h4>
+                    <p className="text-red-700 mb-3">
+                      Los navegadores marcan tu sitio como "No seguro". Esto afecta la confianza 
+                      de tus visitantes y tu posicionamiento en Google.
+                    </p>
+                    <ul className="text-sm text-red-700 mb-4 space-y-1">
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Protege los datos de tus usuarios
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Mejora el ranking en buscadores
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Aumenta la confianza del cliente
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Instalación gratuita incluida
+                      </li>
+                    </ul>
+                    <Button 
+                      asChild 
+                      className="bg-[#EF233C] hover:bg-[#b3001b] text-white"
+                    >
+                      <a 
+                        href="https://clientes.hostingplus.cl/cart.php?gid=7" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        <Shield className="h-4 w-4" />
+                        Comprar SSL en HostingPlus
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {Object.keys(data.ssl.security_headers).length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Headers de Seguridad</h4>
@@ -480,6 +532,18 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {data.ssl.ssl_enabled && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center gap-2">
+                  <Check className="h-5 w-5 text-green-600" />
+                  <h4 className="font-medium text-green-800">SSL Configurado Correctamente</h4>
+                </div>
+                <p className="text-sm text-green-700 mt-1">
+                  Tu sitio web cuenta con un certificado SSL válido que protege las comunicaciones.
+                </p>
               </div>
             )}
           </CardContent>
