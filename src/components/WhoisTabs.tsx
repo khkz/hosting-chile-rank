@@ -216,8 +216,7 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
             {/* Complaint Alert Section */}
             {complaintInfo && (
               <div className={`border rounded-lg p-4 ${
-                complaintInfo.level === 'critical' ? 'bg-red-50 border-red-200' :
-                complaintInfo.level === 'high' ? 'bg-red-50 border-red-200' :
+                complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'bg-red-50 border-red-200' :
                 complaintInfo.level === 'medium' ? 'bg-yellow-50 border-yellow-200' :
                 complaintInfo.level === 'low' ? 'bg-blue-50 border-blue-200' :
                 'bg-green-50 border-green-200'
@@ -245,26 +244,30 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                       'text-green-700'
                     }`}>
                       <strong>{complaintInfo.count} reclamo{complaintInfo.count !== 1 ? 's' : ''}</strong>
-                      {complaintInfo.count > 0 && (
+                      {complaintInfo.count > 0 && complaintInfo.lastComplaint && (
                         <span> (último: {complaintInfo.lastComplaint})</span>
                       )}
                     </p>
-                    <p className={`text-sm mt-2 ${
-                      complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
-                      complaintInfo.level === 'medium' ? 'text-yellow-700' :
-                      complaintInfo.level === 'low' ? 'text-blue-700' :
-                      'text-green-700'
-                    }`}>
-                      {complaintInfo.description}
-                    </p>
-                    <p className={`text-sm mt-2 font-medium ${
-                      complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
-                      complaintInfo.level === 'medium' ? 'text-yellow-700' :
-                      complaintInfo.level === 'low' ? 'text-blue-700' :
-                      'text-green-700'
-                    }`}>
-                      {complaintInfo.recommendation}
-                    </p>
+                    {complaintInfo.description && (
+                      <p className={`text-sm mt-2 ${
+                        complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
+                        complaintInfo.level === 'medium' ? 'text-yellow-700' :
+                        complaintInfo.level === 'low' ? 'text-blue-700' :
+                        'text-green-700'
+                      }`}>
+                        {complaintInfo.description}
+                      </p>
+                    )}
+                    {complaintInfo.recommendation && (
+                      <p className={`text-sm mt-2 font-medium ${
+                        complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
+                        complaintInfo.level === 'medium' ? 'text-yellow-700' :
+                        complaintInfo.level === 'low' ? 'text-blue-700' :
+                        'text-green-700'
+                      }`}>
+                        {complaintInfo.recommendation}
+                      </p>
+                    )}
                     {complaintInfo.reclamosUrl && (
                       <a 
                         href={complaintInfo.reclamosUrl}

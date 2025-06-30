@@ -1,11 +1,14 @@
 
 // Complaint levels for hosting providers
-export type ComplaintLevel = 'none' | 'low' | 'medium' | 'high';
+export type ComplaintLevel = 'none' | 'low' | 'medium' | 'high' | 'critical';
 
 export interface ComplaintInfo {
   count: number;
   level: ComplaintLevel;
   reclamosUrl?: string;
+  lastComplaint?: string;
+  description?: string;
+  recommendation?: string;
 }
 
 // Complaint data for hosting providers based on ASN
@@ -71,8 +74,40 @@ export const getComplaintBadge = (level: ComplaintLevel) => {
       icon: '🚨',
       color: 'bg-red-100 text-red-800 border-red-300',
       text: 'Muchos reclamos'
+    },
+    critical: {
+      icon: '🚨',
+      color: 'bg-red-100 text-red-800 border-red-300',
+      text: 'Reclamos críticos'
     }
   };
   
   return badges[level];
+};
+
+// Add the missing detectProviderFromASN function
+export const detectProviderFromASN = (asn: string, ispName: string): string | null => {
+  // Simple provider detection based on ASN or ISP name
+  const providers = {
+    'AS266879': 'HostingPlus',
+    'AS266855': 'EcoHosting', 
+    'AS19871': 'HostGator',
+    'AS265839': 'Hosting.cl',
+    'AS52368': 'PlanetaHosting'
+  };
+  
+  // Check ASN first
+  if (providers[asn]) {
+    return providers[asn];
+  }
+  
+  // Check ISP name for partial matches
+  const lowerIspName = ispName.toLowerCase();
+  if (lowerIspName.includes('hostingplus')) return 'HostingPlus';
+  if (lowerIspName.includes('ecohosting')) return 'EcoHosting';
+  if (lowerIspName.includes('hostgator')) return 'HostGator';
+  if (lowerIspName.includes('hosting.cl')) return 'Hosting.cl';
+  if (lowerIspName.includes('planetahosting')) return 'PlanetaHosting';
+  
+  return null;
 };
