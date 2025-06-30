@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import RecentSearches from './RecentSearches';
@@ -55,11 +54,9 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Recursos</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/blog" className="text-gray-300 hover:text-[#EF233C] transition-colors">Blog</Link></li>
               <li><Link to="/ultimos-dominios" className="text-gray-300 hover:text-[#EF233C] transition-colors">Últimos Dominios</Link></li>
               <li><Link to="/guia-elegir-vps" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guía VPS</Link></li>
               <li><Link to="/guia-elegir-ssl" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guía SSL</Link></li>
-              <li><Link to="/contacto" className="text-gray-300 hover:text-[#EF233C] transition-colors">Contacto</Link></li>
             </ul>
           </div>
 
