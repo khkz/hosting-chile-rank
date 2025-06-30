@@ -103,6 +103,28 @@ const isChileanIP = (ip: string): boolean => {
   return chileanRanges.some(range => ip.startsWith(range));
 };
 
+// Fetch real WHOIS data
+const fetchWhoisData = async (domain: string) => {
+  try {
+    console.log(`Fetching WHOIS data for: ${domain}`);
+    
+    const { data, error } = await supabase.functions.invoke('whois-lookup', {
+      body: { domain }
+    });
+
+    if (error) {
+      console.error('Error fetching WHOIS data:', error);
+      return null;
+    }
+
+    console.log('WHOIS data received:', data);
+    return data;
+  } catch (error) {
+    console.error('Error calling whois-lookup function:', error);
+    return null;
+  }
+};
+
 // Fetch comprehensive DNS records
 const fetchDNSRecords = async (domain: string) => {
   const dnsData = {
@@ -265,6 +287,22 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
         updated_at: new Date().toISOString()
       }, { onConflict: 'domain_id' });
 
+    // Save WHOIS info
+    await supabase
+      .from('whois_info')
+      .upsert({
+        domain_id: domainId,
+        registrar: analysisResult.whois.registrar,
+        created_date: analysisResult.whois.created_date,
+        expires_date: analysisResult.whois.expires_date,
+        status: analysisResult.whois.status,
+        owner_name: analysisResult.whois.owner_name,
+        organization: analysisResult.whois.organization,
+        email: analysisResult.whois.email,
+        dnssec_status: analysisResult.whois.dnssec_status,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'domain_id' });
+
     // Save SSL info
     await supabase
       .from('ssl_info')
@@ -308,10 +346,11 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   const dnsRecords = await fetchDNSRecords(domain);
   const primaryIP = dnsRecords.a_records[0] || '–';
 
-  // Run parallel analyses
-  const [sslInfo, techStack] = await Promise.all([
+  // Run parallel analyses including real WHOIS data
+  const [sslInfo, techStack, whoisInfo] = await Promise.all([
     checkSSLStatus(domain),
-    detectTechStack(domain)
+    detectTechStack(domain),
+    fetchWhoisData(domain)
   ]);
 
   const analysisResult: DomainAnalysisResult = {
@@ -324,11 +363,11 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
       nameservers: dnsRecords.ns_records
     },
     dns: dnsRecords,
-    whois: {
-      registrar: 'NIC Chile',
-      created_date: '2024-12-01',
-      expires_date: '2025-12-01',
-      status: 'Active',
+    whois: whoisInfo || {
+      registrar: 'No disponible',
+      created_date: 'No disponible',
+      expires_date: 'No disponible',
+      status: 'No disponible',
       owner_name: 'Información privada',
       organization: 'Información privada',
       email: 'Información privada',
@@ -361,7 +400,8 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         id,
         dns_info(*),
         ssl_info(*),
-        tech_stack(*)
+        tech_stack(*),
+        whois_info(*)
       `)
       .eq('domain', domain)
       .single();
@@ -372,6 +412,7 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
     const dnsInfo = domainData.dns_info?.[0];
     const sslInfo = domainData.ssl_info?.[0];
     const techInfo = domainData.tech_stack?.[0];
+    const whoisInfo = domainData.whois_info?.[0];
 
     if (!dnsInfo) return null;
 
@@ -393,14 +434,14 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         ns_records: ensureArray(dnsInfo.ns)
       },
       whois: {
-        registrar: 'NIC Chile',
-        created_date: '2024-12-01',
-        expires_date: '2025-12-01',
-        status: 'Active',
-        owner_name: 'Información privada',
-        organization: 'Información privada',
-        email: 'Información privada',
-        dnssec_status: 'No configurado'
+        registrar: whoisInfo?.registrar || 'No disponible',
+        created_date: whoisInfo?.created_date || 'No disponible',
+        expires_date: whoisInfo?.expires_date || 'No disponible',
+        status: whoisInfo?.status || 'No disponible',
+        owner_name: whoisInfo?.owner_name || 'Información privada',
+        organization: whoisInfo?.organization || 'Información privada',
+        email: whoisInfo?.email || 'Información privada',
+        dnssec_status: whoisInfo?.dnssec_status || 'No configurado'
       },
       ssl: {
         ssl_enabled: sslInfo?.ssl_enabled || false,
