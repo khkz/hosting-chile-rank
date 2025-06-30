@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -14,6 +13,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import WhoisTabs from '@/components/WhoisTabs';
 import { analyzeDomain, loadCachedAnalysis, type DomainAnalysisResult } from '@/services/domainAnalysis';
+import { hasValidIP } from '@/lib/utils';
 
 // Function to capitalize the first letter of a string
 const capitalizeFirstLetter = (string: string): string => {
@@ -298,8 +298,8 @@ const WhoisDomain = () => {
               </div>
             )}
             
-            {/* New warning for non-Chilean IPs */}
-            {domainData.basic.ip && !domainData.basic.ip_chile && (
+            {/* New warning for non-Chilean IPs - Fixed condition */}
+            {hasValidIP(domainData.basic.ip) && !domainData.basic.ip_chile && (
               <Alert variant="destructive" className="mb-6 bg-red-50 border-red-200">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
                 <AlertTitle className="text-red-700">Alojamiento fuera de Chile</AlertTitle>

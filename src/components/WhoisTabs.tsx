@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import type { DomainAnalysisResult } from '@/services/domainAnalysis';
 import { getComplaintBadge } from '@/services/hostingComplaints';
+import { hasValidIP } from '@/lib/utils';
 
 interface WhoisTabsProps {
   data: DomainAnalysisResult;
@@ -33,16 +34,6 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
   if (isLoading) {
     return <div className="text-center py-8">Cargando análisis completo...</div>;
   }
-
-  // Helper function to check if we have a valid IP address
-  const hasValidIP = (ip: string) => {
-    if (!ip || ip === '–' || ip === '-' || ip === 'No disponible' || ip === 'Error al obtener IP') {
-      return false;
-    }
-    // Check if it's a valid IP format
-    const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    return ipRegex.test(ip);
-  };
 
   // Helper function to check if we have valid nameservers
   const hasValidNameservers = (nameservers: string[]) => {
