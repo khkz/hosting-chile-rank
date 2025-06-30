@@ -71,7 +71,7 @@ const DomainAnalysisSearch = () => {
           </div>
           <Button 
             onClick={handleAnalyzeDomain}
-            className="px-6"
+            className="px-6 bg-[#2B2D42] text-white hover:bg-[#2B2D42]/90"
           >
             <Search className="h-4 w-4 mr-2" />
             Analizar
