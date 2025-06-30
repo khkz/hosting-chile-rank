@@ -34,6 +34,22 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
     return <div className="text-center py-8">Cargando análisis completo...</div>;
   }
 
+  // Helper function to check if we have a valid IP address
+  const hasValidIP = (ip: string) => {
+    if (!ip || ip === '–' || ip === '-' || ip === 'No disponible' || ip === 'Error al obtener IP') {
+      return false;
+    }
+    // Check if it's a valid IP format
+    const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+    return ipRegex.test(ip);
+  };
+
+  // Helper function to check if we have valid nameservers
+  const hasValidNameservers = (nameservers: string[]) => {
+    return nameservers.length > 0 && 
+           nameservers.some(ns => ns && ns !== 'No disponible' && ns !== '-' && ns.trim() !== '');
+  };
+
   // Helper function to check if we have real WHOIS data
   const hasRealWhoisData = (whoisData: any) => {
     return whoisData.owner_name && 
@@ -98,14 +114,20 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
               <div>
                 <span className="font-medium">IP Principal:</span>
                 <span className="ml-2">{data.basic.ip}</span>
-                {data.basic.ip_chile ? (
-                  <Badge variant="secondary" className="ml-2 bg-green-100 text-green-800">
-                    🇨🇱 IP Chilena
-                  </Badge>
+                {hasValidIP(data.basic.ip) ? (
+                  data.basic.ip_chile ? (
+                    <Badge variant="secondary" className="ml-2 bg-green-100 text-green-800">
+                      🇨🇱 IP Chilena
+                    </Badge>
+                  ) : (
+                    <Badge variant="destructive" className="ml-2">
+                      <CloudOff className="h-3 w-3 mr-1" />
+                      IP Extranjera
+                    </Badge>
+                  )
                 ) : (
-                  <Badge variant="destructive" className="ml-2">
-                    <CloudOff className="h-3 w-3 mr-1" />
-                    IP Extranjera
+                  <Badge variant="outline" className="ml-2 bg-gray-100 text-gray-600">
+                    Sin resolución DNS
                   </Badge>
                 )}
               </div>
@@ -139,12 +161,66 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
             
             <div>
               <span className="font-medium">Nameservers:</span>
-              <ul className="ml-6 mt-1 list-disc">
-                {data.basic.nameservers.map((ns, index) => (
-                  <li key={index} className="text-sm">{ns}</li>
-                ))}
-              </ul>
+              {hasValidNameservers(data.basic.nameservers) ? (
+                <ul className="ml-6 mt-1 list-disc">
+                  {data.basic.nameservers.map((ns, index) => (
+                    <li key={index} className="text-sm">{ns}</li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="ml-2 text-gray-500">No configurados</div>
+              )}
             </div>
+
+            {/* Hosting Required Alert - Most Critical */}
+            {!hasValidNameservers(data.basic.nameservers) && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <div className="flex items-start gap-3">
+                  <Server className="h-6 w-6 text-red-600 mt-1 flex-shrink-0" />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-red-800 text-lg mb-2">
+                      🚨 Tu dominio necesita hosting para funcionar
+                    </h4>
+                    <p className="text-red-700 mb-3">
+                      Sin nameservers configurados, tu dominio no puede mostrar contenido web ni recibir emails corporativos.
+                    </p>
+                    <ul className="text-sm text-red-700 mb-4 space-y-1">
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Sitio web funcionando 24/7
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Emails corporativos @{data.basic.domain}
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Configuración completa incluida
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-green-600" />
+                        Servidores en Chile para mejor velocidad
+                      </li>
+                    </ul>
+                    <Button 
+                      asChild 
+                      className="bg-[#EF233C] hover:bg-[#b3001b] text-white"
+                    >
+                      <a 
+                        href="https://www.hostingplus.cl/hosting/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        <Server className="h-4 w-4" />
+                        Contratar Hosting en HostingPlus
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Complaint Alert Section */}
             {complaintInfo && (
@@ -219,7 +295,8 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
               </div>
             )}
 
-            {!data.basic.ip_chile && (
+            {/* Foreign IP Alert - Only show if there's a valid foreign IP */}
+            {hasValidIP(data.basic.ip) && !data.basic.ip_chile && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <div className="flex items-start gap-2">
                   <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5" />
@@ -470,8 +547,8 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
               </div>
             </div>
 
-            {/* SSL Purchase CTA - Only show when SSL is not enabled */}
-            {!data.ssl.ssl_enabled && (
+            {/* SSL Purchase CTA - Only show when SSL is not enabled and domain has valid nameservers */}
+            {!data.ssl.ssl_enabled && hasValidNameservers(data.basic.nameservers) && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-6">
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="h-6 w-6 text-red-600 mt-1 flex-shrink-0" />

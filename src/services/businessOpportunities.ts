@@ -1,3 +1,4 @@
+
 import type { DomainAnalysisResult } from './domainAnalysis';
 
 export interface BusinessOpportunity {
@@ -5,7 +6,7 @@ export interface BusinessOpportunity {
   title: string;
   description: string;
   impact: 'critical' | 'high' | 'medium' | 'low';
-  category: 'security' | 'performance' | 'seo' | 'marketing';
+  category: 'security' | 'performance' | 'seo' | 'marketing' | 'hosting';
   icon: string;
   cta: {
     text: string;
@@ -22,6 +23,8 @@ export interface BusinessOpportunity {
 
 const detectIssues = (data: DomainAnalysisResult) => {
   return {
+    noNameservers: data.basic.nameservers.length === 0 || 
+                   data.basic.nameservers.every(ns => !ns || ns === 'No disponible' || ns === '-'),
     noSSL: !data.ssl.ssl_enabled,
     slowLoadTime: data.performance.load_time_ms > 3000,
     lowPageSpeedScore: data.performance.pagespeed_score < 70,
@@ -34,8 +37,37 @@ export const generateBusinessOpportunities = (data: DomainAnalysisResult): Busin
   const issues = detectIssues(data);
   const opportunities: BusinessOpportunity[] = [];
 
+  // Hosting Service opportunity - Most critical (domain doesn't work without nameservers)
+  if (issues.noNameservers) {
+    opportunities.push({
+      id: 'hosting-service',
+      title: 'Hosting Requerido - Dominio sin Configurar',
+      description: 'Tu dominio no tiene nameservers configurados. Necesitas un servicio de hosting para que funcione tu sitio web y tus emails corporativos.',
+      impact: 'critical',
+      category: 'hosting',
+      icon: 'Server',
+      cta: {
+        text: 'Contratar Hosting en HostingPlus',
+        url: 'https://www.hostingplus.cl/hosting/',
+        type: 'primary'
+      },
+      benefits: [
+        'Tu sitio web funcionará correctamente',
+        'Emails corporativos @tudominio.com',
+        'Configuración completa incluida',
+        'Soporte técnico especializado',
+        'Servidores en Chile para mejor velocidad'
+      ],
+      details: {
+        problem: `El dominio ${data.basic.domain} no tiene nameservers configurados, por lo que no funciona`,
+        solution: 'Servicio de hosting con configuración completa de DNS y email',
+        urgency: 'Sin hosting, tu dominio no puede mostrar contenido ni recibir emails'
+      }
+    });
+  }
+
   // SSL Certificate opportunity - Enhanced detection
-  if (issues.noSSL || (!data.ssl.ssl_enabled && data.basic.domain)) {
+  if (issues.noSSL && !issues.noNameservers) {
     opportunities.push({
       id: 'ssl-certificate',
       title: 'Certificado SSL Requerido',
@@ -118,7 +150,7 @@ export const generateBusinessOpportunities = (data: DomainAnalysisResult): Busin
   }
 
   // Analytics Setup opportunity
-  if (issues.noAnalytics) {
+  if (issues.noAnalytics && !issues.noNameservers) {
     opportunities.push({
       id: 'analytics-setup',
       title: 'Configuración de Analítica Web',
