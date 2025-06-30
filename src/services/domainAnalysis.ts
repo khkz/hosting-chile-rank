@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 export interface DomainAnalysisResult {
@@ -552,11 +553,6 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
     });
 
     // Transform cached data back to analysis result format
-    const dnsInfo = domainData.dns_info?.[0];
-    const sslInfo = domainData.ssl_info?.[0];
-    const techInfo = domainData.tech_stack?.[0];
-    const whoisInfo = domainData.whois_info?.[0];
-
     if (!dnsInfo) return null;
 
     return {
