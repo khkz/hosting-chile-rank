@@ -17,35 +17,35 @@ const complaintData: Record<string, ComplaintInfo> = {
   "AS266879": {
     count: 0,
     level: 'none',
-    reclamosUrl: "https://www.reclamos.cl/empresa/hostingplus"
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=hostingplus.cl"
   },
   
   // EcoHosting.cl - AS266855  
   "AS266855": {
     count: 0,
     level: 'none',
-    reclamosUrl: "https://www.reclamos.cl/empresa/ecohosting"
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=ecohosting.cl"
   },
   
   // HostGator.cl - AS19871
   "AS19871": {
     count: 3,
     level: 'low',
-    reclamosUrl: "https://www.reclamos.cl/empresa/hostgator"
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=hostgator.cl"
   },
   
   // Hosting.cl - AS265839
   "AS265839": {
     count: 8,
     level: 'medium',
-    reclamosUrl: "https://www.reclamos.cl/empresa/hosting-cl"
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=hosting.cl"
   },
   
   // PlanetaHosting.cl - AS52368
   "AS52368": {
     count: 5,
     level: 'low',
-    reclamosUrl: "https://www.reclamos.cl/empresa/planetahosting"
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=planetahosting.cl"
   }
 };
 
