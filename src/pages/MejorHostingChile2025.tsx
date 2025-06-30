@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '../components/Navbar';
@@ -257,6 +256,31 @@ const MejorHostingChile2025 = () => {
                 </Card>
               ))}
             </div>
+            
+            {/* Enlaces internos a guías */}
+            <div className="bg-blue-50 p-6 rounded-lg">
+              <h3 className="font-semibold text-lg text-[#2B2D42] mb-4">
+                📚 Profundiza en nuestras guías especializadas
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Link to="/guia-elegir-hosting" className="text-[#EF233C] hover:underline font-medium block">
+                    → Guía completa para elegir hosting web
+                  </Link>
+                  <Link to="/guia-elegir-vps" className="text-[#EF233C] hover:underline font-medium block">
+                    → Cómo elegir el VPS perfecto
+                  </Link>
+                </div>
+                <div className="space-y-2">
+                  <Link to="/guia-elegir-servidor-dedicado" className="text-[#EF233C] hover:underline font-medium block">
+                    → Guía para servidores dedicados
+                  </Link>
+                  <Link to="/guia-elegir-ssl" className="text-[#EF233C] hover:underline font-medium block">
+                    → Todo sobre certificados SSL
+                  </Link>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* Tabla Comparativa */}
@@ -444,9 +468,15 @@ const MejorHostingChile2025 = () => {
                       Contratar HostingPlus Ahora
                     </a>
                   </Button>
-                  <Link to="/ranking" className="text-white hover:text-gray-200 underline">
-                    Ver ranking completo de hosting Chile
-                  </Link>
+                  <div className="flex flex-col sm:flex-row gap-2 text-sm">
+                    <Link to="/ranking" className="text-white hover:text-gray-200 underline">
+                      Ver ranking completo
+                    </Link>
+                    <span className="text-white/60 hidden sm:inline">•</span>
+                    <Link to="/comparativa" className="text-white hover:text-gray-200 underline">
+                      Comparar proveedores
+                    </Link>
+                  </div>
                 </div>
               </CardContent>
             </Card>

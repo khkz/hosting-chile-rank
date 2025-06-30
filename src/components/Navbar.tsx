@@ -9,7 +9,8 @@ import {
   BarChart2,
   ShoppingCart,
   Globe,
-  FileText 
+  FileText,
+  Star
 } from 'lucide-react';
 import Logo from './Logo';
 import {
@@ -104,7 +105,7 @@ const Navbar = () => {
             <DropdownMenuTrigger asChild>
               <button 
                 className={`${navLinkClasses} px-3 py-2 flex items-center gap-1 ${
-                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl'].includes(location.pathname) 
+                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl', '/mejor-hosting-chile-2025'].includes(location.pathname) 
                     ? activeNavLinkClasses 
                     : ''
                 }`}
@@ -114,7 +115,16 @@ const Navbar = () => {
                 <ChevronDown className="h-4 w-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-white">
+            <DropdownMenuContent align="end" className="w-64 bg-white">
+              <DropdownMenuItem asChild>
+                <Link 
+                  to="/mejor-hosting-chile-2025" 
+                  className={`w-full px-2 py-2 flex items-center gap-2 ${isActive('/mejor-hosting-chile-2025') ? 'text-[#EF233C]' : ''}`}
+                >
+                  <Star className="h-4 w-4" />
+                  Mejor Hosting Chile 2025
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link 
                   to="/guia-elegir-hosting" 
@@ -231,6 +241,16 @@ const Navbar = () => {
                 <div className="pt-2 pb-2">
                   <h3 className="font-medium text-sm text-gray-500 uppercase mb-3">Guías</h3>
                   <div className="pl-2 flex flex-col space-y-3">
+                    <NavLink 
+                      to="/mejor-hosting-chile-2025" 
+                      className={({ isActive }) => 
+                        `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                      }
+                    >
+                      <Star className="h-5 w-5 mr-2" />
+                      Mejor Hosting Chile 2025
+                    </NavLink>
+                    
                     <NavLink 
                       to="/guia-elegir-hosting" 
                       className={({ isActive }) => 
