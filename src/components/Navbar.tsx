@@ -41,9 +41,9 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm">
-      <div className="container mx-auto px-4 flex justify-between items-center h-16">
+      <div className="container mx-auto px-4 flex justify-between items-center h-20">
         <Link to="/" className="flex items-center">
-          <Logo variant="option-b" className="h-8 w-auto mr-2" />
+          <Logo variant="option-a" className="h-12 w-auto mr-2" />
         </Link>
         
         {/* Desktop Menu */}
@@ -182,7 +182,7 @@ const Navbar = () => {
             <div className="flex flex-col h-full">
               <div className="flex flex-col space-y-4 py-4">
                 <Link to="/" className="flex items-center mb-6">
-                  <Logo variant="option-b" className="h-8 w-auto mr-2" />
+                  <Logo variant="option-a" className="h-10 w-auto mr-2" />
                 </Link>
                 
                 <NavLink 

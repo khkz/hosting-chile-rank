@@ -7,14 +7,14 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => {
-  // Opción A: Checkmark integrado
+  // Opción A: Checkmark prominente adelante con slogan
   if (variant === 'option-a' || variant === 'full') {
     return (
       <svg
         className={className}
-        width="200"
-        height="40"
-        viewBox="0 0 200 40"
+        width="280"
+        height="60"
+        viewBox="0 0 280 60"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -28,14 +28,30 @@ const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => 
             <stop offset="0%" stopColor="#4CAF50" />
             <stop offset="100%" stopColor="#388E3C" />
           </linearGradient>
+          
+          <linearGradient id="sloganGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#6B7280" />
+            <stop offset="100%" stopColor="#4B5563" />
+          </linearGradient>
         </defs>
+        
+        {/* Checkmark prominente al frente */}
+        <circle cx="20" cy="22" r="12" fill="url(#checkGrad)" />
+        <path
+          d="M15 22 L18.5 25.5 L25 19"
+          stroke="white"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
         
         {/* Texto principal */}
         <text 
-          x="5" 
-          y="28" 
+          x="45" 
+          y="30" 
           fill="url(#textGrad)" 
-          fontSize="20" 
+          fontSize="22" 
           fontWeight="700" 
           fontFamily="Montserrat, sans-serif"
           letterSpacing="0.5px"
@@ -43,18 +59,18 @@ const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => 
           EligeTuHosting
         </text>
         
-        {/* Checkmark sutil integrado en la "i" */}
-        <circle cx="97" cy="12" r="6" fill="url(#checkGrad)" opacity="0.9" />
-        <path
-          d="M94 12 L96 14 L100 10"
-          stroke="white"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-        
-        {/* Punto original de la "i" oculto, reemplazado por checkmark */}
+        {/* Slogan */}
+        <text 
+          x="45" 
+          y="48" 
+          fill="url(#sloganGrad)" 
+          fontSize="12" 
+          fontWeight="500" 
+          fontFamily="Montserrat, sans-serif"
+          letterSpacing="0.3px"
+        >
+          Tu hosting, nuestra garantía
+        </text>
       </svg>
     );
   }
