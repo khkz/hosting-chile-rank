@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import RecentSearches from './RecentSearches';
+import Logo from './Logo';
 import { Shield, Award, MapPin, Mail, Clock } from 'lucide-react';
 
 const Footer = () => {
@@ -15,7 +17,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="md:col-span-1">
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-white mb-2">EligeTuHosting</h3>
+              <Logo variant="option-a" className="h-12 w-auto mb-4" />
               <p className="text-gray-300 leading-relaxed">
                 El análisis más completo y objetivo de hosting en Chile desde 2020.
               </p>
