@@ -4,9 +4,10 @@ import React from 'react';
 interface LogoProps {
   className?: string;
   variant?: 'full' | 'icon' | 'favicon' | 'option-a' | 'option-b';
+  darkBackground?: boolean;
 }
 
-const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => {
+const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a', darkBackground = false }) => {
   // Opción A: Checkmark prominente adelante con slogan
   if (variant === 'option-a' || variant === 'full') {
     return (
@@ -19,9 +20,9 @@ const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => 
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#2B2D42" />
-            <stop offset="100%" stopColor="#1a1c2e" />
+          <linearGradient id={darkBackground ? "textGradDark" : "textGrad"} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={darkBackground ? "#EDF2F4" : "#2B2D42"} />
+            <stop offset="100%" stopColor={darkBackground ? "#ffffff" : "#1a1c2e"} />
           </linearGradient>
           
           <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -29,9 +30,9 @@ const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => 
             <stop offset="100%" stopColor="#388E3C" />
           </linearGradient>
           
-          <linearGradient id="sloganGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#6B7280" />
-            <stop offset="100%" stopColor="#4B5563" />
+          <linearGradient id={darkBackground ? "sloganGradDark" : "sloganGrad"} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={darkBackground ? "#9CA3AF" : "#6B7280"} />
+            <stop offset="100%" stopColor={darkBackground ? "#D1D5DB" : "#4B5563"} />
           </linearGradient>
         </defs>
         
@@ -50,7 +51,7 @@ const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => 
         <text 
           x="45" 
           y="30" 
-          fill="url(#textGrad)" 
+          fill={`url(#${darkBackground ? "textGradDark" : "textGrad"})`}
           fontSize="22" 
           fontWeight="700" 
           fontFamily="Montserrat, sans-serif"
@@ -63,7 +64,7 @@ const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => 
         <text 
           x="45" 
           y="48" 
-          fill="url(#sloganGrad)" 
+          fill={`url(#${darkBackground ? "sloganGradDark" : "sloganGrad"})`}
           fontSize="12" 
           fontWeight="500" 
           fontFamily="Montserrat, sans-serif"
