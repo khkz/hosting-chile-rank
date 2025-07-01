@@ -7,7 +7,7 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ className = "", variant = 'full' }) => {
-  const baseSize = variant === 'favicon' ? 32 : variant === 'icon' ? 40 : 250;
+  const baseSize = variant === 'favicon' ? 32 : variant === 'icon' ? 40 : 200;
   
   return (
     <svg
@@ -19,75 +19,129 @@ const Logo: React.FC<LogoProps> = ({ className = "", variant = 'full' }) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        {/* Gradientes modernos */}
-        <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#EF233C" />
-          <stop offset="50%" stopColor="#FF4757" />
-          <stop offset="100%" stopColor="#C53030" />
+        {/* Modern vibrant gradients */}
+        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FF6B6B" />
+          <stop offset="30%" stopColor="#EF233C" />
+          <stop offset="70%" stopColor="#FF4757" />
+          <stop offset="100%" stopColor="#FF3742" />
         </linearGradient>
         
-        <linearGradient id="secondaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#2B2D42" />
-          <stop offset="100%" stopColor="#3A3D5C" />
-        </linearGradient>
-        
-        <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#00D4FF" />
+        <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#4ECDC4" />
+          <stop offset="50%" stopColor="#00D4FF" />
           <stop offset="100%" stopColor="#0099CC" />
         </linearGradient>
         
-        {/* Sombra para profundidad */}
-        <filter id="dropshadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
-          <feOffset dx="2" dy="2" result="offset"/>
-          <feFlood floodColor="#00000040"/>
-          <feComposite in="SourceGraphic" in2="offset" operator="over"/>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#667eea" />
+          <stop offset="100%" stopColor="#764ba2" />
+        </linearGradient>
+        
+        {/* Glow effect */}
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        
+        {/* Soft shadow */}
+        <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="4" stdDeviation="8" floodColor="#000" floodOpacity="0.1"/>
         </filter>
       </defs>
       
-      {/* Círculo de fondo con gradiente */}
-      <circle cx="100" cy="100" r="85" fill="url(#secondaryGradient)" filter="url(#dropshadow)" />
+      {/* Modern circular background with gradient */}
+      <circle 
+        cx="100" 
+        cy="100" 
+        r="90" 
+        fill="url(#bgGrad)" 
+        filter="url(#softShadow)"
+      />
       
-      {/* Elementos de servidor/hosting */}
+      {/* Inner circle for depth */}
+      <circle 
+        cx="100" 
+        cy="100" 
+        r="75" 
+        fill="rgba(255,255,255,0.1)" 
+        stroke="rgba(255,255,255,0.2)" 
+        strokeWidth="1"
+      />
+      
+      {/* Main "E" letter - modern and bold */}
       <g transform="translate(100, 100)">
-        {/* Servidor principal */}
-        <rect x="-35" y="-25" width="70" height="50" rx="8" fill="url(#primaryGradient)" />
+        {/* E letter with modern styling */}
+        <path
+          d="M-25 -35 L-25 35 L20 35 L20 25 L-15 25 L-15 5 L15 5 L15 -5 L-15 -5 L-15 -25 L20 -25 L20 -35 Z"
+          fill="url(#primaryGrad)"
+          filter="url(#glow)"
+        />
         
-        {/* Líneas de conexión/datos */}
-        <rect x="-30" y="-15" width="60" height="3" rx="1.5" fill="white" opacity="0.9" />
-        <rect x="-30" y="-8" width="45" height="3" rx="1.5" fill="white" opacity="0.7" />
-        <rect x="-30" y="-1" width="50" height="3" rx="1.5" fill="white" opacity="0.8" />
-        <rect x="-30" y="6" width="35" height="3" rx="1.5" fill="white" opacity="0.6" />
-        <rect x="-30" y="13" width="55" height="3" rx="1.5" fill="white" opacity="0.8" />
+        {/* Tech accent elements */}
+        <circle cx="25" cy="-25" r="6" fill="url(#accentGrad)" />
+        <circle cx="25" cy="0" r="4" fill="url(#accentGrad)" opacity="0.8" />
+        <circle cx="25" cy="25" r="6" fill="url(#accentGrad)" />
         
-        {/* Indicador de estado activo */}
-        <circle cx="25" cy="-15" r="4" fill="url(#accentGradient)" />
-        <circle cx="25" cy="-15" r="2" fill="white" />
+        {/* Connection lines for tech feel */}
+        <line x1="20" y1="-25" x2="19" y2="-25" stroke="url(#accentGrad)" strokeWidth="2" opacity="0.6" />
+        <line x1="20" y1="0" x2="21" y2="0" stroke="url(#accentGrad)" strokeWidth="2" opacity="0.6" />
+        <line x1="20" y1="25" x2="19" y2="25" stroke="url(#accentGrad)" strokeWidth="2" opacity="0.6" />
         
-        {/* Elementos de conectividad */}
-        <g opacity="0.8">
-          {/* Nodos de conexión */}
-          <circle cx="-50" cy="40" r="8" fill="url(#accentGradient)" />
-          <circle cx="0" cy="50" r="8" fill="url(#accentGradient)" />
-          <circle cx="50" cy="40" r="8" fill="url(#accentGradient)" />
-          
-          {/* Líneas de conexión */}
-          <line x1="-42" y1="32" x2="-8" y2="42" stroke="url(#accentGradient)" strokeWidth="2" opacity="0.6" />
-          <line x1="8" y1="42" x2="42" y2="32" stroke="url(#accentGradient)" strokeWidth="2" opacity="0.6" />
-          <line x1="0" y1="25" x2="0" y2="42" stroke="url(#accentGradient)" strokeWidth="2" opacity="0.6" />
-        </g>
+        {/* For full variant, add text */}
+        {variant === 'full' && (
+          <g>
+            <text 
+              x="0" 
+              y="55" 
+              textAnchor="middle" 
+              fill="url(#primaryGrad)" 
+              fontSize="14" 
+              fontWeight="700" 
+              fontFamily="Montserrat, sans-serif"
+              letterSpacing="1px"
+            >
+              ELIGE TU HOSTING
+            </text>
+          </g>
+        )}
         
-        {/* Texto "E" estilizado para versión icon */}
-        {variant === 'icon' && (
-          <text x="0" y="8" textAnchor="middle" fill="white" fontSize="32" fontWeight="bold" fontFamily="Montserrat">
-            E
-          </text>
+        {/* Simplified version for favicon */}
+        {variant === 'favicon' && (
+          <>
+            {/* Simplified E for favicon */}
+            <rect x="-15" y="-20" width="25" height="6" rx="2" fill="white" />
+            <rect x="-15" y="-3" width="20" height="6" rx="2" fill="white" />
+            <rect x="-15" y="14" width="25" height="6" rx="2" fill="white" />
+            <rect x="-15" y="-20" width="6" height="40" rx="2" fill="white" />
+          </>
         )}
       </g>
       
-      {/* Efectos de brillo */}
-      <circle cx="100" cy="100" r="85" fill="none" stroke="url(#accentGradient)" strokeWidth="2" opacity="0.3" />
-      <circle cx="100" cy="100" r="75" fill="none" stroke="white" strokeWidth="1" opacity="0.2" />
+      {/* Outer glow ring */}
+      <circle 
+        cx="100" 
+        cy="100" 
+        r="90" 
+        fill="none" 
+        stroke="url(#accentGrad)" 
+        strokeWidth="2" 
+        opacity="0.3"
+      />
+      
+      {/* Subtle highlight */}
+      <circle 
+        cx="100" 
+        cy="100" 
+        r="80" 
+        fill="none" 
+        stroke="rgba(255,255,255,0.4)" 
+        strokeWidth="1" 
+        opacity="0.6"
+      />
     </svg>
   );
 };
