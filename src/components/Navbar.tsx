@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { 
@@ -44,8 +43,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
         <Link to="/" className="flex items-center">
-          <Logo className="h-8 w-auto mr-2" />
-          <span className="font-bold text-xl text-[#2B2D42]">EligeTuHosting</span>
+          <Logo variant="option-a" className="h-8 w-auto mr-2" />
         </Link>
         
         {/* Desktop Menu */}
@@ -184,8 +182,7 @@ const Navbar = () => {
             <div className="flex flex-col h-full">
               <div className="flex flex-col space-y-4 py-4">
                 <Link to="/" className="flex items-center mb-6">
-                  <Logo className="h-8 w-auto mr-2" />
-                  <span className="font-bold text-xl text-[#2B2D42]">EligeTuHosting</span>
+                  <Logo variant="option-a" className="h-8 w-auto mr-2" />
                 </Link>
                 
                 <NavLink 

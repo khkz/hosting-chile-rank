@@ -3,193 +3,178 @@ import React from 'react';
 
 interface LogoProps {
   className?: string;
-  variant?: 'full' | 'icon' | 'favicon';
+  variant?: 'full' | 'icon' | 'favicon' | 'option-a' | 'option-b';
 }
 
-const Logo: React.FC<LogoProps> = ({ className = "", variant = 'full' }) => {
-  const baseSize = variant === 'favicon' ? 32 : variant === 'icon' ? 40 : 200;
+const Logo: React.FC<LogoProps> = ({ className = "", variant = 'option-a' }) => {
+  // Opción A: Checkmark integrado
+  if (variant === 'option-a' || variant === 'full') {
+    return (
+      <svg
+        className={className}
+        width="200"
+        height="40"
+        viewBox="0 0 200 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#2B2D42" />
+            <stop offset="100%" stopColor="#1a1c2e" />
+          </linearGradient>
+          
+          <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4CAF50" />
+            <stop offset="100%" stopColor="#388E3C" />
+          </linearGradient>
+        </defs>
+        
+        {/* Texto principal */}
+        <text 
+          x="5" 
+          y="28" 
+          fill="url(#textGrad)" 
+          fontSize="20" 
+          fontWeight="700" 
+          fontFamily="Montserrat, sans-serif"
+          letterSpacing="0.5px"
+        >
+          EligeTuHosting
+        </text>
+        
+        {/* Checkmark sutil integrado en la "i" */}
+        <circle cx="97" cy="12" r="6" fill="url(#checkGrad)" opacity="0.9" />
+        <path
+          d="M94 12 L96 14 L100 10"
+          stroke="white"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+        
+        {/* Punto original de la "i" oculto, reemplazado por checkmark */}
+      </svg>
+    );
+  }
   
+  // Opción B: Shield minimalista
+  if (variant === 'option-b') {
+    return (
+      <svg
+        className={className}
+        width="200"
+        height="40"
+        viewBox="0 0 200 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="textGradB" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#2B2D42" />
+            <stop offset="100%" stopColor="#1a1c2e" />
+          </linearGradient>
+          
+          <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#1976D2" />
+            <stop offset="100%" stopColor="#1565C0" />
+          </linearGradient>
+        </defs>
+        
+        {/* Shield minimalista integrado en la "E" */}
+        <path
+          d="M8 8 L8 32 L20 32 L20 27 L13 27 L13 22 L19 22 L19 18 L13 18 L13 13 L20 13 L20 8 Z"
+          fill="url(#textGradB)"
+        />
+        
+        {/* Shield sutil en la esquina superior de la E */}
+        <path
+          d="M6 6 Q6 4 8 4 Q10 4 10 6 L10 10 Q8 12 6 10 Z"
+          fill="url(#shieldGrad)"
+          opacity="0.8"
+        />
+        
+        {/* Resto del texto */}
+        <text 
+          x="25" 
+          y="28" 
+          fill="url(#textGradB)" 
+          fontSize="20" 
+          fontWeight="700" 
+          fontFamily="Montserrat, sans-serif"
+          letterSpacing="0.5px"
+        >
+          ligeTuHosting
+        </text>
+      </svg>
+    );
+  }
+  
+  // Versión para favicon
+  if (variant === 'favicon') {
+    return (
+      <svg
+        className={className}
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="32" height="32" rx="6" fill="#2B2D42"/>
+        <rect x="8" y="8" width="16" height="3" rx="1" fill="white"/>
+        <rect x="8" y="14" width="12" height="3" rx="1" fill="white"/>
+        <rect x="8" y="20" width="16" height="3" rx="1" fill="white"/>
+        <rect x="8" y="8" width="3" height="15" rx="1" fill="white"/>
+        <circle cx="26" cy="10" r="3" fill="#4CAF50"/>
+        <path d="M24.5 10 L25.5 11 L27.5 9" stroke="white" strokeWidth="1" strokeLinecap="round" fill="none"/>
+      </svg>
+    );
+  }
+  
+  // Versión solo icono
+  if (variant === 'icon') {
+    return (
+      <svg
+        className={className}
+        width="40"
+        height="40"
+        viewBox="0 0 40 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="40" height="40" rx="8" fill="#2B2D42"/>
+        <rect x="10" y="10" width="20" height="4" rx="2" fill="white"/>
+        <rect x="10" y="18" width="15" height="4" rx="2" fill="white"/>
+        <rect x="10" y="26" width="20" height="4" rx="2" fill="white"/>
+        <rect x="10" y="10" width="4" height="20" rx="2" fill="white"/>
+        <circle cx="32" cy="12" r="4" fill="#4CAF50"/>
+        <path d="M30 12 L31.5 13.5 L34 11" stroke="white" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+      </svg>
+    );
+  }
+  
+  // Default fallback
   return (
     <svg
       className={className}
-      width={baseSize}
-      height={baseSize}
-      viewBox="0 0 200 200"
+      width="200"
+      height="40"
+      viewBox="0 0 200 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <defs>
-        {/* Warm and friendly gradients */}
-        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FF6B6B" />
-          <stop offset="30%" stopColor="#FF8E53" />
-          <stop offset="70%" stopColor="#FF6B6B" />
-          <stop offset="100%" stopColor="#FF5722" />
-        </linearGradient>
-        
-        <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FFB74D" />
-          <stop offset="50%" stopColor="#FFA726" />
-          <stop offset="100%" stopColor="#FF9800" />
-        </linearGradient>
-        
-        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#81C784" />
-          <stop offset="50%" stopColor="#66BB6A" />
-          <stop offset="100%" stopColor="#4CAF50" />
-        </linearGradient>
-        
-        <linearGradient id="faceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FFF9C4" />
-          <stop offset="100%" stopColor="#FFEB3B" />
-        </linearGradient>
-        
-        {/* Soft glow effect */}
-        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge> 
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-        
-        {/* Soft shadow */}
-        <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="3" stdDeviation="6" floodColor="#000" floodOpacity="0.15"/>
-        </filter>
-      </defs>
-      
-      {/* Friendly circular background */}
-      <circle 
-        cx="100" 
-        cy="100" 
-        r="90" 
-        fill="url(#bgGrad)" 
-        filter="url(#softShadow)"
-      />
-      
-      {/* Inner glow circle */}
-      <circle 
-        cx="100" 
-        cy="100" 
-        r="75" 
-        fill="rgba(255,255,255,0.15)" 
-        stroke="rgba(255,255,255,0.3)" 
-        strokeWidth="1"
-      />
-      
-      {/* Main content container */}
-      <g transform="translate(100, 100)">
-        {/* Smiley face circle background */}
-        <circle 
-          cx="-35" 
-          cy="-10" 
-          r="25" 
-          fill="url(#faceGrad)" 
-          stroke="url(#accentGrad)" 
-          strokeWidth="2"
-          filter="url(#glow)"
-        />
-        
-        {/* Left eye (normal) */}
-        <circle cx="-43" cy="-18" r="3" fill="#333" />
-        
-        {/* Right eye (wink) - curved line */}
-        <path
-          d="M-30 -18 Q-27 -21 -24 -18"
-          stroke="#333"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          fill="none"
-        />
-        
-        {/* Smile */}
-        <path
-          d="M-45 -5 Q-35 5 -25 -5"
-          stroke="#333"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          fill="none"
-        />
-        
-        {/* Small blush on cheeks */}
-        <ellipse cx="-47" cy="-8" rx="3" ry="2" fill="#FF8A80" opacity="0.6" />
-        <ellipse cx="-23" cy="-8" rx="3" ry="2" fill="#FF8A80" opacity="0.6" />
-        
-        {/* Modern "E" letter */}
-        <path
-          d="M-5 -35 L-5 35 L35 35 L35 25 L5 25 L5 5 L30 5 L30 -5 L5 -5 L5 -25 L35 -25 L35 -35 Z"
-          fill="url(#primaryGrad)"
-          filter="url(#glow)"
-        />
-        
-        {/* Friendly accent dots */}
-        <circle cx="40" cy="-25" r="4" fill="url(#accentGrad)" opacity="0.9" />
-        <circle cx="40" cy="0" r="3" fill="url(#accentGrad)" opacity="0.7" />
-        <circle cx="40" cy="25" r="4" fill="url(#accentGrad)" opacity="0.9" />
-        
-        {/* Connection elements */}
-        <path d="M35 -25 Q37 -25 40 -25" stroke="url(#accentGrad)" strokeWidth="2" opacity="0.6" />
-        <path d="M35 0 Q37 0 40 0" stroke="url(#accentGrad)" strokeWidth="2" opacity="0.6" />
-        <path d="M35 25 Q37 25 40 25" stroke="url(#accentGrad)" strokeWidth="2" opacity="0.6" />
-        
-        {/* For full variant, add text */}
-        {variant === 'full' && (
-          <g>
-            <text 
-              x="0" 
-              y="55" 
-              textAnchor="middle" 
-              fill="url(#primaryGrad)" 
-              fontSize="14" 
-              fontWeight="700" 
-              fontFamily="Montserrat, sans-serif"
-              letterSpacing="1px"
-            >
-              ELIGE TU HOSTING
-            </text>
-          </g>
-        )}
-        
-        {/* Simplified version for favicon */}
-        {variant === 'favicon' && (
-          <>
-            {/* Simple smiley */}
-            <circle cx="-35" cy="-10" r="15" fill="#FFEB3B" />
-            <circle cx="-40" cy="-15" r="2" fill="#333" />
-            <path d="M-33 -15 Q-30 -18 -27 -15" stroke="#333" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-            <path d="M-42 -5 Q-35 0 -28 -5" stroke="#333" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-            
-            {/* Simple E */}
-            <rect x="-5" y="-15" width="20" height="4" rx="1" fill="white" />
-            <rect x="-5" y="-2" width="15" height="4" rx="1" fill="white" />
-            <rect x="-5" y="11" width="20" height="4" rx="1" fill="white" />
-            <rect x="-5" y="-15" width="4" height="30" rx="1" fill="white" />
-          </>
-        )}
-      </g>
-      
-      {/* Outer friendly glow ring */}
-      <circle 
-        cx="100" 
-        cy="100" 
-        r="90" 
-        fill="none" 
-        stroke="url(#accentGrad)" 
-        strokeWidth="2" 
-        opacity="0.4"
-      />
-      
-      {/* Inner highlight for depth */}
-      <circle 
-        cx="100" 
-        cy="100" 
-        r="80" 
-        fill="none" 
-        stroke="rgba(255,255,255,0.5)" 
-        strokeWidth="1" 
-        opacity="0.7"
-      />
+      <text 
+        x="5" 
+        y="28" 
+        fill="#2B2D42" 
+        fontSize="20" 
+        fontWeight="700" 
+        fontFamily="Montserrat, sans-serif"
+      >
+        EligeTuHosting
+      </text>
     </svg>
   );
 };
