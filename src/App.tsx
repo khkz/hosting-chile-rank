@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import Index from './pages/Index';
 import Ranking from './pages/Ranking';
 import Comparativa from './pages/Comparativa';
@@ -20,6 +20,7 @@ import MejorHostingChile2025 from './pages/MejorHostingChile2025';
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Toaster />
       <Routes>
         <Route path="/" element={<Index />} />
