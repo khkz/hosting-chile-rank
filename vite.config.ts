@@ -36,6 +36,16 @@ export default defineConfig(({ mode }) => ({
     },
   },
   // Configure server to serve XML files with correct MIME type
+  configureServer(server) {
+    server.middlewares.use((req, res, next) => {
+      if (req.url && req.url.endsWith('.xml')) {
+        res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+      }
+      next();
+    });
+  },
+  // Configure preview server for production builds
   preview: {
     headers: {
       'Cache-Control': 'no-cache',
