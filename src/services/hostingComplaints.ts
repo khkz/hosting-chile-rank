@@ -52,7 +52,7 @@ const complaintData: Record<string, ComplaintInfo> = {
   "AS263702": {
     count: 4,
     level: 'low',
-    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=grupo%20zgh",
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=zgh",
     description: "Reclamos relacionados con servicios de hosting y conectividad",
     recommendation: "Evaluar alternativas de hosting con mejor soporte al cliente"
   }
