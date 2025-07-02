@@ -18,6 +18,7 @@ import CatalogoDetalle from './pages/CatalogoDetalle';
 import Benchmark from './pages/Benchmark';
 import MejorHostingChile2025 from './pages/MejorHostingChile2025';
 import Sitemap from './pages/Sitemap';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/comparativa" element={<Comparativa />} />
         <Route path="/cotiza-hosting" element={<CotizaHosting />} />
         <Route path="/whois/:slug" element={<WhoisDomain />} />
+        <Route path="/whois/:slug/" element={<WhoisDomain />} />
         <Route path="/ultimos-dominios" element={<UltimosDominios />} />
         <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
         <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />
@@ -40,6 +42,7 @@ function App() {
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
         <Route path="/sitemap" element={<Sitemap />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
