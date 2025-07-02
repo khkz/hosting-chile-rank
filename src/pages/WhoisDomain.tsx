@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Check, RefreshCw, Globe, AlertTriangle, CloudOff } from 'lucide-react';
+import { Check, RefreshCw, Globe, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet';
@@ -12,7 +12,7 @@ import RecentSearches from '@/components/RecentSearches';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import WhoisTabs from '@/components/WhoisTabs';
-import { analyzeDomain, loadCachedAnalysis, type DomainAnalysisResult } from '@/services/domainAnalysis';
+import { useWhoisSSR, detectSSRData } from '@/hooks/useWhoisSSR';
 import { hasValidIP } from '@/lib/utils';
 
 // Function to capitalize the first letter of a string
@@ -22,154 +22,84 @@ const capitalizeFirstLetter = (string: string): string => {
 
 const WhoisDomain = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [domainData, setDomainData] = useState<DomainAnalysisResult | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [refreshing, setRefreshing] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
   const [previewError, setPreviewError] = useState(false);
-  const [usingLiveData, setUsingLiveData] = useState(false);
-  const [debugInfo, setDebugInfo] = useState<string>('');
   const { toast } = useToast();
 
   // Format domain name from slug
   const domainName = slug ? slug.replace(/-/g, '.') : '';
   const capitalizedDomainName = capitalizeFirstLetter(domainName);
 
-  // Generate structured data for Schema.org
-  const generateSchemaData = () => {
-    if (!domainData) return null;
-    const schemaData = {
-      "@context": "https://schema.org",
-      "@type": "TechArticle",
-      "headline": `${capitalizedDomainName} - Análisis completo de dominio`,
-      "description": `Análisis técnico completo de ${domainName}: DNS, WHOIS, SSL, rendimiento, tecnología y más información para optimizar tu presencia en línea.`,
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `https://eligetuhosting.cl/whois/${slug}/`
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "eligetuhosting.cl"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "eligetuhosting.cl",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://eligetuhosting.cl/logo.png"
-        }
-      },
-      "datePublished": new Date().toISOString(),
-      "dateModified": new Date().toISOString(),
-      "about": {
-        "@type": "WebSite",
-        "name": domainName,
-        "url": `https://${domainName}`
-      },
-      "technicalSpecifications": {
-        "ip": domainData.basic.ip,
-        "nameservers": domainData.basic.nameservers.join(", "),
-        "provider": domainData.basic.provider,
-        "location": domainData.basic.ip_chile ? "Chile" : "Internacional",
-        "ssl": domainData.ssl.ssl_enabled ? "Habilitado" : "Deshabilitado"
-      }
-    };
-    return JSON.stringify(schemaData);
-  };
+  // Use the new SSR hook instead of the old domain analysis
+  const { data: whoisData, isLoading, error, refetch, isFetching } = useWhoisSSR(domainName);
 
-  // Enhanced analysis function with comprehensive debugging
-  const performAnalysis = async (domain: string, forceRefresh = false) => {
-    console.log(`🎯 PERFORMING ANALYSIS: ${domain} (forceRefresh: ${forceRefresh})`);
-    setRefreshing(forceRefresh);
-    setPreviewLoaded(false);
-    setPreviewError(false);
-    setDebugInfo('Iniciando análisis...');
-    
-    try {
-      let analysisResult: DomainAnalysisResult | null = null;
-
-      // Try to load cached data first unless forcing refresh
-      if (!forceRefresh) {
-        console.log('🔍 Checking for cached data...');
-        setDebugInfo('Verificando datos en caché...');
-        analysisResult = await loadCachedAnalysis(domain);
-        if (analysisResult) {
-          console.log('✅ Using cached analysis data');
-          setDebugInfo('Usando datos en caché');
-          setDomainData(analysisResult);
-          setUsingLiveData(false);
-          setIsLoading(false);
-          
-          // Show cache info to user
-          toast({
-            title: "Datos cargados desde caché",
-            description: "Usando datos almacenados previamente. Usa 'Actualizar análisis' para obtener datos frescos.",
-            variant: "default"
-          });
-          return;
-        } else {
-          console.log('❌ No valid cached data found');
-          setDebugInfo('No se encontraron datos en caché válidos');
-        }
-      } else {
-        setDebugInfo('Forzando análisis en vivo...');
-      }
-
-      // Perform live analysis
-      console.log('🔄 Performing live domain analysis');
-      setDebugInfo('Realizando análisis en vivo...');
-      analysisResult = await analyzeDomain(domain);
-      
-      console.log('📊 Live analysis completed:', {
-        domain: analysisResult.basic.domain,
-        whois_registrar: analysisResult.whois.registrar,
-        whois_created: analysisResult.whois.created_date,
-        whois_owner: analysisResult.whois.owner_name,
-        has_real_data: analysisResult.whois.created_date !== 'No disponible'
-      });
-      
-      setDomainData(analysisResult);
-      setUsingLiveData(true);
-      setDebugInfo('Análisis completado exitosamente');
-
-      // Enhanced success message based on data quality
-      const hasRealWhoisData = analysisResult.whois.created_date !== 'No disponible' && 
-                               analysisResult.whois.owner_name !== 'No disponible' &&
-                               analysisResult.whois.owner_name.indexOf('Información privada') === -1;
-
-      toast({
-        title: hasRealWhoisData ? "Análisis completado con datos reales" : "Análisis completado",
-        description: hasRealWhoisData 
-          ? "Se obtuvieron datos WHOIS reales del dominio." 
-          : "Se completó el análisis pero algunos datos WHOIS no están disponibles públicamente.",
-        variant: "default"
-      });
-
-    } catch (error) {
-      console.error('💥 Error performing domain analysis:', error);
-      setError('No se pudo completar el análisis del dominio');
-      setDebugInfo(`Error: ${error instanceof Error ? error.message : 'Error desconocido'}`);
-      toast({
-        title: "Error en el análisis",
-        description: "No se pudo obtener información completa para este dominio.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-      setRefreshing(false);
-    }
-  };
-
+  // Detect SSR data on initial load
+  const [ssrData, setSSRData] = useState<any>(null);
+  
   useEffect(() => {
-    if (!slug) {
-      setError('No se encontró información para este dominio');
-      setIsLoading(false);
-      return;
+    const detectedSSR = detectSSRData();
+    if (detectedSSR) {
+      setSSRData(detectedSSR);
+      console.log('🎯 SSR data detected and will be used for hydration');
     }
+  }, []);
 
-    performAnalysis(domainName);
-  }, [slug, domainName]);
+  // Convert WHOIS data to the expected domain analysis format for compatibility
+  const domainData = whoisData ? {
+    basic: {
+      domain: domainName,
+      ip: '–',
+      ip_chile: false,
+      provider: 'Desconocido',
+      asn: 'No disponible',
+      nameservers: []
+    },
+    dns: {
+      a_records: [],
+      aaaa_records: [],
+      mx_records: [],
+      txt_records: [],
+      cname_records: [],
+      ns_records: []
+    },
+    whois: {
+      registrar: whoisData.registrar,
+      created_date: whoisData.created_date,
+      expires_date: whoisData.expires_date,
+      status: whoisData.status,
+      owner_name: whoisData.owner_name,
+      organization: whoisData.organization,
+      email: 'Información privada',
+      dnssec_status: whoisData.dnssec_status
+    },
+    ssl: {
+      ssl_enabled: false,
+      ssl_issuer: 'Desconocido',
+      ssl_expires_date: '',
+      ssl_grade: 'Desconocido',
+      https_redirect: false,
+      security_headers: {}
+    },
+    performance: {
+      load_time_ms: 0,
+      page_size_kb: 0,
+      pagespeed_score: 0,
+      first_contentful_paint_ms: 0,
+      largest_contentful_paint_ms: 0,
+      cumulative_layout_shift: 0
+    },
+    tech_stack: {
+      server_software: 'Desconocido',
+      cms_detected: 'Desconocido',
+      framework_detected: 'Desconocido',
+      cdn_provider: 'Ninguno',
+      analytics_tools: [],
+      programming_language: 'Desconocido',
+      database_type: 'Desconocido',
+      hosting_provider: 'Desconocido',
+      country_location: 'Desconocido'
+    }
+  } : null;
 
   // Add page-specific SEO metadata
   React.useEffect(() => {
@@ -200,8 +130,13 @@ const WhoisDomain = () => {
 
   const handleRefresh = () => {
     if (domainName) {
-      console.log('🔄 Manual refresh triggered');
-      performAnalysis(domainName, true);
+      console.log('🔄 Manual refresh triggered for SSR data');
+      refetch();
+      toast({
+        title: "Actualizando datos",
+        description: "Obteniendo información fresca del dominio...",
+        variant: "default"
+      });
     }
   };
 
@@ -223,7 +158,6 @@ const WhoisDomain = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://eligetuhosting.cl/whois/${slug}/`} />
         <link rel="canonical" href={`https://eligetuhosting.cl/whois/${slug}/`} />
-        {domainData && <script type="application/ld+json">{generateSchemaData()}</script>}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`} />
         <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
@@ -234,10 +168,9 @@ const WhoisDomain = () => {
       <Navbar />
       
       <main className="container mx-auto px-4 py-12">
-        {/* Breadcrumbs */}
         {!isLoading && !error && domainData && <SEOBreadcrumbs items={breadcrumbItems} />}
         
-        {isLoading ? (
+        {isLoading && !ssrData ? (
           <div className="space-y-4">
             <Skeleton className="h-10 w-3/4" />
             <Skeleton className="h-6 w-1/2" />
@@ -247,17 +180,11 @@ const WhoisDomain = () => {
               </div>
               <Skeleton className="h-60 w-full" />
             </div>
-            {/* Debug info during loading */}
-            {debugInfo && (
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-700">Estado: {debugInfo}</p>
-              </div>
-            )}
           </div>
         ) : error ? (
           <div className="text-center py-12">
             <h1 className="text-2xl font-bold text-red-600 mb-2">Error</h1>
-            <p>{error}</p>
+            <p>No se pudo obtener información del dominio</p>
             <p className="mt-4">
               Puedes buscar información sobre este dominio utilizando nuestro buscador en la{' '}
               <Link to="/" className="text-blue-600 underline">
@@ -275,46 +202,28 @@ const WhoisDomain = () => {
               <Button 
                 onClick={handleRefresh} 
                 variant="outline" 
-                disabled={refreshing} 
+                disabled={isFetching} 
                 className="flex items-center gap-2"
               >
-                <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-                {refreshing ? 'Analizando...' : 'Actualizar análisis'}
+                <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
+                {isFetching ? 'Actualizando...' : 'Actualizar análisis'}
               </Button>
             </div>
             
-            {/* Enhanced status indicators */}
-            {usingLiveData && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-sm text-green-800">
+            {/* SSR indicator */}
+            {ssrData && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
                   <Check className="inline-block h-4 w-4 mr-1 mb-1" />
-                  Análisis en vivo completado. Esta información fue obtenida en tiempo real.
+                  Página cargada con renderizado server-side para mejor SEO.
                 </p>
-                {domainData.whois.created_date !== 'No disponible' && (
-                  <p className="text-xs text-green-700 mt-1">
-                    ✓ Datos WHOIS reales obtenidos desde NIC Chile
-                  </p>
-                )}
               </div>
-            )}
-            
-            {/* New warning for non-Chilean IPs - Fixed condition */}
-            {hasValidIP(domainData.basic.ip) && !domainData.basic.ip_chile && (
-              <Alert variant="destructive" className="mb-6 bg-red-50 border-red-200">
-                <AlertTriangle className="h-5 w-5 text-red-600" />
-                <AlertTitle className="text-red-700">Alojamiento fuera de Chile</AlertTitle>
-                <AlertDescription className="text-red-700">
-                  Este sitio web tiene una IP extranjera, lo que puede representar riesgos para la soberanía de 
-                  datos chilenos, afectar velocidad de carga en Chile y podría estar sujeto a leyes de privacidad 
-                  diferentes. Se recomienda alojar contenido chileno en servidores locales.
-                </AlertDescription>
-              </Alert>
             )}
             
             <div className="grid lg:grid-cols-3 gap-8 mt-8">
               {/* Main analysis tabs */}
               <div className="lg:col-span-2">
-                <WhoisTabs data={domainData} isLoading={refreshing} />
+                <WhoisTabs data={domainData} isLoading={isFetching} />
               </div>
               
               {/* Sidebar with preview and recommendations */}
@@ -372,17 +281,6 @@ const WhoisDomain = () => {
                 <RecentSearches />
               </div>
             </div>
-            
-            {/* Debug info panel (only show in development or when there are issues) */}
-            {process.env.NODE_ENV === 'development' && debugInfo && (
-              <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                <h4 className="font-medium text-gray-800 mb-2">Debug Info</h4>
-                <p className="text-sm text-gray-600">{debugInfo}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Usando datos: {usingLiveData ? 'En vivo' : 'Caché'}
-                </p>
-              </div>
-            )}
             
             {/* Recommendation section */}
             <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
