@@ -86,12 +86,25 @@ const Sitemap = () => {
   </url>
 </urlset>`;
 
-    // Instead of modifying document properties, we'll render the XML as text
-    document.body.innerHTML = `<pre style="font-family: monospace; white-space: pre-wrap;">${sitemapContent}</pre>`;
+    // Clear the body and set the sitemap content as plain text
+    document.body.innerHTML = '';
+    document.body.style.fontFamily = 'monospace';
+    document.body.style.whiteSpace = 'pre';
+    document.body.style.padding = '20px';
+    document.body.style.backgroundColor = '#f8f9fa';
+    document.body.textContent = sitemapContent;
+
+    // Try to set content type if possible (this may not work in all browsers)
+    try {
+      document.contentType = 'application/xml';
+    } catch (e) {
+      // Fallback - content type setting failed, but text display should still work
+      console.log('Could not set content type, displaying as text');
+    }
   }, []);
 
   return (
-    <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', padding: '20px' }}>
+    <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', padding: '20px', backgroundColor: '#f8f9fa' }}>
       Loading sitemap...
     </div>
   );
