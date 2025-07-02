@@ -2,5 +2,5 @@
 {
   "version": 1,
   "include": ["/whois", "/whois/*"],
-  "exclude": ["/sitemap.xml"]
+  "exclude": ["/sitemap.xml", "/robots.txt", "/feed/*"]
 }
