@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
+import WhoisRedirect from './components/WhoisRedirect';
 import Index from './pages/Index';
 import Ranking from './pages/Ranking';
 import Comparativa from './pages/Comparativa';
@@ -32,6 +33,9 @@ function App() {
         <Route path="/cotiza-hosting" element={<CotizaHosting />} />
         <Route path="/domain/:slug" element={<WhoisDomain />} />
         <Route path="/domain/:slug/" element={<WhoisDomain />} />
+        {/* Rutas de redirección para compatibilidad con URLs antiguas */}
+        <Route path="/whois/:slug" element={<WhoisRedirect />} />
+        <Route path="/whois/:slug/" element={<WhoisRedirect />} />
         <Route path="/ultimos-dominios" element={<UltimosDominios />} />
         <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
         <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />
