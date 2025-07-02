@@ -34,7 +34,7 @@ const DomainAnalysisSearch = () => {
     setError(null);
     // Convert domain to slug format for URL (replace dots with hyphens)
     const domainSlug = trimmedDomain.replace(/\./g, '-');
-    navigate(`/whois/${domainSlug}/`);
+    navigate(`/domain/${domainSlug}/`);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

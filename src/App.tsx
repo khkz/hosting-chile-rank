@@ -30,8 +30,8 @@ function App() {
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/comparativa" element={<Comparativa />} />
         <Route path="/cotiza-hosting" element={<CotizaHosting />} />
-        <Route path="/whois/:slug" element={<WhoisDomain />} />
-        <Route path="/whois/:slug/" element={<WhoisDomain />} />
+        <Route path="/domain/:slug" element={<WhoisDomain />} />
+        <Route path="/domain/:slug/" element={<WhoisDomain />} />
         <Route path="/ultimos-dominios" element={<UltimosDominios />} />
         <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
         <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />

@@ -1,3 +1,4 @@
+
 // scripts/generate-rss.mjs
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -27,7 +28,7 @@ if (!existsSync(feedDir)) mkdirSync(feedDir, { recursive: true });
 const rssItems = items.slice(0, 20).map(({ d, date }) => `
   <item>
     <title>${d}</title>
-    <link>https://eligetuhosting.cl/whois/${d}</link>
+    <link>https://eligetuhosting.cl/domain/${d.replace(/\./g, '-')}/</link>
     <description>Nuevo dominio registrado el ${new Date(date).toLocaleDateString('es-CL')}</description>
     <pubDate>${new Date(date).toUTCString()}</pubDate>
     <guid>${d}</guid>

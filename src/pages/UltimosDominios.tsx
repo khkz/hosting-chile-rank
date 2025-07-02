@@ -384,7 +384,7 @@ const UltimosDominios = () => {
                             <Globe className="h-4 w-4 text-blue-600" />
                             <span>{domain.d}</span>
                             <div className="flex ml-auto space-x-2">
-                              <Link to={`/whois/${domain.d.replace(/\./g, '-')}/`} className="text-blue-600 hover:text-blue-800" title="Analizar dominio">
+                              <Link to={`/domain/${domain.d.replace(/\./g, '-')}/`} className="text-blue-600 hover:text-blue-800" title="Analizar dominio">
                                 <Search className="h-4 w-4" />
                               </Link>
                             </div>
