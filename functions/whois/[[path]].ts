@@ -271,17 +271,29 @@ const generateWhoisHTML = (domain: string, whoisData: WhoisData): string => {
 export default {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
-    const pathParts = url.pathname.split('/');
+    const pathname = url.pathname;
+    
+    console.log(`🚀 CF Pages Edge Function called for: ${pathname}`);
     
     // Extract domain from path: /whois/ejemplo.cl -> ejemplo.cl
+    const pathParts = pathname.split('/');
     if (pathParts.length < 3 || pathParts[1] !== 'whois') {
+      console.log('❌ Invalid path structure:', pathname);
       return new Response('Not Found', { status: 404 });
     }
     
-    const domain = pathParts[2];
+    let domain = pathParts[2];
+    
+    // Handle domain format (replace dashes with dots if needed)
+    if (domain.includes('-') && !domain.includes('.')) {
+      domain = domain.replace(/-/g, '.');
+    }
+    
+    console.log(`🔍 Processing domain: ${domain}`);
     
     // Validate domain format
     if (!isDomainValid(domain)) {
+      console.log('❌ Invalid domain format:', domain);
       const html = generateWhoisHTML(domain, {
         registrar: 'Dominio inválido',
         created_date: 'No disponible',

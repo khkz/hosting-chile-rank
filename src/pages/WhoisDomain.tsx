@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -26,8 +27,11 @@ const WhoisDomain = () => {
   const [previewError, setPreviewError] = useState(false);
   const { toast } = useToast();
 
-  // Format domain name from slug
-  const domainName = slug ? slug.replace(/-/g, '.') : '';
+  // Format domain name from slug - handle both formats
+  const domainName = slug ? (
+    slug.includes('.') ? slug : slug.replace(/-/g, '.')
+  ) : '';
+  
   const capitalizedDomainName = capitalizeFirstLetter(domainName);
 
   // Use the new SSR hook instead of the old domain analysis
