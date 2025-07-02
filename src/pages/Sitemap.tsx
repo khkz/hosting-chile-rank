@@ -93,14 +93,6 @@ const Sitemap = () => {
     document.body.style.padding = '20px';
     document.body.style.backgroundColor = '#f8f9fa';
     document.body.textContent = sitemapContent;
-
-    // Try to set content type if possible (this may not work in all browsers)
-    try {
-      document.contentType = 'application/xml';
-    } catch (e) {
-      // Fallback - content type setting failed, but text display should still work
-      console.log('Could not set content type, displaying as text');
-    }
   }, []);
 
   return (
