@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
@@ -16,6 +17,7 @@ import Resena from './pages/Resena';
 import CatalogoDetalle from './pages/CatalogoDetalle';
 import Benchmark from './pages/Benchmark';
 import MejorHostingChile2025 from './pages/MejorHostingChile2025';
+import Sitemap from './pages/Sitemap';
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
+        <Route path="/sitemap" element={<Sitemap />} />
       </Routes>
     </Router>
   );
