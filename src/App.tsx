@@ -8,6 +8,7 @@ import { navItems } from "./nav-items";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Sitemap from "./pages/Sitemap";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,8 @@ const App = () => (
             <Route key={to} path={to} element={page} />
           ))}
           <Route path="/sitemap" element={<Sitemap />} />
+          {/* Catch-all route for 404 errors */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
