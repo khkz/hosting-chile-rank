@@ -19,7 +19,6 @@ import CatalogoDetalle from './pages/CatalogoDetalle';
 import Benchmark from './pages/Benchmark';
 import MejorHostingChile2025 from './pages/MejorHostingChile2025';
 import Sitemap from './pages/Sitemap';
-import SitemapXML from './pages/SitemapXML';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -47,7 +46,6 @@ function App() {
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
         <Route path="/sitemap" element={<Sitemap />} />
-        <Route path="/sitemap.xml" element={<SitemapXML />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
