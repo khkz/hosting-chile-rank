@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 const Sitemap = () => {
   useEffect(() => {
-    // Redirect to serve the sitemap XML content
+    // Set proper content type header for XML
     const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -85,13 +85,16 @@ const Sitemap = () => {
     <priority>0.6</priority>
   </url>
 </urlset>`;
-    
-    // Set the response headers and content
-    document.documentElement.innerHTML = sitemapContent;
-    document.contentType = 'application/xml';
+
+    // Instead of modifying document properties, we'll render the XML as text
+    document.body.innerHTML = `<pre style="font-family: monospace; white-space: pre-wrap;">${sitemapContent}</pre>`;
   }, []);
 
-  return null;
+  return (
+    <div style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap', padding: '20px' }}>
+      Loading sitemap...
+    </div>
+  );
 };
 
 export default Sitemap;
