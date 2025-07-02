@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import type { ViteDevServer } from "vite";
+import type { IncomingMessage, ServerResponse } from "http";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -40,8 +42,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   // Add middleware to handle XML files properly
-  configureServer: (server) => {
-    server.middlewares.use('/sitemap.xml', (req, res, next) => {
+  configureServer: (server: ViteDevServer) => {
+    server.middlewares.use('/sitemap.xml', (req: IncomingMessage, res: ServerResponse, next: () => void) => {
       res.setHeader('Content-Type', 'application/xml; charset=utf-8');
       next();
     });
