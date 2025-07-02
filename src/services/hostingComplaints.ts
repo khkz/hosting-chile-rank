@@ -46,6 +46,15 @@ const complaintData: Record<string, ComplaintInfo> = {
     count: 5,
     level: 'low',
     reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=planetahosting.cl"
+  },
+  
+  // GRUPO ZGH SPA - AS263702
+  "AS263702": {
+    count: 4,
+    level: 'low',
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=grupo%20zgh",
+    description: "Reclamos relacionados con servicios de hosting y conectividad",
+    recommendation: "Evaluar alternativas de hosting con mejor soporte al cliente"
   }
 };
 
@@ -93,7 +102,8 @@ export const detectProviderFromASN = (asn: string, ispName: string): string | nu
     'AS266855': 'EcoHosting', 
     'AS19871': 'HostGator',
     'AS265839': 'Hosting.cl',
-    'AS52368': 'PlanetaHosting'
+    'AS52368': 'PlanetaHosting',
+    'AS263702': 'GRUPO ZGH SPA'
   };
   
   // Check ASN first
@@ -108,6 +118,7 @@ export const detectProviderFromASN = (asn: string, ispName: string): string | nu
   if (lowerIspName.includes('hostgator')) return 'HostGator';
   if (lowerIspName.includes('hosting.cl')) return 'Hosting.cl';
   if (lowerIspName.includes('planetahosting')) return 'PlanetaHosting';
+  if (lowerIspName.includes('grupo zgh') || lowerIspName.includes('zgh spa')) return 'GRUPO ZGH SPA';
   
   return null;
 };

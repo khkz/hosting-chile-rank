@@ -77,15 +77,15 @@ export const lookupASN = async (ip: string): Promise<ASNInfo> => {
     const knownChileanISPs = [
       { range: '201.148.104', asn: 'AS265839', isp: 'HOSTING.CL' },
       { range: '186.64.115', asn: 'AS52368', isp: 'ZAM LTDA (SolucionHost)' },
-      { range: '200.27', asn: 'AS266879', isp: 'HostingPlus' }, // Updated ASN
+      { range: '200.27', asn: 'AS266879', isp: 'HostingPlus' },
       { range: '190.98', asn: 'AS22047', isp: 'VTR Banda Ancha' },
       { range: '200.54', asn: 'AS7418', isp: 'ENTEL Chile' },
       { range: '186.67', asn: 'AS28001', isp: 'Telmex Chile' },
       { range: '191.98', asn: 'AS27678', isp: 'NetUno' },
-      { range: '138.117', asn: 'AS263702', isp: 'Universidad de Chile' },
+      { range: '138.117', asn: 'AS263702', isp: 'GRUPO ZGH SPA' },
       { range: '146.83', asn: 'AS263237', isp: 'Red Universitaria Nacional' },
       { range: '152.172', asn: 'AS52468', isp: 'GTD Internet' },
-      { range: '109.72.119', asn: 'AS263702', isp: 'V2 Networks' }
+      { range: '109.72.119', asn: 'AS263702', isp: 'GRUPO ZGH SPA' }
     ];
 
     for (const provider of knownChileanISPs) {
