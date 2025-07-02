@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -160,8 +159,8 @@ const WhoisDomain = () => {
         <meta property="og:title" content={`${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`} />
         <meta property="og:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://eligetuhosting.cl/whois/${slug}/`} />
-        <link rel="canonical" href={`https://eligetuhosting.cl/whois/${slug}/`} />
+        <meta property="og:url" content={`https://eligetuhosting.cl/domain/${slug}/`} />
+        <link rel="canonical" href={`https://eligetuhosting.cl/domain/${slug}/`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`} />
         <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />

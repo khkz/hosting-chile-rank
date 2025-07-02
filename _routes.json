@@ -1,6 +1,6 @@
 
 {
   "version": 1,
-  "include": ["/whois/*"],
-  "exclude": ["/whois/_*"]
+  "include": ["/whois"],
+  "exclude": []
 }
