@@ -7,13 +7,14 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  console.log(`🚀 Sitemap.xml Edge Function called for: ${req.url}`);
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Read the sitemap.xml file from the public directory
     const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
@@ -165,146 +166,79 @@ serve(async (req) => {
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/canepaclick-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/consultoraverde-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/dialogouniversitario-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/amirahtech-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/salazargeo-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/centrolongevidad-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/christiansalazar-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/notporras-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/axiocon-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/abejorro-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/fotografiademascotas-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/medikalsalud-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/mkcoach-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/akusuperfoods-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/mifuegolento-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/tuordenturitmo-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/buenostiempos-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/abby-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://eligetuhosting.cl/domain/panoramas-chile-cl/</loc>
+    <loc>https://eligetuhosting.cl/domain/interlogics-cl/</loc>
     <lastmod>2025-07-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
-  <url>
-    <loc>https://eligetuhosting.cl/domain/hmfchile-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/polarbear-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/farmaciamiramar-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/casaflorencia-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/legacompliance-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/kossi-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/invierteoro-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/climain-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/gonzocorona-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://eligetuhosting.cl/domain/antagency-cl/</loc>
-    <lastmod>2025-07-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
 </urlset>`;
 
+    console.log(`✅ Serving sitemap.xml with ${sitemapContent.split('<url>').length - 1} URLs`);
+    
     return new Response(sitemapContent, {
       headers: {
         ...corsHeaders,
@@ -313,7 +247,7 @@ serve(async (req) => {
       },
     });
   } catch (error) {
-    console.error('Error serving sitemap:', error);
+    console.error('❌ Error serving sitemap:', error);
     return new Response('Error serving sitemap', { 
       status: 500,
       headers: corsHeaders 
