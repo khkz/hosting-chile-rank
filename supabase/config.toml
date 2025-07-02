@@ -41,6 +41,3 @@ enable_confirmations = false
 
 [functions.whois-lookup]
 verify_jwt = false
-
-[functions.sitemap]
-verify_jwt = false
