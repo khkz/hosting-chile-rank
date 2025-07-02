@@ -48,7 +48,7 @@ const complaintData: Record<string, ComplaintInfo> = {
     reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=planetahosting.cl"
   },
   
-  // GRUPO ZGH SPA - AS263702
+  // GRUPO ZGH SPA - AS263702 - Updated URL to use "zgh" instead of "grupo%20zgh"
   "AS263702": {
     count: 4,
     level: 'low',
