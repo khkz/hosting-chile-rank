@@ -65,7 +65,7 @@ const RecentSearches = () => {
           {domains.map((domain, index) => (
             <Link 
               key={index} 
-              to={`/domain/${domain.replace(/\./g, '-')}/`} 
+              to={`/whois/${domain.replace(/\./g, '-')}/`} 
               className="text-sm px-3 py-1 bg-[#EDF2F4] hover:bg-gray-200 rounded-full text-[#2B2D42] transition-colors flex items-center"
             >
               <Search className="h-4 w-4 mr-1 text-gray-500" />

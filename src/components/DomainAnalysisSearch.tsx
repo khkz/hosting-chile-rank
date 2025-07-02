@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -33,7 +34,7 @@ const DomainAnalysisSearch = () => {
     setError(null);
     // Convert domain to slug format for URL (replace dots with hyphens)
     const domainSlug = trimmedDomain.replace(/\./g, '-');
-    navigate(`/domain/${domainSlug}/`);
+    navigate(`/whois/${domainSlug}/`);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

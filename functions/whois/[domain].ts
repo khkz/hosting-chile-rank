@@ -116,7 +116,7 @@ const generateWhoisHTML = (domain: string, whoisData: WhoisData): string => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": `Análisis WHOIS de ${domain}`,
-    "url": `https://eligetuhosting.cl/whois?domain=${domain}`,
+    "url": `https://eligetuhosting.cl/whois/${domain}`,
     "description": description,
     "mainEntity": {
       "@type": "TechArticle",
@@ -158,13 +158,13 @@ const generateWhoisHTML = (domain: string, whoisData: WhoisData): string => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
   <meta name="description" content="${description}">
-  <link rel="canonical" href="https://eligetuhosting.cl/whois?domain=${domain}">
+  <link rel="canonical" href="https://eligetuhosting.cl/whois/${domain}">
   
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
-  <meta property="og:url" content="https://eligetuhosting.cl/whois?domain=${domain}">
+  <meta property="og:url" content="https://eligetuhosting.cl/whois/${domain}">
   <meta property="og:site_name" content="eligetuhosting.cl">
   
   <!-- Twitter Cards -->
@@ -271,49 +271,17 @@ const generateWhoisHTML = (domain: string, whoisData: WhoisData): string => {
 export default {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
-    console.log(`🚀 CF Pages Edge Function called for: ${url.pathname} with search: ${url.search}`);
+    const pathParts = url.pathname.split('/');
     
-    // Handle /whois/ URLs with 301 redirects to preserve SEO
-    if (url.pathname.startsWith('/whois/')) {
-      const pathParts = url.pathname.split('/');
-      if (pathParts.length >= 3) {
-        let domain = pathParts[2];
-        
-        // Convert domain format for slug (dots to dashes)
-        const domainSlug = domain.includes('.') ? domain.replace(/\./g, '-') : domain;
-        
-        console.log(`🔄 301 Redirect: /whois/${domain} → /domain/${domainSlug}/`);
-        
-        // 301 Permanent Redirect to preserve SEO juice
-        return new Response(null, {
-          status: 301,
-          headers: {
-            'Location': `https://eligetuhosting.cl/domain/${domainSlug}/`,
-            'Cache-Control': 'public, max-age=31536000', // 1 year cache for redirects
-          },
-        });
-      }
+    // Extract domain from path: /whois/ejemplo.cl -> ejemplo.cl
+    if (pathParts.length < 3 || pathParts[1] !== 'whois') {
+      return new Response('Not Found', { status: 404 });
     }
     
-    // Extract domain from query parameter
-    let domain = url.searchParams.get('domain') || '';
-    
-    if (!domain) {
-      console.log('❌ No domain parameter provided');
-      return new Response('Domain parameter required', { status: 400 });
-    }
-    
-    console.log(`🔍 Processing domain: ${domain}`);
-    
-    // Handle both formats: domain-with-dashes and domain.with.dots
-    if (domain.includes('-') && !domain.includes('.') && domain.endsWith('-cl')) {
-      domain = domain.replace(/-/g, '.');
-      console.log(`🔄 Converted slug format to domain: ${domain}`);
-    }
+    const domain = pathParts[2];
     
     // Validate domain format
     if (!isDomainValid(domain)) {
-      console.log('❌ Invalid domain format:', domain);
       const html = generateWhoisHTML(domain, {
         registrar: 'Dominio inválido',
         created_date: 'No disponible',

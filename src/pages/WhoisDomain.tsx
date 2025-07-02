@@ -26,11 +26,8 @@ const WhoisDomain = () => {
   const [previewError, setPreviewError] = useState(false);
   const { toast } = useToast();
 
-  // Format domain name from slug - handle both formats
-  const domainName = slug ? (
-    slug.includes('.') ? slug : slug.replace(/-/g, '.')
-  ) : '';
-  
+  // Format domain name from slug
+  const domainName = slug ? slug.replace(/-/g, '.') : '';
   const capitalizedDomainName = capitalizeFirstLetter(domainName);
 
   // Use the new SSR hook instead of the old domain analysis
@@ -159,8 +156,8 @@ const WhoisDomain = () => {
         <meta property="og:title" content={`${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`} />
         <meta property="og:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://eligetuhosting.cl/domain/${slug}/`} />
-        <link rel="canonical" href={`https://eligetuhosting.cl/domain/${slug}/`} />
+        <meta property="og:url" content={`https://eligetuhosting.cl/whois/${slug}/`} />
+        <link rel="canonical" href={`https://eligetuhosting.cl/whois/${slug}/`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`} />
         <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
