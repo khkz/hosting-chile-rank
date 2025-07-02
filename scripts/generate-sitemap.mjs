@@ -37,7 +37,7 @@ const hostingReviews = [
 let raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
 const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
 const domainUrls = domainsArr
-  .slice(0, 400)                                                      // 400 más recientes
+  .slice(0, 5000)                                                     // 5000 más recientes (aprox. 10 días)
   .map(({ d }) => urlTag(`${ROOT}/domain/${d.replace(/\./g, '-')}/`, '0.6'))
   .join('');
 
