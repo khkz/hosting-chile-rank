@@ -33,12 +33,12 @@ const hostingReviews = [
 ].map(slug => urlTag(`${ROOT}/reseñas/${slug}`, '0.8'))
  .join('');
 
-/* ---------- últimos dominios (.whois/) --------------------------------- */
+/* ---------- últimos dominios (ahora con /domain/) ---------------------- */
 let raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
 const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
 const domainUrls = domainsArr
   .slice(0, 400)                                                      // 400 más recientes
-  .map(({ d }) => urlTag(`${ROOT}/whois/${d}`, '0.6'))
+  .map(({ d }) => urlTag(`${ROOT}/domain/${d.replace(/\./g, '-')}/`, '0.6'))
   .join('');
 
 /* ---------- compone el XML -------------------------------------------- */
@@ -53,4 +53,4 @@ ${domainUrls}
 /* ---------- escribe ---------------------------------------------------- */
 await fs.mkdir('public', { recursive: true });
 await fs.writeFile('public/sitemap.xml', sitemap, 'utf8');
-console.log('✅  Sitemap regenerado (static + providers + reviews + whois)');
+console.log('✅  Sitemap regenerado con URLs /domain/ (static + providers + reviews + domains)');

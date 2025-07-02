@@ -273,21 +273,30 @@ export default {
     const url = new URL(request.url);
     console.log(`🚀 CF Pages Edge Function called for: ${url.pathname} with search: ${url.search}`);
     
-    // Extract domain from query parameter or path
-    let domain = url.searchParams.get('domain') || '';
-    
-    // If no query param, try to extract from path
-    if (!domain && url.pathname.startsWith('/whois/')) {
+    // Handle /whois/ URLs with 301 redirects to preserve SEO
+    if (url.pathname.startsWith('/whois/')) {
       const pathParts = url.pathname.split('/');
       if (pathParts.length >= 3) {
-        domain = pathParts[2];
+        let domain = pathParts[2];
         
-        // Handle domain format (replace dashes with dots if needed)
-        if (domain.includes('-') && !domain.includes('.')) {
-          domain = domain.replace(/-/g, '.');
-        }
+        // Convert domain format for slug (dots to dashes)
+        const domainSlug = domain.includes('.') ? domain.replace(/\./g, '-') : domain;
+        
+        console.log(`🔄 301 Redirect: /whois/${domain} → /domain/${domainSlug}/`);
+        
+        // 301 Permanent Redirect to preserve SEO juice
+        return new Response(null, {
+          status: 301,
+          headers: {
+            'Location': `https://eligetuhosting.cl/domain/${domainSlug}/`,
+            'Cache-Control': 'public, max-age=31536000', // 1 year cache for redirects
+          },
+        });
       }
     }
+    
+    // Extract domain from query parameter
+    let domain = url.searchParams.get('domain') || '';
     
     if (!domain) {
       console.log('❌ No domain parameter provided');
@@ -295,6 +304,12 @@ export default {
     }
     
     console.log(`🔍 Processing domain: ${domain}`);
+    
+    // Handle both formats: domain-with-dashes and domain.with.dots
+    if (domain.includes('-') && !domain.includes('.') && domain.endsWith('-cl')) {
+      domain = domain.replace(/-/g, '.');
+      console.log(`🔄 Converted slug format to domain: ${domain}`);
+    }
     
     // Validate domain format
     if (!isDomainValid(domain)) {
