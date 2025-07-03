@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Check, RefreshCw, Globe, AlertTriangle, CloudOff } from 'lucide-react';
+import { Check, RefreshCw, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet';
@@ -12,6 +12,7 @@ import RecentSearches from '@/components/RecentSearches';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import WhoisTabs from '@/components/WhoisTabs';
+import SitePreview from '@/components/SitePreview';
 import { analyzeDomain, loadCachedAnalysis, type DomainAnalysisResult } from '@/services/domainAnalysis';
 import { hasValidIP } from '@/lib/utils';
 
@@ -26,8 +27,6 @@ const WhoisDomain = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [previewLoaded, setPreviewLoaded] = useState(false);
-  const [previewError, setPreviewError] = useState(false);
   const [usingLiveData, setUsingLiveData] = useState(false);
   const [debugInfo, setDebugInfo] = useState<string>('');
   const { toast } = useToast();
@@ -82,8 +81,6 @@ const WhoisDomain = () => {
   const performAnalysis = async (domain: string, forceRefresh = false) => {
     console.log(`🎯 PERFORMING ANALYSIS: ${domain} (forceRefresh: ${forceRefresh})`);
     setRefreshing(forceRefresh);
-    setPreviewLoaded(false);
-    setPreviewError(false);
     setDebugInfo('Iniciando análisis...');
     
     try {
@@ -205,14 +202,6 @@ const WhoisDomain = () => {
     }
   };
 
-  const handleImageLoad = () => {
-    setPreviewLoaded(true);
-  };
-
-  const handleImageError = () => {
-    setPreviewError(true);
-  };
-
   return (
     <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Helmet>
@@ -319,54 +308,8 @@ const WhoisDomain = () => {
               
               {/* Sidebar with preview and recommendations */}
               <div className="space-y-6">
-                {/* Website preview */}
-                <Card className="border overflow-hidden shadow-md bg-white">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Globe className="h-5 w-5 text-blue-700" />
-                      Vista previa del sitio
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="h-[200px] relative overflow-hidden bg-gray-100">
-                      {!previewLoaded && !previewError && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                          <div className="text-center">
-                            <RefreshCw className="h-8 w-8 mx-auto animate-spin text-gray-400" />
-                            <p className="mt-2 text-sm text-gray-500">Cargando vista previa...</p>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {previewError && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                          <div className="text-center">
-                            <p className="text-sm text-gray-500">No se pudo cargar la vista previa</p>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <img 
-                        src={`https://image.thum.io/get/width/400/png/${domainName}`}
-                        alt={`Vista previa de ${domainName}`} 
-                        className={`w-full h-full object-cover transition-opacity duration-300 ${previewLoaded ? 'opacity-100' : 'opacity-0'}`}
-                        onLoad={handleImageLoad}
-                        onError={handleImageError}
-                      />
-                    </div>
-                    <div className="p-3 bg-white border-t">
-                      <a 
-                        href={`https://${domainName}`} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-sm text-blue-600 hover:underline flex items-center"
-                      >
-                        <Globe className="h-3 w-3 mr-1" />
-                        Visitar sitio
-                      </a>
-                    </div>
-                  </CardContent>
-                </Card>
+                {/* Website preview with new enhanced component */}
+                <SitePreview domain={domainName} />
 
                 {/* Recent searches */}
                 <RecentSearches />
