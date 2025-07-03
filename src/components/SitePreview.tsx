@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Globe, RefreshCw, ExternalLink, AlertCircle, Wifi } from 'lucide-react';
+import { Globe, RefreshCw, ExternalLink, AlertCircle, Wifi, Image as ImageIcon } from 'lucide-react';
 import { screenshotService, type ScreenshotResult } from '@/services/screenshotService';
 
 interface SitePreviewProps {
@@ -13,63 +13,30 @@ interface SitePreviewProps {
 const SitePreview: React.FC<SitePreviewProps> = ({ domain, className = '' }) => {
   const [previewState, setPreviewState] = useState<{
     loading: boolean;
-    loaded: boolean;
-    error: boolean;
-    imageUrl?: string;
-    provider?: string;
-    isDomainAccessible?: boolean;
+    result?: ScreenshotResult;
   }>({
-    loading: true,
-    loaded: false,
-    error: false
+    loading: true
   });
 
   const [retryCount, setRetryCount] = useState(0);
 
   const loadPreview = async () => {
-    setPreviewState(prev => ({ ...prev, loading: true, error: false }));
+    setPreviewState({ loading: true });
     
     try {
-      // First check if domain is accessible
-      const isAccessible = await screenshotService.isDomainAccessible(domain);
-      
-      if (!isAccessible) {
-        setPreviewState({
-          loading: false,
-          loaded: false,
-          error: true,
-          isDomainAccessible: false
-        });
-        return;
-      }
-
-      // Try to capture screenshot
-      const result: ScreenshotResult = await screenshotService.captureScreenshot(domain);
-      
-      if (result.success && result.imageUrl) {
-        setPreviewState({
-          loading: false,
-          loaded: true,
-          error: false,
-          imageUrl: result.imageUrl,
-          provider: result.provider,
-          isDomainAccessible: true
-        });
-      } else {
-        setPreviewState({
-          loading: false,
-          loaded: false,
-          error: true,
-          isDomainAccessible: true
-        });
-      }
+      const result = await screenshotService.captureScreenshot(domain);
+      setPreviewState({
+        loading: false,
+        result
+      });
     } catch (error) {
       console.error('Preview error:', error);
       setPreviewState({
         loading: false,
-        loaded: false,
-        error: true,
-        isDomainAccessible: true
+        result: {
+          success: false,
+          error: 'Error al cargar la vista previa'
+        }
       });
     }
   };
@@ -95,58 +62,75 @@ const SitePreview: React.FC<SitePreviewProps> = ({ domain, className = '' }) => 
       );
     }
 
-    if (previewState.error) {
-      return (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-          <div className="text-center px-4">
-            {previewState.isDomainAccessible === false ? (
-              <>
-                <Wifi className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600 mb-3">
-                  El dominio no está configurado o no es accesible
-                </p>
-              </>
-            ) : (
-              <>
-                <AlertCircle className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600 mb-3">
-                  No se pudo capturar la vista previa
-                </p>
-              </>
-            )}
-            <Button 
-              onClick={handleRetry} 
-              variant="outline" 
-              size="sm"
-              className="text-xs"
-            >
-              <RefreshCw className="h-3 w-3 mr-1" />
-              Reintentar
-            </Button>
-          </div>
-        </div>
-      );
-    }
+    const { result } = previewState;
+    if (!result) return null;
 
-    if (previewState.loaded && previewState.imageUrl) {
+    if (result.success && result.imageUrl) {
       return (
         <>
           <img 
-            src={previewState.imageUrl}
+            src={result.imageUrl}
             alt={`Vista previa de ${domain}`} 
             className="w-full h-full object-cover"
-            onError={() => setPreviewState(prev => ({ ...prev, error: true, loaded: false }))}
+            onError={() => setPreviewState(prev => ({
+              ...prev,
+              result: {
+                success: false,
+                error: 'Error al cargar la imagen'
+              }
+            }))}
           />
-          {previewState.provider && (
+          {result.provider && (
             <div className="absolute bottom-1 right-1 bg-black bg-opacity-50 text-white text-xs px-1 py-0.5 rounded">
-              {previewState.provider}
+              {result.provider}
             </div>
           )}
         </>
       );
     }
 
-    return null;
+    // Fallback content
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100">
+        <div className="text-center px-4">
+          {result.fallbackData?.favicon ? (
+            <div className="mb-4">
+              <img 
+                src={result.fallbackData.favicon} 
+                alt={`Favicon de ${domain}`}
+                className="h-12 w-12 mx-auto rounded-lg shadow-sm"
+              />
+            </div>
+          ) : (
+            <div className="mb-4">
+              <div className="h-12 w-12 mx-auto bg-blue-100 rounded-lg flex items-center justify-center">
+                <Globe className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          )}
+          
+          <h3 className="font-medium text-gray-800 mb-1">{domain}</h3>
+          <p className="text-xs text-gray-600 mb-3">
+            {result.fallbackData?.description || 'Vista previa no disponible'}
+          </p>
+          
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-3">
+            <ImageIcon className="h-3 w-3" />
+            <span>Captura no disponible</span>
+          </div>
+          
+          <Button 
+            onClick={handleRetry} 
+            variant="outline" 
+            size="sm"
+            className="text-xs"
+          >
+            <RefreshCw className="h-3 w-3 mr-1" />
+            Reintentar
+          </Button>
+        </div>
+      </div>
+    );
   };
 
   return (
