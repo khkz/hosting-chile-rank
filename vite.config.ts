@@ -5,6 +5,59 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import type { ViteDevServer } from "vite";
 import type { IncomingMessage, ServerResponse } from "http";
+import { readFileSync, existsSync } from "fs";
+
+// Plugin personalizado para servir archivos estáticos
+const staticFilesPlugin = () => {
+  return {
+    name: 'static-files-plugin',
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
+        const url = req.url;
+        
+        if (!url) {
+          next();
+          return;
+        }
+
+        // Lista de archivos estáticos que deben ser servidos directamente
+        const staticFiles = [
+          '/sitemap.xml',
+          '/robots.txt',
+          '/feed/latest-domains.xml'
+        ];
+
+        // Verificar si la URL coincide con un archivo estático
+        if (staticFiles.includes(url)) {
+          try {
+            const filePath = path.join(process.cwd(), 'public', url);
+            
+            if (existsSync(filePath)) {
+              const content = readFileSync(filePath, 'utf8');
+              
+              // Configurar headers apropiados
+              if (url.endsWith('.xml')) {
+                res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+                res.setHeader('Cache-Control', 'public, max-age=3600');
+              } else if (url.endsWith('.txt')) {
+                res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+                res.setHeader('Cache-Control', 'public, max-age=86400');
+              }
+              
+              res.statusCode = 200;
+              res.end(content);
+              return;
+            }
+          } catch (error) {
+            console.error(`Error serving static file ${url}:`, error);
+          }
+        }
+        
+        next();
+      });
+    }
+  };
+};
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -14,8 +67,8 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    staticFilesPlugin(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -38,21 +91,6 @@ export default defineConfig(({ mode }) => ({
     },
     // Copy static files to build output
     copyPublicDir: true,
-  },
-  // Configure server to serve XML and TXT files with correct MIME type
-  configureServer(server: ViteDevServer) {
-    server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
-      if (req.url) {
-        if (req.url.endsWith('.xml')) {
-          res.setHeader('Content-Type', 'application/xml; charset=utf-8');
-          res.setHeader('Cache-Control', 'public, max-age=3600');
-        } else if (req.url.endsWith('.txt')) {
-          res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-          res.setHeader('Cache-Control', 'public, max-age=86400');
-        }
-      }
-      next();
-    });
   },
   // Configure preview server for production builds
   preview: {

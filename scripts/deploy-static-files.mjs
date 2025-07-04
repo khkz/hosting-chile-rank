@@ -52,3 +52,7 @@ console.log('📋 Archivos disponibles:');
 console.log('   • https://eligetuhosting.cl/sitemap.xml');
 console.log('   • https://eligetuhosting.cl/robots.txt');
 console.log('   • https://eligetuhosting.cl/feed/latest-domains.xml');
+console.log('\n🔍 Para testear localmente:');
+console.log('   • http://localhost:8080/sitemap.xml');
+console.log('   • http://localhost:8080/robots.txt');
+console.log('   • http://localhost:8080/feed/latest-domains.xml');
