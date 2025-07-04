@@ -1,34 +1,62 @@
 
 # eligetuhosting.cl robots.txt
-User-agent: *
-Allow: /
 
-# Allow all search engines to index the site
+# Configuración específica para Googlebot (optimizada para crawleo frecuente)
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0.5
+# Priorizar secciones con contenido fresco
+Allow: /ultimos-dominios/
+Allow: /domain/
+Allow: /ranking/
+
+# Otros buscadores principales
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
+
 User-agent: Slurp
 Allow: /
+Crawl-delay: 1
+
 User-agent: DuckDuckBot
 Allow: /
+Crawl-delay: 1
+
 User-agent: Baiduspider
 Allow: /
+Crawl-delay: 2
+
 User-agent: YandexBot
 Allow: /
+Crawl-delay: 1
 
-# Social media crawlers
+# Social media crawlers (sin restricciones)
 User-agent: Twitterbot
 Allow: /
+
 User-agent: facebookexternalhit
 Allow: /
 
-# Sitemap
-Sitemap: https://eligetuhosting.cl/sitemap.xml
-
-# Crawl delay to prevent server overload
+# Configuración por defecto para otros bots
+User-agent: *
+Allow: /
 Crawl-delay: 1
 
-# Domain information pages - allow all
+# Sitemap (ubicación principal)
+Sitemap: https://eligetuhosting.cl/sitemap.xml
+
+# RSS feeds para contenido fresco
+Sitemap: https://eligetuhosting.cl/feed/latest-domains.xml
+
+# Directivas adicionales para optimización
+# Permitir acceso completo a páginas de dominios
 Allow: /whois/
 Allow: /ultimos-dominios/
+Allow: /domain/
+
+# Hints para crawlers sobre contenido que cambia frecuentemente
+# (comentarios informativos para administradores)
+# - /ultimos-dominios/ se actualiza cada hora
+# - /domain/ páginas individuales tienen contenido estático una vez creadas
+# - /ranking/ se actualiza diariamente
