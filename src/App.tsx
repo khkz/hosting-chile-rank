@@ -3,6 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import WhoisRedirect from './components/WhoisRedirect';
+import StaticSitemap from './components/StaticSitemap';
+import StaticRobots from './components/StaticRobots';
+import StaticRSSFeed from './components/StaticRSSFeed';
 import Index from './pages/Index';
 import Ranking from './pages/Ranking';
 import Comparativa from './pages/Comparativa';
@@ -27,6 +30,11 @@ function App() {
       <ScrollToTop />
       <Toaster />
       <Routes>
+        {/* Rutas para archivos estáticos */}
+        <Route path="/sitemap.xml" element={<StaticSitemap />} />
+        <Route path="/robots.txt" element={<StaticRobots />} />
+        <Route path="/feed/latest-domains.xml" element={<StaticRSSFeed />} />
+        
         {/* Rutas normales de la aplicación */}
         <Route path="/" element={<Index />} />
         <Route path="/ranking" element={<Ranking />} />
