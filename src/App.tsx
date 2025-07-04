@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import WhoisRedirect from './components/WhoisRedirect';
+import StaticFileHandler from './components/StaticFileHandler';
 import Index from './pages/Index';
 import Ranking from './pages/Ranking';
 import Comparativa from './pages/Comparativa';
@@ -21,21 +22,40 @@ import MejorHostingChile2025 from './pages/MejorHostingChile2025';
 import Sitemap from './pages/Sitemap';
 import NotFound from './pages/NotFound';
 
+// Componente para manejar archivos estáticos específicos
+const StaticFileRedirect = ({ file }: { file: string }) => {
+  React.useEffect(() => {
+    // Redirigir inmediatamente al archivo estático
+    window.location.replace(file);
+  }, [file]);
+  
+  return <div>Redirecting to {file}...</div>;
+};
+
 function App() {
   return (
     <Router>
       <ScrollToTop />
+      <StaticFileHandler />
       <Toaster />
       <Routes>
+        {/* Rutas para archivos estáticos - estas deben ir primero */}
+        <Route path="/sitemap.xml" element={<StaticFileRedirect file="/sitemap.xml" />} />
+        <Route path="/robots.txt" element={<StaticFileRedirect file="/robots.txt" />} />
+        <Route path="/feed/latest-domains.xml" element={<StaticFileRedirect file="/feed/latest-domains.xml" />} />
+        
+        {/* Rutas normales de la aplicación */}
         <Route path="/" element={<Index />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/comparativa" element={<Comparativa />} />
         <Route path="/cotiza-hosting" element={<CotizaHosting />} />
         <Route path="/domain/:slug" element={<WhoisDomain />} />
         <Route path="/domain/:slug/" element={<WhoisDomain />} />
+        
         {/* Rutas de redirección para compatibilidad con URLs antiguas */}
         <Route path="/whois/:slug" element={<WhoisRedirect />} />
         <Route path="/whois/:slug/" element={<WhoisRedirect />} />
+        
         <Route path="/ultimos-dominios" element={<UltimosDominios />} />
         <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
         <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />

@@ -1,0 +1,10 @@
+
+{
+  "scripts": {
+    "generate-sitemap": "node scripts/generate-sitemap.mjs",
+    "generate-rss": "node scripts/generate-rss.mjs", 
+    "notify-search-engines": "node scripts/notify-search-engines.mjs",
+    "deploy-static": "node scripts/deploy-static-files.mjs",
+    "seo-deploy": "npm run generate-sitemap && npm run notify-search-engines"
+  }
+}
