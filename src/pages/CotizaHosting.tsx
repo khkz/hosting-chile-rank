@@ -26,7 +26,7 @@ const PUBLIC_KEY = "9wS_UPfV9q3-ZJeBZ";
 const formSchema = z.object({
   nombre: z.string().min(2, { message: "El nombre debe tener al menos 2 caracteres" }),
   email: z.string().email({ message: "Email inválido" }),
-  telefono: z.string().optional(),
+  telefono: z.string().min(1, { message: "El teléfono es obligatorio" }),
   tipoProyecto: z.enum(["sitio_personal", "sitio_empresa", "tienda_online", "aplicacion", "otro"], {
     required_error: "Selecciona el tipo de proyecto",
   }),
@@ -177,7 +177,7 @@ const CotizaHosting = () => {
                       name="telefono"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Teléfono (opcional)</FormLabel>
+                          <FormLabel>Teléfono</FormLabel>
                           <FormControl>
                             <Input placeholder="+56 9 1234 5678" {...field} />
                           </FormControl>
