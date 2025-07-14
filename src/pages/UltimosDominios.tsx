@@ -243,7 +243,7 @@ const UltimosDominios = () => {
   }];
 
   // Prepare breadcrumbs for this page
-  const breadcrumbItems = [{ label: 'Últimos Dominios' }];
+  const breadcrumbItems: { name: string; href: string }[] = [];
   return <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
       <Helmet>
         <title>Últimos dominios registrados en NIC.cl — eligetuhosting.cl</title>
@@ -265,7 +265,7 @@ const UltimosDominios = () => {
       
       <main className="container mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <SEOBreadcrumbs items={breadcrumbItems} />
+        <SEOBreadcrumbs items={breadcrumbItems} pageName="Últimos Dominios" />
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>

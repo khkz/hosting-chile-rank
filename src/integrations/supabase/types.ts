@@ -108,11 +108,119 @@ export type Database = {
           {
             foreignKeyName: "dns_info_domain_id_fkey"
             columns: ["domain_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "domains"
             referencedColumns: ["id"]
           },
         ]
+      }
+      domain_analysis: {
+        Row: {
+          analyzed_at: string
+          business_type: string | null
+          created_at: string
+          domain_id: string
+          estimated_value: number | null
+          id: string
+          is_active: boolean | null
+          screenshot_url: string | null
+          seo_score: number | null
+          technology_detected: string[] | null
+          traffic_estimate: number | null
+          updated_at: string
+        }
+        Insert: {
+          analyzed_at?: string
+          business_type?: string | null
+          created_at?: string
+          domain_id: string
+          estimated_value?: number | null
+          id?: string
+          is_active?: boolean | null
+          screenshot_url?: string | null
+          seo_score?: number | null
+          technology_detected?: string[] | null
+          traffic_estimate?: number | null
+          updated_at?: string
+        }
+        Update: {
+          analyzed_at?: string
+          business_type?: string | null
+          created_at?: string
+          domain_id?: string
+          estimated_value?: number | null
+          id?: string
+          is_active?: boolean | null
+          screenshot_url?: string | null
+          seo_score?: number | null
+          technology_detected?: string[] | null
+          traffic_estimate?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      domain_categories: {
+        Row: {
+          category: string
+          confidence_score: number | null
+          created_at: string
+          detected_at: string
+          domain_id: string
+          id: string
+          keywords: string[] | null
+          subcategory: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          confidence_score?: number | null
+          created_at?: string
+          detected_at?: string
+          domain_id: string
+          id?: string
+          keywords?: string[] | null
+          subcategory?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          confidence_score?: number | null
+          created_at?: string
+          detected_at?: string
+          domain_id?: string
+          id?: string
+          keywords?: string[] | null
+          subcategory?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      domain_trends: {
+        Row: {
+          count: number | null
+          created_at: string
+          id: string
+          keyword: string
+          trend_date: string
+          updated_at: string
+        }
+        Insert: {
+          count?: number | null
+          created_at?: string
+          id?: string
+          keyword: string
+          trend_date?: string
+          updated_at?: string
+        }
+        Update: {
+          count?: number | null
+          created_at?: string
+          id?: string
+          keyword?: string
+          trend_date?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       domains: {
         Row: {
@@ -191,7 +299,7 @@ export type Database = {
           {
             foreignKeyName: "performance_metrics_domain_id_fkey"
             columns: ["domain_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "domains"
             referencedColumns: ["id"]
           },
@@ -262,7 +370,7 @@ export type Database = {
           {
             foreignKeyName: "ssl_info_domain_id_fkey"
             columns: ["domain_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "domains"
             referencedColumns: ["id"]
           },
@@ -318,7 +426,7 @@ export type Database = {
           {
             foreignKeyName: "tech_stack_domain_id_fkey"
             columns: ["domain_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "domains"
             referencedColumns: ["id"]
           },
@@ -389,7 +497,7 @@ export type Database = {
           {
             foreignKeyName: "whois_info_domain_id_fkey"
             columns: ["domain_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "domains"
             referencedColumns: ["id"]
           },

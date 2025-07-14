@@ -187,11 +187,8 @@ const WhoisDomain = () => {
   // Prepare breadcrumbs for this page
   const breadcrumbItems = [
     {
-      label: 'Dominios',
+      name: 'Dominios',
       href: '/ultimos-dominios/'
-    },
-    {
-      label: capitalizedDomainName
     }
   ];
 
@@ -224,7 +221,7 @@ const WhoisDomain = () => {
       
       <main className="container mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        {!isLoading && !error && domainData && <SEOBreadcrumbs items={breadcrumbItems} />}
+        {!isLoading && !error && domainData && <SEOBreadcrumbs items={breadcrumbItems} pageName={capitalizedDomainName} />}
         
         {isLoading ? (
           <div className="space-y-4">
