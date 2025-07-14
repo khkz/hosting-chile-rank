@@ -235,7 +235,7 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                       complaintInfo.level === 'low' ? 'text-blue-800' :
                       'text-green-800'
                     }`}>
-                      {complaintInfo.level === 'none' ? 'Proveedor Confiable' : 'Alerta de Reclamos'}
+                      {complaintInfo.level === 'none' ? 'Proveedor Confiable' : 'Reclamos del Proveedor de Hosting'}
                     </h4>
                     <p className={`text-sm mt-1 ${
                       complaintInfo.level === 'critical' || complaintInfo.level === 'high' ? 'text-red-700' :
