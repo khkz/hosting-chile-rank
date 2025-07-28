@@ -174,7 +174,7 @@ const GuiaElegirVPS = () => {
                     Sus servidores están optimizados para proyectos chilenos con datacenters en Santiago.
                   </p>
                   <a 
-                    href="https://www.hostingplus.cl/vps" 
+                    href="https://www.hostingplus.cl/servidores-vps.htm" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
@@ -185,16 +185,16 @@ const GuiaElegirVPS = () => {
                 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <img src="/logo-cloudhosting.svg" alt="CloudHosting" className="h-10" loading="lazy" />
-                    <h3 className="text-xl font-semibold">CloudHosting VPS</h3>
+                    <img src="/logo-ecohosting.svg" alt="EcoHosting" className="h-10" loading="lazy" />
+                    <h3 className="text-xl font-semibold">EcoHosting VPS</h3>
                     <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded">Mejor rendimiento</span>
                   </div>
                   <p className="mb-3">
-                    VPS de alto rendimiento con tecnología de nube, ideal para aplicaciones exigentes o
+                    VPS de alto rendimiento con tecnología eficiente, ideal para aplicaciones exigentes o
                     proyectos que requieren alta disponibilidad y escalabilidad inmediata.
                   </p>
                   <a 
-                    href="https://www.cloudhosting.cl/" 
+                    href="https://ecohosting.cl/servidores-dedicados-chile/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
