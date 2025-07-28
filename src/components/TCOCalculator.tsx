@@ -30,12 +30,12 @@ const TCOCalculator = () => {
   });
 
   const extraCosts = {
-    ssl: 2990,
-    backup: 1990,
-    security: 3990,
-    domain: 1290,
-    siteBuilder: 1990,
-    email: 2490
+    ssl: 990,    // SSL premium anual -> ~990 CLP/mes
+    backup: 1490, // Backups automáticos premium -> ~1490 CLP/mes  
+    security: 2490, // Seguridad avanzada (firewall premium) -> ~2490 CLP/mes
+    domain: 1190, // Dominio .cl -> ~1190 CLP/mes (promedio anual)
+    siteBuilder: 990, // Constructor de sitios premium -> ~990 CLP/mes
+    email: 1790  // Email profesional con más almacenamiento -> ~1790 CLP/mes
   };
 
   const providers = Object.values(hostingCompanies);
