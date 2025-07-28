@@ -194,7 +194,7 @@ const GuiaElegirVPS = () => {
                     proyectos que requieren alta disponibilidad y escalabilidad inmediata.
                   </p>
                   <a 
-                    href="https://ecohosting.cl/servidores-dedicados-chile/" 
+                    href="https://ecohosting.cl/cloud-hosting-vps/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
