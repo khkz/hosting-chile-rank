@@ -196,7 +196,7 @@ const GuiaElegirServidorDedicado = () => {
                     Ofrecen tanto servidores administrados como no administrados con excelente conectividad en Chile.
                   </p>
                   <a 
-                    href="https://www.hostingplus.cl/servidores-dedicados" 
+                    href="https://www.hostingplus.cl/servidores-housing-dedicados.htm" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
