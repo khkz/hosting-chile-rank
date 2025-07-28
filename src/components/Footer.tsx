@@ -45,6 +45,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li><Link to="/ranking" className="text-gray-300 hover:text-[#EF233C] transition-colors">Ranking de Hosting</Link></li>
               <li><Link to="/cotiza-hosting" className="text-gray-300 hover:text-[#EF233C] transition-colors">Cotización Gratuita</Link></li>
+              <li><Link to="/calculadora-tco" className="text-gray-300 hover:text-[#EF233C] transition-colors">Calculadora de TCO</Link></li>
               <li><Link to="/comparativa" className="text-gray-300 hover:text-[#EF233C] transition-colors">Comparativas</Link></li>
               <li><Link to="/guia-elegir-hosting" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guías de Compra</Link></li>
               <li><Link to="/benchmark" className="text-gray-300 hover:text-[#EF233C] transition-colors">Benchmarks</Link></li>
