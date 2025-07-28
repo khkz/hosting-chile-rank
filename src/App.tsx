@@ -23,6 +23,7 @@ import Benchmark from './pages/Benchmark';
 import MejorHostingChile2025 from './pages/MejorHostingChile2025';
 import Sitemap from './pages/Sitemap';
 import NotFound from './pages/NotFound';
+import TCOCalculatorPage from './pages/TCOCalculatorPage';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
+        <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
