@@ -197,7 +197,7 @@ const GuiaElegirSSL = () => {
                     Sus planes de hosting incluyen SSL Let's Encrypt gratuito y automatizado.
                   </p>
                   <a 
-                    href="https://www.hostingplus.cl/ssl" 
+                    href="https://www.hostingplus.cl/blog/servicio/certificados-ssl-ip-fija/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
