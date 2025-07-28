@@ -15,6 +15,11 @@ interface TCOResult {
   year5: number;
   savings: number;
   bestAlternative: string;
+  alternativeExplanation: string;
+  alternatives: Array<{name: string, score: number, price: number, explanation: string}>;
+  monthlyTotal: number;
+  baseCost: number;
+  extrasTotal: number;
 }
 
 const TCOCalculator = () => {
@@ -57,28 +62,62 @@ const TCOCalculator = () => {
     const year3 = monthlyTotal * 36;
     const year5 = monthlyTotal * 60;
     
-    // Find best value alternative (not just cheapest)
+    // Find best value alternative with improved algorithm
+    const currentPlan = providers.find(p => p.id === selectedProvider)?.plans.find(p => p.name === selectedPlan);
+    const currentPrice = currentPlan?.price || 0;
+    const currentHasUnlimited = currentPlan?.bandwidth === "Ilimitado";
+    
     let bestAlternative = '';
     let bestValue = 0;
     let bestPrice = Infinity;
+    let alternativeExplanation = '';
+    const alternatives: Array<{name: string, score: number, price: number, explanation: string}> = [];
     
     providers.forEach(provider => {
       provider.plans.forEach(plan => {
         if (provider.id !== selectedProvider) {
-          // Calculate value score: rating/10 * storage weight + price competitiveness
-          const storageGB = parseInt(plan.storage.replace(/[^0-9]/g, '')) || 10;
-          const valueScore = (provider.rating / 10) * 0.4 + 
-                           (storageGB / 100) * 0.3 + 
-                           (10000 / plan.price) * 0.3; // Inverse price weight
+          // Quality filters
+          if (provider.rating < 8.5) return;
           
-          if (valueScore > bestValue || (valueScore === bestValue && plan.price < bestPrice)) {
+          // Price range filter (within 50% of current price)
+          const priceRatio = plan.price / currentPrice;
+          if (priceRatio > 1.5 || priceRatio < 0.5) return;
+          
+          // Bandwidth compatibility
+          if (currentHasUnlimited && plan.bandwidth !== "Ilimitado") return;
+          
+          // Calculate enhanced value score
+          const storageGB = parseInt(plan.storage.replace(/[^0-9]/g, '')) || 10;
+          const ratingScore = (provider.rating / 10) * 0.5; // 50% weight
+          const storageScore = Math.min(storageGB / 100, 1) * 0.3; // 30% weight, capped at 1
+          const priceScore = (currentPrice / plan.price) * 0.2; // 20% weight (better price = higher score)
+          
+          // Bonus for premium providers
+          const providerBonus = (provider.id === 'hostingplus' || provider.id === 'ecohosting') ? 0.1 : 0;
+          
+          const valueScore = ratingScore + storageScore + priceScore + providerBonus;
+          
+          const explanation = `Rating: ${provider.rating}/10 (${(ratingScore*10).toFixed(1)}pts) + Storage: ${plan.storage} (${(storageScore*10).toFixed(1)}pts) + Precio: $${plan.price.toLocaleString()} (${(priceScore*10).toFixed(1)}pts)${providerBonus > 0 ? ' + Proveedor Premium (+1.0pts)' : ''}`;
+          
+          alternatives.push({
+            name: `${provider.name} - ${plan.name}`,
+            score: valueScore,
+            price: plan.price,
+            explanation
+          });
+          
+          if (valueScore > bestValue || (Math.abs(valueScore - bestValue) < 0.01 && plan.price < bestPrice)) {
             bestValue = valueScore;
             bestPrice = plan.price;
             bestAlternative = `${provider.name} - ${plan.name}`;
+            alternativeExplanation = explanation;
           }
         }
       });
     });
+    
+    // Sort alternatives by score
+    alternatives.sort((a, b) => b.score - a.score);
     
     const savings = year5 - (bestPrice * 60);
     
@@ -88,6 +127,8 @@ const TCOCalculator = () => {
       year5,
       savings,
       bestAlternative,
+      alternativeExplanation,
+      alternatives: alternatives.slice(0, 3), // Top 3 alternatives
       monthlyTotal,
       baseCost,
       extrasTotal: monthlyCosts
@@ -299,16 +340,40 @@ const TCOCalculator = () => {
                   <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">
                     Análisis de Ahorro
                   </h3>
-                  <div className="text-sm text-green-800 dark:text-green-200">
-                    <div>Mejor alternativa: {tcoResults.bestAlternative}</div>
-                    <div className="font-medium mt-1">
+                  <div className="text-sm text-green-800 dark:text-green-200 space-y-2">
+                    <div>Mejor alternativa: <span className="font-medium">{tcoResults.bestAlternative}</span></div>
+                    <div className="font-medium">
                       {tcoResults.savings > 0 
                         ? `Podrías ahorrar $${Math.abs(tcoResults.savings).toLocaleString()} en 5 años`
                         : `Costo adicional de $${Math.abs(tcoResults.savings).toLocaleString()} vs la opción más económica`
                       }
                     </div>
+                    {tcoResults.alternativeExplanation && (
+                      <div className="text-xs opacity-80 mt-2 p-2 bg-white/50 dark:bg-black/20 rounded">
+                        <strong>¿Por qué esta alternativa?</strong><br />
+                        {tcoResults.alternativeExplanation}
+                      </div>
+                    )}
                   </div>
                 </div>
+
+                {/* Top Alternatives */}
+                {tcoResults.alternatives && tcoResults.alternatives.length > 0 && (
+                  <div className="space-y-3">
+                    <h3 className="font-semibold">Mejores Alternativas (Top 3)</h3>
+                    {tcoResults.alternatives.map((alt, index) => (
+                      <div key={alt.name} className="p-3 border rounded-lg">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-medium">#{index + 1} {alt.name}</span>
+                          <Badge variant="outline">${alt.price.toLocaleString()}/mes</Badge>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Score: {alt.score.toFixed(2)} - {alt.explanation}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 <Button onClick={exportResults} className="w-full" variant="outline">
                   <Download className="h-4 w-4 mr-2" />
