@@ -207,41 +207,21 @@ const GuiaElegirServidorDedicado = () => {
                 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <img src="/logo-hostgator.svg" alt="HostGator" className="h-10" loading="lazy" />
-                    <h3 className="text-xl font-semibold">HostGator Enterprise</h3>
-                    <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded">Alto rendimiento</span>
+                    <img src="/logo-ecohosting.svg" alt="EcoHosting" className="h-10" loading="lazy" />
+                    <h3 className="text-xl font-semibold">EcoHosting Servidores</h3>
+                    <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">Eco-friendly</span>
                   </div>
                   <p className="mb-3">
-                    Servidores dedicados de gama alta con hardware premium, ideal para aplicaciones
-                    empresariales que requieren máximo rendimiento y disponibilidad.
+                    Servidores dedicados con enfoque en sustentabilidad y eficiencia energética.
+                    Excelente opción para empresas comprometidas con el medio ambiente.
                   </p>
                   <a 
-                    href="https://www.hostgator.cl/" 
+                    href="https://ecohosting.cl/servidores-dedicados-chile/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
                   >
-                    Ver servidores <span className="ml-1">→</span>
-                  </a>
-                </div>
-                
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <div className="flex items-center gap-3 mb-3">
-                    <img src="/logo-fullhosting.svg" alt="FullHosting" className="h-10" loading="lazy" />
-                    <h3 className="text-xl font-semibold">FullHosting Dedicados</h3>
-                    <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">Mejor precio</span>
-                  </div>
-                  <p className="mb-3">
-                    Una opción equilibrada con buena relación calidad-precio para empresas medianas
-                    y proyectos que necesitan un servidor dedicado sin un presupuesto elevado.
-                  </p>
-                  <a 
-                    href="https://www.fullhosting.cl/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
-                  >
-                    Ver planes <span className="ml-1">→</span>
+                    Ver servidores dedicados <span className="ml-1">→</span>
                   </a>
                 </div>
               </div>
