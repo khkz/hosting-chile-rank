@@ -57,15 +57,25 @@ const TCOCalculator = () => {
     const year3 = monthlyTotal * 36;
     const year5 = monthlyTotal * 60;
     
-    // Find best alternative for comparison
+    // Find best value alternative (not just cheapest)
     let bestAlternative = '';
+    let bestValue = 0;
     let bestPrice = Infinity;
     
     providers.forEach(provider => {
       provider.plans.forEach(plan => {
-        if (provider.id !== selectedProvider && plan.price < bestPrice) {
-          bestPrice = plan.price;
-          bestAlternative = `${provider.name} - ${plan.name}`;
+        if (provider.id !== selectedProvider) {
+          // Calculate value score: rating/10 * storage weight + price competitiveness
+          const storageGB = parseInt(plan.storage.replace(/[^0-9]/g, '')) || 10;
+          const valueScore = (provider.rating / 10) * 0.4 + 
+                           (storageGB / 100) * 0.3 + 
+                           (10000 / plan.price) * 0.3; // Inverse price weight
+          
+          if (valueScore > bestValue || (valueScore === bestValue && plan.price < bestPrice)) {
+            bestValue = valueScore;
+            bestPrice = plan.price;
+            bestAlternative = `${provider.name} - ${plan.name}`;
+          }
         }
       });
     });
