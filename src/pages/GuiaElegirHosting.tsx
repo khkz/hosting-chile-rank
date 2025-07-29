@@ -173,10 +173,12 @@ const GuiaElegirHosting = () => {
               <h2 className="text-2xl font-bold mb-6">2. Los 6 factores que SÍ importan (y los 3 que te van a estafar)</h2>
               
               <div className="bg-red-50 p-4 rounded-lg mb-6 border-l-4 border-red-400">
-                <h3 className="font-semibold text-red-800 mb-2">⚠️ Alerta de estafa común en Chile</h3>
+                <h3 className="font-semibold text-red-800 mb-2">⚠️ Cuidado con los hosting amateur en Chile</h3>
                 <p className="text-red-700 text-sm">
-                  Si te ofrecen "espacio ilimitado" por menos de $3.000 pesos, es mentira. 
-                  He visto clientes que perdieron sus sitios por caer en estas ofertas. No existe el almuerzo gratis.
+                  Muchos hosting en Chile son servidores amateur sin respaldo técnico real. Antes de contratar, 
+                  revisa <strong>reclamos.cl</strong> para ver denuncias reales. Asegúrate de que tengan número fijo, 
+                  dirección física donde dirigirse y soporte técnico 24/7. Si solo tienen WhatsApp o email, 
+                  huye. Cuando tu sitio se caiga a las 3 AM, vas a agradecer haber elegido profesionales.
                 </p>
               </div>
               
