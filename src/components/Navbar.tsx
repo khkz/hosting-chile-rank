@@ -103,7 +103,7 @@ const Navbar = () => {
             <DropdownMenuTrigger asChild>
               <button 
                 className={`${navLinkClasses} px-3 py-2 flex items-center gap-1 ${
-                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl', '/guia-elegir-cdn', '/mejor-hosting-chile-2025'].includes(location.pathname) 
+                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl', '/guia-elegir-cdn', '/mejor-hosting-chile-2025', '/guia-migrar-hosting', '/guia-seguridad-web', '/guia-hosting-wordpress'].includes(location.pathname) 
                     ? activeNavLinkClasses 
                     : ''
                 }`}
@@ -161,6 +161,30 @@ const Navbar = () => {
                   className={`w-full px-2 py-2 ${isActive('/guia-elegir-cdn') ? 'text-[#EF233C]' : ''}`}
                 >
                   Cómo elegir CDN
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link 
+                  to="/guia-migrar-hosting" 
+                  className={`w-full px-2 py-2 ${isActive('/guia-migrar-hosting') ? 'text-[#EF233C]' : ''}`}
+                >
+                  Migrar Hosting Seguro
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link 
+                  to="/guia-seguridad-web" 
+                  className={`w-full px-2 py-2 ${isActive('/guia-seguridad-web') ? 'text-[#EF233C]' : ''}`}
+                >
+                  Seguridad Web
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link 
+                  to="/guia-hosting-wordpress" 
+                  className={`w-full px-2 py-2 ${isActive('/guia-hosting-wordpress') ? 'text-[#EF233C]' : ''}`}
+                >
+                  Hosting WordPress
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -304,6 +328,36 @@ const Navbar = () => {
                     >
                       <FileText className="h-5 w-5 mr-2" />
                       Cómo elegir CDN
+                    </NavLink>
+                    
+                    <NavLink 
+                      to="/guia-migrar-hosting" 
+                      className={({ isActive }) => 
+                        `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                      }
+                    >
+                      <FileText className="h-5 w-5 mr-2" />
+                      Migrar Hosting Seguro
+                    </NavLink>
+                    
+                    <NavLink 
+                      to="/guia-seguridad-web" 
+                      className={({ isActive }) => 
+                        `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                      }
+                    >
+                      <FileText className="h-5 w-5 mr-2" />
+                      Seguridad Web
+                    </NavLink>
+                    
+                    <NavLink 
+                      to="/guia-hosting-wordpress" 
+                      className={({ isActive }) => 
+                        `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                      }
+                    >
+                      <FileText className="h-5 w-5 mr-2" />
+                      Hosting WordPress
                     </NavLink>
                   </div>
                 </div>
