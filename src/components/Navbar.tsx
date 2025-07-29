@@ -103,7 +103,7 @@ const Navbar = () => {
             <DropdownMenuTrigger asChild>
               <button 
                 className={`${navLinkClasses} px-3 py-2 flex items-center gap-1 ${
-                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl', '/mejor-hosting-chile-2025'].includes(location.pathname) 
+                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl', '/guia-elegir-cdn', '/mejor-hosting-chile-2025'].includes(location.pathname) 
                     ? activeNavLinkClasses 
                     : ''
                 }`}
@@ -153,6 +153,14 @@ const Navbar = () => {
                   className={`w-full px-2 py-2 ${isActive('/guia-elegir-ssl') ? 'text-[#EF233C]' : ''}`}
                 >
                   Cómo elegir SSL
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link 
+                  to="/guia-elegir-cdn" 
+                  className={`w-full px-2 py-2 ${isActive('/guia-elegir-cdn') ? 'text-[#EF233C]' : ''}`}
+                >
+                  Cómo elegir CDN
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -286,6 +294,16 @@ const Navbar = () => {
                     >
                       <FileText className="h-5 w-5 mr-2" />
                       Cómo elegir SSL
+                    </NavLink>
+                    
+                    <NavLink 
+                      to="/guia-elegir-cdn" 
+                      className={({ isActive }) => 
+                        `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                      }
+                    >
+                      <FileText className="h-5 w-5 mr-2" />
+                      Cómo elegir CDN
                     </NavLink>
                   </div>
                 </div>
