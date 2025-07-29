@@ -19,8 +19,8 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
     },
     plans: [
       {
-        name: "Plan Starter",
-        price: 3990,
+        name: "Personal SSD",
+        price: 4158, // Precio mensual efectivo con descuento anual ($49,900/año)
         storage: "15 GB SSD",
         bandwidth: "Ilimitada",
         domains: 1,
@@ -30,12 +30,13 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
           { name: "SSL Gratis", included: true },
           { name: "Instalador WordPress", included: true },
           { name: "Firewall WAF", included: true },
-          { name: "Soporte 24/7", included: true }
+          { name: "Soporte 24/7", included: true },
+          { name: "Correos ilimitados", included: true }
         ]
       },
       {
-        name: "Plan Business",
-        price: 5990,
+        name: "Emprendedor SSD",
+        price: 5575, // Precio mensual efectivo con descuento anual ($66,900/año)
         storage: "30 GB SSD",
         bandwidth: "Ilimitada",
         domains: 5,
@@ -46,12 +47,13 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
           { name: "Instalador WordPress", included: true },
           { name: "Firewall WAF", included: true },
           { name: "Soporte 24/7", included: true },
+          { name: "Correos ilimitados", included: true },
           { name: "IP Dedicada", included: true }
         ]
       },
       {
-        name: "Plan Premium",
-        price: 9990,
+        name: "WordPress",
+        price: 6992, // Precio mensual efectivo con descuento anual ($83,900/año)
         storage: "50 GB SSD",
         bandwidth: "Ilimitada",
         domains: 10,
@@ -62,9 +64,31 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
           { name: "Instalador WordPress", included: true },
           { name: "Firewall WAF", included: true },
           { name: "Soporte 24/7", included: true },
+          { name: "Correos ilimitados", included: true },
           { name: "IP Dedicada", included: true },
           { name: "CloudLinux", included: true },
           { name: "LiteSpeed Cache", included: true }
+        ]
+      },
+      {
+        name: "E-commerce",
+        price: 11242, // Precio mensual efectivo con descuento anual ($134,900/año)
+        storage: "100 GB SSD",
+        bandwidth: "Ilimitada",
+        domains: 25,
+        features: [
+          { name: "LiteSpeed Enterprise", included: true },
+          { name: "JetBackup", included: true },
+          { name: "SSL Gratis", included: true },
+          { name: "Instalador WordPress", included: true },
+          { name: "Firewall WAF", included: true },
+          { name: "Soporte 24/7", included: true },
+          { name: "Correos ilimitados", included: true },
+          { name: "IP Dedicada", included: true },
+          { name: "CloudLinux", included: true },
+          { name: "LiteSpeed Cache", included: true },
+          { name: "WooCommerce optimizado", included: true },
+          { name: "CDN incluido", included: true }
         ]
       }
     ]
