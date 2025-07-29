@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import StickyCTA from '../components/StickyCTA';
+import FinalCTA from '../components/FinalCTA';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle, Zap, Database, Shield } from 'lucide-react';
 
@@ -209,34 +210,34 @@ const GuiaHostingWordPress = () => {
               <div className="bg-card p-6 rounded-lg border border-yellow-300">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-yellow-500 text-white px-3 py-1 rounded-full font-bold text-sm">🥇 #1</div>
-                  <h3 className="text-xl font-bold">SiteGround - WordPress Hosting</h3>
+                  <h3 className="text-xl font-bold">HostingPlus - WordPress Optimizado</h3>
                 </div>
                 <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <p className="font-bold mb-2">Por qué es #1:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• SuperCacher específico WP</li>
-                      <li>• Staging con 1 click</li>
-                      <li>• Updates automáticos seguros</li>
-                      <li>• CDN gratuito desde plan básico</li>
-                      <li>• Soporte WP especializado</li>
+                      <li>• LiteSpeed + LSCache automático</li>
+                      <li>• WordPress preoptimizado</li>
+                      <li>• SSL gratuito incluido</li>
+                      <li>• Servidores en Chile</li>
+                      <li>• Soporte técnico en español</li>
                     </ul>
                   </div>
                   <div>
                     <p className="font-bold mb-2">Mi experiencia:</p>
                     <p className="text-sm text-gray-600 mb-2">
-                      He migrado 100+ sitios a SiteGround. Promedio mejora velocidad: 60%.
-                      Su caché específico WordPress es el mejor que he probado.
+                      HostingPlus es el líder chileno en WordPress. Sus servidores locales
+                      dan velocidades increíbles desde Chile, y su soporte entiende nuestro mercado.
                     </p>
                   </div>
                   <div>
                     <p className="font-bold mb-2">Precios Chile:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• <strong>StartUp:</strong> $7.990/mes</li>
-                      <li>• <strong>GrowBig:</strong> $11.990/mes</li>
-                      <li>• <strong>GoGeek:</strong> $19.990/mes</li>
+                      <li>• <strong>Básico:</strong> $2.990/mes</li>
+                      <li>• <strong>Plus:</strong> $5.990/mes</li>
+                      <li>• <strong>Pro:</strong> $9.990/mes</li>
                     </ul>
-                    <p className="text-green-600 text-sm font-medium mt-2">⭐ Mejor relación precio/performance</p>
+                    <p className="text-green-600 text-sm font-medium mt-2">⭐ Mejor hosting local Chile</p>
                   </div>
                 </div>
               </div>
@@ -244,34 +245,34 @@ const GuiaHostingWordPress = () => {
               <div className="bg-card p-6 rounded-lg border">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-gray-400 text-white px-3 py-1 rounded-full font-bold text-sm">🥈 #2</div>
-                  <h3 className="text-xl font-bold">Webempresa - Plan WordPress</h3>
+                  <h3 className="text-xl font-bold">Ecohosting - WordPress Sustentable</h3>
                 </div>
                 <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <p className="font-bold mb-2">Fortalezas:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• Empresa 100% española</li>
-                      <li>• WPO (optimización) incluida</li>
-                      <li>• Soporte en español excelente</li>
-                      <li>• Backups automáticos diarios</li>
-                      <li>• Certificado SSL premium</li>
+                      <li>• Hosting 100% verde certificado</li>
+                      <li>• Servidores SSD en Chile</li>
+                      <li>• Soporte técnico local experto</li>
+                      <li>• Backup automático diario</li>
+                      <li>• WordPress preinstalado</li>
                     </ul>
                   </div>
                   <div>
                     <p className="font-bold mb-2">Mi experiencia:</p>
                     <p className="text-sm text-gray-600 mb-2">
-                      Soporte técnico de los mejores que he visto. 
-                      Ideal para clientes que valoran atención personalizada.
+                      Ecohosting combina performance con sustentabilidad. 
+                      Ideal para empresas con conciencia ambiental que no quieren sacrificar velocidad.
                     </p>
                   </div>
                   <div>
                     <p className="font-bold mb-2">Precios Chile:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• <strong>WordPress Uno:</strong> $12.990/mes</li>
-                      <li>• <strong>WordPress Dos:</strong> $18.990/mes</li>
-                      <li>• <strong>WordPress Tres:</strong> $24.990/mes</li>
+                      <li>• <strong>Eco Básico:</strong> $3.490/mes</li>
+                      <li>• <strong>Eco Plus:</strong> $6.990/mes</li>
+                      <li>• <strong>Eco Pro:</strong> $11.990/mes</li>
                     </ul>
-                    <p className="text-blue-600 text-sm font-medium mt-2">⭐ Mejor soporte técnico</p>
+                    <p className="text-blue-600 text-sm font-medium mt-2">⭐ Hosting más sustentable</p>
                   </div>
                 </div>
               </div>
@@ -279,34 +280,34 @@ const GuiaHostingWordPress = () => {
               <div className="bg-card p-6 rounded-lg border">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-orange-500 text-white px-3 py-1 rounded-full font-bold text-sm">🥉 #3</div>
-                  <h3 className="text-xl font-bold">Raiola Networks - WordPress</h3>
+                  <h3 className="text-xl font-bold">1Hosting - Simple y Rápido</h3>
                 </div>
                 <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <p className="font-bold mb-2">Fortalezas:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• Servidores en España</li>
-                      <li>• LiteSpeed + LSCache</li>
-                      <li>• Precio muy competitivo</li>
-                      <li>• WordPress preinstalado</li>
-                      <li>• Cloudflare gratuito</li>
+                      <li>• Interfaz súper simple</li>
+                      <li>• WordPress 1-click install</li>
+                      <li>• Precio muy accesible</li>
+                      <li>• Servidores rápidos</li>
+                      <li>• Ideal para principiantes</li>
                     </ul>
                   </div>
                   <div>
                     <p className="font-bold mb-2">Mi experiencia:</p>
                     <p className="text-sm text-gray-600 mb-2">
-                      Excelente para proyectos nuevos o sitios medianos. 
-                      Su tecnología LiteSpeed da muy buenos resultados.
+                      Perfecto para quienes empiezan con WordPress. 
+                      Panel de control intuitivo y configuración automática.
                     </p>
                   </div>
                   <div>
                     <p className="font-bold mb-2">Precios Chile:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• <strong>WordPress Uno:</strong> $8.990/mes</li>
-                      <li>• <strong>WordPress Dos:</strong> $14.990/mes</li>
-                      <li>• <strong>WordPress Tres:</strong> $22.990/mes</li>
+                      <li>• <strong>Starter:</strong> $1.990/mes</li>
+                      <li>• <strong>Business:</strong> $3.990/mes</li>
+                      <li>• <strong>Premium:</strong> $7.990/mes</li>
                     </ul>
-                    <p className="text-orange-600 text-sm font-medium mt-2">⭐ Mejor precio/calidad</p>
+                    <p className="text-orange-600 text-sm font-medium mt-2">⭐ Mejor para principiantes</p>
                   </div>
                 </div>
               </div>
@@ -315,8 +316,8 @@ const GuiaHostingWordPress = () => {
             <Alert className="mt-6">
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                <strong>Mi recomendación personal:</strong> Para 90% de casos, SiteGround StartUp es perfecto. 
-                Solo si necesitas soporte premium en español, ve con Webempresa.
+                <strong>Mi recomendación personal:</strong> Para 90% de casos WordPress en Chile, HostingPlus es la mejor opción. 
+                Servidores locales + soporte en español + precio justo = combinación perfecta.
               </AlertDescription>
             </Alert>
           </section>
@@ -670,6 +671,12 @@ const GuiaHostingWordPress = () => {
         </div>
       </div>
       
+      <FinalCTA 
+        title="¿Listo para un WordPress súper rápido?"
+        subtitle="HostingPlus optimiza WordPress automáticamente. 30 días de garantía."
+        buttonText="Probar HostingPlus WordPress"
+        buttonLink="https://www.hostingplus.cl/"
+      />
       <StickyCTA />
       <Footer />
     </>
