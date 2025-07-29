@@ -17,9 +17,19 @@ interface PlanFeature {
   included: boolean;
 }
 
+interface PricingPeriod {
+  monthly: number;
+  sixMonths?: number;
+  annual: number;
+  biannual?: number;
+  triannual: number;
+  includesDomainFrom?: 'annual' | 'biannual' | 'triannual';
+}
+
 interface Plan {
   name: string;
-  price: number;
+  price: number; // Precio mensual de referencia (puede ser precio trianual dividido por período)
+  pricing?: PricingPeriod; // Precios reales por período
   storage: string;
   bandwidth: string;
   domains: number;

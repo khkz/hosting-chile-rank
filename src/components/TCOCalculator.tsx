@@ -50,17 +50,34 @@ const TCOCalculator = () => {
   const tcoResults = useMemo(() => {
     if (!selectedPlanData) return null;
 
-    const baseCost = selectedPlanData.price;
     const monthlyCosts = Object.entries(extras)
       .filter(([_, enabled]) => enabled)
       .reduce((total, [extra]) => total + extraCosts[extra as keyof typeof extraCosts], 0);
     
-    const monthlyTotal = baseCost + monthlyCosts;
+    // Use real pricing structure if available, otherwise fallback to price multiplication
+    const pricing = selectedPlanData.pricing;
+    let year1Cost, year3Cost, year5Cost;
+    let baseCost = selectedPlanData.price; // Reference price for display
     
-    // Calculate costs for different periods
-    const year1 = monthlyTotal * 12;
-    const year3 = monthlyTotal * 36;
-    const year5 = monthlyTotal * 60;
+    if (pricing) {
+      // Use real period pricing
+      year1Cost = (pricing.annual * 12) + (monthlyCosts * 12);
+      year3Cost = (pricing.triannual * 36) + (monthlyCosts * 36);
+      // For 5 years: 3 years + 2 years (assuming 2-year renewal available, otherwise use annual)
+      const year5Base = (pricing.triannual * 36) + ((pricing.biannual || pricing.annual) * 24);
+      year5Cost = year5Base + (monthlyCosts * 60);
+      
+      // Update base cost to reflect the actual annual price for display consistency
+      baseCost = pricing.annual;
+    } else {
+      // Fallback to linear calculation for providers without detailed pricing
+      const monthlyTotal = baseCost + monthlyCosts;
+      year1Cost = monthlyTotal * 12;
+      year3Cost = monthlyTotal * 36;
+      year5Cost = monthlyTotal * 60;
+    }
+    
+    const monthlyTotal = baseCost + monthlyCosts;
     
     // Find best value alternative with improved algorithm
     const currentPlan = providers.find(p => p.id === selectedProvider)?.plans.find(p => p.name === selectedPlan);
@@ -119,12 +136,12 @@ const TCOCalculator = () => {
     // Sort alternatives by score
     alternatives.sort((a, b) => b.score - a.score);
     
-    const savings = year5 - (bestPrice * 60);
+    const savings = year5Cost - (bestPrice * 60);
     
     return {
-      year1,
-      year3,
-      year5,
+      year1: year1Cost,
+      year3: year3Cost,
+      year5: year5Cost,
       savings,
       bestAlternative,
       alternativeExplanation,
@@ -316,15 +333,41 @@ const TCOCalculator = () => {
                   <h3 className="font-semibold">Proyección de Costos</h3>
                   
                   {[
-                    { period: '1 año', cost: tcoResults.year1, months: 12 },
-                    { period: '3 años', cost: tcoResults.year3, months: 36 },
-                    { period: '5 años', cost: tcoResults.year5, months: 60 }
-                  ].map(({ period, cost, months }) => (
+                    { 
+                      period: '1 año', 
+                      cost: tcoResults.year1, 
+                      description: selectedPlanData?.pricing ? 
+                        `Plan: $${(selectedPlanData.pricing.annual * 12).toLocaleString()} + Extras: $${(tcoResults.extrasTotal * 12).toLocaleString()}` :
+                        `12 meses × $${tcoResults.monthlyTotal.toLocaleString()}`,
+                      hasFreeDomain: selectedPlanData?.pricing?.includesDomainFrom && ['annual', 'biannual', 'triannual'].includes(selectedPlanData.pricing.includesDomainFrom)
+                    },
+                    { 
+                      period: '3 años', 
+                      cost: tcoResults.year3, 
+                      description: selectedPlanData?.pricing ? 
+                        `Plan: $${(selectedPlanData.pricing.triannual * 36).toLocaleString()} + Extras: $${(tcoResults.extrasTotal * 36).toLocaleString()}` :
+                        `36 meses × $${tcoResults.monthlyTotal.toLocaleString()}`,
+                      hasFreeDomain: selectedPlanData?.pricing?.includesDomainFrom && ['triannual'].includes(selectedPlanData.pricing.includesDomainFrom)
+                    },
+                    { 
+                      period: '5 años', 
+                      cost: tcoResults.year5, 
+                      description: selectedPlanData?.pricing ? 
+                        `3 años + 2 años + Extras: $${(tcoResults.extrasTotal * 60).toLocaleString()}` :
+                        `60 meses × $${tcoResults.monthlyTotal.toLocaleString()}`,
+                      hasFreeDomain: selectedPlanData?.pricing?.includesDomainFrom
+                    }
+                  ].map(({ period, cost, description, hasFreeDomain }) => (
                     <div key={period} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
-                        <div className="font-medium">{period}</div>
+                        <div className="font-medium flex items-center gap-2">
+                          {period}
+                          {hasFreeDomain && (
+                            <Badge variant="secondary" className="text-xs">Dominio Gratis</Badge>
+                          )}
+                        </div>
                         <div className="text-sm text-muted-foreground">
-                          {months} meses × ${tcoResults.monthlyTotal.toLocaleString()}
+                          {description}
                         </div>
                       </div>
                       <div className="text-right">

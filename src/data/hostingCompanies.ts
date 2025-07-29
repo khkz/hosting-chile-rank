@@ -1,6 +1,30 @@
 
 import { HostingCompanyData } from "@/components/HostingCompanyInfo";
 
+interface PlanFeature {
+  name: string;
+  included: boolean;
+}
+
+interface PricingPeriod {
+  monthly: number;
+  sixMonths?: number;
+  annual: number;
+  biannual?: number;
+  triannual: number;
+  includesDomainFrom?: 'annual' | 'biannual' | 'triannual';
+}
+
+interface Plan {
+  name: string;
+  price: number; // Precio mensual de referencia (puede ser precio trianual dividido por período)
+  pricing?: PricingPeriod; // Precios reales por período
+  storage: string;
+  bandwidth: string;
+  domains: number;
+  features: PlanFeature[];
+}
+
 export const hostingCompanies: Record<string, HostingCompanyData> = {
   "hostingplus": {
     id: "hostingplus",
@@ -20,7 +44,15 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
     plans: [
       {
         name: "Personal SSD",
-        price: 3469, // Precio mensual efectivo con descuento trianual ($124,900/3 años)
+        price: 3469, // Precio mensual efectivo con descuento trianual
+        pricing: {
+          monthly: 19900,
+          sixMonths: 16150, // $96,900/6 meses
+          annual: 4158, // $49,900/año
+          biannual: 3886, // $93,300/2 años 
+          triannual: 3469, // $124,900/3 años
+          includesDomainFrom: 'annual'
+        },
         storage: "15 GB SSD",
         bandwidth: "Ilimitada",
         domains: 1,
@@ -36,7 +68,15 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
       },
       {
         name: "Emprendedor SSD",
-        price: 3886, // Precio mensual efectivo con descuento trianual ($139,900/3 años)
+        price: 3886, // Precio mensual efectivo con descuento trianual
+        pricing: {
+          monthly: 23900,
+          sixMonths: 19150, // $114,900/6 meses
+          annual: 5575, // $66,900/año
+          biannual: 4742, // $113,800/2 años
+          triannual: 3886, // $139,900/3 años
+          includesDomainFrom: 'annual'
+        },
         storage: "30 GB SSD",
         bandwidth: "Ilimitada",
         domains: 5,
@@ -53,7 +93,15 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
       },
       {
         name: "WordPress",
-        price: 5553, // Precio mensual efectivo con descuento trianual ($199,900/3 años) + Dominio Gratis
+        price: 5553, // Precio mensual efectivo con descuento trianual + Dominio Gratis
+        pricing: {
+          monthly: 29900,
+          sixMonths: 23150, // $138,900/6 meses
+          annual: 6992, // $83,900/año + Dominio Gratis
+          biannual: 6250, // $150,000/2 años + Dominio Gratis
+          triannual: 5553, // $199,900/3 años + Dominio Gratis
+          includesDomainFrom: 'annual'
+        },
         storage: "50 GB SSD",
         bandwidth: "Ilimitada",
         domains: 10,
@@ -67,13 +115,20 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
           { name: "Correos ilimitados", included: true },
           { name: "IP Dedicada", included: true },
           { name: "CloudLinux", included: true },
-          { name: "LiteSpeed Cache", included: true },
-          { name: "Dominio Gratis", included: true }
+          { name: "LiteSpeed Cache", included: true }
         ]
       },
       {
         name: "E-commerce",
-        price: 7664, // Precio mensual efectivo con descuento trianual ($275,900/3 años) + Dominio Gratis
+        price: 7664, // Precio mensual efectivo con descuento trianual + Dominio Gratis
+        pricing: {
+          monthly: 22900,
+          sixMonths: 12150, // $72,900/6 meses
+          annual: 11242, // $134,900/año + Dominio Gratis
+          biannual: 8329, // $199,900/2 años + Dominio Gratis
+          triannual: 7664, // $275,900/3 años + Dominio Gratis
+          includesDomainFrom: 'annual'
+        },
         storage: "100 GB SSD",
         bandwidth: "Ilimitada",
         domains: 25,
@@ -89,8 +144,7 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
           { name: "CloudLinux", included: true },
           { name: "LiteSpeed Cache", included: true },
           { name: "WooCommerce optimizado", included: true },
-          { name: "CDN incluido", included: true },
-          { name: "Dominio Gratis", included: true }
+          { name: "CDN incluido", included: true }
         ]
       }
     ]
