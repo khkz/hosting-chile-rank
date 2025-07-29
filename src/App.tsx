@@ -16,6 +16,7 @@ import UltimosDominios from './pages/UltimosDominios';
 import GuiaElegirHosting from './pages/GuiaElegirHosting';
 import GuiaElegirVPS from './pages/GuiaElegirVPS';
 import GuiaElegirServidorDedicado from './pages/GuiaElegirServidorDedicado';
+import GuiaElegirCDN from './pages/GuiaElegirCDN';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
 import Resena from './pages/Resena';
 import CatalogoDetalle from './pages/CatalogoDetalle';
@@ -52,6 +53,7 @@ function App() {
         <Route path="/guia-elegir-hosting" element={<GuiaElegirHosting />} />
         <Route path="/guia-elegir-vps" element={<GuiaElegirVPS />} />
         <Route path="/guia-elegir-servidor-dedicado" element={<GuiaElegirServidorDedicado />} />
+        <Route path="/guia-elegir-cdn" element={<GuiaElegirCDN />} />
         <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
