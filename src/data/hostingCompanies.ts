@@ -20,7 +20,7 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
     plans: [
       {
         name: "Personal SSD",
-        price: 4158, // Precio mensual efectivo con descuento anual ($49,900/año)
+        price: 3469, // Precio mensual efectivo con descuento trianual ($124,900/3 años)
         storage: "15 GB SSD",
         bandwidth: "Ilimitada",
         domains: 1,
@@ -36,7 +36,7 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
       },
       {
         name: "Emprendedor SSD",
-        price: 5575, // Precio mensual efectivo con descuento anual ($66,900/año)
+        price: 3886, // Precio mensual efectivo con descuento trianual ($139,900/3 años)
         storage: "30 GB SSD",
         bandwidth: "Ilimitada",
         domains: 5,
@@ -53,7 +53,7 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
       },
       {
         name: "WordPress",
-        price: 6992, // Precio mensual efectivo con descuento anual ($83,900/año)
+        price: 5553, // Precio mensual efectivo con descuento trianual ($199,900/3 años) + Dominio Gratis
         storage: "50 GB SSD",
         bandwidth: "Ilimitada",
         domains: 10,
@@ -67,12 +67,13 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
           { name: "Correos ilimitados", included: true },
           { name: "IP Dedicada", included: true },
           { name: "CloudLinux", included: true },
-          { name: "LiteSpeed Cache", included: true }
+          { name: "LiteSpeed Cache", included: true },
+          { name: "Dominio Gratis", included: true }
         ]
       },
       {
         name: "E-commerce",
-        price: 11242, // Precio mensual efectivo con descuento anual ($134,900/año)
+        price: 7664, // Precio mensual efectivo con descuento trianual ($275,900/3 años) + Dominio Gratis
         storage: "100 GB SSD",
         bandwidth: "Ilimitada",
         domains: 25,
@@ -88,7 +89,8 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
           { name: "CloudLinux", included: true },
           { name: "LiteSpeed Cache", included: true },
           { name: "WooCommerce optimizado", included: true },
-          { name: "CDN incluido", included: true }
+          { name: "CDN incluido", included: true },
+          { name: "Dominio Gratis", included: true }
         ]
       }
     ]
