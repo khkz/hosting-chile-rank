@@ -84,7 +84,7 @@ const GuiaElegirHosting = () => {
               <h2 className="text-2xl font-bold mb-4 text-amber-800">Mi experiencia: El error que me costó caro</h2>
               <p className="text-amber-700 mb-4">
                 En 2016 lancé mi primera tienda online con el hosting más barato que encontré: $990 pesos mensuales. 
-                Parecía un chollo, ¿verdad? Error garrafal. En pleno CyberDay, con 500 visitantes simultáneos, 
+                Parecía una ganga, ¿verdad? Error garrafal. En pleno CyberDay, con 500 visitantes simultáneos, 
                 el sitio se cayó por 6 horas. Perdí más de $2 millones en ventas y la confianza de muchos clientes.
               </p>
               <p className="text-amber-700">
