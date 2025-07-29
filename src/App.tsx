@@ -18,6 +18,9 @@ import GuiaElegirVPS from './pages/GuiaElegirVPS';
 import GuiaElegirServidorDedicado from './pages/GuiaElegirServidorDedicado';
 import GuiaElegirCDN from './pages/GuiaElegirCDN';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
+import GuiaMigrarHosting from './pages/GuiaMigrarHosting';
+import GuiaSeguridadWeb from './pages/GuiaSeguridadWeb';
+import GuiaHostingWordPress from './pages/GuiaHostingWordPress';
 import Resena from './pages/Resena';
 import CatalogoDetalle from './pages/CatalogoDetalle';
 import Benchmark from './pages/Benchmark';
@@ -55,6 +58,9 @@ function App() {
         <Route path="/guia-elegir-servidor-dedicado" element={<GuiaElegirServidorDedicado />} />
         <Route path="/guia-elegir-cdn" element={<GuiaElegirCDN />} />
         <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
+        <Route path="/guia-migrar-hosting" element={<GuiaMigrarHosting />} />
+        <Route path="/guia-seguridad-web" element={<GuiaSeguridadWeb />} />
+        <Route path="/guia-hosting-wordpress" element={<GuiaHostingWordPress />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
