@@ -42,21 +42,19 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto px-4 flex justify-between items-center h-20">
-        <Link to="/" className="flex items-center">
+        <a href="https://eligetuhosting.cl" className="flex items-center">
           <Logo variant="option-a" className="h-12 w-auto mr-2" />
-        </Link>
+        </a>
         
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-1">
-          <NavLink 
-            to="/" 
-            className={({ isActive }) => 
-              `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2`
-            }
+          <a 
+            href="https://eligetuhosting.cl" 
+            className={`${navLinkClasses} px-3 py-2`}
           >
             <Home className="h-4 w-4 mr-1" />
             Inicio
-          </NavLink>
+          </a>
           
           <NavLink 
             to="/ranking" 
@@ -213,19 +211,17 @@ const Navbar = () => {
           <SheetContent side="left" className="w-[80%] sm:max-w-sm">
             <div className="flex flex-col h-full">
               <div className="flex flex-col space-y-4 py-4">
-                <Link to="/" className="flex items-center mb-6">
+                <a href="https://eligetuhosting.cl" className="flex items-center mb-6">
                   <Logo variant="option-a" className="h-10 w-auto mr-2" />
-                </Link>
+                </a>
                 
-                <NavLink 
-                  to="/" 
-                  className={({ isActive }) => 
-                    `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
-                  }
+                <a 
+                  href="https://eligetuhosting.cl" 
+                  className={mobileNavLinkClasses}
                 >
                   <Home className="h-5 w-5 mr-2" />
                   Inicio
-                </NavLink>
+                </a>
                 
                 <NavLink 
                   to="/ranking" 
