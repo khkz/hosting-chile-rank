@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import WhoisRedirect from './components/WhoisRedirect';
+import DomainRedirect from './components/DomainRedirect';
 import StaticSitemap from './components/StaticSitemap';
 import StaticRobots from './components/StaticRobots';
 import StaticRSSFeed from './components/StaticRSSFeed';
@@ -32,6 +33,7 @@ import TCOCalculatorPage from './pages/TCOCalculatorPage';
 function App() {
   return (
     <Router>
+      <DomainRedirect />
       <ScrollToTop />
       <Toaster />
       <Routes>
