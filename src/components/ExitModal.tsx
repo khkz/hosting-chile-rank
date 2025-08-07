@@ -6,32 +6,74 @@ import { Button } from "@/components/ui/button";
 const ExitModal = () => {
   const [open, setOpen] = useState(false);
 
-  /* Detectar intención de salida (desktop + mobile) */
   useEffect(() => {
     const KEY = "exitIntentSeen";
+
+    // Desactivar si está embebido en un iframe (p.ej., vista previa del editor)
+    const inIframe = (() => {
+      try {
+        return window.self !== window.top;
+      } catch {
+        return true;
+      }
+    })();
+    if (inIframe) return;
+
     if (localStorage.getItem(KEY)) return;
 
-    const leave = (e: MouseEvent) => {
-      if (e.clientY <= 0) {
-        setOpen(true);
-        localStorage.setItem(KEY, "1");
-        document.removeEventListener("mouseout", leave);
-      }
-    };
-    const scrollUpFast = () => {
-      if ((window as any).oldScroll && (window as any).oldScroll - window.scrollY > 120) {
-        setOpen(true);
-        localStorage.setItem(KEY, "1");
-        window.removeEventListener("scroll", scrollUpFast);
-      }
-      (window as any).oldScroll = window.scrollY;
-    };
+    // Armado con retardo de 5s para evitar disparos tempranos
+    let armed = false;
+    const armTimeout = window.setTimeout(() => {
+      armed = true;
+    }, 5000);
 
-    document.addEventListener("mouseout", leave);
-    window.addEventListener("scroll", scrollUpFast, { passive: true });
+    function triggerOpen() {
+      setOpen(true);
+      localStorage.setItem(KEY, "1");
+      document.removeEventListener("pointerout", onPointerOut);
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(armTimeout);
+    }
+
+    // Desktop: usar pointerout + relatedTarget null + clientY <= 0
+    function onPointerOut(e: PointerEvent) {
+      if (!armed) return;
+      const target = e.relatedTarget as Node | null;
+      if (!target && e.clientY <= 0) {
+        triggerOpen();
+      }
+    }
+
+    // Mobile: requerir scroll > 300px y luego "flick" hacia arriba > 200px en < 300ms
+    let scrolledDown = window.scrollY > 300;
+    let lastY = window.scrollY;
+    let lastT = performance.now();
+
+    function onScroll() {
+      if (!armed) return;
+      const y = window.scrollY;
+      if (y > 300) scrolledDown = true;
+
+      const now = performance.now();
+      const dy = lastY - y; // positivo cuando se desplaza hacia arriba
+      const dt = now - lastT;
+
+      if (scrolledDown && dy >= 200 && dt <= 300) {
+        triggerOpen();
+        return;
+      }
+
+      lastY = y;
+      lastT = now;
+    }
+
+    document.addEventListener("pointerout", onPointerOut);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
-      document.removeEventListener("mouseout", leave);
-      window.removeEventListener("scroll", scrollUpFast);
+      document.removeEventListener("pointerout", onPointerOut);
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(armTimeout);
     };
   }, []);
 
