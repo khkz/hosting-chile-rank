@@ -3,37 +3,34 @@ import { supabase } from '@/integrations/supabase/client';
 
 const DomainRedirect: React.FC = () => {
   useEffect(() => {
-    const checkDomainRedirect = async () => {
-      try {
-        // Get current location info
-        const currentPath = window.location.pathname;
-        const currentSearch = window.location.search;
-        
-        // Call the edge function to check if redirect is needed
-        const { data, error } = await supabase.functions.invoke('domain-redirect', {
-          body: {
-            path: currentPath,
-            search: currentSearch
-          }
-        });
+    try {
+      const isInIframe = window.self !== window.top;
+      const isLovablePreview = window.location.search.includes('__lovable_token');
+      if (isInIframe || isLovablePreview) return;
 
-        if (error) {
-          console.error('Error checking domain redirect:', error);
-          return;
-        }
+      const targetDomain = 'eligetuhosting.cl';
+      const currentHost = window.location.host;
 
-        // If redirect is needed, perform the redirect
-        if (data?.shouldRedirect && data?.redirectUrl) {
-          console.log(`Redirecting to: ${data.redirectUrl}`);
-          window.location.href = data.redirectUrl;
-        }
-      } catch (error) {
-        console.error('Error in domain redirect check:', error);
-      }
-    };
+      // If we're already on the target domain, do nothing
+      if (currentHost.includes(targetDomain)) return;
 
-    // Only check on initial load
-    checkDomainRedirect();
+      const currentPath = window.location.pathname;
+      const currentSearch = window.location.search;
+      const redirectUrl = `https://${targetDomain}${currentPath}${currentSearch}${window.location.hash || ''}`;
+
+      const currentHref = window.location.href;
+      if (redirectUrl === currentHref) return;
+
+      // Redirect to the canonical domain
+      window.location.href = redirectUrl;
+
+      // Fire-and-forget ping for logging (does not affect redirect)
+      void supabase.functions.invoke('domain-redirect', {
+        body: { path: currentPath, search: currentSearch }
+      }).catch(() => {});
+    } catch (error) {
+      console.error('Error in domain redirect check:', error);
+    }
   }, []);
 
   // This component doesn't render anything
