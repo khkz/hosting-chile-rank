@@ -274,6 +274,10 @@ const RankingPage = () => {
       <Helmet>
         <title>Ranking de Hosting Chile 2025 | Comparativa Oficial</title>
         <meta name="description" content="Comparativa actualizada de los mejores hosting en Chile. Evaluamos velocidad, soporte local y seguridad para tu sitio web." />
+        <link rel="canonical" href="https://eligetuhosting.cl/ranking" />
+        <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/ranking" />
+        <meta property="og:url" content="https://eligetuhosting.cl/ranking" />
+        <meta property="og:image" content="https://eligetuhosting.cl/lovable-uploads/4b9ad72f-ec68-4414-8b9f-5debe4d14d9f.png" />
         <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

@@ -195,10 +195,13 @@ const MejorHostingChile2025 = () => {
         />
         <meta name="keywords" content="mejor hosting Chile, cuál es el mejor hosting en Chile, hosting rápido SSD en Chile, mejor hosting chileno 2025, hosting confiable Chile, hosting WordPress Chile" />
         <link rel="canonical" href="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
+        <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
         <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
         <meta property="og:title" content="¿Cuál es el mejor hosting en Chile en 2025? Guía definitiva" />
         <meta property="og:description" content="Comparativa exhaustiva del mejor hosting Chile 2025. Análisis de velocidad, uptime y precios de los principales proveedores." />
         <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
+        <meta property="og:image" content="https://eligetuhosting.cl/lovable-uploads/990dfac6-4636-4e8c-b43d-81fd2ef16375.png" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

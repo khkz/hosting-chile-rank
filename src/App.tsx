@@ -67,6 +67,7 @@ function App() {
         <Route path="/guia-seguridad-web" element={<GuiaSeguridadWeb />} />
         <Route path="/guia-hosting-wordpress" element={<GuiaHostingWordPress />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
+        <Route path="/resenas/:slug" element={<Resena />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
