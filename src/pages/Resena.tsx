@@ -175,6 +175,24 @@ const Resena = () => {
           name="description" 
           content={`Análisis detallado y reseña de ${hosting.name}. Descubre sus ventajas, desventajas y si es la mejor opción para tu sitio web.`} 
         />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: hosting.name,
+            image: hosting.logo,
+            brand: hosting.name,
+            sku: slug,
+            review: {
+              "@type": "Review",
+              reviewBody: hosting.description,
+              reviewRating: { "@type": "Rating", ratingValue: hosting.rating, bestRating: 10 },
+              author: { "@type": "Organization", name: "eligetuhosting.cl" },
+              datePublished: "2025-01-01"
+            },
+            aggregateRating: { "@type": "AggregateRating", ratingValue: hosting.rating, bestRating: 10, ratingCount: 1 }
+          })}
+        </script>
       </Helmet>
       
       <Navbar />
@@ -302,7 +320,7 @@ const Resena = () => {
             <a 
               href={hosting.url} 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="nofollow sponsored noopener noreferrer"
               className="bg-[#EF233C] text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
             >
               Visitar {hosting.name}

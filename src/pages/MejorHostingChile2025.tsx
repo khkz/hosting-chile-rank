@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Check, X, ExternalLink, Star, Zap, Shield, Clock, Headphones, MapPin, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getComplaintInfo, getComplaintBadge } from '../services/hostingComplaints';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import Methodology from '@/components/Methodology';
 
 const MejorHostingChile2025 = () => {
   const hostingProviders = [
@@ -192,7 +194,8 @@ const MejorHostingChile2025 = () => {
           content="Descubre cuál es el mejor hosting en Chile 2025. Comparativa completa de velocidad, uptime y precios. Guía definitiva para elegir hosting SSD rápido." 
         />
         <meta name="keywords" content="mejor hosting Chile, cuál es el mejor hosting en Chile, hosting rápido SSD en Chile, mejor hosting chileno 2025, hosting confiable Chile, hosting WordPress Chile" />
-        <link rel="canonical" href="https://tudominio.com/mejor-hosting-chile-2025" />
+        <link rel="canonical" href="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
+        <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
         <meta property="og:title" content="¿Cuál es el mejor hosting en Chile en 2025? Guía definitiva" />
         <meta property="og:description" content="Comparativa exhaustiva del mejor hosting Chile 2025. Análisis de velocidad, uptime y precios de los principales proveedores." />
         <meta property="og:type" content="article" />
@@ -200,19 +203,40 @@ const MejorHostingChile2025 = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            "headline": "¿Cuál es el mejor hosting en Chile en 2025? Guía definitiva y comparativa",
-            "author": {
-              "@type": "Organization",
-              "name": "Hosting Chile Ranking"
-            },
-            "datePublished": "2025-01-01",
-            "dateModified": "2025-01-01",
-            "description": "Análisis completo de los mejores proveedores de hosting en Chile para 2025, incluyendo comparativas de velocidad, uptime y precios."
+            headline: "¿Cuál es el mejor hosting en Chile en 2025? Guía definitiva y comparativa",
+            author: { "@type": "Organization", name: "eligetuhosting.cl" },
+            datePublished: "2025-01-01",
+            dateModified: new Date().toISOString().slice(0,10),
+            description: "Análisis completo de los mejores proveedores de hosting en Chile para 2025, incluyendo comparativas de velocidad, uptime y precios."
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map(f => ({
+              "@type": "Question",
+              name: f.question,
+              acceptedAnswer: { "@type": "Answer", text: f.answer }
+            }))
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: hostingProviders.slice(0,5).map((p, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: p.name,
+              url: `https://eligetuhosting.cl/reseñas/${p.name.toLowerCase().replace(/\.cl|\s|\./g, '')}`
+            }))
           })}
         </script>
       </Helmet>
 
       <Navbar />
+      <SEOBreadcrumbs items={[{ name: 'Ranking', href: '/ranking' }]} pageName="Mejor hosting Chile 2025" />
 
       <main className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -315,6 +339,8 @@ const MejorHostingChile2025 = () => {
             </div>
           </section>
 
+          <Methodology />
+
           {/* Tabla Comparativa */}
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-[#2B2D42] mb-8 text-center">
@@ -401,7 +427,7 @@ const MejorHostingChile2025 = () => {
                         </td>
                         <td className="p-3 text-center">
                           <Button asChild size="sm" className={`${provider.destacado ? "bg-[#EF233C] hover:bg-[#c41e3a] text-white" : "bg-gray-700 hover:bg-gray-800 text-white"} text-xs px-2 py-1 min-w-0`}>
-                            <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 whitespace-nowrap">
+                            <a href={provider.url} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex items-center gap-1 whitespace-nowrap">
                               Ver
                               <ExternalLink className="w-3 h-3" />
                             </a>
@@ -546,7 +572,7 @@ const MejorHostingChile2025 = () => {
                     size="lg" 
                     className="bg-white text-[#EF233C] hover:bg-gray-100 font-semibold px-8 py-3"
                   >
-                    <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.hostingplus.cl/" target="_blank" rel="nofollow sponsored noopener noreferrer">
                       Contratar HostingPlus Ahora
                     </a>
                   </Button>

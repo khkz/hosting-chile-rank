@@ -274,6 +274,7 @@ const RankingPage = () => {
       <Helmet>
         <title>Ranking de Hosting Chile 2025 | Comparativa Oficial</title>
         <meta name="description" content="Comparativa actualizada de los mejores hosting en Chile. Evaluamos velocidad, soporte local y seguridad para tu sitio web." />
+        <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <style type="text/css">{`
@@ -376,7 +377,7 @@ const RankingPage = () => {
                       : 'bg-[#2B2D42] hover:bg-[#1a1c2e] text-white'
                   }`}
                 >
-                  <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+                  <a href={provider.url} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex items-center justify-center">
                     Visitar sitio
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
@@ -400,7 +401,7 @@ const RankingPage = () => {
               key={index} 
               href={category.url} 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="nofollow sponsored noopener noreferrer"
               className="block hover:shadow-lg transition-all duration-300 rounded-lg overflow-hidden transform hover:scale-105"
             >
               <Card className={`${category.bgColor} h-full flex flex-col items-center justify-center p-6 text-center hover:shadow-xl transition-all duration-300`}>

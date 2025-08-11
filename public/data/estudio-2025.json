@@ -1,0 +1,14 @@
+{
+  "title": "Estudio de Hosting Chile 2025",
+  "lastUpdated": "2025-01-01",
+  "methodology": {
+    "factors": [
+      { "name": "Servicio post-venta", "weight": 0.25 },
+      { "name": "Velocidad/tecnología", "weight": 0.25 },
+      { "name": "Seguridad & Backups", "weight": 0.20 },
+      { "name": "Reputación", "weight": 0.15 },
+      { "name": "Precio vs. valor", "weight": 0.15 }
+    ]
+  },
+  "notes": "Este dataset es un placeholder público para IA y motores de búsqueda."
+}

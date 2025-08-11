@@ -29,6 +29,8 @@ import MejorHostingChile2025 from './pages/MejorHostingChile2025';
 import Sitemap from './pages/Sitemap';
 import NotFound from './pages/NotFound';
 import TCOCalculatorPage from './pages/TCOCalculatorPage';
+import SEOOrganization from './components/SEOOrganization';
+import AcercaDe from './pages/AcercaDe';
 
 function App() {
   return (
@@ -36,6 +38,7 @@ function App() {
       <DomainRedirect />
       <ScrollToTop />
       <Toaster />
+      <SEOOrganization />
       <Routes>
         {/* Rutas para archivos estáticos */}
         <Route path="/sitemap.xml" element={<StaticSitemap />} />
@@ -67,7 +70,9 @@ function App() {
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
+        <Route path="/mejor-hosting-chile" element={<Navigate to="/mejor-hosting-chile-2025" replace />} />
         <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
+        <Route path="/acerca-de" element={<AcercaDe />} />
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

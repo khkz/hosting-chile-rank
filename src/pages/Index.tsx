@@ -45,6 +45,18 @@ const Index = () => {
     
   }, []);
 
+  React.useEffect(() => {
+    // Add RSS alternate link
+    let rss = document.querySelector('link[rel="alternate"][type="application/rss+xml"]');
+    if (!rss) {
+      rss = document.createElement('link');
+      rss.setAttribute('rel', 'alternate');
+      rss.setAttribute('type', 'application/rss+xml');
+      rss.setAttribute('href', '/feed/latest-domains.xml');
+      document.head.appendChild(rss);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
       <Navbar />

@@ -40,6 +40,8 @@ const Methodology = () => {
               </TableBody>
             </Table>
           </div>
+          <p className="text-sm text-gray-600 mt-6">Última actualización: {new Date().toLocaleDateString('es-CL')}</p>
+          <p className="text-xs text-gray-500 mt-2">Divulgación: Algunos enlaces pueden ser afiliados. Nunca alteran nuestras evaluaciones ni el orden del ranking.</p>
         </div>
       </div>
     </section>

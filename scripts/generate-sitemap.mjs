@@ -19,6 +19,8 @@ const urlTag = (loc, prio = '0.7', changefreq = 'weekly', lastmod = NOW) => `
 const staticUrls = [
   ['/', '0.9', 'daily'],
   ['/ranking', '0.9', 'daily'],
+  ['/mejor-hosting-chile-2025', '1.0', 'daily'],
+  ['/mejor-hosting-chile', '0.9', 'daily'],
   ['/comparativa', '0.8', 'weekly'],
   ['/cotiza-hosting', '0.8', 'weekly'],
   ['/ultimos-dominios', '0.9', 'hourly'], // Optimizado para crawleo frecuente

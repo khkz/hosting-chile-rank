@@ -121,7 +121,7 @@ const HostingCard: React.FC<HostingCardProps> = ({
         asChild
         className={`mt-6 inline-block ${isTopRated ? 'bg-[#EF233C]' : 'bg-[#2B2D42]'} text-white px-5 py-2 rounded-lg hover:opacity-90 transition-opacity w-full justify-center`}
       >
-        <a href={url} target="_blank" rel="noopener noreferrer">Visitar Hosting</a>
+        <a href={url} target="_blank" rel="nofollow sponsored noopener noreferrer">Visitar Hosting</a>
       </Button>
     </Card>
   );
