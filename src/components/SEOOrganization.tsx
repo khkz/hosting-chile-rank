@@ -7,10 +7,9 @@ const SEOOrganization: React.FC = () => {
     name: "EligeTuHosting",
     url: "https://eligetuhosting.cl",
     logo: "https://eligetuhosting.cl/favicon-logo.svg",
-    sameAs: [],
     contactPoint: [{
       "@type": "ContactPoint",
-      telephone: "+56-2-1234-5678",
+      email: "contacto@eligetuhosting.cl",
       contactType: "customer support",
       areaServed: "CL",
       availableLanguage: ["es"]

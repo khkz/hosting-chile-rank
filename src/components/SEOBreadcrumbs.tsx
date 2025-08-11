@@ -65,7 +65,7 @@ const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
           </BreadcrumbSeparator>
           
           {items.map((item, index) => (
-            <React.Fragment key={index}>
+            <span key={index} className="contents">
               <BreadcrumbItem>
                 {index === items.length - 1 && !pageName ? (
                   <BreadcrumbPage>{item.name}</BreadcrumbPage>
@@ -81,7 +81,7 @@ const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
                   <ChevronRight className="h-4 w-4" />
                 </BreadcrumbSeparator>
               )}
-            </React.Fragment>
+            </span>
           ))}
 
           {pageName && (

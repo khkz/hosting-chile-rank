@@ -190,7 +190,8 @@ const Resena = () => {
               author: { "@type": "Organization", name: "eligetuhosting.cl" },
               datePublished: "2025-01-01"
             },
-            aggregateRating: { "@type": "AggregateRating", ratingValue: hosting.rating, bestRating: 10, ratingCount: 1 }
+            aggregateRating: { "@type": "AggregateRating", ratingValue: hosting.rating, bestRating: 10, ratingCount: 1 },
+            dateModified: new Date().toISOString().slice(0,10)
           })}
         </script>
       </Helmet>

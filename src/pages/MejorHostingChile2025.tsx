@@ -229,7 +229,7 @@ const MejorHostingChile2025 = () => {
               "@type": "ListItem",
               position: i + 1,
               name: p.name,
-              url: `https://eligetuhosting.cl/reseñas/${p.name.toLowerCase().replace(/\.cl|\s|\./g, '')}`
+              url: p.url
             }))
           })}
         </script>
@@ -340,6 +340,28 @@ const MejorHostingChile2025 = () => {
           </section>
 
           <Methodology />
+
+          {/* Datos y fuentes */}
+          <section className="mb-12">
+            <Card className="border">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-[#2B2D42]">Datos y fuentes</CardTitle>
+                <CardDescription>Transparencia y verificación independiente</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>
+                  Consulta nuestro dataset público con los factores y pesos usados en el estudio:
+                  <a href="/data/estudio-2025.json" className="text-[#EF233C] hover:underline ml-1" target="_blank" rel="noopener noreferrer">estudio-2025.json</a>
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Reclamos y reputación: <a href="https://www.reclamos.cl" className="text-[#EF233C] hover:underline" target="_blank" rel="noopener noreferrer">Reclamos.cl</a></li>
+                  <li>Uptime y disponibilidad: UptimeRobot/Pingdom (paneles públicos cuando aplica)</li>
+                  <li>Precios y condiciones: páginas oficiales de cada proveedor</li>
+                </ul>
+                <p className="text-sm text-gray-500">Divulgación: Algunos enlaces pueden ser afiliados. Esto no altera nuestra metodología ni el ranking.</p>
+              </CardContent>
+            </Card>
+          </section>
 
           {/* Tabla Comparativa */}
           <section className="mb-12">
