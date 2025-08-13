@@ -105,8 +105,8 @@ const ASNDetail: React.FC = () => {
       {data && (
         <section className="space-y-6">
           <header>
-            <h1 className="text-3xl font-bold">AS{data.overview.asn} {data.overview.name ? decodeURIComponent(data.overview.name) : ''}</h1>
-            <p className="text-muted-foreground mt-2">{data.overview.description ? decodeURIComponent(data.overview.description) : 'Proveedor de red / Sistema autónomo'}</p>
+            <h1 className="text-3xl font-bold">AS{data.overview.asn} {data.overview.name ? data.overview.name.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}</h1>
+            <p className="text-muted-foreground mt-2">{data.overview.description ? data.overview.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : 'Proveedor de red / Sistema autónomo'}</p>
             {data.overview.country_code && (
               <p className="text-xs mt-1">País base: {data.overview.country_code}</p>
             )}
