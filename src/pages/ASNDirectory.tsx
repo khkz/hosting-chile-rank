@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Loader2, Search, Filter, MapPin } from 'lucide-react';
 import UltimasBusquedas from '@/components/UltimasBusquedas';
+import UltimasBusquedasASN from '@/components/UltimasBusquedasASN';
+import { useASNSearchHistory } from '@/hooks/useASNSearchHistory';
 import { isChileanASN } from '@/utils/ipDetection';
 
 
@@ -21,6 +23,7 @@ const ASNDirectory: React.FC = () => {
   const [countryFilter, setCountryFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'asn' | 'name'>('asn');
   const [showFilters, setShowFilters] = useState(false);
+  const { addToHistory } = useASNSearchHistory();
 
   useEffect(() => {
     const t = setTimeout(() => performSearch(q), 400);
@@ -57,6 +60,17 @@ const ASNDirectory: React.FC = () => {
       }
       
       setResults(searchResults);
+      
+      // Save successful searches to history (only for direct ASN searches, not ranges)
+      if (!rangeMatch && searchResults.length > 0) {
+        searchResults.forEach(result => {
+          addToHistory({
+            asn: result.asn,
+            name: result.name || `AS${result.asn}`,
+            countryCode: result.country_code
+          });
+        });
+      }
     } catch (e) {
       console.error(e);
       setResults([]);
@@ -278,6 +292,11 @@ const ASNDirectory: React.FC = () => {
         </div>
       )}
 
+
+      {/* Últimas búsquedas ASN */}
+      <div className="mt-8">
+        <UltimasBusquedasASN />
+      </div>
 
       {/* Últimas búsquedas para SEO */}
       <div className="mt-12">
