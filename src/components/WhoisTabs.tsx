@@ -25,6 +25,7 @@ import type { DomainAnalysisResult } from '@/services/domainAnalysis';
 import { getComplaintBadge } from '@/services/hostingComplaints';
 import { hasValidIP } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import { normalizeASN } from '@/services/asnApi';
 
 interface WhoisTabsProps {
   data: DomainAnalysisResult;
@@ -136,11 +137,11 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                 <span className="font-medium">ASN:</span>
                 {data.basic.asn ? (
                   <Link
-                    to={`/asn/${String(data.basic.asn).toUpperCase().startsWith('AS') ? String(data.basic.asn).toUpperCase() : 'AS' + String(data.basic.asn)}`}
+                    to={`/asn/AS${normalizeASN(String(data.basic.asn)) || ''}`}
                     className="ml-2 text-primary hover:underline"
-                    aria-label={`Ver detalle del ASN ${data.basic.asn}`}
+                    aria-label={`Ver detalle del ASN AS${normalizeASN(String(data.basic.asn)) || ''}`}
                   >
-                    {data.basic.asn}
+                    {`AS${normalizeASN(String(data.basic.asn)) || String(data.basic.asn)}`}
                   </Link>
                 ) : (
                   <span className="ml-2">No disponible</span>

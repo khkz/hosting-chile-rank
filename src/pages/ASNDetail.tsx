@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import { getASNDetails, estimatePrefixSize, normalizeASN } from '@/services/asnApi';
@@ -12,9 +12,21 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGri
 
 const ASNDetail: React.FC = () => {
   const { asn: asnParam } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<Awaited<ReturnType<typeof getASNDetails>> | null>(null);
+
+  // Canonicalize URL: always /asn/AS{number}
+  useEffect(() => {
+    if (!asnParam) return;
+    const n = normalizeASN(asnParam);
+    if (!n) return;
+    const canonicalParam = `AS${n}`;
+    if (asnParam.toUpperCase() !== canonicalParam) {
+      navigate(`/asn/${canonicalParam}`, { replace: true });
+    }
+  }, [asnParam, navigate]);
 
   useEffect(() => {
     const load = async () => {

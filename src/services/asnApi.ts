@@ -1,3 +1,5 @@
+import { supabase } from '@/integrations/supabase/client';
+
 // Minimal ASN API wrapper using BGPView public API
 // Note: This is a client-side service; consider server-side caching later if needed.
 
@@ -34,6 +36,19 @@ async function fetchJSON<T = any>(url: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+async function fetchBGViewJSON<T = any>(path: string): Promise<T> {
+  try {
+    return await fetchJSON<T>(`${BGPVIEW_BASE}${path}`);
+  } catch (err: any) {
+    const { data, error } = await supabase.functions.invoke('asn-proxy', {
+      body: { endpoint: path },
+    });
+    if (error) throw new Error(error.message || 'ASN proxy error');
+    return data as T;
+  }
+}
+
+
 export function normalizeASN(input: string): number | null {
   if (!input) return null;
   const m = input.toUpperCase().match(/AS?(\d+)/);
@@ -41,7 +56,7 @@ export function normalizeASN(input: string): number | null {
 }
 
 export async function getASNOverview(asn: number): Promise<ASNOverview> {
-  const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/asn/${asn}`);
+  const json = await fetchBGViewJSON<{ status: string; data: any }>(`/asn/${asn}`);
   const d = json?.data || {};
   return {
     asn: d.asn ?? asn,
@@ -56,7 +71,7 @@ export async function getASNOverview(asn: number): Promise<ASNOverview> {
 }
 
 export async function getASNPrefixes(asn: number): Promise<{ ipv4_prefixes: ASNPrefix[]; ipv6_prefixes: ASNPrefix[] }> {
-  const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/asn/${asn}/prefixes`);
+  const json = await fetchBGViewJSON<{ status: string; data: any }>(`/asn/${asn}/prefixes`);
   const d = json?.data || {};
   const mapPrefix = (p: any): ASNPrefix => ({
     prefix: p.prefix || p.cidr || p.ip || '',
@@ -72,7 +87,7 @@ export async function getASNPrefixes(asn: number): Promise<{ ipv4_prefixes: ASNP
 
 export async function getASNPeers(asn: number): Promise<Array<{ asn: number; name?: string }>> {
   try {
-    const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/asn/${asn}/peers`);
+    const json = await fetchBGViewJSON<{ status: string; data: any }>(`/asn/${asn}/peers`);
     const d = json?.data || {};
     const peers: Array<{ asn: number; name?: string }> = (d.ipv4_peers || []).concat(d.ipv6_peers || []).map((p: any) => ({
       asn: p.asn || p.peer_asn,
@@ -109,7 +124,7 @@ export interface ASNSearchResult {
 export async function searchASN(query: string): Promise<ASNSearchResult[]> {
   if (!query || query.trim().length < 2) return [];
   const q = encodeURIComponent(query.trim());
-  const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/search?query_term=${q}`);
+  const json = await fetchBGViewJSON<{ status: string; data: any }>(`/search?query_term=${q}`);
   const asns = json?.data?.asns || [];
   return asns.map((a: any) => ({
     asn: a.asn,
