@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import { searchASN, ASNSearchResult } from '@/services/asnApi';
 import { Input } from '@/components/ui/input';
@@ -10,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Search, Filter, MapPin } from 'lucide-react';
 import UltimasBusquedas from '@/components/UltimasBusquedas';
 import { isChileanASN } from '@/utils/ipDetection';
+
 
 const ASNDirectory: React.FC = () => {
   const [q, setQ] = useState('');
@@ -100,7 +103,9 @@ const ASNDirectory: React.FC = () => {
   }), [filteredAndSortedResults]);
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow container mx-auto px-4 py-8">
       <Helmet>
         <title>ASN Chile: Mapa y Directorio (BGP)</title>
         <meta name="description" content="Explora ASNs de Chile: proveedores, prefijos IP y peers. Busca por ASN o nombre y navega el mapa y directorio de redes." />
@@ -273,11 +278,14 @@ const ASNDirectory: React.FC = () => {
         </div>
       )}
 
+
       {/* Últimas búsquedas para SEO */}
       <div className="mt-12">
         <UltimasBusquedas />
       </div>
-    </main>
+      </main>
+      <Footer />
+    </div>
   );
 };
 
