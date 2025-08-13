@@ -6,6 +6,7 @@ import { searchASN, ASNSearchResult } from '@/services/asnApi';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, Search } from 'lucide-react';
+import UltimasBusquedas from '@/components/UltimasBusquedas';
 
 const ASNDirectory: React.FC = () => {
   const [q, setQ] = useState('');
@@ -102,6 +103,11 @@ const ASNDirectory: React.FC = () => {
       {results.length === 0 && !loading && (
         <div className="text-sm text-muted-foreground">Escribe al menos 2 caracteres para buscar ASNs por nombre o número.</div>
       )}
+
+      {/* Últimas búsquedas para SEO */}
+      <div className="mt-12">
+        <UltimasBusquedas />
+      </div>
     </main>
   );
 };
