@@ -33,6 +33,7 @@ import SEOOrganization from './components/SEOOrganization';
 import AcercaDe from './pages/AcercaDe';
 import ASNDirectory from './pages/ASNDirectory';
 import ASNDetail from './pages/ASNDetail';
+import ASNChile from './pages/ASNChile';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
         <Route path="/acerca-de" element={<AcercaDe />} />
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="/asn" element={<ASNDirectory />} />
+        <Route path="/asn/chile" element={<ASNChile />} />
         <Route path="/asn/:asn" element={<ASNDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

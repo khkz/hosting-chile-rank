@@ -7,8 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Loader2, ExternalLink, MapPin, Calendar, Database, Network, Building, Globe } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { isChileanASN } from '@/utils/ipDetection';
+import { getHostingCompanyFromASN, classifyASN, isHostingASN } from '@/services/hostingASNService';
 
 const ASNDetail: React.FC = () => {
   const { asn: asnParam } = useParams();
@@ -48,6 +52,11 @@ const ASNDetail: React.FC = () => {
   const asnNum = useMemo(() => normalizeASN(asnParam || '') || 0, [asnParam]);
   const pageTitle = data ? `AS${data.overview.asn} ${data.overview.name || ''} – Prefijos IP y Peers` : `AS${asnNum} – ASN`;
   const canonical = `${window.location.origin}/asn/AS${asnNum}`;
+  
+  // Enhanced ASN classification and hosting company detection
+  const asnClassification = data ? classifyASN(data.overview.name || '', data.overview.description) : 'unknown';
+  const hostingCompany = data ? getHostingCompanyFromASN(`AS${data.overview.asn}`) : null;
+  const isChilean = data ? isChileanASN(`AS${data.overview.asn}`) : false;
 
   const chartData = useMemo(() => {
     if (!data) return [];
@@ -105,11 +114,147 @@ const ASNDetail: React.FC = () => {
       {data && (
         <section className="space-y-6">
           <header>
-            <h1 className="text-3xl font-bold">AS{data.overview.asn} {data.overview.name ? data.overview.name.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}</h1>
-            <p className="text-muted-foreground mt-2">{data.overview.description ? data.overview.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : 'Proveedor de red / Sistema autónomo'}</p>
-            {data.overview.country_code && (
-              <p className="text-xs mt-1">País base: {data.overview.country_code}</p>
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold flex items-center gap-3">
+                  AS{data.overview.asn} {data.overview.name ? data.overview.name.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}
+                  {isChilean && (
+                    <Badge variant="secondary" className="gap-1">
+                      <MapPin className="h-3 w-3" />
+                      Chileno
+                    </Badge>
+                  )}
+                  {hostingCompany && (
+                    <Badge variant="outline" className="gap-1">
+                      <Building className="h-3 w-3" />
+                      Hosting
+                    </Badge>
+                  )}
+                </h1>
+                <p className="text-muted-foreground mt-2">{data.overview.description ? data.overview.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : 'Proveedor de red / Sistema autónomo'}</p>
+                
+                {/* Información básica en badges */}
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {data.overview.country_code && (
+                    <Badge variant="outline" className="gap-1">
+                      <MapPin className="h-3 w-3" />
+                      {data.overview.country_code}
+                    </Badge>
+                  )}
+                  {data.overview.rir_allocation && (
+                    <Badge variant="outline" className="gap-1">
+                      <Database className="h-3 w-3" />
+                      RIR: {data.overview.rir_allocation}
+                    </Badge>
+                  )}
+                  <Badge variant="outline" className="gap-1">
+                    <Network className="h-3 w-3" />
+                    {data.ipv4_prefixes.length} IPv4 + {data.ipv6_prefixes.length} IPv6
+                  </Badge>
+                  {data.peers && (
+                    <Badge variant="outline" className="gap-1">
+                      🔗 {data.peers.length} peers
+                    </Badge>
+                  )}
+                  {asnClassification !== 'unknown' && (
+                    <Badge variant="outline" className="gap-1">
+                      <Globe className="h-3 w-3" />
+                      {asnClassification === 'telecom' && 'Telecomunicaciones'}
+                      {asnClassification === 'hosting' && 'Hosting'}
+                      {asnClassification === 'isp' && 'ISP'}
+                      {asnClassification === 'enterprise' && 'Empresa'}
+                      {asnClassification === 'academic' && 'Académico'}
+                      {asnClassification === 'government' && 'Gobierno'}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              
+              {/* Enlaces externos */}
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <a 
+                    href={`https://bgpview.io/asn/${data.overview.asn}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="gap-1"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    BGPView
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <a 
+                    href={`https://bgp.he.net/AS${data.overview.asn}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="gap-1"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    Hurricane Electric
+                  </a>
+                </Button>
+              </div>
+            </div>
+            
+            {/* Información de empresa de hosting si aplica */}
+            {hostingCompany && (
+              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+                  <Building className="h-4 w-4" />
+                  Información de Hosting
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <span className="text-blue-700">Empresa:</span>
+                    <p className="font-medium text-blue-900">{hostingCompany.hostingCompany}</p>
+                  </div>
+                  {hostingCompany.companyRating && (
+                    <div>
+                      <span className="text-blue-700">Calificación:</span>
+                      <p className="font-medium text-blue-900">⭐ {hostingCompany.companyRating}/5</p>
+                    </div>
+                  )}
+                  {hostingCompany.companyUrl && (
+                    <div>
+                      <a 
+                        href={hostingCompany.companyUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Visitar sitio web →
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
+
+            {/* Información adicional */}
+            <div className="mt-4 p-4 bg-muted/50 rounded-lg">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="text-muted-foreground">Total de prefijos:</span>
+                  <p className="font-medium">{data.ipv4_prefixes.length + data.ipv6_prefixes.length}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Prefijos IPv4:</span>
+                  <p className="font-medium">{data.ipv4_prefixes.length}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">Prefijos IPv6:</span>
+                  <p className="font-medium">{data.ipv6_prefixes.length}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    Datos actualizados:
+                  </span>
+                  <p className="font-medium">{new Date().toLocaleDateString('es-CL')}</p>
+                </div>
+              </div>
+            </div>
           </header>
 
           <Card>
