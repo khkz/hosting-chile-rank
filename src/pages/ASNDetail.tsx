@@ -153,7 +153,7 @@ const ASNDetail: React.FC = () => {
                       {data.ipv4_prefixes.slice(0, 100).map((p, idx) => (
                         <TableRow key={idx}>
                           <TableCell>{p.prefix}</TableCell>
-                          <TableCell className="max-w-[480px] truncate" title={p.description || ''}>{p.description || '-'}</TableCell>
+                          <TableCell className="max-w-[480px] truncate" title={p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}>{p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : '-'}</TableCell>
                           <TableCell>{p.country_code || '-'}</TableCell>
                         </TableRow>
                       ))}
@@ -184,7 +184,7 @@ const ASNDetail: React.FC = () => {
                       {data.ipv6_prefixes.slice(0, 100).map((p, idx) => (
                         <TableRow key={idx}>
                           <TableCell>{p.prefix}</TableCell>
-                          <TableCell className="max-w-[480px] truncate" title={p.description || ''}>{p.description || '-'}</TableCell>
+                          <TableCell className="max-w-[480px] truncate" title={p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}>{p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : '-'}</TableCell>
                           <TableCell>{p.country_code || '-'}</TableCell>
                         </TableRow>
                       ))}
