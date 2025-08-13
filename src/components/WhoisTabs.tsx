@@ -135,14 +135,10 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
               </div>
               <div>
                 <span className="font-medium">ASN:</span>
-                {data.basic.asn ? (
-                  <Link
-                    to={`/asn/AS${normalizeASN(String(data.basic.asn)) || ''}`}
-                    className="ml-2 text-primary hover:underline"
-                    aria-label={`Ver detalle del ASN AS${normalizeASN(String(data.basic.asn)) || ''}`}
-                  >
+                {data.basic.asn && data.basic.asn !== 'No disponible' ? (
+                  <span className="ml-2">
                     {`AS${normalizeASN(String(data.basic.asn)) || String(data.basic.asn)}`}
-                  </Link>
+                  </span>
                 ) : (
                   <span className="ml-2">No disponible</span>
                 )}
