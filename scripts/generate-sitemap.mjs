@@ -25,7 +25,8 @@ const staticUrls = [
   ['/cotiza-hosting', '0.8', 'weekly'],
   ['/ultimos-dominios', '0.9', 'hourly'], // Optimizado para crawleo frecuente
   ['/contacto', '0.7', 'monthly'],
-  ['/faq', '0.7', 'monthly']
+  ['/faq', '0.7', 'monthly'],
+  ['/asn', '0.7', 'weekly']
 ].map(([path, prio, freq]) => urlTag(`${ROOT}${path}`, prio, freq)).join('');
 
 /* ---------- páginas "VS" de proveedores -------------------------------- */

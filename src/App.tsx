@@ -31,6 +31,8 @@ import NotFound from './pages/NotFound';
 import TCOCalculatorPage from './pages/TCOCalculatorPage';
 import SEOOrganization from './components/SEOOrganization';
 import AcercaDe from './pages/AcercaDe';
+import ASNDirectory from './pages/ASNDirectory';
+import ASNDetail from './pages/ASNDetail';
 
 function App() {
   return (
@@ -75,6 +77,8 @@ function App() {
         <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
         <Route path="/acerca-de" element={<AcercaDe />} />
         <Route path="/sitemap" element={<Sitemap />} />
+        <Route path="/asn" element={<ASNDirectory />} />
+        <Route path="/asn/:asn" element={<ASNDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

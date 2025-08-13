@@ -1,0 +1,133 @@
+// Minimal ASN API wrapper using BGPView public API
+// Note: This is a client-side service; consider server-side caching later if needed.
+
+export interface ASNOverview {
+  asn: number;
+  name?: string;
+  description?: string;
+  country_code?: string;
+  prefixes_count?: number;
+  peers_count?: number;
+  rir_allocation?: string;
+  website?: string | null;
+}
+
+export interface ASNPrefix {
+  prefix: string; // e.g., "190.110.0.0/16" or "2a00:xxx/32"
+  description?: string | null;
+  country_code?: string | null;
+  parent?: string | null;
+}
+
+export interface ASNDetails {
+  overview: ASNOverview;
+  ipv4_prefixes: ASNPrefix[];
+  ipv6_prefixes: ASNPrefix[];
+  peers?: Array<{ asn: number; name?: string }>; // optional for future use
+}
+
+const BGPVIEW_BASE = 'https://api.bgpview.io';
+
+async function fetchJSON<T = any>(url: string): Promise<T> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`ASN API error ${res.status}`);
+  return res.json() as Promise<T>;
+}
+
+export function normalizeASN(input: string): number | null {
+  if (!input) return null;
+  const m = input.toUpperCase().match(/AS?(\d+)/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+export async function getASNOverview(asn: number): Promise<ASNOverview> {
+  const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/asn/${asn}`);
+  const d = json?.data || {};
+  return {
+    asn: d.asn ?? asn,
+    name: d.name ?? d.description_short ?? undefined,
+    description: d.description ?? d.description_short ?? undefined,
+    country_code: d.country_code ?? d.country ?? undefined,
+    prefixes_count: d.prefixes_count ?? d.total_prefixes ?? undefined,
+    peers_count: d.peers_count ?? undefined,
+    rir_allocation: d.rir_allocation ?? undefined,
+    website: d.website ?? null,
+  };
+}
+
+export async function getASNPrefixes(asn: number): Promise<{ ipv4_prefixes: ASNPrefix[]; ipv6_prefixes: ASNPrefix[] }> {
+  const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/asn/${asn}/prefixes`);
+  const d = json?.data || {};
+  const mapPrefix = (p: any): ASNPrefix => ({
+    prefix: p.prefix || p.cidr || p.ip || '',
+    description: p.name || p.description || null,
+    country_code: p.country_code || p.country || null,
+    parent: p.parent || null,
+  });
+  return {
+    ipv4_prefixes: Array.isArray(d.ipv4_prefixes) ? d.ipv4_prefixes.map(mapPrefix) : [],
+    ipv6_prefixes: Array.isArray(d.ipv6_prefixes) ? d.ipv6_prefixes.map(mapPrefix) : [],
+  };
+}
+
+export async function getASNPeers(asn: number): Promise<Array<{ asn: number; name?: string }>> {
+  try {
+    const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/asn/${asn}/peers`);
+    const d = json?.data || {};
+    const peers: Array<{ asn: number; name?: string }> = (d.ipv4_peers || []).concat(d.ipv6_peers || []).map((p: any) => ({
+      asn: p.asn || p.peer_asn,
+      name: p.name || p.peer_name,
+    }));
+    // Deduplicate by ASN
+    const seen = new Set<number>();
+    return peers.filter(pe => (seen.has(pe.asn) ? false : (seen.add(pe.asn), true)));
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function getASNDetails(asnInput: string): Promise<ASNDetails> {
+  const asn = normalizeASN(asnInput);
+  if (!asn) throw new Error('ASN inválido');
+
+  const [overview, prefixes, peers] = await Promise.all([
+    getASNOverview(asn),
+    getASNPrefixes(asn),
+    getASNPeers(asn),
+  ]);
+
+  return { overview, ipv4_prefixes: prefixes.ipv4_prefixes, ipv6_prefixes: prefixes.ipv6_prefixes, peers };
+}
+
+export interface ASNSearchResult {
+  asn: number;
+  name?: string;
+  description?: string;
+  country_code?: string;
+}
+
+export async function searchASN(query: string): Promise<ASNSearchResult[]> {
+  if (!query || query.trim().length < 2) return [];
+  const q = encodeURIComponent(query.trim());
+  const json = await fetchJSON<{ status: string; data: any }>(`${BGPVIEW_BASE}/search?query_term=${q}`);
+  const asns = json?.data?.asns || [];
+  return asns.map((a: any) => ({
+    asn: a.asn,
+    name: a.name || a.description_short,
+    description: a.description || a.description_long,
+    country_code: a.country_code || a.country,
+  }));
+}
+
+export function estimatePrefixSize(prefix: string): number {
+  // Simple estimation for IPv4 only; IPv6 is large; we can rank by CIDR.
+  try {
+    const [ip, maskStr] = prefix.split('/');
+    const mask = parseInt(maskStr, 10);
+    if (ip.includes(':')) return 0; // ignore IPv6 for size chart
+    const size = Math.pow(2, 32 - mask);
+    return size;
+  } catch {
+    return 0;
+  }
+}

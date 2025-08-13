@@ -96,6 +96,15 @@ const Navbar = () => {
             Últimos dominios
           </NavLink>
           
+          <NavLink 
+            to="/asn" 
+            className={({ isActive }) => 
+              `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2`
+            }
+          >
+            <Globe className="h-4 w-4 mr-1" />
+            Mapa ASN
+          </NavLink>
           {/* Dropdown Menu for "Guías" */}
           <DropdownMenu open={isGuideMenuOpen} onOpenChange={setIsGuideMenuOpen}>
             <DropdownMenuTrigger asChild>
@@ -263,6 +272,15 @@ const Navbar = () => {
                   Últimos dominios
                 </NavLink>
                 
+                <NavLink 
+                  to="/asn" 
+                  className={({ isActive }) => 
+                    `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                  }
+                >
+                  <Globe className="h-5 w-5 mr-2" />
+                  Mapa ASN
+                </NavLink>
                 <div className="pt-2 pb-2">
                   <h3 className="font-medium text-sm text-gray-500 uppercase mb-3">Guías</h3>
                   <div className="pl-2 flex flex-col space-y-3">
