@@ -24,6 +24,30 @@ serve(async (req) => {
     }
 
     const res = await fetch(`${BGPVIEW_BASE}${endpoint}`);
+    
+    if (!res.ok) {
+      console.error(`BGPView API error: ${res.status} ${res.statusText}`);
+      return new Response(JSON.stringify({ 
+        error: `BGPView API unavailable (${res.status})`,
+        details: `Failed to fetch data from BGPView API`
+      }), {
+        status: 502,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const contentType = res.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      console.error(`BGPView returned unexpected content type: ${contentType}`);
+      return new Response(JSON.stringify({ 
+        error: 'BGPView API error',
+        details: 'API returned invalid response format'
+      }), {
+        status: 502,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const body = await res.json();
 
     return new Response(JSON.stringify(body), {
