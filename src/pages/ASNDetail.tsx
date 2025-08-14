@@ -1,3 +1,4 @@
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -71,6 +72,14 @@ const ASNDetail: React.FC = () => {
     .slice(0, 10);
     return rows;
   }, [data]);
+
+  // Helper function to safely get RIR allocation display
+  const getRirDisplay = (rir: any): string => {
+    if (!rir) return 'N/A';
+    if (typeof rir === 'string') return rir;
+    if (typeof rir === 'number') return rir.toString();
+    return 'N/A';
+  };
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -146,7 +155,7 @@ const ASNDetail: React.FC = () => {
                   )}
                   <Badge variant="outline" className="gap-1">
                     <Database className="h-3 w-3" />
-                    RIR: {data.overview.rir_allocation ? String(data.overview.rir_allocation) : 'N/A'}
+                    RIR: {getRirDisplay(data.overview.rir_allocation)}
                   </Badge>
                   <Badge variant="outline" className="gap-1">
                     <Network className="h-3 w-3" />
