@@ -38,6 +38,19 @@ const knownHostingASNs: HostingASNMapping[] = [
     asnNumber: 'AS263702',
     hostingCompany: 'Grupo ZGH SPA',
     companyRating: 2.8
+  },
+  {
+    asnNumber: 'AS270205',
+    hostingCompany: 'EcoHosting',
+    companyLogo: '/logo-ecohosting.svg',
+    companyRating: 3.8,
+    companyUrl: 'https://www.ecohosting.cl'
+  },
+  {
+    asnNumber: 'AS270206',
+    hostingCompany: 'PlusChile',
+    companyRating: 3.5,
+    companyUrl: 'https://www.pluschile.cl'
   }
 ];
 
