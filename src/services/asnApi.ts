@@ -1,7 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 
-// Minimal ASN API wrapper using BGPView public API
-// Note: This is a client-side service; consider server-side caching later if needed.
+// ASN API wrapper with database caching for faster performance
 
 export interface ASNOverview {
   asn: number;
@@ -56,9 +55,36 @@ export function normalizeASN(input: string): number | null {
 }
 
 export async function getASNOverview(asn: number): Promise<ASNOverview> {
+  try {
+    // Check cache first
+    const { data: cachedData } = await supabase
+      .from('asn_data_cache')
+      .select('*')
+      .eq('asn', asn)
+      .gt('expires_at', new Date().toISOString())
+      .single();
+    
+    if (cachedData) {
+      console.log(`ASN data cache hit for: AS${asn}`);
+      return {
+        asn: cachedData.asn,
+        name: cachedData.name || undefined,
+        description: cachedData.description || undefined,
+        country_code: cachedData.country_code || undefined,
+        prefixes_count: cachedData.prefixes_count || undefined,
+        peers_count: cachedData.peers_count || undefined,
+        rir_allocation: cachedData.rir_allocation || undefined,
+        website: cachedData.website || null,
+      };
+    }
+  } catch (error) {
+    console.log(`ASN data cache miss for: AS${asn}`);
+  }
+  
+  // Cache miss or expired, fetch from API
   const json = await fetchBGViewJSON<{ status: string; data: any }>(`/asn/${asn}`);
   const d = json?.data || {};
-  return {
+  const overview: ASNOverview = {
     asn: d.asn ?? asn,
     name: d.name ?? d.description_short ?? undefined,
     description: d.description ?? d.description_short ?? undefined,
@@ -68,6 +94,29 @@ export async function getASNOverview(asn: number): Promise<ASNOverview> {
     rir_allocation: d.rir_allocation ?? undefined,
     website: d.website ?? null,
   };
+  
+  // Cache the data
+  try {
+    await supabase
+      .from('asn_data_cache')
+      .upsert({
+        asn: overview.asn,
+        name: overview.name,
+        description: overview.description,
+        country_code: overview.country_code,
+        prefixes_count: overview.prefixes_count,
+        peers_count: overview.peers_count,
+        rir_allocation: overview.rir_allocation,
+        website: overview.website,
+        cached_at: new Date().toISOString(),
+        expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+      });
+    console.log(`Cached ASN data for: AS${asn}`);
+  } catch (error) {
+    console.warn('Failed to cache ASN data:', error);
+  }
+  
+  return overview;
 }
 
 export async function getASNPrefixes(asn: number): Promise<{ ipv4_prefixes: ASNPrefix[]; ipv6_prefixes: ASNPrefix[] }> {
@@ -123,15 +172,53 @@ export interface ASNSearchResult {
 
 export async function searchASN(query: string): Promise<ASNSearchResult[]> {
   if (!query || query.trim().length < 2) return [];
+  
+  const searchTerm = query.trim().toLowerCase();
+  
+  try {
+    // Check cache first
+    const { data: cachedResult } = await supabase
+      .from('asn_search_cache')
+      .select('results, expires_at')
+      .eq('search_term', searchTerm)
+      .gt('expires_at', new Date().toISOString())
+      .single();
+    
+    if (cachedResult) {
+      console.log(`ASN search cache hit for: ${searchTerm}`);
+      return cachedResult.results as any as ASNSearchResult[];
+    }
+  } catch (error) {
+    console.log(`ASN search cache miss for: ${searchTerm}`);
+  }
+  
+  // Cache miss or expired, fetch from API
   const q = encodeURIComponent(query.trim());
   const json = await fetchBGViewJSON<{ status: string; data: any }>(`/search?query_term=${q}`);
   const asns = json?.data?.asns || [];
-  return asns.map((a: any) => ({
+  const results: ASNSearchResult[] = asns.map((a: any) => ({
     asn: a.asn,
     name: a.name || a.description_short,
     description: a.description || a.description_long,
     country_code: a.country_code || a.country,
   }));
+  
+  // Cache the results
+  try {
+    await supabase
+      .from('asn_search_cache')
+      .upsert({
+        search_term: searchTerm,
+        results: results as any,
+        cached_at: new Date().toISOString(),
+        expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days
+      });
+    console.log(`Cached ASN search results for: ${searchTerm}`);
+  } catch (error) {
+    console.warn('Failed to cache ASN search results:', error);
+  }
+  
+  return results;
 }
 
 export function estimatePrefixSize(prefix: string): number {

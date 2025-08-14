@@ -14,6 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      asn_data_cache: {
+        Row: {
+          asn: number
+          cached_at: string | null
+          country_code: string | null
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          ipv4_prefixes: Json | null
+          ipv6_prefixes: Json | null
+          name: string | null
+          peers: Json | null
+          peers_count: number | null
+          prefixes_count: number | null
+          rir_allocation: string | null
+          website: string | null
+        }
+        Insert: {
+          asn: number
+          cached_at?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          ipv4_prefixes?: Json | null
+          ipv6_prefixes?: Json | null
+          name?: string | null
+          peers?: Json | null
+          peers_count?: number | null
+          prefixes_count?: number | null
+          rir_allocation?: string | null
+          website?: string | null
+        }
+        Update: {
+          asn?: number
+          cached_at?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          ipv4_prefixes?: Json | null
+          ipv6_prefixes?: Json | null
+          name?: string | null
+          peers?: Json | null
+          peers_count?: number | null
+          prefixes_count?: number | null
+          rir_allocation?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      asn_search_cache: {
+        Row: {
+          cached_at: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          results: Json
+          search_term: string
+        }
+        Insert: {
+          cached_at?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          results: Json
+          search_term: string
+        }
+        Update: {
+          cached_at?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          results?: Json
+          search_term?: string
+        }
+        Relationships: []
+      }
       contact_history: {
         Row: {
           contact_date: string

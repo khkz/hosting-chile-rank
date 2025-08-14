@@ -17,29 +17,37 @@ const ASNChile: React.FC = () => {
     const loadChileanASNs = async () => {
       setLoading(true);
       try {
-        // Search for common Chilean providers
+        // Search for common Chilean providers with parallel requests for better performance
         const chileanProviders = [
           'chile', 'claro', 'entel', 'movistar', 'vtr', 'gtd', 'mundo', 'tie', 'netline',
           'hosting.cl', 'netuno', 'rdc', 'redvoiss', 'solucionhost', 'hostingplus',
           'ecohosting', 'pluschile', 'webhost', 'gigas'
         ];
         
-        const allResults: ASNSearchResult[] = [];
+        console.log('🚀 Starting ASN search with caching...');
+        const startTime = Date.now();
         
-        for (const provider of chileanProviders) {
+        // Make all searches in parallel for much better performance
+        const searchPromises = chileanProviders.map(async (provider) => {
           try {
             const results = await searchASN(provider);
             // Filter Chilean ASNs
             const filtered = results.filter(r => 
               r.country_code === 'CL' || 
               isChileanASN(`AS${r.asn}`) ||
-              (r.name && /chile|claro|entel|movistar|vtr|gtd/i.test(r.name))
+              (r.name && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile/i.test(r.name))
             );
-            allResults.push(...filtered);
+            return filtered;
           } catch (e) {
             console.warn(`Error searching for ${provider}:`, e);
+            return [];
           }
-        }
+        });
+        
+        const allResultArrays = await Promise.all(searchPromises);
+        const allResults: ASNSearchResult[] = allResultArrays.flat();
+        
+        console.log(`✅ ASN searches completed in ${Date.now() - startTime}ms`);
 
         // Remove duplicates and sort by ASN
         const uniqueASNs = allResults.filter((asn, index, arr) => 
@@ -47,6 +55,7 @@ const ASNChile: React.FC = () => {
         ).sort((a, b) => a.asn - b.asn);
 
         setChileanASNs(uniqueASNs);
+        console.log(`📊 Total unique Chilean ASNs found: ${uniqueASNs.length}`);
       } catch (e) {
         console.error('Error loading Chilean ASNs:', e);
       } finally {
