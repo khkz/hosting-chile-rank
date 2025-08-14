@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -157,7 +157,15 @@ export type Database = {
           traffic_estimate?: number | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "domain_analysis_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       domain_categories: {
         Row: {
@@ -193,7 +201,15 @@ export type Database = {
           subcategory?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "domain_categories_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       domain_trends: {
         Row: {
@@ -257,6 +273,53 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      job_boards_data: {
+        Row: {
+          created_at: string | null
+          domain_id: string
+          id: string
+          platforms_searched: string[] | null
+          platforms_with_presence: number | null
+          results: Json | null
+          scraped_at: string | null
+          search_term: string | null
+          total_jobs_found: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          domain_id: string
+          id?: string
+          platforms_searched?: string[] | null
+          platforms_with_presence?: number | null
+          results?: Json | null
+          scraped_at?: string | null
+          search_term?: string | null
+          total_jobs_found?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          domain_id?: string
+          id?: string
+          platforms_searched?: string[] | null
+          platforms_with_presence?: number | null
+          results?: Json | null
+          scraped_at?: string | null
+          search_term?: string | null
+          total_jobs_found?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_boards_data_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: true
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       performance_metrics: {
         Row: {
@@ -328,6 +391,59 @@ export type Database = {
           username?: string | null
         }
         Relationships: []
+      }
+      sii_data: {
+        Row: {
+          business_activity: string | null
+          company_name: string | null
+          created_at: string | null
+          domain_id: string
+          found_in_sii: boolean | null
+          id: string
+          rut_found: string | null
+          scraped_at: string | null
+          search_details: Json | null
+          search_method: string | null
+          search_term: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          business_activity?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          domain_id: string
+          found_in_sii?: boolean | null
+          id?: string
+          rut_found?: string | null
+          scraped_at?: string | null
+          search_details?: Json | null
+          search_method?: string | null
+          search_term?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          business_activity?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          domain_id?: string
+          found_in_sii?: boolean | null
+          id?: string
+          rut_found?: string | null
+          scraped_at?: string | null
+          search_details?: Json | null
+          search_method?: string | null
+          search_term?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sii_data_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: true
+            referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       ssl_info: {
         Row: {
@@ -505,7 +621,21 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_domains: {
+        Row: {
+          analyzed_at: string | null
+          business_type: string | null
+          cms_detected: string | null
+          country_location: string | null
+          domain: string | null
+          framework_detected: string | null
+          hosting_provider: string | null
+          is_active: boolean | null
+          source: string | null
+          timestamp: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
