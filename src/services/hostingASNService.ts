@@ -37,8 +37,7 @@ const knownHostingASNs: HostingASNMapping[] = [
   {
     asnNumber: 'AS263702',
     hostingCompany: 'Grupo ZGH SPA',
-    companyLogo: '/logo-ecohosting.svg',
-    companyRating: 4.0
+    companyRating: 2.8
   }
 ];
 
