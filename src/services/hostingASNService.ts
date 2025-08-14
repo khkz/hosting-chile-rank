@@ -1,3 +1,4 @@
+
 /**
  * Service to connect ASN data with hosting company information
  */
@@ -35,7 +36,7 @@ const knownHostingASNs: HostingASNMapping[] = [
   },
   {
     asnNumber: 'AS263702',
-    hostingCompany: 'Grupo ZGH (EcoHosting)',
+    hostingCompany: 'Grupo ZGH SPA',
     companyLogo: '/logo-ecohosting.svg',
     companyRating: 4.0
   }
