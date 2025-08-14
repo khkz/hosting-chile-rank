@@ -145,9 +145,7 @@ const ASNDetail: React.FC = () => {
                   {data.overview.rir_allocation && (
                     <Badge variant="outline" className="gap-1">
                       <Database className="h-3 w-3" />
-                      RIR: {typeof data.overview.rir_allocation === 'object' 
-                        ? (data.overview.rir_allocation as any)?.rir_name || 'N/A'
-                        : data.overview.rir_allocation}
+                      RIR: {data.overview.rir_allocation || 'N/A'}
                     </Badge>
                   )}
                   <Badge variant="outline" className="gap-1">
