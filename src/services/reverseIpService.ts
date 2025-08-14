@@ -28,30 +28,26 @@ function isPrefixWorthLookup(prefix: string): boolean {
   return maskNum >= 24 && maskNum <= 30;
 }
 
-// Fetch reverse IP data from ViewDNS.info (free API)
+// Fetch reverse IP data using Supabase Edge Function proxy
 async function fetchReverseIpFromAPI(ip: string): Promise<ReverseIpResult[]> {
   try {
-    // Using ViewDNS.info reverse IP API (free tier)
-    const response = await fetch(`https://viewdns.info/reverseip/?host=${ip}&t=1&output=json`);
-    
-    if (!response.ok) {
-      console.warn(`ViewDNS API error: ${response.status}`);
+    const { data, error } = await supabase.functions.invoke('reverse-ip-proxy', {
+      body: { ip }
+    });
+
+    if (error) {
+      console.error('Edge function error:', error);
       return [];
     }
-    
-    const data = await response.json();
-    
-    if (data.query && data.query.host_list) {
-      return data.query.host_list.map((host: any) => ({
-        domain: host.name,
-        ip: ip,
-        type: 'website'
-      }));
+
+    if (data && data.domains) {
+      console.log(`Found ${data.domains.length} domains for IP ${ip}`);
+      return data.domains;
     }
     
     return [];
   } catch (error) {
-    console.error('Error fetching reverse IP data:', error);
+    console.error('Error calling reverse IP proxy:', error);
     return [];
   }
 }
