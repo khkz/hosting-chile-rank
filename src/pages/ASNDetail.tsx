@@ -76,8 +76,29 @@ const ASNDetail: React.FC = () => {
   // Helper function to safely get RIR allocation display
   const getRirDisplay = (rir: any): string => {
     if (!rir) return 'N/A';
-    if (typeof rir === 'string') return rir;
+    
+    // If it's already an object, extract rir_name
+    if (typeof rir === 'object' && rir.rir_name) {
+      return rir.rir_name;
+    }
+    
+    // If it's a string, check if it's JSON
+    if (typeof rir === 'string') {
+      // Try to parse as JSON to extract rir_name
+      try {
+        const parsed = JSON.parse(rir);
+        if (parsed && parsed.rir_name) {
+          return parsed.rir_name;
+        }
+      } catch (e) {
+        // If parsing fails, return the string as-is (simple string)
+        return rir;
+      }
+    }
+    
+    // If it's a number, convert to string
     if (typeof rir === 'number') return rir.toString();
+    
     return 'N/A';
   };
 
