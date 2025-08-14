@@ -20,7 +20,8 @@ const ASNChile: React.FC = () => {
         // Search for common Chilean providers
         const chileanProviders = [
           'chile', 'claro', 'entel', 'movistar', 'vtr', 'gtd', 'mundo', 'tie', 'netline',
-          'hosting.cl', 'netuno', 'rdc', 'redvoiss', 'solucionhost', 'hostingplus'
+          'hosting.cl', 'netuno', 'rdc', 'redvoiss', 'solucionhost', 'hostingplus',
+          'ecohosting', 'pluschile', 'webhost', 'gigas'
         ];
         
         const allResults: ASNSearchResult[] = [];
