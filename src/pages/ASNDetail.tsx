@@ -13,6 +13,7 @@ import { Loader2, ExternalLink, MapPin, Calendar, Database, Network, Building, G
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { isChileanASN } from '@/utils/ipDetection';
 import { getHostingCompanyFromASN, classifyASN, isHostingASN } from '@/services/hostingASNService';
+import { ReverseIpLookup } from '@/components/ReverseIpLookup';
 
 const ASNDetail: React.FC = () => {
   const { asn: asnParam } = useParams();
@@ -294,6 +295,7 @@ const ASNDetail: React.FC = () => {
                         <TableHead>Prefijo</TableHead>
                         <TableHead>Descripción</TableHead>
                         <TableHead>País</TableHead>
+                        <TableHead>Sitios Web</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -302,6 +304,9 @@ const ASNDetail: React.FC = () => {
                           <TableCell>{p.prefix}</TableCell>
                           <TableCell className="max-w-[480px] truncate" title={p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}>{p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : '-'}</TableCell>
                           <TableCell>{p.country_code || '-'}</TableCell>
+                          <TableCell>
+                            <ReverseIpLookup prefix={p.prefix} />
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -325,6 +330,7 @@ const ASNDetail: React.FC = () => {
                         <TableHead>Prefijo</TableHead>
                         <TableHead>Descripción</TableHead>
                         <TableHead>País</TableHead>
+                        <TableHead>Sitios Web</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -333,6 +339,9 @@ const ASNDetail: React.FC = () => {
                           <TableCell>{p.prefix}</TableCell>
                           <TableCell className="max-w-[480px] truncate" title={p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}>{p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : '-'}</TableCell>
                           <TableCell>{p.country_code || '-'}</TableCell>
+                          <TableCell>
+                            <ReverseIpLookup prefix={p.prefix} />
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

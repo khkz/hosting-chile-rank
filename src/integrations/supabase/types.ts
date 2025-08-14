@@ -470,6 +470,36 @@ export type Database = {
         }
         Relationships: []
       }
+      reverse_ip_cache: {
+        Row: {
+          cached_at: string | null
+          created_at: string | null
+          domain_count: number | null
+          domains: Json
+          expires_at: string | null
+          id: string
+          ip_prefix: string
+        }
+        Insert: {
+          cached_at?: string | null
+          created_at?: string | null
+          domain_count?: number | null
+          domains?: Json
+          expires_at?: string | null
+          id?: string
+          ip_prefix: string
+        }
+        Update: {
+          cached_at?: string | null
+          created_at?: string | null
+          domain_count?: number | null
+          domains?: Json
+          expires_at?: string | null
+          id?: string
+          ip_prefix?: string
+        }
+        Relationships: []
+      }
       sii_data: {
         Row: {
           business_activity: string | null
