@@ -31,11 +31,12 @@ const ASNChile: React.FC = () => {
         const searchPromises = chileanProviders.map(async (provider) => {
           try {
             const results = await searchASN(provider);
-            // Filter Chilean ASNs
+            // Filter Chilean ASNs with more inclusive criteria
             const filtered = results.filter(r => 
               r.country_code === 'CL' || 
               isChileanASN(`AS${r.asn}`) ||
-              (r.name && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile/i.test(r.name))
+              (r.name && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile|hosting\.cl/i.test(r.name)) ||
+              (r.description && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile/i.test(r.description))
             );
             return filtered;
           } catch (e) {
@@ -66,46 +67,51 @@ const ASNChile: React.FC = () => {
     loadChileanASNs();
   }, []);
 
-  // Categorize ASNs by type
+  // Categorize ASNs by type with more inclusive patterns
   const categorizedASNs = {
     telecom: chileanASNs.filter(asn => 
-      asn.name && /claro|entel|movistar|vtr|wom|virgin|simple/i.test(asn.name)
+      asn.name && /claro|entel|movistar|vtr|wom|virgin|simple|telefon|telecom|movil/i.test(asn.name)
     ),
     hosting: chileanASNs.filter(asn => 
-      asn.name && /hosting|host|server|datacenter|cloud|netuno|solucion/i.test(asn.name)
+      asn.name && /hosting|host|server|datacenter|cloud|netuno|solucion|eco.*host|plus.*chile|webhost|gigas/i.test(asn.name)
     ),
     isp: chileanASNs.filter(asn => 
-      asn.name && /gtd|mundo|tie|netline|rdc|redvoiss|internet/i.test(asn.name) &&
+      asn.name && /gtd|mundo|tie|netline|rdc|redvoiss|internet|isp|provider|banda|fibra/i.test(asn.name) &&
       !/hosting|host|server|datacenter|cloud/i.test(asn.name)
     ),
     others: chileanASNs.filter(asn => {
       const name = asn.name || '';
+      const desc = asn.description || '';
       return !(
-        /claro|entel|movistar|vtr|wom|virgin|simple/i.test(name) ||
-        /hosting|host|server|datacenter|cloud|netuno|solucion/i.test(name) ||
-        (/gtd|mundo|tie|netline|rdc|redvoiss|internet/i.test(name) && !/hosting|host|server|datacenter|cloud/i.test(name))
-      );
+        /claro|entel|movistar|vtr|wom|virgin|simple|telefon|telecom|movil/i.test(name) ||
+        /hosting|host|server|datacenter|cloud|netuno|solucion|eco.*host|plus.*chile|webhost|gigas/i.test(name) ||
+        (/gtd|mundo|tie|netline|rdc|redvoiss|internet|isp|provider|banda|fibra/i.test(name) && !/hosting|host|server|datacenter|cloud/i.test(name))
+      ) && (name.includes('chile') || desc.includes('chile') || asn.country_code === 'CL');
     })
   };
 
   const renderASNCard = (asn: ASNSearchResult) => (
     <Card key={asn.asn} className="hover:shadow-md transition-shadow">
-      <CardHeader>
+      <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Link to={`/asn/AS${asn.asn}`} className="hover:underline">
-            AS{asn.asn} {asn.name}
+            AS{asn.asn}
           </Link>
           <Badge variant="secondary" className="gap-1">
             <MapPin className="h-3 w-3" />
             🇨🇱
           </Badge>
         </CardTitle>
+        <p className="text-sm font-medium text-foreground">{asn.name || 'Sin nombre'}</p>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">{asn.description || 'Proveedor chileno'}</p>
-        {asn.country_code && (
-          <p className="text-xs mt-2 text-blue-600">País: {asn.country_code}</p>
-        )}
+      <CardContent className="pt-0">
+        <p className="text-sm text-muted-foreground mb-3">{asn.description || 'Proveedor chileno'}</p>
+        <div className="flex flex-wrap gap-2 text-xs">
+          {asn.country_code && (
+            <Badge variant="outline">País: {asn.country_code}</Badge>
+          )}
+          <Badge variant="outline">ASN: {asn.asn}</Badge>
+        </div>
       </CardContent>
     </Card>
   );
@@ -174,8 +180,8 @@ const ASNChile: React.FC = () => {
           <Network className="h-6 w-6 text-green-600" />
           Telecomunicaciones
         </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {categorizedASNs.telecom.slice(0, 12).map(renderASNCard)}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {categorizedASNs.telecom.slice(0, 24).map(renderASNCard)}
         </div>
       </section>
 
@@ -185,8 +191,8 @@ const ASNChile: React.FC = () => {
           <Building className="h-6 w-6 text-purple-600" />
           Hosting y Servidores
         </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {categorizedASNs.hosting.slice(0, 12).map(renderASNCard)}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {categorizedASNs.hosting.slice(0, 24).map(renderASNCard)}
         </div>
       </section>
 
@@ -196,8 +202,8 @@ const ASNChile: React.FC = () => {
           <Network className="h-6 w-6 text-orange-600" />
           Proveedores de Internet (ISP)
         </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {categorizedASNs.isp.slice(0, 12).map(renderASNCard)}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {categorizedASNs.isp.slice(0, 24).map(renderASNCard)}
         </div>
       </section>
 
@@ -205,8 +211,8 @@ const ASNChile: React.FC = () => {
       {categorizedASNs.others.length > 0 && (
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Otros Proveedores</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {categorizedASNs.others.slice(0, 12).map(renderASNCard)}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {categorizedASNs.others.slice(0, 24).map(renderASNCard)}
           </div>
         </section>
       )}
