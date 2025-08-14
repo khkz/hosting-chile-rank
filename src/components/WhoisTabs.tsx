@@ -140,7 +140,7 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                     href={`/asn/${data.basic.asn}`}
                     className="ml-2 text-primary hover:text-primary/80 underline font-medium"
                   >
-                    AS{data.basic.asn}
+                    {data.basic.asn}
                   </a>
                 ) : (
                   <span className="ml-2">No disponible</span>
