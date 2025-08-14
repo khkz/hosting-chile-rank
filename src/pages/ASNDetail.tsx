@@ -40,6 +40,8 @@ const ASNDetail: React.FC = () => {
       setError(null);
       try {
         const res = await getASNDetails(asnParam);
+        console.log('ASN Data loaded:', res);
+        console.log('RIR Allocation value:', res.overview.rir_allocation, 'Type:', typeof res.overview.rir_allocation);
         setData(res);
       } catch (e: any) {
         setError(e?.message || 'Error al cargar datos del ASN');
@@ -142,12 +144,10 @@ const ASNDetail: React.FC = () => {
                       {data.overview.country_code}
                     </Badge>
                   )}
-                  {data.overview.rir_allocation && (
-                    <Badge variant="outline" className="gap-1">
-                      <Database className="h-3 w-3" />
-                      RIR: {data.overview.rir_allocation || 'N/A'}
-                    </Badge>
-                  )}
+                  <Badge variant="outline" className="gap-1">
+                    <Database className="h-3 w-3" />
+                    RIR: {data.overview.rir_allocation ? String(data.overview.rir_allocation) : 'N/A'}
+                  </Badge>
                   <Badge variant="outline" className="gap-1">
                     <Network className="h-3 w-3" />
                     {data.ipv4_prefixes.length} IPv4 + {data.ipv6_prefixes.length} IPv6
