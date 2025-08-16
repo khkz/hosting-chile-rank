@@ -104,8 +104,11 @@ export function ReverseIpLookup({ prefix }: ReverseIpLookupProps) {
             </CardContent>
           </Card>
         ) : (
-          <div className="text-xs text-muted-foreground">
-            No se encontraron sitios web en este rango de IPs
+          <div className="text-xs text-muted-foreground space-y-1">
+            <div>No se encontraron sitios web en este rango de IPs</div>
+            <div className="text-xs opacity-75">
+              Es posible que estas IPs no tengan sitios web activos o sean utilizadas para otros servicios de red.
+            </div>
           </div>
         )}
       </CollapsibleContent>
