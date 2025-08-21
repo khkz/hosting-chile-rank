@@ -729,21 +729,7 @@ export type Database = {
       }
     }
     Views: {
-      public_domains: {
-        Row: {
-          analyzed_at: string | null
-          business_type: string | null
-          cms_detected: string | null
-          country_location: string | null
-          domain: string | null
-          framework_detected: string | null
-          hosting_provider: string | null
-          is_active: boolean | null
-          source: string | null
-          timestamp: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       get_public_domains: {
