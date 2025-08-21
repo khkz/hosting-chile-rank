@@ -746,7 +746,21 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      get_public_domains: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          analyzed_at: string
+          business_type: string
+          cms_detected: string
+          country_location: string
+          domain: string
+          framework_detected: string
+          hosting_provider: string
+          is_active: boolean
+          source: string
+          timestamp: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
