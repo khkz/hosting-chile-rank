@@ -6,14 +6,40 @@ const SEOOrganization: React.FC = () => {
     "@type": "Organization",
     name: "EligeTuHosting",
     url: "https://eligetuhosting.cl",
-    logo: "https://eligetuhosting.cl/favicon-logo.svg",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://eligetuhosting.cl/favicon-logo.svg",
+      width: "512",
+      height: "512"
+    },
+    foundingDate: "2020",
+    areaServed: {
+      "@type": "Country",
+      name: "Chile"
+    },
+    sameAs: [
+      "https://twitter.com/eligetuhosting",
+      "https://facebook.com/eligetuhosting",
+      "https://linkedin.com/company/eligetuhosting"
+    ],
     contactPoint: [{
       "@type": "ContactPoint",
       email: "contacto@eligetuhosting.cl",
+      telephone: "+56912345678",
       contactType: "customer support",
       areaServed: "CL",
       availableLanguage: ["es"]
-    }]
+    }],
+    publisher: {
+      "@type": "Organization",
+      name: "EligeTuHosting",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://eligetuhosting.cl/favicon-logo.svg",
+        width: "512",
+        height: "512"
+      }
+    }
   };
 
   const site = {

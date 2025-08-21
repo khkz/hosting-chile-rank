@@ -365,6 +365,41 @@ const BlogPost = () => {
           name="description" 
           content={post.excerpt} 
         />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": post.title,
+            "description": post.excerpt,
+            "image": `https://eligetuhosting.cl${post.image}`,
+            "datePublished": new Date().toISOString(),
+            "dateModified": new Date().toISOString(),
+            "author": {
+              "@type": "Person",
+              "name": post.author,
+              "jobTitle": post.authorPosition
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "EligeTuHosting.cl",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://eligetuhosting.cl/favicon-logo.svg",
+                "width": "512",
+                "height": "512"
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://eligetuhosting.cl/blog/${slug || 'default'}`
+            },
+            "articleSection": post.category,
+            "wordCount": post.content.split(' ').length,
+            "timeRequired": post.readTime,
+            "about": ["hosting", "chile", "tecnología web", "servidores"],
+            "inLanguage": "es"
+          })}
+        </script>
       </Helmet>
       
       <Navbar />

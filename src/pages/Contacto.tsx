@@ -82,6 +82,20 @@ const Contacto = () => {
           name="description" 
           content="Contáctanos para resolver tus dudas sobre hosting en Chile. Estamos aquí para ayudarte a encontrar el mejor servicio para tu sitio web." 
         />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "mainEntity": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "email": "contacto@eligetuhosting.cl",
+              "telephone": "+56912345678",
+              "areaServed": "CL",
+              "availableLanguage": ["Spanish"]
+            }
+          })}
+        </script>
       </Helmet>
       
       <Navbar />

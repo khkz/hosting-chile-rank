@@ -10,6 +10,19 @@ const AcercaDe: React.FC = () => {
         <title>Acerca de | EligeTuHosting.cl</title>
         <meta name="description" content="Quiénes somos, nuestra metodología y principios de transparencia para recomendar el mejor hosting en Chile." />
         <link rel="canonical" href="https://eligetuhosting.cl/acerca-de" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            "mainEntity": {
+              "@type": "Organization",
+              "name": "EligeTuHosting",
+              "description": "Evaluamos proveedores de hosting en Chile desde 2020 con pruebas técnicas y políticas de transparencia",
+              "foundingDate": "2020",
+              "areaServed": "Chile"
+            }
+          })}
+        </script>
       </Helmet>
       <Navbar />
       <main className="container mx-auto px-4 py-12 max-w-3xl">

@@ -56,7 +56,9 @@ const WhoisDomain = () => {
         "name": "eligetuhosting.cl",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://eligetuhosting.cl/logo.png"
+          "url": "https://eligetuhosting.cl/favicon-logo.svg",
+          "width": "512",
+          "height": "512"
         }
       },
       "datePublished": new Date().toISOString(),
@@ -65,6 +67,11 @@ const WhoisDomain = () => {
         "@type": "WebSite",
         "name": domainName,
         "url": `https://${domainName}`
+      },
+      "isBasedOn": {
+        "@type": "Dataset",
+        "name": "NIC Chile WHOIS Database",
+        "url": "https://www.nic.cl"
       },
       "technicalSpecifications": {
         "ip": domainData.basic.ip,

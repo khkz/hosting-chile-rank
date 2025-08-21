@@ -254,6 +254,35 @@ const UltimosDominios = () => {
         <meta property="og:url" content="https://eligetuhosting.cl/ultimos-dominios/" />
         <link rel="canonical" href="https://eligetuhosting.cl/ultimos-dominios/" />
         {!isLoading && domains.length > 0 && <script type="application/ld+json">{generateSchemaData()}</script>}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Dataset",
+            "name": "Dominios .cl registrados en Chile",
+            "description": "Dataset público de los últimos dominios .cl registrados en NIC Chile, actualizado en tiempo real",
+            "url": "https://eligetuhosting.cl/ultimos-dominios/",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "creator": {
+              "@type": "Organization",
+              "name": "EligeTuHosting.cl"
+            },
+            "distribution": [{
+              "@type": "DataDownload",
+              "encodingFormat": "application/json",
+              "contentUrl": "https://eligetuhosting.cl/data/latest.json"
+            }, {
+              "@type": "DataDownload", 
+              "encodingFormat": "application/xml",
+              "contentUrl": "https://eligetuhosting.cl/feeds/latest-domains.xml"
+            }],
+            "temporalCoverage": "2025/2025",
+            "spatialCoverage": {
+              "@type": "Place",
+              "name": "Chile"
+            },
+            "keywords": ["dominios", "chile", "nic", "registros", "hosting"]
+          })}
+        </script>
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Últimos dominios registrados en Chile — eligetuhosting.cl" />
         <meta name="twitter:description" content="Lista actualizada de los últimos dominios .cl registrados. Encuentra los sitios web más recientes de Chile." />
@@ -334,6 +363,37 @@ const UltimosDominios = () => {
         </Card>
         
         <UltimasBusquedas />
+
+        {/* TL;DR Summary for domain data */}
+        {!isLoading && domains.length > 0 && (
+          <div className="mb-8">
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6">
+              <h2 className="text-xl font-bold text-green-900 mb-4 flex items-center gap-2">
+                📊 Resumen de datos
+              </h2>
+              <div className="grid md:grid-cols-3 gap-4 mb-4">
+                <div className="bg-white/60 p-4 rounded-lg text-center">
+                  <div className="text-2xl font-bold text-green-900">{domains.length}</div>
+                  <div className="text-sm text-green-700">Dominios registrados</div>
+                </div>
+                <div className="bg-white/60 p-4 rounded-lg text-center">
+                  <div className="text-2xl font-bold text-green-900">24h</div>
+                  <div className="text-sm text-green-700">Período de datos</div>
+                </div>
+                <div className="bg-white/60 p-4 rounded-lg text-center">
+                  <div className="text-2xl font-bold text-green-900">100%</div>
+                  <div className="text-sm text-green-700">Datos públicos</div>
+                </div>
+              </div>
+              <div className="text-sm text-green-800">
+                <strong>Fuentes:</strong> NIC Chile (registro oficial de dominios .cl), 
+                <a href="https://www.nic.cl" target="_blank" rel="noopener noreferrer" className="underline ml-1">
+                  nic.cl
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Domain list filter */}
         {!isLoading && domains.length > 0 && (

@@ -1,0 +1,18 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Últimos dominios registrados en Chile",
+  "home_page_url": "https://eligetuhosting.cl",
+  "feed_url": "https://eligetuhosting.cl/feeds/latest-domains.json",
+  "description": "Lista actualizada de los últimos dominios .cl registrados en NIC Chile",
+  "author": {
+    "name": "EligeTuHosting.cl",
+    "url": "https://eligetuhosting.cl"
+  },
+  "language": "es",
+  "items": [],
+  "_meta": {
+    "about": "Esta es la versión inicial del JSON Feed. Se actualizará automáticamente con datos reales de dominios.",
+    "generator": "eligetuhosting.cl custom generator",
+    "updated": "2025-01-21T00:00:00Z"
+  }
+}
