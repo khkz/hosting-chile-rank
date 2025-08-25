@@ -1,6 +1,10 @@
 {
-  "updated": "2025-08-25T07:15:16.723Z",
+  "updated": "2025-08-25T08:21:15.366Z",
   "domains": [
+    {
+      "d": "ingeor.cl",
+      "date": "2025-08-25T03:40:17Z"
+    },
     {
       "d": "janomaths.cl",
       "date": "2025-08-25T03:02:29Z"
@@ -1108,22 +1112,6 @@
     {
       "d": "podologiacentro.cl",
       "date": "2025-08-24T05:44:59Z"
-    },
-    {
-      "d": "solopies.cl",
-      "date": "2025-08-24T03:48:38Z"
-    },
-    {
-      "d": "ubo-bridge.cl",
-      "date": "2025-08-24T03:33:32Z"
-    },
-    {
-      "d": "uc-bridge.cl",
-      "date": "2025-08-24T03:26:58Z"
-    },
-    {
-      "d": "u-bridge.cl",
-      "date": "2025-08-24T03:17:58Z"
     }
   ]
 }
