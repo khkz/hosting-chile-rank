@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -105,6 +104,11 @@ const ASNDetail: React.FC = () => {
     return 'N/A';
   };
 
+  const handleReviewClick = (companySlug: string) => {
+    console.log('Navigating to review page:', `/resena/${companySlug}`);
+    navigate(`/resena/${companySlug}`);
+  };
+
   return (
     <>
       <Navbar />
@@ -171,7 +175,6 @@ const ASNDetail: React.FC = () => {
                 </h1>
                 <p className="text-muted-foreground mt-2">{data.overview.description ? data.overview.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : 'Proveedor de red / Sistema autónomo'}</p>
                 
-                {/* Información básica en badges */}
                 <div className="flex flex-wrap gap-2 mt-3">
                   {data.overview.country_code && (
                     <Badge variant="outline" className="gap-1">
@@ -261,10 +264,12 @@ const ASNDetail: React.FC = () => {
                     </div>
                     <div className="flex flex-col sm:flex-row gap-2">
                       {hostingCompany.companySlug && (
-                        <Button asChild variant="secondary" className="bg-white text-gray-900 hover:bg-gray-100 border shadow-sm">
-                          <Link to={`/resena/${hostingCompany.companySlug}`}>
-                            Ver reseña
-                          </Link>
+                        <Button 
+                          variant="secondary" 
+                          className="bg-blue-600 text-white hover:bg-blue-700 border-0"
+                          onClick={() => handleReviewClick(hostingCompany.companySlug)}
+                        >
+                          Ver reseña
                         </Button>
                       )}
                       <Button asChild variant="outline">
@@ -296,7 +301,6 @@ const ASNDetail: React.FC = () => {
               </Card>
             ) : null}
 
-            {/* Información adicional */}
             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                 <div>
