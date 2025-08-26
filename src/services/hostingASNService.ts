@@ -11,6 +11,7 @@ export interface HostingASNMapping {
   companyLogo?: string;
   companyRating?: number;
   companyUrl?: string;
+  companySlug?: string;
 }
 
 // Known ASN mappings for Chilean hosting companies
@@ -32,7 +33,8 @@ const knownHostingASNs: HostingASNMapping[] = [
     hostingCompany: 'HostingPlus',
     companyLogo: '/logo-hostingplus.svg',
     companyRating: 4.1,
-    companyUrl: 'https://www.hostingplus.cl'
+    companyUrl: 'https://www.hostingplus.cl',
+    companySlug: 'hostingplus'
   },
   {
     asnNumber: 'AS263702',
@@ -44,7 +46,8 @@ const knownHostingASNs: HostingASNMapping[] = [
     hostingCompany: 'EcoHosting',
     companyLogo: '/logo-ecohosting.svg',
     companyRating: 3.8,
-    companyUrl: 'https://www.ecohosting.cl'
+    companyUrl: 'https://www.ecohosting.cl',
+    companySlug: 'ecohosting'
   },
   {
     asnNumber: 'AS270206',

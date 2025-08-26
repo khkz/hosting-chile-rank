@@ -25,7 +25,7 @@ const StickyCTA = () => {
         asChild
         className="w-full bg-[#EF233C] text-white py-3 rounded-lg hover:bg-red-700"
       >
-        <Link to="/cotiza-tu-hosting">
+        <Link to="/cotiza-hosting">
           Cotiza tu hosting
         </Link>
       </Button>

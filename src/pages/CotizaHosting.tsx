@@ -47,6 +47,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const CotizaHosting = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [urlParams, setUrlParams] = useState(new URLSearchParams());
   const [caracteristicas, setCaracteristicas] = useState([
     { id: "ssl", label: "Certificado SSL" },
     { id: "litespeed", label: "Servidor LiteSpeed" },
@@ -75,6 +76,8 @@ const CotizaHosting = () => {
 
   useEffect(() => {
     document.title = "Cotiza tu hosting ideal | eligetuhosting.cl";
+    // Capture URL parameters for lead tracking
+    setUrlParams(new URLSearchParams(window.location.search));
   }, []);
 
   const onSubmit = async (data: FormValues) => {
@@ -86,6 +89,11 @@ const CotizaHosting = () => {
         {
           ...data,
           caracteristicas: (data.caracteristicas || []).join(", "),
+          // Include UTM and ASN tracking data
+          utm_source: urlParams.get('utm_source') || '',
+          utm_campaign: urlParams.get('utm_campaign') || '',
+          provider: urlParams.get('provider') || '',
+          referral_page: window.location.href,
         },
         PUBLIC_KEY
       );

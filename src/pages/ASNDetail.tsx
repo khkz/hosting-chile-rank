@@ -2,6 +2,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import { getASNDetails, estimatePrefixSize, normalizeASN } from '@/services/asnApi';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -103,7 +106,9 @@ const ASNDetail: React.FC = () => {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <>
+      <Navbar />
+      <main className="container mx-auto px-4 py-8">
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={`Detalle del ASN AS${asnNum}: prefijos IPv4/IPv6, tamaño de rangos y peers.`} />
@@ -228,39 +233,68 @@ const ASNDetail: React.FC = () => {
               </div>
             </div>
             
-            {/* Información de empresa de hosting si aplica */}
-            {hostingCompany && (
-              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h3 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
-                  <Building className="h-4 w-4" />
-                  Información de Hosting
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <span className="text-blue-700">Empresa:</span>
-                    <p className="font-medium text-blue-900">{hostingCompany.hostingCompany}</p>
+            {/* Panel del proveedor de hosting */}
+            {hostingCompany ? (
+              <Card className="mt-4 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-primary">
+                    <Building className="h-5 w-5" />
+                    Panel del Proveedor
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    {hostingCompany.companyLogo && (
+                      <img 
+                        src={hostingCompany.companyLogo} 
+                        alt={`Logo de ${hostingCompany.hostingCompany}`}
+                        className="h-12 w-auto object-contain"
+                      />
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-xl font-semibold">{hostingCompany.hostingCompany}</h3>
+                      {hostingCompany.companyRating && (
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          ⭐ {hostingCompany.companyRating}/5.0 - Proveedor verificado
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      {hostingCompany.companySlug && (
+                        <Button asChild variant="default">
+                          <Link to={`/resena/${hostingCompany.companySlug}`}>
+                            Ver reseña
+                          </Link>
+                        </Button>
+                      )}
+                      <Button asChild variant="outline">
+                        <Link 
+                          to={`/cotiza-hosting?utm_source=asn&utm_campaign=${data.overview.asn}&provider=${hostingCompany.companySlug || hostingCompany.hostingCompany}`}
+                        >
+                          Cotizar
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
-                  {hostingCompany.companyRating && (
-                    <div>
-                      <span className="text-blue-700">Calificación:</span>
-                      <p className="font-medium text-blue-900">⭐ {hostingCompany.companyRating}/5</p>
-                    </div>
-                  )}
-                  {hostingCompany.companyUrl && (
-                    <div>
-                      <a 
-                        href={hostingCompany.companyUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline font-medium"
-                      >
-                        Visitar sitio web →
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+                </CardContent>
+              </Card>
+            ) : asnClassification === 'hosting' ? (
+              <Card className="mt-4 border-blue-200 bg-blue-50">
+                <CardContent className="pt-4">
+                  <div className="text-center">
+                    <h3 className="font-semibold text-blue-900 mb-2">¿Buscas hosting?</h3>
+                    <p className="text-sm text-blue-700 mb-3">
+                      Este ASN pertenece a un proveedor de hosting. Encuentra la mejor opción para tu proyecto.
+                    </p>
+                    <Button asChild variant="default" size="sm">
+                      <Link to={`/cotiza-hosting?utm_source=asn&utm_campaign=${data.overview.asn}`}>
+                        Cotiza gratis
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : null}
 
             {/* Información adicional */}
             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
@@ -400,10 +434,13 @@ const ASNDetail: React.FC = () => {
                 )}
               </CardContent>
             </Card>
-          )}
+        )}
         </section>
       )}
     </main>
+    <StickyCTA />
+    <Footer />
+    </>
   );
 };
 

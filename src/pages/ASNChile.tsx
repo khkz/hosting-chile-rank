@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import { searchASN, ASNSearchResult } from '@/services/asnApi';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -117,7 +120,9 @@ const ASNChile: React.FC = () => {
   );
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <>
+      <Navbar />
+      <main className="container mx-auto px-4 py-8">
       <Helmet>
         <title>ASN Chile: Sistemas Autónomos de Proveedores Chilenos</title>
         <meta name="description" content="Directorio completo de ASNs chilenos: Claro, Entel, Movistar, VTR, GTD, empresas de hosting y más proveedores de internet de Chile." />
@@ -231,6 +236,9 @@ const ASNChile: React.FC = () => {
         <UltimasBusquedas />
       </div>
     </main>
+    <StickyCTA />
+    <Footer />
+    </>
   );
 };
 
