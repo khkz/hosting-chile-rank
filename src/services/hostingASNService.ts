@@ -26,7 +26,9 @@ const knownHostingASNs: HostingASNMapping[] = [
   {
     asnNumber: 'AS52368',
     hostingCompany: 'SolucionHost',
-    companyRating: 4.0
+    companyRating: 4.0,
+    companyUrl: 'https://www.solucionhost.com',
+    companySlug: 'solucionhost'
   },
   {
     asnNumber: 'AS266879',
