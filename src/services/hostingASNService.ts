@@ -54,6 +54,12 @@ const knownHostingASNs: HostingASNMapping[] = [
     hostingCompany: 'PlusChile',
     companyRating: 3.5,
     companyUrl: 'https://www.pluschile.cl'
+  },
+  {
+    asnNumber: 'AS52512',
+    hostingCompany: 'OPENCLOUD SpA',
+    companyRating: 3.7,
+    companyUrl: 'https://www.opencloud.cl'
   }
 ];
 
