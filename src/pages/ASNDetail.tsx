@@ -261,7 +261,7 @@ const ASNDetail: React.FC = () => {
                     </div>
                     <div className="flex flex-col sm:flex-row gap-2">
                       {hostingCompany.companySlug && (
-                        <Button asChild variant="default">
+                        <Button asChild variant="default" className="bg-primary text-primary-foreground hover:bg-primary/90 border-0">
                           <Link to={`/resena/${hostingCompany.companySlug}`}>
                             Ver reseña
                           </Link>
