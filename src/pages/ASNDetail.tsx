@@ -291,7 +291,7 @@ const ASNDetail: React.FC = () => {
                     <p className="text-sm text-blue-700 mb-3">
                       Este ASN pertenece a un proveedor de hosting. Encuentra la mejor opción para tu proyecto.
                     </p>
-                    <Button asChild variant="default" size="sm">
+                    <Button asChild variant="secondary" size="sm" className="bg-white text-blue-900 border border-blue-200 hover:bg-blue-50">
                       <Link to={`/cotiza-hosting?utm_source=asn&utm_campaign=${data.overview.asn}`}>
                         Cotiza gratis
                       </Link>
