@@ -1,6 +1,5 @@
 
 import React, { useState, useMemo } from 'react';
-import HostingCard from './HostingCard';
 import { Trophy, Check, Star, Shield, Zap, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
