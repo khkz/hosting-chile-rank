@@ -1,21 +1,23 @@
 
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import StatsTicker from '@/components/StatsTicker';
 import HostingRanking from '@/components/HostingRanking';
-import Benefits from '@/components/Benefits';
-import Testimonial from '@/components/Testimonial';
-import Migration from '@/components/Migration';
-import Categories from '@/components/Categories';
-import SimpleFAQ from '@/components/SimpleFAQ';
-import UltimasBusquedas from '@/components/UltimasBusquedas';
-import TransparencyNotice from '@/components/TransparencyNotice';
-import FinalCTA from '@/components/FinalCTA';
-import Footer from '@/components/Footer';
-import StickyCTA from '@/components/StickyCTA';
-import MiniNav from '@/components/MiniNav';
-import ExitModal from '@/components/ExitModal';
+
+// Lazy load non-critical components
+const Benefits = lazy(() => import('@/components/Benefits'));
+const Testimonial = lazy(() => import('@/components/Testimonial'));
+const Migration = lazy(() => import('@/components/Migration'));
+const Categories = lazy(() => import('@/components/Categories'));
+const SimpleFAQ = lazy(() => import('@/components/SimpleFAQ'));
+const UltimasBusquedas = lazy(() => import('@/components/UltimasBusquedas'));
+const TransparencyNotice = lazy(() => import('@/components/TransparencyNotice'));
+const FinalCTA = lazy(() => import('@/components/FinalCTA'));
+const Footer = lazy(() => import('@/components/Footer'));
+const StickyCTA = lazy(() => import('@/components/StickyCTA'));
+const MiniNav = lazy(() => import('@/components/MiniNav'));
+const ExitModal = lazy(() => import('@/components/ExitModal'));
 
 const Index = () => {
   // Add page-specific SEO metadata
@@ -61,49 +63,54 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
       <Navbar />
       <main className="relative">
-        {/* section 1: Hero */}
+        {/* section 1: Hero - Above the fold, load immediately */}
         <Hero />
         
-        {/* section 2: Stats ticker */}
+        {/* section 2: Stats ticker - Above the fold */}
         <StatsTicker />
         
-        {/* section 3: Ranking cards */}
+        {/* section 3: Ranking cards - Critical content */}
         <HostingRanking />
         
-        {/* section 4: Transparency Notice */}
-        <TransparencyNotice />
-        
-        {/* section 5: Benefits */}
-        <Benefits />
-        
-        {/* section 6: Testimonials + Partners */}
-        <Testimonial />
-        
-        {/* section 7: Last Searches */}
-        <UltimasBusquedas />
-        
-        {/* section 8: Migration CTA */}
-        <Migration />
-        
-        {/* section 9: Categories */}
-        <Categories />
-        
-        {/* section 10: FAQ */}
-        <SimpleFAQ />
-        
-        {/* section 11: Final CTA */}
-        <FinalCTA />
-        
-        {/* Mini Nav sticky */}
-        <MiniNav />
-        
-        {/* CTA sticky mobile */}
-        <StickyCTA />
-        
-        {/* Exit Intent Modal */}
-        <ExitModal />
+        {/* Lazy loaded sections below the fold */}
+        <Suspense fallback={<div className="h-20 bg-gray-50 animate-pulse" />}>
+          {/* section 4: Transparency Notice */}
+          <TransparencyNotice />
+          
+          {/* section 5: Benefits */}
+          <Benefits />
+          
+          {/* section 6: Testimonials + Partners */}
+          <Testimonial />
+          
+          {/* section 7: Last Searches */}
+          <UltimasBusquedas />
+          
+          {/* section 8: Migration CTA */}
+          <Migration />
+          
+          {/* section 9: Categories */}
+          <Categories />
+          
+          {/* section 10: FAQ */}
+          <SimpleFAQ />
+          
+          {/* section 11: Final CTA */}
+          <FinalCTA />
+          
+          {/* Mini Nav sticky */}
+          <MiniNav />
+          
+          {/* CTA sticky mobile */}
+          <StickyCTA />
+          
+          {/* Exit Intent Modal */}
+          <ExitModal />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={<div className="h-32 bg-gray-50 animate-pulse" />}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
