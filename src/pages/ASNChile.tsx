@@ -102,7 +102,7 @@ const ASNChile: React.FC = () => {
           </Link>
           <Badge variant="secondary" className="gap-1">
             <MapPin className="h-3 w-3" />
-            🇨🇱
+            CL
           </Badge>
         </CardTitle>
         <p className="text-sm font-medium text-foreground">{asn.name || 'Sin nombre'}</p>
