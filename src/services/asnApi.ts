@@ -182,7 +182,7 @@ export async function searchASN(query: string): Promise<ASNSearchResult[]> {
       .select('results, expires_at')
       .eq('search_term', searchTerm)
       .gt('expires_at', new Date().toISOString())
-      .maybeSingle();
+      .single();
     
     if (cachedResult) {
       console.log(`ASN search cache hit for: ${searchTerm}`);
@@ -203,7 +203,7 @@ export async function searchASN(query: string): Promise<ASNSearchResult[]> {
     country_code: a.country_code || a.country,
   }));
   
-  // Cache the results with proper conflict resolution
+  // Cache the results
   try {
     await supabase
       .from('asn_search_cache')
@@ -212,8 +212,6 @@ export async function searchASN(query: string): Promise<ASNSearchResult[]> {
         results: results as any,
         cached_at: new Date().toISOString(),
         expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days
-      }, {
-        onConflict: 'search_term'
       });
     console.log(`Cached ASN search results for: ${searchTerm}`);
   } catch (error) {

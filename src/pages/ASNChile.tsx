@@ -15,7 +15,6 @@ import { isChileanASN } from '@/utils/ipDetection';
 const ASNChile: React.FC = () => {
   const [chileanASNs, setChileanASNs] = useState<ASNSearchResult[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadChileanASNs = async () => {
@@ -63,7 +62,6 @@ const ASNChile: React.FC = () => {
         console.log(`📊 Total unique Chilean ASNs found: ${uniqueASNs.length}`);
       } catch (e) {
         console.error('Error loading Chilean ASNs:', e);
-        setError('Error al cargar los ASNs chilenos');
       } finally {
         setLoading(false);
       }
@@ -104,7 +102,7 @@ const ASNChile: React.FC = () => {
           </Link>
           <Badge variant="secondary" className="gap-1">
             <MapPin className="h-3 w-3" />
-            CL
+            🇨🇱
           </Badge>
         </CardTitle>
         <p className="text-sm font-medium text-foreground">{asn.name || 'Sin nombre'}</p>
@@ -155,12 +153,6 @@ const ASNChile: React.FC = () => {
         <div className="flex items-center gap-2 text-sm mb-8">
           <Loader2 className="h-4 w-4 animate-spin" /> 
           Cargando ASNs chilenos…
-        </div>
-      )}
-
-      {error && (
-        <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
-          {error}
         </div>
       )}
 

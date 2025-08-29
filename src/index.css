@@ -1,5 +1,6 @@
 
-/* Critical CSS - inline font loading handled in HTML */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,26 +93,13 @@
   }
 
   body {
-    @apply bg-background text-[#333] antialiased;
-    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+    @apply bg-background text-[#333] font-montserrat antialiased;
     line-height: 1.6;
-    font-display: swap;
   }
   
-  /* Critical performance optimizations */
+  /* Optimize for Core Web Vitals */
   img, video {
     @apply max-w-full h-auto;
-    content-visibility: auto;
-  }
-  
-  /* Improve LCP */
-  .hero-section, .above-fold {
-    content-visibility: visible;
-  }
-  
-  /* Reduce layout shift */
-  .container {
-    contain: layout style paint;
   }
   
   /* Improve accessibility */
@@ -119,20 +107,14 @@
     @apply outline-none ring-2 ring-accent ring-offset-2;
   }
   
-  /* Optimize animations for 60fps */
+  /* Improve animations */
   .transition-all {
-    @apply transition-[transform,opacity] duration-300 ease-in-out;
-    will-change: transform, opacity;
+    @apply transition-[all] duration-300 ease-in-out;
   }
   
   /* Animations for content appearance */
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    @apply animate-fade-in;
   }
   
   /* Gradient utilities */
@@ -143,7 +125,7 @@
     background-clip: text;
   }
   
-  /* Optimized scrollbar */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -154,7 +136,6 @@
   
   ::-webkit-scrollbar-thumb {
     @apply bg-gray-300 rounded-lg;
-    will-change: background-color;
   }
   
   ::-webkit-scrollbar-thumb:hover {
@@ -162,20 +143,18 @@
   }
 }
 
-/* Performance optimization classes */
+/* Critical CSS kept inline */
 .critical-css {
   display: block;
   content-visibility: auto;
-  contain-intrinsic-size: 1px 200px;
 }
 
-/* Optimized image containers for CLS prevention */
+/* For optimal LCP and CLS */
 .img-container {
   position: relative;
   width: 100%;
   height: 0;
   overflow: hidden;
-  contain: layout style paint;
 }
 
 .img-container > img {
@@ -185,19 +164,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  image-rendering: optimizeQuality;
-}
-
-/* Prevent layout shift */
-.skeleton-loader {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
 }
 
 /* Smooth scroll behavior */

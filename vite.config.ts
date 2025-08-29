@@ -22,19 +22,8 @@ export default defineConfig(({ mode }) => ({
   // Include XML and TXT files as assets
   assetsInclude: ['**/*.xml', '**/*.txt'],
   build: {
-    // Optimize build performance
-    target: 'es2015',
-    minify: 'esbuild',
-    cssMinify: true,
     rollupOptions: {
       output: {
-        // Chunk splitting for better caching
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-          charts: ['recharts'],
-        },
         assetFileNames: (assetInfo) => {
           // Preserve XML and TXT files in their original location at root
           if (assetInfo.name && (assetInfo.name.endsWith('.xml') || assetInfo.name.endsWith('.txt'))) {
@@ -42,18 +31,10 @@ export default defineConfig(({ mode }) => ({
           }
           return 'assets/[name]-[hash][extname]';
         },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-      },
-      // Tree shaking optimization
-      treeshake: {
-        moduleSideEffects: false,
       },
     },
     // Copy static files to build output
     copyPublicDir: true,
-    // Optimize chunk size
-    chunkSizeWarningLimit: 600,
   },
   // Configure preview server for production builds
   preview: {

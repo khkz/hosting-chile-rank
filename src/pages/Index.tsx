@@ -18,11 +18,8 @@ import MiniNav from '@/components/MiniNav';
 import ExitModal from '@/components/ExitModal';
 
 const Index = () => {
-  console.log('Index component starting to render');
-  
   // Add page-specific SEO metadata
   React.useEffect(() => {
-    console.log('Index component useEffect running');
     document.title = "Elige tu Hosting — Mejor Hosting Chile 2025";
     
     // Create meta description
@@ -60,25 +57,51 @@ const Index = () => {
     }
   }, []);
 
-  console.log('Index component rendering JSX');
-  console.log('About to render Navbar and Hero');
-  
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
-      <div style={{padding: '20px', backgroundColor: '#fff', margin: '20px', border: '2px solid red'}}>
-        <h1>Debug: Page is loading</h1>
-        <p>If you can see this, React is working</p>
-      </div>
       <Navbar />
       <main className="relative">
-        {/* section 1: Hero - Above the fold, load immediately */}
+        {/* section 1: Hero */}
         <Hero />
         
-        {/* section 2: Stats ticker - Above the fold */}
+        {/* section 2: Stats ticker */}
         <StatsTicker />
         
-        {/* section 3: Ranking cards - Critical content */}
+        {/* section 3: Ranking cards */}
         <HostingRanking />
+        
+        {/* section 4: Transparency Notice */}
+        <TransparencyNotice />
+        
+        {/* section 5: Benefits */}
+        <Benefits />
+        
+        {/* section 6: Testimonials + Partners */}
+        <Testimonial />
+        
+        {/* section 7: Last Searches */}
+        <UltimasBusquedas />
+        
+        {/* section 8: Migration CTA */}
+        <Migration />
+        
+        {/* section 9: Categories */}
+        <Categories />
+        
+        {/* section 10: FAQ */}
+        <SimpleFAQ />
+        
+        {/* section 11: Final CTA */}
+        <FinalCTA />
+        
+        {/* Mini Nav sticky */}
+        <MiniNav />
+        
+        {/* CTA sticky mobile */}
+        <StickyCTA />
+        
+        {/* Exit Intent Modal */}
+        <ExitModal />
       </main>
       <Footer />
     </div>
