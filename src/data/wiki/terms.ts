@@ -107,11 +107,11 @@ export const wikiTerms: WikiTerm[] = [
 
 WordPress comenzó en 2003 como una plataforma simple para blogs, pero se ha convertido en el motor que impulsa casi la mitad de internet. No es solo un software; es todo un ecosistema que permite a cualquier persona crear sitios web profesionales sin necesidad de programar.
 
-![WordPress Dashboard](/src/assets/wiki/wordpress-dashboard.jpg "Panel de administración de WordPress - Interfaz intuitiva para gestionar tu sitio web")
+![Ilustración conceptual de un dashboard moderno](/src/assets/wiki/wordpress-dashboard.jpg "Ilustración abstracta representando un panel de administración - Interfaz moderna y minimalista")
 
 ## ¿Por qué WordPress domina el mercado?
 
-![Estadísticas WordPress](/src/assets/wiki/wordpress-stats.jpg "WordPress potencia más del 43% de todos los sitios web del mundo")
+![Visualización de datos abstracta](/src/assets/wiki/wordpress-stats.jpg "Ilustración de gráficos y estadísticas en estilo minimalista")
 
 **La historia es fascinante:** Matt Mullenweg tenía solo 19 años cuando cofundó WordPress. Hoy, empresas como The New York Times, Sony Music y hasta la Casa Blanca usan WordPress. En Chile, desde La Tercera hasta pequeños emprendimientos locales confían en esta plataforma.
 
@@ -128,7 +128,7 @@ WordPress está construido pensando en SEO. URLs limpias, estructura semántica,
 
 ## Editor Gutenberg: La revolución del contenido
 
-![Gutenberg Editor](/src/assets/wiki/gutenberg-editor.jpg "Editor Gutenberg - Crea contenido profesional con bloques visuales")
+![Ilustración de edición de contenido](/src/assets/wiki/gutenberg-editor.jpg "Representación abstracta del flujo de trabajo creativo y edición de contenido")
 
 El editor Gutenberg transformó WordPress desde 2018. Permite crear diseños sofisticados usando bloques: párrafos, imágenes, botones, columnas, galerías. Es como tener un page builder básico incluido gratis.
 
@@ -176,7 +176,7 @@ El editor Gutenberg transformó WordPress desde 2018. Permite crear diseños sof
 
 ## Requisitos técnicos explicados simple
 
-![WordPress Requirements](/src/assets/wiki/wordpress-requirements.jpg "Requisitos técnicos de WordPress - Especificaciones necesarias para un funcionamiento óptimo")
+![Ilustración de infraestructura técnica](/src/assets/wiki/wordpress-requirements.jpg "Representación visual abstracta de requisitos técnicos y hosting")
 
 **Hosting recomendado:**
 - **PHP 8.0+:** WordPress está escrito en PHP, versiones antiguas son inseguras
