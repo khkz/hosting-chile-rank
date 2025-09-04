@@ -101,23 +101,163 @@ export const wikiTerms: WikiTerm[] = [
     id: 'wp-001',
     slug: 'wordpress',
     title: 'WordPress',
-    shortDefinition: 'CMS más popular del mundo. Potencia el 43% de los sitios web globalmente.',
-    longDefinition: 'Sistema de gestión de contenidos (CMS) de código abierto que permite crear y administrar sitios web sin conocimientos técnicos avanzados.',
+    shortDefinition: 'El CMS que cambió la web: potencia más del 43% de todos los sitios web del mundo. Desde blogs personales hasta tiendas online masivas.',
+    longDefinition: `
+## ¿Qué es WordPress realmente?
+
+WordPress comenzó en 2003 como una plataforma simple para blogs, pero se ha convertido en el motor que impulsa casi la mitad de internet. No es solo un software; es todo un ecosistema que permite a cualquier persona crear sitios web profesionales sin necesidad de programar.
+
+## ¿Por qué WordPress domina el mercado?
+
+**La historia es fascinante:** Matt Mullenweg tenía solo 19 años cuando cofundó WordPress. Hoy, empresas como The New York Times, Sony Music y hasta la Casa Blanca usan WordPress. En Chile, desde La Tercera hasta pequeños emprendimientos locales confían en esta plataforma.
+
+### Lo que hace especial a WordPress:
+
+**1. Flexibilidad sin límites**
+WordPress puede ser literalmente cualquier cosa: un blog personal, una tienda online que facture millones, un sitio corporativo, un portal de noticias, o incluso una plataforma de cursos. La flexibilidad viene de su arquitectura modular: temas controlan el diseño, plugins agregan funcionalidad.
+
+**2. Comunidad global activa**
+Con más de 60,000 plugins gratuitos y miles de temas, hay una solución para prácticamente cualquier necesidad. La comunidad chilena de WordPress también es muy activa, con meetups regulares en Santiago y Valparaíso.
+
+**3. SEO nativo**
+WordPress está construido pensando en SEO. URLs limpias, estructura semántica, sitemap automático, y compatibilidad con plugins como Yoast o RankMath hacen que posicionar en Google sea mucho más fácil.
+
+## Casos de uso reales en Chile
+
+**Restaurantes:** La Piojera, Barrio Lastarria y cientos de restaurantes usan WordPress con reservas online, menús digitales y delivery integrado.
+
+**E-commerce:** Desde artesanías en Pomaire hasta tecnología en Santiago, WooCommerce (plugin de WordPress) permite vender online con pasarelas chilenas como Flow y Khipu.
+
+**Profesionales:** Abogados, arquitectos, dentistas... WordPress es perfecto para sitios corporativos que necesitan proyectar seriedad pero mantenerse actualizados fácilmente.
+
+**Medios:** Varios medios digitales chilenos usan WordPress por su capacidad de manejar alto tráfico y publicar contenido rápidamente.
+
+## Ventajas honestas de WordPress
+
+✅ **Curva de aprendizaje suave:** Si sabes usar Word, puedes usar WordPress
+✅ **Escalable:** Sirve desde 10 hasta 10 millones de visitas mensuales
+✅ **Económico:** El software es gratis, solo pagas hosting y eventualmente plugins premium
+✅ **SEO-friendly:** Google ama WordPress por su estructura limpia
+✅ **Actualizaciones constantes:** Se mantiene al día con estándares web
+✅ **Respaldo masivo:** 40% del web no puede estar equivocado
+
+## Desventajas que debes conocer
+
+❌ **Puede ser vulnerable:** Al ser tan popular, es blanco de hackers (se soluciona con seguridad adecuada)
+❌ **Rendimiento variable:** Puede volverse lento con muchos plugins mal configurados
+❌ **Mantenimiento necesario:** Requiere actualizaciones regulares
+❌ **Curva técnica:** Para personalizaciones avanzadas necesitas conocimientos o ayuda profesional
+
+## ¿Cuándo WordPress es la mejor opción?
+
+**✅ Perfecto para:**
+- Blogs y sitios de contenido
+- Sitios corporativos medianos a grandes
+- E-commerce con WooCommerce
+- Portales de noticias y revistas
+- Sitios que necesitan actualización frecuente
+- Proyectos con presupuesto variable (puede crecer gradualmente)
+
+**❌ Considera alternativas para:**
+- Aplicaciones web complejas (mejor React/Angular)
+- Sitios ultra-rápidos estáticos (mejor Gatsby/Next.js)
+- E-commerce masivo (considera Shopify Plus)
+- Aplicaciones móviles nativas
+
+## Requisitos técnicos explicados simple
+
+**Hosting recomendado:**
+- **PHP 8.0+:** WordPress está escrito en PHP, versiones antiguas son inseguras
+- **MySQL 5.7+:** Base de datos donde se guarda todo el contenido
+- **HTTPS obligatorio:** Google penaliza sitios sin SSL
+- **Mod_rewrite:** Permite URLs amigables (/sobre-nosotros/ en vez de /index.php?page=about)
+
+**En la práctica:** Cualquier hosting chileno decente cumple estos requisitos. HostingPlus los tiene optimizados específicamente para WordPress.
+
+## WordPress vs. la competencia
+
+**vs. Wix/Squarespace:** WordPress es más flexible pero requiere más conocimiento técnico
+
+**vs. Shopify:** Para e-commerce puro, Shopify puede ser más simple, pero WordPress + WooCommerce es más económico a largo plazo
+
+**vs. Drupal/Joomla:** WordPress es más fácil de usar, ellos son más potentes pero complejos
+
+## Mitos que debes ignorar
+
+**"WordPress es solo para blogs"** - Falso. El 43% del web incluye tiendas, portales corporativos, aplicaciones web.
+
+**"WordPress es lento"** - Falso. Con hosting adecuado y configuración correcta, puede ser extremadamente rápido.
+
+**"WordPress no es seguro"** - Falso. Es tan seguro como cualquier CMS si se mantiene actualizado y se configura correctamente.
+
+## Primeros pasos recomendados
+
+1. **Elige hosting especializado:** No todos los hostings son iguales para WordPress
+2. **Instala WordPress:** Muchos hostings lo hacen automáticamente
+3. **Elige un tema:** Empieza con Twenty Twenty-Four (tema oficial)
+4. **Plugins esenciales:** Yoast SEO, Wordfence Security, backup plugin
+5. **Crea contenido:** Empieza con páginas básicas (Inicio, Sobre nosotros, Contacto)
+
+## El futuro de WordPress
+
+WordPress no se duerme en los laureles. **Gutenberg** (el nuevo editor) está transformando la experiencia de creación. **Full Site Editing** permite personalizar completamente el diseño. La integración con **inteligencia artificial** está llegando fuerte.
+
+**En Chile:** La adopción sigue creciendo. Empresas medianas están migrando de sitios estáticos a WordPress para tener control total de su presencia digital.
+
+## FAQ frecuentes
+
+**¿Es WordPress gratis?**
+El software sí, pero necesitas hosting (desde $3.000/mes) y dominio ($15.000/año). Plugins premium son opcionales.
+
+**¿Puedo migrar mi sitio actual a WordPress?**
+Sí, hay herramientas y servicios especializados. La mayoría de hostings chilenos ofrecen migración gratuita.
+
+**¿Necesito saber programar?**
+No para uso básico. Para personalizaciones avanzadas ayuda, pero hay miles de desarrolladores WordPress en Chile.
+
+**¿WordPress funciona en móviles?**
+Sí, todos los temas modernos son responsive. Además puedes gestionar el sitio desde la app móvil.
+
+## Conclusión: ¿Por qué WordPress sigue ganando?
+
+WordPress democratizó la creación web. Antes necesitabas un programador para cada cambio; hoy cualquier emprendedor chileno puede tener una presencia web profesional en horas, no meses.
+
+No es perfecto, pero la combinación de flexibilidad, costo y facilidad de uso lo mantiene como la mejor opción para la mayoría de proyectos web. En un mercado digital chileno cada vez más competitivo, WordPress te da las herramientas para destacar sin necesidad de ser un experto técnico.
+
+**¿La recomendación?** Si tienes dudas entre WordPress y otra opción, probablemente WordPress sea la respuesta. Es difícil equivocarse con la plataforma que confían 800 millones de sitios web.
+    `,
     category: 'wordpress',
     cms: 'wordpress',
-    tags: ['cms', 'open-source', 'php'],
+    tags: ['cms', 'open-source', 'php', 'blog', 'ecommerce', 'seo', 'gutenberg', 'woocommerce'],
     level: 'basico',
-    related: ['gutenberg', 'child-themes', 'multisite'],
-    hostingRequirements: ['PHP 8.0+', 'MySQL 5.7+', 'HTTPS', 'mod_rewrite'],
+    related: ['gutenberg', 'woocommerce', 'child-themes', 'multisite', 'elementor', 'yoast-seo'],
+    hostingRequirements: [
+      'PHP 8.0+ (recomendado 8.1 para mejor rendimiento)',
+      'MySQL 5.7+ o MariaDB 10.4+',
+      'HTTPS/SSL obligatorio (incluido gratis)',
+      'Mod_rewrite para URLs amigables',
+      'Memory limit mínimo 256MB (recomendado 512MB)',
+      'Backup automático diario',
+      'Actualizaciones automáticas de seguridad'
+    ],
     cta: {
       plan: 'WordPress Básico',
-      copy: 'Hosting optimizado para WordPress desde $2.990/mes',
+      copy: 'WordPress optimizado con instalación automática, SSL gratis y soporte especializado desde $2.990/mes. Perfecto para empezar.',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=1'
     },
-    proofPoints: ['Instalación automática', 'Actualizaciones automáticas', 'Soporte especializado'],
-    whenToUse: 'Para blogs, sitios corporativos, e-commerce y portales de noticias.',
-    synonyms: ['wp'],
-    lastUpdated: '2025-01-01'
+    proofPoints: [
+      'Instalación con 1 clic y configuración optimizada',
+      'Actualizaciones automáticas de WordPress y plugins', 
+      'Soporte técnico especializado en WordPress',
+      'SSL gratuito incluido',
+      'Backup diario con restore fácil',
+      'Staging area para probar cambios',
+      'Cache optimizado para WordPress',
+      'Malware scanning automático'
+    ],
+    whenToUse: 'WordPress es ideal para blogs, sitios corporativos, portales de noticias, e-commerce con WooCommerce, sitios de servicios profesionales (abogados, dentistas, arquitectos), portfolios creativos, y cualquier proyecto que necesite actualizaciones frecuentes de contenido. En Chile es especialmente popular para restaurantes, tiendas online, medios digitales y empresas de servicios.',
+    synonyms: ['wp', 'wordpress.org', 'cms wordpress', 'gestor de contenidos'],
+    lastUpdated: '2025-01-15'
   },
   {
     id: 'wp-002',
