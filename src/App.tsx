@@ -34,6 +34,8 @@ import AcercaDe from './pages/AcercaDe';
 import ASNDirectory from './pages/ASNDirectory';
 import ASNDetail from './pages/ASNDetail';
 import ASNChile from './pages/ASNChile';
+import WikiIndex from './pages/WikiIndex';
+import WikiTerm from './pages/WikiTerm';
 
 function App() {
   return (
@@ -81,6 +83,8 @@ function App() {
         <Route path="/asn" element={<ASNDirectory />} />
         <Route path="/asn/chile" element={<ASNChile />} />
         <Route path="/asn/:asn" element={<ASNDetail />} />
+        <Route path="/wiki" element={<WikiIndex />} />
+        <Route path="/wiki/:slug" element={<WikiTerm />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
