@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -32,10 +32,12 @@ const GlossarySearch: React.FC<GlossarySearchProps> = ({
     if (cmsFilter !== 'all') filters.cms = cmsFilter;
     if (levelFilter !== 'all') filters.level = levelFilter;
 
-    const results = searchTerms(query, filters);
-    onResults(results);
-    return results;
-  }, [query, categoryFilter, cmsFilter, levelFilter, onResults]);
+    return searchTerms(query, filters);
+  }, [query, categoryFilter, cmsFilter, levelFilter]);
+
+  useEffect(() => {
+    onResults(filteredResults);
+  }, [filteredResults, onResults]);
 
   const clearFilters = () => {
     setQuery('');
