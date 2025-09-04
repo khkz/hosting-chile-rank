@@ -275,22 +275,84 @@ No es perfecto, pero la combinación de flexibilidad, costo y facilidad de uso l
     id: 'wp-002',
     slug: 'gutenberg',
     title: 'Gutenberg',
-    shortDefinition: 'Editor de bloques nativo de WordPress. Permite diseñar páginas sin código.',
-    longDefinition: 'Editor moderno de WordPress basado en bloques que reemplazó al editor clásico. Permite crear layouts complejos arrastrando y soltando elementos.',
+    shortDefinition: 'Editor de bloques moderno de WordPress que permite crear contenido usando bloques arrastrables.',
+    longDefinition: `## ¿Qué es Gutenberg?
+
+Gutenberg es el **editor de bloques oficial de WordPress**, introducido en la versión 5.0 en diciembre de 2018. Su nombre honra a Johannes Gutenberg, inventor de la imprenta moderna. Este revolucionario editor reemplaza el antiguo editor clásico TinyMCE con un sistema de **bloques visuales e intuitivos**.
+
+### Características principales
+
+- **Sistema de bloques**: Cada elemento (párrafo, imagen, lista) es un bloque independiente
+- **Interfaz visual**: Lo que ves es lo que obtienes (WYSIWYG) mejorado
+- **Reutilización**: Bloques reutilizables para elementos comunes
+- **Responsive**: Vista previa responsive directa en el editor
+- **Extensible**: Compatible con bloques personalizados de temas y plugins
+
+### Ventajas sobre el editor clásico
+
+| Aspecto | Editor Clásico | Gutenberg |
+|---------|----------------|-----------|
+| Flexibilidad | Limitado | Máxima flexibilidad |
+| Diseño | Básico | Avanzado sin código |
+| Reutilización | No | Bloques reutilizables |
+| Responsive | Manual | Automático |
+| Futuro | Obsoleto | En desarrollo activo |
+
+### Tipos de bloques disponibles
+
+**Bloques comunes:**
+- Párrafo, Encabezado, Lista, Imagen
+- Galería, Cita, Audio, Video
+
+**Bloques de diseño:**
+- Columnas, Grupo, Separador
+- Espaciador, Botones, Medios y texto
+
+**Bloques de widgets:**
+- Archivo, Calendario, Categorías
+- Últimos posts, Búsqueda, Nube de etiquetas
+
+**Bloques avanzados:**
+- HTML personalizado, Código
+- Shortcode, Tabla, Verso
+
+### Rendimiento y optimización
+
+Gutenberg genera código HTML más limpio y semántico que el editor clásico. Sin embargo, puede cargar más CSS y JavaScript en el frontend. Para optimizar:
+
+- Usa un **hosting optimizado para WordPress**
+- Implementa **caché a nivel de servidor**
+- Considera plugins de optimización como **LiteSpeed Cache**
+- Minimiza bloques innecesarios
+
+### Comparación con page builders
+
+Mientras que **Elementor** o **Divi** son page builders completos, Gutenberg se enfoca en la **edición de contenido**. Es ideal para blogs y sitios de contenido, mientras que page builders son mejores para diseños complejos.`,
     category: 'wordpress',
     cms: 'wordpress',
-    tags: ['editor', 'bloques', 'fse'],
+    tags: ['editor', 'bloques', 'wordpress', 'contenido', 'wysiwyg'],
     level: 'basico',
-    related: ['elementor', 'page-builders', 'full-site-editing'],
-    hostingRequirements: ['PHP 8.0+', 'Memory limit 256MB+'],
+    related: ['wordpress', 'elementor', 'yoast-seo', 'litespeed-cache'],
+    hostingRequirements: [
+      'WordPress 5.0 o superior',
+      'PHP 7.4+ recomendado',
+      'Memoria mínima 256MB',
+      'Navegador web moderno'
+    ],
     cta: {
-      plan: 'WordPress Básico',
-      copy: 'Prueba Gutenberg con hosting optimizado',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=1'
+      plan: 'WordPress Pro',
+      copy: 'Optimiza tu experiencia con Gutenberg en hosting WordPress especializado',
+      url: 'https://clientes.hostingplus.cl/cotiza-hosting?plan=wordpress-pro'
     },
-    proofPoints: ['Compatible con todos los temas', 'Incluido gratis', 'Constantemente actualizado'],
-    whenToUse: 'Para crear contenido rico sin plugins adicionales.',
-    synonyms: ['editor de bloques', 'block editor']
+    proofPoints: [
+      'Hosting optimizado para WordPress',
+      'Caching especializado para Gutenberg',
+      'Backups automáticos diarios',
+      'Soporte especializado en WordPress'
+    ],
+    whenToUse: 'Para sitios de contenido, blogs, y cuando necesitas flexibilidad sin complejidad de page builders',
+    synonyms: ['Editor de bloques', 'Block Editor', 'WordPress Editor'],
+    lastUpdated: '2025-01-15'
   },
 
   // Page Builders
@@ -519,41 +581,232 @@ Elementor es la herramienta ideal para **90% de proyectos WordPress** que requie
     id: 'perf-001',
     slug: 'litespeed-cache',
     title: 'LiteSpeed Cache',
-    shortDefinition: 'Plugin de caché oficial para servidores LiteSpeed. Mejora velocidad hasta 10x.',
-    longDefinition: 'Plugin gratuito de caché diseñado específicamente para servidores LiteSpeed. Incluye optimización automática, caché de objetos, CDN y compresión avanzada.',
+    shortDefinition: 'Plugin de caché avanzado para WordPress que optimiza el rendimiento del sitio web.',
+    longDefinition: `## ¿Qué es LiteSpeed Cache?
+
+**LiteSpeed Cache** es un plugin de caché **gratuito y de código abierto** para WordPress desarrollado por LiteSpeed Technologies. Es considerado uno de los plugins de caché más potentes y eficientes disponibles, especialmente cuando se usa en servidores **LiteSpeed Web Server**.
+
+### Características principales
+
+**Caché avanzado:**
+- **Page cache**: Almacena páginas HTML estáticas
+- **Object cache**: Caché de base de datos y consultas
+- **Browser cache**: Configuración automática de caché del navegador
+- **CDN integrado**: Cloudflare y QUIC.cloud incluidos
+
+**Optimización automática:**
+- **Minificación** de CSS, JavaScript y HTML
+- **Combinación** de archivos CSS/JS
+- **Lazy loading** de imágenes y iframes
+- **WebP** conversion automática
+- **Critical CSS** generation
+
+### Ventajas sobre otros plugins de caché
+
+| Característica | LiteSpeed Cache | WP Rocket | W3 Total Cache |
+|----------------|-----------------|-----------|----------------|
+| Precio | Gratis | $59/año | Gratis/Premium |
+| Facilidad uso | Alta | Muy alta | Media |
+| Rendimiento | Excelente* | Excelente | Bueno |
+| CDN incluido | Sí (QUIC.cloud) | No | No |
+| ESI support | Sí | No | No |
+
+*Máximo rendimiento solo en servidores LiteSpeed
+
+### Configuración recomendada
+
+**Configuración básica (principiantes):**
+1. Activar **Page Cache**
+2. Habilitar **Browser Cache**
+3. Activar **Object Cache** (si disponible)
+4. Configurar **Image Optimization**
+
+**Configuración avanzada:**
+- **TTL de caché**: 604800 segundos (1 semana)
+- **Exclude pages**: /carrito/, /checkout/, /mi-cuenta/
+- **Database cleanup**: Habilitado
+- **CDN**: Configurar QUIC.cloud
+- **Critical CSS**: Generar automáticamente
+
+### Requisitos de hosting
+
+Para aprovechar al **100% las capacidades** de LiteSpeed Cache:
+
+- **LiteSpeed Web Server** (no Apache/Nginx)
+- **Redis** o **Memcached** para object cache
+- **QUIC.cloud CDN** configurado
+- **PHP 7.4+** con extensiones necesarias
+
+### Problemas comunes y soluciones
+
+**1. Caché no funciona:**
+- Verificar permisos de escritura en /wp-content/
+- Comprobar que no hay plugins conflictivos
+- Revisar exclusiones de caché
+
+**2. CSS/JS roto:**
+- Deshabilitar minificación temporalmente
+- Excluir archivos problemáticos
+- Usar "Separate CCSS Per URL"
+
+**3. Performance no mejora:**
+- Verificar que estás en servidor LiteSpeed
+- Activar Object Cache
+- Configurar CDN correctamente
+
+### Herramientas de diagnóstico
+
+- **Debug mode**: Para identificar problemas
+- **Page optimization**: Análisis automático
+- **Heartbeat control**: Reduce carga del servidor
+- **Database optimizer**: Limpieza automática`,
     category: 'performance',
     cms: 'wordpress',
-    tags: ['cache', 'litespeed', 'velocidad', 'gratis'],
+    tags: ['cache', 'performance', 'optimizacion', 'velocidad', 'litespeed', 'cdn'],
     level: 'medio',
-    related: ['litespeed-server', 'wp-rocket', 'redis-cache', 'cloudflare'],
-    hostingRequirements: ['Servidor LiteSpeed', 'mod_rewrite', 'PHP 7.4+'],
+    related: ['wordpress', 'core-web-vitals', 'redis-cache'],
+    hostingRequirements: [
+      'LiteSpeed Web Server (para máximo rendimiento)',
+      'WordPress con permisos de escritura',
+      'PHP 7.4+ recomendado',
+      'Redis o Memcached (opcional)'
+    ],
     cta: {
-      plan: 'WordPress Turbo',
-      copy: 'Máximo rendimiento con LiteSpeed Enterprise',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      plan: 'Performance Pro',
+      copy: 'Acelera tu WordPress con hosting LiteSpeed optimizado',
+      url: 'https://clientes.hostingplus.cl/cotiza-hosting?plan=performance-pro'
     },
-    proofPoints: ['Único hosting LiteSpeed en Chile', 'HTTP/3 + QUIC', 'Configuración optimizada'],
-    whenToUse: 'Solo funciona al máximo en hosting con servidor LiteSpeed nativo.',
-    synonyms: ['lscache', 'litespeed plugin']
+    proofPoints: [
+      'Servidores LiteSpeed nativos',
+      'Caché integrado a nivel servidor',
+      'Optimización automática',
+      'CDN QUIC.cloud incluido'
+    ],
+    whenToUse: 'Para cualquier sitio WordPress que necesite mejor rendimiento, especialmente en servidores LiteSpeed',
+    synonyms: ['LSCache', 'LiteSpeed WordPress Cache', 'LSCWP'],
+    lastUpdated: '2025-01-15'
   },
   {
     id: 'perf-002',
     slug: 'redis-cache',
     title: 'Redis Object Cache',
-    shortDefinition: 'Sistema de caché en memoria que reduce consultas a la base de datos hasta 80%.',
+    shortDefinition: 'Sistema de caché en memoria que acelera las consultas de base de datos en WordPress.',
+    longDefinition: `## ¿Qué es Redis Object Cache?
+
+**Redis Object Cache** es una tecnología de **caché en memoria** que acelera dramáticamente las consultas de base de datos en WordPress. Redis (Remote Dictionary Server) almacena datos en **RAM**, proporcionando acceso ultrarrápido a información frecuentemente solicitada.
+
+### ¿Cómo funciona?
+
+Cuando WordPress necesita datos de la base de datos:
+
+1. **Sin Redis**: WordPress consulta MySQL directamente (lento)
+2. **Con Redis**: WordPress consulta primero Redis (ultrarrápido)
+3. Si el dato no está en Redis, consulta MySQL y guarda en Redis
+
+### Beneficios de rendimiento
+
+**Mejoras típicas:**
+- **Reducción de tiempo de respuesta**: 50-80%
+- **Menos carga en MySQL**: Hasta 90% menos consultas
+- **Mayor concurrencia**: Soporta más usuarios simultáneos
+- **Escalabilidad**: Mejor rendimiento bajo carga
+
+### Casos de uso ideales
+
+**E-commerce:**
+- Consultas de productos frecuentes
+- Sesiones de usuario
+- Carrito de compras persistente
+
+**Sitios de alto tráfico:**
+- Blogs con miles de visitas
+- Portales de noticias
+- Foros y comunidades
+
+**WooCommerce:**
+- Cache de categorías y productos
+- Datos de inventario
+- Configuraciones de tienda
+
+### Configuración técnica
+
+**Plugins recomendados:**
+- **Redis Object Cache** (by Till Krüss)
+- **LiteSpeed Cache** (con soporte Redis)
+- **W3 Total Cache** (configuración manual)
+
+**Configuración wp-config.php:**
+\`\`\`php
+define('WP_REDIS_HOST', '127.0.0.1');
+define('WP_REDIS_PORT', 6379);
+define('WP_REDIS_DATABASE', 0);
+define('WP_CACHE_KEY_SALT', 'tu-dominio.com');
+\`\`\`
+
+### Monitoreo y mantenimiento
+
+**Métricas importantes:**
+- **Hit ratio**: >90% es excelente
+- **Memory usage**: Monitorear uso de RAM
+- **Evicted keys**: Indicador de memoria insuficiente
+- **Connected clients**: Número de conexiones activas
+
+**Comandos útiles Redis:**
+- \`redis-cli info memory\`: Estado de memoria
+- \`redis-cli monitor\`: Ver consultas en tiempo real
+- \`redis-cli flushall\`: Limpiar caché completo
+
+### Comparación con Memcached
+
+| Aspecto | Redis | Memcached |
+|---------|-------|-----------|
+| Persistencia | Sí | No |
+| Tipos de datos | Avanzados | Básicos |
+| Clustering | Nativo | Manual |
+| Rendimiento | Excelente | Excelente |
+| Popularidad WordPress | Alta | Media |
+
+### Problemas comunes
+
+**1. Alto uso de memoria:**
+- Configurar \`maxmemory\` apropiadamente
+- Implementar políticas de eviction
+- Monitorear growth rate
+
+**2. Conexiones perdidas:**
+- Verificar configuración de red
+- Revisar logs de Redis
+- Comprobar timeouts
+
+**3. Performance no mejora:**
+- Verificar hit ratio
+- Revisar configuración de plugins
+- Analizar bottlenecks reales`,
     category: 'performance',
-    cms: 'general',
-    tags: ['cache', 'database', 'memoria', 'performance'],
+    cms: 'wordpress',
+    tags: ['redis', 'cache', 'database', 'performance', 'memoria', 'optimizacion'],
     level: 'avanzado',
-    related: ['litespeed-cache', 'memcached', 'object-cache-pro'],
-    hostingRequirements: ['Redis server', 'PHP Redis extension', 'Memory 256MB+'],
+    related: ['wordpress', 'litespeed-cache', 'core-web-vitals'],
+    hostingRequirements: [
+      'Servidor Redis instalado y configurado',
+      'Plugin Redis Object Cache para WordPress',
+      'PHP con extensión Redis habilitada',
+      'Memoria RAM suficiente (>1GB recomendado)'
+    ],
     cta: {
-      plan: 'WordPress Pro',
-      copy: 'Redis incluido en planes Pro y superiores',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      plan: 'Business Pro',
+      copy: 'Implementa Redis en tu hosting profesional',
+      url: 'https://clientes.hostingplus.cl/cotiza-hosting?plan=business-pro'
     },
-    proofPoints: ['Redis preconfigurado', 'Monitoreo 24/7', 'Backup automático'],
-    whenToUse: 'Sites con alto tráfico, e-commerce o consultas complejas de BD.'
+    proofPoints: [
+      'Redis incluido en planes premium',
+      'Configuración automática optimizada',
+      'Monitoreo 24/7 de performance',
+      'Soporte técnico especializado'
+    ],
+    whenToUse: 'Para sitios con alta carga de base de datos, e-commerce, o más de 10,000 visitas mensuales',
+    synonyms: ['Object Cache', 'Redis Cache', 'In-Memory Cache'],
+    lastUpdated: '2025-01-15'
   },
   {
     id: 'perf-003',
