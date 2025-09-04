@@ -612,7 +612,6 @@ export const wikiTerms: WikiTerm[] = [
     proofPoints: ['100% gratuita', 'Sin tiempo offline', 'Soporte especializado'],
     whenToUse: 'Al cambiar de hosting o actualizar plan.'
   }
-
   // Nota: Este es un conjunto inicial. Se pueden agregar más términos según necesidades específicas.
 ];
 
