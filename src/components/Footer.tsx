@@ -56,6 +56,7 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Recursos</h4>
             <ul className="space-y-2 text-sm">
+              <li><Link to="/wiki" className="text-gray-300 hover:text-[#EF233C] transition-colors">Wiki de Hosting</Link></li>
               <li><Link to="/ultimos-dominios" className="text-gray-300 hover:text-[#EF233C] transition-colors">Últimos Dominios</Link></li>
               <li><Link to="/asn" className="text-gray-300 hover:text-[#EF233C] transition-colors">Mapa ASN</Link></li>
               <li><Link to="/guia-elegir-vps" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guía VPS</Link></li>
