@@ -164,6 +164,23 @@ const WikiTerm: React.FC = () => {
                       li: ({children}) => <li className="text-base leading-relaxed">{children}</li>,
                       strong: ({children}) => <strong className="font-semibold text-foreground">{children}</strong>,
                       blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic bg-muted/50 p-4 rounded-r-lg my-4">{children}</blockquote>,
+                      img: ({src, alt}) => (
+                        <figure className="my-6">
+                          <div className="rounded-lg overflow-hidden border border-border shadow-sm">
+                            <img 
+                              src={src?.replace('/src/', '/')} 
+                              alt={alt || ''}
+                              className="w-full h-auto object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+                        </figure>
+                      ),
+                      em: ({children}) => (
+                        <figcaption className="text-sm text-muted-foreground mt-2 text-center italic">
+                          {children}
+                        </figcaption>
+                      ),
                     }}
                   >
                     {term.longDefinition}
