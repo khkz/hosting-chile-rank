@@ -9,7 +9,8 @@ import {
   ShoppingCart,
   Globe,
   FileText,
-  Star
+  Star,
+  BookOpen
 } from 'lucide-react';
 import Logo from './Logo';
 import {
@@ -94,6 +95,16 @@ const Navbar = () => {
           >
             <Globe className="h-4 w-4 mr-1" />
             Últimos dominios
+          </NavLink>
+          
+          <NavLink 
+            to="/wiki" 
+            className={({ isActive }) => 
+              `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2`
+            }
+          >
+            <BookOpen className="h-4 w-4 mr-1" />
+            Wiki
           </NavLink>
           
           {/* Dropdown Menu for "Guías" */}
@@ -261,6 +272,16 @@ const Navbar = () => {
                 >
                   <Globe className="h-5 w-5 mr-2" />
                   Últimos dominios
+                </NavLink>
+                
+                <NavLink 
+                  to="/wiki" 
+                  className={({ isActive }) => 
+                    `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                  }
+                >
+                  <BookOpen className="h-5 w-5 mr-2" />
+                  Wiki
                 </NavLink>
                 
                 <div className="pt-2 pb-2">

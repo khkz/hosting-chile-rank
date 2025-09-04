@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search } from 'lucide-react';
+import { useDebounce } from 'use-debounce';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +26,9 @@ const GlossarySearch: React.FC<GlossarySearchProps> = ({
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [cmsFilter, setCmsFilter] = useState<string>('all');
   const [levelFilter, setLevelFilter] = useState<string>('all');
+  
+  // Debounce search query for smoother UX
+  const [debouncedQuery] = useDebounce(query, 150);
 
   const filteredResults = useMemo(() => {
     const filters: any = {};
@@ -32,8 +36,8 @@ const GlossarySearch: React.FC<GlossarySearchProps> = ({
     if (cmsFilter !== 'all') filters.cms = cmsFilter;
     if (levelFilter !== 'all') filters.level = levelFilter;
 
-    return searchTerms(query, filters);
-  }, [query, categoryFilter, cmsFilter, levelFilter]);
+    return searchTerms(debouncedQuery, filters);
+  }, [debouncedQuery, categoryFilter, cmsFilter, levelFilter]);
 
   useEffect(() => {
     onResults(filteredResults);

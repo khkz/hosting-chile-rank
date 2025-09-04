@@ -2,6 +2,7 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import providers from './providers.json' assert { type: 'json' };
+import { wikiTerms } from '../src/data/wiki/terms.ts';
 
 const ROOT   = 'https://eligetuhosting.cl';
 const NOW    = new Date().toISOString();   // ISO format with time for better precision
@@ -24,6 +25,7 @@ const staticUrls = [
   ['/comparativa', '0.8', 'weekly'],
   ['/cotiza-hosting', '0.8', 'weekly'],
   ['/ultimos-dominios', '0.9', 'hourly'], // Optimizado para crawleo frecuente
+  ['/wiki', '0.8', 'weekly'], // Wiki index page
   ['/contacto', '0.7', 'monthly'],
   ['/faq', '0.7', 'monthly'],
   ['/asn', '0.7', 'weekly']
@@ -40,6 +42,11 @@ const hostingReviews = [
   'bluehost', 'donweb', 'godaddy'
 ].map(slug => urlTag(`${ROOT}/reseñas/${slug}`, '0.8', 'weekly'))
  .join('');
+
+/* ---------- páginas Wiki (términos) ------------------------------------ */
+const wikiUrls = wikiTerms
+  .map(term => urlTag(`${ROOT}/wiki/${term.slug}`, '0.7', 'weekly'))
+  .join('');
 
 /* ---------- últimos dominios (.domain/) --------------------------------- */
 let raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
@@ -66,6 +73,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${staticUrls}
 ${providerUrls}
 ${hostingReviews}
+${wikiUrls}
 ${domainUrls}
 </urlset>`.trimStart();
 
