@@ -7,19 +7,24 @@ interface WikiImageProps {
   className?: string;
 }
 
-const WikiImage: React.FC<WikiImageProps> = ({ src, alt, caption, className = "" }) => {
+const WikiImage: React.FC<WikiImageProps> = ({ 
+  src, 
+  alt, 
+  caption, 
+  className = "" 
+}) => {
   return (
-    <figure className={`my-6 ${className}`}>
-      <div className="rounded-lg overflow-hidden border border-border shadow-sm">
+    <figure className={`my-8 ${className}`}>
+      <div className="rounded-lg overflow-hidden border border-border bg-card">
         <img 
-          src={src} 
+          src={src}
           alt={alt}
           className="w-full h-auto object-cover"
           loading="lazy"
         />
       </div>
       {caption && (
-        <figcaption className="text-sm text-muted-foreground mt-2 text-center italic">
+        <figcaption className="text-sm text-muted-foreground mt-3 text-center italic">
           {caption}
         </figcaption>
       )}

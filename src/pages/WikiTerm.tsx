@@ -12,9 +12,17 @@ import Footer from '@/components/Footer';
 import RightRailOffer from '@/components/RightRailOffer';
 import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import WikiImage from '@/components/WikiImage';
 import { wikiTerms, getRelatedTerms, wikiCategories } from '@/data/wiki/terms';
 import { buildHostingPlusURL, trackCTAClick } from '@/utils/cta';
 import { ExternalLink, Calendar, Tag, Server, ChevronRight } from 'lucide-react';
+
+// Import wiki images
+import wordpressDashboard from '@/assets/wiki/wordpress-dashboard.jpg';
+import gutenbergEditor from '@/assets/wiki/gutenberg-editor.jpg';
+import elementorInterface from '@/assets/wiki/elementor-interface.jpg';
+import wordpressStats from '@/assets/wiki/wordpress-stats.jpg';
+import wordpressRequirements from '@/assets/wiki/wordpress-requirements.jpg';
 
 const WikiTerm: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -164,18 +172,25 @@ const WikiTerm: React.FC = () => {
                       li: ({children}) => <li className="text-base leading-relaxed">{children}</li>,
                       strong: ({children}) => <strong className="font-semibold text-foreground">{children}</strong>,
                       blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic bg-muted/50 p-4 rounded-r-lg my-4">{children}</blockquote>,
-                      img: ({src, alt}) => (
-                        <figure className="my-6">
-                          <div className="rounded-lg overflow-hidden border border-border shadow-sm">
-                            <img 
-                              src={src?.replace('/src/', '/')} 
-                              alt={alt || ''}
-                              className="w-full h-auto object-cover"
-                              loading="lazy"
-                            />
-                          </div>
-                        </figure>
-                      ),
+                      img: ({src, alt, title}) => {
+                        // Map image sources to imported assets
+                        const imageMap: Record<string, string> = {
+                          '/src/assets/wiki/wordpress-dashboard.jpg': wordpressDashboard,
+                          '/src/assets/wiki/gutenberg-editor.jpg': gutenbergEditor,
+                          '/src/assets/wiki/elementor-interface.jpg': elementorInterface,
+                          '/src/assets/wiki/wordpress-stats.jpg': wordpressStats,
+                          '/src/assets/wiki/wordpress-requirements.jpg': wordpressRequirements,
+                        };
+                        const imageSrc = imageMap[src || ''] || src;
+                        return (
+                          <WikiImage 
+                            src={imageSrc || ''} 
+                            alt={alt || ''} 
+                            caption={title} 
+                            className="my-6"
+                          />
+                        );
+                      },
                       em: ({children}) => (
                         <figcaption className="text-sm text-muted-foreground mt-2 text-center italic">
                           {children}

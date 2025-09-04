@@ -107,15 +107,13 @@ export const wikiTerms: WikiTerm[] = [
 
 WordPress comenzó en 2003 como una plataforma simple para blogs, pero se ha convertido en el motor que impulsa casi la mitad de internet. No es solo un software; es todo un ecosistema que permite a cualquier persona crear sitios web profesionales sin necesidad de programar.
 
-![WordPress Dashboard](/src/assets/wiki/wordpress-dashboard.jpg)
-*Panel de administración de WordPress - Interfaz intuitiva para gestionar tu sitio web*
+![WordPress Dashboard](/src/assets/wiki/wordpress-dashboard.jpg "Panel de administración de WordPress - Interfaz intuitiva para gestionar tu sitio web")
 
 ## ¿Por qué WordPress domina el mercado?
 
-**La historia es fascinante:** Matt Mullenweg tenía solo 19 años cuando cofundó WordPress. Hoy, empresas como The New York Times, Sony Music y hasta la Casa Blanca usan WordPress. En Chile, desde La Tercera hasta pequeños emprendimientos locales confían en esta plataforma.
+![Estadísticas WordPress](/src/assets/wiki/wordpress-stats.jpg "WordPress potencia más del 43% de todos los sitios web del mundo")
 
-![WordPress Statistics](/src/assets/wiki/wordpress-stats.jpg)
-*WordPress potencia el 43% de todos los sitios web del mundo*
+**La historia es fascinante:** Matt Mullenweg tenía solo 19 años cuando cofundó WordPress. Hoy, empresas como The New York Times, Sony Music y hasta la Casa Blanca usan WordPress. En Chile, desde La Tercera hasta pequeños emprendimientos locales confían en esta plataforma.
 
 ### Lo que hace especial a WordPress:
 
@@ -128,8 +126,11 @@ Con más de 60,000 plugins gratuitos y miles de temas, hay una solución para pr
 **3. SEO nativo**
 WordPress está construido pensando en SEO. URLs limpias, estructura semántica, sitemap automático, y compatibilidad con plugins como Yoast o RankMath hacen que posicionar en Google sea mucho más fácil.
 
-![Gutenberg Editor](/src/assets/wiki/gutenberg-editor.jpg)
-*Editor Gutenberg - Crea contenido profesional con bloques visuales*
+## Editor Gutenberg: La revolución del contenido
+
+![Gutenberg Editor](/src/assets/wiki/gutenberg-editor.jpg "Editor Gutenberg - Crea contenido profesional con bloques visuales")
+
+El editor Gutenberg transformó WordPress desde 2018. Permite crear diseños sofisticados usando bloques: párrafos, imágenes, botones, columnas, galerías. Es como tener un page builder básico incluido gratis.
 
 ## Casos de uso reales en Chile
 
@@ -175,8 +176,7 @@ WordPress está construido pensando en SEO. URLs limpias, estructura semántica,
 
 ## Requisitos técnicos explicados simple
 
-![WordPress Requirements](/src/assets/wiki/wordpress-requirements.jpg)
-*Requisitos técnicos de WordPress - Especificaciones necesarias para un funcionamiento óptimo*
+![WordPress Requirements](/src/assets/wiki/wordpress-requirements.jpg "Requisitos técnicos de WordPress - Especificaciones necesarias para un funcionamiento óptimo")
 
 **Hosting recomendado:**
 - **PHP 8.0+:** WordPress está escrito en PHP, versiones antiguas son inseguras
