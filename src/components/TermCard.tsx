@@ -162,7 +162,7 @@ const TermCard: React.FC<TermCardProps> = ({ term, variant = 'default' }) => {
                 size="sm"
                 onClick={() => {
                   handleCTAClick('secondary');
-                  window.open(buildHostingPlusURL('https://clientes.hostingplus.cl/cotiza-hosting', { content: `${term.slug}-secondary` }), '_blank');
+                  window.open(buildHostingPlusURL('https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4', { content: `${term.slug}-secondary` }), '_blank');
                 }}
               >
                 Cotizar

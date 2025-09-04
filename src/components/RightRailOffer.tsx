@@ -19,12 +19,12 @@ const RightRailOffer: React.FC<RightRailOfferProps> = ({
   };
 
   const primaryUrl = buildHostingPlusURL(
-    'https://clientes.hostingplus.cl/cart.php?a=add&pid=3',
-    { content: `${termSlug}-sidebar`, term: 'wordpress-turbo' }
+    'https://clientes.hostingplus.cl/cart.php?a=add&pid=84',
+    { content: `${termSlug}-sidebar`, term: 'wordpress-hosting' }
   );
 
   const secondaryUrl = buildHostingPlusURL(
-    'https://clientes.hostingplus.cl/cotiza-hosting',
+    'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4',
     { content: `${termSlug}-sidebar`, term: 'cotizacion' }
   );
 

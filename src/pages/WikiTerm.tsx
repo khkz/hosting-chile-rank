@@ -42,7 +42,7 @@ const WikiTerm: React.FC = () => {
   });
 
   const secondaryCTAUrl = buildHostingPlusURL(
-    'https://clientes.hostingplus.cl/cotiza-hosting',
+    'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4',
     { content: `${term.slug}-secondary` }
   );
 
