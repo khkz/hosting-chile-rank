@@ -130,7 +130,7 @@ const RightRailOffer: React.FC<RightRailOfferProps> = ({
             </Button>
             
             <Button 
-              variant="outline" 
+              variant="secondary" 
               className="w-full"
               onClick={() => {
                 handleCTAClick('secondary');
