@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -151,7 +153,21 @@ const WikiTerm: React.FC = () => {
               
               {term.longDefinition ? (
                 <div className="prose prose-gray dark:prose-invert max-w-none">
-                  <p className="text-lg leading-relaxed">{term.longDefinition}</p>
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h2: ({children}) => <h3 className="text-xl font-bold mt-8 mb-4">{children}</h3>,
+                      h3: ({children}) => <h4 className="text-lg font-semibold mt-6 mb-3">{children}</h4>,
+                      p: ({children}) => <p className="text-base leading-relaxed mb-4">{children}</p>,
+                      ul: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4">{children}</ul>,
+                      ol: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4">{children}</ol>,
+                      li: ({children}) => <li className="text-base leading-relaxed">{children}</li>,
+                      strong: ({children}) => <strong className="font-semibold text-foreground">{children}</strong>,
+                      blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic bg-muted/50 p-4 rounded-r-lg my-4">{children}</blockquote>,
+                    }}
+                  >
+                    {term.longDefinition}
+                  </ReactMarkdown>
                 </div>
               ) : (
                 <p className="text-lg leading-relaxed">{term.shortDefinition}</p>
