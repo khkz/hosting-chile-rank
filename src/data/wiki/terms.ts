@@ -299,12 +299,145 @@ No es perfecto, pero la combinación de flexibilidad, costo y facilidad de uso l
     slug: 'elementor',
     title: 'Elementor',
     shortDefinition: 'Constructor visual líder para WordPress. Acelera con LiteSpeed + HTTP/3.',
-    longDefinition: 'Page builder freemium que permite diseñar sitios web profesionales con interfaz drag & drop. Incluye plantillas, widgets avanzados y opciones de responsive design.',
+    longDefinition: `# ¿Qué es Elementor?
+
+Elementor revolucionó WordPress desde 2016 convirtiéndose en el page builder más popular del mundo. No es solo una herramienta de diseño; es un ecosistema completo que democratiza la creación web profesional.
+
+**La realidad en números:** Más de 5 millones de sitios web activos usan Elementor. En Chile, desde startups hasta corporaciones como Falabella Digital confían en esta plataforma para sus proyectos críticos.
+
+## Elementor Free vs Pro: ¿Qué necesitas realmente?
+
+### Elementor Free (Gratis)
+- **30+ widgets básicos:** Texto, imagen, botón, video, mapa
+- **Responsive editing:** Edita para móvil, tablet y desktop
+- **Drag & drop visual:** Interfaz intuitiva sin código
+- **Plantillas básicas:** Biblioteca limitada pero funcional
+
+### Elementor Pro ($59/año)
+- **90+ widgets premium:** Formularios, WooCommerce, testimonios
+- **Theme Builder:** Crea headers, footers y plantillas personalizadas
+- **WooCommerce Builder:** Páginas de producto, checkout, carrito
+- **Motion Effects:** Animaciones, parallax, scrolling effects
+- **Marketing Tools:** Popup Builder, Lead Generation
+
+## Rendimiento: Elementor + LiteSpeed = Velocidad Extrema
+
+**El problema común:** Elementor puede generar código pesado que ralentiza sitios web. La solución está en la infraestructura de hosting.
+
+### Optimización con LiteSpeed Cache
+
+\`\`\`
+Configuración recomendada LiteSpeed:
+- Page Cache: Activado
+- Object Cache: Redis/Memcached
+- CSS/JS Minify: LSCache automático
+- Image Optimization: WebP + lazy loading
+- Critical CSS: Generación automática
+\`\`\`
+
+**Resultado real:** Sitios Elementor que cargan en 2-3 segundos se optimizan a 0.8-1.2 segundos con LiteSpeed Enterprise + HTTP/3.
+
+## Compatibilidad: Elementor vs Gutenberg
+
+**¿Usar ambos?** Sí, es posible y recomendable:
+
+- **Gutenberg:** Para blog posts y contenido editorial
+- **Elementor:** Para landing pages, home, servicios, contacto
+
+### Tabla Comparativa: Constructores Visuales
+
+| Criterio | Elementor | Gutenberg | Divi |
+|----------|-----------|-----------|------|
+| **Curva aprendizaje** | Fácil | Muy fácil | Medio |
+| **Velocidad base** | Media | Rápida | Lenta |
+| **Widgets incluidos** | 90+ (Pro) | 20+ | 100+ |
+| **Responsive editing** | Excelente | Bueno | Excelente |
+| **SEO-friendly** | Bueno | Excelente | Regular |
+| **Precio anual** | $59 | Gratis | $89 |
+| **Compatibilidad plugins** | Excelente | Excelente | Buena |
+
+## Casos de uso en Chile
+
+### 1. E-commerce (WooCommerce)
+**Ejemplo:** Tienda de ropa online
+- Product Builder personalizado
+- Checkout optimizado
+- Landing pages promocionales
+- **Hosting recomendado:** WordPress Pro + Redis
+
+### 2. Sitios corporativos
+**Ejemplo:** Estudio legal en Santiago
+- Diseño profesional y responsive
+- Formularios de contacto avanzados
+- Testimonios y casos de éxito
+- **Hosting recomendado:** WordPress Turbo + HTTP/3
+
+### 3. Landing pages conversion
+**Ejemplo:** Curso online
+- A/B testing con diferentes diseños
+- Popup builder integrado
+- Formularios con CRM
+- **Hosting recomendado:** WordPress Turbo + LiteSpeed
+
+## Pros y contras honestos
+
+### ✅ Ventajas
+- **Flexibilidad total:** Diseña cualquier layout sin limitaciones
+- **Comunidad activa:** Miles de plantillas y tutoriales
+- **Actualizaciones constantes:** Nuevos widgets cada mes
+- **Integración nativa:** Compatible con 99% de plugins WordPress
+
+### ❌ Desventajas
+- **Dependencia del plugin:** Sin Elementor, el diseño se rompe
+- **Código adicional:** Genera CSS/JS extra vs temas nativos
+- **Vendor lock-in:** Migrar a otro builder es complejo
+- **Costo anual:** $59/año para funciones profesionales
+
+## Mejores prácticas 2025
+
+### 1. Optimización de rendimiento
+\`\`\`
+- Usa solo widgets necesarios
+- Optimiza imágenes a WebP
+- Activa lazy loading
+- Purga CSS no utilizado
+\`\`\`
+
+### 2. SEO y estructura
+- **Un H1 por página:** No uses múltiples Heading widgets H1
+- **Alt tags descriptivos:** Siempre completa alt text en imágenes
+- **Schema markup:** Usa widgets estructurados para FAQ, reviews
+- **URL structure:** Mantén URLs limpias y descriptivas
+
+### 3. Responsive design
+- **Mobile-first:** Diseña primero para móvil
+- **Breakpoints custom:** Ajusta para dispositivos específicos
+- **Typography scales:** Usa escalas responsivas para texto
+- **Touch targets:** Botones mínimo 44px en móvil
+
+## ¿Cuándo NO usar Elementor?
+
+1. **Blogs puros:** Gutenberg es más eficiente para contenido editorial
+2. **Sites ultra-rápidos:** Si Core Web Vitals son críticos, considera temas custom
+3. **Presupuesto limitado:** Version gratuita es muy básica
+4. **Desarrolladores avanzados:** ACF + custom fields puede ser más flexible
+
+## Conclusión y recomendación
+
+Elementor es la herramienta ideal para **90% de proyectos WordPress** que requieren diseño personalizado. La clave del éxito está en la **infraestructura de hosting**.
+
+**Nuestra recomendación:** Elementor Pro + LiteSpeed Enterprise + HTTP/3 es la combinación que permite crear sitios web visualmente impactantes sin sacrificar velocidad.
+
+### Next steps
+1. **Evalúa tus necesidades:** ¿Free o Pro?
+2. **Elige hosting optimizado:** LiteSpeed + Redis es esencial
+3. **Planifica estructura:** Define pages vs posts desde el inicio
+4. **Optimiza desde día 1:** Configura cache y optimización de imágenes`,
     category: 'builders',
     cms: 'wordpress',
-    tags: ['page-builder', 'visual', 'drag-drop', 'responsive'],
+    tags: ['page-builder', 'visual', 'drag-drop', 'responsive', 'woocommerce', 'theme-builder'],
     level: 'medio',
-    related: ['litespeed-cache', 'elementor-ai', 'divi', 'beaver-builder'],
+    related: ['litespeed-cache', 'elementor-ai', 'divi', 'beaver-builder', 'gutenberg', 'core-web-vitals'],
     hostingRequirements: ['LiteSpeed Server', 'PHP 8.1+', 'Memory 512MB+', 'HTTP/3'],
     cta: {
       plan: 'WordPress Turbo',
@@ -313,7 +446,8 @@ No es perfecto, pero la combinación de flexibilidad, costo y facilidad de uso l
     },
     proofPoints: ['LiteSpeed Enterprise', 'HTTP/3 nativo', 'Staging con 1 clic', 'JetBackup diario'],
     whenToUse: 'Para sitios corporativos, landing pages y portales que requieren diseño personalizado.',
-    synonyms: ['constructor visual', 'page builder']
+    synonyms: ['constructor visual', 'page builder', 'elementor pro', 'page builder wordpress'],
+    lastUpdated: '2025-01-04'
   },
   {
     id: 'pb-002',
@@ -333,6 +467,51 @@ No es perfecto, pero la combinación de flexibilidad, costo y facilidad de uso l
     },
     proofPoints: ['Uptime 99.9%', 'Conectividad premium', 'Soporte especializado'],
     whenToUse: 'Para acelerar la creación de contenido y diseños únicos.'
+  },
+
+  {
+    id: 'pb-003',
+    slug: 'divi',
+    title: 'Divi',
+    shortDefinition: 'Constructor visual de Elegant Themes con diseño único y módulos premium.',
+    longDefinition: 'Page builder premium de Elegant Themes que incluye el Divi Theme. Ofrece interfaz drag & drop, módulos exclusivos y diseños únicos, pero requiere más recursos que Elementor.',
+    category: 'builders',
+    cms: 'wordpress',
+    tags: ['page-builder', 'visual', 'elegant-themes', 'premium'],
+    level: 'medio',
+    related: ['elementor', 'beaver-builder', 'litespeed-cache', 'core-web-vitals'],
+    hostingRequirements: ['PHP 8.0+', 'Memory 768MB+', 'LiteSpeed recomendado'],
+    cta: {
+      plan: 'WordPress Turbo',
+      copy: 'Optimiza Divi con LiteSpeed Enterprise',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+    },
+    proofPoints: ['Optimización específica Divi', 'Cache avanzado', 'Soporte especializado'],
+    whenToUse: 'Para diseños únicos y proyectos que requieren estética diferenciada.',
+    synonyms: ['divi builder', 'elegant themes'],
+    lastUpdated: '2025-01-04'
+  },
+  {
+    id: 'pb-004',
+    slug: 'beaver-builder',
+    title: 'Beaver Builder',
+    shortDefinition: 'Page builder enfocado en rendimiento y código limpio. Ideal para desarrolladores.',
+    longDefinition: 'Constructor visual que prioriza código limpio y rendimiento. Popular entre desarrolladores por su flexibilidad y hooks personalizados. Menos recursos visuales que Elementor pero más eficiente.',
+    category: 'builders',
+    cms: 'wordpress',
+    tags: ['page-builder', 'performance', 'developer-friendly', 'codigo-limpio'],
+    level: 'avanzado',
+    related: ['elementor', 'divi', 'litespeed-cache', 'advanced-custom-fields'],
+    hostingRequirements: ['PHP 7.4+', 'Memory 256MB+'],
+    cta: {
+      plan: 'WordPress Pro',
+      copy: 'Hosting optimizado para Beaver Builder',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+    },
+    proofPoints: ['Código optimizado', 'Velocidad superior', 'Developer-friendly'],
+    whenToUse: 'Para proyectos que priorizan rendimiento y requieren customización avanzada.',
+    synonyms: ['bb', 'beaver page builder'],
+    lastUpdated: '2025-01-04'
   },
 
   // Performance & Cache
