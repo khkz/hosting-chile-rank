@@ -255,7 +255,7 @@ No es perfecto, pero la combinación de flexibilidad, costo y facilidad de uso l
     cta: {
       plan: 'WordPress Básico',
       copy: 'WordPress optimizado con instalación automática, SSL gratis y soporte especializado desde $2.990/mes. Perfecto para empezar.',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=1'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: [
       'Instalación con 1 clic y configuración optimizada',
@@ -342,7 +342,7 @@ Mientras que **Elementor** o **Divi** son page builders completos, Gutenberg se 
     cta: {
       plan: 'WordPress Pro',
       copy: 'Optimiza tu experiencia con Gutenberg en hosting WordPress especializado',
-      url: 'https://clientes.hostingplus.cl/cotiza-hosting?plan=wordpress-pro'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: [
       'Hosting optimizado para WordPress',
@@ -504,7 +504,7 @@ Elementor es la herramienta ideal para **90% de proyectos WordPress** que requie
     cta: {
       plan: 'WordPress Turbo',
       copy: 'Acelera Elementor con LiteSpeed + HTTP/3',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['LiteSpeed Enterprise', 'HTTP/3 nativo', 'Staging con 1 clic', 'JetBackup diario'],
     whenToUse: 'Para sitios corporativos, landing pages y portales que requieren diseño personalizado.',
@@ -525,7 +525,7 @@ Elementor es la herramienta ideal para **90% de proyectos WordPress** que requie
     cta: {
       plan: 'WordPress Turbo',
       copy: 'IA sin interrupciones con hosting premium',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Uptime 99.9%', 'Conectividad premium', 'Soporte especializado'],
     whenToUse: 'Para acelerar la creación de contenido y diseños únicos.'
@@ -546,7 +546,7 @@ Elementor es la herramienta ideal para **90% de proyectos WordPress** que requie
     cta: {
       plan: 'WordPress Turbo',
       copy: 'Optimiza Divi con LiteSpeed Enterprise',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Optimización específica Divi', 'Cache avanzado', 'Soporte especializado'],
     whenToUse: 'Para diseños únicos y proyectos que requieren estética diferenciada.',
@@ -568,7 +568,7 @@ Elementor es la herramienta ideal para **90% de proyectos WordPress** que requie
     cta: {
       plan: 'WordPress Pro',
       copy: 'Hosting optimizado para Beaver Builder',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Código optimizado', 'Velocidad superior', 'Developer-friendly'],
     whenToUse: 'Para proyectos que priorizan rendimiento y requieren customización avanzada.',
@@ -674,7 +674,7 @@ Para aprovechar al **100% las capacidades** de LiteSpeed Cache:
     cta: {
       plan: 'Performance Pro',
       copy: 'Acelera tu WordPress con hosting LiteSpeed optimizado',
-      url: 'https://clientes.hostingplus.cl/cotiza-hosting?plan=performance-pro'
+      url: 'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4'
     },
     proofPoints: [
       'Servidores LiteSpeed nativos',
@@ -796,7 +796,7 @@ define('WP_CACHE_KEY_SALT', 'tu-dominio.com');
     cta: {
       plan: 'Business Pro',
       copy: 'Implementa Redis en tu hosting profesional',
-      url: 'https://clientes.hostingplus.cl/cotiza-hosting?plan=business-pro'
+      url: 'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4'
     },
     proofPoints: [
       'Redis incluido en planes premium',
@@ -1189,7 +1189,7 @@ Core Web Vitals optimization is not optional for modern websites competing in Ch
     cta: {
       plan: 'WordPress Turbo',
       copy: 'Mejora Core Web Vitals con servidor premium',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['HTTP/3 nativo', 'SSD NVMe', 'Red premium', 'Optimización automática'],
     whenToUse: 'Esencial para SEO y ranking en Google desde 2021.',
@@ -1581,7 +1581,7 @@ INP optimization is crucial for modern web performance, especially for Chilean b
     cta: {
       plan: 'WordPress Turbo',
       copy: 'Optimiza INP con CPU dedicada',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['CPU Intel/AMD última gen', 'Latencia <50ms', 'NVMe enterprise', 'Optimización automática'],
     whenToUse: 'Sites con mucha interactividad: e-commerce, apps web, dashboards.',
@@ -1875,7 +1875,7 @@ Wordfence represents the gold standard for WordPress security. For Chilean busin
     cta: {
       plan: 'WordPress Pro',
       copy: 'Seguridad multicapa: Wordfence + WAF servidor',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['WAF a nivel servidor', 'JetBackup diario', 'Monitoreo 24/7', 'Soporte seguridad'],
     whenToUse: 'Todo sitio WordPress necesita protección contra ataques.',
@@ -1896,7 +1896,7 @@ Wordfence represents the gold standard for WordPress security. For Chilean busin
     cta: {
       plan: 'WordPress Pro',
       copy: 'JetBackup incluido: restore en minutos',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Backup cada 4 horas', 'Restore granular', '30 días de retención'],
     whenToUse: 'Sites críticos que no pueden permitirse pérdida de datos.'
@@ -2133,7 +2133,7 @@ WooCommerce sigue siendo la mejor opción para e-commerce en WordPress por su fl
     cta: {
       plan: 'WordPress E-commerce',
       copy: 'Hosting optimizado para WooCommerce',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=5'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
     },
     proofPoints: [
       'Soporte PHP 8.3 optimizado',
@@ -2158,7 +2158,7 @@ WooCommerce sigue siendo la mejor opción para e-commerce en WordPress por su fl
     cta: {
       plan: 'WordPress E-commerce',
       copy: 'Integra Flow con hosting estable',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=5'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
     },
     proofPoints: ['Uptime 99.9%', 'Conectividad premium', 'Soporte local'],
     whenToUse: 'E-commerce en Chile que necesita múltiples métodos de pago.'
@@ -2180,7 +2180,7 @@ WooCommerce sigue siendo la mejor opción para e-commerce en WordPress por su fl
     cta: {
       plan: 'VPS Cloud',
       copy: 'Moodle profesional con VPS optimizado',
-      url: 'https://clientes.hostingplus.cl/vps-cloud'
+      url: 'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4'
     },
     proofPoints: ['CPU/RAM dedicada', 'Redis incluido', 'Migración asistida', 'Soporte especializado'],
     whenToUse: 'Educación formal, capacitación empresarial, cursos con certificación.',
@@ -2199,7 +2199,7 @@ WooCommerce sigue siendo la mejor opción para e-commerce en WordPress por su fl
     cta: {
       plan: 'WordPress Pro',
       copy: 'LearnDash optimizado con Redis y staging',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Optimización LMS', 'Redis Object Cache', 'Staging para pruebas'],
     whenToUse: 'Venta de cursos online, academia privada, formación corporativa.'
@@ -2220,7 +2220,7 @@ WooCommerce sigue siendo la mejor opción para e-commerce en WordPress por su fl
     cta: {
       plan: 'Hosting Pro',
       copy: 'Acelera Joomla con LiteSpeed + Redis',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['LiteSpeed compatible', 'Redis opcional', 'Migración gratuita'],
     whenToUse: 'Sitios corporativos complejos, portales con múltiples usuarios.',
@@ -2239,7 +2239,7 @@ WooCommerce sigue siendo la mejor opción para e-commerce en WordPress por su fl
     cta: {
       plan: 'VPS Cloud',
       copy: 'PrestaShop empresarial con VPS dedicado',
-      url: 'https://clientes.hostingplus.cl/vps-cloud'
+      url: 'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4'
     },
     proofPoints: ['Recursos dedicados', 'Optimización e-commerce', 'Soporte especializado'],
     whenToUse: 'E-commerce con inventario complejo y múltiples sucursales.'
@@ -2682,7 +2682,7 @@ La IA para WordPress en Chile representa una oportunidad transformacional para e
     cta: {
       plan: 'WordPress Turbo',
       copy: 'IA sin interrupciones con hosting premium',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Uptime 99.9%', 'Conectividad premium', 'Resources garantizados'],
     whenToUse: 'Para acelerar creación de contenido y automatizar tareas.'
@@ -2700,7 +2700,7 @@ La IA para WordPress en Chile representa una oportunidad transformacional para e
     cta: {
       plan: 'WordPress Turbo',
       copy: 'AI Engine optimizado con hosting confiable',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['API calls estables', 'Memory garantizada', 'Uptime 99.9%'],
     whenToUse: 'Sites que quieren chatbots inteligentes o generación automática.'
@@ -2719,7 +2719,7 @@ La IA para WordPress en Chile representa una oportunidad transformacional para e
     cta: {
       plan: 'VPS Cloud',
       copy: 'Headless WP con Node.js + PHP en VPS',
-      url: 'https://clientes.hostingplus.cl/vps-cloud'
+      url: 'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4'
     },
     proofPoints: ['Stack personalizable', 'Node.js disponible', 'Configuración experta'],
     whenToUse: 'Apps web, sitios super rápidos, arquitecturas modernas.'
@@ -3090,7 +3090,7 @@ HTTP/3 and QUIC represent the future of web connectivity. For Chilean businesses
     cta: {
       plan: 'WordPress Turbo',
       copy: 'Primer hosting con HTTP/3 nativo en Chile',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['HTTP/3 desde 2023', 'LiteSpeed Enterprise', 'QUIC.cloud CDN'],
     whenToUse: 'Sites que buscan máxima velocidad y mejor UX.'
@@ -3511,7 +3511,7 @@ Yoast SEO remains the gold standard for WordPress SEO, especially for Chilean bu
     cta: {
       plan: 'WordPress Básico',
       copy: 'SEO optimizado desde el primer día',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=1'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Instalación automática', 'Sitemap automático', 'Guías SEO incluidas', 'Soporte especializado'],
     whenToUse: 'Todo sitio WordPress necesita optimización SEO básica.',
@@ -3774,7 +3774,7 @@ RankMath representa la evolución natural del SEO para WordPress. Su combinació
     cta: {
       plan: 'WordPress Pro',
       copy: 'RankMath Pro con hosting optimizado',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Performance optimizada', 'Analytics integrado', 'Soporte especializado'],
     whenToUse: 'Sites que buscan SEO avanzado sin pagar licencias.'
@@ -3794,7 +3794,7 @@ RankMath representa la evolución natural del SEO para WordPress. Su combinació
     cta: {
       plan: 'WordPress Turbo',
       copy: 'Único hosting LiteSpeed Enterprise en Chile',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['LiteSpeed Enterprise', 'HTTP/3 nativo', 'Compatibilidad total'],
     whenToUse: 'Sites que necesitan máximo rendimiento y compatibilidad.'
@@ -3812,7 +3812,7 @@ RankMath representa la evolución natural del SEO para WordPress. Su combinació
     cta: {
       plan: 'WordPress Pro',
       copy: 'PHP 8.4 disponible en todos los planes',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Todas las versiones PHP', 'Actualización inmediata', 'Testing sin riesgo'],
     whenToUse: 'Para aprovechar las últimas mejoras de rendimiento.'
@@ -3832,7 +3832,7 @@ RankMath representa la evolución natural del SEO para WordPress. Su combinació
     cta: {
       plan: 'WordPress Pro',
       copy: 'Staging automático con 1 clic',
-      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4'
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
     proofPoints: ['Staging ilimitado', 'Clonado automático', 'Sincronización fácil'],
     whenToUse: 'Antes de actualizar plugins, temas o hacer cambios importantes.'
@@ -3850,7 +3850,7 @@ RankMath representa la evolución natural del SEO para WordPress. Su combinació
     cta: {
       plan: 'Migración Gratuita',
       copy: 'Migración profesional sin costo',
-      url: 'https://clientes.hostingplus.cl/migracion-gratuita'
+      url: 'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4'
     },
     proofPoints: ['100% gratuita', 'Sin tiempo offline', 'Soporte especializado'],
     whenToUse: 'Al cambiar de hosting o actualizar plan.'
