@@ -20,7 +20,7 @@ const NotFound = () => {
           <p className="mt-4 text-lg text-[#555] max-w-md mx-auto">
             Lo sentimos, la página que estás buscando no existe o ha sido movida.
           </p>
-          <Button asChild className="mt-8 bg-[#EF233C]">
+          <Button asChild className="mt-8 bg-primary text-primary-foreground hover:bg-primary/90">
             <Link to="/">Volver al inicio</Link>
           </Button>
         </div>

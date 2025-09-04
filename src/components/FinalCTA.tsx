@@ -23,7 +23,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({
         <p className="mt-2">{subtitle}</p>
         <Button 
           asChild
-          className="mt-4 bg-[#EF233C] hover:bg-[#b3001b] px-8 py-3 rounded-lg font-medium"
+          className="mt-4 bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-lg font-medium"
         >
           {buttonLink.startsWith('http') ? (
             <a href={buttonLink} target="_blank" rel="noopener noreferrer">
