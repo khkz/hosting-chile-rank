@@ -98,6 +98,1122 @@ export const wikiCategories: WikiCategory[] = [
 export const wikiTerms: WikiTerm[] = [
   // WordPress Core
   {
+    slug: 'schema-markup',
+    title: 'Schema Markup',
+    shortDefinition: 'Código estructurado que ayuda a Google entender tu contenido y mostrar rich snippets en los resultados de búsqueda.',
+    longDefinition: `
+## ¿Qué es Schema Markup y por qué revoluciona tu SEO?
+
+Schema Markup es el **lenguaje secreto** que hablan Google, Bing y otros motores de búsqueda. Es código estructurado (JSON-LD) que describe exactamente qué tipo de contenido tienes en tu sitio: si es un producto, una receta, una reseña, un evento, una empresa local.
+
+**La magia:** Cuando Google entiende perfectamente tu contenido, puede mostrar **rich snippets** - esos resultados enriquecidos con estrellas, precios, fechas, imágenes que destacan en los resultados de búsqueda.
+
+## ¿Por qué Schema importa tanto en Chile?
+
+En el mercado chileno, donde la competencia digital crece exponentially, Schema Markup te da una ventaja real:
+
+**Restaurantes en Santiago:** Un restaurant con Schema puede mostrar horarios, menú, reseñas con estrellas directamente en Google. Los clientes ven toda la info antes de hacer clic.
+
+**E-commerce local:** Una tienda que vende productos chilenos puede mostrar precio, disponibilidad, y rating directamente en los resultados de búsqueda.
+
+**Profesionales:** Un dentista en Las Condes puede aparecer con horarios, ubicación, teléfono y reseñas sin que el usuario necesite entrar al sitio.
+
+## Tipos de Schema más valiosos
+
+### 1. Local Business Schema
+Para cualquier negocio con ubicación física en Chile:
+
+\`\`\`json
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Café Central Santiago",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Alameda 1234",
+    "addressLocality": "Santiago",
+    "addressRegion": "Región Metropolitana",
+    "postalCode": "7500000",
+    "addressCountry": "CL"
+  },
+  "telephone": "+56-2-2234-5678"
+}
+\`\`\`
+
+### 2. Product Schema
+Para e-commerce (esencial con WooCommerce):
+
+\`\`\`json
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Vino Carmenère Valle del Maipo",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "CLP",
+    "price": "15990"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "127"
+  }
+}
+\`\`\`
+
+### 3. Article Schema
+Para blogs y medios digitales:
+
+\`\`\`json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Mejores Hostings Chile 2025",
+  "author": {
+    "@type": "Person",
+    "name": "Experto Hosting"
+  },
+  "datePublished": "2025-01-15"
+}
+\`\`\`
+
+## Implementación práctica: 3 métodos
+
+### Método 1: Plugin Yoast SEO
+- Configuración automática básica
+- Ideal para principiantes
+- Cubre Organization, Website, Person
+
+### Método 2: Plugin Schema Pro
+- Configuración visual avanzada
+- 35+ tipos de schema
+- Perfecto para e-commerce
+
+### Método 3: Código manual
+- Control total
+- Mejor para desarrolladores
+- Máxima personalización
+
+## Schema para diferentes industrias chilenas
+
+**Restaurantes y Cafés:**
+- Menu, OpeningHours, AggregateRating
+- Delivery radius para apps
+
+**Retailers y E-commerce:**
+- Product, Offer, Review
+- Inventory status, shipping info
+
+**Servicios Profesionales:**
+- Service, LocalBusiness, ProfessionalService
+- Availability, service areas
+
+**Hoteles y Turismo:**
+- LodgingBusiness, TouristAttraction
+- Amenities, booking info
+
+**Salud y Wellness:**
+- MedicalBusiness, Physician
+- Insurance accepted, specialties
+
+## Errores comunes que debes evitar
+
+❌ **Schema duplicado:** Múltiples plugins generando el mismo schema
+
+❌ **Información incorrecta:** Precios o horarios desactualizados
+
+❌ **Sobreoptimización:** Schema en contenido irrelevante
+
+❌ **Sintaxis incorrecta:** JSON-LD mal formado
+
+✅ **Solución:** Usa Google's Structured Data Testing Tool para validar
+
+## Herramientas imprescindibles
+
+### Google Search Console
+- Informe "Mejoras" muestra errores de schema
+- Monitorea rich snippets activos
+- Identifica oportunidades perdidas
+
+### Schema.org Generator
+- Genera código automáticamente
+- Valida sintaxis correcta
+- Múltiples tipos disponibles
+
+### Rich Results Test
+- Prueba en tiempo real
+- Previsualiza rich snippets
+- Detecta errores específicos
+
+## Impacto medible: KPIs que importan
+
+**CTR (Click Through Rate):**
+Sitios con rich snippets ven 20-30% más clics
+
+**Posicionamiento:**
+Schema no mejora ranking directamente, pero sí indirectamente via UX
+
+**Visibilidad:**
+Rich snippets ocupan más espacio visual en SERPs
+
+**Conversiones:**
+Usuarios que ven precios/ratings antes de hacer clic convierten mejor
+
+## Schema y WordPress: Configuración óptima
+
+### Para blogs y medios:
+1. **Yoast SEO:** Configuración básica automática
+2. **Article schema:** Automático en posts
+3. **Person/Organization:** Una sola vez en configuración
+
+### Para e-commerce:
+1. **WooCommerce:** Schema básico incluido
+2. **Schema Pro:** Para rich snippets avanzados
+3. **Product reviews:** Esencial para rating stars
+
+### Para negocios locales:
+1. **Local SEO plugin:** Configuración específica
+2. **Google My Business:** Integración automática
+3. **Opening hours:** Actualización regular
+
+## El futuro del Schema: IA y búsqueda por voz
+
+**Google SGE (Search Generative Experience)** usa Schema para entender contenido y generar respuestas de IA.
+
+**Búsqueda por voz:** "Oye Google, ¿qué restaurante italiano está abierto cerca?" - Schema ayuda a aparecer en estas respuestas.
+
+**Tendencia 2025:** Schema cada vez más importante para aparecer en respuestas de ChatGPT, Bard y otros asistentes de IA.
+
+## FAQ sobre Schema Markup
+
+**¿Es obligatorio Schema?**
+No es obligatorio, pero es casi imprescindible para competir en SERPs modernas.
+
+**¿Afecta la velocidad del sitio?**
+Mínimamente. JSON-LD se carga asíncronamente y no afecta render.
+
+**¿Funciona con todos los temas de WordPress?**
+Sí, Schema se agrega al <head> independientemente del tema.
+
+**¿Cuánto tiempo tarda en aparecer en Google?**
+Entre 2-8 semanas, dependiendo de la frecuencia de crawleo.
+
+## Conclusión: Schema como ventaja competitiva
+
+En Chile, donde la digitalización se acelera post-pandemia, Schema Markup no es un "nice-to-have" - es una necesidad competitiva.
+
+**La realidad:** Tus competidores ya lo están usando. Cada día que no implementas Schema es tráfico que pierdes ante competidores más visibles en Google.
+
+**La recomendación:** Empieza con schema básico (Organization/LocalBusiness) y expande gradualmente. En 6 meses, verás un impacto claro en CTR y visibilidad.
+
+Schema Markup es inversión, no gasto. Te posiciona mejor hoy y te prepara para el futuro de búsqueda dominado por IA.
+    `,
+    category: 'seo',
+    cms: 'general',
+    tags: ['schema', 'rich-snippets', 'structured-data', 'json-ld', 'seo-tecnico', 'google'],
+    level: 'medio',
+    related: ['yoast-seo', 'google-search-console', 'seo-local', 'woocommerce'],
+    hostingRequirements: [
+      'Soporte para modificar <head> del sitio',
+      'Plugins SEO compatibles (Yoast, RankMath)',
+      'Acceso a Google Search Console',
+      'Cache que respete JSON-LD'
+    ],
+    cta: {
+      plan: 'WordPress Pro',
+      copy: 'Hosting optimizado para SEO con Schema automático y herramientas avanzadas incluidas',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: [
+      'Yoast SEO Premium incluido',
+      'Schema automático configurado',
+      'Google Search Console integrado',
+      'Rich snippets monitoring',
+      'SEO técnico optimizado'
+    ],
+    whenToUse: 'Schema es imprescindible para e-commerce, negocios locales, blogs de contenido, servicios profesionales, restaurantes, hoteles, y cualquier sitio que quiera maximizar visibilidad en Google. Especialmente valioso en mercados competitivos como Santiago, Valparaíso y Concepción.',
+    synonyms: ['datos estructurados', 'rich snippets', 'marcado semántico', 'json-ld'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'seo-002',
+    slug: 'google-search-console',
+    title: 'Google Search Console',
+    shortDefinition: 'Herramienta gratuita de Google que muestra cómo tu sitio aparece en búsquedas y te ayuda a optimizar tu SEO.',
+    longDefinition: `
+## ¿Qué es Google Search Console exactamente?
+
+Google Search Console (GSC) es la **línea directa entre tu sitio web y Google**. Es como tener una conversación privada con el motor de búsqueda más importante del mundo, donde Google te cuenta exactamente qué piensa de tu sitio.
+
+**No es solo una herramienta SEO** - es el sistema nervioso de tu presencia digital. Te dice qué búsquedas traen visitantes, qué páginas indexa Google, qué errores encuentra, y más importante: **qué oportunidades estás perdiendo**.
+
+## ¿Por qué GSC es crucial para sitios chilenos?
+
+En Chile, donde **95% de las búsquedas pasan por Google**, Search Console te conecta directamente con tu audiencia. Te muestra no solo cómo te encuentra la gente, sino **cómo QUIERE encontrarte**.
+
+**Caso real:** Un restaurant en Providencia descubrió via GSC que la gente buscaba "delivery sushi las condes" pero su sitio no tenía esa palabra clave. Un simple ajuste de contenido triplicó sus pedidos online.
+
+## Datos críticos que solo GSC te proporciona
+
+### 1. Performance Report: Tu mapa del tesoro SEO
+
+**Queries (consultas de búsqueda):**
+- Qué escribe exactamente la gente para encontrarte
+- Búsquedas donde apareces pero no haces clic
+- Keywords que están creciendo vs. las que están cayendo
+
+**Pages (páginas):**
+- Cuáles de tus páginas funcionan mejor
+- Páginas con alto CTR vs. páginas con bajo CTR
+- Oportunidades de contenido perdidas
+
+**Devices (dispositivos):**
+Crucial en Chile donde **78% del tráfico es móvil**
+
+**Search Appearance:**
+- Rich snippets activos
+- Featured snippets ganados
+- Images, Videos, News apariciones
+
+### 2. Index Coverage: ¿Google ve tu sitio completo?
+
+**Válidas:** Páginas correctamente indexadas
+**Con advertencias:** Indexadas pero con problemas menores
+**Errores:** Páginas que Google no puede indexar
+**Excluidas:** Páginas intencionalmente no indexadas
+
+### 3. Sitemaps: Tu guía para Google
+
+Subes tu sitemap.xml y GSC te dice:
+- Cuántas URLs enviaste vs. cuántas indexó Google
+- Errores específicos en URLs
+- Tiempo de descubrimiento de contenido nuevo
+
+## Configuración paso a paso: Desde cero a experto
+
+### Paso 1: Verificación de propiedad
+```
+Métodos de verificación:
+1. HTML tag (más fácil)
+2. Google Analytics (si ya lo tienes)
+3. Google Tag Manager
+4. DNS verification (más seguro)
+5. HTML file upload
+```
+
+### Paso 2: Configuración inicial
+- **Sitemap submission:** /sitemap.xml y /sitemap_index.xml
+- **URL parameters:** Si tienes filtros o tracking
+- **International targeting:** Configurar Chile como país objetivo
+- **Preferred domain:** www vs. no-www
+
+### Paso 3: Integraciones importantes
+- **Google Analytics:** Para datos completos
+- **Bing Webmaster Tools:** Importa configuración automáticamente
+- **WordPress SEO plugins:** Yoast/RankMath se conectan automáticamente
+
+## Análisis de datos: Encontrando el oro SEO
+
+### Identificando oportunidades perdidas
+
+**Queries con alta impresión, bajo CTR:**
+Apareces en búsquedas pero la gente no hace clic
+→ Optimiza títulos y descripciones
+
+**Pages con buena posición, bajo tráfico:**
+Google te posiciona bien pero pocas búsquedas
+→ Expande contenido para más keywords
+
+**Queries position 8-20:**
+Estás cerca de primera página
+→ Optimización enfocada puede llevarte a top 5
+
+### Análisis competitivo indirecto
+
+GSC no muestra competidores directamente, pero:
+- Queries donde perdiste posiciones = competidores mejorando
+- Nuevas queries apareciendo = tendencias del mercado
+- Caídas bruscas de tráfico = cambios de algoritmo o competencia
+
+## Resolución de problemas comunes
+
+### Errores de cobertura más frecuentes
+
+**Soft 404:** Página existe pero parece error 404
+- **Solución:** Revisar contenido thin, agregar más información
+
+**Crawl errors:** Google no puede acceder
+- **Solución:** Verificar robots.txt, permisos servidor, redirects
+
+**Duplicate content:** Múltiples URLs con mismo contenido
+- **Solución:** Canonical tags, redirects 301, parámetros URL
+
+**Mobile usability:** Problemas en móvil
+- **Solución:** Tema responsive, velocidad móvil, botones touch-friendly
+
+### Problemas específicos en Chile
+
+**Múltiples regiones:** Si serves varias ciudades/regiones
+- Usa subdominios o subdirectorios
+- Configura targeting geográfico específico
+
+**Español de Chile:** Modismos y términos locales
+- Incluye variaciones chilenas de términos
+- "Auto" vs "carro", "pololo/a" vs "novio/a"
+
+## Integración con WordPress: Maximizando insights
+
+### Plugins recomendados que se conectan con GSC:
+
+**Yoast SEO:**
+- Importa datos GSC directamente
+- Muestra keywords principales por página
+- Alertas automáticas de problemas
+
+**Site Kit by Google:**
+- Dashboard unificado GSC + Analytics
+- Datos en tiempo real en WordPress admin
+- Recomendaciones automáticas
+
+**MonsterInsights:**
+- Correlaciona datos GSC con Analytics
+- Reports personalizados
+- Alertas de cambios significativos
+
+## Estrategias avanzadas: Más allá de lo básico
+
+### 1. Seasonal trend analysis
+En Chile, identifica patrones:
+- **Verano:** Búsquedas turismo, helados, piscinas
+- **Invierno:** Calefacción, ropa abrigada, destinos ski
+- **Fiestas Patrias:** Productos tradicionales, celebraciones
+- **Back to school:** Marzo en Chile vs. otros países
+
+### 2. Content gap analysis
+1. Exporta queries del último año
+2. Identifica temas con muchas búsquedas pero pocas páginas tuyas
+3. Crea contenido específico para esos gaps
+
+### 3. Featured snippet optimization
+- Identifica queries position 1-5 sin featured snippet
+- Estructura contenido en formato pregunta-respuesta
+- Usa listas, tablas, definiciones claras
+
+## Monitoreo y alertas: Automatizando el éxito
+
+### Métricas clave para monitorear semanalmente:
+
+**Tráfico total:** Tendencia general up/down
+**Queries top 10:** Cambios en posiciones principales
+**Click-through rate promedio:** Indicador de relevancia
+**Coverage issues:** Nuevos errores de indexación
+**Mobile usability:** Problemas en experiencia móvil
+
+### Configurando alertas inteligentes:
+
+```python
+# Ejemplo de alerta automática
+IF total_clicks < semana_anterior * 0.8:
+    SEND_ALERT("Caída significativa tráfico orgánico")
+
+IF coverage_errors > 10:
+    SEND_ALERT("Problemas indexación detectados")
+```
+
+## El futuro de Search Console: IA y búsqueda generativa
+
+**Google SGE integration:** GSC empezará a mostrar:
+- Apariciones en respuestas de IA
+- Performance en búsqueda generativa
+- Optimizaciones para featured in AI responses
+
+**Predictive insights:** Google está desarrollando:
+- Predicciones de tendencias estacionales
+- Alertas automáticas de oportunidades
+- Recomendaciones de contenido basadas en IA
+
+## Casos de éxito reales en Chile
+
+**E-commerce artesanías:** 
+- GSC reveló 200+ queries long-tail no exploradas
+- Crearon landing pages específicas
+- **Resultado:** +300% tráfico orgánico en 6 meses
+
+**Clínica dental Santiago:**
+- GSC mostró búsquedas locales ignoradas
+- Optimizaron para "dentista urgencia [barrio]"
+- **Resultado:** Agenda llena por 3 meses
+
+**Blog de recetas chilenas:**
+- Identificaron búsquedas estacionales via GSC
+- Calendario de contenido basado en data real
+- **Resultado:** Monetización exitosa con marcas chilenas
+
+## FAQ: Dudas frecuentes sobre GSC
+
+**¿Cuánto tarda en mostrar datos?**
+Datos aparecen en 1-3 días, trends claros en 1-2 semanas.
+
+**¿Por qué Analytics y GSC muestran números diferentes?**
+GSC cuenta clics, Analytics sesiones. Diferentes metodologías.
+
+**¿GSC mejora mi ranking?**
+No directamente, pero usarlo bien sí mejora tu SEO.
+
+**¿Funciona con sitios nuevos?**
+Sí, aunque datos limitados primeras semanas.
+
+## Conclusión: GSC como sistema de navegación SEO
+
+Google Search Console no es solo una herramienta - es tu **GPS para navegar el SEO**. Te dice dónde estás, hacia dónde vas, y qué obstáculos enfrentas.
+
+En el competitivo mercado digital chileno, GSC te da la información que necesitas para tomar decisiones basadas en datos reales, no intuiciones.
+
+**Bottom line:** Si no usas GSC, estás piloteando tu estrategia SEO a ciegas. Si lo usas bien, tienes una ventaja competitiva significativa sobre quienes solo "hacen SEO" sin medir resultados.
+
+La pregunta no es si necesitas GSC - es cuánto más podrías crecer si lo usaras estratégicamente.
+    `,
+    category: 'seo',
+    cms: 'general',
+    tags: ['google', 'search-console', 'analytics', 'seo-tools', 'indexacion', 'performance'],
+    level: 'medio',
+    related: ['schema-markup', 'yoast-seo', 'page-speed', 'seo-local'],
+    hostingRequirements: [
+      'Capacidad de verificación HTML/DNS',
+      'Sitemap.xml automático',
+      'Logs de servidor accesibles',
+      'Integración con Google Analytics'
+    ],
+    cta: {
+      plan: 'SEO Pro',
+      copy: 'Hosting con Google Search Console pre-configurado y análisis SEO automático',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: [
+      'Google Search Console configurado automáticamente',
+      'Integración con Analytics incluida',
+      'Monitoreo SEO 24/7',
+      'Alertas automáticas de problemas',
+      'Reports mensuales de performance'
+    ],
+    whenToUse: 'Imprescindible para cualquier sitio web que quiera tráfico orgánico. Especialmente valioso para e-commerce, blogs, sitios corporativos, medios digitales, y cualquier negocio que dependa de Google para atraer clientes. En Chile es esencial para competir en mercados locales.',
+    synonyms: ['GSC', 'webmaster tools', 'google analytics búsqueda', 'herramientas google'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'seo-003',
+    slug: 'page-speed-insights',
+    title: 'Page Speed Insights',
+    shortDefinition: 'Herramienta de Google que analiza la velocidad de tu sitio web y proporciona recomendaciones específicas para mejorar el rendimiento.',
+    longDefinition: `
+## ¿Qué es Page Speed Insights y por qué define tu éxito online?
+
+Page Speed Insights (PSI) es la **herramienta oficial de Google** para medir y optimizar la velocidad de sitios web. Pero no es solo una herramienta de diagnóstico - es el **juez que decide si tu sitio merece aparecer en Google**.
+
+**La realidad brutal:** En Chile, donde la conexión móvil promedio es más lenta que países desarrollados, un sitio lento significa **pérdida directa de ventas, leads y posicionamiento**.
+
+**Dato clave:** Google usa Page Speed como factor de ranking directo desde 2018. Un sitio lento no solo frustra usuarios - Google literalmente lo castiga en resultados de búsqueda.
+
+## Core Web Vitals: Las métricas que importan en 2025
+
+### 1. Largest Contentful Paint (LCP)
+**Qué mide:** Tiempo que tarda en cargar el contenido principal
+- **Bueno:** ≤ 2.5 segundos
+- **Necesita mejora:** 2.5-4.0 segundos  
+- **Pobre:** > 4.0 segundos
+
+**En práctica:** Si tu home page demora más de 2.5s en mostrar el contenido principal, estás perdiendo 40% de visitantes móviles en Chile.
+
+### 2. First Input Delay (FID) → Interaction to Next Paint (INP)
+**Qué mide:** Responsividad del sitio a interacciones
+- **Bueno:** ≤ 200ms
+- **Necesita mejora:** 200-500ms
+- **Pobre:** > 500ms
+
+**En práctica:** Tiempo entre hacer clic en "Comprar" y que algo pase. En e-commerce, cada 100ms adicionales reduce conversiones 1%.
+
+### 3. Cumulative Layout Shift (CLS)
+**Qué mide:** Estabilidad visual durante carga
+- **Bueno:** ≤ 0.1
+- **Necesita mejora:** 0.1-0.25
+- **Pobre:** > 0.25
+
+**En práctica:** Cuando haces clic en un botón pero salta el contenido y terminas clickeando otra cosa. Frustrante y mortal para UX.
+
+## Factores críticos que afectan velocidad en Chile
+
+### 1. Hosting Location & Infrastructure
+**El problema:** Muchos sitios chilenos usan hosting en EE.UU./Europa
+- **Latencia promedio Chile-Miami:** 140-180ms
+- **Latencia Chile-São Paulo:** 60-80ms  
+- **Latencia hosting local:** 15-30ms
+
+**La solución:** Hosting con servidores en Chile + CDN global
+
+### 2. Calidad de conexión móvil
+**Realidad chilena:**
+- 4G cobertura: 85% territorio nacional
+- Velocidad promedio móvil: 25-45 Mbps
+- **Pero:** En metro Santiago, en horario peak: 5-15 Mbps
+
+**Implicación:** Tu sitio debe estar optimizado para conexiones lentas, no para tu oficina con fibra.
+
+### 3. Dispositivos predominantes
+**Hardware típico usuario chileno:**
+- Smartphones gama media (2-4GB RAM)
+- Procesadores menos potentes que flagship
+- Storage limitado = caché limitado
+
+## Análisis paso a paso: Interpretando resultados PSI
+
+### Sección Performance Score (0-100)
+- **90-100:** Excelente (verde)
+- **50-89:** Necesita mejora (amarillo)
+- **0-49:** Pobre (rojo)
+
+**Importante:** El score es logarítmico. Pasar de 50 a 75 es más fácil que de 75 a 90.
+
+### Field Data vs Lab Data
+
+**Field Data (Real User Monitoring):**
+- Datos reales de usuarios Chrome
+- Representa experiencia real
+- Solo disponible si tienes tráfico suficiente
+
+**Lab Data (Lighthouse):**
+- Simulación controlada
+- Útil para debugging
+- Puede diferir de experiencia real
+
+### Opportunities vs Diagnostics
+
+**Opportunities:** Optimizaciones con mayor impacto
+- Eliminate render-blocking resources
+- Properly size images  
+- Remove unused JavaScript
+
+**Diagnostics:** Mejoras adicionales sin score específico
+- Reduce initial server response time
+- Avoid enormous network payloads
+- Use efficient cache policy
+
+## Optimizaciones críticas para sitios chilenos
+
+### 1. Imágenes: El asesino silencioso
+**Problema común:** Subir imágenes de 3-5MB directamente del celular
+
+**Solución:**
+```html
+<!-- Antes: Imagen pesada -->
+<img src="producto.jpg" alt="Producto">
+
+<!-- Después: Optimizada -->
+<img 
+  src="producto-800w.webp" 
+  srcset="producto-400w.webp 400w, 
+          producto-800w.webp 800w,
+          producto-1200w.webp 1200w"
+  sizes="(max-width: 640px) 400px, 
+         (max-width: 1024px) 800px, 
+         1200px"
+  alt="Producto artesanal chileno"
+  loading="lazy">
+```
+
+### 2. JavaScript: Menos es más
+**Problema:** WordPress con 15+ plugins cargando JS innecesario
+
+**Solución estratégica:**
+- **Critical JS:** Solo lo necesario above-the-fold
+- **Defer non-critical:** Scripts no esenciales después
+- **Remove unused:** Auditar y eliminar plugins innecesarios
+
+### 3. CSS: Optimización inteligente
+```css
+/* Critical CSS inline en <head> */
+<style>
+/* Solo estilos above-the-fold */
+.header, .hero { /* styles */ }
+</style>
+
+/* Non-critical CSS deferred */
+<link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+```
+
+### 4. Hosting específico para velocidad
+**Configuración ideal:**
+- **SSD NVMe:** 3-5x más rápido que SSD tradicional
+- **HTTP/3:** 15-30% mejora sobre HTTP/2
+- **Brotli compression:** 15-25% mejor que Gzip
+- **Server-side caching:** Redis/Memcached
+
+## Herramientas complementarias chilenas
+
+### GTmetrix + servidor Chile
+- Configura testing desde Santiago
+- Análisis más preciso para audiencia local
+- Waterfall detallado de recursos
+
+### WebPageTest + conexión real
+- Simula velocidades 3G/4G chilenas
+- Testing desde múltiples ubicaciones
+- Film strip visual de carga
+
+### Chrome DevTools + throttling
+- Simula conexiones lentas localmente
+- Debugging en tiempo real
+- Performance profiling detallado
+
+## Casos críticos: Cuando cada segundo cuenta
+
+### E-commerce en Cyber Monday
+**Problema:** Sitio lento durante peak traffic
+**Impacto:** 1 segundo adicional = 7% menos conversiones
+**Solución:** Load testing previo + scaling automático
+
+### Leads generation profesionales
+**Problema:** Formularios que no cargan rápido
+**Impacto:** Profesionales abandonan si demora >3s
+**Solución:** Critical path optimization + formularios lightweight
+
+### Media/Noticias durante eventos
+**Problema:** Tráfico viral colapsa sitio
+**Impacto:** Pierdes momentum mediático
+**Solución:** CDN agresivo + AMP pages
+
+## Optimización avanzada: Técnicas 2025
+
+### 1. Resource Hints estratégicos
+```html
+<!-- Prefetch recursos siguientes páginas -->
+<link rel="prefetch" href="/productos/">
+
+<!-- Preconnect servicios externos -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<!-- DNS prefetch para faster resolución -->
+<link rel="dns-prefetch" href="//www.google-analytics.com">
+```
+
+### 2. Service Workers para cache inteligente
+```javascript
+// Cache first para assets estáticos
+// Network first para contenido dinámico
+// Fallback offline para UX resiliente
+```
+
+### 3. Progressive enhancement
+- **Base:** HTML puro funcional
+- **Enhancement:** CSS para visual appeal  
+- **Enhancement:** JS para interactividad
+
+## Monitoreo continuo: Más allá del one-time test
+
+### Real User Monitoring (RUM)
+- **Google Analytics:** Core Web Vitals report
+- **Cloudflare Analytics:** Si usas su CDN
+- **New Relic/DataDog:** Para sitios enterprise
+
+### Automated monitoring
+```bash
+# Lighthouse CI para testing automático
+npm install -g @lhci/cli
+lhci autorun --upload.target=temporary-public-storage
+```
+
+### Performance budgets
+- Definir límites máximos (ej: bundle <500KB)
+- Alertas automáticas si se exceden
+- Integration con CI/CD pipeline
+
+## FAQ específicos para sitios chilenos
+
+**¿Hosting local vs internacional?**
+Local + CDN global = mejor experiencia para usuarios chilenos
+
+**¿WordPress multisite afecta velocidad?**
+Sí significativamente. Considera subdominios separados.
+
+**¿Plugins chilenos (Webpay, etc.) afectan score?**
+Algunos sí. Usa lazy loading para scripts de pago.
+
+**¿AMP vale la pena en 2025?**
+Para noticias/blogs sí. Para e-commerce, mejor optimización tradicional.
+
+## Conclusión: Velocidad como ventaja competitiva
+
+En Chile, donde la paciencia digital es limitada y la competencia crece, **velocidad es diferenciación**. No es solo UX - es SEO, es conversiones, es credibilidad.
+
+**La realidad:** Tus competidores probablemente tienen sitios lentos. Una optimización seria de velocidad puede darte 6-12 meses de ventaja antes que reaccionen.
+
+**El costo de la lentitud:** Un sitio de 4 segundos de carga pierde 25% de visitantes vs uno de 1 segundo. En e-commerce, eso es dinero directo perdido.
+
+**La oportunidad:** Page Speed Insights te da la hoja de ruta exacta. Solo necesitas ejecutarla consistentemente.
+
+Velocidad no es un proyecto - es una disciplina permanente que define si tu sitio prospera o sobrevive en el mercado digital chileno.
+    `,
+    category: 'seo',
+    cms: 'general',
+    tags: ['velocidad', 'performance', 'core-web-vitals', 'page-speed', 'ux', 'google'],
+    level: 'medio',
+    related: ['litespeed-cache', 'google-search-console', 'cdn', 'webp'],
+    hostingRequirements: [
+      'SSD NVMe para velocidad máxima',
+      'HTTP/3 y Brotli compression',
+      'Cache server-side (Redis/Memcached)',
+      'CDN incluido o integrable',
+      'PHP 8.0+ optimizado'
+    ],
+    cta: {
+      plan: 'Performance Pro',
+      copy: 'Hosting ultra-rápido con Page Speed 90+ garantizado y optimización automática',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: [
+      'Page Speed Score 90+ garantizado',
+      'SSD NVMe + HTTP/3 incluido',
+      'Cache automático multi-nivel',
+      'CDN global sin costo extra',
+      'Optimización de imágenes automática',
+      'Monitoreo de velocidad 24/7'
+    ],
+    whenToUse: 'Esencial para cualquier sitio web, especialmente crítico para e-commerce, landing pages, sitios corporativos, y cualquier negocio que dependa de conversiones online. En Chile, donde las conexiones móviles son variables, la optimización de velocidad es fundamental para retener visitantes.',
+    synonyms: ['page speed', 'velocidad web', 'core web vitals', 'performance google'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'seo-004',
+    slug: 'seo-local',
+    title: 'SEO Local',
+    shortDefinition: 'Estrategias de optimización para aparecer en búsquedas geográficas específicas. Fundamental para negocios físicos en Chile.',
+    longDefinition: `
+## ¿Qué es SEO Local y por qué decide el éxito en Chile?
+
+SEO Local es el **arte de aparecer cuando la gente busca servicios cerca de ellos**. No es solo SEO tradicional - es la diferencia entre ser encontrado por tu vecino que necesita tus servicios vs. que vaya donde la competencia.
+
+**La realidad chilena:** "Dentista Las Condes", "restaurant delivery Ñuñoa", "plomero urgencia Valparaíso" - estas búsquedas generan más conversiones que búsquedas genéricas porque tienen **intención de compra inmediata**.
+
+**Datos concretos:** 76% de búsquedas locales resultan en visita física dentro de 24 horas. En Chile, esto significa que SEO Local bien ejecutado se traduce directamente en foot traffic y ventas.
+
+## ¿Por qué SEO Local es crítico específicamente en Chile?
+
+### 1. Concentración urbana extrema
+- **40% de población:** Región Metropolitana
+- **Competencia intensa:** Miles de negocios similares en pocos kilómetros
+- **Oportunidad:** Aparecer primero en tu comuna = ventaja masiva
+
+### 2. Búsquedas híper-locales dominantes
+**Patrones reales de búsqueda:**
+- "Farmacia abierta domingo La Reina"
+- "Sushi delivery San Miguel"
+- "Veterinario emergencia Viña del Mar"
+- "Ferretería cerca mío abierta"
+
+### 3. Mobile-first behavior chileno
+**78% búsquedas locales desde móvil** mientras la gente se mueve por la ciudad. Necesitan respuestas inmediatas, direcciones, horarios, teléfonos.
+
+## Los 3 pilares del SEO Local exitoso
+
+### 1. Google My Business: Tu carta de presentación digital
+
+**Optimización completa GMB:**
+```
+Información básica:
+- Nombre exacto del negocio
+- Dirección completa con código postal
+- Teléfono local (+56 número)
+- Horarios específicos (incluir feriados chilenos)
+- Categoría principal precisa
+
+Información avanzada:
+- Fotos de alta calidad (exterior, interior, productos, equipo)
+- Descripción con keywords locales naturales
+- Servicios específicos listados
+- Atributos relevantes (WiFi, estacionamiento, delivery)
+```
+
+**Posts regulares en GMB:**
+- Promociones temporales
+- Productos nuevos
+- Eventos especiales
+- Feriados y horarios especiales
+
+### 2. Citations (Citas locales): Consistencia es clave
+
+**Directorios chilenos imprescindibles:**
+- Páginas Amarillas Chile
+- Guía Comercial Chile
+- Encuentra24 Chile
+- Cylex Chile
+- Local.cl
+- Tuugo Chile
+
+**Información que debe ser idéntica en todos:**
+- Nombre comercial exacto
+- Dirección (formato, abreviaciones)
+- Teléfono (mismo formato)
+- URL del sitio web
+
+**Citation building estratégico:**
+1. **General directories:** Base foundation
+2. **Industry-specific:** Zomato (restaurants), Doctoralia (salud)
+3. **Local chambers:** Cámaras de Comercio locales
+4. **Social platforms:** Facebook, Instagram business
+
+### 3. Reviews: El factor de confianza
+
+**Estrategia de reviews sistemática:**
+```
+Solicitud post-servicio:
+1. Email follow-up 2-3 días después
+2. Link directo a Google review
+3. Incentivo suave (descuento próxima compra)
+4. Respuesta a TODAS las reviews (positivas y negativas)
+```
+
+**Manejo de reviews negativas:**
+- Respuesta rápida (máximo 24h)
+- Tono profesional y empático
+- Ofrecimiento de solución offline
+- Seguimiento público del progreso
+
+## Optimización on-page para SEO Local
+
+### 1. Keywords locales estratégicas
+
+**Estructura recomendada:**
+- **Primary:** [Servicio] + [Ciudad]
+- **Secondary:** [Servicio] + [Comuna/Barrio]
+- **Long-tail:** [Servicio] + [Comuna] + [Calificador]
+
+**Ejemplos reales:**
+- Primary: "Dentista Santiago"
+- Secondary: "Dentista Las Condes"
+- Long-tail: "Dentista urgencia Las Condes domingo"
+
+### 2. Contenido geo-específico
+
+**Páginas de ubicación individual:**
+```html
+<h1>Dentista en Las Condes - Dr. [Nombre]</h1>
+<h2>Atención Dental Especializada en Las Condes</h2>
+
+<p>Nuestro centro dental en Las Condes atiende pacientes de 
+toda la zona oriente de Santiago. Ubicados en el corazón de 
+Las Condes, somos la opción confiable para familias de 
+Vitacura, La Reina, y sectores aledaños.</p>
+
+<h3>¿Por qué elegir nuestro dentista en Las Condes?</h3>
+- Ubicación central en Las Condes
+- Estacionamiento gratuito
+- Atención de urgencias
+- Especialistas en [tratamientos específicos]
+```
+
+### 3. Schema markup local
+
+**Local Business Schema optimizado:**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Dentist",
+  "name": "Clínica Dental Las Condes",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. Apoquindo 1234",
+    "addressLocality": "Las Condes",
+    "addressRegion": "Región Metropolitana",
+    "postalCode": "7550000",
+    "addressCountry": "CL"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "-33.4109",
+    "longitude": "-70.5761"
+  },
+  "telephone": "+56-2-2234-5678",
+  "openingHours": ["Mo-Fr 09:00-18:00", "Sa 09:00-13:00"],
+  "acceptsReservations": true,
+  "currenciesAccepted": "CLP",
+  "paymentAccepted": ["cash", "credit card", "debit card"],
+  "priceRange": "$$"
+}
+```
+
+## Estrategias avanzadas para dominar búsquedas locales
+
+### 1. Content marketing geo-específico
+
+**Blog posts que funcionan:**
+- "Guía completa: Qué hacer en caso de emergencia dental en Las Condes"
+- "Top 5 parques para ejercitarse cerca de nuestra clínica"
+- "Historia del barrio Las Condes: Cómo hemos crecido con la comunidad"
+
+### 2. Link building local
+
+**Oportunidades chilenas:**
+- **Sponsorships:** Equipos deportivos locales, eventos comunitarios
+- **Partnerships:** Cross-promotion con negocios complementarios
+- **Press local:** Medios digitales locales, blogs de barrio
+- **Chambers of Commerce:** Membresías en cámaras locales
+
+### 3. Social signals locales
+
+**Instagram geo-tagging:**
+- Ubicación en todas las publicaciones
+- Stories con location stickers
+- User-generated content con hashtags locales
+
+**Facebook local engagement:**
+- Eventos locales regulares
+- Posts sobre actividades del barrio
+- Participación en grupos locales
+
+## Herramientas específicas para SEO Local chileno
+
+### Tracking y análisis:
+- **Google My Business Insights:** Performance data local
+- **BrightLocal:** Citation tracking y rank monitoring
+- **Moz Local:** Gestión de listings y reviews
+- **SEMrush Local:** Keyword research geo-específico
+
+### Research local:
+- **Google Trends:** Búsquedas por región en Chile
+- **AnswerThePublic:** Questions locales específicas
+- **Keyword Tool:** Sugerencias geo-modificadas
+
+### Citation management:
+- **Yext:** Gestión masiva de listings
+- **Local Search Association:** Best practices
+- **Whitespark:** Citation finder y auditor
+
+## Casos de éxito reales en Chile
+
+### Restaurant Providencia:
+**Problema:** Invisible en "restaurant Providencia delivery"
+**Estrategia:** 
+- GMB optimization con fotos apetitosas
+- Reviews strategy sistemática
+- Content sobre el barrio y tradiciones locales
+**Resultado:** +400% pedidos delivery en 4 meses
+
+### Veterinaria Ñuñoa:
+**Problema:** Competencia feroz con clínicas grandes
+**Estrategia:**
+- Especialización en "veterinario urgencia Ñuñoa"
+- Testimonials video con vecinos del barrio
+- Partnership con pet shops locales
+**Resultado:** Agenda llena 2 meses por adelantado
+
+### Abogado Valparaíso:
+**Problema:** Búsquedas dominadas por Santiago
+**Estrategia:**
+- Content específico sobre legislación porteña
+- Citations en directorios región Valparaíso
+- Sponsorship eventos culturales locales
+**Resultado:** Primer resultado "abogado Valparaíso" en 6 meses
+
+## Errores comunes que destrozan SEO Local
+
+❌ **Inconsistencia en directorios:** Diferentes versiones de dirección/teléfono
+
+❌ **GMB abandoned:** Información desactualizada, sin responder reviews
+
+❌ **Fake reviews:** Google los detecta y penaliza severamente
+
+❌ **Keyword stuffing local:** "Dentista Santiago Las Condes Providencia Ñuñoa"
+
+❌ **No mobile optimization:** 78% búsquedas locales son móvil
+
+✅ **Solución:** Auditoría sistemática + proceso consistente
+
+## SEO Local + WhatsApp: La ventaja chilena
+
+**Integración estratégica:**
+- Número WhatsApp en GMB
+- "Click to WhatsApp" en sitio web
+- WhatsApp Business con auto-respuestas
+- Quick replies para consultas frecuentes
+
+**Por qué funciona en Chile:**
+- 95% penetración WhatsApp
+- Preferencia comunicación directa
+- Confianza en conversación personal
+
+## El futuro del SEO Local: Tendencias 2025
+
+### 1. Voice search optimization
+"Ok Google, encuentra dentista cerca que atienda ahora"
+- Optimización para consultas conversacionales
+- Featured snippets locales
+- FAQ sections optimizadas
+
+### 2. AI-powered search
+Google SGE empezará a incluir:
+- Respuestas AI con recomendaciones locales
+- Comparaciones automáticas de negocios cercanos
+- Recommendations basadas en historial y ubicación
+
+### 3. Hyper-local targeting
+- Optimización por cuadras, no solo comunas
+- Real-time availability integration
+- Dynamic content based on user location
+
+## FAQ SEO Local Chile
+
+**¿Puedo rankear en múltiples ciudades sin ubicación física?**
+Difícil sin presencia real. Consider service areas vs. ubicaciones específicas.
+
+**¿Importa el dominio .cl para SEO Local?**
+Ayuda pero no es determinante. Contenido local > dominio.
+
+**¿Cuánto tiempo toma ver resultados SEO Local?**
+GMB changes: 2-4 semanas. Rankings estables: 3-6 meses.
+
+**¿Funciona SEO Local para servicios online?**
+Sí, si sirves áreas geográficas específicas (delivery, servicios a domicilio).
+
+## Conclusión: SEO Local como crecimiento sostenible
+
+En Chile, donde las comunidades son fuertes y la confianza local importa, **SEO Local no es una táctica - es una estrategia de crecimiento fundamental**.
+
+**La oportunidad:** Muchas empresas chilenas siguen subestimando SEO Local. Una ejecución profesional te posiciona años por delante de competidores que solo hacen "SEO genérico".
+
+**El retorno:** SEO Local bien ejecutado tiene el ROI más alto de todas las estrategias de marketing digital porque captura demanda existente con intención de compra inmediata.
+
+No es solo aparecer primero en Google - es construir presencia digital que refleje y fortalezca tu conexión con la comunidad local que sirves.
+    `,
+    category: 'seo',
+    cms: 'general',
+    tags: ['seo-local', 'google-my-business', 'gmb', 'business-local', 'chile', 'geolocalización'],
+    level: 'medio',
+    related: ['google-search-console', 'schema-markup', 'reviews', 'local-business'],
+    hostingRequirements: [
+      'IP geolocalizada en Chile',
+      'SSL certificado validado',
+      'Velocidad optimizada para móvil',
+      'Schema markup local automático'
+    ],
+    cta: {
+      plan: 'Local Business',
+      copy: 'Hosting localizado en Chile con herramientas SEO Local integradas',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: [
+      'Servidores ubicados en Chile',
+      'Google My Business optimization incluida',
+      'Schema markup local automático',
+      'SSL validado para confianza local',
+      'Soporte en horario chileno',
+      'Integración WhatsApp Business'
+    ],
+    whenToUse: 'Imprescindible para restaurantes, clínicas, talleres, tiendas físicas, servicios profesionales (abogados, contadores, arquitectos), servicios a domicilio, y cualquier negocio que atienda clientes en ubicaciones específicas de Chile. Especialmente valioso en Santiago, Valparaíso, Concepción y ciudades principales.',
+    synonyms: ['seo geográfico', 'búsquedas locales', 'google maps seo', 'local search'],
+    lastUpdated: '2025-01-15'
+  },
+
+  // WordPress Core
+  {
     id: 'wp-001',
     slug: 'wordpress',
     title: 'WordPress',
