@@ -736,7 +736,7 @@ En Chile, donde las distancias y comunas importan, SEO Local no es opcional - es
   }
 ];
 
-// Utility functions - explicitly exported
+// Utility functions - properly exported
 export const searchTerms = (query: string, filters?: Record<string, any>): WikiTerm[] => {
   let results = wikiTerms;
   
