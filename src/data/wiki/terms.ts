@@ -814,6 +814,97 @@ Ideal para tiendas que priorizan funcionalidad comercial sobre flexibilidad de c
 
   // Trends 2025
   {
+    id: 'trend-001',
+    slug: 'web3-hosting',
+    title: 'Hosting Web3',
+    shortDefinition: 'Infraestructura descentralizada para sitios web que utiliza blockchain y IPFS para mayor autonomía y resistencia a la censura.',
+    longDefinition: `El hosting Web3 representa la evolución hacia una internet descentralizada, donde los sitios web se distribuyen en redes peer-to-peer eliminando puntos únicos de falla.
+
+## Tecnologías principales
+- **IPFS**: Sistema de archivos distribuido
+- **ENS**: Dominios en Ethereum
+- **Arweave**: Almacenamiento permanente
+- **Filecoin**: Red de almacenamiento descentralizada
+
+## Ventajas del hosting Web3
+- 🌐 **Descentralización**: Sin servidores centrales
+- 🛡️ **Resistencia a censura**: Imparable
+- 💾 **Permanencia**: Archivos inmutables
+- 🌍 **Global**: Acceso desde cualquier lugar
+
+## Casos de uso 2025
+- Sitios de activismo y periodismo
+- NFT marketplaces
+- dApps y DeFi protocols
+- Archivos históricos permanentes
+
+El futuro descentralizado de la web está aquí.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['web3', 'blockchain', 'ipfs', 'descentralizado', 'ens'],
+    level: 'avanzado',
+    related: ['jamstack', 'edge-computing', 'security'],
+    hostingRequirements: ['Gateway IPFS', 'ENS integration', 'Crypto payments'],
+    cta: {
+      plan: 'Web3 Pro',
+      copy: 'Hosting híbrido Web2+Web3 para el futuro descentralizado',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=94'
+    },
+    proofPoints: ['IPFS gateway incluido', 'ENS domains', 'Hybrid deployment'],
+    whenToUse: 'Ideal para proyectos que requieren máxima disponibilidad y resistencia a censura',
+    synonyms: ['hosting descentralizado', 'ipfs hosting', 'blockchain hosting'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-002',
+    slug: 'pwa-progressive-web-apps',
+    title: 'Progressive Web Apps (PWA)',
+    shortDefinition: 'Aplicaciones web que funcionan como apps nativas con capacidades offline, notificaciones push e instalación.',
+    longDefinition: `Las PWA combinan lo mejor de la web y las aplicaciones móviles, ofreciendo experiencias nativas sin necesidad de app stores.
+
+## Características principales
+- 📱 **App-like**: Comportamiento nativo
+- 🔄 **Offline**: Service Workers
+- 🔔 **Push notifications**: Re-engagement
+- 💾 **Installable**: Home screen
+
+## Tecnologías 2025
+\`\`\`javascript
+// Service Worker básico
+self.addEventListener('fetch', event => {
+  if (event.request.url.includes('/api/')) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => response || fetch(event.request))
+    );
+  }
+});
+\`\`\`
+
+## Beneficios para negocios
+- ⚡ 50% más engagement
+- 📈 20% más conversiones
+- 💰 Menor costo que apps nativas
+- 🌐 Un solo desarrollo multiplataforma
+
+Las PWA son el estándar 2025 para experiencias móviles.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['pwa', 'mobile', 'offline', 'service-workers', 'app-like'],
+    level: 'medio',
+    related: ['performance', 'mobile-optimization', 'push-notifications'],
+    hostingRequirements: ['HTTPS obligatorio', 'Service Workers', 'Push API', 'Manifest'],
+    cta: {
+      plan: 'PWA Pro',
+      copy: 'Hosting optimizado para Progressive Web Apps con todas las APIs',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=95'
+    },
+    proofPoints: ['HTTPS incluido', 'Push notifications', 'Offline storage'],
+    whenToUse: 'Perfecto para e-commerce, noticias, redes sociales y cualquier sitio móvil',
+    synonyms: ['progressive web app', 'aplicaciones web progresivas'],
+    lastUpdated: '2025-01-15'
+  },
+  {
     id: 'trend-003',
     slug: 'jamstack',
     title: 'JAMstack',
@@ -942,6 +1033,402 @@ Transformando la creación de contenido en 2025.`,
     proofPoints: ['APIs IA optimizadas', 'Rate limiting flexible', 'Storage expandible'],
     whenToUse: 'Perfecto para blogs automatizados, e-commerce con muchos productos y sitios de contenido',
     synonyms: ['ia contenido', 'content ai', 'generacion automatica'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-006',
+    slug: 'ssr-server-side-rendering',
+    title: 'Server Side Rendering (SSR)',
+    shortDefinition: 'Renderizado de páginas web en el servidor para mejorar SEO, Core Web Vitals y experiencia de usuario inicial.',
+    longDefinition: `SSR renderiza páginas en el servidor antes de enviarlas al cliente, combinando la velocidad inicial de sitios estáticos con la funcionalidad de SPAs.
+
+## Frameworks SSR populares 2025
+- **Next.js**: React con SSR/SSG híbrido
+- **Nuxt.js**: Vue.js server-side
+- **SvelteKit**: Svelte full-stack
+- **Remix**: React enfocado en web standards
+
+## Beneficios clave
+- 🚀 **FCP mejorado**: Contenido visible inmediato
+- 📱 **SEO superior**: Contenido indexable
+- 🔄 **Hidratación**: Interactividad progresiva
+- 🌐 **Universal**: Mismo código cliente/servidor
+
+## Implementación Next.js
+\`\`\`javascript
+// pages/productos.js
+export async function getServerSideProps() {
+  const productos = await fetch('https://api.mi-tienda.cl/productos');
+  return { props: { productos: productos.json() } };
+}
+
+export default function Productos({ productos }) {
+  return <ProductosList productos={productos} />;
+}
+\`\`\`
+
+Esencial para sitios que necesitan SEO + interactividad.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['ssr', 'nextjs', 'seo', 'performance', 'react'],
+    level: 'avanzado',
+    related: ['jamstack', 'core-web-vitals', 'seo'],
+    hostingRequirements: ['Node.js 18+', 'Serverless functions', 'Edge caching'],
+    cta: {
+      plan: 'SSR Pro',
+      copy: 'Hosting optimizado para aplicaciones SSR con Node.js',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=96'
+    },
+    proofPoints: ['Node.js optimizado', 'Edge caching', 'Auto-scaling'],
+    whenToUse: 'Perfecto para e-commerce, SaaS, dashboards y sitios con contenido dinámico',
+    synonyms: ['server side rendering', 'renderizado servidor'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-007',
+    slug: 'micro-frontends',
+    title: 'Micro-Frontends',
+    shortDefinition: 'Arquitectura que divide aplicaciones frontend grandes en piezas independientes desarrollables y desplegables por separado.',
+    longDefinition: `Los Micro-Frontends extienden el concepto de microservicios al frontend, permitiendo equipos independientes desarrollar partes de una aplicación web.
+
+## Arquitectura típica
+- **Shell aplicación**: Contenedor principal
+- **Módulos independientes**: Features autónomos
+- **Routing distribuido**: Navegación coordinada
+- **Shared libraries**: Componentes comunes
+
+## Tecnologías 2025
+- **Module Federation**: Webpack 5
+- **Single-SPA**: Framework agnóstico
+- **Bit**: Componentes compartidos
+- **Nx**: Monorepo con micro-frontends
+
+## Ventajas organizacionales
+- 👥 **Equipos autónomos**: Desarrollo independiente
+- 🚀 **Deploy independiente**: Sin bloqueos
+- 🔧 **Tech stack diverso**: React + Vue + Angular
+- 📈 **Escalabilidad**: Crecimiento orgánico
+
+## Implementación básica
+\`\`\`javascript
+// webpack.config.js
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'checkout',
+      exposes: {
+        './CheckoutApp': './src/CheckoutApp'
+      }
+    })
+  ]
+};
+\`\`\`
+
+Ideal para equipos grandes y aplicaciones complejas.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['micro-frontends', 'arquitectura', 'escalabilidad', 'webpack', 'modular'],
+    level: 'avanzado',
+    related: ['jamstack', 'ci-cd', 'monorepo'],
+    hostingRequirements: ['CDN avanzado', 'Multiple deploys', 'Edge routing'],
+    cta: {
+      plan: 'Enterprise',
+      copy: 'Hosting enterprise para arquitecturas micro-frontend complejas',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=97'
+    },
+    proofPoints: ['Multi-deploy support', 'Advanced CDN', '24/7 DevOps'],
+    whenToUse: 'Ideal para equipos grandes, aplicaciones enterprise y organizaciones distribuidas',
+    synonyms: ['microfrontends', 'frontend distribuido'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-008',
+    slug: 'webassembly-wasm',
+    title: 'WebAssembly (WASM)',
+    shortDefinition: 'Formato binario que permite ejecutar código de alto rendimiento en navegadores, compilado desde C++, Rust o Go.',
+    longDefinition: `WebAssembly lleva aplicaciones nativas al navegador con rendimiento cercano al código nativo, abriendo nuevas posibilidades para la web.
+
+## Lenguajes compatibles 2025
+- **Rust**: Performance + seguridad memory
+- **C/C++**: Legacy code portado
+- **Go**: Simplicidad + concurrencia
+- **AssemblyScript**: TypeScript-like syntax
+
+## Casos de uso web
+- 🎮 **Gaming**: Engines complejos
+- 🎨 **Media processing**: Edición imagen/video
+- 📊 **Data analysis**: Algoritmos pesados
+- 🔐 **Cryptography**: Operaciones seguras
+
+## Ejemplo Rust → WASM
+\`\`\`rust
+// lib.rs
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub fn fibonacci(n: u32) -> u32 {
+    match n {
+        0 => 0,
+        1 => 1,
+        _ => fibonacci(n - 1) + fibonacci(n - 2),
+    }
+}
+\`\`\`
+
+\`\`\`javascript
+// main.js
+import init, { fibonacci } from './pkg/mi_proyecto.js';
+
+init().then(() => {
+    console.log(fibonacci(40)); // Ultra rápido!
+});
+\`\`\`
+
+El futuro del high-performance web computing.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['webassembly', 'wasm', 'performance', 'rust', 'native'],
+    level: 'avanzado',
+    related: ['performance', 'gaming', 'data-processing'],
+    hostingRequirements: ['WASM MIME types', 'CORS headers', 'Shared memory'],
+    cta: {
+      plan: 'Performance Pro',
+      copy: 'Hosting optimizado para aplicaciones WebAssembly de alto rendimiento',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=98'
+    },
+    proofPoints: ['WASM pre-configurado', 'Headers optimizados', 'Memory limits altos'],
+    whenToUse: 'Perfecto para aplicaciones que requieren cálculos intensivos o portar código nativo',
+    synonyms: ['wasm', 'web assembly', 'codigo nativo web'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-009',
+    slug: 'green-hosting',
+    title: 'Green Hosting',
+    shortDefinition: 'Hosting sustentable que utiliza energías renovables y tecnologías eficientes para reducir la huella de carbono.',
+    longDefinition: `El Green Hosting combina responsabilidad ambiental con excelencia técnica, utilizando energía renovable y optimizaciones para minimizar el impacto ecológico.
+
+## Estrategias sustentables
+- 🌱 **Energía renovable**: Solar, eólica, hidroeléctrica
+- ⚡ **Eficiencia energética**: Servidores optimizados
+- 🌡️ **Cooling natural**: Ubicaciones estratégicas
+- 📊 **Carbon offsetting**: Compensación verificada
+
+## Certificaciones importantes
+- **Energy Star**: Eficiencia energética
+- **ISO 14001**: Gestión ambiental
+- **Green Web Foundation**: Hosting verificado
+- **Carbon Neutral**: Huella cero carbono
+
+## Beneficios business
+- 🌍 **Brand reputation**: Compromiso ambiental
+- 💰 **Costos reducidos**: Eficiencia energética
+- 📈 **Customer loyalty**: Consumidores conscientes
+- 🏆 **Compliance**: Regulaciones ambientales
+
+## Tecnologías verdes 2025
+- **Liquid cooling**: 40% menos energía
+- **ARM processors**: Eficiencia superior
+- **Edge computing**: Reducción transferencia
+- **AI optimization**: Recursos dinámicos
+
+El hosting del futuro es verde y eficiente.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['green-hosting', 'sustentabilidad', 'energia-renovable', 'carbono-neutral'],
+    level: 'medio',
+    related: ['performance', 'edge-computing', 'optimization'],
+    hostingRequirements: ['Energía renovable', 'Certificación verde', 'Monitoreo carbono'],
+    cta: {
+      plan: 'Green Pro',
+      copy: 'Hosting 100% renovable con certificación de carbono neutral',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=99'
+    },
+    proofPoints: ['100% energía renovable', 'Carbono neutral verificado', 'Cooling eficiente'],
+    whenToUse: 'Ideal para empresas B-Corp, e-commerce consciente y brands sustentables',
+    synonyms: ['hosting sustentable', 'hosting ecologico', 'carbon neutral hosting'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-010',
+    slug: 'headless-ecommerce',
+    title: 'Headless E-commerce',
+    shortDefinition: 'Separación del frontend de la gestión de productos, permitiendo experiencias de compra personalizadas y omnicanales.',
+    longDefinition: `El Headless E-commerce desacopla la presentación de la lógica comercial, permitiendo crear experiencias de compra únicas en cualquier dispositivo o canal.
+
+## Arquitectura headless
+- **Backend**: API de productos, pagos, inventario
+- **Frontend**: Experiencias personalizadas
+- **APIs**: Conexión entre sistemas
+- **Omnichannel**: Web, móvil, IoT, voice
+
+## Plataformas populares 2025
+- **Shopify Plus**: API robusta
+- **Commercetools**: Enterprise-grade
+- **Medusa**: Open-source modular
+- **Saleor**: GraphQL nativo
+
+## Ventajas competitivas
+- ⚡ **Performance**: Sub-2s loading
+- 🎨 **Flexibilidad**: Diseño sin límites
+- 📱 **Omnichannel**: Una fuente de verdad
+- 🔧 **Integraciones**: APIs ilimitadas
+
+## Stack tecnológico típico
+\`\`\`javascript
+// Frontend: Next.js + Shopify Storefront API
+import { GraphQLClient } from 'graphql-request';
+
+const client = new GraphQLClient(
+  'https://mi-tienda.myshopify.com/api/2023-01/graphql.json',
+  { headers: { 'X-Shopify-Storefront-Access-Token': token } }
+);
+
+const productos = await client.request(\`
+  query getProductos {
+    products(first: 20) {
+      edges { node { title price } }
+    }
+  }
+\`);
+\`\`\`
+
+El futuro del e-commerce es headless y omnicanal.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['headless-ecommerce', 'api-first', 'omnichannel', 'jamstack', 'performance'],
+    level: 'avanzado',
+    related: ['jamstack', 'api-integration', 'performance'],
+    hostingRequirements: ['API rate limits altos', 'CDN global', 'Edge functions'],
+    cta: {
+      plan: 'Headless Pro',
+      copy: 'Hosting especializado para arquitecturas headless e-commerce',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=100'
+    },
+    proofPoints: ['APIs optimizadas', 'CDN commerce', 'Edge personalization'],
+    whenToUse: 'Perfecto para retailers que necesitan experiencias únicas y presencia omnicanal',
+    synonyms: ['ecommerce headless', 'comercio sin cabeza', 'api ecommerce'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-011',
+    slug: 'voice-search-optimization',
+    title: 'Optimización para Búsqueda por Voz',
+    shortDefinition: 'Adaptación de sitios web para consultas conversacionales de Alexa, Google Assistant y otros asistentes de voz.',
+    longDefinition: `La búsqueda por voz está transformando el SEO hacia consultas más naturales y conversacionales, requiriendo nuevas estrategias de optimización.
+
+## Cambios en patrones de búsqueda
+- 📝 **Texto**: "hosting chile"
+- 🗣️ **Voz**: "¿cuál es el mejor hosting en Chile?"
+- ❓ **Preguntas**: Quién, qué, dónde, cuándo, cómo
+- 📍 **Local**: "cerca de mí", ubicaciones específicas
+
+## Estrategias de optimización
+- **Featured Snippets**: Respuestas directas
+- **FAQ Schema**: Marcado de preguntas
+- **Long-tail keywords**: Frases naturales
+- **Local SEO**: Búsquedas geográficas
+
+## Implementación técnica
+\`\`\`html
+<!-- Schema FAQ para voice search -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "¿Cuál es el mejor hosting en Chile?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "HostingPlus ofrece el mejor rendimiento..."
+    }
+  }]
+}
+</script>
+\`\`\`
+
+## Métricas importantes
+- Position Zero conquests
+- Voice search traffic
+- Conversational query performance
+- Local pack appearances
+
+La voz es el futuro de la búsqueda web.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['voice-search', 'seo', 'featured-snippets', 'conversational', 'alexa'],
+    level: 'medio',
+    related: ['seo-local', 'schema-markup', 'featured-snippets'],
+    hostingRequirements: ['Schema rich', 'Fast TTFB', 'SSL security'],
+    cta: {
+      plan: 'Voice SEO',
+      copy: 'Hosting optimizado para búsqueda por voz con Schema avanzado',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=101'
+    },
+    proofPoints: ['Schema FAQ automático', 'TTFB <200ms', 'Voice optimization'],
+    whenToUse: 'Esencial para negocios locales, FAQ sites y brands que buscan position zero',
+    synonyms: ['busqueda por voz', 'voice seo', 'asistentes voz'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'trend-012',
+    slug: 'core-web-vitals-2025',
+    title: 'Core Web Vitals 2025',
+    shortDefinition: 'Métricas actualizadas de Google para experiencia de usuario: INP, LCP, CLS y las nuevas métricas de interacción.',
+    longDefinition: `Core Web Vitals 2025 incluye nuevas métricas centradas en interacción y responsiveness, cruciales para ranking y UX.
+
+## Métricas principales 2025
+- **INP**: Interaction to Next Paint (reemplaza FID)
+- **LCP**: Largest Contentful Paint (<2.5s)
+- **CLS**: Cumulative Layout Shift (<0.1)
+- **TTFB**: Time to First Byte (<600ms)
+
+## Nuevas métricas experimentales
+- **Responsiveness**: Tiempo respuesta UI
+- **Smoothness**: Fluidez animaciones
+- **Animation Frame Rate**: FPS consistente
+
+## Optimizaciones técnicas
+\`\`\`javascript
+// Optimización INP
+document.addEventListener('click', async (e) => {
+  // Yield para mejorar responsiveness
+  await new Promise(resolve => setTimeout(resolve, 0));
+  
+  // Procesamiento pesado
+  heavyTask();
+});
+
+// Web Vitals monitoring
+import {getCLS, getFID, getFCP, getLCP, getTTFB} from 'web-vitals';
+
+getCLS(console.log);
+getLCP(console.log);
+getTTFB(console.log);
+\`\`\`
+
+## Tools de medición
+- **PageSpeed Insights**: Oficial Google
+- **Web Vitals Extension**: Chrome
+- **Lighthouse**: Auditoría completa
+- **Core Web Vitals Report**: Search Console
+
+CWV 2025 son más estrictos y determinantes para SEO.`,
+    category: 'trends-2025',
+    cms: 'general',
+    tags: ['core-web-vitals', 'performance', 'inp', 'lcp', 'google', 'seo'],
+    level: 'medio',
+    related: ['page-speed-insights', 'performance', 'seo'],
+    hostingRequirements: ['SSD NVMe', 'HTTP/3', 'Edge caching', 'Resource hints'],
+    cta: {
+      plan: 'Core Vitals Pro',
+      copy: 'Hosting optimizado para Core Web Vitals 2025 perfectos',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=102'
+    },
+    proofPoints: ['CWV Score 95+', 'INP <200ms', 'LCP <1.5s garantizado'],
+    whenToUse: 'Crítico para todo sitio que dependa del tráfico orgánico de Google',
+    synonyms: ['web vitals', 'metricas google', 'inp lcp cls'],
     lastUpdated: '2025-01-15'
   }
 ];
