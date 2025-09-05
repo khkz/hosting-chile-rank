@@ -15,6 +15,7 @@ import { BookOpen, TrendingUp, Zap } from 'lucide-react';
 
 const WikiIndex: React.FC = () => {
   const [searchResults, setSearchResults] = useState<WikiTerm[]>(wikiTerms);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [featuredTerms] = useState<WikiTerm[]>(
     wikiTerms.filter(term => 
       ['wordpress', 'elementor', 'woocommerce', 'litespeed-cache', 'moodle', 'ai-wordpress', 'http3-quic'].includes(term.slug)
@@ -23,6 +24,20 @@ const WikiIndex: React.FC = () => {
 
   const handleSearchResults = (results: WikiTerm[]) => {
     setSearchResults(results);
+    setSelectedCategory(null); // Clear category when searching
+  };
+
+  const handleCategoryClick = (categoryId: string) => {
+    const categoryResults = wikiTerms.filter(t => t.category === categoryId);
+    setSearchResults(categoryResults);
+    setSelectedCategory(categoryId);
+    // Scroll to results section
+    document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const clearFilters = () => {
+    setSearchResults(wikiTerms);
+    setSelectedCategory(null);
   };
 
   const trendingTerms = wikiTerms.filter(term => term.category === 'trends-2025').slice(0, 4);
@@ -103,8 +118,8 @@ const WikiIndex: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Términos destacados (si no hay búsqueda) */}
-            {searchResults.length === wikiTerms.length && (
+            {/* Términos destacados (si no hay búsqueda activa) */}
+            {searchResults.length === wikiTerms.length && !selectedCategory && (
               <section className="space-y-6">
                 <div className="flex items-center gap-2">
                   <h2 className="text-2xl font-bold">Términos Destacados</h2>
@@ -118,8 +133,8 @@ const WikiIndex: React.FC = () => {
               </section>
             )}
 
-            {/* Categorías populares (si no hay búsqueda) */}
-            {searchResults.length === wikiTerms.length && (
+            {/* Categorías populares (si no hay búsqueda activa) */}
+            {searchResults.length === wikiTerms.length && !selectedCategory && (
               <section className="space-y-6">
                 <h2 className="text-2xl font-bold">Explorar por Categorías</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -127,12 +142,7 @@ const WikiIndex: React.FC = () => {
                     <Card 
                       key={category.id} 
                       className="hover:shadow-md transition-shadow cursor-pointer"
-                      onClick={() => {
-                        const categoryResults = wikiTerms.filter(t => t.category === category.id);
-                        setSearchResults(categoryResults);
-                        // Scroll to results section
-                        document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' });
-                      }}
+                      onClick={() => handleCategoryClick(category.id)}
                     >
                       <CardContent className="p-4 text-center">
                         <div className="text-2xl mb-2">{category.icon}</div>
@@ -148,8 +158,8 @@ const WikiIndex: React.FC = () => {
               </section>
             )}
 
-            {/* Tendencias 2025 (si no hay búsqueda) */}
-            {searchResults.length === wikiTerms.length && (
+            {/* Tendencias 2025 (si no hay búsqueda activa) */}
+            {searchResults.length === wikiTerms.length && !selectedCategory && (
               <section className="space-y-6">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
@@ -167,12 +177,30 @@ const WikiIndex: React.FC = () => {
             {/* Resultados de búsqueda */}
             <section id="search-results" className="space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">
-                  {searchResults.length === wikiTerms.length ? 'Todos los Términos' : 'Resultados de Búsqueda'}
-                </h2>
-                <Badge variant="outline">
-                  {searchResults.length} término{searchResults.length !== 1 ? 's' : ''}
-                </Badge>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-2xl font-bold">
+                    {selectedCategory 
+                      ? `${wikiCategories.find(c => c.id === selectedCategory)?.name || 'Categoría'}` 
+                      : searchResults.length === wikiTerms.length 
+                        ? 'Todos los Términos' 
+                        : 'Resultados de Búsqueda'}
+                  </h2>
+                  {selectedCategory && (
+                    <Badge variant="secondary" className="text-xs">
+                      {wikiCategories.find(c => c.id === selectedCategory)?.icon} Categoría
+                    </Badge>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">
+                    {searchResults.length} término{searchResults.length !== 1 ? 's' : ''}
+                  </Badge>
+                  {(selectedCategory || searchResults.length !== wikiTerms.length) && (
+                    <Button variant="outline" size="sm" onClick={clearFilters}>
+                      Ver todos
+                    </Button>
+                  )}
+                </div>
               </div>
 
               {searchResults.length === 0 ? (
