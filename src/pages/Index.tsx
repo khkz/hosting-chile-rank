@@ -8,7 +8,7 @@ import Benefits from '@/components/Benefits';
 import Testimonial from '@/components/Testimonial';
 import Migration from '@/components/Migration';
 import Categories from '@/components/Categories';
-import SimpleFAQ from '@/components/SimpleFAQ';
+import FAQ from '@/components/FAQ';
 import UltimasBusquedas from '@/components/UltimasBusquedas';
 import TransparencyNotice from '@/components/TransparencyNotice';
 import FinalCTA from '@/components/FinalCTA';
@@ -89,7 +89,7 @@ const Index = () => {
         <Categories />
         
         {/* section 10: FAQ */}
-        <SimpleFAQ />
+        <FAQ />
         
         {/* section 11: Final CTA */}
         <FinalCTA />

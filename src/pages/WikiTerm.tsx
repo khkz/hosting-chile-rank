@@ -13,8 +13,10 @@ import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import CodeBlock from '@/components/CodeBlock';
 import HostingPlusCTA from '@/components/HostingPlusCTA';
+import TLDRSummary from '@/components/TLDRSummary';
+import SimpleFAQ from '@/components/SimpleFAQ';
 import { wikiTerms, getRelatedTerms, wikiCategories } from '@/data/wiki/terms';
-import { Calendar, Tag, Server, ChevronRight } from 'lucide-react';
+import { Calendar, Tag, Server, ChevronRight, Clock, ListOrdered } from 'lucide-react';
 
 const WikiTerm: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -43,27 +45,81 @@ const WikiTerm: React.FC = () => {
         <title>{term.title} - Guía Completa de Hosting | Wiki HostingChile</title>
         <meta name="description" content={`${term.shortDefinition} Descubre requisitos de hosting, cuándo usar ${term.title} y recomendaciones de HostingPlus.`} />
         <meta name="keywords" content={`${term.title}, ${term.tags.join(', ')}, hosting, ${term.cms}, chile`} />
-        <link rel="canonical" href={`https://hostingchile.net/wiki/${term.slug}`} />
+        <link rel="canonical" href={`https://eligetuhosting.cl/wiki/${term.slug}`} />
         
-        {/* Schema.org DefinedTerm */}
+        {/* OpenGraph */}
+        <meta property="og:title" content={`${term.title} - Guía Completa de Hosting`} />
+        <meta property="og:description" content={term.shortDefinition} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://eligetuhosting.cl/wiki/${term.slug}`} />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${term.title} - Guía Completa de Hosting`} />
+        <meta name="twitter:description" content={term.shortDefinition} />
+        
+        {/* Enhanced Schema.org with Article + FAQPage + BreadcrumbList */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "DefinedTerm",
-            "name": term.title,
-            "description": term.shortDefinition,
-            "url": `https://hostingchile.net/wiki/${term.slug}`,
-            "inDefinedTermSet": {
-              "@type": "DefinedTermSet",
-              "name": "Wiki de Hosting Chile",
-              "url": "https://hostingchile.net/wiki"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "HostingChile",
-              "url": "https://hostingchile.net"
-            },
-            "dateModified": term.lastUpdated || "2025-01-01"
+            "@graph": [
+              {
+                "@type": "Article",
+                "headline": term.title,
+                "description": term.shortDefinition,
+                "url": `https://eligetuhosting.cl/wiki/${term.slug}`,
+                "datePublished": term.lastUpdated || "2025-01-01",
+                "dateModified": term.lastUpdated || "2025-01-01",
+                "author": {
+                  "@type": "Organization",
+                  "name": "EligeTuHosting.cl"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "EligeTuHosting.cl",
+                  "url": "https://eligetuhosting.cl"
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": `https://eligetuhosting.cl/wiki/${term.slug}`
+                },
+                "keywords": term.tags.join(', ')
+              },
+              {
+                "@type": "DefinedTerm",
+                "name": term.title,
+                "description": term.shortDefinition,
+                "url": `https://eligetuhosting.cl/wiki/${term.slug}`,
+                "inDefinedTermSet": {
+                  "@type": "DefinedTermSet",
+                  "name": "Wiki de Hosting Chile",
+                  "url": "https://eligetuhosting.cl/wiki"
+                }
+              },
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Inicio",
+                    "item": "https://eligetuhosting.cl"
+                  },
+                  {
+                    "@type": "ListItem", 
+                    "position": 2,
+                    "name": "Wiki",
+                    "item": "https://eligetuhosting.cl/wiki"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": term.title,
+                    "item": `https://eligetuhosting.cl/wiki/${term.slug}`
+                  }
+                ]
+              }
+            ]
           })}
         </script>
       </Helmet>
@@ -116,22 +172,36 @@ const WikiTerm: React.FC = () => {
               )}
             </header>
 
-            {/* TL;DR */}
-            <Card className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  ⚡ TL;DR (Resumen ejecutivo)
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="font-medium">{term.shortDefinition}</p>
-                {term.whenToUse && (
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    <strong>Cuándo usar:</strong> {term.whenToUse}
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+            {/* TL;DR Enhanced */}
+            {term.tldr && (
+              <TLDRSummary data={term.tldr} />
+            )}
+
+            {/* Table of Contents */}
+            {term.toc && term.toc.length > 0 && (
+              <Card className="bg-muted/30">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <ListOrdered className="h-5 w-5" />
+                    Tabla de Contenidos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ol className="space-y-2">
+                    {term.toc.map((item, index) => (
+                      <li key={index} className="text-sm">
+                        <a 
+                          href={`#${item.anchor}`}
+                          className="text-primary hover:text-primary/80 transition-colors"
+                        >
+                          {index + 1}. {item.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Contenido principal */}
             <section className="space-y-6">
@@ -196,6 +266,40 @@ const WikiTerm: React.FC = () => {
                         <li key={idx} className="flex items-center gap-3">
                           <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
                           <span>{req}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </section>
+            )}
+
+            {/* FAQ Section */}
+            {term.faq && term.faq.length > 0 && (
+              <section className="space-y-4">
+                <h2 className="text-2xl font-bold">Preguntas Frecuentes</h2>
+                <SimpleFAQ 
+                  faqs={term.faq}
+                  termSlug={term.slug}
+                  termTitle={term.title}
+                />
+              </section>
+            )}
+
+            {/* Common Errors Section */}
+            {term.commonErrors && term.commonErrors.length > 0 && (
+              <section className="space-y-4">
+                <h2 className="text-2xl font-bold">❌ Errores Comunes</h2>
+                <Card className="border-destructive/20 bg-destructive/5">
+                  <CardContent className="p-6">
+                    <ul className="space-y-4">
+                      {term.commonErrors.map((error, idx) => (
+                        <li key={idx} className="flex gap-3">
+                          <div className="w-2 h-2 bg-destructive rounded-full flex-shrink-0 mt-2"></div>
+                          <div>
+                            <strong className="text-destructive">{error.error}</strong>
+                            <p className="text-sm text-muted-foreground mt-1">{error.solution}</p>
+                          </div>
                         </li>
                       ))}
                     </ul>

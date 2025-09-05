@@ -1,3 +1,35 @@
+import React from 'react';
+import { TrendingUp, Globe, Plug, Palette, ShoppingCart, Users, Zap, Shield } from 'lucide-react';
+
+export interface TLDRData {
+  title: string;
+  keyPoints: string[];
+  stats?: Array<{
+    label: string;
+    value: string;
+    icon: React.ReactNode;
+  }>;
+  sources?: Array<{
+    title: string;
+    url: string;
+  }>;
+}
+
+export interface TOCItem {
+  title: string;
+  anchor: string;
+}
+
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
+export interface CommonError {
+  error: string;
+  solution: string;
+}
+
 export interface WikiTerm {
   id: string;
   slug: string;
@@ -19,6 +51,10 @@ export interface WikiTerm {
   whenToUse?: string;
   synonyms?: string[];
   lastUpdated?: string;
+  tldr?: TLDRData;
+  toc?: TOCItem[];
+  faq?: FAQ[];
+  commonErrors?: CommonError[];
 }
 
 export interface WikiCategory {
@@ -102,7 +138,24 @@ export const wikiTerms: WikiTerm[] = [
     slug: 'wordpress',
     title: 'WordPress',
     shortDefinition: 'El CMS más popular del mundo, que impulsa más del 43% de todos los sitios web. Sistema de gestión de contenidos open-source.',
-    longDefinition: 'WordPress es el sistema de gestión de contenidos más utilizado globalmente, perfecto para blogs, sitios corporativos y e-commerce. En Chile es la plataforma preferida por desarrolladores y empresas.',
+    longDefinition: `WordPress es el sistema de gestión de contenidos más utilizado globalmente, perfecto para blogs, sitios corporativos y e-commerce. En Chile es la plataforma preferida por desarrolladores y empresas.
+
+## ¿Por qué WordPress domina el mercado?
+
+WordPress ha logrado su posición dominante por varias razones clave:
+
+- **Facilidad de uso**: Interfaz intuitiva que permite a usuarios sin conocimientos técnicos gestionar contenido
+- **Flexibilidad total**: Desde blogs simples hasta complejas tiendas online con WooCommerce
+- **Comunidad masiva**: Miles de plugins y themes gratuitos y premium
+- **SEO-friendly**: Optimizado para motores de búsqueda desde su núcleo
+
+## Ventajas en el mercado chileno
+
+En Chile, WordPress tiene ventajas específicas:
+- Soporte local de hosting especializado
+- Plugins para integración con Transbank y otros medios de pago chilenos
+- Themes optimizados para audiencias hispanohablantes
+- Comunidad activa de desarrolladores locales`,
     category: 'wordpress',
     cms: 'wordpress',
     tags: ['cms', 'wordpress-core', 'gestion-contenidos', 'open-source'],
@@ -117,7 +170,40 @@ export const wikiTerms: WikiTerm[] = [
     proofPoints: ['WordPress pre-instalado', 'Updates automáticos', 'Staging site incluido'],
     whenToUse: 'Ideal para blogs, sitios corporativos, e-commerce y cualquier proyecto web',
     synonyms: ['WP', 'sistema de gestión'],
-    lastUpdated: '2025-01-15'
+    lastUpdated: '2025-01-15',
+    tldr: {
+      title: 'WordPress Esencial',
+      keyPoints: [
+        'CMS que impulsa 43% de todos los sitios web mundialmente',
+        'Gratuito y open-source con miles de plugins disponibles',
+        'Ideal para blogs, sitios corporativos y tiendas online',
+        'Requiere hosting optimizado para máximo rendimiento'
+      ],
+      stats: [
+        { label: 'Market Share', value: '43%', icon: React.createElement(Globe, { className: 'h-4 w-4' }) },
+        { label: 'Plugins', value: '60K+', icon: React.createElement(Plug, { className: 'h-4 w-4' }) },
+        { label: 'Themes', value: '11K+', icon: React.createElement(Palette, { className: 'h-4 w-4' }) }
+      ]
+    },
+    faq: [
+      {
+        question: '¿WordPress es gratuito?',
+        answer: 'Sí, WordPress.org es completamente gratuito. Solo pagas por hosting y dominio. Existe WordPress.com que es un servicio de hosting con limitaciones.'
+      },
+      {
+        question: '¿Necesito saber programar para usar WordPress?',
+        answer: 'No es necesario. WordPress tiene una interfaz visual intuitiva. Sin embargo, conocimientos básicos de HTML/CSS te darán más control.'
+      },
+      {
+        question: '¿Qué hosting necesita WordPress?',
+        answer: 'PHP 8.1+, MySQL 8.0+, al menos 1GB RAM. En Chile recomendamos hosting local con soporte WordPress especializado.'
+      }
+    ],
+    toc: [
+      { title: '¿Por qué WordPress domina el mercado?', anchor: 'dominio-mercado' },
+      { title: 'Ventajas en el mercado chileno', anchor: 'ventajas-chile' },
+      { title: 'Requisitos de hosting', anchor: 'requisitos-hosting' }
+    ]
   },
   {
     id: 'wp-002',
@@ -1429,6 +1515,68 @@ CWV 2025 son más estrictos y determinantes para SEO.`,
     proofPoints: ['CWV Score 95+', 'INP <200ms', 'LCP <1.5s garantizado'],
     whenToUse: 'Crítico para todo sitio que dependa del tráfico orgánico de Google',
     synonyms: ['web vitals', 'metricas google', 'inp lcp cls'],
+    lastUpdated: '2025-01-15'
+  },
+
+  // New Critical Terms for Phase 1
+  {
+    id: 'pb-004',
+    slug: 'elementor',
+    title: 'Elementor',
+    shortDefinition: 'El page builder visual más popular para WordPress, usado por más de 12 millones de sitios web. Permite crear diseños profesionales sin código.',
+    category: 'builders',
+    cms: 'wordpress',
+    tags: ['page-builder', 'elementor', 'visual-editor', 'drag-drop'],
+    level: 'medio',
+    related: ['gutenberg', 'wordpress', 'divi'],
+    hostingRequirements: ['PHP 8.0+', 'MySQL 8.0+', 'Al menos 2GB RAM', 'SSD storage'],
+    cta: {
+      plan: 'WordPress Pro',
+      copy: 'Hosting optimizado para Elementor con recursos garantizados',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: ['PHP 8.1 optimizado', 'RAM garantizada 4GB+', 'SSD NVMe incluido'],
+    whenToUse: 'Ideal para diseñadores, agencias y usuarios que necesitan control total sobre el diseño sin programar',
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'pb-005',
+    slug: 'divi',
+    title: 'Divi',
+    shortDefinition: 'Page builder y tema premium de Elegant Themes con Visual Builder integrado. Popular alternativa a Elementor.',
+    category: 'builders',
+    cms: 'wordpress',
+    tags: ['divi', 'page-builder', 'visual-builder', 'elegant-themes'],
+    level: 'medio',
+    related: ['elementor', 'gutenberg', 'wordpress'],
+    hostingRequirements: ['PHP 8.0+', 'MySQL 8.0+', 'Al menos 2GB RAM'],
+    cta: {
+      plan: 'WordPress Pro',
+      copy: 'Hosting optimizado para Divi con recursos garantizados',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: ['Compatible con Divi', 'PHP 8.1 optimizado', 'RAM garantizada'],
+    whenToUse: 'Perfecto para agencias, diseñadores y empresas que buscan un sistema completo tema + builder',
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'perf-006',
+    slug: 'caching-wordpress',
+    title: 'Caching en WordPress',
+    shortDefinition: 'Sistema de almacenamiento temporal que acelera WordPress guardando versiones estáticas de páginas, reduciendo tiempo de carga hasta 10x.',
+    category: 'performance',
+    cms: 'wordpress',
+    tags: ['cache', 'performance', 'velocidad', 'wp-rocket', 'litespeed'],
+    level: 'medio',
+    related: ['litespeed-cache', 'cdn', 'page-speed-insights'],
+    hostingRequirements: ['SSD storage', 'PHP OPcache habilitado', 'Redis/Memcached disponible'],
+    cta: {
+      plan: 'Performance Pro',
+      copy: 'Hosting con cache multi-nivel y LiteSpeed incluido',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: ['LiteSpeed Server incluido', 'Redis cache disponible', 'Page Speed 90+ garantizado'],
+    whenToUse: 'Esencial para cualquier sitio WordPress, especialmente e-commerce y sitios con tráfico alto',
     lastUpdated: '2025-01-15'
   }
 ];
