@@ -16,7 +16,7 @@ import HostingPlusCTA from '@/components/HostingPlusCTA';
 import TLDRSummary from '@/components/TLDRSummary';
 import SimpleFAQ from '@/components/SimpleFAQ';
 import { wikiTerms, getRelatedTerms, wikiCategories } from '@/data/wiki/terms';
-import { Calendar, Tag, Server, ChevronRight, Clock, ListOrdered } from 'lucide-react';
+import { Calendar, Tag, Server, ChevronRight, Clock, ListOrdered, ExternalLink } from 'lucide-react';
 
 const WikiTerm: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -171,6 +171,36 @@ const WikiTerm: React.FC = () => {
                 </div>
               )}
             </header>
+
+            {/* Official Links */}
+            {term.links && term.links.length > 0 && (
+              <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2 text-primary">
+                    <ExternalLink className="h-5 w-5" />
+                    Enlaces Oficiales y Descargas
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {term.links.map((link, index) => (
+                      <a
+                        key={index}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 p-3 bg-background/60 rounded-lg border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 group"
+                      >
+                        <ExternalLink className="h-4 w-4 text-primary group-hover:text-primary/80" />
+                        <span className="text-sm font-medium text-foreground group-hover:text-primary">
+                          {link.title}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* TL;DR Enhanced */}
             {term.tldr && (

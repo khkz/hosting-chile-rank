@@ -55,6 +55,10 @@ export interface WikiTerm {
   toc?: TOCItem[];
   faq?: FAQ[];
   commonErrors?: CommonError[];
+  links?: Array<{
+    title: string;
+    url: string;
+  }>;
 }
 
 export interface WikiCategory {
@@ -1734,6 +1738,28 @@ CWV 2025 son más estrictos y determinantes para SEO.`,
         answer: 'Divi es competitivo en velocidad. Con hosting optimizado y cache adecuado, alcanza fácilmente Page Speed 85-95+.'
       }
     ],
+    links: [
+      {
+        title: 'Descargar Divi - Elegant Themes',
+        url: 'https://www.elegantthemes.com/gallery/divi/'
+      },
+      {
+        title: 'Precios Divi (Lifetime vs Yearly)',
+        url: 'https://www.elegantthemes.com/join/'
+      },
+      {
+        title: 'Documentación Divi',
+        url: 'https://www.elegantthemes.com/documentation/divi/'
+      },
+      {
+        title: 'Divi Layouts (Plantillas)',
+        url: 'https://www.elegantthemes.com/layouts/'
+      },
+      {
+        title: 'Soporte Divi',
+        url: 'https://www.elegantthemes.com/support/'
+      }
+    ],
     lastUpdated: '2025-01-15'
   },
   {
@@ -1894,6 +1920,28 @@ if (is_user_logged_in() || is_cart() || is_checkout()) {
       {
         question: '¿LiteSpeed Cache es realmente gratis?',
         answer: 'LiteSpeed Cache plugin es 100% gratis, pero necesitas LiteSpeed Server para máximo rendimiento. Funciona en cualquier servidor pero es óptimo con LiteSpeed.'
+      }
+    ],
+    links: [
+      {
+        title: 'WP Rocket - Plugin Premium',
+        url: 'https://wp-rocket.me/'
+      },
+      {
+        title: 'LiteSpeed Cache - Plugin Gratuito',
+        url: 'https://wordpress.org/plugins/litespeed-cache/'
+      },
+      {
+        title: 'WP Super Cache - Plugin Gratuito',
+        url: 'https://wordpress.org/plugins/wp-super-cache/'
+      },
+      {
+        title: 'W3 Total Cache - Plugin Gratuito',
+        url: 'https://wordpress.org/plugins/w3-total-cache/'
+      },
+      {
+        title: 'Guía Caching WordPress',
+        url: 'https://codex.wordpress.org/WordPress_Optimization/Caching'
       }
     ],
     lastUpdated: '2025-01-15'
