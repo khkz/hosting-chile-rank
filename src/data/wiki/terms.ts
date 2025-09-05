@@ -1524,39 +1524,216 @@ CWV 2025 son más estrictos y determinantes para SEO.`,
     slug: 'elementor',
     title: 'Elementor',
     shortDefinition: 'El page builder visual más popular para WordPress, usado por más de 12 millones de sitios web. Permite crear diseños profesionales sin código.',
+    longDefinition: `Elementor es el page builder más utilizado del mundo WordPress, revolucionando la creación de sitios web con su editor visual intuitivo y potente.
+
+## ¿Por qué elegir Elementor?
+
+### 🎨 **Editor Visual Avanzado**
+- Edición en tiempo real (frontend editing)
+- Más de 100 widgets profesionales
+- Sistema de templates globales
+- Control granular de responsive design
+
+### 🚀 **Rendimiento Optimizado**
+- Código CSS optimizado automáticamente
+- Lazy loading nativo
+- Minificación automática
+- Compatible con cache plugins
+
+### 💼 **Perfecto para Profesionales**
+- Theme Builder completo
+- WooCommerce Builder integrado
+- Custom CSS por elemento
+- Dynamic Content capabilities
+
+## Planes disponibles
+
+### **Elementor Free** - Gratis
+- 30+ widgets básicos
+- Diseños responsive
+- Editor frontend
+- **[Descargar en WordPress.org](https://wordpress.org/plugins/elementor/)**
+
+### **Elementor Pro** - $59/año
+- 90+ widgets Pro
+- Theme Builder
+- WooCommerce Builder  
+- Forms avanzados
+- **[Obtener Elementor Pro](https://elementor.com/pricing/)**
+
+### **Expert/Studio** - $199-$999/año
+- Para agencias y desarrolladores
+- White-label
+- Priority support
+- Kit completo de herramientas
+
+## Comparativa con competidores
+
+| Feature | Elementor | Divi | Gutenberg |
+|---------|-----------|------|-----------|
+| Curva aprendizaje | Fácil | Media | Fácil |
+| Widgets incluidos | 100+ | 46 | 30+ |
+| Rendimiento | Excelente | Bueno | Muy bueno |
+| Theme Builder | ✅ Pro | ✅ | ✅ FSE |
+| Precio anual | $59 | $89 | Gratis |
+
+## Casos de uso ideales
+- **Landing pages** de alta conversión
+- **Sitios corporativos** profesionales  
+- **E-commerce** con WooCommerce
+- **Portfolios** creativos
+- **Blogs** con diseño personalizado`,
     category: 'builders',
     cms: 'wordpress',
-    tags: ['page-builder', 'elementor', 'visual-editor', 'drag-drop'],
+    tags: ['page-builder', 'elementor', 'visual-editor', 'drag-drop', 'theme-builder'],
     level: 'medio',
-    related: ['gutenberg', 'wordpress', 'divi'],
-    hostingRequirements: ['PHP 8.0+', 'MySQL 8.0+', 'Al menos 2GB RAM', 'SSD storage'],
+    related: ['gutenberg', 'wordpress', 'divi', 'woocommerce'],
+    hostingRequirements: ['PHP 8.0+', 'MySQL 8.0+', 'Al menos 2GB RAM', 'SSD storage', 'Gzip/Brotli compression'],
     cta: {
       plan: 'WordPress Pro',
-      copy: 'Hosting optimizado para Elementor con recursos garantizados',
+      copy: 'Hosting optimizado para Elementor con recursos garantizados y soporte especializado',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
-    proofPoints: ['PHP 8.1 optimizado', 'RAM garantizada 4GB+', 'SSD NVMe incluido'],
+    proofPoints: ['PHP 8.1 optimizado', 'RAM garantizada 4GB+', 'SSD NVMe incluido', 'Elementor pre-instalado'],
     whenToUse: 'Ideal para diseñadores, agencias y usuarios que necesitan control total sobre el diseño sin programar',
+    synonyms: ['elementor wordpress', 'page builder elementor', 'constructor visual'],
+    faq: [
+      {
+        question: '¿Elementor Free es suficiente para mi sitio?',
+        answer: 'Elementor Free es perfecto para sitios básicos y páginas simples. Para sitios profesionales, Theme Builder y widgets avanzados, necesitarás Elementor Pro.'
+      },
+      {
+        question: '¿Afecta Elementor la velocidad de mi sitio?',
+        answer: 'Elementor está optimizado para rendimiento. Con hosting adecuado y buenas prácticas, los sitios pueden alcanzar Page Speed 90+.'
+      },
+      {
+        question: '¿Puedo usar Elementor con cualquier tema?',
+        answer: 'Sí, Elementor es compatible con la mayoría de temas WordPress. Para máximo control, recomendamos Hello Theme (oficial de Elementor).'
+      }
+    ],
     lastUpdated: '2025-01-15'
   },
   {
     id: 'pb-005',
     slug: 'divi',
     title: 'Divi',
-    shortDefinition: 'Page builder y tema premium de Elegant Themes con Visual Builder integrado. Popular alternativa a Elementor.',
+    shortDefinition: 'Page builder y tema premium de Elegant Themes con Visual Builder integrado. Popular alternativa a Elementor con más de 1 millón de usuarios.',
+    longDefinition: `Divi es el sistema todo-en-uno de Elegant Themes que combina un potente page builder con un tema premium, usado por más de 1 millón de sitios web profesionales.
+
+## ¿Qué hace único a Divi?
+
+### 🎯 **Sistema Todo-en-Uno**
+- Tema + Page Builder integrados
+- No necesitas plugins adicionales  
+- Diseño cohesivo garantizado
+- Updates automáticos coordinados
+
+### 🎨 **Visual Builder Avanzado**
+- Edición frontend en tiempo real
+- 46 módulos de contenido únicos
+- Biblioteca de 2000+ layouts pre-hechos
+- Responsive editing granular
+
+### 🚀 **Performance & Features**
+- Split testing A/B integrado
+- Dynamic content capabilities
+- CSS Grid y Flexbox nativo
+- Animations y effects avanzados
+
+## Planes y Precios
+
+### **Divi Yearly Access** - $89/año
+- Divi Theme + Builder
+- Todos los layouts premium
+- Premium support
+- Updates por 1 año
+- **[Obtener Divi](https://www.elegantthemes.com/join/)**
+
+### **Divi Lifetime Access** - $249 una vez
+- Todo lo anterior
+- Acceso de por vida
+- Mejor valor a largo plazo
+- **[Comprar Lifetime](https://www.elegantthemes.com/join/)**
+
+### **Extra Themes + Plugins**
+- Bloom (Email Opt-ins)
+- Monarch (Social Sharing)
+- Extra Magazine Theme
+- Incluidos en membresía
+
+## Divi vs Competencia
+
+| Aspecto | Divi | Elementor Pro | Beaver Builder |
+|---------|------|---------------|----------------|
+| Precio anual | $89 | $59 | $99 |
+| Tema incluido | ✅ | ❌ | ❌ |
+| A/B Testing | ✅ | ❌ | ❌ |
+| Layouts pre-hechos | 2000+ | 300+ | 500+ |
+| Learning curve | Media | Fácil | Media |
+
+## Casos de uso perfectos
+
+### 🏢 **Sitios Corporativos**
+- Empresas que necesitan consistencia visual
+- Múltiples páginas de servicios
+- Secciones de equipo y testimoniales
+
+### 🎨 **Agencies & Freelancers**  
+- A/B testing para optimizar conversión
+- Layouts pre-hechos para acelerar desarrollo
+- White-label para clientes
+
+### 📈 **Marketing & Landing Pages**
+- Split testing nativo
+- Lead generation con Bloom
+- Conversion-focused modules
+
+## Tips de optimización Divi
+
+\`\`\`css
+/* Optimizar Divi performance */
+/* 1. Deshabilitar módulos no utilizados */
+/* 2. Usar Divi Rocket plugin */
+/* 3. Optimizar imágenes antes de subir */
+/* 4. Combinar con LiteSpeed Cache */
+\`\`\`
+
+## Errores comunes con Divi
+- **No optimizar imágenes**: Divi usa muchas imágenes, optimízalas siempre
+- **Abusar de animaciones**: Pueden ralentizar en móviles
+- **No usar child theme**: Importante para customizaciones CSS`,
     category: 'builders',
     cms: 'wordpress',
-    tags: ['divi', 'page-builder', 'visual-builder', 'elegant-themes'],
+    tags: ['divi', 'page-builder', 'visual-builder', 'elegant-themes', 'all-in-one'],
     level: 'medio',
-    related: ['elementor', 'gutenberg', 'wordpress'],
-    hostingRequirements: ['PHP 8.0+', 'MySQL 8.0+', 'Al menos 2GB RAM'],
+    related: ['elementor', 'gutenberg', 'wordpress', 'ab-testing'],
+    hostingRequirements: ['PHP 8.0+', 'MySQL 8.0+', 'Al menos 2GB RAM', 'SSD storage', 'Cache compatibility'],
     cta: {
       plan: 'WordPress Pro',
-      copy: 'Hosting optimizado para Divi con recursos garantizados',
+      copy: 'Hosting optimizado para Divi con recursos garantizados y cache LiteSpeed',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
-    proofPoints: ['Compatible con Divi', 'PHP 8.1 optimizado', 'RAM garantizada'],
-    whenToUse: 'Perfecto para agencias, diseñadores y empresas que buscan un sistema completo tema + builder',
+    proofPoints: ['Compatible con Divi', 'PHP 8.1 optimizado', 'RAM garantizada 4GB+', 'LiteSpeed Cache incluido'],
+    whenToUse: 'Perfecto para agencias, diseñadores y empresas que buscan un sistema completo tema + builder con A/B testing',
+    synonyms: ['divi theme', 'divi builder', 'elegant themes'],
+    faq: [
+      {
+        question: '¿Vale la pena el Lifetime Access de Divi?',
+        answer: 'Si planeas usar Divi por más de 3 años, el Lifetime Access ($249) es más económico que renovar anualmente ($89/año).'
+      },
+      {
+        question: '¿Divi incluye tema o solo el builder?',
+        answer: 'Divi incluye tanto el tema como el page builder integrado. Es una solución todo-en-uno, no necesitas tema adicional.'
+      },
+      {
+        question: '¿Puedo usar Divi Builder con otros temas?',
+        answer: 'Sí, el Divi Builder funciona con cualquier tema WordPress, pero la mejor experiencia es con el tema Divi incluido.'
+      },
+      {
+        question: '¿Qué tan rápido es Divi comparado con otros builders?',
+        answer: 'Divi es competitivo en velocidad. Con hosting optimizado y cache adecuado, alcanza fácilmente Page Speed 85-95+.'
+      }
+    ],
     lastUpdated: '2025-01-15'
   },
   {
@@ -1564,19 +1741,161 @@ CWV 2025 son más estrictos y determinantes para SEO.`,
     slug: 'caching-wordpress',
     title: 'Caching en WordPress',
     shortDefinition: 'Sistema de almacenamiento temporal que acelera WordPress guardando versiones estáticas de páginas, reduciendo tiempo de carga hasta 10x.',
+    longDefinition: `El caching es la optimización más impactante para WordPress. Transforma sitios lentos en experiencias ultra-rápidas guardando contenido pre-procesado.
+
+## ¿Por qué es crucial el caching?
+
+### 🚀 **Mejoras de rendimiento**
+- Reduce tiempo de carga 5-10x
+- Mejora Core Web Vitals dramáticamente
+- Reduce carga del servidor hasta 95%
+- Mejor ranking en Google automáticamente
+
+### 💰 **Beneficios de negocio**
+- Menor bounce rate
+- Mayor conversión
+- Mejor experiencia de usuario
+- Ahorro en recursos de hosting
+
+## Tipos de cache esenciales
+
+### **Page Cache** - Lo más importante
+- Guarda páginas HTML completas
+- Evita procesar PHP en cada visita
+- Mejora TTFB (Time to First Byte)
+
+### **Object Cache** - Para sitios dinámicos
+- Cache de consultas a base de datos
+- Ideal para WooCommerce y membership sites
+- Redis/Memcached para máximo rendimiento
+
+### **OPcache** - Nivel servidor
+- Cache de código PHP compilado
+- Incluido en hostings modernos
+- Mejora velocidad de ejecución
+
+## Mejores plugins de cache 2025
+
+### **WP Rocket** - Premium ($59/año)
+- Setup automático inteligente
+- Cache de páginas + optimizaciones
+- Lazy loading avanzado
+- **[Obtener WP Rocket](https://wp-rocket.me/)**
+
+\`\`\`php
+// Configuración recomendada WP Rocket
+define('WP_CACHE', true);
+// Minificación automática CSS/JS
+// Preload inteligente
+// Database cleanup programado
+\`\`\`
+
+### **LiteSpeed Cache** - Gratis (con LiteSpeed Server)
+- Más rápido que otros plugins
+- ESI (Edge Side Includes)
+- Image optimization incluida
+- **[Descargar LiteSpeed Cache](https://wordpress.org/plugins/litespeed-cache/)**
+
+### **W3 Total Cache** - Gratis
+- Cache multi-nivel completo
+- CDN integration nativa
+- Configuración granular
+- **[Descargar W3TC](https://wordpress.org/plugins/w3-total-cache/)**
+
+### **WP Super Cache** - Gratis
+- Plugin oficial de Automattic
+- Simple y confiable
+- Ideal para principiantes
+- **[Descargar WP Super Cache](https://wordpress.org/plugins/wp-super-cache/)**
+
+## Configuración óptima cache
+
+\`\`\`apache
+# .htaccess - Cache headers
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/jpg "access plus 1 year"
+</IfModule>
+\`\`\`
+
+## Cache + WooCommerce
+
+### Páginas a NO cachear
+- \`/cart/\` - Carrito de compras
+- \`/checkout/\` - Proceso de pago  
+- \`/my-account/\` - Área cliente
+- Páginas con formularios dinámicos
+
+### Configuración recomendada
+\`\`\`php
+// Excluir cookies de WooCommerce
+if (is_user_logged_in() || is_cart() || is_checkout()) {
+    define('DONOTCACHEPAGE', true);
+}
+\`\`\`
+
+## Medición y monitoreo
+
+### Tools para medir mejoras
+- **GTmetrix**: Before/after comparisons
+- **PageSpeed Insights**: Core Web Vitals
+- **Pingdom**: Monitoring continuo
+- **Query Monitor**: Cache hit ratio
+
+### KPIs importantes
+- **TTFB**: < 200ms (excelente)
+- **Cache Hit Ratio**: > 95%
+- **Page Speed Score**: > 90
+- **LCP**: < 2.5 segundos
+
+## Errores comunes con cache
+
+❌ **No purgar cache tras cambios**
+- Siempre purga después de updates
+- Configura auto-purge para posts
+
+❌ **Cachear páginas dinámicas**  
+- Login, checkout, formularios
+- Usar exclusiones correctas
+
+❌ **No optimizar base de datos**
+- Combinar con DB optimization
+- Limpiar revisiones y spam`,
     category: 'performance',
     cms: 'wordpress',
-    tags: ['cache', 'performance', 'velocidad', 'wp-rocket', 'litespeed'],
+    tags: ['cache', 'performance', 'velocidad', 'wp-rocket', 'litespeed', 'optimizacion'],
     level: 'medio',
-    related: ['litespeed-cache', 'cdn', 'page-speed-insights'],
-    hostingRequirements: ['SSD storage', 'PHP OPcache habilitado', 'Redis/Memcached disponible'],
+    related: ['litespeed-cache', 'cdn', 'page-speed-insights', 'core-web-vitals'],
+    hostingRequirements: ['SSD storage', 'PHP OPcache habilitado', 'Redis/Memcached disponible', 'LiteSpeed Server (recomendado)'],
     cta: {
       plan: 'Performance Pro',
-      copy: 'Hosting con cache multi-nivel y LiteSpeed incluido',
+      copy: 'Hosting con LiteSpeed Server, Redis cache y optimizaciones automáticas incluidas',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
     },
-    proofPoints: ['LiteSpeed Server incluido', 'Redis cache disponible', 'Page Speed 90+ garantizado'],
-    whenToUse: 'Esencial para cualquier sitio WordPress, especialmente e-commerce y sitios con tráfico alto',
+    proofPoints: ['LiteSpeed Server incluido', 'Redis cache disponible', 'Page Speed 90+ garantizado', 'Cache automático pre-configurado'],
+    whenToUse: 'Esencial para cualquier sitio WordPress, especialmente e-commerce, blogs con tráfico y sitios con contenido dinámico',
+    synonyms: ['cache wordpress', 'wp cache', 'acelerar wordpress'],
+    faq: [
+      {
+        question: '¿Qué plugin de cache es mejor para principiantes?',
+        answer: 'WP Super Cache es ideal para principiantes por su simplicidad. Para usuarios intermedios, WP Rocket ofrece la mejor experiencia automática.'
+      },
+      {
+        question: '¿El cache funciona con WooCommerce?',
+        answer: 'Sí, pero requiere configuración especial. Páginas como carrito y checkout no deben cachearse. WP Rocket y LiteSpeed Cache tienen configuraciones específicas para WooCommerce.'
+      },
+      {
+        question: '¿Necesito cache si tengo un CDN?',
+        answer: 'Sí, son complementarios. El cache del servidor optimiza generación de páginas, el CDN acelera entrega global. Ambos juntos dan máximo rendimiento.'
+      },
+      {
+        question: '¿LiteSpeed Cache es realmente gratis?',
+        answer: 'LiteSpeed Cache plugin es 100% gratis, pero necesitas LiteSpeed Server para máximo rendimiento. Funciona en cualquier servidor pero es óptimo con LiteSpeed.'
+      }
+    ],
     lastUpdated: '2025-01-15'
   }
 ];
