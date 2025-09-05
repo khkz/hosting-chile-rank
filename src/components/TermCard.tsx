@@ -108,15 +108,6 @@ const TermCard: React.FC<TermCardProps> = ({ term, variant = 'default' }) => {
           </div>
         )}
 
-        <HostingPlusCTA
-          termSlug={term.slug}
-          termTitle={term.title}
-          plan={term.cta.plan}
-          copy={term.cta.copy}
-          url={term.cta.url}
-          proofPoints={term.proofPoints}
-          variant="compact"
-        />
 
         <div className="flex items-center justify-between pt-2">
           <div className="text-xs text-muted-foreground">
