@@ -226,8 +226,8 @@ Google usa Page Speed como factor de ranking directo desde 2018.`,
   }
 ];
 
-// Utility functions
-export const searchTerms = (query: string, filters?: any): WikiTerm[] => {
+// Utility functions - explicitly exported
+export const searchTerms = (query: string, filters?: Record<string, any>): WikiTerm[] => {
   let results = wikiTerms;
   
   // Apply text search if query provided
