@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import Navbar from '@/components/Navbar';
@@ -12,9 +11,10 @@ import Footer from '@/components/Footer';
 import RightRailOffer from '@/components/RightRailOffer';
 import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import CodeBlock from '@/components/CodeBlock';
+import HostingPlusCTA from '@/components/HostingPlusCTA';
 import { wikiTerms, getRelatedTerms, wikiCategories } from '@/data/wiki/terms';
-import { buildHostingPlusURL, trackCTAClick } from '@/utils/cta';
-import { ExternalLink, Calendar, Tag, Server, ChevronRight } from 'lucide-react';
+import { Calendar, Tag, Server, ChevronRight } from 'lucide-react';
 
 const WikiTerm: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -31,20 +31,6 @@ const WikiTerm: React.FC = () => {
 
   const relatedTerms = getRelatedTerms(term.slug);
   const category = wikiCategories.find(c => c.id === term.category);
-
-  const handleCTAClick = (type: 'primary' | 'secondary' = 'primary') => {
-    trackCTAClick(term.slug, type);
-  };
-
-  const primaryCTAUrl = buildHostingPlusURL(term.cta.url, {
-    content: term.slug,
-    term: term.title.toLowerCase()
-  });
-
-  const secondaryCTAUrl = buildHostingPlusURL(
-    'https://clientes.hostingplus.cl/submitticket.php?step=2&deptid=4',
-    { content: `${term.slug}-secondary` }
-  );
 
   const breadcrumbItems = [
     { name: 'Inicio', href: '/' },
@@ -166,6 +152,19 @@ const WikiTerm: React.FC = () => {
                       blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic bg-muted/50 p-4 rounded-r-lg my-4">{children}</blockquote>,
                       img: () => null, // Hide all images
                       em: ({children}) => <em className="italic">{children}</em>,
+                      code: ({className, children, ...props}) => {
+                        const match = /language-(\w+)/.exec(className || '');
+                        const isInline = !match;
+                        return isInline ? (
+                          <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
+                            {children}
+                          </code>
+                        ) : (
+                          <CodeBlock language={match[1]} className="my-4">
+                            {String(children).replace(/\n$/, '')}
+                          </CodeBlock>
+                        );
+                      },
                     }}
                   >
                     {term.longDefinition}
@@ -206,63 +205,14 @@ const WikiTerm: React.FC = () => {
             )}
 
             {/* CTA Principal - Recomendado HostingPlus */}
-            <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-              <CardContent className="p-8">
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium mb-4">
-                      ⭐ Recomendado: HostingPlus
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">
-                      Hosting Optimizado para {term.title}
-                    </h3>
-                    <p className="text-lg text-muted-foreground">
-                      {term.cta.copy}
-                    </p>
-                  </div>
-
-                  {term.proofPoints.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {term.proofPoints.map((point, idx) => (
-                        <div key={idx} className="flex items-center gap-3">
-                          <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-primary rounded-full"></div>
-                          </div>
-                          <span className="text-sm font-medium">{point}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Button 
-                      size="lg"
-                      onClick={() => {
-                        handleCTAClick('primary');
-                        window.open(primaryCTAUrl, '_blank');
-                      }}
-                    >
-                      Contratar {term.cta.plan}
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="lg"
-                      onClick={() => {
-                        handleCTAClick('secondary');
-                        window.open(secondaryCTAUrl, '_blank');
-                      }}
-                    >
-                      Cotizar mi proyecto
-                    </Button>
-                  </div>
-
-                  <div className="text-center text-sm text-muted-foreground">
-                    ⭐ 4.8/5 en Google Reviews • +10,000 clientes • Soporte 24/7
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <HostingPlusCTA
+              termSlug={term.slug}
+              termTitle={term.title}
+              plan={term.cta.plan}
+              copy={term.cta.copy}
+              url={term.cta.url}
+              proofPoints={term.proofPoints}
+            />
 
             {/* Términos relacionados */}
             {relatedTerms.length > 0 && (
