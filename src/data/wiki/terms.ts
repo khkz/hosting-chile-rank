@@ -229,6 +229,72 @@ export const wikiTerms: WikiTerm[] = [
     whenToUse: 'Esencial para cualquier sitio WordPress que quiera posicionarse',
     synonyms: ['plugin seo', 'wordpress seo'],
     lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'seo-003',
+    slug: 'google-search-console',
+    title: 'Google Search Console',
+    shortDefinition: 'Herramienta gratuita de Google que muestra cómo tu sitio aparece en búsquedas y te ayuda a optimizar tu SEO.',
+    longDefinition: 'Google Search Console es la línea directa entre tu sitio web y Google, proporcionando datos cruciales sobre rendimiento SEO.',
+    category: 'seo',
+    cms: 'general',
+    tags: ['google', 'search-console', 'analytics', 'seo-tools'],
+    level: 'medio',
+    related: ['schema-markup', 'yoast-seo', 'page-speed'],
+    hostingRequirements: ['Verificación HTML/DNS', 'Sitemap.xml automático'],
+    cta: {
+      plan: 'SEO Pro',
+      copy: 'Hosting con Google Search Console pre-configurado',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: ['Search Console configurado', 'Monitoreo SEO 24/7'],
+    whenToUse: 'Imprescindible para cualquier sitio que quiera tráfico orgánico',
+    synonyms: ['GSC', 'webmaster tools'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'seo-004',
+    slug: 'page-speed-insights',
+    title: 'Page Speed Insights',
+    shortDefinition: 'Herramienta de Google que analiza la velocidad de tu sitio web y proporciona recomendaciones específicas para mejorar el rendimiento.',
+    longDefinition: 'Page Speed Insights mide Core Web Vitals y proporciona métricas cruciales para SEO y experiencia de usuario.',
+    category: 'seo',
+    cms: 'general',
+    tags: ['velocidad', 'performance', 'core-web-vitals', 'page-speed'],
+    level: 'medio',
+    related: ['litespeed-cache', 'google-search-console', 'cdn'],
+    hostingRequirements: ['SSD NVMe', 'HTTP/3', 'Cache server-side'],
+    cta: {
+      plan: 'Performance Pro',
+      copy: 'Hosting ultra-rápido con Page Speed 90+ garantizado',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=84'
+    },
+    proofPoints: ['Page Speed Score 90+', 'CDN global incluido'],
+    whenToUse: 'Crítico para SEO, conversiones y experiencia móvil',
+    synonyms: ['PageSpeed', 'velocidad web'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'seo-005',
+    slug: 'seo-local',
+    title: 'SEO Local',
+    shortDefinition: 'Estrategias de optimización para aparecer en búsquedas geográficas locales como "restaurante cerca de mí" o "dentista Santiago".',
+    longDefinition: 'SEO Local optimiza tu negocio para búsquedas con intención geográfica, crucial para empresas con ubicación física.',
+    category: 'seo',
+    cms: 'general',
+    tags: ['seo-local', 'google-my-business', 'local-business', 'geolocalizacion'],
+    level: 'medio',
+    related: ['schema-markup', 'google-search-console', 'reviews'],
+    hostingRequirements: ['Schema Local Business', 'SSL certificado', 'Hosting en Chile'],
+    cta: {
+      plan: 'Local Business',
+      copy: 'Hosting optimizado para SEO local con presencia en Chile',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=83'
+    },
+    proofPoints: ['Servidores en Chile', 'Schema local configurado', 'GMB optimization'],
+    whenToUse: 'Esencial para restaurantes, clínicas, tiendas físicas y servicios locales',
+    synonyms: ['local seo', 'seo geografico'],
+    lastUpdated: '2025-01-15'
   }
 ];
 
