@@ -124,7 +124,16 @@ const WikiIndex: React.FC = () => {
                 <h2 className="text-2xl font-bold">Explorar por Categorías</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {wikiCategories.map(category => (
-                    <Card key={category.id} className="hover:shadow-md transition-shadow cursor-pointer">
+                    <Card 
+                      key={category.id} 
+                      className="hover:shadow-md transition-shadow cursor-pointer"
+                      onClick={() => {
+                        const categoryResults = wikiTerms.filter(t => t.category === category.id);
+                        setSearchResults(categoryResults);
+                        // Scroll to results section
+                        document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
                       <CardContent className="p-4 text-center">
                         <div className="text-2xl mb-2">{category.icon}</div>
                         <h3 className="font-semibold mb-1">{category.name}</h3>
@@ -156,7 +165,7 @@ const WikiIndex: React.FC = () => {
             )}
 
             {/* Resultados de búsqueda */}
-            <section className="space-y-6">
+            <section id="search-results" className="space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold">
                   {searchResults.length === wikiTerms.length ? 'Todos los Términos' : 'Resultados de Búsqueda'}
