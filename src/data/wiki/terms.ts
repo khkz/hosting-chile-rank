@@ -1615,6 +1615,28 @@ CWV 2025 son más estrictos y determinantes para SEO.`,
         answer: 'Sí, Elementor es compatible con la mayoría de temas WordPress. Para máximo control, recomendamos Hello Theme (oficial de Elementor).'
       }
     ],
+    links: [
+      {
+        title: 'Elementor Free - WordPress.org',
+        url: 'https://wordpress.org/plugins/elementor/'
+      },
+      {
+        title: 'Elementor Pro - Oficial',
+        url: 'https://elementor.com/pricing/'
+      },
+      {
+        title: 'Documentación Elementor',
+        url: 'https://elementor.com/help/'
+      },
+      {
+        title: 'Templates Elementor',
+        url: 'https://elementor.com/library/'
+      },
+      {
+        title: 'Hello Theme - Tema Oficial',
+        url: 'https://wordpress.org/themes/hello-elementor/'
+      }
+    ],
     lastUpdated: '2025-01-15'
   },
   {
