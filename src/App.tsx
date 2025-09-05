@@ -36,6 +36,7 @@ import ASNDetail from './pages/ASNDetail';
 import ASNChile from './pages/ASNChile';
 import WikiIndex from './pages/WikiIndex';
 import WikiTerm from './pages/WikiTerm';
+import WikiCategory from './pages/WikiCategory';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 
@@ -86,6 +87,7 @@ function App() {
         <Route path="/asn/chile" element={<ASNChile />} />
         <Route path="/asn/:asn" element={<ASNDetail />} />
         <Route path="/wiki" element={<WikiIndex />} />
+        <Route path="/wiki/categoria/:categoryId" element={<WikiCategory />} />
         <Route path="/wiki/:slug" element={<WikiTerm />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />

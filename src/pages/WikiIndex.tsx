@@ -139,20 +139,18 @@ const WikiIndex: React.FC = () => {
                 <h2 className="text-2xl font-bold">Explorar por Categorías</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {wikiCategories.map(category => (
-                    <Card 
-                      key={category.id} 
-                      className="hover:shadow-md transition-shadow cursor-pointer"
-                      onClick={() => handleCategoryClick(category.id)}
-                    >
-                      <CardContent className="p-4 text-center">
-                        <div className="text-2xl mb-2">{category.icon}</div>
-                        <h3 className="font-semibold mb-1">{category.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">{category.description}</p>
-                        <Badge variant="outline" className="text-xs">
-                          {wikiTerms.filter(t => t.category === category.id).length} términos
-                        </Badge>
-                      </CardContent>
-                    </Card>
+                    <Link key={category.id} to={`/wiki/categoria/${category.id}`}>
+                      <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                        <CardContent className="p-4 text-center">
+                          <div className="text-2xl mb-2">{category.icon}</div>
+                          <h3 className="font-semibold mb-1">{category.name}</h3>
+                          <p className="text-sm text-muted-foreground mb-2">{category.description}</p>
+                          <Badge variant="outline" className="text-xs">
+                            {wikiTerms.filter(t => t.category === category.id).length} términos
+                          </Badge>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   ))}
                 </div>
               </section>
