@@ -227,7 +227,9 @@ En Chile, WordPress tiene ventajas específicas:
     toc: [
       { title: '¿Por qué WordPress domina el mercado?', anchor: 'dominio-mercado' },
       { title: 'Ventajas en el mercado chileno', anchor: 'ventajas-chile' },
-      { title: 'Requisitos de hosting', anchor: 'requisitos-hosting' }
+      { title: 'Requisitos técnicos recomendados', anchor: 'requisitos-tecnicos' },
+      { title: 'Consideraciones de seguridad', anchor: 'seguridad' },
+      { title: 'Rendimiento y optimización', anchor: 'rendimiento' }
     ]
   },
   {
