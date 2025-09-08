@@ -36,7 +36,7 @@ export interface WikiTerm {
   title: string;
   shortDefinition: string;
   longDefinition?: string;
-  category: 'wordpress' | 'builders' | 'seo' | 'performance' | 'security' | 'woocommerce' | 'lms' | 'cms' | 'cdn' | 'infrastructure' | 'email' | 'devops' | 'migration' | 'analytics' | 'trends-2025';
+  category: 'wordpress' | 'builders' | 'seo' | 'performance' | 'security' | 'woocommerce' | 'lms' | 'cms' | 'cdn' | 'infrastructure' | 'email' | 'devops' | 'migration' | 'analytics' | 'trends-2025' | 'hosting-fundamentals' | 'domains' | 'ssl-security';
   cms: 'wordpress' | 'joomla' | 'moodle' | 'general' | 'drupal' | 'prestashop';
   tags: string[];
   level: 'basico' | 'medio' | 'avanzado';
@@ -132,6 +132,27 @@ export const wikiCategories: WikiCategory[] = [
     description: 'IA, nuevas tecnologías y el futuro del hosting',
     icon: '🚀',
     termCount: 12
+  },
+  {
+    id: 'hosting-fundamentals',
+    name: 'Hosting Fundamentals',
+    description: 'Conceptos básicos de hosting web',
+    icon: '🖥️',
+    termCount: 8
+  },
+  {
+    id: 'domains',
+    name: 'Dominios',
+    description: 'Gestión y configuración de dominios',
+    icon: '🌐',
+    termCount: 5
+  },
+  {
+    id: 'ssl-security',
+    name: 'SSL y Certificados',
+    description: 'Seguridad con certificados SSL/TLS',
+    icon: '🔒',
+    termCount: 4
   }
 ];
 
@@ -214,7 +235,68 @@ En Chile, WordPress tiene ventajas específicas:
     slug: 'gutenberg',
     title: 'Gutenberg Editor',
     shortDefinition: 'Editor visual de bloques de WordPress que permite crear contenido arrastrando y soltando elementos sin necesidad de código.',
-    longDefinition: 'Gutenberg revoluciona WordPress convirtiendo todo en bloques reutilizables. Permite crear páginas profesionales sin conocimiento técnico.',
+    longDefinition: `Gutenberg es el editor de bloques nativo de WordPress que revoluciona la creación de contenido. Reemplaza el editor clásico con un sistema modular más potente.
+
+## ¿Qué son los bloques?
+
+Cada elemento de tu página es un bloque independiente:
+- **Párrafo** - Texto básico
+- **Título** - Encabezados H1-H6
+- **Imagen** - Fotos con caption
+- **Galería** - Múltiples imágenes
+- **Botón** - CTA personalizables
+- **Columnas** - Layouts responsive
+
+## Ventajas sobre editor clásico
+
+### **Flexibilidad visual**
+- Crear layouts complejos sin código
+- Preview en tiempo real
+- Drag & drop intuitivo
+- Responsive automático
+
+### **Bloques reutilizables**
+- Guardar combinaciones de bloques
+- Reutilizar en múltiples páginas
+- Sincronización automática de cambios
+- Biblioteca de patrones
+
+## Full Site Editing (FSE)
+
+Con themes compatibles, Gutenberg permite editar:
+- **Headers** y **footers**
+- **Templates** completos
+- **Navegación** del sitio
+- **Widgets** y sidebars
+
+### Themes FSE recomendados
+- **Twenty Twenty-Four** (oficial)
+- **Kadence** (bloques avanzados)
+- **GeneratePress** (performance)
+
+## Gutenberg vs Page Builders
+
+### **vs Elementor**
+✅ Nativo de WordPress (más rápido)
+✅ Gratuito completamente
+❌ Menos opciones de diseño
+
+### **vs Divi**
+✅ Open source
+✅ Mejor para SEO
+❌ Curva de aprendizaje
+
+## Optimización Gutenberg
+
+### **Performance**
+- Usar bloques nativos cuando sea posible
+- Evitar plugins de bloques pesados
+- Optimizar imágenes automáticamente
+
+### **SEO**
+- Estructura semántica automática
+- Headers organizados correctamente
+- Schema markup integrado`,
     category: 'wordpress',
     cms: 'wordpress', 
     tags: ['gutenberg', 'editor-bloques', 'page-builder', 'fse'],
@@ -236,7 +318,101 @@ En Chile, WordPress tiene ventajas específicas:
     slug: 'child-themes',
     title: 'Child Themes',
     shortDefinition: 'Tema hijo que hereda funcionalidades del tema padre pero permite personalizaciones seguras sin perder cambios en actualizaciones.',
-    longDefinition: 'Los Child Themes protegen las personalizaciones de tu sitio WordPress cuando el tema original se actualiza, manteniendo cambios seguros.',
+    longDefinition: `Los Child Themes son fundamentales para mantener personalizaciones de WordPress de forma segura. Sin child theme, pierdes todos los cambios cuando el tema se actualiza.
+
+## ¿Por qué usar Child Themes?
+
+### **Protección de cambios**
+Cuando actualizas un tema, se sobrescriben TODOS los archivos:
+- ❌ CSS personalizado desaparece
+- ❌ Modificaciones en PHP se pierden
+- ❌ Horas de trabajo perdidas
+
+Con child theme:
+- ✅ Tus cambios están seguros
+- ✅ Updates automáticos del tema padre
+- ✅ Funcionalidad completa preservada
+
+## Crear Child Theme paso a paso
+
+### **1. Estructura de archivos**
+\`\`\`
+/wp-content/themes/mi-tema-child/
+├── style.css (obligatorio)
+├── functions.php (recomendado)
+└── screenshot.png (opcional)
+\`\`\`
+
+### **2. style.css básico**
+\`\`\`css
+/*
+Theme Name: Mi Tema Child
+Template: nombre-tema-padre
+Version: 1.0
+*/
+
+@import url("../tema-padre/style.css");
+
+/* Tus estilos personalizados aquí */
+.custom-class {
+    color: #333;
+}
+\`\`\`
+
+### **3. functions.php**
+\`\`\`php
+<?php
+// Cargar estilos del tema padre
+function cargar_estilos_padre() {
+    wp_enqueue_style('tema-padre', 
+        get_template_directory_uri() . '/style.css');
+}
+add_action('wp_enqueue_scripts', 'cargar_estilos_padre');
+
+// Tus funciones personalizadas aquí
+\`\`\`
+
+## Personalizaciones comunes
+
+### **Override de templates**
+Copia cualquier archivo del tema padre al child:
+- \`index.php\` - Página principal
+- \`single.php\` - Posts individuales  
+- \`page.php\` - Páginas estáticas
+- \`header.php\` - Cabecera
+
+### **Hooks personalizados**
+\`\`\`php
+// Agregar contenido al footer
+function mi_footer_personalizado() {
+    echo '<p>Copyright 2025 Mi Empresa</p>';
+}
+add_action('wp_footer', 'mi_footer_personalizado');
+\`\`\`
+
+## Mejores prácticas
+
+### **Naming conventions**
+- Usa nombres descriptivos para funciones
+- Prefija con tu marca/proyecto
+- Comenta tu código claramente
+
+### **Testing**
+- Prueba en staging antes de producción
+- Verifica compatibilidad con plugins
+- Test responsive en dispositivos
+
+## Child Themes y performance
+
+### **Optimización**
+- No duplicar CSS innecesario
+- Minificar archivos en producción
+- Usar child theme solo cuando necesites customización
+
+### **Maintenance**
+- Documenta tus cambios
+- Mantén backup del child theme
+- Version control con Git`,
     category: 'wordpress',
     cms: 'wordpress',
     tags: ['child-theme', 'personalizacion', 'mantenimiento', 'updates'],
@@ -1964,6 +2140,491 @@ if (is_user_logged_in() || is_cart() || is_checkout()) {
       {
         title: 'Guía Caching WordPress',
         url: 'https://codex.wordpress.org/WordPress_Optimization/Caching'
+      }
+    ],
+    lastUpdated: '2025-01-15'
+  },
+
+  // Hosting Fundamentals - Critical Missing Terms
+  {
+    id: 'host-001',
+    slug: 'que-es-hosting',
+    title: '¿Qué es Hosting Web?',
+    shortDefinition: 'Servicio que permite almacenar y hacer accesible tu sitio web en internet. Es como el "terreno digital" donde vive tu página web.',
+    longDefinition: `El hosting web es el servicio fundamental que permite que tu sitio web sea accesible en internet las 24 horas del día. 
+
+## ¿Cómo funciona el hosting?
+
+Cuando alguien escribe tu dominio en su navegador, se conecta a un servidor (computadora potente) que almacena todos los archivos de tu sitio web y los envía al navegador del visitante.
+
+### Componentes esenciales
+- **Servidor**: Hardware donde se almacenan tus archivos
+- **Almacenamiento**: Espacio en disco para archivos, imágenes, base de datos
+- **Ancho de banda**: Capacidad de transferencia de datos
+- **Panel de control**: Interfaz para gestionar tu hosting
+
+## Tipos de hosting en Chile
+
+### **Hosting Compartido** - Ideal para empezar
+- Múltiples sitios en un servidor
+- Más económico ($2.000-$8.000/mes)
+- Perfecto para blogs y sitios pequeños
+
+### **VPS** - Recursos garantizados  
+- Servidor virtual privado
+- Mayor control y rendimiento
+- Ideal para e-commerce ($15.000-$50.000/mes)
+
+### **Servidor Dedicado** - Máximo control
+- Servidor completo para ti
+- Máximo rendimiento
+- Para sitios enterprise ($80.000+/mes)
+
+## ¿Por qué el hosting local es mejor?
+
+En Chile, elegir hosting nacional tiene ventajas específicas:
+- **Velocidad**: Servidores físicamente más cerca = menor latencia
+- **SEO Local**: Google favorece hosting en el país de tu audiencia
+- **Soporte**: Atención en español y horario chileno
+- **Cumplimiento legal**: Datos alojados bajo ley chilena`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['hosting-basico', 'servidor-web', 'alojamiento', 'hosting-chile'],
+    level: 'basico',
+    related: ['dominio', 'ssl-certificado', 'cpanel'],
+    hostingRequirements: ['SSD storage mínimo', 'PHP 8.0+', 'MySQL/MariaDB', 'Panel de control', 'SSL incluido'],
+    cta: {
+      plan: 'Hosting Compartido',
+      copy: 'Hosting en Chile con dominio gratis y SSL incluido - Perfecto para empezar',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['Dominio .cl gratis primer año', 'SSL automático', 'Soporte 24/7 en español'],
+    whenToUse: 'Esencial para cualquier presencia web: blogs, sitios corporativos, tiendas online',
+    synonyms: ['web hosting', 'alojamiento web', 'servidor web'],
+    tldr: {
+      title: 'Hosting Web Esencial',
+      keyPoints: [
+        'Servicio que hace tu sitio accesible 24/7 en internet',
+        'Incluye almacenamiento, ancho de banda y email',
+        'Hosting local en Chile mejora velocidad y SEO',
+        'Tipos: Compartido (económico), VPS (medio), Dedicado (enterprise)'
+      ],
+      stats: [
+        { label: 'Uptime', value: '99.9%', icon: React.createElement(Zap, { className: 'h-4 w-4' }) },
+        { label: 'Soporte', value: '24/7', icon: React.createElement(Users, { className: 'h-4 w-4' }) },
+        { label: 'Backup', value: 'Diario', icon: React.createElement(Shield, { className: 'h-4 w-4' }) }
+      ]
+    },
+    faq: [
+      {
+        question: '¿Cuánto cuesta el hosting en Chile?',
+        answer: 'Hosting compartido desde $2.000/mes, VPS desde $15.000/mes, servidores dedicados desde $80.000/mes. Incluyen dominio y SSL el primer año.'
+      },
+      {
+        question: '¿Qué diferencia hay entre hosting compartido y VPS?',
+        answer: 'Hosting compartido comparte recursos con otros sitios (más económico). VPS te da recursos garantizados y mayor control (mejor rendimiento).'
+      },
+      {
+        question: '¿Necesito hosting chileno si mi audiencia es local?',
+        answer: 'Sí, absolutamente. Hosting en Chile mejora velocidad, SEO local y cumple normativas locales. Google favorece sitios con hosting local.'
+      }
+    ],
+    links: [
+      {
+        title: 'Comparar Planes de Hosting',
+        url: '/ranking'
+      },
+      {
+        title: 'Guía Elegir Hosting 2025',
+        url: '/guia-elegir-hosting'
+      }
+    ],
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'host-002', 
+    slug: 'cpanel',
+    title: 'cPanel',
+    shortDefinition: 'Panel de control web más popular para gestionar hosting. Permite administrar archivos, emails, bases de datos y dominios desde una interfaz gráfica.',
+    longDefinition: `cPanel es el panel de control de hosting más utilizado mundialmente, que simplifica la gestión de tu sitio web mediante una interfaz visual intuitiva.
+
+## Características principales de cPanel
+
+### **File Manager** - Gestor de archivos
+- Subir/descargar archivos sin FTP
+- Editor de código integrado
+- Permisos y compresión de archivos
+- Backup y restauración
+
+### **Email Management** - Gestión de correos
+- Crear cuentas de email ilimitadas
+- Webmail (Roundcube, Horde)
+- Filtros anti-spam automáticos
+- Autoresponders y forwarding
+
+### **Database Tools** - Herramientas de BD
+- phpMyAdmin para MySQL
+- Crear/gestionar bases de datos
+- Usuarios y permisos de BD
+- Import/export de datos
+
+### **Domain Management** - Gestión dominios
+- Subdominios ilimitados
+- Addon domains (dominios adicionales)
+- Redirects y parked domains
+- DNS zone editor
+
+## Ventajas de cPanel vs otros paneles
+
+### **vs DirectAdmin**
+✅ Más funciones integradas
+✅ Mejor ecosystem de plugins
+✅ Interface más moderna
+
+### **vs Plesk**  
+✅ Más económico para hosting compartido
+✅ Mayor compatibilidad con aplicaciones
+✅ Comunidad más grande
+
+## cPanel en Chile - Consideraciones especiales
+
+### **Licencias y costos**
+- cPanel aumentó precios 2019+ (licencias por cuenta)
+- Algunos providers usan alternatives como DirectAdmin
+- Verificar si está incluido en tu plan
+
+### **Integración con hosting local**
+- Softaculous para WordPress en 1-click
+- Configuración automática SSL Let's Encrypt
+- Backups automáticos incluidos`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['cpanel', 'panel-control', 'hosting-management', 'file-manager'],
+    level: 'basico',
+    related: ['que-es-hosting', 'ftp', 'ssl-certificado'],
+    hostingRequirements: ['Hosting con cPanel incluido', 'Licencia cPanel válida'],
+    cta: {
+      plan: 'Hosting con cPanel',
+      copy: 'Hosting con cPanel incluido - Gestiona tu sitio fácilmente',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['cPanel incluido sin costo extra', 'Softaculous con 400+ aplicaciones', 'File Manager avanzado'],
+    whenToUse: 'Esencial para usuarios sin conocimientos técnicos que necesitan gestionar su hosting',
+    synonyms: ['panel de control', 'control panel', 'cpanel hosting'],
+    faq: [
+      {
+        question: '¿Todos los hostings incluyen cPanel?',
+        answer: 'No, algunos usan DirectAdmin, Plesk o paneles propios. cPanel es el más popular pero verifica que esté incluido antes de contratar.'
+      },
+      {
+        question: '¿Puedo gestionar WordPress desde cPanel?',
+        answer: 'Sí, puedes instalar WordPress con 1-click, gestionar archivos, bases de datos y configurar SSL. También instalar plugins de backup.'
+      },
+      {
+        question: '¿Es seguro subir archivos por cPanel File Manager?',
+        answer: 'Sí, es seguro. Usa conexión SSL y permisos de usuario. Para archivos grandes +100MB es mejor usar FTP/SFTP.'
+      }
+    ],
+    links: [
+      {
+        title: 'Documentación oficial cPanel',
+        url: 'https://docs.cpanel.net/'
+      },
+      {
+        title: 'Video tutoriales cPanel',
+        url: 'https://www.youtube.com/watch?v=tutorial-cpanel'
+      }
+    ],
+    lastUpdated: '2025-01-15'
+  },
+
+  // SSL and Security Terms
+  {
+    id: 'ssl-001',
+    slug: 'ssl-certificado',
+    title: 'Certificado SSL',
+    shortDefinition: 'Protocolo de seguridad que encripta datos entre navegador y servidor. Convierte HTTP en HTTPS y es obligatorio para SEO y confianza.',
+    longDefinition: `Los certificados SSL/TLS son fundamentales para la seguridad web moderna. En 2025 son obligatorios para cualquier sitio web profesional.
+
+## ¿Cómo funciona SSL?
+
+### **Encriptación de datos**
+1. **Handshake**: Navegador y servidor negocian encriptación
+2. **Intercambio de claves**: Se establece conexión segura
+3. **Transmisión encriptada**: Todos los datos viajan protegidos
+4. **Verificación continua**: Se mantiene la seguridad
+
+### **Indicadores visuales**
+- 🔒 **Candado verde** en barra de navegación
+- **"Secure"** o "Seguro" junto a URL
+- **https://** en lugar de http://
+
+## Tipos de certificados SSL
+
+### **Domain Validated (DV)** - Más común
+- Validación automática del dominio
+- Emisión en minutos
+- Ideal para blogs y sitios pequeños
+- **Gratis con Let's Encrypt**
+
+### **Organization Validated (OV)** - Empresas
+- Valida identidad de la organización
+- Proceso manual 1-3 días
+- Muestra nombre de empresa
+- Ideal para e-commerce ($50-200/año)
+
+### **Extended Validation (EV)** - Máxima confianza
+- Validación exhaustiva de empresa
+- Barra verde en navegador (navegadores antiguos)
+- Proceso 1-2 semanas
+- Para bancos, seguros ($200-500/año)
+
+## SSL gratuito vs premium
+
+### **Let's Encrypt (Gratuito)**
+✅ Encriptación 256-bit igual que premium
+✅ Renovación automática cada 90 días
+✅ Compatible con todos los navegadores
+✅ Perfecto para 95% de sitios web
+
+### **SSL Premium (Paid)**
+✅ Validación de organización
+✅ Wildcard para subdominios
+✅ Garantía financiera
+✅ Soporte técnico incluido
+
+## SSL y SEO en Chile
+
+### **Impacto en rankings**
+- Google penaliza sitios sin SSL desde 2014
+- Chrome marca sitios HTTP como "No seguro"
+- Mejora rankings locales en Google Chile
+- Aumenta confianza del usuario chileno
+
+### **Configuración óptima**
+\`\`\`apache
+# Forzar HTTPS en .htaccess
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+\`\`\`
+
+## Errores comunes SSL
+
+### ❌ **Mixed Content**
+- Cargar recursos HTTP en página HTTPS
+- Rompe el candado de seguridad
+- Verificar imágenes, CSS, JS externos
+
+### ❌ **Certificado expirado**
+- Verificar renovación automática
+- Monitorear fecha de expiración
+- Configurar alertas de vencimiento
+
+### ❌ **Certificado incorrecto**
+- Dominio no coincide con certificado
+- Falta configuración www/non-www
+- Subdominios no incluidos`,
+    category: 'ssl-security',
+    cms: 'general',
+    tags: ['ssl', 'https', 'seguridad-web', 'certificado-digital', 'encriptacion'],
+    level: 'basico',
+    related: ['que-es-hosting', 'seo-local', 'google-search-console'],
+    hostingRequirements: ['SSL gratuito incluido', 'Let\'s Encrypt automático', 'Force HTTPS disponible'],
+    cta: {
+      plan: 'Hosting con SSL Gratis',
+      copy: 'Hosting con SSL automático incluido - Sitio seguro desde día 1',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['SSL Let\'s Encrypt gratuito', 'Instalación automática', 'Renovación automática', 'Force HTTPS incluido'],
+    whenToUse: 'Obligatorio para cualquier sitio web en 2025 - blogs, e-commerce, sitios corporativos',
+    synonyms: ['certificado digital', 'https', 'ssl gratis', 'let\'s encrypt'],
+    tldr: {
+      title: 'SSL Esencial 2025',
+      keyPoints: [
+        'Obligatorio para SEO - Google penaliza sitios sin HTTPS',
+        'Let\'s Encrypt ofrece SSL gratuito con misma seguridad',
+        'Aumenta confianza del usuario y conversiones',
+        'Encriptación 256-bit protege datos sensibles'
+      ],
+      stats: [
+        { label: 'Sitios HTTPS', value: '95%', icon: React.createElement(Shield, { className: 'h-4 w-4' }) },
+        { label: 'Mejora SEO', value: '+15%', icon: React.createElement(TrendingUp, { className: 'h-4 w-4' }) },
+        { label: 'Confianza', value: '+25%', icon: React.createElement(Users, { className: 'h-4 w-4' }) }
+      ]
+    },
+    faq: [
+      {
+        question: '¿SSL gratuito es igual de seguro que el premium?',
+        answer: 'Sí, Let\'s Encrypt usa la misma encriptación 256-bit. La diferencia está en validación de empresa y garantías, no en seguridad técnica.'
+      },
+      {
+        question: '¿Cómo instalo SSL en mi hosting?',
+        answer: 'La mayoría de hostings modernos incluyen SSL automático con Let\'s Encrypt. Se instala en 1-click desde cPanel o se activa automáticamente.'
+      },
+      {
+        question: '¿SSL afecta la velocidad del sitio?',
+        answer: 'Mínimamente. La sobrecarga es <1% y HTTP/2 (que requiere HTTPS) compensa con creces cualquier latencia adicional.'
+      }
+    ],
+    links: [
+      {
+        title: 'Let\'s Encrypt - SSL Gratuito',
+        url: 'https://letsencrypt.org/'
+      },
+      {
+        title: 'SSL Test - Verificar certificado',
+        url: 'https://www.ssllabs.com/ssltest/'
+      },
+      {
+        title: 'Guía SSL WordPress',
+        url: 'https://wordpress.org/support/article/https-for-wordpress/'
+      }
+    ],
+    lastUpdated: '2025-01-15'
+  },
+
+  // Domains Category
+  {
+    id: 'dom-001',
+    slug: 'dominio',
+    title: 'Dominio Web',
+    shortDefinition: 'Nombre único que identifica tu sitio web en internet (ej: miempresa.cl). Es la dirección que escriben los usuarios para acceder a tu sitio.',
+    longDefinition: `Un dominio es la identidad digital de tu negocio. En Chile, elegir el dominio correcto es crucial para SEO local y credibilidad.
+
+## Anatomía de un dominio
+
+### **Estructura completa**
+\`\`\`
+https://www.miempresa.cl
+├── Protocolo: https://
+├── Subdominio: www
+├── Dominio: miempresa  
+└── Extensión: .cl
+\`\`\`
+
+### **Componentes principales**
+- **Nombre**: Identifica tu marca/negocio
+- **Extensión**: Define propósito y ubicación
+- **Subdominio**: Secciones específicas (www, blog, tienda)
+
+## Extensiones de dominio en Chile
+
+### **Dominios Chilenos (.cl)**
+- **Mayor credibilidad** local
+- **Mejor SEO** para búsquedas en Chile  
+- **Confianza** del consumidor chileno
+- Requiere RUT/empresa chilena válida
+
+### **Extensiones populares**
+- **.com** - Comercial global (más caro pero universal)
+- **.net** - Redes (alternativa a .com)
+- **.org** - Organizaciones sin fines de lucro
+- **.shop** - Específico para e-commerce
+
+## Importancia del dominio para SEO
+
+### **SEO Local Chile**
+- Google favorece dominios .cl para búsquedas chilenas
+- Keywords en dominio tienen peso SEO
+- Mejora click-through rate en resultados
+
+### **Branding y confianza**
+- Dominio .cl genera 40% más confianza
+- Fácil de recordar y escribir
+- Coherencia con identidad de marca
+
+## Estrategias de naming
+
+### **✅ Buenas prácticas**
+- Corto y memorable (máximo 15 caracteres)
+- Fácil de escribir y pronunciar
+- Incluir keyword principal si es natural
+- Evitar números y guiones
+
+### **❌ Errores comunes**
+- Muy largo o complicado
+- Similar a competidores
+- Trademark conflicts
+- Difícil de pronunciar
+
+## Gestión de dominios
+
+### **DNS básico**
+\`\`\`
+Tipo A: miempresa.cl → 192.168.1.1
+Tipo CNAME: www.miempresa.cl → miempresa.cl
+Tipo MX: mail.miempresa.cl → servidor-email
+\`\`\`
+
+### **Configuraciones esenciales**
+- **A Record**: Apunta dominio a servidor
+- **CNAME**: Alias para subdominios
+- **MX**: Servidores de email
+- **TTL**: Tiempo de cache DNS
+
+## Protección de marca
+
+### **Registro defensivo**
+- Registrar variantes comunes (.com, .net)
+- Prevenir typosquatting
+- Proteger marca en diferentes extensiones
+
+### **Renovación automática**
+- Evitar pérdida accidental del dominio
+- Configurar auto-renewal
+- Monitorear fechas de vencimiento`,
+    category: 'domains',
+    cms: 'general',
+    tags: ['dominio', 'dns', 'dominio-cl', 'registro-dominio'],
+    level: 'basico',
+    related: ['que-es-hosting', 'ssl-certificado', 'seo-local'],
+    hostingRequirements: ['Gestión DNS incluida', 'Subdominios ilimitados', 'Redirecciones disponibles'],
+    cta: {
+      plan: 'Dominio + Hosting',
+      copy: 'Dominio .cl gratis con hosting - Identidad digital chilena',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['Dominio .cl gratis primer año', 'DNS management incluido', 'Whois privacy protection'],
+    whenToUse: 'Fundamental para cualquier presencia web - primer paso antes del hosting',
+    synonyms: ['nombre de dominio', 'url', 'dirección web'],
+    tldr: {
+      title: 'Dominio Web Esencial',
+      keyPoints: [
+        'Identidad única de tu sitio web en internet',
+        'Dominio .cl mejora SEO y credibilidad en Chile',
+        'Debe ser corto, memorable y fácil de escribir',
+        'Requiere renovación anual para mantener propiedad'
+      ],
+      stats: [
+        { label: 'Dominios .cl', value: '500K+', icon: React.createElement(Globe, { className: 'h-4 w-4' }) },
+        { label: 'Credibilidad +', value: '40%', icon: React.createElement(TrendingUp, { className: 'h-4 w-4' }) },
+        { label: 'SEO Local +', value: '25%', icon: React.createElement(Users, { className: 'h-4 w-4' }) }
+      ]
+    },
+    faq: [
+      {
+        question: '¿Puedo registrar dominio .cl sin ser chileno?',
+        answer: 'No, necesitas RUT chileno válido (persona o empresa). Extranjeros pueden usar empresa chilena o representante legal.'
+      },
+      {
+        question: '¿Cuánto cuesta mantener un dominio?',
+        answer: 'Dominio .cl cuesta ~$15.000/año. .com ~$20.000/año. Muchos providers incluyen dominio gratis el primer año con hosting.'
+      },
+      {
+        question: '¿Puedo cambiar de dominio después?',
+        answer: 'Sí, pero afecta SEO. Es mejor elegir bien desde el inicio. Si cambias, configura redirects 301 permanentes del dominio anterior.'
+      }
+    ],
+    links: [
+      {
+        title: 'NIC Chile - Registro dominios .cl',
+        url: 'https://www.nic.cl/'
+      },
+      {
+        title: 'Verificar disponibilidad dominio',
+        url: 'https://www.nic.cl/registry/Whois.do'
       }
     ],
     lastUpdated: '2025-01-15'
