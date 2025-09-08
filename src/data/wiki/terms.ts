@@ -165,7 +165,7 @@ export const wikiTerms: WikiTerm[] = [
     shortDefinition: 'El CMS más popular del mundo, que impulsa más del 43% de todos los sitios web. Sistema de gestión de contenidos open-source.',
     longDefinition: `WordPress es el sistema de gestión de contenidos más utilizado globalmente, perfecto para blogs, sitios corporativos y e-commerce. En Chile es la plataforma preferida por desarrolladores y empresas.
 
-## ¿Por qué WordPress domina el mercado?
+## ¿Por qué WordPress domina el mercado? {#dominio-mercado}
 
 WordPress ha logrado su posición dominante por varias razones clave:
 
@@ -174,7 +174,7 @@ WordPress ha logrado su posición dominante por varias razones clave:
 - **Comunidad masiva**: Miles de plugins y themes gratuitos y premium
 - **SEO-friendly**: Optimizado para motores de búsqueda desde su núcleo
 
-## Ventajas en el mercado chileno
+## Ventajas en el mercado chileno {#ventajas-chile}
 
 En Chile, WordPress tiene ventajas específicas:
 - Soporte local de hosting especializado
@@ -182,7 +182,7 @@ En Chile, WordPress tiene ventajas específicas:
 - Themes optimizados para audiencias hispanohablantes
 - Comunidad activa de desarrolladores locales
 
-## Requisitos técnicos recomendados
+## Requisitos técnicos recomendados {#requisitos-tecnicos}
 
 Para un rendimiento óptimo de WordPress en Chile, recomendamos:
 
@@ -204,7 +204,7 @@ Para un rendimiento óptimo de WordPress en Chile, recomendamos:
 - **CDN**: CloudFlare para audiencia latinoamericana
 - **Staging**: Ambiente de pruebas incluido
 
-## Consideraciones de seguridad
+## Consideraciones de seguridad {#seguridad}
 
 WordPress es seguro por defecto, pero requiere configuración apropiada:
 
@@ -225,7 +225,7 @@ WordPress es seguro por defecto, pero requiere configuración apropiada:
 - **File editing**: Deshabilitado desde admin panel
 - **Database prefix**: Cambiar "wp_" por algo único
 
-## Rendimiento y optimización
+## Rendimiento y optimización {#rendimiento}
 
 WordPress puede ser extremadamente rápido con la configuración correcta:
 
