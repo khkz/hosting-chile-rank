@@ -5207,6 +5207,529 @@ EcoHosting:
       ]
     },
     lastUpdated: '2025-01-15'
+  },
+
+  // Additional Hosting Fundamentals Terms
+  {
+    id: 'hf-009',
+    slug: 'espacio-en-disco',
+    title: 'Espacio en Disco',
+    shortDefinition: 'Cantidad de almacenamiento disponible en el servidor para archivos del sitio web, bases de datos, emails y backups.',
+    longDefinition: `El espacio en disco es la capacidad de almacenamiento que tienes disponible en tu hosting para todos los archivos de tu sitio web, incluyendo imágenes, videos, bases de datos y correos electrónicos.
+
+## ¿Cuánto espacio necesitas?
+
+### **Sitio básico (1-5 páginas)**
+- **1-2 GB**: Suficiente para sitio corporativo simple
+- Incluye: Archivos WordPress, theme, algunas imágenes
+- Sin tienda online ni videos
+
+### **Blog activo**
+- **5-10 GB**: Para blog con contenido regular
+- Incluye: Posts, imágenes optimizadas, plugins
+- Base de datos creciente
+
+### **E-commerce pequeño**
+- **10-20 GB**: Tienda con catálogo moderado
+- Incluye: Productos, variaciones, usuarios
+- Base de datos compleja
+
+### **Sitio empresarial**
+- **20-50 GB**: Corporate con múltiples secciones
+- Incluye: Documentos, multimedia, intranet
+- Múltiples usuarios y contenido
+
+## Qué consume espacio
+
+### **Archivos principales**
+- WordPress core: ~50 MB
+- Themes: 5-20 MB cada uno
+- Plugins: 1-50 MB cada uno
+- Uploads: Variable (mayor consumo)
+
+### **Base de datos**
+- Posts y páginas: Mínimo
+- Productos WooCommerce: Moderado
+- Logs y cache: Puede ser alto
+- Usuarios: Despreciable
+
+### **Emails**
+- Cuentas de correo: Variable
+- Archivos adjuntos: Alto consumo
+- Configurar límites por cuenta
+
+## Optimización de espacio
+
+### **Imágenes**
+- Comprimir con WebP/AVIF
+- Usar CDN para offload
+- Eliminar imágenes no utilizadas
+- Implementar lazy loading
+
+### **Archivos innecesarios**
+- Limpiar cache regularmente
+- Eliminar themes/plugins no usados
+- Revisar uploads duplicados
+- Purgar logs antiguos
+
+### **Base de datos**
+- Optimizar tablas regularmente
+- Eliminar revisiones antiguas
+- Limpiar spam y trash
+- Usar plugins de optimización
+
+## Monitoreo en Chile
+
+### **Panel cPanel**
+- Disk Usage en vista principal
+- File Manager para detalles
+- Database size en MySQL
+
+### **Alertas automáticas**
+- Configurar al 80% de uso
+- Email notifications
+- Monitoreo preventivo
+
+## Planes recomendados Chile
+
+### **Shared hosting**
+- 5-10 GB: Sitios básicos
+- 20-30 GB: E-commerce pequeño
+- SSD incluido para performance
+
+### **VPS**
+- 50-100 GB base
+- Escalable según necesidad
+- NVMe SSD para máxima velocidad
+
+### **Dedicated**
+- 500 GB - 2 TB
+- RAID para redundancia
+- Backups automáticos`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['espacio-disco', 'almacenamiento', 'storage', 'hosting-basico'],
+    level: 'basico',
+    related: ['ssd-vs-hdd', 'backup-automatico', 'vps'],
+    hostingRequirements: ['SSD storage', 'Monitoreo de uso', 'Alertas automáticas'],
+    cta: {
+      plan: 'Shared Pro',
+      copy: 'Hosting con 30GB SSD y monitoreo de espacio incluido',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=82'
+    },
+    proofPoints: ['SSD NVMe incluido', 'Alertas de uso 80%', 'Escalabilidad automática'],
+    whenToUse: 'Fundamental considerar desde el inicio del proyecto web',
+    synonyms: ['almacenamiento', 'storage'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'hf-010',
+    slug: 'ram-memoria',
+    title: 'RAM (Memoria)',
+    shortDefinition: 'Memoria temporal del servidor que determina cuántos procesos simultáneos puede manejar tu sitio web.',
+    longDefinition: `La RAM (Random Access Memory) es la memoria temporal del servidor que determina la capacidad de procesar múltiples tareas simultáneamente. Más RAM = mejor performance para sitios con alto tráfico.
+
+## ¿Por qué importa la RAM?
+
+### **Procesamiento simultáneo**
+- Cada visitante usa memoria
+- Plugins activos consumen RAM
+- Base de datos requiere memoria
+- Cache en memoria mejora velocidad
+
+### **WordPress y RAM**
+- **WordPress base**: 32-64 MB
+- **Con plugins**: 64-128 MB
+- **WooCommerce**: 128-256 MB
+- **Sitio complejo**: 256-512 MB
+
+## Consumo típico por tipo de sitio
+
+### **Blog personal**
+- **512 MB - 1 GB**: Suficiente para tráfico básico
+- 50-100 visitantes simultáneos
+- Plugins básicos SEO y cache
+
+### **Sitio corporativo**
+- **1-2 GB**: Para funcionalidades moderadas
+- 100-300 visitantes simultáneos
+- Formularios, chat, analytics
+
+### **E-commerce**
+- **2-4 GB**: Tienda online con catálogo
+- 200-500 visitantes simultáneos
+- WooCommerce + payment gateways
+
+### **Sitio enterprise**
+- **4-8 GB+**: Portal corporativo complejo
+- 500+ visitantes simultáneos
+- Múltiples integraciones y APIs
+
+## Optimización de memoria
+
+### **Plugins de cache**
+- WP Rocket: Cache en memoria
+- W3 Total Cache: Object cache
+- LiteSpeed Cache: Optimización avanzada
+
+### **Optimización PHP**
+- PHP 8.1+ más eficiente
+- OPcache activado
+- Memory limit adecuado
+
+### **Base de datos**
+- Query cache habilitado
+- Índices optimizados
+- Tablas MyISAM vs InnoDB
+
+## Monitoreo RAM Chile
+
+### **En shared hosting**
+- Límites por cuenta
+- Monitoreo automático
+- Upgrade automático disponible
+
+### **En VPS/Dedicado**
+- Acceso completo a métricas
+- Configuración personalizada
+- Escalabilidad inmediata
+
+### **Herramientas útiles**
+- **htop**: Monitor en tiempo real
+- **New Relic**: APM completo
+- **Query Monitor**: WordPress específico
+
+## Señales de RAM insuficiente
+
+### **Síntomas comunes**
+- ❌ Error 500 Internal Server Error
+- ❌ "Fatal error: Allowed memory size"
+- ❌ Sitio lento en horas peak
+- ❌ Timeouts frecuentes
+
+### **Soluciones inmediatas**
+- Aumentar memory_limit en PHP
+- Desactivar plugins innecesarios
+- Optimizar imágenes y base de datos
+- Implementar cache agresivo
+
+## Planes RAM Chile
+
+### **Shared hosting**
+- 1-2 GB garantizados
+- Burst hasta 4 GB
+- Ideal para sitios pequeños-medianos
+
+### **VPS Chile**
+- 2-32 GB configurables
+- RAM dedicada 100%
+- Escalabilidad inmediata
+
+### **Cloud hosting**
+- RAM elástica
+- Auto-scaling automático
+- Pay per use`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['ram', 'memoria', 'performance', 'hosting-recursos'],
+    level: 'medio',
+    related: ['vps', 'servidor-compartido', 'ancho-banda'],
+    hostingRequirements: ['PHP 8.1+', 'Memory monitoring', 'Burst capability'],
+    cta: {
+      plan: 'VPS Managed',
+      copy: 'VPS con RAM dedicada y escalabilidad automática',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=83'
+    },
+    proofPoints: ['RAM dedicada 100%', 'Monitoreo 24/7', 'Auto-scaling disponible'],
+    whenToUse: 'Crítico para sitios con alto tráfico o funcionalidades complejas',
+    synonyms: ['memoria', 'memory'],
+    lastUpdated: '2025-01-15'
+  },
+
+  // Additional Domains Terms
+  {
+    id: 'dom-006',
+    slug: 'whois',
+    title: 'WHOIS',
+    shortDefinition: 'Base de datos pública que contiene información sobre el propietario, fechas de registro y servidores DNS de un dominio.',
+    longDefinition: `WHOIS es un protocolo y base de datos que almacena información pública sobre dominios registrados, incluyendo datos del propietario, fechas importantes y configuración DNS.
+
+## ¿Qué información contiene WHOIS?
+
+### **Datos del registrante**
+- Nombre del propietario
+- Organización
+- Dirección física
+- Email de contacto
+- Teléfono
+
+### **Fechas importantes**
+- **Fecha de registro**: Cuándo se registró
+- **Fecha de expiración**: Cuándo vence
+- **Fecha de actualización**: Último cambio
+- **Fecha de creación**: Primera vez registrado
+
+### **Información técnica**
+- Registrar (empresa que gestiona)
+- Nameservers activos
+- Status del dominio
+- DNSSEC habilitado
+
+## WHOIS y privacidad
+
+### **Protección de datos RGPD**
+Desde GDPR (2018):
+- Datos personales ofuscados
+- Solo info técnica visible
+- Contacto a través del registrar
+- Protección automática en .com/.net
+
+### **Dominios .CL y privacidad**
+- NIC Chile requiere datos verificables
+- Persona natural: RUT obligatorio
+- Empresa: RUT empresa obligatorio
+- Datos visibles públicamente
+
+### **WHOIS Privacy**
+Servicio que oculta datos personales:
+- Email proxy incluido
+- Dirección del registrar
+- Teléfono genérico
+- Disponible para .com/.net/.org
+
+## Consulta WHOIS en Chile
+
+### **Dominios .CL**
+\`\`\`
+whois dominio.cl
+\`\`\`
+- Información completa de NIC Chile
+- Datos de contacto reales
+- Status y fechas
+
+### **Dominios internacionales**
+\`\`\`
+whois dominio.com
+\`\`\`
+- Datos pueden estar protegidos
+- Información técnica siempre visible
+- Contacto a través de registrar
+
+### **Herramientas online**
+- **whois.net**: Múltiples TLDs
+- **nic.cl**: Específico para .CL
+- **who.is**: Interfaz amigable
+- **whois command**: Terminal Linux/Mac
+
+## Usos del WHOIS
+
+### **Verificación de dominios**
+- Confirmar propietario real
+- Verificar fechas de expiración
+- Contactar propietario legítimo
+- Research de competencia
+
+### **Seguridad y fraude**
+- Identificar dominios maliciosos
+- Verificar legitimidad
+- Investigar phishing
+- Reportar abuse
+
+### **SEO y marketing**
+- Research de dominios expirados
+- Identificar oportunidades
+- Verificar autoridad de dominio
+- Contact outreach
+
+## Protección WHOIS Chile
+
+### **Para empresas**
+- Usar email corporativo no personal
+- Dirección física real obligatoria
+- RUT empresa más profesional
+- Contact técnico separado
+
+### **Para personas**
+- Considerar WHOIS privacy (.com)
+- Email dedicado para dominio
+- Apartado postal si es posible
+- Teléfono no personal
+
+## WHOIS y compliance
+
+### **Requisitos legales**
+- Datos actualizados obligatorios
+- Responsabilidad del registrante
+- Multas por información falsa
+- Cancelación por datos erróneos
+
+### **Verificación periódica**
+- Revisar datos cada 6 meses
+- Actualizar antes de expiración
+- Confirmar emails de contacto
+- Backup de información importante`,
+    category: 'domains',
+    cms: 'general',
+    tags: ['whois', 'domain-info', 'registrante', 'privacidad'],
+    level: 'basico',
+    related: ['dns', 'nameservers', 'subdominio'],
+    hostingRequirements: ['Domain management', 'WHOIS privacy opcional'],
+    cta: {
+      plan: 'Domain Manager',
+      copy: 'Gestión completa de dominios con WHOIS privacy incluido',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=88'
+    },
+    proofPoints: ['WHOIS privacy gratuito', 'Gestión centralizada', 'Alertas de expiración'],
+    whenToUse: 'Esencial para verificar y gestionar información de dominios',
+    synonyms: ['información dominio', 'datos registrante'],
+    lastUpdated: '2025-01-15'
+  },
+
+  // Additional SSL Terms  
+  {
+    id: 'ssl-005',
+    slug: 'certificado-ev',
+    title: 'Certificado EV (Extended Validation)',
+    shortDefinition: 'Certificado SSL de máxima validación que muestra el nombre de la empresa en verde en la barra del navegador.',
+    longDefinition: `Los certificados EV (Extended Validation) ofrecen el máximo nivel de validación SSL, mostrando visualmente la verificación completa de la organización en el navegador.
+
+## ¿Qué es Extended Validation?
+
+### **Validación exhaustiva**
+- Verificación legal de la empresa
+- Confirmación de existencia física
+- Validación de autoridad del solicitante
+- Proceso 7-10 días hábiles
+
+### **Indicadores visuales**
+- **Barra verde** con nombre empresa (navegadores antiguos)
+- **Candado verde** con nombre completo
+- **Click para detalles** de certificado
+- **Máxima confianza** visual
+
+## EV vs otros certificados
+
+### **Domain Validation (DV)**
+✅ Validación: Solo propiedad dominio
+✅ Tiempo: Minutos/horas
+✅ Costo: Bajo
+❌ Confianza: Básica
+
+### **Organization Validation (OV)**
+✅ Validación: Empresa + dominio
+✅ Tiempo: 1-3 días
+✅ Costo: Medio
+✅ Confianza: Buena
+
+### **Extended Validation (EV)**
+✅ Validación: Máxima verificación
+❌ Tiempo: 7-10 días
+❌ Costo: Alto
+✅ Confianza: Máxima
+
+## Proceso de validación EV
+
+### **Documentación requerida**
+- **Escritura de constitución** empresa
+- **RUT empresa** vigente
+- **Poder notarial** del solicitante
+- **Comprobante domicilio** comercial
+- **Estados financieros** (algunos casos)
+
+### **Verificación telefónica**
+- Llamada a número público empresa
+- Confirmación con representante legal
+- Verificación de solicitud de certificado
+- Documentación adicional si requerida
+
+### **Bases de datos públicas**
+- Verificación en registros mercantiles
+- Cross-check con databases gubernamentales
+- Validación de existencia legal
+- Confirmación de actividad comercial
+
+## Casos de uso ideales EV
+
+### **Instituciones financieras**
+- Bancos y financieras
+- Sistemas de pago online
+- Transferencias monetarias
+- Máxima confianza requerida
+
+### **E-commerce grande**
+- Tiendas online enterprise
+- Marketplaces
+- Sistemas de membresía
+- Transacciones altas
+
+### **Gobierno y salud**
+- Portales gubernamentales
+- Sistemas médicos
+- Datos sensibles
+- Compliance requerido
+
+## Implementación en Chile
+
+### **Autoridades de certificación**
+- **DigiCert**: Líder mundial EV
+- **Sectigo**: Precio competitivo
+- **GlobalSign**: Europa/LATAM focused
+- **GoDaddy**: Proceso simplificado
+
+### **Requisitos específicos Chile**
+- RUT empresa vigente obligatorio
+- Notarización en español
+- Verificación Servicio de Impuestos Internos
+- Comprobante domicilio comercial
+
+## Consideraciones técnicas
+
+### **Instalación**
+- Proceso idéntico a SSL estándar
+- Configuración en servidor web
+- Test de funcionamiento
+- Verificación indicadores visuales
+
+### **Renovación**
+- Re-validación completa cada año
+- Documentación actualizada
+- Proceso no se simplifica
+- Planificar con 30 días anticipación
+
+### **Compatibilidad**
+- Todos los navegadores modernos
+- Móviles iOS/Android
+- Indicadores pueden variar
+- Fallback a SSL estándar
+
+## ROI del certificado EV
+
+### **Beneficios medibles**
+- +15-25% conversión promedio
+- -60% bounce rate en checkout
+- +40% confianza del usuario
+- Mejor posicionamiento SEO
+
+### **Costo vs beneficio**
+- Certificado EV: $200-500 USD/año
+- Aumento conversión 20%
+- ROI positivo con $2,500 ventas/mes
+- Payback típico: 1-3 meses`,
+    category: 'ssl-security',
+    cms: 'general',
+    tags: ['ssl-ev', 'extended-validation', 'maxima-seguridad', 'confianza'],
+    level: 'avanzado',
+    related: ['https', 'ssl-certificados', 'certificado-wildcard'],
+    hostingRequirements: ['SSL support', 'Dedicated IP', 'Business hosting'],
+    cta: {
+      plan: 'Enterprise Pro',
+      copy: 'Hosting enterprise con certificados EV y soporte premium',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=89'
+    },
+    proofPoints: ['Certificados EV disponibles', 'Soporte instalación', 'Dedicated IP incluido'],
+    whenToUse: 'Esencial para e-commerce grande, bancos, gobierno y sitios críticos',
+    synonyms: ['certificado validación extendida', 'ssl máxima validación'],
+    lastUpdated: '2025-01-15'
   }
 ];
 
