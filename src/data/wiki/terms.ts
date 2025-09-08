@@ -451,6 +451,1273 @@ add_action('wp_footer', 'mi_footer_personalizado');
     synonyms: ['tienda virtual', 'e-commerce WordPress'],
     lastUpdated: '2025-01-15'
   },
+  // === PHASE 2 TERMS: Performance, Security, Email, CDN ===
+  
+  // Performance Terms - Advanced
+  {
+    id: 'perf-007',
+    slug: 'lazy-loading',
+    title: 'Lazy Loading',
+    shortDefinition: 'Técnica que carga imágenes y contenido solo cuando el usuario está a punto de verlo, mejorando drasticamente la velocidad inicial.',
+    longDefinition: `Lazy Loading es una optimización fundamental que carga contenido "bajo demanda", reduciendo el tiempo de carga inicial hasta en 70%.
+
+## ¿Cómo funciona Lazy Loading?
+
+### **Carga tradicional vs Lazy**
+**Tradicional**: Todas las imágenes se cargan al mismo tiempo
+- 50 imágenes = 50 requests simultáneas
+- Usuario ve solo las primeras 3-4 imágenes
+- Ancho de banda desperdiciado
+
+**Lazy Loading**: Solo carga lo visible + próximas imágenes
+- Carga inicial: 3-4 imágenes
+- Resto se carga progresivamente
+- 60-70% menos datos iniciales
+
+## Implementación técnica
+
+### **HTML nativo (WordPress 5.5+)**
+\`\`\`html
+<img src="imagen.jpg" loading="lazy" alt="descripción">
+\`\`\`
+
+### **JavaScript avanzado**
+\`\`\`javascript
+// Intersection Observer API
+const images = document.querySelectorAll('img[data-src]');
+const imageObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.dataset.src;
+      img.classList.remove('lazy');
+      imageObserver.unobserve(img);
+    }
+  });
+});
+\`\`\`
+
+## Tipos de Lazy Loading
+
+### **Imágenes**
+- Técnica más común y efectiva
+- Soporte nativo en navegadores modernos
+- Mejora Core Web Vitals (LCP)
+
+### **Videos**
+- Carga solo el poster frame
+- Video completo al hacer play
+- Crítico para sitios con video
+
+### **Iframes**
+- YouTube, Google Maps embebidos
+- Evita cargar contenido externo
+- Mantiene el control de velocidad
+
+### **Contenido**
+- Posts en scroll infinito
+- Comentarios bajo demanda
+- Widgets no críticos
+
+## Impacto en Core Web Vitals
+
+### **Largest Contentful Paint (LCP)**
+- Mejora hasta 40% cargando solo imágenes visibles
+- Hero image carga primero, resto después
+- LCP < 2.5s más fácil de lograr
+
+### **Cumulative Layout Shift (CLS)**
+- Define dimensiones de imagen para evitar saltos
+- \`width\` y \`height\` obligatorios
+- Placeholder mientras carga
+
+## Plugins recomendados
+
+### **WordPress nativo**
+- Lazy loading automático desde WP 5.5
+- Sin plugins adicionales necesarios
+- Compatible con todos los themes
+
+### **a3 Lazy Load**
+- Control granular de settings
+- Lazy loading para videos e iframes
+- Compatible con WooCommerce
+
+### **WP Rocket**
+- Lazy loading inteligente integrado
+- Optimiza también CSS y JS
+- Configuración automática
+
+## Optimización para móviles
+
+### **Estrategia diferenciada**
+- Móvil: Lazy más agresivo (viewport + 100px)
+- Desktop: Menos agresivo (viewport + 300px)
+- Conexión lenta: Priorizar texto
+
+### **Responsive images + Lazy**
+\`\`\`html
+<img srcset="small.jpg 400w, medium.jpg 800w, large.jpg 1200w"
+     sizes="(max-width: 600px) 400px, 800px"
+     src="fallback.jpg"
+     loading="lazy"
+     alt="responsive lazy image">
+\`\`\`
+
+## Métricas y monitoreo
+
+### **Antes vs Después**
+- **Velocidad inicial**: +60-70%
+- **Datos transferidos**: -50-60%
+- **Time to Interactive**: -30-40%
+- **Bounce rate**: -15-25%
+
+### **Herramientas de medición**
+- Google PageSpeed Insights
+- GTmetrix lazy loading report
+- Chrome DevTools Performance
+- Real User Monitoring (RUM)`,
+    category: 'performance',
+    cms: 'general',
+    tags: ['lazy-loading', 'imagenes', 'performance', 'core-web-vitals', 'mobile'],
+    level: 'medio',
+    related: ['optimizacion-imagenes', 'core-web-vitals', 'cache-web'],
+    hostingRequirements: ['Soporte HTTP/2', 'CDN integrado', 'Optimización automática'],
+    cta: {
+      plan: 'Performance Pro',
+      copy: 'Hosting con lazy loading automático y CDN global incluido',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=87'
+    },
+    proofPoints: ['Lazy loading pre-configurado', 'Core Web Vitals 95+', 'CDN con 200+ ubicaciones'],
+    whenToUse: 'Crítico para sitios con muchas imágenes, e-commerce, portfolios',
+    synonyms: ['carga perezosa', 'carga bajo demanda'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'perf-008',
+    slug: 'minificacion',
+    title: 'Minificación',
+    shortDefinition: 'Proceso que elimina espacios, comentarios y caracteres innecesarios del código CSS/JS para reducir el tamaño y mejorar la velocidad.',
+    longDefinition: `La minificación es una optimización esencial que reduce el tamaño de archivos CSS y JavaScript hasta en 80%, mejorando significativamente la velocidad de carga.
+
+## ¿Qué es la minificación?
+
+### **Antes de minificar**
+\`\`\`css
+/* Archivo CSS normal */
+.header {
+    background-color: #ffffff;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navigation li {
+    display: inline-block;
+    margin-right: 15px;
+}
+\`\`\`
+
+### **Después de minificar**
+\`\`\`css
+.header{background-color:#fff;padding:20px 0;margin-bottom:30px;box-shadow:0 2px 4px rgba(0,0,0,.1)}.navigation li{display:inline-block;margin-right:15px}
+\`\`\`
+
+**Resultado**: 75% menos tamaño, misma funcionalidad
+
+## Tipos de minificación
+
+### **CSS Minification**
+Elimina:
+- Espacios en blanco y saltos de línea
+- Comentarios (/* comentario */)
+- Código CSS no utilizado
+- Propiedades redundantes
+
+### **JavaScript Minification**
+Elimina:
+- Espacios y comentarios
+- Variables con nombres largos → nombres cortos
+- Código muerto (dead code)
+- Console.log() de desarrollo
+
+### **HTML Minification**
+Remueve:
+- Espacios entre tags
+- Comentarios HTML
+- Atributos vacíos
+- Meta tags innecesarios
+
+## Herramientas de minificación
+
+### **Para WordPress**
+**WP Rocket** (Premium)
+- Minificación automática CSS/JS
+- Combinación de archivos
+- Optimización sin romper el sitio
+
+**Autoptimize** (Gratuito)
+- Minifica y combina archivos
+- Inline critical CSS
+- Configuración granular
+
+**W3 Total Cache** (Freemium)
+- Minificación integrada
+- CDN compatibility
+- Performance monitoring
+
+### **Herramientas online**
+- **CSS Minifier**: cssminifier.com
+- **JavaScript Minifier**: javascript-minifier.com
+- **HTML Minifier**: html-minifier.com
+
+## Optimización avanzada
+
+### **Critical CSS**
+Combinar minificación con critical path:
+1. Extraer CSS crítico above-the-fold
+2. Inline el CSS crítico minificado
+3. Lazy load resto de CSS minificado
+
+### **Tree Shaking**
+Para JavaScript moderno:
+- Eliminar código no utilizado automáticamente
+- Webpack/Rollup automatizan el proceso
+- Reduce bundles hasta 60%
+
+### **Concatenación + Minificación**
+\`\`\`
+Archivos originales:
+- style1.css (15KB)
+- style2.css (22KB)  
+- style3.css (8KB)
+Total: 45KB en 3 requests
+
+Después de minificar + concatenar:
+- all-styles.min.css (18KB)
+Total: 18KB en 1 request
+Mejora: 60% menos tamaño, 66% menos requests
+\`\`\`
+
+## Impacto en performance
+
+### **Core Web Vitals**
+**First Contentful Paint (FCP)**
+- CSS minificado reduce tiempo de render
+- Mejora promedio: 20-30%
+
+**Largest Contentful Paint (LCP)**
+- JavaScript minificado no bloquea renderizado
+- LCP mejora hasta 25%
+
+### **Métricas reales**
+- **Tamaño total**: -40-80% reducción
+- **Requests HTTP**: -50-70% menos
+- **Time to Interactive**: -20-35% mejora
+- **Page Load Time**: -30-50% más rápido
+
+## Configuración en hosting chileno
+
+### **Servidor level**
+- Gzip/Brotli compression habilitado
+- HTTP/2 para multiplexing
+- Cache headers optimizados
+
+### **WordPress optimizado**
+\`\`\`php
+// functions.php - minificación básica
+function minify_css_output($buffer) {
+    $buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer);
+    $buffer = str_replace(array("\r\n", "\r", "\n", "\t"), '', $buffer);
+    return $buffer;
+}
+\`\`\`
+
+## Mejores prácticas
+
+### **Desarrollo vs Producción**
+- **Desarrollo**: Archivos normales para debugging
+- **Staging**: Test minificación antes de live
+- **Producción**: Siempre minificado + comprimido
+
+### **Monitoring continuo**
+- Monitor tamaño de assets post-deployment
+- Alertas si bundles crecen >20%
+- Performance budgets automáticos
+
+### **Rollback strategy**
+- Mantener versiones sin minificar
+- Test automático post-minificación
+- CDN cache invalidation automática`,
+    category: 'performance',
+    cms: 'general',
+    tags: ['minificacion', 'css', 'javascript', 'optimization', 'core-web-vitals'],
+    level: 'medio',
+    related: ['cache-web', 'lazy-loading', 'optimizacion-imagenes'],
+    hostingRequirements: ['Gzip/Brotli enabled', 'HTTP/2 support', 'CDN integration'],
+    cta: {
+      plan: 'Performance Pro',
+      copy: 'Hosting con minificación automática y optimización avanzada',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=87'
+    },
+    proofPoints: ['Minificación automática', 'Gzip/Brotli enabled', 'Performance monitoring'],
+    whenToUse: 'Esencial para todos los sitios web, especialmente e-commerce y sitios con mucho contenido',
+    synonyms: ['compresión código', 'optimización archivos'],
+    lastUpdated: '2025-01-15'
+  },
+  
+  // Security Terms - Advanced
+  {
+    id: 'sec-005',
+    slug: 'autenticacion-dos-factores',
+    title: 'Autenticación de Dos Factores (2FA)',
+    shortDefinition: 'Sistema de seguridad que requiere dos métodos de verificación para acceder a tu sitio web, añadiendo una capa extra de protección.',
+    longDefinition: `La Autenticación de Dos Factores (2FA) es la defensa más efectiva contra hackeos, reduciendo el riesgo de compromiso en un 99.9% según Microsoft.
+
+## ¿Por qué 2FA es crítico?
+
+### **Estadísticas de hackeos en Chile**
+- 80% de ataques exitosos usan credenciales robadas
+- 1 de cada 3 sitios web chilenos es atacado anualmente
+- 2FA reduce hackeos exitosos en 99.9%
+- Costo promedio de hackeo: $2.5M CLP
+
+### **Vectores de ataque comunes**
+**Password attacks**
+- Brute force: 1000+ intentos por minuto
+- Dictionary attacks con passwords chilenos comunes
+- Credential stuffing desde leaks previos
+
+**Social engineering**
+- Phishing emails dirigidos
+- Llamadas falsas de "soporte técnico"
+- SMS maliciosos
+
+## Tipos de 2FA
+
+### **TOTP (Time-based One-Time Password)**
+**Apps recomendadas:**
+- **Google Authenticator**: Gratis, sincroniza en la nube
+- **Authy**: Backup automático, multi-device
+- **Microsoft Authenticator**: Integración enterprise
+- **1Password**: Todo-en-uno con password manager
+
+**Ventajas:**
+- Funciona offline
+- No depende de SMS (más seguro)
+- Tokens cambian cada 30 segundos
+
+### **SMS 2FA**
+⚠️ **No recomendado para sitios críticos**
+- Vulnerable a SIM swapping
+- Operadoras chilenas con seguridad variable
+- Mejor que nada, pero TOTP es superior
+
+### **Hardware tokens**
+Para sitios enterprise:
+- **YubiKey**: Estándar oro en seguridad
+- **Titan Security Key**: Google's option
+- Imposible de hackear remotamente
+
+### **Push notifications**
+- **Duo Mobile**: Popular en empresas
+- **Microsoft Authenticator**: Push + TOTP
+- Confirmación con un tap
+
+## Implementación en WordPress
+
+### **Plugins recomendados**
+
+**Wordfence 2FA** (Gratuito)
+- Integrado con Wordfence Security
+- TOTP + backup codes
+- Configuración simple
+
+**Two Factor Authentication** (Gratuito)
+- Multiple métodos 2FA
+- Email, TOTP, backup codes
+- Granular user controls
+
+**Duo Security** (Premium)
+- Enterprise-grade 2FA
+- Push notifications + TOTP
+- Admin reporting + analytics
+
+### **Configuración paso a paso**
+1. **Install plugin 2FA**
+2. **Generate backup codes** (crítico!)
+3. **Test en usuario admin**
+4. **Mandatory para admins**
+5. **Optional para usuarios regulares**
+6. **Document recovery process**
+
+## 2FA para diferentes usuarios
+
+### **Administradores**
+- 2FA obligatorio siempre
+- TOTP + backup codes
+- Recovery process documentado
+- Regular audit de accesos
+
+### **Editores/Autores**
+- 2FA recomendado
+- Training en seguridad
+- Backup codes compartidos con IT
+
+### **Usuarios finales**
+- 2FA opcional pero incentivado
+- SMS okay para conveniencia
+- Email 2FA como fallback
+
+## Configuración avanzada
+
+### **Conditional 2FA**
+\`\`\`php
+// functions.php - 2FA solo desde IPs no confiables
+function require_2fa_unknown_ip($user_id) {
+    $current_ip = $_SERVER['REMOTE_ADDR'];
+    $trusted_ips = get_user_meta($user_id, 'trusted_ips', true);
+    
+    if (!in_array($current_ip, $trusted_ips)) {
+        // Force 2FA for unknown IP
+        return true;
+    }
+    return false;
+}
+\`\`\`
+
+### **Time-based restrictions**
+- 2FA requerido fuera horario laboral
+- Geolocation-based triggers
+- Failed login attempt thresholds
+
+## Recovery y backup
+
+### **Backup codes**
+- Generate 10 single-use codes
+- Store securely (password manager)
+- Regenerate after cada uso
+- Share with team lead si necesario
+
+### **Recovery process**
+1. **Primary method fails** → try backup code
+2. **No backup codes** → email recovery link
+3. **Email compromised** → contact admin
+4. **Admin unavailable** → hosting support recovery
+
+### **Documentation crítica**
+\`\`\`
+Documento de recuperación 2FA:
+- Admin contacts + phone numbers
+- Hosting account recovery process
+- Database backup location
+- Emergency disable instructions
+\`\`\`
+
+## Monitoreo y alertas
+
+### **Failed 2FA attempts**
+- Alert after 3 failed TOTP attempts
+- Block IP after 5 failed attempts
+- Email admin immediately
+
+### **Successful logins**
+- Log all 2FA successes with IP/location
+- Weekly reports de unusual access
+- Automated anomaly detection
+
+## Compliance y regulaciones
+
+### **GDPR considerations**
+- 2FA data processing disclosure
+- User consent for biometric 2FA
+- Right to disable 2FA (con admin approval)
+
+### **Industry standards**
+- PCI DSS requires 2FA para payment data access
+- ISO 27001 recommends multi-factor auth
+- Chilean banking regulations best practices`,
+    category: 'security',
+    cms: 'general',
+    tags: ['2fa', 'autenticacion', 'seguridad', 'login', 'wordpress-security'],
+    level: 'medio',
+    related: ['firewall-web', 'backup-hosting', 'proteccion-malware'],
+    hostingRequirements: ['Plugin support', 'Email delivery', 'Secure login URLs'],
+    cta: {
+      plan: 'Security Pro',
+      copy: 'Hosting con 2FA pre-configurado y monitoreo de seguridad 24/7',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=88'
+    },
+    proofPoints: ['2FA setup automático', 'Security monitoring 24/7', 'Backup codes seguros'],
+    whenToUse: 'Obligatorio para sitios con login de administrador, e-commerce, datos sensibles',
+    synonyms: ['doble autenticación', 'verificación en dos pasos'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'sec-006',
+    slug: 'backup-hosting',
+    title: 'Backup de Hosting',
+    shortDefinition: 'Sistema automatizado que crea copias de seguridad completas de tu sitio web para proteger contra pérdida de datos, hackeos y errores.',
+    longDefinition: `Los backups son tu última línea de defensa. Sin backup adecuado, un solo hackeo o error puede destruir años de trabajo en minutos.
+
+## ¿Por qué fallan los backups?
+
+### **Errores comunes que destruyen sitios**
+**"Mi sitio desapareció"** - Casos reales:
+- E-commerce chileno perdió 500 productos tras update fallido
+- Blog de 5 años borrado por plugin malicioso
+- Tienda online hackeada, sin backup funcionando
+- Hosting proveedor perdió servidor completo
+
+### **Backup vs Desastre**
+- **Sin backup**: Pérdida total, reconstruir desde cero
+- **Backup básico**: Recuperación parcial, 70% del contenido
+- **Backup profesional**: Restauración 100% en <2 horas
+
+## Tipos de backup críticos
+
+### **Backup completo del sitio**
+**Incluye**:
+- Todos los archivos WordPress (/wp-content/)
+- Base de datos completa (posts, users, settings)
+- Archivos del tema y plugins
+- Uploads y media library
+- .htaccess y configuraciones
+
+### **Backup diferencial**
+- Solo cambios desde último backup completo
+- Más rápido y eficiente en almacenamiento
+- Ideal para sitios que cambian frecuentemente
+
+### **Backup incremental**
+- Solo cambios desde último backup (cualquier tipo)
+- Mínimo uso de recursos
+- Restauración más compleja pero eficiente
+
+## Estrategia 3-2-1
+
+### **Regla 3-2-1 para sitios críticos**
+- **3 copias** de tus datos (original + 2 backups)
+- **2 tipos** de almacenamiento diferentes
+- **1 copia offsite** (remota/cloud)
+
+**Ejemplo práctico**:
+1. **Original**: Servidor de hosting
+2. **Backup 1**: Hosting provider (automático)
+3. **Backup 2**: Google Drive (plugin)
+4. **Backup 3**: Disco local (manual mensual)
+
+## Frecuencia de backup
+
+### **Sitios de alto cambio** (e-commerce, noticias)
+- **Archivos**: 4x por día
+- **Base de datos**: Cada hora
+- **Completo**: Diario
+- **Retención**: 30 días mínimo
+
+### **Sitios estáticos** (corporativos, portfolios)
+- **Completo**: Semanal
+- **Incremental**: Diario
+- **Retención**: 90 días
+
+### **Blogs activos**
+- **Archivos**: Diario
+- **Base de datos**: 2x por día
+- **Completo**: Semanal
+- **Retención**: 60 días
+
+## Plugins de backup recomendados
+
+### **UpdraftPlus** (Freemium)
+**Gratuito incluye**:
+- Backup completo manual
+- Restauración básica
+- Google Drive, Dropbox integration
+
+**Premium añade**:
+- Scheduling automático
+- Incremental backups
+- Migration tools
+- Premium storage options
+
+### **BackWPup** (Freemium)
+- Backup a múltiples destinos
+- XML export de contenido
+- Optimización de base de datos
+- Logs detallados
+
+### **Jetpack Backup** (Premium)
+- Real-time backup (cada cambio)
+- One-click restore
+- Activity log completo
+- Automatic malware scanning
+
+## Almacenamiento de backups
+
+### **Cloud storage recomendado**
+**Google Drive**
+- 15GB gratuito
+- Integración nativa con plugins
+- Reliable y fast
+
+**Dropbox**
+- Excellent sync technology
+- Business plans con más storage
+- Version history automático
+
+**Amazon S3**
+- Industrial-grade reliability
+- Pay-per-use pricing
+- Infinitely scalable
+
+### **Almacenamiento local**
+⚠️ **No como única opción**
+- External drive para backup mensual
+- NAS casero para sitios múltiples
+- Siempre combinado con cloud
+
+## Testing de backups
+
+### **Test mensual obligatorio**
+1. **Download backup** desde storage
+2. **Install en staging site**
+3. **Verify functionality** completa
+4. **Check database integrity**
+5. **Test login y admin area**
+6. **Document any issues**
+
+### **Restoration time testing**
+- **Target**: <2 horas para sitio completo
+- **Test**: Restore desde diferentes backup points
+- **Measure**: Tiempo real de restauración
+- **Document**: Proceso paso a paso
+
+## Backup de hosting provider
+
+### **Qué preguntar a tu hosting**
+1. **¿Frecuencia de backups automáticos?**
+2. **¿Retención period?** (30+ días recomendado)
+3. **¿Cómo restore un backup?** (debe ser simple)
+4. **¿Backup incluye email y bases de datos?**
+5. **¿Recovery point objective (RPO)?**
+6. **¿Recovery time objective (RTO)?**
+
+### **Red flags del hosting**
+❌ "Backup no incluido"
+❌ "Solo backup semanal"
+❌ "Backup manual únicamente"
+❌ "No garantizamos recuperación"
+❌ "Backup storage same server"
+
+## Automatización avanzada
+
+### **Monitoring de backups**
+\`\`\`php
+// WordPress cron - verificar backup diario
+function check_daily_backup() {
+    $last_backup = get_option('last_successful_backup');
+    $24_hours_ago = time() - (24 * 60 * 60);
+    
+    if ($last_backup < $24_hours_ago) {
+        // Alert: backup failed!
+        wp_mail('admin@sitio.cl', 'Backup Failed', 'No backup en 24h');
+    }
+}
+add_action('wp_scheduled_backup_check', 'check_daily_backup');
+\`\`\`
+
+### **Health check automation**
+- Verify backup file integrity
+- Test database export validity
+- Confirm storage accessibility
+- Alert on backup size anomalies
+
+## Recovery procedures
+
+### **Emergency restoration**
+1. **Assess damage scope**
+2. **Identify best backup point**
+3. **Download backup files**
+4. **Clean installation if needed**
+5. **Restore files + database**
+6. **Test functionality**
+7. **Update security**
+
+### **Partial recovery**
+- Recover solo posts perdidos
+- Restore specific plugin settings
+- Recover media library únicamente
+- Database table restoration
+
+## Compliance y legales
+
+### **Data retention**
+- **Chile**: No ley específica, but business best practice 7 años
+- **GDPR**: Backup data subject to same rules
+- **Industry standards**: Financial 7 años, healthcare varies
+
+### **Backup security**
+- Encrypt backups containing personal data
+- Secure backup storage access
+- Regular purge of old backups
+- Access logging para compliance`,
+    category: 'security',
+    cms: 'general',
+    tags: ['backup', 'seguridad', 'recuperacion', 'automatizacion', 'disaster-recovery'],
+    level: 'basico',
+    related: ['autenticacion-dos-factores', 'firewall-web', 'proteccion-malware'],
+    hostingRequirements: ['Backup automático incluido', 'Múltiples restore points', 'Offsite storage'],
+    cta: {
+      plan: 'Backup Pro',
+      copy: 'Hosting con backup automático cada 6 horas y restauración instant',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=89'
+    },
+    proofPoints: ['Backup cada 6 horas', '90 días retención', 'Restore en 1-click'],
+    whenToUse: 'Obligatorio para cualquier sitio web que contenga trabajo valioso',
+    synonyms: ['copia de seguridad', 'respaldo', 'recovery'],
+    lastUpdated: '2025-01-15'
+  },
+  
+  // Email Terms - Advanced
+  {
+    id: 'email-004',
+    slug: 'deliverability-email',
+    title: 'Deliverability de Email',
+    shortDefinition: 'Capacidad de tus emails para llegar efectivamente a la bandeja de entrada del destinatario, no a spam o bounces.',
+    longDefinition: `Email deliverability es crítico para business en Chile. 85% de emails business van a spam sin configuración adecuada.
+
+## El problema del spam en Chile
+
+### **Estadísticas email Chile 2025**
+- 73% de emails marketing van a spam
+- Solo 15% de emails reach inbox sin autenticación
+- Pérdida promedio: $3.2M CLP anuales por mala deliverability
+- 92% de empresas chilenas NO tienen SPF/DKIM configurado
+
+### **¿Por qué fallan los emails?**
+**Configuración incorrecta**
+- Servidor compartido con mala reputación
+- Sin autenticación SPF/DKIM/DMARC
+- IP blacklisted por spam previo
+
+**Contenido problemático**
+- Palabras trigger en español ("gratis", "descuento", "oferta")
+- HTML mal formateado
+- Ratio texto/imagen incorrecto
+- Links acortados sospechosos
+
+## Autenticación email obligatoria
+
+### **SPF (Sender Policy Framework)**
+Autoriza qué servidores pueden enviar por tu dominio
+\`\`\`
+DNS TXT record:
+v=spf1 include:_spf.google.com include:servers.mcsv.net ~all
+\`\`\`
+
+**Común para hosting chileno**:
+\`\`\`
+v=spf1 a mx include:hostingplus.cl ~all
+\`\`\`
+
+### **DKIM (DomainKeys Identified Mail)**
+Firma digital que verifica autenticidad
+\`\`\`
+DNS TXT record: selector._domainkey.tudominio.cl
+v=DKIM1; k=rsa; p=[public-key-string]
+\`\`\`
+
+### **DMARC (Domain-based Authentication)**
+Policy que indica qué hacer con emails que fallan SPF/DKIM
+\`\`\`
+DNS TXT record: _dmarc.tudominio.cl
+v=DMARC1; p=quarantine; rua=mailto:dmarc@tudominio.cl
+\`\`\`
+
+## Configuración técnica paso a paso
+
+### **1. Verificación DNS actual**
+Herramientas para revisar:
+- **MXToolbox**: DNS lookup completo
+- **DMARC Analyzer**: Reporte DMARC detallado
+- **Mail-tester**: Score deliverability completo
+- **Google Admin Console**: Gmail deliverability
+
+### **2. Configuración hosting**
+**cPanel setup**:
+1. Email Authentication → Enable DKIM
+2. DNS Zone Editor → Add SPF record
+3. Email Deliverability → Check all domains
+4. Reverse DNS → Configure PTR record
+
+### **3. Email services recomendados**
+**Para transaccional**:
+- **SendGrid**: 100 emails/día gratuito
+- **Mailgun**: Excellent para developers
+- **Amazon SES**: $0.10 per 1000 emails
+- **Postmark**: Specialized en transaccional
+
+**Para marketing**:
+- **Mailchimp**: User-friendly, plans locales
+- **ConvertKit**: Perfecto para creators
+- **ActiveCampaign**: Advanced automation
+- **Sendinblue**: Todo-en-uno con SMS
+
+## Testing y monitoreo
+
+### **Herramientas testing**
+**Mail-tester.com**
+- Score /10 instant
+- Detailed report técnico
+- SPF/DKIM validation
+- Content analysis
+
+**GlockApps**
+- Preview en múltiples providers
+- Inbox placement rate real
+- Blacklist monitoring
+- Competitive analysis
+
+### **Métricas clave**
+**Delivery rate**: % emails delivered (not bounced)
+- Target: >95%
+- Industry average: 85%
+
+**Inbox placement**: % delivered que llegan a inbox
+- Target: >90%
+- Promedio sin configuración: 15%
+
+**Open rate**: % emails opened
+- Target: 25-35% (depende industria)
+- Chile average: 18%
+
+**Click rate**: % emails con click
+- Target: 3-7%
+- E-commerce: 2-4%
+
+## WordPress email configuration
+
+### **Plugins SMTP recomendados**
+
+**WP Mail SMTP** (Freemium)
+- Support para todos los providers
+- Authentication testing
+- Email logging
+- Open/click tracking (Pro)
+
+**Easy WP SMTP**
+- Simple configuration
+- Gmail, Outlook, SendGrid support
+- Testing tools incluidos
+
+**Post SMTP**
+- Advanced logging
+- Multiple providers
+- Security features
+- Error handling
+
+### **Configuración típica Gmail**
+\`\`\`php
+// wp-config.php
+define('WPMS_ON', true);
+define('WPMS_SMTP_HOST', 'smtp.gmail.com');
+define('WPMS_SMTP_PORT', 587);
+define('WPMS_SMTP_AUTH', true);
+define('WPMS_SMTP_AUTOTLS', true);
+define('WPMS_SMTP_USER', 'tu-email@gmail.com');
+define('WPMS_SMTP_PASS', 'app-password');
+\`\`\`
+
+## Optimization para Chile
+
+### **Timing optimization**
+**Mejores horarios envío Chile**:
+- **B2B**: Martes-Jueves 10-11 AM, 2-3 PM
+- **B2C**: Sábados 11 AM-1 PM, Miércoles 7-9 PM
+- **E-commerce**: Viernes 6-8 PM, Domingos 10 AM-12 PM
+
+### **Content optimization**
+**Subject lines efectivos Chile**:
+✅ "Nueva oferta exclusiva para ti"
+✅ "Confirmación de tu pedido #12345"
+✅ "Te enviamos tu descuento prometido"
+
+❌ "GRATIS!!! DESCUENTO 50% HOY MISMO"
+❌ "RE: RE: Urgente responde ahora"
+❌ "💰💰💰 DINERO FÁCIL 💰💰💰"
+
+### **Personalización local**
+- Usar horario Chile en timestamps
+- Precios en CLP formato $1.500
+- Referencias culturales apropiadas
+- Legal disclaimer Chilean compliance
+
+## Troubleshooting común
+
+### **Gmail spam issues**
+**Síntomas**:
+- Emails van a spam en Gmail
+- Promotional tab en lugar de primary
+- Low open rates en dominios @gmail.com
+
+**Soluciones**:
+1. **Authenticate properly**: SPF + DKIM + DMARC
+2. **Content optimization**: Remove spam trigger words
+3. **Engagement**: Ask recipients to move to primary
+4. **List hygiene**: Remove inactive Gmail users
+
+### **Outlook/Hotmail blocks**
+**Síntomas**:
+- Emails bounce en dominios @outlook/@hotmail
+- "550 Spam detected" error
+- IP reputation issues
+
+**Soluciones**:
+1. **SNDS registration**: Microsoft sender reputation
+2. **Junk mail reporting**: Feedback loop setup
+3. **Content adjustment**: Outlook-specific optimization
+4. **IP warming**: Gradual volume increase
+
+## Advanced deliverability
+
+### **List segmentation**
+- **High engagement**: Recent openers/clickers
+- **Medium engagement**: Irregular activity
+- **Low engagement**: Suppress or re-engagement campaign
+- **Geographic**: Chile vs international
+
+### **Reputation management**
+- Monitor blacklists weekly
+- Track spam complaint rates (<0.1%)
+- Maintain bounce rate <5%
+- Monitor engagement trends
+
+### **A/B testing**
+- Subject line variations
+- Send time optimization
+- From name testing
+- Content format (text vs HTML)`,
+    category: 'email',
+    cms: 'general',
+    tags: ['deliverability', 'email-marketing', 'smtp', 'spf', 'dkim', 'dmarc'],
+    level: 'avanzado',
+    related: ['email-hosting', 'smtp'],
+    hostingRequirements: ['SPF/DKIM support', 'SMTP relay', 'DNS management', 'Reputation monitoring'],
+    cta: {
+      plan: 'Email Pro',
+      copy: 'Hosting con email deliverability garantizado y configuración automática',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=90'
+    },
+    proofPoints: ['95%+ inbox rate', 'SPF/DKIM auto-config', 'Reputation monitoring'],
+    whenToUse: 'Critical para email marketing, transaccional, notificaciones importantes',
+    synonyms: ['entregabilidad email', 'inbox placement'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'email-005',
+    slug: 'smtp',
+    title: 'SMTP',
+    shortDefinition: 'Protocolo estándar para envío de emails entre servidores que asegura entrega confiable y autenticada de correos electrónicos.',
+    longDefinition: `SMTP (Simple Mail Transfer Protocol) es el backbone del email mundial. Sin SMTP configurado correctamente, tus emails WordPress pueden perderse o ir a spam.
+
+## ¿Qué es SMTP exactamente?
+
+### **SMTP vs PHP mail()**
+**PHP mail() function** (default WordPress):
+- Usa servidor local para envío
+- Sin autenticación
+- Alta probabilidad de spam
+- No tracking de entrega
+- Dependiente de configuración servidor
+
+**SMTP configurado**:
+- Servidor dedicado email
+- Autenticación obligatoria
+- Mejor deliverability
+- Logs de entrega
+- Configuración independiente
+
+### **Flujo SMTP típico**
+1. **WordPress** genera email
+2. **Plugin SMTP** intercepta email
+3. **Autenticación** con servidor SMTP
+4. **Envío** a través de servidor autorizado
+5. **Delivery** al destinatario final
+
+## Configuración SMTP en WordPress
+
+### **Settings básicos requeridos**
+\`\`\`
+SMTP Host: smtp.gmail.com
+SMTP Port: 587 (TLS) o 465 (SSL)
+Encryption: TLS o SSL
+Authentication: Yes
+Username: tu-email@gmail.com
+Password: app-password (not regular password)
+\`\`\`
+
+### **Providers SMTP populares Chile**
+
+**Gmail SMTP** (Más común)
+- **Host**: smtp.gmail.com
+- **Port**: 587 (TLS)
+- **Límite**: 500 emails/día
+- **Cost**: Gratuito
+- **Setup**: App password requerido
+
+**Outlook/Hotmail SMTP**
+- **Host**: smtp-mail.outlook.com
+- **Port**: 587
+- **Límite**: 300 emails/día
+- **Cost**: Gratuito
+- **Auth**: OAuth2 recomendado
+
+**SendGrid** (Profesional)
+- **Host**: smtp.sendgrid.net
+- **Port**: 587
+- **Límite**: 100 emails/día (free), unlimited (paid)
+- **Cost**: $0 - $15/month
+- **Features**: Analytics, tracking, templates
+
+**Mailgun** (Developer-friendly)
+- **Host**: smtp.mailgun.org
+- **Port**: 587
+- **Límite**: 10,000 emails/month (free)
+- **Cost**: $0.80 per 1000 emails
+- **Features**: API integration, webhooks
+
+## Configuración paso a paso
+
+### **1. Gmail SMTP setup**
+**Prerequisitos**:
+1. Enable 2-factor authentication en Gmail
+2. Generate "App Password" específico para WordPress
+3. Never usar password regular de Gmail
+
+**WordPress plugin config**:
+\`\`\`
+SMTP Host: smtp.gmail.com
+SMTP Port: 587
+Encryption: TLS
+Authentication: Yes
+Username: tu-gmail@gmail.com
+Password: [16-character app password]
+From Email: tu-gmail@gmail.com
+From Name: Tu Sitio Web
+\`\`\`
+
+### **2. SendGrid setup (recomendado profesional)**
+**Advantages over Gmail**:
+- Higher sending limits
+- Professional email analytics
+- Better deliverability rates
+- Dedicated IP option
+- Advanced suppression management
+
+**Setup process**:
+1. Create SendGrid account
+2. Verify sender identity
+3. Generate API key
+4. Configure WordPress plugin
+
+\`\`\`
+SMTP Host: smtp.sendgrid.net
+SMTP Port: 587
+Authentication: Yes
+Username: apikey (literally "apikey")
+Password: [your-sendgrid-api-key]
+\`\`\`
+
+## Testing SMTP configuration
+
+### **Plugin testing tools**
+**WP Mail SMTP Test**:
+1. Go to WP Mail SMTP → Email Test
+2. Send test email to your personal account
+3. Check inbox AND spam folder
+4. Verify "sent via" shows SMTP provider
+
+### **Manual testing**
+\`\`\`php
+// Add to functions.php temporarily
+function test_smtp_email() {
+    $to = 'tu-email@gmail.com';
+    $subject = 'SMTP Test from WordPress';
+    $message = 'This email tests SMTP configuration.';
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+    
+    $sent = wp_mail($to, $subject, $message, $headers);
+    
+    if($sent) {
+        echo 'Email sent successfully!';
+    } else {
+        echo 'Email failed to send.';
+    }
+}
+// Call: test_smtp_email();
+\`\`\`
+
+### **Debugging failed emails**
+**Common error messages**:
+
+**"SMTP authentication failed"**
+- Wrong username/password
+- App password not used (Gmail)
+- 2FA not enabled
+
+**"Connection refused"**
+- Wrong SMTP host
+- Port blocked by hosting
+- Firewall blocking outbound SMTP
+
+**"SSL connection failed"**
+- Use TLS instead of SSL
+- Port 587 instead of 465
+- Certificate issues
+
+## SMTP optimization
+
+### **Performance optimization**
+**Connection pooling**:
+- Reuse SMTP connections
+- Batch email sending
+- Avoid connection per email
+
+**Async sending**:
+\`\`\`php
+// Queue emails for background processing
+function queue_email_async($to, $subject, $message) {
+    wp_schedule_single_event(time(), 'send_queued_email', 
+        array($to, $subject, $message));
+}
+
+add_action('send_queued_email', function($to, $subject, $message) {
+    wp_mail($to, $subject, $message);
+});
+\`\`\`
+
+### **Error handling**
+\`\`\`php
+// Log failed SMTP emails
+function log_smtp_errors($wp_error) {
+    if (is_wp_error($wp_error)) {
+        error_log('SMTP Error: ' . $wp_error->get_error_message());
+        // Send alert to admin
+        wp_mail('admin@sitio.cl', 'SMTP Error', 
+            $wp_error->get_error_message());
+    }
+}
+add_action('wp_mail_failed', 'log_smtp_errors');
+\`\`\`
+
+## Security considerations
+
+### **Authentication security**
+**App passwords** (Gmail):
+- Specific to application
+- Revocable individually
+- Don't expire unless revoked
+- More secure than main password
+
+**API keys** (SendGrid, Mailgun):
+- Limited scope permissions
+- Rotatable regularly
+- Activity logging
+- Rate limiting built-in
+
+### **Connection security**
+**Always use encryption**:
+- TLS preferred over SSL
+- Port 587 (TLS) better than 465 (SSL)
+- Never plain text (port 25)
+
+**IP restrictions**:
+- Some providers allow IP whitelisting
+- Lock SMTP to specific server IPs
+- Detect unusual sending patterns
+
+## Troubleshooting by provider
+
+### **Gmail issues**
+**"Less secure app access"** (deprecated):
+- Modern Gmail requires app passwords
+- 2FA must be enabled first
+- Regular password won't work
+
+**Sending limits hit**:
+- 500 emails/day limit
+- Switch to Google Workspace (2000/day)
+- Or use dedicated email service
+
+### **Hosting provider SMTP**
+**Shared hosting limits**:
+- Often port 25 blocked
+- Rate limiting per account
+- Reputation shared with other users
+
+**VPS/Dedicated advantages**:
+- Custom SMTP configuration
+- Dedicated IP reputation
+- No shared limits
+- Full control over settings
+
+## Monitoring y analytics
+
+### **Key metrics to track**
+**Delivery rate**:
+- Emails sent vs delivered
+- Bounce rate by type
+- Failed authentication attempts
+
+**Performance metrics**:
+- Average delivery time
+- SMTP connection success rate
+- Peak sending times
+
+**Error tracking**:
+\`\`\`php
+// WordPress SMTP monitoring
+function monitor_smtp_health() {
+    $failed_24h = get_transient('smtp_failed_count');
+    if ($failed_24h > 10) {
+        // Alert admin of SMTP issues
+        wp_mail('admin@sitio.cl', 'SMTP Health Alert', 
+            "Over 10 SMTP failures in 24h: $failed_24h");
+    }
+}
+wp_schedule_event(time(), 'daily', 'smtp_health_check');
+\`\`\`
+
+## Migration strategies
+
+### **From PHP mail() to SMTP**
+1. **Install SMTP plugin**
+2. **Test with low-volume emails first**
+3. **Monitor deliverability improvement**
+4. **Full migration after verification**
+
+### **Between SMTP providers**
+1. **Setup new provider in parallel**
+2. **Test thoroughly**
+3. **Switch DNS if needed**
+4. **Monitor deliverability metrics**
+5. **Keep old provider as backup initially**`,
+    category: 'email',
+    cms: 'general',
+    tags: ['smtp', 'email-configuration', 'wordpress', 'deliverability', 'gmail'],
+    level: 'medio',
+    related: ['deliverability-email', 'email-hosting'],
+    hostingRequirements: ['Outbound SMTP allowed', 'Ports 587/465 open', 'SSL/TLS support'],
+    cta: {
+      plan: 'Professional Email',
+      copy: 'Hosting con SMTP configurado y optimizado para máxima deliverability',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=91'
+    },
+    proofPoints: ['SMTP pre-configurado', 'Multiple providers supported', 'Delivery monitoring'],
+    whenToUse: 'Esencial para cualquier sitio que envíe emails: forms, notifications, e-commerce',
+    synonyms: ['servidor correo', 'email smtp'],
+    lastUpdated: '2025-01-15'
+  },
   // SEO Terms
   {
     id: 'seo-001',
