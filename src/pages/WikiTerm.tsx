@@ -244,17 +244,18 @@ const WikiTerm: React.FC = () => {
                     components={{
                       h2: ({children, ...props}) => {
                         const text = String(children);
-                        // Buscar ID específico en el texto usando regex
+                        // Extraer ID y limpiar texto
                         const idMatch = text.match(/\{#([^}]+)\}/);
-                        const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-').replace(/(^-|-$)/g, '');
-                        const cleanText = idMatch ? text.replace(/\s*\{#[^}]+\}\s*/, '').trim() : text;
+                        const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
+                        const cleanText = text.replace(/\s*\{#[^}]+\}\s*/g, '').trim();
                         return <h3 id={id} className="text-xl font-bold mt-8 mb-4 scroll-mt-20" {...props}>{cleanText}</h3>;
                       },
                       h3: ({children, ...props}) => {
                         const text = String(children);
+                        // Extraer ID y limpiar texto
                         const idMatch = text.match(/\{#([^}]+)\}/);
-                        const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-').replace(/(^-|-$)/g, '');
-                        const cleanText = idMatch ? text.replace(/\s*\{#[^}]+\}\s*/, '').trim() : text;
+                        const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
+                        const cleanText = text.replace(/\s*\{#[^}]+\}\s*/g, '').trim();
                         return <h4 id={id} className="text-lg font-semibold mt-6 mb-3 scroll-mt-20" {...props}>{cleanText}</h4>;
                       },
                       p: ({children}) => <p className="text-base leading-relaxed mb-4">{children}</p>,
