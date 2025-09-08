@@ -180,7 +180,78 @@ En Chile, WordPress tiene ventajas específicas:
 - Soporte local de hosting especializado
 - Plugins para integración con Transbank y otros medios de pago chilenos
 - Themes optimizados para audiencias hispanohablantes
-- Comunidad activa de desarrolladores locales`,
+- Comunidad activa de desarrolladores locales
+
+## Requisitos técnicos recomendados {#requisitos-tecnicos}
+
+Para un rendimiento óptimo de WordPress en Chile, recomendamos:
+
+### **Hosting Requirements**
+- **PHP**: Versión 8.1 o superior (mejor performance)
+- **MySQL**: 8.0+ o MariaDB 10.5+
+- **RAM**: Mínimo 1GB, recomendado 2GB+
+- **SSD**: Storage en estado sólido para velocidad
+- **SSL**: Certificado incluido (Let's Encrypt gratis)
+
+### **Configuración Servidor**
+- **mod_rewrite**: Para URLs amigables
+- **Memory Limit**: 256MB mínimo, 512MB recomendado
+- **Max Execution Time**: 60 segundos mínimo
+- **File Upload Limit**: 64MB para imágenes y plugins
+
+### **Servicios Esenciales**
+- **Backups automáticos**: Diarios con retención 30 días
+- **CDN**: CloudFlare para audiencia latinoamericana
+- **Staging**: Ambiente de pruebas incluido
+
+## Consideraciones de seguridad {#seguridad}
+
+WordPress es seguro por defecto, pero requiere configuración apropiada:
+
+### **Medidas básicas**
+- **Updates automáticos**: Core, plugins y themes siempre actualizados
+- **Usuarios fuertes**: Evitar "admin" como username
+- **Two-Factor Auth**: Plugin de autenticación 2FA
+- **Login protection**: Limite de intentos de acceso
+
+### **Plugins de seguridad recomendados**
+- **Wordfence**: Firewall y malware scanner
+- **iThemes Security**: Configuración integral
+- **UpdraftPlus**: Backups automáticos offsite
+
+### **Hardening específico**
+- **wp-config.php**: Permisos 600, keys de seguridad únicas
+- **Directory browsing**: Deshabilitado via .htaccess
+- **File editing**: Deshabilitado desde admin panel
+- **Database prefix**: Cambiar "wp_" por algo único
+
+## Rendimiento y optimización {#rendimiento}
+
+WordPress puede ser extremadamente rápido con la configuración correcta:
+
+### **Plugins de performance**
+- **WP Rocket**: Cache completo (premium)
+- **W3 Total Cache**: Solución gratuita robusta
+- **Smush**: Optimización automática de imágenes
+- **Query Monitor**: Debug de consultas lentas
+
+### **Optimización de imágenes**
+- **WebP**: Formato moderno con 25-35% menos peso
+- **Lazy loading**: Nativo desde WordPress 5.5
+- **Dimensiones correctas**: Subir en tamaño real
+- **CDN**: Distribución global de assets
+
+### **Database optimization**
+- **WP-Optimize**: Limpieza de spam y revisiones
+- **Consultas eficientes**: Evitar plugins que generen queries pesadas
+- **Índices**: Optimización a nivel MySQL para sitios grandes
+
+### **Hosting especializado Chile**
+En HostingPlus ofrecemos:
+- **Litespeed Server**: 40% más rápido que Apache
+- **OPcache PHP**: Cache de código compilado
+- **Redis**: Cache de objetos en memoria
+- **Staging sites**: Testing sin afectar producción`,
     category: 'wordpress',
     cms: 'wordpress',
     tags: ['cms', 'wordpress-core', 'gestion-contenidos', 'open-source'],
