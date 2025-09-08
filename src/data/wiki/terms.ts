@@ -182,7 +182,7 @@ En Chile, WordPress tiene ventajas específicas:
 - Themes optimizados para audiencias hispanohablantes
 - Comunidad activa de desarrolladores locales
 
-## Requisitos técnicos recomendados {#requisitos-tecnicos}
+## Requisitos técnicos recomendados
 
 Para un rendimiento óptimo de WordPress en Chile, recomendamos:
 
@@ -204,7 +204,7 @@ Para un rendimiento óptimo de WordPress en Chile, recomendamos:
 - **CDN**: CloudFlare para audiencia latinoamericana
 - **Staging**: Ambiente de pruebas incluido
 
-## Consideraciones de seguridad {#seguridad}
+## Consideraciones de seguridad
 
 WordPress es seguro por defecto, pero requiere configuración apropiada:
 
@@ -225,7 +225,7 @@ WordPress es seguro por defecto, pero requiere configuración apropiada:
 - **File editing**: Deshabilitado desde admin panel
 - **Database prefix**: Cambiar "wp_" por algo único
 
-## Rendimiento y optimización {#rendimiento}
+## Rendimiento y optimización
 
 WordPress puede ser extremadamente rápido con la configuración correcta:
 

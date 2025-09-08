@@ -242,8 +242,16 @@ const WikiTerm: React.FC = () => {
                   <ReactMarkdown 
                     remarkPlugins={[remarkGfm]}
                     components={{
-                      h2: ({children}) => <h3 className="text-xl font-bold mt-8 mb-4">{children}</h3>,
-                      h3: ({children}) => <h4 className="text-lg font-semibold mt-6 mb-3">{children}</h4>,
+                      h2: ({children, ...props}) => {
+                        const text = String(children);
+                        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                        return <h3 id={id} className="text-xl font-bold mt-8 mb-4 scroll-mt-20" {...props}>{children}</h3>;
+                      },
+                      h3: ({children, ...props}) => {
+                        const text = String(children);
+                        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                        return <h4 id={id} className="text-lg font-semibold mt-6 mb-3 scroll-mt-20" {...props}>{children}</h4>;
+                      },
                       p: ({children}) => <p className="text-base leading-relaxed mb-4">{children}</p>,
                       ul: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4">{children}</ul>,
                       ol: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4">{children}</ol>,
