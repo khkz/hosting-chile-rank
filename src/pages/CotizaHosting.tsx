@@ -539,6 +539,272 @@ const CotizaHosting = () => {
               </Card>
             </div>
           </div>
+          
+          {/* Sección de testimonios */}
+          <section className="mt-16 text-center">
+            <h2 className="text-2xl font-bold text-[#2B2D42] mb-8">
+              Lo que dicen nuestros clientes
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex justify-center mb-4">
+                    <div className="flex space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 italic mb-4">
+                    "Encontraron exactamente lo que necesitaba para mi tienda online. 
+                    El proceso fue muy fácil y transparente."
+                  </p>
+                  <div>
+                    <p className="font-medium">María González</p>
+                    <p className="text-sm text-gray-500">Dueña de Mi Tienda Online</p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex justify-center mb-4">
+                    <div className="flex space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 italic mb-4">
+                    "Me ahorraron horas de investigación. La recomendación fue perfecta 
+                    y conseguí un descuento que no habría obtenido solo."
+                  </p>
+                  <div>
+                    <p className="font-medium">Carlos Mendoza</p>
+                    <p className="text-sm text-gray-500">Desarrollador Web</p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex justify-center mb-4">
+                    <div className="flex space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 italic mb-4">
+                    "Excelente servicio post-contratación. Cuando tuve problemas 
+                    técnicos me ayudaron a resolverlos rápidamente."
+                  </p>
+                  <div>
+                    <p className="font-medium">Ana Silva</p>
+                    <p className="text-sm text-gray-500">Emprendedora Digital</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+          
+          {/* Sección de proveedores destacados */}
+          <section className="mt-16">
+            <h2 className="text-2xl font-bold text-[#2B2D42] text-center mb-8">
+              Proveedores que recomendamos
+            </h2>
+            <div className="grid md:grid-cols-4 gap-6">
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <img 
+                    src="/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png"
+                    alt="HostingPlus"
+                    className="h-12 mx-auto mb-4"
+                    loading="lazy"
+                  />
+                  <h3 className="font-semibold mb-2">HostingPlus</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Líder en velocidad y soporte técnico
+                  </p>
+                  <div className="text-sm">
+                    <div className="flex justify-between mb-1">
+                      <span>Puntuación:</span>
+                      <span className="font-bold text-[#EF233C]">9.8/10</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Desde:</span>
+                      <span className="font-bold">$2.990/mes</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <img 
+                    src="/logo-hostgator.svg"
+                    alt="HostGator"
+                    className="h-12 mx-auto mb-4"
+                    loading="lazy"
+                  />
+                  <h3 className="font-semibold mb-2">HostGator</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Mejor relación calidad/precio
+                  </p>
+                  <div className="text-sm">
+                    <div className="flex justify-between mb-1">
+                      <span>Puntuación:</span>
+                      <span className="font-bold text-[#EF233C]">9.2/10</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Desde:</span>
+                      <span className="font-bold">$1.990/mes</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <img 
+                    src="/logo-bluehost.svg"
+                    alt="Bluehost"
+                    className="h-12 mx-auto mb-4"
+                    loading="lazy"
+                  />
+                  <h3 className="font-semibold mb-2">Bluehost</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Especialista en WordPress
+                  </p>
+                  <div className="text-sm">
+                    <div className="flex justify-between mb-1">
+                      <span>Puntuación:</span>
+                      <span className="font-bold text-[#EF233C]">9.0/10</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Desde:</span>
+                      <span className="font-bold">$2.490/mes</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <img 
+                    src="/logo-godaddy.svg"
+                    alt="GoDaddy"
+                    className="h-12 mx-auto mb-4"
+                    loading="lazy"
+                  />
+                  <h3 className="font-semibold mb-2">GoDaddy</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Solución integral con dominios
+                  </p>
+                  <div className="text-sm">
+                    <div className="flex justify-between mb-1">
+                      <span>Puntuación:</span>
+                      <span className="font-bold text-[#EF233C]">8.8/10</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Desde:</span>
+                      <span className="font-bold">$2.190/mes</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+          
+          {/* FAQ Section */}
+          <section className="mt-16">
+            <h2 className="text-2xl font-bold text-[#2B2D42] text-center mb-8">
+              Preguntas frecuentes
+            </h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">¿Es gratuito solicitar una cotización?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Sí, completamente gratuito. Nuestro servicio de asesoría no tiene costo y 
+                    solo cobramos comisiones a los proveedores, nunca al cliente final.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">¿En cuánto tiempo recibo la cotización?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Normalmente respondemos en menos de 24 horas con opciones personalizadas. 
+                    En casos urgentes podemos responder el mismo día.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">¿Qué incluye la asesoría?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Incluye comparativa de proveedores, recomendación personalizada, negociación 
+                    de descuentos exclusivos y soporte post-contratación sin costo adicional.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">¿Puedo cambiar de proveedor después?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Sí, te ayudamos con migraciones gratuitas si no estás conforme con tu 
+                    proveedor actual. Tenemos acuerdos especiales para facilitar el proceso.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+          
+          {/* CTA final */}
+          <section className="mt-16 text-center">
+            <Card className="bg-gradient-to-r from-[#EF233C] to-[#D90429] text-white">
+              <CardContent className="py-12">
+                <h2 className="text-3xl font-bold mb-4">
+                  ¿Listo para encontrar tu hosting ideal?
+                </h2>
+                <p className="text-xl mb-6 opacity-90">
+                  Más de 2,500 empresas han confiado en nosotros
+                </p>
+                <div className="flex justify-center space-x-8 text-center">
+                  <div>
+                    <div className="text-2xl font-bold">98%</div>
+                    <div className="text-sm opacity-80">Satisfacción</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">24h</div>
+                    <div className="text-sm opacity-80">Respuesta promedio</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">30%</div>
+                    <div className="text-sm opacity-80">Ahorro promedio</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
         </div>
       </main>
       
