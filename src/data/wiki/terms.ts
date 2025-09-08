@@ -5732,7 +5732,334 @@ whois dominio.com
     lastUpdated: '2025-01-15'
   },
 
-  // Additional Hosting Fundamentals Terms
+  // Additional simple terms without code blocks
+  {
+    id: 'hf-009',
+    slug: 'cpanel',
+    title: 'cPanel',
+    shortDefinition: 'Panel de control web más popular para gestionar hosting, dominios, emails, bases de datos y archivos desde una interfaz gráfica.',
+    longDefinition: 'cPanel es el panel de control de hosting más utilizado mundialmente, que permite administrar todos los aspectos de tu sitio web sin conocimientos técnicos avanzados.',
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['cpanel', 'panel-control', 'hosting-management'],
+    level: 'basico',
+    related: ['ftp', 'mysql', 'ssl-certificados'],
+    hostingRequirements: ['cPanel license', 'Linux hosting'],
+    cta: {
+      plan: 'Hosting con cPanel',
+      copy: 'Hosting profesional con cPanel incluido y soporte en español',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['cPanel incluido', 'Interfaz en español', 'Soporte técnico local'],
+    whenToUse: 'Esencial para gestionar hosting web sin conocimientos técnicos',
+    synonyms: ['panel de control', 'administración hosting'],
+    lastUpdated: '2025-01-15'
+  }
+];
+
+// Helper functions
+export const searchTerms = (query: string, filters?: Record<string, any>): WikiTerm[] => {
+  let results = wikiTerms;
+  
+  if (query) {
+    const searchQuery = query.toLowerCase();
+    results = results.filter(term =>
+      term.title.toLowerCase().includes(searchQuery) ||
+      term.shortDefinition.toLowerCase().includes(searchQuery) ||
+      term.longDefinition?.toLowerCase().includes(searchQuery) ||
+      term.tags.some(tag => tag.toLowerCase().includes(searchQuery)) ||
+      term.synonyms?.some(synonym => synonym.toLowerCase().includes(searchQuery))
+    );
+  }
+  
+  if (filters) {
+    if (filters.category) {
+      results = results.filter(term => term.category === filters.category);
+    }
+    if (filters.cms) {
+      results = results.filter(term => term.cms === filters.cms);
+    }
+    if (filters.level) {
+      results = results.filter(term => term.level === filters.level);
+    }
+  }
+  
+  return results;
+};
+
+export const getRelatedTerms = (currentSlug: string): WikiTerm[] => {
+  const currentTerm = wikiTerms.find(term => term.slug === currentSlug);
+  if (!currentTerm) return [];
+  
+  return wikiTerms.filter(term => 
+    currentTerm.related.includes(term.slug)
+  );
+};
+  {
+    id: 'hf-009',
+    slug: 'cpanel',
+    title: 'cPanel',
+    shortDefinition: 'Panel de control web más popular para gestionar hosting, dominios, emails, bases de datos y archivos desde una interfaz gráfica.',
+    longDefinition: `cPanel es el panel de control de hosting más utilizado mundialmente, que permite administrar todos los aspectos de tu sitio web sin conocimientos técnicos avanzados.
+
+## Funcionalidades principales
+
+### Gestión de archivos
+- File Manager para subir/editar archivos
+- Crear y gestionar cuentas FTP
+- Comprimir y descomprimir archivos
+- Establecer permisos de archivos
+
+### Administración de emails
+- Crear cuentas de correo ilimitadas
+- Configurar forwarders y autoresponders
+- Acceso a webmail (Roundcube/Horde)
+- Filtros antispam integrados
+
+### Base de datos
+- Crear bases de datos MySQL
+- Administrar con phpMyAdmin
+- Gestionar usuarios y permisos
+- Backups automáticos
+
+### Dominios
+- Gestionar dominios adicionales
+- Crear subdominios ilimitados
+- Configurar redirects
+- Editor de zona DNS
+
+## Ventajas de cPanel
+
+- Interfaz intuitiva con iconos claros
+- No requiere conocimientos técnicos
+- Mobile-friendly para gestión móvil
+- Softaculous para instalar apps
+- SSL/TLS automático
+
+## cPanel en hosting chileno
+
+La mayoría de proveedores incluyen cPanel con:
+- Interfaz en español disponible
+- Soporte técnico en idioma local
+- Configuración timezone Chile/Santiago`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['cpanel', 'panel-control', 'hosting-management', 'administracion'],
+    level: 'basico',
+    related: ['ftp', 'mysql', 'ssl-certificados'],
+    hostingRequirements: ['cPanel license', 'Linux hosting', 'WHM access'],
+    cta: {
+      plan: 'Hosting con cPanel',
+      copy: 'Hosting profesional con cPanel incluido y soporte en español',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['cPanel incluido', 'Interfaz en español', 'Soporte técnico local'],
+    whenToUse: 'Esencial para gestionar hosting web sin conocimientos técnicos',
+    synonyms: ['panel de control', 'administración hosting'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'hf-010',
+    slug: 'ftp',
+    title: 'FTP (File Transfer Protocol)',
+    shortDefinition: 'Protocolo estándar para transferir archivos entre tu computador y el servidor de hosting de forma segura y eficiente.',
+    longDefinition: `FTP es el protocolo fundamental para subir, descargar y gestionar archivos en tu hosting. Permite transferir archivos de manera directa entre tu computador y el servidor.
+
+## Usos principales del FTP
+
+### Transferencia de archivos
+- Subir archivos grandes que fallan via web
+- Descargar backups completos del sitio
+- Editar archivos directamente en servidor
+- Gestionar permisos de archivos
+
+### Mantenimiento del sitio
+- Actualizar plugins manualmente
+- Instalar themes personalizados
+- Editar archivos .htaccess
+- Limpiar archivos temporales
+
+## Tipos de FTP
+
+### FTP estándar
+- Puerto 21 por defecto
+- Transmisión sin encriptación
+- Compatible con servidores antiguos
+- No recomendado para datos sensibles
+
+### SFTP (Secure FTP)
+- Protocolo encriptado SSH
+- Puerto 22 por defecto
+- Máxima seguridad para transferencias
+- Recomendado para sitios empresariales
+
+## Clientes FTP recomendados
+
+### FileZilla (Gratuito)
+- Multiplataforma (Windows/Mac/Linux)
+- Interfaz intuitiva drag & drop
+- Soporte SFTP y FTPS
+- Gestor de sitios integrado
+
+### WinSCP (Windows)
+- Especializado en SFTP
+- Editor de texto integrado
+- Sincronización de directorios
+- Interfaz tipo Windows Explorer
+
+## Configuración FTP Chile
+
+### Datos de conexión típicos
+- Host: ftp.tudominio.cl o IP servidor
+- Usuario: cuenta cPanel o usuario FTP
+- Contraseña: password asignado
+- Puerto: 21 (FTP) o 22 (SFTP)
+
+### Configuración segura
+- Usar SFTP siempre que sea posible
+- Passwords fuertes y únicos
+- Limitar acceso por IP si es factible
+- Cambiar passwords periódicamente`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['ftp', 'transferencia-archivos', 'sftp', 'file-management'],
+    level: 'basico',
+    related: ['cpanel', 'ssh', 'file-manager'],
+    hostingRequirements: ['FTP access', 'SFTP support', 'File permissions'],
+    cta: {
+      plan: 'Hosting Pro',
+      copy: 'Hosting con acceso FTP/SFTP ilimitado y soporte técnico',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=82'
+    },
+    proofPoints: ['FTP/SFTP incluido', 'Sin límites de transferencia', 'Soporte configuración'],
+    whenToUse: 'Esencial para gestión avanzada de archivos y mantenimiento del sitio',
+    synonyms: ['transferencia archivos', 'protocolo archivos'],
+    lastUpdated: '2025-01-15'
+  },
+  {
+    id: 'dom-007',
+    slug: 'zona-dns',
+    title: 'Zona DNS',
+    shortDefinition: 'Archivo de configuración que contiene todos los registros DNS de un dominio, definiendo cómo se resuelven las consultas de nombres.',
+    longDefinition: `La zona DNS es el archivo de configuración maestro que contiene todos los registros DNS de un dominio, definiendo cómo se comporta el dominio en internet.
+
+## Componentes de una zona DNS
+
+### Registros principales
+- A Record: Apunta dominio a dirección IP
+- CNAME: Alias que apunta a otro dominio
+- MX Record: Servidores de correo
+- NS Record: Nameservers autoritativos
+- TXT Record: Información de texto (SPF, DKIM)
+
+### Registros avanzados
+- AAAA: Direcciones IPv6
+- SRV: Servicios específicos
+- PTR: Reverse DNS lookup
+- CAA: Certificate Authority Authorization
+
+## Estructura típica zona DNS
+
+### Encabezado SOA (Start of Authority)
+Define el servidor primario y parámetros de zona:
+- Servidor DNS primario
+- Email del administrador
+- Número de serie (versión)
+- Tiempos de refresco y retry
+
+### Nameservers (NS)
+Lista de servidores DNS autoritativos con mínimo 2 servidores para redundancia.
+
+### Registros del dominio principal
+- miempresa.cl → A → 192.168.1.100
+- www.miempresa.cl → CNAME → miempresa.cl
+- mail.miempresa.cl → A → 192.168.1.101
+
+## Gestión zona DNS en Chile
+
+### Panel de control hosting
+La mayoría de hostings chilenos incluyen editor DNS:
+- Interfaz gráfica para modificar registros
+- Validación automática de sintaxis
+- Backup automático antes de cambios
+- Rollback en caso de errores
+
+### Proveedores DNS especializados
+- Cloudflare: DNS gratuito con CDN
+- Amazon Route 53: DNS empresarial
+- Google Cloud DNS: Alta disponibilidad
+- DNS local: Incluido en hosting
+
+## Propagación DNS
+
+### Tiempo de propagación
+- TTL bajo (300s): Cambios rápidos, más consultas
+- TTL alto (86400s): Cambios lentos, menos carga
+- Propagación global: 24-48 horas máximo
+- DNS local: Actualización inmediata
+
+### Verificación de propagación
+Herramientas para comprobar cambios:
+- whatsmydns.net (global)
+- dnschecker.org (múltiples ubicaciones)
+- dig command (técnico)
+- nslookup (Windows/Mac/Linux)`,
+    category: 'domains',
+    cms: 'general',
+    tags: ['zona-dns', 'dns-records', 'nameservers', 'configuracion-dns'],
+    level: 'medio',
+    related: ['dns', 'nameservers', 'subdominio'],
+    hostingRequirements: ['DNS management', 'Zone file access', 'TTL control'],
+    cta: {
+      plan: 'DNS Pro',
+      copy: 'Gestión completa de zona DNS con panel avanzado incluido',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=83'
+    },
+    proofPoints: ['Editor DNS avanzado', 'Backup automático', 'Soporte técnico DNS'],
+    whenToUse: 'Fundamental para configurar y gestionar la resolución de nombres del dominio',
+    synonyms: ['archivo dns', 'configuración dns'],
+    lastUpdated: '2025-01-15'
+  }
+];
+
+// Helper functions
+export const searchTerms = (query: string, filters?: Record<string, any>): WikiTerm[] => {
+  let results = wikiTerms;
+  
+  if (query) {
+    const searchQuery = query.toLowerCase();
+    results = results.filter(term =>
+      term.title.toLowerCase().includes(searchQuery) ||
+      term.shortDefinition.toLowerCase().includes(searchQuery) ||
+      term.longDefinition?.toLowerCase().includes(searchQuery) ||
+      term.tags.some(tag => tag.toLowerCase().includes(searchQuery)) ||
+      term.synonyms?.some(synonym => synonym.toLowerCase().includes(searchQuery))
+    );
+  }
+  
+  if (filters) {
+    if (filters.category) {
+      results = results.filter(term => term.category === filters.category);
+    }
+    if (filters.cms) {
+      results = results.filter(term => term.cms === filters.cms);
+    }
+    if (filters.level) {
+      results = results.filter(term => term.level === filters.level);
+    }
+  }
+  
+  return results;
+};
+
+export const getRelatedTerms = (currentSlug: string): WikiTerm[] => {
+  const currentTerm = wikiTerms.find(term => term.slug === currentSlug);
+  if (!currentTerm) return [];
+  
+  return wikiTerms.filter(term => 
+    currentTerm.related.includes(term.slug)
+  );
+};
   {
     id: 'hf-011',
     slug: 'cpu-procesador',
