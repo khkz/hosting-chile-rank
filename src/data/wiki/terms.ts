@@ -5754,6 +5754,615 @@ whois dominio.com
     whenToUse: 'Esencial para gestionar hosting web sin conocimientos técnicos',
     synonyms: ['panel de control', 'administración hosting'],
     lastUpdated: '2025-01-15'
+  },
+
+  // Performance Terms - Fase 2
+  {
+    id: 'perf-001',
+    slug: 'cache-web',
+    title: 'Cache Web',
+    shortDefinition: 'Sistema que almacena temporalmente contenido para acelerar la carga de páginas web y reducir la carga del servidor.',
+    longDefinition: `El cache web es fundamental para optimizar el rendimiento de tu sitio. Almacena temporalmente páginas, imágenes y recursos para entregar contenido más rápido a los usuarios.
+
+## Tipos de cache principales
+
+### Cache del navegador
+- Almacena recursos en el dispositivo del usuario
+- CSS, JavaScript, imágenes se cargan desde local
+- Configuración via headers HTTP
+- Reduce transferencia de datos
+
+### Cache del servidor
+- Páginas HTML pre-generadas
+- Reduce carga de base de datos
+- Plugins como WP Rocket, W3 Total Cache
+- Cache de objetos y consultas
+
+### Cache CDN
+- Contenido distribuido globalmente
+- Reduce latencia geográfica
+- Ideal para audiencia internacional
+- Configuración automática
+
+## Configuración recomendada Chile
+
+### Headers cache básicos
+\`\`\`apache
+# Imágenes y assets
+<FilesMatch "\\.(jpg|jpeg|png|gif|css|js)$">
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+</FilesMatch>
+
+# HTML dinámico
+<FilesMatch "\\.(html|php)$">
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+</FilesMatch>
+\`\`\`
+
+### Plugins WordPress recomendados
+- **WP Rocket**: Premium, fácil configuración
+- **W3 Total Cache**: Gratuito, más técnico
+- **LiteSpeed Cache**: Para servidores LiteSpeed
+- **WP Super Cache**: Básico y confiable
+
+## Beneficios medibles
+
+### Mejoras típicas
+- **Velocidad**: 50-80% más rápido
+- **Bounce rate**: Reducción 20-40%
+- **Conversiones**: Aumento 15-25%
+- **SEO**: Mejor ranking Google
+
+### Impacto específico Chile
+- Conexiones lentas rurales: +200% mejora
+- Mobile users: Experiencia superior
+- Ahorro bandwidth: Reduce costos hosting`,
+    category: 'performance',
+    cms: 'general',
+    tags: ['cache', 'performance', 'velocidad-web', 'optimizacion'],
+    level: 'medio',
+    related: ['que-es-hosting', 'cdn', 'optimizacion-web'],
+    hostingRequirements: ['Cache server-side', 'Soporte .htaccess', 'PHP OpCache'],
+    cta: {
+      plan: 'Hosting Optimizado',
+      copy: 'Hosting con cache avanzado incluido - Sitios hasta 10x más rápidos',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=85'
+    },
+    proofPoints: ['Cache incluido', 'Optimización automática', 'Soporte técnico'],
+    whenToUse: 'Obligatorio para cualquier sitio web profesional',
+    synonyms: ['caché', 'almacenamiento temporal', 'optimización'],
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'perf-002', 
+    slug: 'optimizacion-imagenes',
+    title: 'Optimización de Imágenes',
+    shortDefinition: 'Técnicas para reducir el tamaño de imágenes sin perder calidad, mejorando velocidad de carga y experiencia del usuario.',
+    longDefinition: `La optimización de imágenes es crucial para el rendimiento web. Las imágenes pueden representar hasta 70% del peso total de una página.
+
+## Formatos de imagen recomendados
+
+### WebP (Recomendado 2025)
+- **Tamaño**: 25-35% menor que JPEG
+- **Calidad**: Superior a PNG/JPEG
+- **Soporte**: 95% navegadores
+- **Ideal para**: Todas las imágenes web
+
+### JPEG tradicional
+- **Uso**: Fotografías con muchos colores
+- **Compresión**: Ajustable calidad/tamaño
+- **Compatibility**: Universal
+- **Optimización**: 85% calidad óptima
+
+### PNG
+- **Uso**: Logos, gráficos, transparencias
+- **Ventaja**: Sin pérdida de calidad
+- **Desventaja**: Archivos más pesados
+- **Optimización**: PNG-8 vs PNG-24
+
+## Herramientas de optimización
+
+### Automáticas (WordPress)
+- **Smush**: Compresión automática
+- **ShortPixel**: API potente
+- **Imagify**: Por Automattic
+- **EWWW Image Optimizer**: Completo
+
+### Manuales
+- **TinyPNG**: Web simple y efectiva
+- **Squoosh**: Google, múltiples formatos
+- **ImageOptim**: Mac, lossless
+- **GIMP**: Gratuito, control total
+
+## Técnicas avanzadas
+
+### Lazy Loading
+\`\`\`html
+<img src="placeholder.jpg" data-src="image.jpg" loading="lazy" alt="Descripción">
+\`\`\`
+
+### Responsive Images
+\`\`\`html
+<picture>
+  <source media="(max-width: 768px)" srcset="mobile.webp">
+  <source media="(min-width: 769px)" srcset="desktop.webp">
+  <img src="fallback.jpg" alt="Imagen responsive">
+</picture>
+\`\`\`
+
+### Dimensiones correctas
+- Mobile: Max 800px ancho
+- Desktop: Max 1920px ancho  
+- Thumbnails: 300x300px máximo
+- Evitar redimensionar en CSS
+
+## Impacto específico Chile
+
+### Conexiones móviles
+- 4G limitado en regiones
+- Plans datos restringidos
+- Imágenes optimizadas = menos consumo
+
+### SEO local
+- Core Web Vitals críticos
+- Google prioriza velocidad
+- Bounce rate reducido
+- Mejor ranking local`,
+    category: 'performance',
+    cms: 'general',
+    tags: ['imagenes', 'optimization', 'webp', 'lazy-loading', 'performance'],
+    level: 'medio',
+    related: ['cache-web', 'cdn', 'performance-web'],
+    hostingRequirements: ['Soporte WebP', 'Compresión automática', 'CDN incluido'],
+    cta: {
+      plan: 'Hosting con CDN',
+      copy: 'Optimización automática de imágenes + CDN global incluido',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=87'
+    },
+    proofPoints: ['WebP automático', 'Compresión inteligente', 'CDN incluido'],
+    whenToUse: 'Esencial para sitios con contenido visual',
+    synonyms: ['compresión imágenes', 'optimización visual'],
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'perf-003',
+    slug: 'core-web-vitals', 
+    title: 'Core Web Vitals',
+    shortDefinition: 'Métricas de Google que miden la experiencia real del usuario: velocidad de carga, interactividad y estabilidad visual.',
+    longDefinition: `Core Web Vitals son las métricas oficiales de Google para evaluar la experiencia del usuario. Desde 2021 son factor de ranking directo en búsquedas.
+
+## Las 3 métricas principales
+
+### LCP (Largest Contentful Paint)
+- **Qué mide**: Velocidad de carga del contenido principal
+- **Meta**: ≤ 2.5 segundos
+- **Optimización**: 
+  - Optimizar servidor response time
+  - Comprimir imágenes hero
+  - Lazy load content below fold
+  - Usar CDN para assets críticos
+
+### FID (First Input Delay) → INP (2024)
+- **Qué mide**: Tiempo hasta primera interacción
+- **Meta**: ≤ 100ms (FID) / ≤ 200ms (INP)
+- **Optimización**:
+  - Reducir JavaScript blocking
+  - Code splitting
+  - Defer non-critical scripts
+  - Optimizar third-party scripts
+
+### CLS (Cumulative Layout Shift)
+- **Qué mide**: Estabilidad visual durante carga
+- **Meta**: ≤ 0.1
+- **Optimización**:
+  - Dimensiones explícitas para imágenes
+  - Reserve space para ads/embeds
+  - Evitar content insertions dinámicos
+  - Optimizar web fonts loading
+
+## Herramientas de medición
+
+### Google oficiales
+- **PageSpeed Insights**: Datos reales + lab
+- **Search Console**: Core Web Vitals report
+- **Chrome DevTools**: Lighthouse integrado
+- **Web Vitals Extension**: Monitoreo tiempo real
+
+### Herramientas chilenas
+- **GTmetrix**: Análisis detallado gratis
+- **Pingdom**: Monitoreo desde múltiples ubicaciones
+- **WebPageTest**: Testing avanzado open source
+
+## Estrategia de optimización Chile
+
+### Paso 1: Medición baseline
+\`\`\`bash
+# Install Web Vitals library
+npm install web-vitals
+
+# Measure in production
+import {getCLS, getFID, getFCP, getLCP, getTTFB} from 'web-vitals';
+
+getCLS(console.log);
+getFID(console.log);
+getLCP(console.log);
+\`\`\`
+
+### Paso 2: Priorización
+1. **LCP first**: Mayor impacto SEO
+2. **CLS second**: UX crítico mobile
+3. **FID/INP last**: Optimization avanzada
+
+### Paso 3: Quick wins
+- Comprimir imágenes → WebP
+- Enable GZIP compression
+- Minify CSS/JS crítico
+- Implement critical CSS inline
+
+## Impacto business Chile
+
+### Mejoras típicas post-optimización
+- **Ranking Google**: +15-30 posiciones
+- **Conversion rate**: +20-40% móvil
+- **Bounce rate**: -25-50%
+- **Revenue per visit**: +15-25%
+
+### Benchmarks mercado chileno
+- **E-commerce**: LCP ≤ 2s crítico
+- **News/Blog**: CLS ≤ 0.05 ideal
+- **SaaS/Apps**: FID ≤ 50ms competitivo`,
+    category: 'performance',
+    cms: 'general',
+    tags: ['core-web-vitals', 'google', 'seo', 'performance', 'ux'],
+    level: 'avanzado',
+    related: ['cache-web', 'optimizacion-imagenes', 'seo-local'],
+    hostingRequirements: ['Servidor optimizado', 'CDN incluido', 'HTTP/2 support'],
+    cta: {
+      plan: 'Hosting Performance Pro',
+      copy: 'Hosting optimizado para Core Web Vitals - Ranking Google garantizado',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=89'
+    },
+    proofPoints: ['Optimización incluida', 'Monitoreo automático', 'Soporte especializado'],
+    whenToUse: 'Obligatorio para sites que compiten en Google',
+    synonyms: ['métricas google', 'web vitals', 'performance seo'],
+    lastUpdated: '2025-01-15'
+  },
+
+  // Security Terms - Fase 2
+  {
+    id: 'sec-001',
+    slug: 'firewall-web',
+    title: 'Firewall Web (WAF)',
+    shortDefinition: 'Sistema de protección que filtra tráfico malicioso antes de que llegue al servidor, bloqueando ataques y amenazas web.',
+    longDefinition: `Un Web Application Firewall (WAF) es la primera línea de defensa contra ataques web. Analiza todo el tráfico HTTP/HTTPS en tiempo real.
+
+## ¿Cómo funciona un WAF?
+
+### Filtrado de tráfico
+- **Inspección deep packet**: Analiza contenido completo
+- **Pattern matching**: Detecta patrones maliciosos
+- **Rate limiting**: Previene ataques DDoS
+- **Geoblocking**: Bloquea países específicos
+
+### Tipos de protección
+
+#### Ataques comunes bloqueados
+- **SQL Injection**: Manipulación base datos
+- **XSS (Cross-Site Scripting)**: Inyección código malicioso
+- **CSRF**: Falsificación requests
+- **File inclusion**: Acceso archivos no autorizados
+- **DDoS Layer 7**: Saturación aplicación
+
+#### Protección específica WordPress
+- **wp-admin brute force**: Múltiples intentos login
+- **Plugin vulnerabilities**: Exploits conocidos
+- **Theme exploits**: Vulnerabilidades templates
+- **XML-RPC attacks**: Abuso funciones WordPress
+
+## Opciones WAF para Chile
+
+### CloudFlare (Recomendado)
+- **Plan Free**: Protección básica DDoS
+- **Plan Pro**: $20/mes, WAF completo
+- **Ventajas**: CDN + Security integrado
+- **Desventaja**: Configuración técnica
+
+### Sucuri WAF
+- **Costo**: $200-500/año
+- **Ventajas**: Especialistas WordPress
+- **Cleanup**: Limpieza malware incluida
+- **Soporte**: En español disponible
+
+### Server-level (cPanel)
+- **ModSecurity**: Incluido hosting premium
+- **ConfigServer Firewall**: CSF gratuito
+- **Fail2ban**: Auto-block IPs maliciosas
+- **Ventaja**: Control total configuración
+
+## Configuración recomendada
+
+### WAF rules básicas
+\`\`\`apache
+# ModSecurity core rules
+SecRuleEngine On
+SecDefaultAction "phase:1,deny,log,status:403"
+SecRequestBodyLimit 13107200
+SecRequestBodyNoFilesLimit 131072
+
+# WordPress specific
+SecRule REQUEST_URI "@beginsWith /wp-admin" \\
+    "id:1001,phase:1,t:none,block,msg:'Admin access blocked'"
+\`\`\`
+
+### Whitelist IPs confiables
+- Oficina empresa
+- Desarrolladores autorizados  
+- APIs/services legítimos
+- Partners comerciales
+
+## Métricas de seguridad
+
+### KPIs a monitorear
+- **Ataques bloqueados/día**: Baseline normal
+- **False positives**: <1% tráfico legítimo
+- **Response time impact**: <50ms adicional
+- **Uptime availability**: >99.9%
+
+### Alertas críticas
+- Spike attacks (10x normal)
+- New attack patterns
+- Failed authentication clusters
+- Suspicious country traffic`,
+    category: 'security',
+    cms: 'general',
+    tags: ['firewall', 'waf', 'seguridad-web', 'proteccion', 'ddos'],
+    level: 'medio',
+    related: ['ssl-certificado', 'backup', 'seguridad-wordpress'],
+    hostingRequirements: ['ModSecurity incluido', 'Firewall configurable', 'DDoS protection'],
+    cta: {
+      plan: 'Hosting Seguro Pro',
+      copy: 'Hosting con firewall avanzado y protección DDoS incluida',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=91'
+    },
+    proofPoints: ['WAF incluido', 'Protección 24/7', 'Monitoreo automático'],
+    whenToUse: 'Esencial para sitios con datos sensibles o alta visibilidad',
+    synonyms: ['cortafuegos web', 'protección web', 'security firewall'],
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'sec-002',
+    slug: 'malware-protection',
+    title: 'Protección contra Malware',
+    shortDefinition: 'Sistemas y estrategias para detectar, prevenir y eliminar software malicioso de sitios web y servidores.',
+    longDefinition: `La protección contra malware es fundamental para mantener la integridad y reputación de tu sitio web. Un sitio infectado puede perder ranking, visitantes y ingresos.
+
+## Tipos de malware comunes
+
+### Malware WordPress específico
+- **Backdoors**: Acceso no autorizado persistente
+- **Drive-by downloads**: Descargas automáticas maliciosas
+- **SEO spam**: Inyección enlaces maliciosos
+- **Phishing redirects**: Redirecciones sitios fraudulentos
+- **Cryptominers**: Minería criptomonedas oculta
+
+### Vectores de infección
+- **Plugins vulnerables**: 60% infecciones WP
+- **Themes nulled**: Código malicioso oculto
+- **Credenciales débiles**: Brute force exitoso  
+- **File uploads**: Subida archivos infectados
+- **SQL injection**: Modificación base datos
+
+## Herramientas de detección
+
+### Scanners automáticos
+- **Wordfence**: Plugin WordPress completo
+- **Sucuri SiteCheck**: Scanner online gratuito
+- **MalCare**: Detección AI avanzada
+- **VirusTotal**: Multi-engine analysis
+
+### Servicios de limpieza
+- **Sucuri**: $200/año, cleanup incluido
+- **MalCare**: $99/año, automático
+- **SiteLock**: Múltiples planes
+- **Wordfence Premium**: $99/año
+
+## Estrategias de prevención
+
+### Hardening básico
+\`\`\`php
+// wp-config.php security
+define('DISALLOW_FILE_EDIT', true);
+define('WP_DEBUG', false);
+define('FORCE_SSL_ADMIN', true);
+
+// Disable XML-RPC
+add_filter('xmlrpc_enabled', '__return_false');
+
+// Hide WP version
+remove_action('wp_head', 'wp_generator');
+\`\`\`
+
+### File permissions correctos
+\`\`\`bash
+# Directorios
+find /path/to/wordpress/ -type d -exec chmod 755 {} \\;
+
+# Archivos PHP
+find /path/to/wordpress/ -type f -exec chmod 644 {} \\;
+
+# wp-config.php
+chmod 600 wp-config.php
+\`\`\`
+
+### Monitoring continuo
+- **File integrity monitoring**: Detecta cambios no autorizados
+- **Blacklist monitoring**: Alerta si apareces en listas negras
+- **Uptime monitoring**: Detecta downtime por infecciones
+- **SSL monitoring**: Verifica certificados válidos
+
+## Respuesta a incidentes
+
+### Protocolo de limpieza
+1. **Aislamiento**: Cambiar passwords, bloquear accesos
+2. **Backup clean**: Restaurar desde backup limpio
+3. **Scan completo**: Verificar todos los archivos
+4. **Cleanup manual**: Remover código malicioso
+5. **Hardening**: Implementar medidas preventivas
+6. **Monitoring**: Verificar no reinfección
+
+### Comunicación crisis
+- **Google Search Console**: Request reconsideration
+- **Usuarios**: Transparencia sobre incident
+- **Clientes**: Medidas tomadas y prevención
+- **Partners**: Notificación si datos compartidos
+
+## Impacto business específico Chile
+
+### Costos típicos infección
+- **Cleanup profesional**: $300-1,500 USD
+- **Downtime revenue**: $500-5,000/día
+- **SEO recovery**: 2-6 meses
+- **Customer trust**: Daño reputacional
+
+### Legal compliance Chile
+- **Ley de datos personales**: Obligación protección
+- **Notificación usuarios**: Requerida en breaches
+- **Sanciones**: Hasta 2% facturación anual`,
+    category: 'security',
+    cms: 'general',
+    tags: ['malware', 'security', 'proteccion', 'wordpress-security', 'antivirus'],
+    level: 'medio',
+    related: ['firewall-web', 'backup', 'ssl-certificado'],
+    hostingRequirements: ['Antimalware incluido', 'File monitoring', 'Backup automático'],
+    cta: {
+      plan: 'Hosting Seguro Premium',
+      copy: 'Protección malware 24/7 + limpieza incluida si hay infección',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=93'
+    },
+    proofPoints: ['Scan diario', 'Limpieza incluida', 'Monitoreo 24/7'],
+    whenToUse: 'Obligatorio para cualquier sitio web comercial',
+    synonyms: ['antimalware', 'protección virus', 'security scan'],
+    lastUpdated: '2025-01-15'
+  },
+
+  // Email Terms - Fase 2  
+  {
+    id: 'email-001',
+    slug: 'email-hosting',
+    title: 'Email Hosting',
+    shortDefinition: 'Servicio de correo electrónico profesional asociado a tu dominio, con mayor seguridad y control que emails gratuitos.',
+    longDefinition: `Email hosting profesional es esencial para proyectar imagen corporativa seria. Usar gmail para empresa puede afectar credibilidad y confianza.
+
+## Ventajas email profesional
+
+### Imagen corporativa
+- **Dominio propio**: juan@miempresa.cl vs juan@gmail.com
+- **Credibilidad**: +40% confianza clientes
+- **Branding**: Cada email promociona tu marca
+- **Profesionalismo**: Fundamental B2B Chile
+
+### Control y seguridad
+- **Datos propios**: No dependes terceros
+- **Privacidad**: Sin scanning para ads
+- **Backup control**: Políticas propias
+- **Compliance**: Cumple normativas chilenas
+
+## Tipos de email hosting
+
+### POP3 (básico)
+- **Funcionamiento**: Descarga emails local
+- **Ventaja**: Simple, compatible universal
+- **Desventaja**: No sincroniza entre dispositivos
+- **Uso recomendado**: Un solo dispositivo acceso
+
+### IMAP (recomendado)
+- **Funcionamiento**: Emails quedan en servidor
+- **Ventaja**: Sincronización multi-device
+- **Desventaja**: Consume más espacio servidor
+- **Uso recomendado**: Equipos modernos
+
+### Exchange/ActiveSync (empresarial)
+- **Funcionamiento**: Sincronización avanzada
+- **Ventajas**: Calendarios, contactos, tareas
+- **Desventaja**: Más caro, más complejo
+- **Uso recomendado**: Equipos >10 personas
+
+## Configuración recomendada Chile
+
+### Parámetros IMAP típicos
+\`\`\`
+Servidor entrante (IMAP):
+- mail.tudominio.cl
+- Puerto: 993 (SSL) o 143 (no-SSL)
+- Seguridad: SSL/TLS recomendado
+
+Servidor saliente (SMTP):
+- mail.tudominio.cl  
+- Puerto: 465 (SSL) o 587 (TLS)
+- Autenticación: Requerida
+\`\`\`
+
+### Capacidades típicas hosting chileno
+- **Cuentas**: 10-ilimitadas según plan
+- **Espacio por cuenta**: 1-10 GB
+- **Webmail**: Roundcube/Horde incluido
+- **Forwarding**: Redirección automática
+- **Autoresponders**: Respuestas automáticas
+- **Filtros spam**: Protección incluida
+
+## Mejores prácticas
+
+### SPF Record (obligatorio)
+\`\`\`dns
+v=spf1 a mx include:_spf.hostingprovider.cl ~all
+\`\`\`
+
+### DKIM (recomendado)
+- Firma digital emails
+- Previene spoofing
+- Mejora deliverability
+- Configuración vía cPanel
+
+### DMARC (avanzado)
+- Política anti-phishing
+- Reportes delivery
+- Protección marca
+- Implementación gradual
+
+## Migración desde email gratuito
+
+### Paso a paso
+1. **Backup emails**: Exportar desde Gmail/Outlook
+2. **Configurar hosting**: Crear cuentas profesionales
+3. **Import emails**: Subir histórico importante
+4. **Update signatures**: Nueva imagen corporativa
+5. **Notify contacts**: Cambio progresivo comunicación
+
+### Timeline recomendado
+- **Semana 1**: Setup y testing interno
+- **Semana 2**: Migración emails críticos
+- **Semana 3**: Notificación clientes/proveedores
+- **Semana 4**: Redirects gmail → email profesional`,
+    category: 'email',
+    cms: 'general',
+    tags: ['email', 'correo', 'email-profesional', 'imap', 'smtp'],
+    level: 'basico',
+    related: ['que-es-hosting', 'dominio', 'dns'],
+    hostingRequirements: ['Email incluido', 'IMAP/POP3 support', 'Webmail interface'],
+    cta: {
+      plan: 'Hosting + Email Profesional',
+      copy: 'Hosting con emails ilimitados incluidos - Imagen profesional desde día 1',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=95'
+    },
+    proofPoints: ['Emails ilimitados', 'Webmail incluido', 'Configuración fácil'],
+    whenToUse: 'Fundamental para cualquier negocio serio',
+    synonyms: ['correo profesional', 'email corporativo', 'mail hosting'],
+    lastUpdated: '2025-01-15'
   }
 ];
 
