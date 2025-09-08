@@ -2628,6 +2628,662 @@ Tipo MX: mail.miempresa.cl → servidor-email
       }
     ],
     lastUpdated: '2025-01-15'
+  },
+
+  // Additional Hosting Fundamentals Terms
+  {
+    id: 'hf-006',
+    slug: 'servidor-compartido',
+    title: 'Servidor Compartido',
+    shortDefinition: 'Tipo de hosting donde múltiples sitios web comparten los recursos de un mismo servidor físico. Opción económica ideal para sitios web pequeños y medianos.',
+    longDefinition: `El hosting compartido es la solución más popular para sitios web nuevos y PyMEs en Chile. Múltiples usuarios comparten CPU, RAM y almacenamiento del mismo servidor.
+
+## ¿Cómo funciona el hosting compartido?
+
+### **Arquitectura del servidor**
+\`\`\`
+Servidor Físico (ejemplo)
+├── CPU: 16 cores (compartidos)
+├── RAM: 64GB (distribuida)
+├── Almacenamiento: 2TB SSD
+└── Cuentas: 200-500 sitios web
+\`\`\`
+
+### **Recursos típicos por cuenta**
+- **Espacio**: 1-10GB SSD
+- **Transferencia**: 50GB-ilimitado/mes  
+- **Dominios**: 1-ilimitados
+- **Emails**: 10-ilimitadas cuentas
+- **Bases de datos**: 5-25 MySQL
+
+## Ventajas del hosting compartido
+
+### **✅ Beneficios principales**
+- **Económico**: Desde $2.000/mes en Chile
+- **Mantenimiento incluido**: Sin gestión técnica
+- **Panel control**: cPanel/Plesk fácil de usar
+- **Soporte técnico**: 24/7 en español
+- **Escalabilidad**: Fácil upgrade a VPS/dedicado
+
+### **🎯 Ideal para:**
+- Sitios web nuevos (<1000 visitas/día)
+- Blogs personales y PyMEs
+- Portafolios profesionales
+- Sitios informativos corporativos
+- E-commerce pequeño (<100 productos)
+
+## Limitaciones importantes
+
+### **❌ Desventajas**
+- **Recursos limitados**: Compartidos con otros sitios
+- **Rendimiento variable**: Afectado por "vecinos ruidosos"
+- **Menos control**: Configuraciones limitadas
+- **Restricciones**: Software y versiones predefinidas
+
+### **⚠️ Cuándo NO usar compartido**
+- Sitios con >5000 visitas/día
+- Aplicaciones con uso intensivo de CPU
+- E-commerce grande con inventario dinámico
+- Sitios que requieren configuraciones específicas
+
+## Proveedores destacados en Chile
+
+### **Hosting compartido confiable**
+- **HostingPlus**: Líder en soporte chileno
+- **WebHosting**: Servidores en Chile
+- **Hosting24**: Precios competitivos
+- **EcoHosting**: Enfoque sustentable
+
+### **Comparación de precios 2025**
+\`\`\`
+Plan Básico (1 sitio):
+├── HostingPlus: $2.490/mes
+├── WebHosting: $2.990/mes  
+├── Hosting24: $1.990/mes
+└── EcoHosting: $2.790/mes
+\`\`\`
+
+## Optimización en shared hosting
+
+### **🚀 Mejores prácticas**
+- Usar **CDN** para reducir carga del servidor
+- **Optimizar imágenes** (WebP, compresión)
+- **Cache plugins** (WP Rocket, W3 Total Cache)
+- **Bases de datos** limpias y optimizadas
+- **Actualizar** WordPress y plugins
+
+### **⚡ Plugins recomendados**
+\`\`\`php
+// Cache configuration
+define('WP_CACHE', true);
+define('WPCACHEHOME', '/path/to/wp-content/plugins/wp-super-cache/');
+
+// Memory limit optimization
+ini_set('memory_limit', '256M');
+\`\`\`
+
+## Monitoreo y mantenimiento
+
+### **📊 Métricas clave**
+- **Tiempo de carga**: <3 segundos objetivo
+- **Uptime**: >99.5% garantizado
+- **Uso recursos**: Monitorear CPU/RAM
+- **Transferencia**: Controlar bandwidth mensual
+
+### **🔧 Herramientas útiles**
+- **GTmetrix**: Velocidad del sitio
+- **Pingdom**: Monitoreo uptime
+- **Google PageSpeed**: Optimización
+- **Sucuri**: Seguridad y malware`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['hosting-compartido', 'servidor-compartido', 'hosting-economico', 'pymes'],
+    level: 'basico',
+    related: ['que-es-hosting', 'vps', 'servidor-dedicado'],
+    hostingRequirements: ['cPanel incluido', 'SSL gratuito', 'Backup automático', 'Soporte 24/7'],
+    cta: {
+      plan: 'Hosting Compartido Premium',
+      copy: 'Hosting compartido optimizado - Ideal para tu primer sitio web',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['99.9% uptime garantizado', 'Soporte en español 24/7', 'cPanel en español', 'Servidores en Chile'],
+    whenToUse: 'Sitios nuevos, blogs, PyMEs con presupuesto limitado y tráfico moderado',
+    synonyms: ['shared hosting', 'hosting económico', 'hosting básico'],
+    tldr: {
+      title: 'Hosting Compartido Esencial',
+      keyPoints: [
+        'Múltiples sitios comparten recursos del mismo servidor',
+        'Opción más económica: desde $2.000/mes en Chile',
+        'Ideal para sitios nuevos con <1000 visitas/día',
+        'Incluye mantenimiento y soporte técnico completo'
+      ]
+    },
+    faq: [
+      {
+        question: '¿Cuántos sitios puedo alojar en hosting compartido?',
+        answer: 'Depende del plan. Planes básicos permiten 1 sitio, planes premium permiten sitios ilimitados. El límite real lo ponen los recursos disponibles.'
+      },
+      {
+        question: '¿El hosting compartido es seguro?',
+        answer: 'Sí, si eliges un proveedor confiable. Los sitios están aislados entre sí. Usa siempre SSL, mantén WordPress actualizado y usa plugins de seguridad.'
+      }
+    ],
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'hf-007',
+    slug: 'vps',
+    title: 'VPS (Servidor Virtual Privado)',
+    shortDefinition: 'Servidor virtual que ofrece recursos dedicados dentro de un servidor físico. Equilibrio perfecto entre hosting compartido y servidor dedicado.',
+    longDefinition: `VPS (Virtual Private Server) te da control total sobre tu entorno de hosting con recursos garantizados. Es el siguiente paso natural desde el hosting compartido.
+
+## ¿Qué es un VPS?
+
+### **Virtualización explicada**
+\`\`\`
+Servidor Físico
+├── VPS 1: 2GB RAM, 2 CPU cores, 50GB SSD
+├── VPS 2: 4GB RAM, 4 CPU cores, 100GB SSD  
+├── VPS 3: 8GB RAM, 6 CPU cores, 200GB SSD
+└── VPS 4: 16GB RAM, 8 CPU cores, 500GB SSD
+\`\`\`
+
+### **Recursos dedicados**
+- **RAM**: Garantizada (no compartida)
+- **CPU**: Cores dedicados o garantizados
+- **Almacenamiento**: SSD NVMe exclusivo
+- **IP**: Dirección IP dedicada incluida
+- **Ancho banda**: Sin límites de "vecinos"
+
+## Tipos de VPS
+
+### **VPS Administrado vs No Administrado**
+
+**VPS Administrado (Managed)**
+- Actualizaciones automáticas del sistema
+- Monitoreo 24/7 por el proveedor
+- Soporte técnico completo
+- Backup automático incluido
+- **Precio**: $25.000-$80.000/mes
+
+**VPS No Administrado (Unmanaged)**  
+- Control total del servidor
+- Tú gestionas actualizaciones y seguridad
+- Soporte limitado a hardware
+- **Precio**: $8.000-$30.000/mes
+- Requiere conocimientos técnicos
+
+### **Sistemas operativos populares**
+\`\`\`bash
+# Linux (más popular)
+├── Ubuntu 20.04/22.04 LTS
+├── CentOS 7/8 (Rocky Linux)
+├── Debian 10/11
+└── CloudLinux (optimizado hosting)
+
+# Windows Server (menos común)
+├── Windows Server 2019
+└── Windows Server 2022
+\`\`\`
+
+## Cuándo usar VPS
+
+### **✅ Ideal para:**
+- Sitios con 5.000-50.000 visitas/día
+- E-commerce con >500 productos
+- Aplicaciones web personalizadas
+- Múltiples sitios de clientes (agencias)
+- Sitios que requieren configuraciones específicas
+
+### **📈 Señales para migrar a VPS**
+- Hosting compartido se queda corto
+- Necesitas instalar software específico
+- Requieres acceso root/SSH
+- Tu sitio sufre caídas frecuentes
+- Necesitas mejor rendimiento de BD
+
+## Configuración típica VPS Chile
+
+### **Configuraciones recomendadas**
+\`\`\`
+VPS Básico ($25.000/mes):
+├── 2GB RAM
+├── 2 CPU cores  
+├── 50GB SSD
+└── 2TB transferencia
+
+VPS Intermedio ($45.000/mes):
+├── 4GB RAM
+├── 4 CPU cores
+├── 100GB SSD  
+└── 4TB transferencia
+
+VPS Avanzado ($80.000/mes):
+├── 8GB RAM
+├── 6 CPU cores
+├── 200GB SSD
+└── 8TB transferencia
+\`\`\`
+
+### **Software de control panel**
+- **cPanel/WHM**: Más popular, fácil de usar
+- **Plesk**: Interfaz moderna, soporte Windows
+- **CyberPanel**: Gratuito, basado en LiteSpeed
+- **DirectAdmin**: Económico, ligero
+
+## Optimización VPS
+
+### **🔧 Configuraciones esenciales**
+\`\`\`bash
+# Actualizar sistema
+sudo apt update && sudo apt upgrade -y
+
+# Configurar firewall
+sudo ufw enable
+sudo ufw allow ssh
+sudo ufw allow http
+sudo ufw allow https
+
+# Optimizar MySQL
+sudo mysql_secure_installation
+
+# Configurar swap
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+\`\`\`
+
+### **⚡ Optimizaciones de rendimiento**
+- **OPcache PHP**: Acelera WordPress 3-5x
+- **Redis/Memcached**: Cache de objetos
+- **HTTP/2**: Protocolo más rápido
+- **Compresión Gzip**: Reduce bandwidth 70%
+
+## Proveedores VPS Chile
+
+### **Recomendados locales**
+- **HostingPlus**: VPS administrados premium
+- **NetHosting**: Buena relación precio/calidad  
+- **ProHosting**: Especialistas en VPS
+- **CloudHosting**: Infraestructura moderna
+
+### **Internacionales populares**
+- **DigitalOcean**: $5 USD/mes, muy popular
+- **Linode**: Rendimiento excepcional
+- **Vultr**: Red global, precios competitivos`,
+    category: 'hosting-fundamentals',
+    cms: 'general', 
+    tags: ['vps', 'servidor-virtual', 'hosting-avanzado', 'escalabilidad'],
+    level: 'medio',
+    related: ['servidor-compartido', 'servidor-dedicado', 'que-es-hosting'],
+    hostingRequirements: ['Acceso root/SSH', 'Control panel opcional', 'IP dedicada', 'Recursos garantizados'],
+    cta: {
+      plan: 'VPS Administrado',
+      copy: 'VPS con gestión completa - Rendimiento sin complicaciones',  
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=85'
+    },
+    proofPoints: ['Recursos 100% dedicados', 'Escalabilidad instantánea', 'Control total del servidor'],
+    whenToUse: 'Sitios con +5000 visitas/día, e-commerce grande, aplicaciones personalizadas',
+    synonyms: ['servidor virtual privado', 'virtual private server', 'hosting vps'],
+    tldr: {
+      title: 'VPS Esencial',
+      keyPoints: [
+        'Servidor virtual con recursos 100% dedicados',
+        'Equilibrio perfecto: control + gestión simplificada',  
+        'Ideal para sitios con 5K-50K visitas diarias',
+        'Escalable: desde $25.000/mes en Chile'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'dom-002', 
+    slug: 'nameservers',
+    title: 'Nameservers (Servidores DNS)',
+    shortDefinition: 'Servidores que traducen nombres de dominio a direcciones IP. Son los "traductores" que permiten que tu dominio apunte a tu hosting.',
+    longDefinition: `Los nameservers son servidores DNS que conectan tu dominio con tu hosting. Son fundamentales para que tu sitio web sea accesible en internet.
+
+## ¿Cómo funcionan los nameservers?
+
+### **Proceso de resolución DNS**
+\`\`\`
+Usuario escribe: miempresa.cl
+      ↓
+1. Consulta nameservers de .cl
+      ↓  
+2. Nameservers responden: ns1.hostingplus.cl
+      ↓
+3. Consulta ns1.hostingplus.cl
+      ↓
+4. Responde IP: 192.168.1.100
+      ↓
+5. Browser conecta a 192.168.1.100
+\`\`\`
+
+### **Tiempo de propagación**
+- **Cambio nameservers**: 24-48 horas mundial
+- **Cambio registros DNS**: 1-4 horas
+- **TTL bajo**: Propagación más rápida
+- **Cache DNS**: Puede ralentizar cambios
+
+## Configuración de nameservers
+
+### **Nameservers típicos en Chile**
+\`\`\`
+HostingPlus:
+├── ns1.hostingplus.cl
+└── ns2.hostingplus.cl
+
+WebHosting:  
+├── ns1.webhosting.cl
+└── ns2.webhosting.cl
+
+Hosting24:
+├── ns1.hosting24.cl
+└── ns2.hosting24.cl
+\`\`\`
+
+### **Cambiar nameservers en NIC Chile**
+1. Acceder a panel NIC Chile
+2. Seleccionar dominio .cl
+3. Ir a "Servidores DNS" 
+4. Ingresar nuevos nameservers
+5. Confirmar cambios (demora 24-48h)
+
+## Registros DNS esenciales
+
+### **Tipos de registros principales**
+\`\`\`dns
+; Registro A - Dominio a IP
+miempresa.cl.    IN    A    192.168.1.100
+www.miempresa.cl. IN   A    192.168.1.100
+
+; Registro CNAME - Alias
+blog.miempresa.cl. IN  CNAME  miempresa.cl.
+tienda.miempresa.cl. IN CNAME miempresa.cl.
+
+; Registro MX - Email  
+miempresa.cl.    IN    MX    10 mail.miempresa.cl.
+                 IN    MX    20 mail2.miempresa.cl.
+
+; Registro TXT - Verificaciones
+miempresa.cl.    IN    TXT   "v=spf1 include:_spf.google.com ~all"
+_dmarc.miempresa.cl. IN TXT  "v=DMARC1; p=quarantine;"
+\`\`\`
+
+### **TTL (Time To Live)**
+- **300 segundos**: Para cambios frecuentes
+- **3600 segundos**: Configuración estándar
+- **86400 segundos**: Para registros estables
+- **Menor TTL**: Propagación más rápida, más consultas DNS
+
+## Problemas comunes
+
+### **❌ Errores frecuentes**
+- **Nameservers incorrectos**: Sitio no carga
+- **Registros A faltantes**: Dominio sin www no resuelve
+- **MX mal configurado**: Email no funciona  
+- **TTL muy alto**: Cambios demoran días
+
+### **🔧 Solución de problemas**
+\`\`\`bash
+# Verificar nameservers actuales
+nslookup miempresa.cl
+
+# Verificar propagación DNS
+dig miempresa.cl @8.8.8.8
+dig miempresa.cl @1.1.1.1
+
+# Verificar registros MX
+dig MX miempresa.cl
+
+# Verificar desde Chile
+dig miempresa.cl @200.1.123.4
+\`\`\`
+
+## Nameservers especializados
+
+### **CDN nameservers**
+- **Cloudflare**: Gratis, mejora velocidad y seguridad
+- **MaxCDN**: Especializado en velocidad
+- **AWS CloudFront**: Enterprise level
+
+### **Configuración Cloudflare**
+\`\`\`
+Nameservers Cloudflare (ejemplo):
+├── adin.ns.cloudflare.com
+└── cruz.ns.cloudflare.com
+
+Beneficios:
+├── CDN global gratuito
+├── Protección DDoS
+├── SSL gratuito  
+└── Optimización automática
+\`\`\`
+
+## DNS management
+
+### **Herramientas útiles**
+- **whatsmydns.net**: Verificar propagación mundial
+- **dnschecker.org**: Multi-location DNS check
+- **mxtoolbox.com**: Verificar registros MX y blacklist
+- **dig/nslookup**: Herramientas comando
+
+### **Best practices**
+- Usar **múltiples nameservers** (redundancia)
+- **TTL apropiado** según uso
+- **Monitorear DNS** con herramientas
+- **Backup DNS** con proveedor secundario`,
+    category: 'domains',
+    cms: 'general',
+    tags: ['dns', 'nameservers', 'propagacion-dns', 'registros-dns'],
+    level: 'medio',
+    related: ['dominio', 'que-es-hosting', 'cloudflare'],
+    hostingRequirements: ['DNS management incluido', 'Nameservers propios', 'Registros DNS completos'],
+    cta: {
+      plan: 'Hosting con DNS Premium',
+      copy: 'DNS ultrarrápido con nameservers en Chile',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['Nameservers en Chile', 'Propagación optimizada', 'DNS management completo'],
+    whenToUse: 'Esencial al conectar dominio con hosting o cambiar proveedores',
+    synonyms: ['servidores dns', 'dns servers', 'servidores de nombres'],
+    tldr: {
+      title: 'Nameservers Esencial',
+      keyPoints: [
+        'Conectan tu dominio con tu servidor de hosting',
+        'Cambios demoran 24-48 horas en propagarse',
+        'Esenciales para que tu sitio sea accesible',
+        'Se configuran en el registrador del dominio'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'ssl-002',
+    slug: 'lets-encrypt',
+    title: 'Let\'s Encrypt',  
+    shortDefinition: 'Autoridad certificadora que ofrece certificados SSL/TLS gratuitos y automáticos. Revolución que hizo HTTPS accesible para todos los sitios web.',
+    longDefinition: `Let's Encrypt democratizó la seguridad web al ofrecer certificados SSL completamente gratuitos y automatizados. Fundado por Mozilla, Chrome y otros gigantes tech.
+
+## ¿Qué es Let's Encrypt?
+
+### **Misión y propósito**
+- **100% gratuito**: Sin costos ocultos ni limitaciones
+- **Automatización total**: Instalación y renovación automática  
+- **Open source**: Transparencia completa del proceso
+- **Respaldado por**: Mozilla, Chrome, Facebook, Cisco
+
+### **Estadísticas impactantes**
+- **+300 millones** de certificados emitidos
+- **90 días** de validez (renovación automática)
+- **99.9%** de sitios WordPress pueden usarlo
+- **Mismo nivel** de encriptación que SSL premium
+
+## Cómo funciona Let's Encrypt
+
+### **Proceso de validación automática**
+\`\`\`
+1. Solicitud certificado → Let's Encrypt
+2. Desafío validación → Servidor web  
+3. Prueba control dominio → Archivo temporal
+4. Validación exitosa → Certificado emitido
+5. Instalación automática → HTTPS activo
+\`\`\`
+
+### **Protocolos utilizados**
+- **ACME**: Protocolo de gestión automática
+- **HTTP-01**: Validación vía archivo web
+- **DNS-01**: Validación vía registro DNS
+- **TLS-ALPN-01**: Validación vía TLS
+
+## Instalación y configuración
+
+### **En hosting compartido (1-click)**
+La mayoría de hostings chilenos incluyen Let's Encrypt:
+\`\`\`
+cPanel → SSL/TLS → Let's Encrypt
+├── Seleccionar dominio
+├── Incluir www y sin www  
+├── Activar "Force HTTPS"
+└── ¡Listo en 30 segundos!
+\`\`\`
+
+### **En VPS con Certbot**
+\`\`\`bash
+# Instalar Certbot (Ubuntu/Debian)
+sudo apt update
+sudo apt install certbot python3-certbot-apache
+
+# Obtener certificado Apache
+sudo certbot --apache -d miempresa.cl -d www.miempresa.cl
+
+# Obtener certificado Nginx  
+sudo certbot --nginx -d miempresa.cl -d www.miempresa.cl
+
+# Verificar renovación automática
+sudo certbot renew --dry-run
+\`\`\`
+
+### **Renovación automática**
+\`\`\`bash
+# Cron job para renovación (se crea automáticamente)
+0 12 * * * /usr/bin/certbot renew --quiet
+
+# Verificar certificados instalados
+sudo certbot certificates
+
+# Forzar renovación manual
+sudo certbot renew --force-renewal
+\`\`\`
+
+## Ventajas vs SSL premium
+
+### **✅ Let's Encrypt advantages**
+- **Costo**: $0 vs $50-200/año SSL premium
+- **Automatización**: Sin intervención manual
+- **Encriptación**: 256-bit idéntica a premium
+- **Compatibilidad**: 99%+ browsers modernos
+- **Velocidad emisión**: Inmediata vs días
+
+### **❌ Limitaciones Let's Encrypt**
+- **Solo Domain Validation**: Sin Extended Validation
+- **90 días validez**: vs 1-2 años SSL premium  
+- **Sin garantía monetaria**: SSL premium incluye seguro
+- **Sin soporte directo**: Depende del hosting/implementación
+
+### **🎯 Cuándo usar cada uno**
+\`\`\`
+Let's Encrypt ideal para:
+├── Blogs y sitios informativos
+├── E-commerce pequeño/mediano
+├── Portafolios profesionales
+└── 95% de sitios web
+
+SSL Premium necesario para:
+├── Banca y finanzas
+├── E-commerce con >$1M ventas/año
+├── Sitios que requieren Extended Validation
+└── Cumplimiento normativo estricto
+\`\`\`
+
+## Troubleshooting común
+
+### **❌ Errores frecuentes**
+\`\`\`
+Error: "Challenge failed"
+Causa: Puerto 80 bloqueado o archivo .htaccess
+Solución: Verificar firewall y permisos
+
+Error: "Rate limit exceeded"  
+Causa: Muchas solicitudes misma IP
+Solución: Esperar 1 semana o usar staging
+
+Error: "Certificate expired"
+Causa: Renovación automática falló
+Solución: Renovar manualmente y verificar cron
+\`\`\`
+
+### **🔧 Comandos diagnóstico**
+\`\`\`bash
+# Verificar SSL activo
+curl -I https://miempresa.cl
+
+# Ver detalles certificado
+openssl s_client -connect miempresa.cl:443 -servername miempresa.cl
+
+# Test SSL Labs
+https://www.ssllabs.com/ssltest/analyze.html?d=miempresa.cl
+\`\`\`
+
+## Proveedores que incluyen Let's Encrypt
+
+### **Hosting chileno con Let's Encrypt**
+- **HostingPlus**: Activación 1-click, renovación auto
+- **WebHosting**: Incluido en todos los planes
+- **Hosting24**: Gratuito, fácil activación
+- **EcoHosting**: SSL automático para .cl
+
+### **Configuración recomendada**
+\`\`\`apache
+# .htaccess - Force HTTPS redirect
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Headers seguridad
+Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+\`\`\``,
+    category: 'ssl-security',
+    cms: 'general',
+    tags: ['lets-encrypt', 'ssl-gratuito', 'certificado-gratuito', 'https'],
+    level: 'medio',
+    related: ['ssl-certificado', 'https', 'seguridad-web'],
+    hostingRequirements: ['Soporte Let\'s Encrypt', 'Instalación 1-click', 'Renovación automática'],
+    cta: {
+      plan: 'Hosting con SSL Automático',
+      copy: 'Let\'s Encrypt incluido - SSL gratuito de por vida',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['SSL gratuito incluido', 'Renovación automática', 'Instalación 1-click'],
+    whenToUse: 'Todos los sitios web modernos - blog, e-commerce, corporativo',
+    synonyms: ['ssl gratuito', 'certificado gratuito', 'https gratis'],
+    tldr: {
+      title: 'Let\'s Encrypt Revolucionario',
+      keyPoints: [
+        'SSL completamente gratuito con misma seguridad que premium',
+        'Instalación y renovación 100% automática',  
+        'Usado por +300 millones de sitios mundialmente',
+        'Incluido en prácticamente todos los hostings modernos'
+      ]
+    },
+    lastUpdated: '2025-01-15'  
   }
 ];
 
