@@ -3284,6 +3284,1929 @@ Header always set X-Frame-Options DENY
       ]
     },
     lastUpdated: '2025-01-15'  
+  },
+
+  // Additional Hosting Fundamentals Terms
+  {
+    id: 'hf-006',
+    slug: 'ancho-de-banda',
+    title: 'Ancho de Banda',
+    shortDefinition: 'Cantidad de datos que pueden transferirse entre el servidor y visitantes en un período específico. Crítico para el rendimiento del sitio.',
+    longDefinition: `El ancho de banda determina cuántos datos pueden fluir entre tu servidor web y los usuarios. Es fundamental para mantener un sitio rápido y accesible, especialmente en horas peak.
+
+## ¿Qué es el ancho de banda?
+
+### **Definición técnica**
+- **Medición**: Generalmente en GB/mes o TB/mes
+- **Tráfico**: Datos enviados + recibidos
+- **Bidireccional**: Include uploads y downloads
+- **Compartido vs dedicado**: Según tipo de hosting
+
+### **Factores que afectan el consumo**
+\`\`\`
+Página típica: 2-3 MB
+├── HTML: 50-100 KB  
+├── CSS: 100-200 KB
+├── JavaScript: 200-500 KB
+├── Imágenes: 1-2 MB
+└── Fonts: 100-300 KB
+
+Video HD 1 min = ~50 MB
+Imagen sin optimizar = 2-5 MB
+Imagen optimizada = 100-500 KB
+\`\`\`
+
+## Cálculo de ancho de banda necesario
+
+### **Fórmula básica**
+\`\`\`
+Ancho de banda = Tamaño promedio página × Visitantes × Páginas/visita × Factor seguridad (1.5x)
+
+Ejemplo práctico:
+- Página: 2 MB
+- Visitantes/mes: 10,000
+- Páginas/visita: 3
+- Total: 2 × 10,000 × 3 × 1.5 = 90 GB/mes
+\`\`\`
+
+### **Recomendaciones por tipo de sitio**
+- **Blog personal**: 10-50 GB/mes
+- **Sitio corporativo**: 50-200 GB/mes  
+- **E-commerce mediano**: 200-500 GB/mes
+- **Portal de noticias**: 500 GB-2 TB/mes
+
+## Optimización del ancho de banda
+
+### **🚀 Técnicas de optimización**
+\`\`\`php
+// Compresión Gzip en .htaccess
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/javascript
+</IfModule>
+
+// Cache headers para imágenes
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+</IfModule>
+\`\`\`
+
+### **CDN para reducir consumo**
+- **CloudFlare**: Cache global, reducción 60%
+- **Amazon CloudFront**: Integración AWS
+- **MaxCDN**: Especializado imágenes
+- **CDN Chile**: Servidores locales
+
+### **Optimización de imágenes**
+\`\`\`bash
+# WebP conversion - 30% menos peso
+cwebp input.jpg -q 80 -o output.webp
+
+# AVIF - 50% menos peso que JPEG  
+avifenc --min 0 --max 63 -a end-usage=q -a cq-level=23 input.jpg output.avif
+
+# Lazy loading automático
+<img src="placeholder.jpg" data-src="real-image.jpg" loading="lazy">
+\`\`\`
+
+## Problemas comunes de ancho de banda
+
+### **❌ Síntomas de insuficiencia**
+- Sitio lento en horas peak
+- Error 509 "Bandwidth exceeded"
+- Hosting suspendido temporalmente
+- Imágenes que no cargan
+
+### **🔧 Soluciones inmediatas**
+1. **Optimizar imágenes**: Usar WebP/AVIF
+2. **Habilitar cache**: Browser + server cache
+3. **CDN**: Distribuir carga globalmente
+4. **Comprimir contenido**: Gzip habilitado
+
+### **Monitoreo continuo**
+\`\`\`
+Herramientas recomendadas:
+├── cPanel: Estadísticas built-in
+├── Google Analytics: Velocidad página
+├── GTmetrix: Análisis performance
+└── Cloudflare Analytics: Tráfico real
+\`\`\`
+
+## Hosting chileno y ancho de banda
+
+### **Proveedores con buen ancho de banda**
+- **HostingPlus**: Ilimitado real en planes superiores
+- **WebHosting**: 500 GB-ilimitado según plan
+- **NetHosting**: Sin restricciones ocultas
+- **EcoHosting**: Transparente en límites
+
+### **¿Cuándo upgrade hosting?**
+- Consistentemente >80% del límite
+- Picos regulares que afectan rendimiento
+- Crecimiento orgánico del tráfico
+- Expansión de contenido multimedia`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['ancho-de-banda', 'bandwidth', 'transferencia-datos', 'performance'],
+    level: 'medio',
+    related: ['que-es-hosting', 'servidor-compartido', 'cdn'],
+    hostingRequirements: ['Ancho de banda suficiente', 'Monitoreo incluido', 'Sin throttling'],
+    cta: {
+      plan: 'Hosting con Ancho de Banda Generoso',
+      copy: 'Ancho de banda ilimitado real - Sin limitaciones de tráfico',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=83'
+    },
+    proofPoints: ['Sin límites ocultos', 'Monitoreo 24/7', 'Escalabilidad automática'],
+    whenToUse: 'Sitios con tráfico creciente, e-commerce, portales multimedia',
+    synonyms: ['bandwidth', 'transferencia de datos', 'límite de tráfico'],
+    tldr: {
+      title: 'Ancho de Banda Crítico',
+      keyPoints: [
+        'Determina velocidad de acceso en horas peak',
+        'Calculable: peso página × visitantes × páginas/visita',
+        'Optimizable con CDN y compresión (60-80% reducción)',
+        'Esencial elegir hosting sin throttling oculto'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'hf-007',
+    slug: 'uptime',
+    title: 'Uptime',
+    shortDefinition: 'Tiempo que un servidor permanece operativo y accesible. 99.9% uptime significa solo 8.76 horas offline por año.',
+    longDefinition: `El uptime es el porcentaje de tiempo que tu sitio web permanece online y accesible para los usuarios. Es uno de los factores más críticos al elegir hosting, especialmente para e-commerce y negocios.
+
+## ¿Qué es el Uptime?
+
+### **Medición estándar**
+\`\`\`
+99.9% = 8.76 horas offline/año
+99.95% = 4.38 horas offline/año  
+99.99% = 52.6 minutos offline/año
+99.999% = 5.26 minutos offline/año
+\`\`\`
+
+### **Cálculo mensual**
+- **99%**: 7.2 horas offline/mes
+- **99.5%**: 3.6 horas offline/mes
+- **99.9%**: 43.2 minutos offline/mes
+- **99.95%**: 21.6 minutos offline/mes
+
+## Factores que afectan el uptime
+
+### **🔧 Infraestructura del proveedor**
+- **Hardware redundante**: Fuentes poder dobles, RAIDs
+- **Conectividad múltiple**: Varios ISPs, BGP routing
+- **Monitoreo 24/7**: NOC dedicado, alertas automáticas
+- **Datacenter tier**: Tier 3+ recomendado
+
+### **⚡ Causas comunes de downtime**
+\`\`\`
+Mantenimiento programado: 40%
+├── Updates de seguridad
+├── Upgrades de hardware  
+├── Migración servidores
+└── Patches de sistema
+
+Fallas hardware: 30%
+├── Discos duros
+├── RAM defectuosa
+├── Fuentes poder
+└── Conectividad red
+
+Ataques DDoS: 20%
+├── Volumétrico
+├── Aplicación
+├── Protocolo
+└── Amplificación
+
+Errores humanos: 10%
+├── Configuración
+├── Deployments
+├── Comandos incorrectos
+└── Procedimientos
+\`\`\`
+
+## Monitoreo de uptime
+
+### **🔍 Herramientas recomendadas**
+\`\`\`php
+// Script PHP básico de ping
+<?php
+$url = "https://miempresa.cl";
+$start = microtime(true);
+$file = @fopen($url, "r");
+$end = microtime(true);
+
+if($file) {
+    $response_time = round(($end - $start) * 1000, 2);
+    echo "Sitio UP - {$response_time}ms";
+    fclose($file);
+} else {
+    echo "Sitio DOWN";
+}
+?>
+\`\`\`
+
+### **Servicios de monitoreo**
+- **UptimeRobot**: Gratis hasta 50 monitores
+- **Pingdom**: Interface completa, alertas avanzadas
+- **StatusCake**: Múltiples ubicaciones, APIs
+- **Site24x7**: Monitoreo integral aplicaciones
+
+### **Configuración alertas**
+\`\`\`
+Recomendación alertas:
+├── Email: Inmediato
+├── SMS: Downtime >5 min
+├── Slack: Alertas automáticas
+└── WhatsApp: Críticos only
+\`\`\`
+
+## SLA y compensaciones
+
+### **🤝 Service Level Agreements típicos**
+- **Shared hosting**: 99.9% (sin compensación)
+- **VPS gestionado**: 99.95% (crédito 5%)
+- **Servidores dedicados**: 99.99% (crédito 10%)
+- **Cloud enterprise**: 99.999% (crédito 25%)
+
+### **Hosting chileno y garantías**
+- **HostingPlus**: 99.9% con crédito automático
+- **WebHosting**: 99.8% garantizado
+- **NetHosting**: 99.95% en planes premium
+- **EcoHosting**: 99.9% sin compensación
+
+## Optimización de uptime
+
+### **🚀 Best practices**
+\`\`\`apache
+# .htaccess - Failover básico
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^miempresa\.cl$ [NC]
+RewriteCond %{QUERY_STRING} !failover
+RewriteRule ^(.*)$ http://backup.miempresa.cl/$1 [R=302,L]
+\`\`\`
+
+### **Arquitectura de alta disponibilidad**
+- **Load balancer**: Distribuir carga múltiples servidores
+- **Failover automático**: Switch instantáneo backup
+- **CDN global**: Content delivery distribuido
+- **Database replication**: Redundancia datos
+
+### **Estrategias empresariales**
+\`\`\`
+Multi-proveedor setup:
+├── Primario: Hosting Chile (baja latencia)
+├── Backup: Cloud AWS (alta disponibilidad)
+├── CDN: CloudFlare (cache global)
+└── DNS: Route53 (healthchecks automáticos)
+\`\`\`
+
+## Impacto del downtime
+
+### **💰 Costo por minuto offline**
+- **E-commerce pequeño**: $50-200/hora
+- **E-commerce mediano**: $500-2,000/hora
+- **Portal de noticias**: $100-500/hora
+- **SaaS empresarial**: $1,000-10,000/hora
+
+### **🔍 Casos de estudio**
+- **Amazon**: $220,000 USD por minuto
+- **Facebook**: $90,000 USD por minuto
+- **E-commerce chileno promedio**: $30-150 por minuto
+
+### **SEO y reputación**
+- Downtime frecuente afecta ranking Google
+- Usuarios abandonan sitios lentos/inestables
+- Pérdida confianza marca
+- Reviews negativos amplificados
+
+## Elegir hosting con buen uptime
+
+### **🔍 Qué verificar antes de contratar**
+1. **Historial público**: Buscar status pages
+2. **Reviews reales**: Experiencias usuarios
+3. **Infraestructura**: Datacenter, redundancia
+4. **SLA**: Garantías y compensaciones
+5. **Soporte**: Tiempo respuesta incidencias
+
+### **Red flags en proveedores**
+- Uptime "garantizado" sin SLA escrito
+- Sin status page público
+- Mantenimientos no programados frecuentes
+- Soporte lento en emergencias`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['uptime', 'disponibilidad', 'sla', 'monitoreo', 'estabilidad'],
+    level: 'medio',
+    related: ['que-es-hosting', 'servidor-compartido', 'vps'],
+    hostingRequirements: ['SLA >99.9%', 'Monitoreo 24/7', 'Soporte técnico inmediato'],
+    cta: {
+      plan: 'Hosting Alta Disponibilidad',
+      copy: '99.9% uptime garantizado con compensación automática',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=83'
+    },
+    proofPoints: ['99.9% SLA garantizado', 'NOC 24/7', 'Compensación automática'],
+    whenToUse: 'E-commerce, sitios corporativos críticos, aplicaciones de negocio',
+    synonyms: ['disponibilidad', 'tiempo online', 'confiabilidad servidor'],
+    tldr: {
+      title: 'Uptime Fundamental',
+      keyPoints: [
+        '99.9% = máximo 8.76 horas offline por año',
+        'Monitoreo esencial con alertas automáticas',
+        'Downtime cuesta $30-150/minuto a e-commerce chileno promedio',
+        'SLA con compensación indica hosting profesional'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'hf-008',
+    slug: 'backup-automatico',
+    title: 'Backup Automático',
+    shortDefinition: 'Sistema que crea copias de seguridad de tu sitio web sin intervención manual. Esencial para recuperar datos ante fallos o ataques.',
+    longDefinition: `Los backups automáticos son tu red de seguridad digital. En Chile, donde los ataques cibernéticos han aumentado 40% según la PDI, tener respaldos automatizados es crítico para cualquier negocio online.
+
+## ¿Por qué backup automático?
+
+### **📊 Estadísticas alarmantes**
+\`\`\`
+Pérdida de datos en Chile:
+├── 68% empresas no tiene backup diario
+├── 23% nunca probó restaurar backup
+├── 45% perdió datos últimos 2 años
+└── Recovery promedio: 3-7 días
+\`\`\`
+
+### **Principales causas pérdida datos**
+- **Malware/ransomware**: 35%
+- **Error humano**: 28%
+- **Falla hardware**: 20%
+- **Desastres naturales**: 10%
+- **Hack/intrusión**: 7%
+
+## Tipos de backup automático
+
+### **🔄 Frecuencia de respaldo**
+\`\`\`
+Backup diario:
+├── Ideal para: Blogs, sitios corporativos
+├── Ventana: 2-6 AM (menos tráfico)
+├── Retención: 30 días mínimo
+└── Costo: Incluido hosting básico
+
+Backup cada 6 horas:
+├── Ideal para: E-commerce activo
+├── Ventana: Continuo, incremental
+├── Retención: 7-14 días
+└── Costo: Hosting premium
+
+Backup en tiempo real:
+├── Ideal para: SaaS, aplicaciones críticas
+├── Ventana: Inmediato (CDC)
+├── Retención: Point-in-time
+└── Costo: Hosting enterprise
+\`\`\`
+
+### **📁 Tipos de contenido respaldado**
+\`\`\`php
+<?php
+// Estructura backup completo
+$backup_structure = [
+    'files' => [
+        'wp-content/uploads/',    // Media files
+        'wp-content/themes/',     // Themes personalizados
+        'wp-content/plugins/',    // Plugins activos
+        'wp-config.php',          // Configuración
+        '.htaccess'               // Reglas servidor
+    ],
+    'database' => [
+        'wp_posts',               // Contenido
+        'wp_options',             // Configuración WP
+        'wp_users',               // Usuarios
+        'wp_postmeta',            // Metadata
+        'custom_tables'           // Tablas adicionales
+    ]
+];
+?>
+\`\`\`
+
+## Implementación técnica
+
+### **🛠️ Backup via cPanel**
+\`\`\`bash
+# Script automático cPanel
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/home/usuario/backups"
+SITE_DIR="/home/usuario/public_html"
+DB_NAME="miempresa_db"
+
+# Backup archivos
+tar -czf $BACKUP_DIR/files_$DATE.tar.gz $SITE_DIR
+
+# Backup base datos
+mysqldump -u usuario -p$PASSWORD $DB_NAME > $BACKUP_DIR/db_$DATE.sql
+
+# Limpiar backups >30 días
+find $BACKUP_DIR -type f -mtime +30 -delete
+
+echo "Backup completado: $DATE"
+\`\`\`
+
+### **🔧 Plugin WordPress recomendados**
+\`\`\`
+UpdraftPlus (Gratis + Premium):
+├── Backup automático programable
+├── Almacenamiento cloud integrado
+├── Restauración 1-click
+└── Migración incluida
+
+BackWPup (Gratis):
+├── Backup completo programado
+├── Múltiples destinos
+├── Logs detallados
+└── Compresión automática
+
+Duplicator Pro:
+├── Backup + migración
+├── Programación avanzada
+├── Filtros personalizados
+└── Cloud storage
+\`\`\`
+
+### **☁️ Almacenamiento externo**
+\`\`\`php
+// Configuración S3 AWS
+define('AWS_ACCESS_KEY_ID', 'tu_access_key');
+define('AWS_SECRET_ACCESS_KEY', 'tu_secret_key');
+define('AWS_S3_BUCKET', 'backups-miempresa');
+define('AWS_S3_REGION', 'us-east-1');
+
+// Configuración Google Drive
+define('GOOGLE_DRIVE_CLIENT_ID', 'tu_client_id');
+define('GOOGLE_DRIVE_CLIENT_SECRET', 'tu_secret');
+define('GOOGLE_DRIVE_REFRESH_TOKEN', 'tu_token');
+\`\`\`
+
+## Estrategia 3-2-1
+
+### **📋 Regla oro del backup**
+\`\`\`
+3 copias de datos:
+├── 1 copia original (servidor producción)
+├── 1 copia local (mismo datacenter)
+└── 1 copia remota (cloud/ubicación diferente)
+
+2 medios diferentes:
+├── SSD/HDD local
+└── Cloud storage
+
+1 copia offsite:
+├── Diferente ubicación geográfica
+└── Proveedores cloud confiables
+\`\`\`
+
+### **🌐 Configuración multi-ubicación**
+- **Local**: cPanel backup diario
+- **Nacional**: Datacenter Chile (NIC Labs)
+- **Internacional**: AWS S3, Google Cloud
+- **Híbrido**: Combinación para redundancia
+
+## Testing y restauración
+
+### **🧪 Pruebas regulares backup**
+\`\`\`bash
+# Script test restauración
+#!/bin/bash
+TEST_DATE=$(date +%Y%m%d)
+STAGING_URL="staging.miempresa.cl"
+
+# Crear ambiente test
+wp config create --dbname=test_db --dbuser=test_user
+
+# Restaurar último backup
+wp db import backup_latest.sql
+
+# Verificar integridad
+wp db check
+wp plugin list --status=active
+
+echo "Test restauración: OK - $TEST_DATE"
+\`\`\`
+
+### **🔄 Proceso restauración paso a paso**
+1. **Evaluar daño**: Qué se perdió exactamente
+2. **Seleccionar backup**: Último funcional conocido
+3. **Ambiente staging**: Probar restauración primero
+4. **Restaurar archivos**: FTP/File Manager
+5. **Restaurar BD**: phpMyAdmin/CLI
+6. **Verificar**: Funcionalidad completa
+7. **DNS switch**: Producción online
+
+## Hosting chileno y backups
+
+### **📊 Comparativa proveedores**
+\`\`\`
+HostingPlus:
+├── Backup diario automático
+├── Retención 30 días
+├── Restauración 1-click
+└── Sin costo adicional
+
+WebHosting:
+├── Backup semanal básico
+├── Retención 14 días  
+├── Restauración manual
+└── Backup diario: +$5,000/mes
+
+NetHosting:
+├── Backup cada 6 horas
+├── Retención 7 días
+├── R1M en planes premium
+└── Cloud backup opcional
+
+EcoHosting:
+├── Backup diario incluido
+├── Retención 21 días
+├── Download backup directo
+└── Sin restauración automática
+\`\`\`
+
+### **⚠️ Lo que NO incluye hosting básico**
+- Backup garantizado pre-hack
+- Restauración automática 24/7
+- Backup offsite automático
+- Point-in-time recovery
+- Testing backup regularmente
+
+## Mejores prácticas
+
+### **✅ Checklist backup profesional**
+- [ ] **Frecuencia adecuada** según criticidad
+- [ ] **Almacenamiento múltiple** (local + cloud)
+- [ ] **Testing mensual** restauración
+- [ ] **Documentación** proceso recovery
+- [ ] **Alertas** fallos backup
+- [ ] **Retención** política clara
+- [ ] **Encriptación** datos sensibles
+- [ ] **Acceso controlado** backups
+
+### **🚫 Errores comunes**
+- Confiar solo en backup hosting
+- Nunca probar restauración
+- Backup sin verificar integridad
+- Una sola ubicación storage
+- No documentar proceso`,
+    category: 'hosting-fundamentals',
+    cms: 'general',
+    tags: ['backup', 'respaldo', 'seguridad', 'recuperacion-datos', 'automatizacion'],
+    level: 'medio',
+    related: ['cpanel', 'que-es-hosting', 'ssl-certificado'],
+    hostingRequirements: ['Backup automático incluido', 'Retención >14 días', 'Restauración fácil'],
+    cta: {
+      plan: 'Hosting con Backup Premium',
+      copy: 'Backup automático diario + restauración 1-click incluida',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=83'
+    },
+    proofPoints: ['Backup diario automático', 'Restauración 1-click', 'Almacenamiento seguro'],
+    whenToUse: 'Todos los sitios - especialmente e-commerce y sitios de negocio',
+    synonyms: ['respaldo automático', 'copia de seguridad', 'backup programado'],
+    tldr: {
+      title: 'Backup Vital',
+      keyPoints: [
+        '68% empresas chilenas no tiene backup diario adecuado',
+        'Regla 3-2-1: 3 copias, 2 medios, 1 offsite',
+        'Testing mensual esencial - 23% nunca probó restaurar',
+        'Costo backup << costo pérdida datos total'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  // Additional Domains Terms
+  {
+    id: 'dom-003',
+    slug: 'dns',
+    title: 'DNS (Domain Name System)',
+    shortDefinition: 'Sistema que traduce nombres de dominio legibles a direcciones IP. Es la "guía telefónica" de internet.',
+    longDefinition: `DNS es la infraestructura que permite que internet funcione de manera amigable para los humanos. Convierte nombres como "miempresa.cl" en direcciones IP que las computadoras entienden.
+
+## ¿Cómo funciona DNS?
+
+### **🔄 Proceso de resolución**
+\`\`\`
+Usuario escribes: www.miempresa.cl
+│
+├── 1. Browser cache (0.1ms)
+├── 2. OS cache (1ms)
+├── 3. Router cache (5ms)  
+├── 4. ISP DNS (20-50ms)
+├── 5. Root servers (100ms)
+├── 6. .cl TLD servers (150ms)
+└── 7. Authoritative NS (200ms)
+
+Resultado: 200.14.86.144
+\`\`\`
+
+### **📡 Tipos de servidores DNS**
+- **Recursivos**: ISP, Google (8.8.8.8), CloudFlare (1.1.1.1)
+- **Autoritativos**: Donde están configurados tus registros
+- **Root servers**: 13 servidores globales principales
+- **TLD servers**: Gestiona .cl, .com, .net, etc.
+
+## Tipos de registros DNS
+
+### **🏷️ Registros principales**
+\`\`\`dns
+; Zona miempresa.cl
+$TTL 3600
+@               IN SOA  ns1.hosting.cl. admin.miempresa.cl. (
+                    2025011501  ; Serial
+                    7200        ; Refresh  
+                    3600        ; Retry
+                    604800      ; Expire
+                    86400 )     ; Minimum TTL
+
+; Nameservers
+@               IN NS   ns1.hosting.cl.
+@               IN NS   ns2.hosting.cl.
+
+; A Records - IPv4
+@               IN A    200.14.86.144
+www             IN A    200.14.86.144
+mail            IN A    200.14.86.145
+
+; AAAA Records - IPv6
+@               IN AAAA 2001:db8::1
+www             IN AAAA 2001:db8::1
+
+; CNAME Records - Alias
+blog            IN CNAME www.miempresa.cl.
+shop            IN CNAME www.miempresa.cl.
+
+; MX Records - Email
+@               IN MX   10 mail.miempresa.cl.
+@               IN MX   20 backup-mail.miempresa.cl.
+
+; TXT Records - Verification/SPF
+@               IN TXT  "v=spf1 include:hosting.cl ~all"
+@               IN TXT  "google-site-verification=abc123..."
+_dmarc          IN TXT  "v=DMARC1; p=quarantine; rua=mailto:dmarc@miempresa.cl"
+\`\`\`
+
+### **⚙️ Registros especializados**
+\`\`\`dns
+; SRV Records - Servicios
+_sip._tcp       IN SRV  10 5 5060 sipserver.miempresa.cl.
+
+; CAA Records - Certificate Authority
+@               IN CAA  0 issue "letsencrypt.org"
+@               IN CAA  0 iodef "mailto:admin@miempresa.cl"
+
+; DKIM - Email authentication  
+selector1._domainkey IN TXT "v=DKIM1; k=rsa; p=MIGfMA0G..."
+\`\`\`
+
+## Propagación DNS
+
+### **⏱️ Tiempos de propagación**
+\`\`\`
+Cambio registro DNS:
+├── Local cache: 0-15 minutos
+├── ISP cache: 30 minutos - 2 horas
+├── Global cache: 2-24 horas
+└── TTL expired: Según configuración
+
+Factores que afectan velocidad:
+├── TTL configurado (300s = 5min)
+├── Tipo de registro
+├── Ubicación geográfica
+└── Cache del proveedor
+\`\`\`
+
+### **🌐 Verificar propagación globalmente**
+\`\`\`bash
+# Verificar desde múltiples ubicaciones
+dig @8.8.8.8 miempresa.cl
+dig @1.1.1.1 miempresa.cl
+dig @208.67.222.222 miempresa.cl
+
+# Verificar TTL actual
+dig miempresa.cl | grep "IN A"
+
+# Trace completo resolución
+dig +trace miempresa.cl
+\`\`\`
+
+### **🔧 Herramientas verificación**
+- **whatsmydns.net**: Check global propagación
+- **dnschecker.org**: Multiple location check
+- **dig web interface**: Online dig commands
+- **mxtoolbox.com**: Comprehensive DNS tools
+
+## Gestión DNS en hosting
+
+### **📊 Panel de control típico**
+\`\`\`
+cPanel DNS Zone Editor:
+├── A Record: Apuntar dominio a IP
+├── CNAME: Crear alias/subdominios
+├── MX Record: Configurar email
+├── TXT Record: Verificaciones/SPF
+└── TTL: Control cache timing
+
+Opciones avanzadas:
+├── Dynamic DNS: IP cambiante
+├── Wildcard DNS: *.miempresa.cl
+├── Round Robin: Multiple IPs
+└── Geographic DNS: Por ubicación
+\`\`\`
+
+### **🎯 Configuraciones comunes**
+\`\`\`dns
+# E-commerce setup
+www.miempresa.cl    IN A    200.14.86.144
+tienda.miempresa.cl IN A    200.14.86.144
+blog.miempresa.cl   IN A    200.14.86.145
+api.miempresa.cl    IN A    200.14.86.146
+
+# CDN integration
+cdn.miempresa.cl    IN CNAME d123abc.cloudfront.net.
+assets.miempresa.cl IN CNAME assets.domain.com.
+
+# Google Workspace
+@                   IN MX   1  aspmx.l.google.com.
+@                   IN MX   5  alt1.aspmx.l.google.com.
+@                   IN TXT  "v=spf1 include:_spf.google.com ~all"
+\`\`\`
+
+## DNS y rendimiento
+
+### **🚀 Optimización velocidad**
+\`\`\`
+TTL optimization:
+├── Records estáticos: 86400s (24h)
+├── Records dinámicos: 300s (5min)
+├── Durante migración: 60s (1min)
+└── Testing/dev: 30s (30seg)
+
+DNS provider selection:
+├── CloudFlare: 14ms promedio global
+├── Route 53: 20ms, geolocalización
+├── Google DNS: 25ms, alta disponibilidad
+└── Hosting DNS: 50-200ms típico
+\`\`\`
+
+### **📈 Impacto en SEO y UX**
+- **Velocidad resolución**: Afecta tiempo carga inicial
+- **Geo-DNS**: Dirige usuarios al servidor más cercano
+- **Failover DNS**: Switchea automático si servidor cae
+- **CDN integration**: Optimiza entrega contenido
+
+## Problemas comunes DNS
+
+### **❌ Errores frecuentes**
+\`\`\`
+DNS_PROBE_FINISHED_NXDOMAIN:
+├── Causa: Dominio no resuelve
+├── Check: Nameservers correctos
+└── Fix: Verificar zona DNS
+
+ERR_NAME_NOT_RESOLVED:
+├── Causa: DNS cache corrupto
+├── Check: flush DNS local
+└── Fix: Cambiar DNS server
+
+Site unreachable intermittently:
+├── Causa: DNS inconsistencia
+├── Check: Multiple DNS servers
+└── Fix: Sincronizar registros
+\`\`\`
+
+### **🔧 Comandos diagnóstico**
+\`\`\`bash
+# Windows
+ipconfig /flushdns
+nslookup miempresa.cl
+
+# macOS/Linux  
+sudo dscacheutil -flushcache
+dig miempresa.cl
+host miempresa.cl
+
+# Advanced diagnosis
+dig +short miempresa.cl
+dig MX miempresa.cl
+dig NS miempresa.cl
+dig TXT miempresa.cl
+\`\`\`
+
+## DNS en Chile
+
+### **🇨🇱 Peculiaridades del .cl**
+- **NIC Chile**: Autoridad para .cl
+- **Nameservers locales**: Mejor para SEO local
+- **Regulación**: Ley 19.799 firma electrónica
+- **Latencia**: <20ms con DNS chileno vs 150ms+ internacional
+
+### **Proveedores DNS recomendados**
+\`\`\`
+Hosting chileno con buen DNS:
+├── HostingPlus: ns1.hostingplus.cl (Santiago)
+├── NetHosting: ns1.nethosting.cl (redundante)
+├── WebHosting: DNS premium incluido
+└── EcoHosting: Nameservers propios
+
+Servicios DNS premium:
+├── CloudFlare: Gratis, muy rápido
+├── Route 53: $0.50/zona, enterprise
+├── Google Cloud DNS: $0.20/1M queries
+└── Azure DNS: Integración Microsoft
+\`\`\``,
+    category: 'domains',
+    cms: 'general',
+    tags: ['dns', 'domain-name-system', 'nameservers', 'registros-dns', 'propagacion'],
+    level: 'medio',
+    related: ['dominio', 'nameservers', 'que-es-hosting'],
+    hostingRequirements: ['Gestión DNS completa', 'Nameservers propios', 'Editor zona DNS'],
+    cta: {
+      plan: 'Hosting con DNS Premium',
+      copy: 'DNS ultrarrápido con gestión completa incluida',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['DNS management completo', 'Nameservers en Chile', 'Propagación rápida'],
+    whenToUse: 'Configuración subdominios, email, CDN, servicios externos',
+    synonyms: ['domain name system', 'sistema nombres dominio', 'resolución dns'],
+    tldr: {
+      title: 'DNS Fundamental',
+      keyPoints: [
+        'Traduce nombres legibles a IPs en ~200ms',
+        'TTL bajo (300s) para cambios rápidos, alto (86400s) para estabilidad',
+        'DNS chileno aporta <20ms latencia vs 150ms+ internacional',
+        'CloudFlare DNS gratuito mejora velocidad significativamente'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'dom-004',
+    slug: 'subdominio',
+    title: 'Subdominio',
+    shortDefinition: 'Extensión de tu dominio principal que permite crear secciones independientes. Como blog.miempresa.cl o tienda.miempresa.cl.',
+    longDefinition: `Los subdominios son una forma poderosa de organizar y expandir tu presencia web sin comprar dominios adicionales. Te permiten crear secciones diferenciadas de tu sitio con funcionalidades específicas.
+
+## ¿Qué es un subdominio?
+
+### **🏗️ Estructura jerárquica**
+\`\`\`
+Anatomy de un subdominio:
+blog.miempresa.cl
+│    │        │
+│    │        └── TLD (.cl)
+│    └── Dominio principal (miempresa)
+└── Subdominio (blog)
+
+Ejemplos comunes:
+├── www.miempresa.cl (subdominio www)
+├── blog.miempresa.cl (blog/noticias)
+├── tienda.miempresa.cl (e-commerce)
+├── app.miempresa.cl (aplicación web)
+├── api.miempresa.cl (API/servicios)
+└── cdn.miempresa.cl (archivos estáticos)
+\`\`\`
+
+### **🎯 Casos de uso estratégicos**
+- **Organización funcional**: Separar blog, tienda, soporte
+- **Geografía**: chile.miempresa.com, peru.miempresa.com
+- **Idiomas**: en.miempresa.cl, es.miempresa.cl
+- **Ambientes**: dev.miempresa.cl, staging.miempresa.cl
+- **Servicios**: mail.miempresa.cl, ftp.miempresa.cl
+
+## Configuración técnica
+
+### **📡 Setup DNS básico**
+\`\`\`dns
+; Registros A para subdominios
+blog.miempresa.cl.    IN A    200.14.86.144
+tienda.miempresa.cl.  IN A    200.14.86.145
+api.miempresa.cl.     IN A    200.14.86.146
+
+; Registros CNAME (alias)
+www.miempresa.cl.     IN CNAME miempresa.cl.
+shop.miempresa.cl.    IN CNAME tienda.miempresa.cl.
+
+; Wildcard subdomains
+*.miempresa.cl.       IN A    200.14.86.147
+\`\`\`
+
+### **🔧 Configuración Apache**
+\`\`\`apache
+# VirtualHost para subdominio específico
+<VirtualHost *:80>
+    ServerName blog.miempresa.cl
+    DocumentRoot /home/usuario/public_html/blog
+    
+    # Logs separados
+    ErrorLog /var/log/apache2/blog_error.log
+    CustomLog /var/log/apache2/blog_access.log combined
+    
+    # PHP específico para blog
+    <Directory "/home/usuario/public_html/blog">
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+# Wildcard VirtualHost
+<VirtualHost *:80>
+    ServerName miempresa.cl
+    ServerAlias *.miempresa.cl
+    DocumentRoot /home/usuario/public_html
+    
+    # Conditional redirects
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^blog\.miempresa\.cl$ [NC]
+    RewriteRule ^(.*)$ /blog/$1 [L]
+    
+    RewriteCond %{HTTP_HOST} ^tienda\.miempresa\.cl$ [NC]
+    RewriteRule ^(.*)$ /tienda/$1 [L]
+</VirtualHost>
+\`\`\`
+
+### **⚡ Configuración Nginx**
+\`\`\`nginx
+# Subdominio específico
+server {
+    listen 80;
+    server_name blog.miempresa.cl;
+    root /var/www/blog;
+    index index.php index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+    }
+}
+
+# Wildcard subdomain handling
+server {
+    listen 80;
+    server_name ~^(?<subdomain>.+)\.miempresa\.cl$;
+    root /var/www/$subdomain;
+    
+    # Fallback si no existe directorio
+    error_page 404 = @fallback;
+    
+    location @fallback {
+        root /var/www/main;
+        try_files $uri $uri/ /index.php?$args;
+    }
+}
+\`\`\`
+
+## Subdominios en cPanel
+
+### **📋 Creación paso a paso**
+\`\`\`
+cPanel > Subdomains:
+1. Subdominio: "blog"
+2. Dominio: miempresa.cl  
+3. Document Root: /public_html/blog
+4. [Crear] → DNS se actualiza automático
+
+Resultado:
+├── DNS record: blog.miempresa.cl A 200.14.86.144
+├── Directorio: /public_html/blog/
+├── Acceso FTP: /public_html/blog/
+└── URL live: https://blog.miempresa.cl
+\`\`\`
+
+### **🛠️ Gestión avanzada**
+\`\`\`php
+// Redirection automática en index.php principal
+<?php
+$host = $_SERVER['HTTP_HOST'];
+$subdomain = str_replace('.miempresa.cl', '', $host);
+
+switch($subdomain) {
+    case 'blog':
+        header('Location: /blog/');
+        break;
+    case 'tienda':
+        header('Location: /ecommerce/');
+        break;
+    case 'api':
+        header('Content-Type: application/json');
+        include 'api/index.php';
+        break;
+    default:
+        // Sitio principal
+        include 'home.php';
+}
+?>
+\`\`\`
+
+## SEO y subdominios
+
+### **🎯 Estrategia SEO**
+\`\`\`
+Google considera subdominios como:
+├── Sitios separados (para ranking)
+├── Misma autoridad dominio principal
+├── Enlaces internos = enlaces externos
+└── Content distribution estratégica
+
+Best practices:
+├── Contenido único por subdominio
+├── Internal linking strategy
+├── XML sitemaps separados
+├── Google Search Console individual
+\`\`\`
+
+### **📊 Estructura recomendada**
+\`\`\`
+Principal: miempresa.cl
+├── Blog: blog.miempresa.cl/
+│   ├── /categoria/
+│   ├── /autor/
+│   └── /archivo/
+├── Tienda: tienda.miempresa.cl/
+│   ├── /categoria/
+│   ├── /producto/
+│   └── /checkout/
+└── Soporte: ayuda.miempresa.cl/
+    ├── /faq/
+    ├── /tutoriales/
+    └── /contacto/
+\`\`\`
+
+### **⚠️ Cuidados SEO**
+- **No duplicate content** entre subdominios
+- **Canonical tags** apropriados
+- **Schema markup** específico por función
+- **Hreflang** para subdominios de idioma
+
+## SSL para subdominios
+
+### **🔒 Certificados SSL**
+\`\`\`
+Opciones SSL subdominios:
+├── Single domain: Un SSL por subdominio
+├── Wildcard SSL: *.miempresa.cl (cubre todos)
+├── Multi-domain (SAN): Lista específica subdominios
+└── Let's Encrypt: Automático para cada uno
+
+Wildcard SSL setup:
+├── Compra: $50-200/año según proveedor
+├── Instalación: Panel control o manual
+├── Cobertura: Todos subdominios presentes/futuros
+└── Renovación: Anual típicamente
+\`\`\`
+
+### **🛡️ Let's Encrypt automático**
+\`\`\`bash
+# Certbot para múltiples subdominios
+certbot certonly --webroot \\
+  -w /var/www/main -d miempresa.cl \\
+  -w /var/www/blog -d blog.miempresa.cl \\
+  -w /var/www/shop -d tienda.miempresa.cl
+
+# Wildcard con DNS validation
+certbot certonly --manual \\
+  --preferred-challenges=dns \\
+  -d miempresa.cl -d *.miempresa.cl
+\`\`\`
+
+## Casos de uso por industria
+
+### **🏢 E-commerce**
+\`\`\`
+Arquitectura típica:
+├── www.miempresa.cl → Sitio corporativo
+├── tienda.miempresa.cl → Catálogo productos
+├── checkout.miempresa.cl → Proceso compra seguro
+├── api.miempresa.cl → API mobile/integraciones
+├── admin.miempresa.cl → Panel administración
+└── cdn.miempresa.cl → Assets estáticos
+\`\`\`
+
+### **📰 Media/Editorial**
+\`\`\`
+Estructura contenido:
+├── www.miempresa.cl → Home/portada
+├── noticias.miempresa.cl → Breaking news
+├── deportes.miempresa.cl → Sección deportes
+├── economia.miempresa.cl → Finanzas
+├── suscriptores.miempresa.cl → Contenido premium
+└── ads.miempresa.cl → Gestión publicidad
+\`\`\`
+
+### **🎓 Educación/SaaS**
+\`\`\`
+Plataforma educativa:
+├── www.miempresa.cl → Landing marketing
+├── app.miempresa.cl → Aplicación principal
+├── cursos.miempresa.cl → Catálogo educativo
+├── live.miempresa.cl → Streaming clases
+├── docs.miempresa.cl → Documentación
+└── status.miempresa.cl → System status
+\`\`\`
+
+## Hosting y subdominios
+
+### **📊 Límites por proveedor**
+\`\`\`
+Hosting Compartido típico:
+├── HostingPlus: Subdominios ilimitados
+├── WebHosting: 25-ilimitados según plan
+├── NetHosting: 10-50 según plan
+└── EcoHosting: Ilimitados en todos
+
+VPS/Dedicado:
+├── Sin límites técnicos
+├── Limitado por DNS management
+├── Performance según recursos
+└── SSL individual por subdominio
+\`\`\`
+
+### **💡 Tips optimización**
+- **CDN por subdominio**: assets.miempresa.cl
+- **Load balancing**: api1.miempresa.cl, api2.miempresa.cl
+- **Geographic routing**: chile.miempresa.cl → servidor Santiago
+- **A/B testing**: beta.miempresa.cl para features nuevas`,
+    category: 'domains',
+    cms: 'general',
+    tags: ['subdominio', 'dns', 'organizacion-web', 'estructura-sitio'],
+    level: 'basico',
+    related: ['dominio', 'dns', 'ssl-certificado'],
+    hostingRequirements: ['Subdominios ilimitados', 'DNS management', 'SSL para subdominios'],
+    cta: {
+      plan: 'Hosting con Subdominios Ilimitados',
+      copy: 'Crea todos los subdominios que necesites - Sin límites',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['Subdominios ilimitados', 'SSL automático', 'DNS management fácil'],
+    whenToUse: 'Organizar secciones web, e-commerce, blogs, APIs, ambientes desarrollo',
+    synonyms: ['subdominio', 'subdirectorio dns', 'dominio secundario'],
+    tldr: {
+      title: 'Subdominios Organizadores',
+      keyPoints: [
+        'Extienden dominio principal sin costo adicional',
+        'Google los trata como sitios separados para SEO',
+        'Ideales para blog.tuempresa.cl, tienda.tuempresa.cl',
+        'Wildcard SSL cubre todos subdominios presentes y futuros'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  // Additional SSL Terms
+  {
+    id: 'ssl-003',
+    slug: 'https',
+    title: 'HTTPS',
+    shortDefinition: 'Protocolo seguro que encripta datos entre navegador y servidor. Esencial para SEO y confianza del usuario desde 2018.',
+    longDefinition: `HTTPS (HyperText Transfer Protocol Secure) es la versión segura de HTTP que encripta toda comunicación entre el navegador del usuario y tu servidor web. Es obligatorio para sitios modernos.
+
+## ¿Por qué HTTPS es obligatorio?
+
+### **🏆 Ranking factor Google desde 2014**
+\`\`\`
+Impacto SEO comprobado:
+├── +0.5-2% boost ranking (confirmado Google)
+├── Prerequisito para HTTP/2 (30% más rápido)
+├── Required para Progressive Web Apps
+├── Necesario para geolocation, camera, mic APIs
+└── Chrome marca HTTP como "No seguro" desde 2018
+\`\`\`
+
+### **📊 Estadísticas adopción Chile 2025**
+- **95%** de los top 1000 sitios chilenos usan HTTPS
+- **Browser warnings**: 78% usuarios abandonan sitio HTTP
+- **E-commerce**: 100% requiere HTTPS para pagos
+- **Mobile**: 85% tráfico web es HTTPS
+
+## HTTPS vs HTTP: Diferencias técnicas
+
+### **🔒 Proceso de encriptación**
+\`\`\`
+HTTP (puerto 80):
+Cliente ➜ [datos planos] ➜ Servidor
+├── Vulnerable a: Man-in-the-middle
+├── ISP puede: Leer todo el tráfico  
+├── Wifi público: Datos visibles
+└── Modificación: Possible injection
+
+HTTPS (puerto 443):
+Cliente ➜ [TLS handshake] ➜ Servidor
+├── 1. Certificate validation
+├── 2. Key exchange (DH/ECDH)
+├── 3. Cipher suite negotiation
+├── 4. Encrypted tunnel established
+└── 5. All data encrypted AES-256
+\`\`\`
+
+### **🔐 TLS Handshake detallado**
+\`\`\`
+1. Client Hello:
+   ├── TLS version supported
+   ├── Cipher suites available
+   ├── Random number generation
+   └── Server Name Indication (SNI)
+
+2. Server Hello:
+   ├── Selected TLS version
+   ├── Chosen cipher suite
+   ├── SSL certificate chain
+   └── Server random number
+
+3. Key Exchange:
+   ├── Client verifies certificate
+   ├── Generates pre-master secret
+   ├── Encrypts with server public key
+   └── Server decrypts with private key
+
+4. Finished:
+   ├── Both derive session keys
+   ├── Test encrypted message
+   ├── Confirm successful handshake
+   └── Begin encrypted communication
+\`\`\`
+
+## Implementación HTTPS
+
+### **⚡ Migración paso a paso**
+\`\`\`bash
+# 1. Backup completo sitio
+mysqldump -u user -p database > backup.sql
+tar -czf site_backup.tar.gz /public_html/
+
+# 2. Instalar certificado SSL
+# (Let's Encrypt automático en cPanel)
+
+# 3. Force HTTPS en .htaccess
+cat >> .htaccess << EOF
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+EOF
+
+# 4. Update WordPress URLs
+wp search-replace 'http://miempresa.cl' 'https://miempresa.cl'
+wp search-replace 'http://www.miempresa.cl' 'https://www.miempresa.cl'
+
+# 5. Update internal links
+grep -r "http://miempresa.cl" . --include="*.php" --include="*.js"
+\`\`\`
+
+### **🔧 Configuración WordPress**
+\`\`\`php
+// wp-config.php - Force HTTPS
+define('FORCE_SSL_ADMIN', true);
+
+// Update site URLs
+define('WP_HOME','https://miempresa.cl');
+define('WP_SITEURL','https://miempresa.cl');
+
+// Mixed content fixes
+add_action('wp_head', function() {
+    if (is_ssl()) {
+        echo '<meta http-equiv="Content-Security-Policy" 
+              content="upgrade-insecure-requests">';
+    }
+});
+
+// Force HTTPS in functions.php
+add_action('template_redirect', function() {
+    if (!is_ssl() && !is_admin()) {
+        wp_redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 301);
+        exit();
+    }
+});
+\`\`\`
+
+### **📱 Headers de seguridad adicionales**
+\`\`\`apache
+# .htaccess - Security headers completos
+<IfModule mod_headers.c>
+    # HSTS - Force HTTPS por 1 año
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # MIME type sniffing protection  
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Referrer policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # CSP básico
+    Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'"
+</IfModule>
+\`\`\`
+
+## Tipos de certificados SSL
+
+### **🏷️ Validación de identidad**
+\`\`\`
+Domain Validated (DV):
+├── Validación: Solo propietario dominio
+├── Tiempo: 5-10 minutos automático
+├── Costo: Gratis (Let's Encrypt)
+├── Indicador: Candado verde básico
+└── Ideal para: Blogs, sitios informativos
+
+Organization Validated (OV):
+├── Validación: Empresa + dominio
+├── Tiempo: 1-3 días manual
+├── Costo: $50-200/año
+├── Indicador: Candado + info empresa
+└── Ideal para: Sitios corporativos
+
+Extended Validation (EV):
+├── Validación: Exhaustiva legal + física
+├── Tiempo: 7-14 días verificación
+├── Costo: $200-1000/año
+├── Indicador: Barra verde con empresa
+└── Ideal para: Banca, e-commerce premium
+\`\`\`
+
+### **🌐 Cobertura de dominios**
+\`\`\`
+Single Domain:
+├── Cubre: miempresa.cl únicamente
+├── NO cubre: www.miempresa.cl (separate)
+├── Costo: $0 (Let's Encrypt) - $50/año
+└── Uso: Sitios simples
+
+Wildcard:
+├── Cubre: *.miempresa.cl
+├── Incluye: blog.miempresa.cl, tienda.miempresa.cl
+├── NO incluye: miempresa.cl (requiere separate)
+├── Costo: $50-300/año
+└── Uso: Múltiples subdominios
+
+Multi-Domain (SAN):
+├── Cubre: Lista específica dominios
+├── Ejemplo: miempresa.cl, miempresa.com, mi-empresa.cl
+├── Límite: 100-250 dominios típico
+├── Costo: $100-500/año
+└── Uso: Múltiples dominios empresa
+\`\`\`
+
+## Rendimiento HTTPS
+
+### **📈 Optimización velocidad**
+\`\`\`
+HTTP/2 benefits (solo con HTTPS):
+├── Multiplexing: Multiple requests paralelos
+├── Server Push: Preload recursos críticos
+├── Header compression: HPACK algorithm
+├── Binary protocol: Más eficiente que HTTP/1.1
+└── Result: 20-50% faster loading
+\`\`\`
+
+### **⚡ TLS optimization**
+\`\`\`nginx
+# Nginx SSL optimization
+ssl_protocols TLSv1.2 TLSv1.3;
+ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384;
+ssl_prefer_server_ciphers off;
+
+# SSL session caching
+ssl_session_cache shared:SSL:10m;
+ssl_session_timeout 10m;
+
+# OCSP stapling
+ssl_stapling on;
+ssl_stapling_verify on;
+ssl_trusted_certificate /path/to/chain.pem;
+
+# SSL buffer optimization
+ssl_buffer_size 4k;
+\`\`\`
+
+### **🔧 Tools para medir rendimiento**
+\`\`\`bash
+# Test SSL speed
+openssl s_time -connect miempresa.cl:443 -new -verify 2
+
+# SSL handshake timing
+curl -w "@curl-format.txt" -o /dev/null -s "https://miempresa.cl"
+
+# Test cipher strength
+nmap --script ssl-enum-ciphers -p 443 miempresa.cl
+
+# SSL Labs automated test
+curl "https://api.ssllabs.com/api/v3/analyze?host=miempresa.cl"
+\`\`\`
+
+## Problemas comunes HTTPS
+
+### **❌ Mixed Content warnings**
+\`\`\`
+Passive mixed content (warnings):
+├── <img src="http://..."> → Insecure images
+├── <link href="http://..."> → Insecure CSS
+├── <video src="http://..."> → Insecure media
+└── Fix: Change to https:// or //
+
+Active mixed content (blocked):
+├── <script src="http://..."> → Blocked scripts
+├── <iframe src="http://..."> → Blocked frames
+├── XMLHttpRequest to HTTP → Blocked AJAX
+└── Fix: Must use HTTPS sources
+\`\`\`
+
+### **🔧 Debug mixed content**
+\`\`\`javascript
+// Find mixed content automatically
+(function() {
+    var insecureElements = [];
+    var elements = document.querySelectorAll('*');
+    
+    elements.forEach(function(el) {
+        ['src', 'href', 'action'].forEach(function(attr) {
+            var value = el.getAttribute(attr);
+            if (value && value.indexOf('http://') === 0) {
+                insecureElements.push({
+                    element: el.tagName,
+                    attribute: attr,
+                    value: value
+                });
+            }
+        });
+    });
+    
+    console.table(insecureElements);
+})();
+\`\`\`
+
+### **🛠️ Troubleshooting certificados**
+\`\`\`bash
+# Verificar certificado válido
+openssl s_client -connect miempresa.cl:443 -servername miempresa.cl
+
+# Check certificate expiration
+echo | openssl s_client -connect miempresa.cl:443 2>/dev/null | openssl x509 -dates -noout
+
+# Verify certificate chain
+openssl s_client -connect miempresa.cl:443 -showcerts
+
+# Test from different locations
+for server in 8.8.8.8 1.1.1.1; do
+    echo "Testing from $server:"
+    dig @$server miempresa.cl +short
+done
+\`\`\`
+
+## HTTPS en hosting chileno
+
+### **📊 Comparativa proveedores**
+\`\`\`
+HostingPlus:
+├── Let's Encrypt: Automático gratis
+├── SSL premium: Desde $25.000/año
+├── Wildcard: $75.000/año
+├── EV: $150.000/año
+└── Instalación: 1-click
+
+WebHosting:
+├── SSL básico: $15.000/año
+├── Let's Encrypt: Manual setup
+├── Soporte SSL: Email only
+└── Renovación: Manual
+
+NetHosting:
+├── SSL incluido: Planes premium
+├── Let's Encrypt: Automático
+├── Multi-domain: Disponible
+└── Migración HTTPS: Asistida
+
+EcoHosting:
+├── SSL gratis: Básico incluido
+├── Let's Encrypt: Setup manual
+├── SSL premium: A solicitud
+└── Soporte: Limitado
+\`\`\`
+
+### **💡 Recomendaciones Chile-específicas**
+- **E-commerce**: SSL obligatorio por ley consumidor
+- **Sitios gobierno**: SSL con validación Chile
+- **Empresas grandes**: EV para confianza cliente
+- **Startups/PYMES**: Let's Encrypt suficiente`,
+    category: 'ssl-security',
+    cms: 'general',
+    tags: ['https', 'ssl', 'seguridad-web', 'encriptacion', 'seo'],
+    level: 'basico',
+    related: ['ssl-certificado', 'let-s-encrypt', 'seo-local'],
+    hostingRequirements: ['SSL automático', 'Force HTTPS', 'HTTP/2 support'],
+    cta: {
+      plan: 'Hosting con HTTPS Automático',
+      copy: 'HTTPS activado en 1-click - Seguridad desde día 1',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=81'
+    },
+    proofPoints: ['HTTPS automático', 'SSL gratis incluido', 'HTTP/2 enabled'],
+    whenToUse: 'Todos los sitios modernos - obligatorio para e-commerce y SEO',
+    synonyms: ['protocolo seguro', 'ssl activo', 'sitio seguro'],
+    tldr: {
+      title: 'HTTPS Obligatorio',
+      keyPoints: [
+        'Ranking factor Google confirmado (+0.5-2% SEO boost)',
+        'Chrome marca HTTP como "No seguro" - 78% usuarios abandonan',
+        'Habilita HTTP/2 = 20-50% más velocidad de carga',
+        'Let\'s Encrypt gratis es suficiente para 95% de casos'
+      ]
+    },
+    lastUpdated: '2025-01-15'
+  },
+
+  {
+    id: 'ssl-004',
+    slug: 'certificado-wildcard',
+    title: 'Certificado Wildcard',
+    shortDefinition: 'SSL que protege dominio principal y todos sus subdominios con un solo certificado. Ideal para *.miempresa.cl.',
+    longDefinition: `Un certificado wildcard SSL protege tu dominio principal y todos los subdominios de primer nivel con una sola instalación. Perfecto para empresas que usan múltiples subdominios.
+
+## ¿Qué cubre un wildcard?
+
+### **🌐 Cobertura completa**
+\`\`\`
+Certificado para *.miempresa.cl cubre:
+├── ✅ blog.miempresa.cl
+├── ✅ tienda.miempresa.cl  
+├── ✅ api.miempresa.cl
+├── ✅ admin.miempresa.cl
+├── ✅ mail.miempresa.cl
+├── ✅ ftp.miempresa.cl
+├── ✅ cualquier.miempresa.cl
+└── ❌ miempresa.cl (requiere certificado adicional)
+
+IMPORTANTE: NO cubre subdominios múltiples:
+├── ❌ blog.api.miempresa.cl
+├── ❌ admin.tienda.miempresa.cl
+└── ❌ test.dev.miempresa.cl
+\`\`\`
+
+### **📊 Comparación costos**
+\`\`\`
+Ejemplo 5 subdominios:
+┌─────────────────┬──────────────┬─────────────────┐
+│ Método          │ Costo anual  │ Gestión         │
+├─────────────────┼──────────────┼─────────────────┤
+│ 5 SSL simples   │ $0 (Let's E.)│ 5 renovaciones  │
+│ 5 SSL premium   │ $250-500     │ 5 instalaciones │
+│ Wildcard básico │ $50-150      │ 1 instalación   │
+│ Wildcard EV     │ $200-800     │ 1 renovación    │
+└─────────────────┴──────────────┴─────────────────┘
+\`\`\`
+
+## Ventajas del wildcard
+
+### **🚀 Beneficios operacionales**
+- **Gestión simplificada**: Un solo certificado para administrar
+- **Escalabilidad**: Subdominios nuevos automáticamente protegidos  
+- **Costo-efectivo**: Más barato que múltiples SSL individuales
+- **Deployment rápido**: No configuración por subdominio
+
+### **⚡ Ventajas técnicas**
+\`\`\`
+Single certificate management:
+├── Una fecha de renovación
+├── Una instalación en servidor
+├── Un proceso de validación
+├── Una clave privada por gestionar
+└── Un backup por realizar
+
+Automatic coverage:
+├── Nuevos subdominios → Inmediatamente protegidos
+├── Development envs → test.miempresa.cl secured
+├── Staging areas → staging.miempresa.cl protected
+└── Geographic expansion → chile.miempresa.cl ready
+\`\`\`
+
+## Implementación técnica
+
+### **🔧 Obtención Let's Encrypt wildcard**
+\`\`\`bash
+# Certbot con validación DNS (requerido para wildcard)
+certbot certonly \\
+  --manual \\
+  --preferred-challenges=dns \\
+  --email admin@miempresa.cl \\
+  --server https://acme-v02.api.letsencrypt.org/directory \\
+  --agree-tos \\
+  -d miempresa.cl \\
+  -d *.miempresa.cl
+
+# DNS challenge - Agregar TXT record:
+# _acme-challenge.miempresa.cl TXT "token-generado-por-certbot"
+
+# Verificar DNS propagation
+dig TXT _acme-challenge.miempresa.cl
+
+# Continue certbot after DNS verification
+\`\`\`
+
+### **🏗️ Configuración Apache wildcard**
+\`\`\`apache
+# VirtualHost para wildcard SSL
+<VirtualHost *:443>
+    ServerName miempresa.cl
+    ServerAlias *.miempresa.cl
+    DocumentRoot /var/www/html
+    
+    # SSL Configuration
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/miempresa.cl/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/miempresa.cl/privkey.pem
+    
+    # SSL Security settings
+    SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+    SSLCipherSuite ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256
+    SSLHonorCipherOrder off
+    
+    # Dynamic document root based on subdomain
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^([^.]+)\\.miempresa\\.cl$ [NC]
+    RewriteCond /var/www/%1 -d
+    RewriteRule ^(.*)$ /var/www/%1/$1 [L]
+    
+    # Fallback to main site if subdomain folder doesn't exist
+    RewriteCond %{HTTP_HOST} ^([^.]+)\\.miempresa\\.cl$ [NC]
+    RewriteCond /var/www/%1 !-d
+    RewriteRule ^(.*)$ /var/www/html/$1 [L]
+</VirtualHost>
+\`\`\`
+
+### **⚙️ Configuración Nginx wildcard**
+\`\`\`nginx
+# Nginx SSL wildcard setup
+server {
+    listen 443 ssl http2;
+    server_name miempresa.cl *.miempresa.cl;
+    
+    # SSL certificates
+    ssl_certificate /etc/letsencrypt/live/miempresa.cl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/miempresa.cl/privkey.pem;
+    
+    # SSL optimization
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+    
+    # Dynamic root based on subdomain
+    set $subdomain "";
+    if ($host ~* ^([^.]+)\.miempresa\.cl$) {
+        set $subdomain $1;
+    }
+    
+    # Try subdomain folder first, fallback to main
+    location / {
+        try_files /var/www/$subdomain/$uri /var/www/$subdomain/$uri/ @fallback;
+    }
+    
+    location @fallback {
+        root /var/www/html;
+        try_files $uri $uri/ /index.php?$args;
+    }
+}
+\`\`\`
+
+## Automatización DNS
+
+### **🔄 API DNS providers**
+\`\`\`python
+# Python script for automatic DNS challenge
+import requests
+import time
+
+def create_dns_record(domain, name, value):
+    """Create DNS TXT record via API"""
+    api_key = "your-dns-provider-api-key"
+    
+    # CloudFlare example
+    headers = {
+        'Authorization': f'Bearer {api_key}',
+        'Content-Type': 'application/json'
+    }
+    
+    data = {
+        'type': 'TXT',
+        'name': f'_acme-challenge.{domain}',
+        'content': value,
+        'ttl': 120
+    }
+    
+    response = requests.post(
+        f'https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records',
+        headers=headers,
+        json=data
+    )
+    
+    return response.json()
+
+def wait_for_propagation(domain, value):
+    """Wait for DNS propagation"""
+    import subprocess
+    import json
+    
+    for attempt in range(30):  # 5 minutes max
+        try:
+            result = subprocess.run([
+                'dig', '+short', 'TXT', f'_acme-challenge.{domain}'
+            ], capture_output=True, text=True)
+            
+            if value in result.stdout:
+                print(f"DNS propagated after {attempt * 10} seconds")
+                return True
+                
+        except Exception as e:
+            print(f"Check attempt {attempt}: {e}")
+            
+        time.sleep(10)
+    
+    return False
+\`\`\`
+
+### **📜 Certbot hooks automáticos**
+\`\`\`bash
+#!/bin/bash
+# certbot-dns-hook.sh
+
+if [ "$CERTBOT_VALIDATION" ]; then
+    # Create DNS record
+    curl -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records" \\
+         -H "Authorization: Bearer $CF_API_TOKEN" \\
+         -H "Content-Type: application/json" \\
+         --data '{
+           "type": "TXT",
+           "name": "_acme-challenge.'$CERTBOT_DOMAIN'",
+           "content": "'$CERTBOT_VALIDATION'",
+           "ttl": 120
+         }'
+    
+    # Wait for propagation
+    sleep 30
+fi
+\`\`\`
+
+## Casos de uso empresariales
+
+### **🏢 Arquitectura microservicios**
+\`\`\`
+E-commerce platform:
+├── www.miempresa.cl → Landing/marketing
+├── api.miempresa.cl → REST API backend
+├── admin.miempresa.cl → Admin dashboard
+├── cdn.miempresa.cl → Static assets
+├── auth.miempresa.cl → Authentication service
+├── pay.miempresa.cl → Payment gateway
+├── img.miempresa.cl → Image optimization
+└── ws.miempresa.cl → WebSocket connections
+
+Development workflow:
+├── dev.miempresa.cl → Development environment
+├── staging.miempresa.cl → Testing environment
+├── beta.miempresa.cl → Beta features
+└── docs.miempresa.cl → API documentation
+\`\`\`
+
+### **🌍 Multi-region setup**
+\`\`\`
+Geographic distribution:
+├── chile.miempresa.cl → Chilean audience
+├── latam.miempresa.cl → Latin America
+├── global.miempresa.cl → International
+└── partners.miempresa.cl → B2B portal
+
+Language localization:
+├── es.miempresa.cl → Spanish content
+├── en.miempresa.cl → English content
+├── pt.miempresa.cl → Portuguese content
+└── fr.miempresa.cl → French content
+\`\`\`
+
+## Renovación automática
+
+### **🔄 Crontab para renovación**
+\`\`\`bash
+# /etc/cron.d/certbot-renewal
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# Try renewal twice daily at random minute
+23 4,16 * * * root certbot renew --quiet --deploy-hook "systemctl reload nginx"
+
+# Weekly DNS cleanup (remove old challenge records)
+0 3 * * 0 root /usr/local/bin/cleanup-acme-challenges.sh
+\`\`\`
+
+### **📧 Monitoring y alertas**
+\`\`\`bash
+#!/bin/bash
+# ssl-monitor.sh - Check SSL expiration
+
+DOMAIN="miempresa.cl"
+WARN_DAYS=30
+
+# Get certificate expiration date
+EXPIRE_DATE=$(echo | openssl s_client -servername $DOMAIN -connect $DOMAIN:443 2>/dev/null | openssl x509 -noout -dates | grep notAfter | cut -d= -f2)
+
+# Convert to epoch
+EXPIRE_EPOCH=$(date -d "$EXPIRE_DATE" +%s)
+CURRENT_EPOCH=$(date +%s)
+DAYS_LEFT=$(( ($EXPIRE_EPOCH - $CURRENT_EPOCH) / 86400 ))
+
+if [ $DAYS_LEFT -lt $WARN_DAYS ]; then
+    # Send alert via email/Slack/webhook
+    echo "SSL certificate for $DOMAIN expires in $DAYS_LEFT days!" | \\
+    mail -s "SSL Expiration Warning" admin@miempresa.cl
+fi
+\`\`\`
+
+## Hosting chileno y wildcard
+
+### **🇨🇱 Proveedores que soportan wildcard**
+\`\`\`
+HostingPlus:
+├── Let's Encrypt wildcard: Manual setup  
+├── SSL wildcard premium: $75.000/año
+├── Instalación: Soporte técnico incluido
+├── Renovación: Automática premium
+└── DNS API: CloudFlare integration
+
+WebHosting:
+├── Wildcard SSL: $120.000/año
+├── Let's Encrypt: No soportado oficialmente
+├── Instalación: Manual via ticket
+└── Soporte: Limitado a horario oficina
+
+NetHosting:
+├── Wildcard incluido: Planes enterprise
+├── Let's Encrypt wildcard: Setup asistido
+├── DNS management: Panel completo
+└── Automatización: Scripts personalizados
+
+EcoHosting:
+├── SSL wildcard: A solicitud
+├── Costo: Variable según validación
+├── Setup: Manual únicamente
+└── Soporte técnico: Email only
+\`\`\`
+
+### **💡 Recomendaciones específicas Chile**
+- **PYMES con subdominios**: Let's Encrypt wildcard manual
+- **E-commerce escalable**: Wildcard premium con soporte
+- **Agencias digitales**: Wildcard para clientes múltiples
+- **SaaS/Plataformas**: Essential para architecture moderna`,
+    category: 'ssl-security',
+    cms: 'general',
+    tags: ['wildcard-ssl', 'certificado-comodin', 'subdominios-ssl', 'ssl-multiple'],
+    level: 'avanzado',
+    related: ['ssl-certificado', 'subdominio', 'https'],
+    hostingRequirements: ['Soporte wildcard SSL', 'DNS API access', 'SSL avanzado'],
+    cta: {
+      plan: 'Hosting con SSL Wildcard',
+      copy: 'Protege todos tus subdominios con un solo certificado',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=85'
+    },
+    proofPoints: ['Wildcard SSL incluido', 'Setup automático', 'Subdominios ilimitados protegidos'],
+    whenToUse: 'Múltiples subdominios, microservicios, environments desarrollo',
+    synonyms: ['certificado comodín', 'ssl asterisco', 'ssl múltiple'],
+    tldr: {
+      title: 'Wildcard Eficiente',
+      keyPoints: [
+        'Un certificado protege *.tuempresa.cl + todos subdominios futuros',
+        'Más barato que múltiples SSL individuales (5+ subdominios)',
+        'Let\'s Encrypt wildcard requiere validación DNS manual',
+        'Ideal para microservicios, APIs, environments múltiples'
+      ]
+    },
+    lastUpdated: '2025-01-15'
   }
 ];
 
