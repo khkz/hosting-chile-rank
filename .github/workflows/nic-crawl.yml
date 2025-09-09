@@ -33,28 +33,17 @@ jobs:
       - name: Generar RSS feed
         run: node scripts/generate-rss.mjs 
 
-      - name: Generar sitemap
-        run: node scripts/generate-sitemap.mjs
-
-      - name: Commit y push si cambia
+      - name: Verificar dominios capturados
         run: |
-          git config user.name  "NIC Bot"
-          git config user.email "bot@eligetuhosting.cl"
-          git add public/data/latest.json public/feed/latest-domains.xml public/sitemap.xml
-          if ! git diff --cached --quiet; then
-            git commit -m "chore: update feeds & sitemap $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-            git push
+          echo "📊 Dominios en latest.json:"
+          if [ -f public/data/latest.json ]; then
+            head -3 public/data/latest.json
+            echo "Total dominios: $(jq '.domains | length' public/data/latest.json 2>/dev/null || echo 'Error leyendo JSON')"
           else
-            echo "Sin cambios."
+            echo "❌ Archivo latest.json no encontrado"
           fi
 
-      - name: Diff rápido
-        run: |
-          echo "HEAD:"
-          head -3 public/data/latest.json
-          git diff --color -- public/data/latest.json | head || true
-
-      - name: Commit y push si cambia
+      - name: Commit feeds y datos
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
@@ -62,7 +51,28 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "chore(domains): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             git push
-            echo "✅ Cambios subidos."
+            echo "✅ Feeds actualizados y subidos."
           else
-            echo "ℹ️  Sin cambios; no se hace push."
+            echo "ℹ️  Sin cambios en feeds."
+          fi
+
+      - name: Generar sitemap
+        run: node scripts/generate-sitemap.mjs
+        continue-on-error: true
+
+      - name: Commit sitemap
+        run: |
+          git config user.name  "NIC Bot"
+          git config user.email "bot@eligetuhosting.cl"
+          if [ -f public/sitemap.xml ]; then
+            git add public/sitemap.xml
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(sitemap): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+              git push
+              echo "✅ Sitemap actualizado y subido."
+            else
+              echo "ℹ️  Sin cambios en sitemap."
+            fi
+          else
+            echo "⚠️  Sitemap no generado, saltando commit."
           fi

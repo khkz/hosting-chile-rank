@@ -2,8 +2,23 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import providers from './providers.json' assert { type: 'json' };
-// Import wiki terms dynamically to handle TypeScript
-const { wikiTerms } = await import('../src/data/wiki/terms.ts');
+
+// Read wiki terms from TypeScript file as text and extract slugs
+function extractWikiSlugs() {
+  try {
+    const content = readFileSync('src/data/wiki/terms.ts', 'utf8');
+    const slugMatches = content.match(/slug:\s*['"]([^'"]+)['"]/g);
+    return slugMatches ? slugMatches.map(match => {
+      const slug = match.match(/slug:\s*['"]([^'"]+)['"]/)[1];
+      return { slug };
+    }) : [];
+  } catch (error) {
+    console.log('⚠️  No se pudo leer términos wiki:', error.message);
+    return [];
+  }
+}
+
+const wikiTerms = extractWikiSlugs();
 
 const ROOT   = 'https://eligetuhosting.cl';
 const NOW    = new Date().toISOString();   // ISO format with time for better precision
@@ -50,19 +65,25 @@ const wikiUrls = wikiTerms
   .join('');
 
 /* ---------- últimos dominios (.domain/) --------------------------------- */
-let raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
-const domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
+let domainsArr = [];
+try {
+  const raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
+  domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
+  console.log(`📊 Procesando ${domainsArr.length} dominios para sitemap`);
+} catch (error) {
+  console.log('⚠️  No se pudo leer latest.json:', error.message);
+}
 
 // Optimizar dominios por recencia
 const domainUrls = domainsArr
   .slice(0, 5000)
   .map((domain, index) => {
-    const { d, t } = domain;
+    const { d, date } = domain; // Cambiado de 't' a 'date'
     // Dominios más recientes (primeros 100) con mayor prioridad y frecuencia diaria
     const isRecent = index < 100;
     const priority = isRecent ? '0.8' : '0.6';
     const changefreq = isRecent ? 'daily' : 'weekly';
-    const lastmod = t ? new Date(t).toISOString() : NOW;
+    const lastmod = date ? new Date(date).toISOString() : NOW;
     
     return urlTag(`${ROOT}/domain/${d.replace(/\./g, '-')}/`, priority, changefreq, lastmod);
   })
