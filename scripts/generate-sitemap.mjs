@@ -2,7 +2,8 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import providers from './providers.json' assert { type: 'json' };
-import { wikiTerms } from '../src/data/wiki/terms.ts';
+// Import wiki terms dynamically to handle TypeScript
+const { wikiTerms } = await import('../src/data/wiki/terms.ts');
 
 const ROOT   = 'https://eligetuhosting.cl';
 const NOW    = new Date().toISOString();   // ISO format with time for better precision
