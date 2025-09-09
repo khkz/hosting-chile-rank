@@ -43,10 +43,10 @@ const hostProviders = [
     speed: "9.9/10",
     uptime: "99.98%",
     features: [
-      "LiteSpeed Enterprise",
-      "Datacenter en Santiago",
-      "IP chilena",
-      "Soporte 24/7 local"
+      "Carga más rápida en Chile (servidores en Santiago)",
+      "Tu sitio protegido 24/7 (bloqueo automático de ataques)",
+      "Recupera tu web con un clic (backups automáticos)",
+      "Email que llega sin ir a spam (SPF, DKIM y DMARC)"
     ],
     url: "https://clientes.hostingplus.cl/cart.php?gid=13"
   },
