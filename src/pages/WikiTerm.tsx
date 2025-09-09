@@ -243,23 +243,31 @@ const WikiTerm: React.FC = () => {
                     remarkPlugins={[remarkGfm]}
                     components={{
                       h2: ({children, ...props}) => {
-                        const text = String(children);
-                        // Extraer ID de la sintaxis {#id} al final del texto
+                        const text = String(children).trim();
+                        // No renderizar si está vacío o solo contiene {#id}
+                        if (!text || text.match(/^\s*\{#[^}]+\}\s*$/)) return null;
+                        
                         const idMatch = text.match(/\{#([^}]+)\}$/);
                         const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
                         const cleanText = text.replace(/\s*\{#[^}]+\}\s*$/g, '').trim();
-                        // No renderizar si el texto está vacío después de limpiar
+                        
+                        // Verificar nuevamente después de limpiar
                         if (!cleanText) return null;
+                        
                         return <h3 id={id} className="text-xl font-bold mt-8 mb-4 scroll-mt-20" {...props}>{cleanText}</h3>;
                       },
                       h3: ({children, ...props}) => {
-                        const text = String(children);
-                        // Extraer ID de la sintaxis {#id} al final del texto
+                        const text = String(children).trim();
+                        // No renderizar si está vacío o solo contiene {#id}
+                        if (!text || text.match(/^\s*\{#[^}]+\}\s*$/)) return null;
+                        
                         const idMatch = text.match(/\{#([^}]+)\}$/);
                         const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
                         const cleanText = text.replace(/\s*\{#[^}]+\}\s*$/g, '').trim();
-                        // No renderizar si el texto está vacío después de limpiar
+                        
+                        // Verificar nuevamente después de limpiar
                         if (!cleanText) return null;
+                        
                         return <h4 id={id} className="text-lg font-semibold mt-6 mb-3 scroll-mt-20" {...props}>{cleanText}</h4>;
                       },
                       p: ({children}) => <p className="text-base leading-relaxed mb-4">{children}</p>,
