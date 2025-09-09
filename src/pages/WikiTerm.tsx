@@ -243,45 +243,108 @@ const WikiTerm: React.FC = () => {
                     remarkPlugins={[remarkGfm]}
                     components={{
                       h2: ({children, ...props}) => {
-                        const text = String(children).trim();
-                        // No renderizar si está vacío o solo contiene {#id}
+                        // Helper function to get plain text from children
+                        const getTextFromChildren = (children: any): string => {
+                          if (typeof children === 'string') return children;
+                          if (Array.isArray(children)) {
+                            return children.map(child => 
+                              typeof child === 'string' ? child :
+                              React.isValidElement(child) && (child as any).props?.children ?
+                              getTextFromChildren((child as any).props.children) : ''
+                            ).join('');
+                          }
+                          if (React.isValidElement(children) && (children as any).props?.children) {
+                            return getTextFromChildren((children as any).props.children);
+                          }
+                          return '';
+                        };
+
+                        // Helper function to strip trailing IDs
+                        const stripTrailingId = (text: string): { cleanText: string; id: string } => {
+                          const idMatch = text.match(/\s*\{#([^}]+)\}\s*$/);
+                          const cleanText = text.replace(/\s*\{#[^}]+\}\s*$/g, '').trim();
+                          const id = idMatch ? idMatch[1] : cleanText.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
+                          return { cleanText, id };
+                        };
+
+                        const text = getTextFromChildren(children).trim();
                         if (!text || text.match(/^\s*\{#[^}]+\}\s*$/)) return null;
                         
-                        const idMatch = text.match(/\{#([^}]+)\}$/);
-                        const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
-                        const cleanText = text.replace(/\s*\{#[^}]+\}\s*$/g, '').trim();
-                        
-                        // Verificar nuevamente después de limpiar
+                        const { cleanText, id } = stripTrailingId(text);
                         if (!cleanText) return null;
                         
                         return <h3 id={id} className="text-xl font-bold mt-8 mb-4 scroll-mt-20" {...props}>{cleanText}</h3>;
                       },
                       h3: ({children, ...props}) => {
-                        const text = String(children).trim();
-                        // No renderizar si está vacío o solo contiene {#id}
+                        // Helper function to get plain text from children
+                        const getTextFromChildren = (children: any): string => {
+                          if (typeof children === 'string') return children;
+                          if (Array.isArray(children)) {
+                            return children.map(child => 
+                              typeof child === 'string' ? child :
+                              React.isValidElement(child) && (child as any).props?.children ? 
+                              getTextFromChildren((child as any).props.children) : ''
+                            ).join('');
+                          }
+                          if (React.isValidElement(children) && (children as any).props?.children) {
+                            return getTextFromChildren((children as any).props.children);
+                          }
+                          return '';
+                        };
+
+                        // Helper function to strip trailing IDs
+                        const stripTrailingId = (text: string): { cleanText: string; id: string } => {
+                          const idMatch = text.match(/\s*\{#([^}]+)\}\s*$/);
+                          const cleanText = text.replace(/\s*\{#[^}]+\}\s*$/g, '').trim();
+                          const id = idMatch ? idMatch[1] : cleanText.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
+                          return { cleanText, id };
+                        };
+
+                        const text = getTextFromChildren(children).trim();
                         if (!text || text.match(/^\s*\{#[^}]+\}\s*$/)) return null;
                         
-                        const idMatch = text.match(/\{#([^}]+)\}$/);
-                        const id = idMatch ? idMatch[1] : text.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
-                        const cleanText = text.replace(/\s*\{#[^}]+\}\s*$/g, '').trim();
-                        
-                        // Verificar nuevamente después de limpiar
+                        const { cleanText, id } = stripTrailingId(text);
                         if (!cleanText) return null;
                         
                         return <h4 id={id} className="text-lg font-semibold mt-6 mb-3 scroll-mt-20" {...props}>{cleanText}</h4>;
                       },
+                      h4: ({children, ...props}) => {
+                        // Helper function to get plain text from children
+                        const getTextFromChildren = (children: any): string => {
+                          if (typeof children === 'string') return children;
+                          if (Array.isArray(children)) {
+                            return children.map(child => 
+                              typeof child === 'string' ? child :
+                              React.isValidElement(child) && (child as any).props?.children ? 
+                              getTextFromChildren((child as any).props.children) : ''
+                            ).join('');
+                          }
+                          if (React.isValidElement(children) && (children as any).props?.children) {
+                            return getTextFromChildren((children as any).props.children);
+                          }
+                          return '';
+                        };
+
+                        // Helper function to strip trailing IDs
+                        const stripTrailingId = (text: string): { cleanText: string; id: string } => {
+                          const idMatch = text.match(/\s*\{#([^}]+)\}\s*$/);
+                          const cleanText = text.replace(/\s*\{#[^}]+\}\s*$/g, '').trim();
+                          const id = idMatch ? idMatch[1] : cleanText.toLowerCase().replace(/[^a-z0-9\s]+/g, '').replace(/\s+/g, '-');
+                          return { cleanText, id };
+                        };
+
+                        const text = getTextFromChildren(children).trim();
+                        if (!text || text.match(/^\s*\{#[^}]+\}\s*$/)) return null;
+                        
+                        const { cleanText, id } = stripTrailingId(text);
+                        if (!cleanText) return null;
+                        
+                        return <h5 id={id} className="text-base font-semibold mt-4 mb-2 scroll-mt-20" {...props}>{cleanText}</h5>;
+                      },
                       p: ({children}) => <p className="text-base leading-relaxed mb-4">{children}</p>,
                       ul: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4">{children}</ul>,
                       ol: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4">{children}</ol>,
-                      li: ({children}) => {
-                        // Manejar objetos React correctamente
-                        const content = Array.isArray(children) 
-                          ? children.filter(child => typeof child !== 'object' || React.isValidElement(child))
-                          : typeof children === 'object' && !React.isValidElement(children) 
-                            ? String(children) 
-                            : children;
-                        return <li className="text-base leading-relaxed">{content}</li>;
-                      },
+                      li: ({children}) => <li className="text-base leading-relaxed">{children}</li>,
                       strong: ({children}) => <strong className="font-semibold text-foreground">{children}</strong>,
                       blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic bg-muted/50 p-4 rounded-r-lg my-4">{children}</blockquote>,
                       img: () => null, // Hide all images
