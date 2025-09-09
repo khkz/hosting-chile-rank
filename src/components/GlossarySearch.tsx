@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { searchTerms, wikiCategories, WikiTerm } from '@/data/wiki/terms';
+import { searchTerms, wikiCategories, WikiTerm } from '@/data/wiki/terms.ts';
 
 interface GlossarySearchProps {
   onResults: (results: any[]) => void;

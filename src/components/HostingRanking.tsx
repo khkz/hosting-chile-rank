@@ -16,10 +16,10 @@ const hostingData = [
     speedRating: 9.8,
     priceRating: 9.5,
     features: [
-      "Datacenter propio en Santiago (IP CL)",
-      "LiteSpeed Enterprise + BitNinja + JetBackup",
-      "0 reclamos en Reclamos.cl (2020-2025)",
-      "Soporte 24/7 y creador web IA gratis"
+      "Carga más rápida en Chile (servidores en Santiago)",
+      "Tu sitio protegido 24/7 (bloqueo automático de ataques)",
+      "Recupera tu web con un clic (backups automáticos)",
+      "Email que llega sin ir a spam (SPF, DKIM y DMARC)"
     ],
     specs: [
       "LiteSpeed Enterprise",
@@ -31,7 +31,7 @@ const hostingData = [
     isRecommended: true,
     buttonColor: "bg-gradient-to-r from-[#EF233C] to-[#c41e3a]",
     borderColor: "border-[#EF233C]",
-    badges: ["Más Popular", "Mejor Velocidad", "0 Reclamos"]
+    badges: ["Más Popular", "Hecho en Chile", "0 Reclamos"]
   },
   {
     position: 2,

@@ -43,6 +43,8 @@ const Hero = () => {
           <strong className="text-[#EF233C]"> mejores proveedores de Chile</strong>.
           <br />
           <span className="text-lg text-gray-500">Comparamos velocidad, seguridad y precios por ti.</span>
+          <br />
+          <span className="text-base text-[#EF233C] font-medium">Tu web se siente local: servidores en Santiago y soporte 24/7 en Chile</span>
         </p>
         
         {/* Social Proof */}
