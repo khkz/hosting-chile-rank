@@ -273,7 +273,15 @@ const WikiTerm: React.FC = () => {
                       p: ({children}) => <p className="text-base leading-relaxed mb-4">{children}</p>,
                       ul: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4">{children}</ul>,
                       ol: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4">{children}</ol>,
-                      li: ({children}) => <li className="text-base leading-relaxed">{children}</li>,
+                      li: ({children}) => {
+                        // Manejar objetos React correctamente
+                        const content = Array.isArray(children) 
+                          ? children.filter(child => typeof child !== 'object' || React.isValidElement(child))
+                          : typeof children === 'object' && !React.isValidElement(children) 
+                            ? String(children) 
+                            : children;
+                        return <li className="text-base leading-relaxed">{content}</li>;
+                      },
                       strong: ({children}) => <strong className="font-semibold text-foreground">{children}</strong>,
                       blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic bg-muted/50 p-4 rounded-r-lg my-4">{children}</blockquote>,
                       img: () => null, // Hide all images
