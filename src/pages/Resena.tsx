@@ -84,7 +84,7 @@ const hostingData = {
   },
   'hostname': {
     name: 'HN.cl',
-    logo: '/logo-hostname.svg',
+    logo: '/logo-hostname.png',
     rating: 9.2,
     description: 'HN.cl (Hostname) es un proveedor chileno de hosting que destaca por su excelente soporte técnico 24/7 y su compromiso con el rendimiento optimizado para el mercado local.',
     pros: [

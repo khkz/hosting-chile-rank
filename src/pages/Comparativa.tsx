@@ -81,7 +81,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'hostname',
     name: 'HN.cl',
-    logo: '/logo-hostname.svg',
+    logo: '/logo-hostname.png',
     velocidad: '9.2/10',
     seguridad: '9.1/10',
     backups: 'Diarios',
