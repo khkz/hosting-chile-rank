@@ -264,7 +264,7 @@ const GuiaElegirVPS = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="bg-orange-400 text-white text-lg font-bold px-3 py-1 rounded-full">#3</span>
-                    <img src="/logo-hostname.svg" alt="Hostname" className="h-10" loading="lazy" />
+                    <img src="/logo-hostname-vps.svg" alt="Hostname VPS" className="h-10" loading="lazy" />
                     <h3 className="text-xl font-bold">Hostname VPS</h3>
                     <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded font-semibold">MEJOR SOPORTE</span>
                   </div>
