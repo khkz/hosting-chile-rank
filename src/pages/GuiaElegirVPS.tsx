@@ -291,7 +291,7 @@ const GuiaElegirVPS = () => {
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="bg-gray-500 text-white text-lg font-bold px-3 py-1 rounded-full">#4</span>
-                    <img src="/logo-siteground.svg" alt="SiteGround" className="h-10" loading="lazy" />
+                    <img src="/logo-siteground.png" alt="SiteGround" className="h-10" loading="lazy" />
                     <h3 className="text-xl font-bold">SiteGround VPS</h3>
                     <span className="bg-purple-600 text-white text-xs px-2 py-1 rounded font-semibold">PARA DEVS</span>
                   </div>
