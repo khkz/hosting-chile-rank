@@ -113,7 +113,7 @@ const VotaHosting = () => {
   });
 
   useEffect(() => {
-    document.title = "Vota por tu hosting favorito | eligetuhosting.cl";
+    document.title = "Vota por tu Hosting | EligeTuHosting.cl";
   }, []);
 
   const watchProveedor = form.watch("nombreProveedor");
@@ -166,7 +166,7 @@ const VotaHosting = () => {
   return (
     <>
       <Helmet>
-        <title>Vota por tu hosting favorito | eligetuhosting.cl</title>
+        <title>Vota por tu Hosting | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Comparte tu experiencia con tu proveedor de hosting y ayuda a otros usuarios a tomar mejores decisiones. Tu opinión es importante." 

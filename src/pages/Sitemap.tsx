@@ -56,7 +56,7 @@ const Sitemap = () => {
   return (
     <>
       <Helmet>
-        <title>Sitemap - Elige tu Hosting</title>
+        <title>Sitemap | EligeTuHosting.cl</title>
         <meta name="description" content="Sitemap completo de Elige tu Hosting con todas las páginas y URLs disponibles." />
         <meta name="robots" content="index, follow" />
       </Helmet>

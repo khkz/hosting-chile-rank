@@ -35,7 +35,7 @@ const WikiCategory: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{category.name} - Wiki de Hosting | HostingChile</title>
+        <title>{category.name} - Wiki | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content={`${category.description}. Encuentra todos los términos relacionados con ${category.name} y las mejores recomendaciones de hosting.`}

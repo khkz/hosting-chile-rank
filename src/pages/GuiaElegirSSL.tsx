@@ -11,7 +11,7 @@ const GuiaElegirSSL = () => {
   return (
     <>
       <Helmet>
-        <title>Guía para elegir el mejor certificado SSL | eligetuhosting.cl</title>
+        <title>Guía Certificados SSL | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Todo lo que necesitas saber para elegir el certificado SSL adecuado para tu sitio web y mantenerlo seguro." 

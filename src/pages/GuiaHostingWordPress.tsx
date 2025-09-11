@@ -11,7 +11,7 @@ const GuiaHostingWordPress = () => {
   return (
     <>
       <Helmet>
-        <title>Mejor Hosting para WordPress Chile 2025 - Guía Específica y Comparativa</title>
+        <title>Hosting WordPress Chile 2025 | EligeTuHosting.cl</title>
         <meta name="description" content="Guía específica para elegir hosting WordPress en Chile. Comparativa real de proveedores, optimizaciones específicas y casos de éxito con WordPress chileno." />
         <meta name="keywords" content="hosting wordpress chile, mejor hosting wordpress, wordpress optimizado chile, hosting wordpress rapido" />
       </Helmet>

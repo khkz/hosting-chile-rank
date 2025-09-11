@@ -7,7 +7,7 @@ const AcercaDe: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Acerca de | EligeTuHosting.cl</title>
+        <title>Acerca de Nosotros | EligeTuHosting.cl</title>
         <meta name="description" content="Quiénes somos, nuestra metodología y principios de transparencia para recomendar el mejor hosting en Chile." />
         <link rel="canonical" href="https://eligetuhosting.cl/acerca-de" />
         <script type="application/ld+json">

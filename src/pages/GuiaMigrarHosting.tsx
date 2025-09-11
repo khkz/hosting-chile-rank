@@ -10,7 +10,7 @@ const GuiaMigrarHosting = () => {
   return (
     <>
       <Helmet>
-        <title>Cómo Migrar tu Hosting Web en Chile Sin Perder Datos [2025] - Guía Completa</title>
+        <title>Guía Migrar Hosting Chile | EligeTuHosting.cl</title>
         <meta name="description" content="Aprende a migrar tu hosting web de forma segura en Chile. Guía paso a paso con experiencias reales, checklist completo y consejos para evitar errores costosos." />
         <meta name="keywords" content="migrar hosting chile, cambiar hosting web, migración web segura, backup hosting chile" />
       </Helmet>

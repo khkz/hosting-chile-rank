@@ -11,7 +11,7 @@ const GuiaElegirServidorDedicado = () => {
   return (
     <>
       <Helmet>
-        <title>Guía para elegir el mejor servidor dedicado | eligetuhosting.cl</title>
+        <title>Guía Servidor Dedicado Chile | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Aprende a elegir el mejor servidor dedicado para proyectos de alto rendimiento. Comparativa de los mejores proveedores en Chile." 

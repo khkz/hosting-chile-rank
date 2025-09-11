@@ -95,7 +95,7 @@ const Blog = () => {
   return (
     <>
       <Helmet>
-        <title>Blog sobre hosting | eligetuhosting.cl</title>
+        <title>Blog Hosting Chile | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Información actualizada sobre hosting, WordPress, seguridad web y tecnologías para tu sitio. Guías, tutoriales y consejos de expertos." 

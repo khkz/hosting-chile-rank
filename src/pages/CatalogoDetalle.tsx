@@ -30,7 +30,7 @@ const CatalogoDetalle = () => {
   return (
     <>
       <Helmet>
-        <title>{company.name} - Información Detallada | eligetuhosting.cl</title>
+        <title>{company.name} | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content={`Información detallada sobre ${company.name}: planes, precios, características técnicas, datos de contacto y más.`} 

@@ -188,7 +188,7 @@ const MejorHostingChile2025 = () => {
   return (
     <>
       <Helmet>
-        <title>¿Cuál es el mejor hosting en Chile en 2025? Guía definitiva y comparativa</title>
+        <title>Mejor Hosting Chile 2025 | Guía Completa | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Descubre cuál es el mejor hosting en Chile 2025. Comparativa completa de velocidad, uptime y precios. Guía definitiva para elegir hosting SSD rápido." 
@@ -201,7 +201,7 @@ const MejorHostingChile2025 = () => {
         <meta property="og:description" content="Comparativa exhaustiva del mejor hosting Chile 2025. Análisis de velocidad, uptime y precios de los principales proveedores." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
-        <meta property="og:image" content="https://eligetuhosting.cl/lovable-uploads/990dfac6-4636-4e8c-b43d-81fd2ef16375.png" />
+        <meta property="og:image" content="https://eligetuhosting.cl/images/mejor-hosting-chile-hero.png" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

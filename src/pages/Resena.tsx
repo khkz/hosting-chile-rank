@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet';
 const hostingData = {
   'hostingplus': {
     name: 'HostingPlus',
-    logo: '/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png',
+    logo: '/images/hostingplus-logo.png',
     rating: 9.8,
     description: 'HostingPlus ofrece una combinación única de rendimiento, seguridad y soporte técnico que lo posiciona como nuestra principal recomendación en el mercado chileno.',
     pros: [
@@ -189,7 +189,7 @@ const Resena = () => {
   return (
     <>
       <Helmet>
-        <title>Reseña de {hosting.name} | eligetuhosting.cl</title>
+        <title>Reseña {hosting.name} | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content={`Análisis detallado y reseña de ${hosting.name}. Descubre sus ventajas, desventajas y si es la mejor opción para tu sitio web.`} 

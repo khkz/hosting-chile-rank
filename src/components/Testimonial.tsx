@@ -93,7 +93,7 @@ const Testimonial = () => {
           </h3>
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
             <div className="group">
-              <img src="/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="HostingPlus" />
+              <img src="/images/hostingplus-logo.png" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="HostingPlus" />
             </div>
             <div className="group">
               <img src="/logo-ecohosting-new.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="EcoHosting" />

@@ -50,7 +50,7 @@ const WikiIndex: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Wiki de Hosting - Glosario Completo de WordPress, Moodle, Joomla y Tendencias 2025 | HostingChile</title>
+        <title>Wiki Hosting 2025 | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2025. Guías técnicas para elegir el mejor hosting en Chile." 

@@ -37,7 +37,7 @@ const hostProviders = [
   {
     id: 1,
     name: "HostingPlus",
-    logo: "/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png",
+    logo: "/images/hostingplus-logo.png",
     rating: 9.9,
     price: "Desde $3.990/mes",
     speed: "9.9/10",
@@ -272,12 +272,12 @@ const RankingPage = () => {
   return (
     <>
       <Helmet>
-        <title>Ranking de Hosting Chile 2025 | Comparativa Oficial</title>
+        <title>Ranking Hosting Chile 2025 | EligeTuHosting.cl</title>
         <meta name="description" content="Comparativa actualizada de los mejores hosting en Chile. Evaluamos velocidad, soporte local y seguridad para tu sitio web." />
         <link rel="canonical" href="https://eligetuhosting.cl/ranking" />
         <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/ranking" />
         <meta property="og:url" content="https://eligetuhosting.cl/ranking" />
-        <meta property="og:image" content="https://eligetuhosting.cl/lovable-uploads/4b9ad72f-ec68-4414-8b9f-5debe4d14d9f.png" />
+        <meta property="og:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
         <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

@@ -360,7 +360,7 @@ const BlogPost = () => {
   return (
     <>
       <Helmet>
-        <title>{post.title} | eligetuhosting.cl</title>
+        <title>{post.title} | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content={post.excerpt} 

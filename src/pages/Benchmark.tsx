@@ -83,7 +83,7 @@ const Benchmark = () => {
   return (
     <>
       <Helmet>
-        <title>Benchmark de Hosting Chile 2025 | eligetuhosting.cl</title>
+        <title>Benchmark Hosting Chile 2025 | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Comparativa técnica y benchmark de los principales proveedores de hosting en Chile. Analizamos velocidad, uptime, seguridad y más." 

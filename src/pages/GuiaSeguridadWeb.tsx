@@ -10,7 +10,7 @@ const GuiaSeguridadWeb = () => {
   return (
     <>
       <Helmet>
-        <title>Seguridad Web Chile 2025: Protege tu Sitio de Hackers y Malware - Guía Completa</title>
+        <title>Seguridad Web Chile 2025 | EligeTuHosting.cl</title>
         <meta name="description" content="Guía completa de seguridad web en Chile. Aprende a proteger tu sitio de hackers, malware y ataques. Medidas específicas para el mercado chileno con casos reales." />
         <meta name="keywords" content="seguridad web chile, proteger sitio web, firewall chile, SSL chile, malware wordpress" />
       </Helmet>

@@ -77,7 +77,7 @@ const Contacto = () => {
   return (
     <>
       <Helmet>
-        <title>Contacto | eligetuhosting.cl</title>
+        <title>Contacto | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Contáctanos para resolver tus dudas sobre hosting en Chile. Estamos aquí para ayudarte a encontrar el mejor servicio para tu sitio web." 

@@ -178,7 +178,7 @@ const WhoisDomain = () => {
   // Add page-specific SEO metadata
   React.useEffect(() => {
     if (domainName) {
-      document.title = `${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`;
+      document.title = `${capitalizedDomainName} - Análisis | EligeTuHosting.cl`;
 
       // Create meta description
       let metaDescription = document.querySelector('meta[name="description"]');
@@ -209,16 +209,16 @@ const WhoisDomain = () => {
   return (
     <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
       <Helmet>
-        <title>{capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl</title>
+        <title>{capitalizedDomainName} - Análisis | EligeTuHosting.cl</title>
         <meta name="description" content={`Análisis técnico completo de ${domainName}: DNS, WHOIS, SSL, rendimiento, tecnología y más información para optimizar tu presencia en línea.`} />
-        <meta property="og:title" content={`${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`} />
+        <meta property="og:title" content={`${capitalizedDomainName} - Análisis | EligeTuHosting.cl`} />
         <meta property="og:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://eligetuhosting.cl/domain/${slug}/`} />
         <link rel="canonical" href={`https://eligetuhosting.cl/domain/${slug}/`} />
         {domainData && <script type="application/ld+json">{generateSchemaData()}</script>}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${capitalizedDomainName} - Análisis completo de dominio — eligetuhosting.cl`} />
+        <meta name="twitter:title" content={`${capitalizedDomainName} - Análisis | EligeTuHosting.cl`} />
         <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
         <meta name="robots" content="index, follow" />
         <meta property="article:modified_time" content={new Date().toISOString()} />
@@ -341,7 +341,7 @@ const WhoisDomain = () => {
                 <img 
                   alt="HostingPlus.cl" 
                   className="h-12" 
-                  src="/lovable-uploads/4b9ad72f-ec68-4414-8b9f-5debe4d14d9f.png" 
+                  src="/images/hostingplus-logo.png" 
                 />
                 <div className="flex-1">
                   <p className="font-medium text-lg">HostingPlus.cl - Nº1 en Chile</p>

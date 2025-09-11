@@ -121,7 +121,7 @@ const ASNDirectory: React.FC = () => {
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8">
       <Helmet>
-        <title>ASN Chile: Mapa y Directorio (BGP)</title>
+        <title>ASN Chile: Directorio BGP | EligeTuHosting.cl</title>
         <meta name="description" content="Explora ASNs de Chile: proveedores, prefijos IP y peers. Busca por ASN o nombre y navega el mapa y directorio de redes." />
         <link rel="canonical" href={`${window.location.origin}/asn`} />
         <meta httpEquiv="content-language" content="es-CL" />

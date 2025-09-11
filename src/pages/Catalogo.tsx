@@ -16,7 +16,7 @@ const CatalogoPage = () => {
   return (
     <>
       <Helmet>
-        <title>Catálogo de Empresas de Hosting en Chile | eligetuhosting.cl</title>
+        <title>Catálogo Hosting Chile | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Directorio completo de proveedores de hosting en Chile. Información detallada, planes y datos de contacto." 

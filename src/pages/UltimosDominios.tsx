@@ -246,7 +246,7 @@ const UltimosDominios = () => {
   const breadcrumbItems: { name: string; href: string }[] = [];
   return <div className="min-h-screen bg-[#EDF2F4] font-montserrat text-[#2B2D42]">
       <Helmet>
-        <title>Últimos dominios registrados en NIC.cl — eligetuhosting.cl</title>
+        <title>Últimos Dominios .CL | EligeTuHosting.cl</title>
         <meta name="description" content="Monitoreo en tiempo real de los dominios .cl más recientes registrados en NIC.cl. Consulta los últimos sitios web creados en Chile." />
         <meta property="og:title" content="Últimos dominios registrados en Chile — eligetuhosting.cl" />
         <meta property="og:description" content="Lista actualizada de los últimos dominios .cl registrados. Encuentra los sitios web más recientes de Chile." />

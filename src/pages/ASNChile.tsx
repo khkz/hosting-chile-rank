@@ -124,7 +124,7 @@ const ASNChile: React.FC = () => {
       <Navbar />
       <main className="container mx-auto px-4 py-8">
       <Helmet>
-        <title>ASN Chile: Sistemas Autónomos de Proveedores Chilenos</title>
+        <title>ASN Chile: Sistemas Autónomos | EligeTuHosting.cl</title>
         <meta name="description" content="Directorio completo de ASNs chilenos: Claro, Entel, Movistar, VTR, GTD, empresas de hosting y más proveedores de internet de Chile." />
         <link rel="canonical" href={`${window.location.origin}/asn/chile`} />
         <meta httpEquiv="content-language" content="es-CL" />

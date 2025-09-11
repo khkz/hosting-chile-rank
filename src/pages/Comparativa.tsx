@@ -39,7 +39,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'hostingplus',
     name: 'HostingPlus.cl',
-    logo: '/lovable-uploads/528891ff-3b55-486e-a927-e4f6d373a3c5.png',
+    logo: '/images/hostingplus-logo.png',
     velocidad: '9.9/10',
     seguridad: '9.9/10',
     backups: 'Diarios (JetBackup)',
@@ -160,7 +160,7 @@ const ComparativaPage = () => {
   return (
     <>
       <Helmet>
-        <title>Comparativa Hosting Chile 2025 | eligetuhosting.cl</title>
+        <title>Comparativa Hosting Chile 2025 | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Compara lado a lado los mejores servicios de hosting en Chile: velocidad, seguridad, backups y servicio al cliente. Datos actualizados 2025." 

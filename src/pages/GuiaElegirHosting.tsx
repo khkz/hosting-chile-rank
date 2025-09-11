@@ -15,7 +15,7 @@ const GuiaElegirHosting = () => {
   return (
     <>
       <Helmet>
-        <title>Guía para elegir el mejor hosting | eligetuhosting.cl</title>
+        <title>Guía Elegir Hosting Chile | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Aprende a elegir el mejor proveedor de hosting para tu sitio web según tus necesidades. Guía completa paso a paso." 

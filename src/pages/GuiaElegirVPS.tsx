@@ -11,7 +11,7 @@ const GuiaElegirVPS = () => {
   return (
     <>
       <Helmet>
-        <title>VPS Chile 2025: Guía Completa + Ranking de Mejores Proveedores</title>
+        <title>VPS Chile 2025: Guía y Ranking | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Guía VPS Chile 2025: 180 migraciones exitosas. Ranking real de 5 mejores proveedores, precios actualizados y cuándo SÍ necesitas VPS. Experiencia de 4 años." 

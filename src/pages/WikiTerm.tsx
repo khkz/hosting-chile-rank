@@ -42,7 +42,7 @@ const WikiTerm: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{term.title} - Guía Completa de Hosting | Wiki HostingChile</title>
+        <title>{term.title} - Wiki | EligeTuHosting.cl</title>
         <meta name="description" content={`${term.shortDefinition} Descubre requisitos de hosting, cuándo usar ${term.title} y recomendaciones de HostingPlus.`} />
         <meta name="keywords" content={`${term.title}, ${term.tags.join(', ')}, hosting, ${term.cms}, chile`} />
         <link rel="canonical" href={`https://eligetuhosting.cl/wiki/${term.slug}`} />

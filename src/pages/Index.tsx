@@ -20,7 +20,7 @@ import ExitModal from '@/components/ExitModal';
 const Index = () => {
   // Add page-specific SEO metadata
   React.useEffect(() => {
-    document.title = "Elige tu Hosting — Mejor Hosting Chile 2025";
+    document.title = "EligeTuHosting.cl — Mejor Hosting Chile 2025";
     
     // Create meta description
     let metaDescription = document.querySelector('meta[name="description"]');
