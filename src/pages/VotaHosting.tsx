@@ -55,7 +55,7 @@ const proveedoresHosting = [
   "1Hosting",
   "Hosting.cl",
   "PlanetaHosting",
-  "NinjaHosting",
+  "Hostname",
   "WebHosting.cl",
   "HostingPro",
   "ChileHosting",

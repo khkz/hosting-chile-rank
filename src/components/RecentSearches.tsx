@@ -5,7 +5,7 @@ import { History, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Fallback data for when the GitHub API request fails
-const fallbackDomains = ["hostingplus.cl", "ecohosting.cl", "fullhosting.cl", "webhosting.cl", "planetahosting.cl", "hostgator.cl", "hosting24.cl", "nethosting.cl", "ninjahosting.cl", "ziphosting.cl"];
+const fallbackDomains = ["hostingplus.cl", "ecohosting.cl", "fullhosting.cl", "webhosting.cl", "planetahosting.cl", "hostgator.cl", "hosting24.cl", "nethosting.cl", "hn.cl", "ziphosting.cl"];
 
 const RecentSearches = () => {
   const [domains, setDomains] = useState<string[]>([]);

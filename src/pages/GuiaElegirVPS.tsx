@@ -260,12 +260,12 @@ const GuiaElegirVPS = () => {
                   </a>
                 </div>
 
-                {/* #3 NinjaHosting */}
+                {/* #3 Hostname */}
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="bg-orange-400 text-white text-lg font-bold px-3 py-1 rounded-full">#3</span>
-                    <img src="/logo-ninjahosting.svg" alt="NinjaHosting" className="h-10" loading="lazy" />
-                    <h3 className="text-xl font-bold">NinjaHosting VPS</h3>
+                    <img src="/logo-hostname.svg" alt="Hostname" className="h-10" loading="lazy" />
+                    <h3 className="text-xl font-bold">Hostname VPS</h3>
                     <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded font-semibold">MEJOR SOPORTE</span>
                   </div>
                   <p className="text-gray-700 mb-4">
@@ -278,12 +278,12 @@ const GuiaElegirVPS = () => {
                     </p>
                   </div>
                   <a 
-                    href="https://ninjahosting.cl/vps/" 
+                    href="https://hn.cl/vps/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="bg-[#EF233C] text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
                   >
-                    Ver planes NinjaHosting <span className="ml-1">→</span>
+                    Ver planes Hostname <span className="ml-1">→</span>
                   </a>
                 </div>
 
