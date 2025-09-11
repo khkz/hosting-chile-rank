@@ -341,7 +341,7 @@ const WhoisDomain = () => {
                 <img 
                   alt="HostingPlus.cl" 
                   className="h-12" 
-                  src="/images/hostingplus-logo.png" 
+                  src="/logo-hostingplus.svg"
                 />
                 <div className="flex-1">
                   <p className="font-medium text-lg">HostingPlus.cl - Nº1 en Chile</p>
