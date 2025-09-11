@@ -86,7 +86,7 @@ const hostingProviders: HostingProvider[] = [
     seguridad: '9.1/10',
     backups: 'Diarios',
     reclamos: '3 en 5 años',
-    hasLiteSpeed: true,
+    hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
     price: 4990,
