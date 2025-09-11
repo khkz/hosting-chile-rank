@@ -82,6 +82,25 @@ const hostingData = {
     ],
     url: 'https://www.hostgator.cl/'
   },
+  'hostname': {
+    name: 'HN.cl',
+    logo: '/logo-hostname.svg',
+    rating: 9.2,
+    description: 'HN.cl (Hostname) es un proveedor chileno de hosting que destaca por su excelente soporte técnico 24/7 y su compromiso con el rendimiento optimizado para el mercado local.',
+    pros: [
+      'Soporte técnico excepcional 24/7 en español',
+      'Servidores LiteSpeed de alto rendimiento',
+      'Datacenter en Santiago con baja latencia',
+      'Backups diarios automatizados',
+      'Firewall WAF avanzado incluido',
+      'Panel cPanel fácil de usar'
+    ],
+    cons: [
+      'Precio ligeramente superior a competidores básicos',
+      'Planes de entrada con recursos limitados'
+    ],
+    url: 'https://hn.cl/'
+  },
   'bluehost': {
     name: 'BlueHost',
     logo: '/logo-bluehost.svg',
