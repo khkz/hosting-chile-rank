@@ -39,7 +39,7 @@ const hostingProviders: HostingProvider[] = [
   {
     id: 'hostingplus',
     name: 'HostingPlus.cl',
-    logo: '/images/hostingplus-logo.png',
+    logo: '/logo-hostingplus.svg',
     velocidad: '9.9/10',
     seguridad: '9.9/10',
     backups: 'Diarios (JetBackup)',
