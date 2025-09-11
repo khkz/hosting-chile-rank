@@ -79,18 +79,18 @@ const hostingProviders: HostingProvider[] = [
     reseñaUrl: '/reseñas/hostgator'
   },
   {
-    id: 'bluehost',
-    name: 'BlueHost.cl',
-    logo: '/logo-bluehost.svg',
-    velocidad: '9.0/10',
-    seguridad: '8.9/10',
-    backups: 'Semanales',
-    reclamos: '8 en 5 años',
-    hasLiteSpeed: false,
+    id: 'hostname',
+    name: 'HN.cl',
+    logo: '/logo-hostname.svg',
+    velocidad: '9.2/10',
+    seguridad: '9.1/10',
+    backups: 'Diarios',
+    reclamos: '3 en 5 años',
+    hasLiteSpeed: true,
     hasWAF: true,
     hasBackups: true,
-    price: 5990,
-    reseñaUrl: '/reseñas/bluehost'
+    price: 4990,
+    reseñaUrl: '/reseñas/hostname'
   },
   {
     id: 'donweb',
