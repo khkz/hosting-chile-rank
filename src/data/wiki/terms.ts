@@ -2904,6 +2904,72 @@ Esencial para tiendas que necesitan integraciones avanzadas.`,
     lastUpdated: '2025-01-15'
   },
 
+  {
+    id: 'woo-006',
+    slug: 'transbank',
+    title: 'Transbank',
+    shortDefinition: 'Principal procesador de pagos electrónicos de Chile que permite integrar Webpay Plus en WooCommerce para aceptar tarjetas de crédito y débito.',
+    longDefinition: `Transbank es el procesador de pagos líder en Chile que permite a tiendas WooCommerce aceptar pagos con tarjetas bancarias chilenas a través de Webpay Plus, Oneclick y otros productos de pago electrónico.
+
+## Introducción a Transbank {#introduccion}
+
+*Contenido en desarrollo - Paso 2/6*
+
+## Configuración Webpay Plus {#setup}
+
+*Contenido en desarrollo - Paso 2/6*
+
+## Validación RUT en Checkout {#validacion-rut}
+
+*Contenido en desarrollo - Paso 2/6*
+
+## Ambientes de Integración {#ambientes}
+
+*Contenido en desarrollo - Paso 3/6*
+
+## Tarjetas de Prueba {#testing}
+
+*Contenido en desarrollo - Paso 3/6*
+
+## Webpay Plus vs Oneclick {#comparativa}
+
+*Contenido en desarrollo - Paso 3/6*
+
+## Troubleshooting Errores Comunes {#errores}
+
+*Contenido en desarrollo - Paso 4/6*
+
+## Preguntas Frecuentes {#faqs}
+
+*Contenido en desarrollo - Paso 4/6*
+`,
+    category: 'woocommerce',
+    cms: 'wordpress',
+    tags: ['transbank', 'webpay', 'pasarela-pago', 'chile', 'pagos'],
+    level: 'medio',
+    related: ['woocommerce', 'ssl-certificado', 'pci-dss', 'payment-gateway'],
+    hostingRequirements: ['SSL certificado válido', 'PHP 7.4+', 'HTTPS obligatorio', 'Certificados Transbank'],
+    toc: [
+      { title: 'Introducción a Transbank', anchor: 'introduccion' },
+      { title: 'Configuración Webpay Plus', anchor: 'setup' },
+      { title: 'Validación RUT en Checkout', anchor: 'validacion-rut' },
+      { title: 'Ambientes de Integración', anchor: 'ambientes' },
+      { title: 'Tarjetas de Prueba', anchor: 'testing' },
+      { title: 'Webpay Plus vs Oneclick', anchor: 'comparativa' },
+      { title: 'Troubleshooting', anchor: 'errores' },
+      { title: 'FAQs', anchor: 'faqs' }
+    ],
+    cta: {
+      plan: 'E-commerce Pro',
+      copy: 'Hosting con SSL premium para Transbank Webpay',
+      url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=88'
+    },
+    proofPoints: ['SSL premium incluido', 'Certificados Transbank pre-instalados', 'Soporte integración Webpay'],
+    whenToUse: 'Necesario para tiendas chilenas que quieren aceptar tarjetas de crédito/débito locales',
+    synonyms: ['webpay', 'webpay plus', 'pasarela transbank', 'pago transbank'],
+    lastUpdated: '2025-01-18'
+  },
+
   // LMS Terms  
   {
     id: 'lms-003',
