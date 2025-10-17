@@ -3643,66 +3643,587 @@ CWV 2025 son más estrictos y determinantes para SEO.`,
     id: 'pb-004',
     slug: 'elementor',
     title: 'Elementor',
-    shortDefinition: 'El page builder visual más popular para WordPress, usado por más de 12 millones de sitios web. Permite crear diseños profesionales sin código.',
-    longDefinition: `Elementor es el page builder más utilizado del mundo WordPress, revolucionando la creación de sitios web con su editor visual intuitivo y potente.
+    shortDefinition: 'El page builder visual más popular para WordPress, usado por más de 12 millones de sitios web globalmente. Permite crear diseños profesionales sin escribir código.',
+    longDefinition: `Elementor es el page builder más utilizado del ecosistema WordPress a nivel mundial, revolucionando la creación de sitios web con su editor visual drag-and-drop intuitivo y extremadamente potente.
 
-## ¿Por qué elegir Elementor?
+Desde su lanzamiento en 2016, Elementor se ha convertido en el estándar de oro para diseñadores, agencias y desarrolladores que necesitan control total sobre el diseño sin depender de código.
 
-### 🎨 **Editor Visual Avanzado**
-- Edición en tiempo real (frontend editing)
-- Más de 100 widgets profesionales
-- Sistema de templates globales
-- Control granular de responsive design
+## ¿Por qué Elementor domina el mercado?
+
+### 🎨 **Editor Visual de Nueva Generación**
+
+**Live Frontend Editing**
+- Edita directamente en la vista final del sitio
+- Ver cambios en tiempo real mientras diseñas
+- No más alternar entre backend y frontend
+- WYSIWYG (What You See Is What You Get) real
+
+**Sistema de Widgets Profesional**
+- **90+ widgets nativos** en versión Pro
+- **30+ widgets** en versión gratuita
+- Widgets para cualquier necesidad: heading, text, image, button, icon, video, testimonials, pricing tables, countdown, forms
+- Extensiones de terceros amplían funcionalidades
+
+**Templates Globales Reutilizables**
+- Crear headers una vez, aplicar globalmente
+- Footers consistentes en todo el sitio
+- Secciones reutilizables (testimonials, CTAs)
+- Actualizar en un lugar, cambiar en todas partes
+
+**Responsive Design Granular**
+- Control por dispositivo: Desktop, Tablet, Mobile
+- Visibility controls por breakpoint
+- Padding/margin diferenciado
+- Tamaños de fuente responsive automáticos
 
 ### 🚀 **Rendimiento Optimizado**
-- Código CSS optimizado automáticamente
-- Lazy loading nativo
-- Minificación automática
-- Compatible con cache plugins
 
-### 💼 **Perfecto para Profesionales**
-- Theme Builder completo
-- WooCommerce Builder integrado
-- Custom CSS por elemento
-- Dynamic Content capabilities
+Elementor está diseñado pensando en velocidad y performance:
 
-## Planes disponibles
+**Optimización Automática**
+- Código CSS generado optimizado automáticamente
+- Minificación automática de assets
+- Lazy loading nativo de imágenes
+- DOM optimizado (menos bloat que competidores)
 
-### **Elementor Free** - Gratis
-- 30+ widgets básicos
-- Diseños responsive
-- Editor frontend
-- **[Descargar en WordPress.org](https://wordpress.org/plugins/elementor/)**
+**Compatible con Performance Plugins**
+\`\`\`
+Funciona perfectamente con:
+├── WP Rocket: Cache + minificación
+├── LiteSpeed Cache: Object cache integrado
+├── ShortPixel: Optimización imágenes automática
+├── Perfmatters: Script management
+└── Cloudflare: CDN global
+\`\`\`
 
-### **Elementor Pro** - $59/año
-- 90+ widgets Pro
-- Theme Builder
-- WooCommerce Builder  
-- Forms avanzados
-- **[Obtener Elementor Pro](https://elementor.com/pricing/)**
+**Métricas reales Chile**
+- **PageSpeed Score**: 85-95+ con configuración adecuada
+- **Largest Contentful Paint**: < 2.5s
+- **First Input Delay**: < 100ms
+- **Cumulative Layout Shift**: < 0.1
 
-### **Expert/Studio** - $199-$999/año
-- Para agencias y desarrolladores
-- White-label
-- Priority support
-- Kit completo de herramientas
+### 💼 **Herramientas Profesionales**
 
-## Comparativa con competidores
+**Theme Builder Completo** (Pro)
+- Diseñar headers personalizados sin código
+- Footers con widgets dinámicos
+- Single post templates customizados
+- Archive pages diseñadas a medida
+- 404 pages creativas
+- Search results pages
 
-| Feature | Elementor | Divi | Gutenberg |
-|---------|-----------|------|-----------|
-| Curva aprendizaje | Fácil | Media | Fácil |
-| Widgets incluidos | 100+ | 46 | 30+ |
-| Rendimiento | Excelente | Bueno | Muy bueno |
-| Theme Builder | ✅ Pro | ✅ | ✅ FSE |
-| Precio anual | $59 | $89 | Gratis |
+**WooCommerce Builder Integrado** (Pro)
+- Product pages completamente personalizadas
+- Shop page layouts únicos
+- Cart page optimizada para conversión
+- Checkout pages sin distracciones
+- Thank you pages con upsells
+- My Account area profesional
 
-## Casos de uso ideales
-- **Landing pages** de alta conversión
-- **Sitios corporativos** profesionales  
-- **E-commerce** con WooCommerce
-- **Portfolios** creativos
-- **Blogs** con diseño personalizado`,
+**Popup Builder** (Pro)
+- Crear popups de conversión
+- Exit-intent popups
+- Lightbox para productos
+- Lead magnets optimizados
+- A/B testing integrado
+
+**Dynamic Content** (Pro)
+- Custom Fields dinámicos
+- ACF Pro integration
+- Toolset compatibility
+- Meta Box support
+- JetEngine integration
+
+### 📊 **Casos de Uso Específicos Chile**
+
+**Landing Pages de Conversión**
+Elementor es la herramienta #1 para crear landing pages en Chile:
+- Templates optimizados para conversión
+- Formularios integrados con Transbank
+- Countdown timers para urgencia
+- Testimonials sections para confianza
+- Sticky CTAs que convierten
+
+**Sitios E-commerce WooCommerce**
+\`\`\`
+Tienda completa sin código:
+├── Productos con layouts únicos
+├── Categorías diseñadas para SEO
+├── Checkout optimizado Chile
+├── Upsells estratégicos
+├── Thank you pages con tracking
+└── Email templates personalizados
+\`\`\`
+
+**Portfolios Creativos**
+- Galerías con lightbox avanzado
+- Hover effects profesionales
+- Animaciones sutiles
+- Case studies detallados
+- Contact forms estratégicos
+
+**Sitios Corporativos Enterprise**
+- Navegación compleja multi-nivel
+- Mega menus con imágenes
+- Team sections interactivas
+- Service pages detalladas
+- Client logos y case studies
+
+## Tutorial Completo: Crear Landing Page Profesional
+
+### **Paso 1: Instalación y Setup**
+
+\`\`\`bash
+# Desde WordPress Admin
+1. Plugins > Add New > Search "Elementor"
+2. Install Elementor + Activate
+3. (Opcional) Install Elementor Pro si tienes licencia
+4. Ir a Elementor > Settings
+5. Configure Features: Enable Flexbox, Improved CSS
+6. Configure Tools: Enable Custom Fonts, Custom Icons
+\`\`\`
+
+### **Paso 2: Estructura de Landing Page**
+
+\`\`\`
+Anatomía landing page perfecta:
+├── Hero Section: Headline + Subhead + CTA principal
+├── Logo Bar: Confianza con logos clientes
+├── Features: 3 beneficios principales con iconos
+├── How It Works: 3-4 pasos proceso
+├── Testimonials: 3 testimonios con fotos reales
+├── Pricing: 1-3 opciones con botones destacados
+├── FAQ: 5-8 preguntas frecuentes
+└── Footer CTA: Última oportunidad conversión
+\`\`\`
+
+### **Paso 3: Design System con Elementor**
+
+**Global Colors** (Elementor > Site Settings > Global Colors)
+\`\`\`
+Definir paleta consistente:
+├── Primary: #FF6B6B (CTA buttons, links)
+├── Secondary: #4ECDC4 (accents, highlights)  
+├── Text: #2D3436 (body copy)
+├── Accent: #FFA000 (urgency, warnings)
+├── Background: #F8F9FA (sections alternadas)
+└── White: #FFFFFF (espacios en blanco)
+\`\`\`
+
+**Global Fonts** (Site Settings > Global Fonts)
+\`\`\`css
+/* Headings */
+H1: Montserrat, 700, 48px → 36px mobile
+H2: Montserrat, 600, 36px → 28px mobile
+H3: Montserrat, 600, 24px → 20px mobile
+
+/* Body */
+Body: Inter, 400, 16px → 14px mobile
+Button: Montserrat, 600, 16px uppercase
+\`\`\`
+
+### **Paso 4: Widgets Esenciales Explicados**
+
+**Heading Widget**
+\`\`\`
+Settings críticos:
+├── Typography: Use Global Fonts
+├── Text Color: Primary or Text global
+├── HTML Tag: H1 solo una vez por página (SEO)
+├── Animation: Fade In Up (sutil, profesional)
+└── Responsive: Ajustar size por device
+\`\`\`
+
+**Button Widget (CTA Optimization)**
+\`\`\`
+Configuración alta conversión:
+├── Text: Acción clara "Comenzar Ahora" (no "Click aquí")
+├── Link: URL absoluta + Track with Google Analytics
+├── Size: Large (Mobile: Medium)
+├── Typography: Use Global Button font
+├── Background: Primary color
+├── Hover: Secondary color transition
+├── Icon: Arrow right →
+├── Border Radius: 4px (modern clean look)
+└── Box Shadow: Subtle elevation
+\`\`\`
+
+**Form Widget (Pro)** - Integración Chile
+\`\`\`php
+// Campos esenciales formulario Chile
+Nombre completo: text (required)
+RUT: text + validation pattern (required e-commerce)
+Email: email (required + validation)
+Teléfono: tel +56 9 XXXX XXXX (mask)
+Mensaje: textarea (optional)
+
+// After Submit Actions
+├── Email: Send to admin@sitio.cl
+├── Email 2: Autoresponder al usuario
+├── Webhook: Integrar CRM (HubSpot, Pipedrive)
+├── Redirect: Thank you page con tracking
+└── MailChimp: Add to list automático
+\`\`\`
+
+### **Paso 5: Performance Optimization**
+
+**Settings Elementor Optimization**
+\`\`\`
+Elementor > Settings > Features:
+✅ Improved Asset Loading
+✅ Optimized DOM Output  
+✅ Lazy Load Background Images
+✅ Inline Font Icons
+✅ Improved CSS Loading
+✅ Flexbox Container (new)
+
+Elementor > Settings > Advanced:
+✅ CSS Print Method: Internal Embedding
+❌ Google Fonts (use local fonts)
+\`\`\`
+
+**WP Rocket Configuration**
+\`\`\`php
+// Cache tab
+✅ Enable caching for mobile devices
+✅ Separate cache files for mobile
+
+// File Optimization
+✅ Minify CSS files
+✅ Combine CSS files
+✅ Optimize CSS delivery
+✅ Minify JavaScript
+❌ Combine JavaScript (puede romper Elementor)
+✅ Delay JavaScript execution: jquery-core, jquery-migrate
+
+// Media
+✅ LazyLoad: Images, Iframes, Videos
+✅ Replace YouTube iframe with preview image
+
+// Preload
+✅ Preload Cache
+✅ Preload Links (Hover)
+✅ Preload Fonts: montserrat, inter
+\`\`\`
+
+### **Paso 6: Responsive Design Best Practices**
+
+\`\`\`css
+/* Elementor responsive strategy */
+
+Mobile First Approach:
+1. Diseña versión Desktop primero
+2. Switch a Tablet view (768px-1024px)
+   - Reduce padding: 60px → 40px
+   - Font sizes: -2px to -4px
+   - Columns: 3 cols → 2 cols
+3. Switch a Mobile view (<768px)
+   - Padding: 40px → 20px
+   - Font sizes: -4px to -8px  
+   - Columns: 2 cols → 1 col stack
+   - Hide non-essential elements
+   - Sticky CTA button bottom
+\`\`\`
+
+**Elementor Responsive Controls**
+- Column Width: Set % por breakpoint
+- Hide Element: Visibility conditions
+- Spacing: Padding/Margin por device
+- Typography: Font size responsive
+- Image Size: Diferentes dimensiones
+
+## Elementor vs Competidores Detallado
+
+| Aspecto | Elementor Pro | Divi Builder | Gutenberg FSE | Beaver Builder |
+|---------|---------------|--------------|---------------|----------------|
+| **Precio anual** | $59 | $89 | Gratis | $99 |
+| **Curva aprendizaje** | Fácil | Media | Fácil | Fácil |
+| **Widgets incluidos** | 90+ | 46 | 40+ | 40+ |
+| **Theme Builder** | ✅ Completo | ✅ Completo | ✅ FSE | ✅ Limitado |
+| **WooCommerce Builder** | ✅ Avanzado | ❌ Básico | ❌ No | ❌ Plugins |
+| **Popup Builder** | ✅ Incluido | ❌ Plugin extra | ❌ No | ❌ No |
+| **Dynamic Content** | ✅ Nativo | ✅ Toolset | ❌ Limitado | ❌ Plugins |
+| **Performance** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Comunidad/soporte** | Enorme | Grande | WordPress.org | Mediana |
+| **Updates frecuencia** | Semanal | Mensual | WordPress core | Mensual |
+| **Templates library** | 300+ | 2000+ | Limitado | 200+ |
+| **White label** | ✅ Pro | ✅ | ❌ | ✅ |
+
+### **¿Cuándo usar cada uno?**
+
+**Elementor Pro**
+- Agencias que necesitan rapidez
+- E-commerce WooCommerce
+- Landing pages optimizadas
+- Sitios que requieren popups
+- Presupuesto medio ($59/año)
+
+**Divi**
+- Acceso de por vida preferible
+- Múltiples sitios ilimitados
+- Template library masiva necesaria
+- Presupuesto: $89/año o $249 lifetime
+
+**Gutenberg FSE**
+- Sitios simples blog/corporate
+- Presupuesto $0 critical
+- Prefer WordPress nativo
+- No necesitas WooCommerce avanzado
+
+**Beaver Builder**
+- Equipos que prefieren estabilidad
+- Menos updates/cambios
+- Performance critical
+- Presupuesto higher okay
+
+## Plugins Esenciales Elementor Chile
+
+### **Performance Boosters**
+
+**1. Perfmatters** ($24.95/año)
+\`\`\`
+Optimizations específicas Elementor:
+├── Disable Elementor Google Fonts
+├── Script Manager: Defer Elementor scripts
+├── Code Snippets: Disable Elementor widgets no usados
+└── Database: Clean Elementor CSS cache
+\`\`\`
+
+**2. Asset CleanUp** (Gratuito)
+- Unload Elementor CSS/JS en páginas específicas
+- Reduce bloat en pages sin Elementor
+- Critical para blog posts simples
+
+**3. Flying Pages** (Gratuito)
+- Prefetch pages on hover
+- Instant page loads feeling
+- Compatible Elementor
+
+### **Functionality Extenders**
+
+**Essential Addons for Elementor** (Gratuito + Pro $39)
+\`\`\`
+90+ widgets adicionales:
+├── Advanced Data Table
+├── Post Grid (advanced filtering)
+├── Pricing Table (comparison)
+├── Team Members (hover effects)
+├── Testimonials Slider
+├── Countdown (evergreen timer)
+├── Instagram Feed
+└── Woo Product Grid
+\`\`\`
+
+**JetElements** ($26 Elementor Cloud Hosting)
+- 50+ widgets únicos
+- Mega menu builder
+- Tabs & Accordions avanzados
+- Portfolio grids
+
+**Happy Addons** (Gratuito + Pro $39)
+\`\`\`
+Chile-specific útiles:
+├── WhatsApp Chat widget
+├── Mercado Pago forms
+├── Pricing Toggle (CLP/USD)
+└── Business Hours (horario Chile)
+\`\`\`
+
+### **WooCommerce Enhancers**
+
+**ShopEngine** (Gratuito + Pro)
+- WooCommerce widgets avanzados
+- Quick view modals
+- Wishlist functionality
+- Compare products
+
+**Ele Custom Skin** (Gratuito)
+- Custom loop templates
+- Dynamic skins para widgets
+- Advanced query filters
+
+## Troubleshooting Común Elementor
+
+### **❌ Error: "Elementor Editor Not Loading"**
+
+**Causas comunes:**
+1. **Conflicto plugin**: Desactivar plugins uno por uno
+2. **Memory limit bajo**: Aumentar a 256MB mínimo
+3. **Conflicto theme**: Cambiar a Hello Elementor temporalmente
+4. **Mod_security blocking**: Contactar hosting
+
+**Solución paso a paso:**
+\`\`\`php
+// 1. Aumentar PHP memory en wp-config.php
+define('WP_MEMORY_LIMIT', '256M');
+define('WP_MAX_MEMORY_LIMIT', '512M');
+
+// 2. Regenerar CSS de Elementor
+Elementor > Tools > Regenerate CSS > Regenerate Files
+
+// 3. Clear all caches
+- Plugin cache (WP Rocket, etc.)
+- Elementor cache  
+- Browser cache (Ctrl+Shift+R)
+
+// 4. Check .htaccess
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+\`\`\`
+
+### **❌ "Elementor Widgets Not Showing"**
+
+\`\`\`bash
+# Reinstalar Elementor clean
+1. Backup sitio completo
+2. Desactivar Elementor + Elementor Pro
+3. Borrar plugins (NO templates ni settings)
+4. Reinstalar versión más reciente
+5. Reactivar
+6. Tools > Regenerate CSS & Data
+7. Tools > Replace URL (si cambió dominio)
+\`\`\`
+
+### **⚡ "Elementor Slow Backend"**
+
+**Optimizaciones inmediatas:**
+\`\`\`php
+// functions.php - Disable Elementor features no usados
+
+// Disable Elementor Google Fonts
+add_filter( 'elementor/frontend/print_google_fonts', '__return_false' );
+
+// Disable Elementor Font Awesome (si usas custom icons)
+add_action( 'elementor/frontend/after_enqueue_styles', function() {
+    wp_deregister_style( 'elementor-icons-fa-solid' );
+    wp_deregister_style( 'elementor-icons-fa-regular' );
+    wp_deregister_style( 'elementor-icons-fa-brands' );
+});
+
+// Limit Elementor post revisions
+define('AUTOSAVE_INTERVAL', 300); // 5 minutos
+define('WP_POST_REVISIONS', 5); // Solo 5 revisiones
+\`\`\`
+
+### **🎨 "Layout Breaks on Mobile"**
+
+**Checklist responsive:**
+- ✅ Set column widths % not px
+- ✅ Use Elementor responsive controls
+- ✅ Test en real devices (no solo devtools)
+- ✅ Padding: Desktop 80px → Mobile 20px
+- ✅ Font sizes: Scale down 20-30%
+- ✅ Reverse column order mobile si necesario
+- ✅ Hide non-essential widgets mobile
+- ✅ Make buttons full-width mobile
+
+## Hosting Optimizado para Elementor Chile
+
+### **Requisitos Mínimos**
+\`\`\`
+PHP: 8.0+ (8.1 recomendado)
+MySQL: 5.6+ (8.0 recomendado)
+Memory: 512MB (1GB+ ideal)
+Storage: SSD NVMe (no HDD)
+HTTP: 2.0+ (HTTP/3 mejor)
+SSL: Let's Encrypt mínimo
+\`\`\`
+
+### **Proveedores Recomendados Chile**
+
+**HostingPlus** (Recomendado #1)
+\`\`\`
+Plan WordPress Pro: $8.990/mes
+├── PHP 8.1 + OPcache
+├── RAM 4GB garantizada
+├── SSD NVMe 50GB
+├── LiteSpeed + LSCache
+├── Elementor Pro incluido
+├── SSL automático
+├── Backup diario
+└── Soporte Elementor especializado
+\`\`\`
+
+**Hosting24**
+- Planes desde $4.990/mes
+- PHP 8.0, MySQL 8.0
+- Buena performance precio/calidad
+- Soporte limitado Elementor
+
+**EcoHosting**
+- Enfoque sustentable
+- Performance sólido
+- $6.990/mes plan medio
+- Comunidad Elementor Chile activa
+
+### **Configuración Hosting Ideal**
+
+\`\`\`apache
+# .htaccess optimizations para Elementor
+
+# Enable Gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+\`\`\`
+
+## Recursos y Aprendizaje
+
+### **Documentación Oficial**
+- **Elementor Academy**: Cursos gratis estructurados
+- **Elementor Developers**: API documentation
+- **Elementor Community**: Forum activo
+- **YouTube Elementor**: Tutorials semanales
+
+### **Comunidades Chile**
+- **WordPress Chile**: Facebook group 20K+ miembros
+- **Elementor Chile**: Telegram group
+- **Diseño Web Chile**: LinkedIn group
+- **Meetups WordPress Santiago**: Eventos mensuales
+
+### **Cursos Recomendados (Español)**
+1. **Udemy**: "Elementor Pro Completo" - $12.990
+2. **Domestika**: "Diseño Web con Elementor" - $19.990  
+3. **YouTube**: Canal "Diseño y Programación Web" (gratis)
+4. **LinkedIn Learning**: Elementor path (gratis trial)
+
+### **Templates Chile-Específicos**
+
+**Template Kits gratuitos Elementor:**
+- Startup Chile Kit
+- Restaurante Santiago Template
+- E-commerce Chile Store
+- Agencia Digital LatAm
+- SaaS Landing Chile
+
+**Premium Template Providers:**
+- **Envato Elements**: $16.50/mes, 1000+ kits
+- **Template Monster**: One-time purchase
+- **Qodeinteractive**: Premium themes Elementor`,
     category: 'builders',
     cms: 'wordpress',
     tags: ['page-builder', 'elementor', 'visual-editor', 'drag-drop', 'theme-builder'],
