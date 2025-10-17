@@ -15,10 +15,30 @@ import WhoisTabs from '@/components/WhoisTabs';
 import SitePreview from '@/components/SitePreview';
 import { analyzeDomain, loadCachedAnalysis, type DomainAnalysisResult } from '@/services/domainAnalysis';
 import { hasValidIP } from '@/lib/utils';
+import { DomainUniqueContent } from '@/components/DomainUniqueContent';
 
 // Function to capitalize the first letter of a string
 const capitalizeFirstLetter = (string: string): string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+// Helper function to calculate domain age (for meta robots)
+const calculateDomainAge = (createdDate: string) => {
+  if (!createdDate || createdDate === 'No disponible') {
+    return { days: 0, years: 0, isNew: false, isEstablished: false };
+  }
+  
+  const created = new Date(createdDate);
+  const now = new Date();
+  const ageInDays = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+  const ageInYears = parseFloat((ageInDays / 365).toFixed(1));
+  
+  return {
+    days: ageInDays,
+    years: ageInYears,
+    isNew: ageInDays < 30,
+    isEstablished: ageInDays > 365
+  };
 };
 
 const WhoisDomain = () => {
@@ -220,7 +240,13 @@ const WhoisDomain = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${capitalizedDomainName} - Análisis | EligeTuHosting.cl`} />
         <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
-        <meta name="robots" content="index, follow" />
+        {/* Conditional noindex for domains older than 90 days */}
+        {domainData && calculateDomainAge(domainData.whois.created_date).days > 90 && (
+          <meta name="robots" content="noindex, follow" />
+        )}
+        {(!domainData || calculateDomainAge(domainData.whois.created_date).days <= 90) && (
+          <meta name="robots" content="index, follow" />
+        )}
         <meta property="article:modified_time" content={new Date().toISOString()} />
       </Helmet>
       
@@ -330,6 +356,9 @@ const WhoisDomain = () => {
                 </p>
               </div>
             )}
+            
+            {/* Unique SEO Content Section */}
+            <DomainUniqueContent domainName={domainName} domainData={domainData} />
             
             {/* Recommendation section */}
             <div className="mt-12 bg-white p-6 rounded-lg shadow-md">

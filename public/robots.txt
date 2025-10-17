@@ -5,10 +5,19 @@
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 0.5
-# Priorizar secciones con contenido fresco
-Allow: /ultimos-dominios/
-Allow: /domain/
+
+# Priorizar contenido de alto valor
 Allow: /ranking/
+Allow: /wiki/
+Allow: /asn/
+Allow: /guia-*
+Allow: /mejor-hosting-chile-2025
+
+# Limitar crawleo de páginas de dominio individuales
+# (Google puede descubrirlas, pero no las priorizamos)
+Allow: /ultimos-dominios/
+Crawl-delay: 2
+Allow: /domain/
 
 # Otros buscadores principales
 User-agent: Bingbot
@@ -76,8 +85,12 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-# Sitemap (ubicación principal)
+# Sitemaps jerárquicos (organizados por tipo de contenido)
 Sitemap: https://eligetuhosting.cl/sitemap.xml
+Sitemap: https://eligetuhosting.cl/sitemap-main.xml
+Sitemap: https://eligetuhosting.cl/sitemap-wiki.xml
+Sitemap: https://eligetuhosting.cl/sitemap-asn.xml
+Sitemap: https://eligetuhosting.cl/sitemap-domains.xml
 
 # RSS feeds para contenido fresco
 Sitemap: https://eligetuhosting.cl/feed/latest-domains.xml
