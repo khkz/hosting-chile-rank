@@ -506,22 +506,622 @@ add_action('wp_footer', 'mi_footer_personalizado');
     id: 'wp-004',
     slug: 'woocommerce',
     title: 'WooCommerce',
-    shortDefinition: 'Plugin de e-commerce para WordPress que convierte cualquier sitio en una tienda online completa con gestión de productos, pagos y envíos.',
-    longDefinition: 'WooCommerce es la plataforma de e-commerce más usada del mundo, perfecta para tiendas online en Chile con integración Transbank y envíos nacionales.',
+    shortDefinition: 'Plugin gratuito de WordPress que transforma tu sitio en una tienda online completa. Solución más popular para e-commerce con más del 30% del mercado global.',
+    longDefinition: `WooCommerce es la plataforma de comercio electrónico de código abierto más popular del mundo, potenciando más de 6 millones de tiendas online activas. En Chile, es la solución preferida por emprendedores y PYMES que buscan crear tiendas virtuales profesionales sin invertir grandes sumas de dinero.
+
+## ¿Qué es WooCommerce?
+
+WooCommerce es un **plugin gratuito para WordPress** desarrollado por Automattic (la misma empresa detrás de WordPress.com) que convierte cualquier sitio WordPress en una tienda online totalmente funcional. Lanzado en 2011, ha experimentado un crecimiento explosivo y actualmente domina más del 30% del mercado global de e-commerce.
+
+### Características principales
+
+- **100% gratuito y de código abierto**: Sin tarifas mensuales ni comisiones por venta
+- **Altamente personalizable**: Miles de extensiones y temas disponibles
+- **Sin límites de productos**: Agrega tantos productos como necesites
+- **Escalabilidad**: Desde pequeños emprendimientos hasta tiendas enterprise
+- **Control total**: Tu tienda, tus datos, tu infraestructura
+- **Comunidad masiva**: Millones de usuarios y desarrolladores en todo el mundo
+
+## WooCommerce en Chile: Ventajas específicas
+
+El mercado chileno presenta particularidades únicas que WooCommerce maneja eficientemente:
+
+### Integración con medios de pago chilenos
+
+WooCommerce se integra perfectamente con las principales pasarelas de pago utilizadas en Chile:
+
+- **Transbank Webpay Plus**: Plugin oficial para pagos con tarjetas de débito y crédito
+- **Mercado Pago Chile**: Integración nativa con tarjetas, transferencias y cuotas
+- **Flow**: Pasarela chilena que acepta múltiples métodos de pago
+- **Khipu**: Transferencias bancarias instantáneas
+- **GetNet (Santander)**: Para comercios que trabajan con Banco Santander
+
+### Gestión de despacho chilena
+
+WooCommerce se adapta a las necesidades logísticas locales:
+
+- **Chilexpress**: Integración mediante plugins especializados
+- **Starken**: Cálculo automático de tarifas según región
+- **Correos de Chile**: Configuración de zonas de envío personalizadas
+- **Blue Express**: API para cotización en tiempo real
+- **Retiro en tienda**: Opción muy popular en el mercado chileno
+
+### Cumplimiento normativo chileno
+
+- **Facturación electrónica SII**: Plugins como "Facturación WooCommerce Chile"
+- **Formato de dirección chileno**: Campos para región, comuna, dirección personalizada
+- **Campo RUT**: Validación automática de RUT/RUN de clientes
+- **Boleta electrónica**: Cumplimiento Ley 21.210
+- **Libro de ventas**: Reportes compatibles con requisitos tributarios
+
+## ¿Cómo funciona WooCommerce?
+
+### Arquitectura técnica
+
+WooCommerce se instala como un plugin dentro de WordPress y extiende su funcionalidad nativa:
+
+1. **Tipos de post personalizados**: Productos, órdenes, cupones
+2. **Taxonomías**: Categorías de productos, etiquetas, atributos
+3. **Tablas de base de datos**: Almacenamiento de metadata de pedidos
+4. **REST API**: Integración con apps móviles y servicios externos
+5. **Webhooks**: Automatización con sistemas de inventario, ERP, CRM
+
+### Proceso de compra paso a paso
+
+El flujo de compra estándar en WooCommerce sigue estos pasos:
+
+1. **Navegación del catálogo**: Cliente explora productos por categoría/búsqueda
+2. **Agregar al carrito**: Selección de cantidad, variaciones (talla, color)
+3. **Revisión del carrito**: Aplicación de cupones, cálculo de envío
+4. **Checkout**: Ingreso de datos de facturación y despacho
+5. **Selección de pago**: Cliente elige método (Webpay, transferencia, etc.)
+6. **Procesamiento**: Redirección a pasarela de pago
+7. **Confirmación**: Email automático + actualización de inventario
+8. **Post-venta**: Seguimiento de pedido, facturación
+
+## Instalación y configuración inicial
+
+### Requisitos de hosting para WooCommerce
+
+Para un funcionamiento óptimo, WooCommerce requiere:
+
+**Requisitos mínimos:**
+- PHP 7.4 o superior (recomendado: PHP 8.1)
+- MySQL 5.6 o MariaDB 10.3
+- WordPress 6.0 o superior
+- Memoria PHP: 256 MB (recomendado: 512 MB)
+- Certificado SSL (HTTPS obligatorio para pagos)
+
+**Requisitos recomendados Chile:**
+- Servidor en Chile o Latam (latencia <50ms)
+- CDN para imágenes de productos
+- Backup diario automatizado
+- Firewall y protección DDoS
+- Staging environment para pruebas
+
+### Instalación paso a paso
+
+\`\`\`bash
+# 1. Instalar WordPress primero
+# 2. Ir a Panel WordPress > Plugins > Añadir nuevo
+# 3. Buscar "WooCommerce"
+# 4. Clic en "Instalar ahora" > "Activar"
+# 5. Seguir asistente de configuración
+\`\`\`
+
+### Configuración inicial (Wizard)
+
+El asistente de WooCommerce guía en 5 pasos:
+
+1. **Información de la tienda**: Dirección, comuna, región
+2. **Industria**: Seleccionar rubro (ropa, tecnología, alimentos)
+3. **Tipos de productos**: Físicos, digitales, suscripciones
+4. **Funciones del negocio**: Inventario, impuestos, cupones
+5. **Tema**: Seleccionar diseño de tienda (o continuar con tema actual)
+
+## Gestión de productos en WooCommerce
+
+### Tipos de productos
+
+WooCommerce soporta múltiples tipos de productos:
+
+#### 1. Producto simple
+Producto único con precio fijo. Ejemplo: Libro, taza, polera.
+
+\`\`\`php
+// Crear producto simple programáticamente
+$product = new WC_Product_Simple();
+$product->set_name('Polera EligeTuHosting');
+$product->set_regular_price('15990');
+$product->set_description('Polera 100% algodón con logo ETH');
+$product->set_manage_stock(true);
+$product->set_stock_quantity(50);
+$product->save();
+\`\`\`
+
+#### 2. Producto variable
+Producto con variaciones (tallas, colores). Ejemplo: Zapatillas (tallas 38-45).
+
+#### 3. Producto agrupado
+Conjunto de productos relacionados vendidos juntos. Ejemplo: Kit de bienvenida.
+
+#### 4. Producto virtual
+Sin envío físico. Ejemplo: Cursos online, ebooks, licencias software.
+
+#### 5. Producto descargable
+Cliente recibe archivo tras compra. Ejemplo: Plantillas, plugins premium.
+
+#### 6. Suscripción
+Cobro recurrente. Ejemplo: Membresía mensual, hosting WordPress. (Requiere extensión WooCommerce Subscriptions)
+
+### Atributos y variaciones
+
+Para productos con opciones (tallas, colores):
+
+\`\`\`php
+// Crear atributo "Talla"
+$attribute = new WC_Product_Attribute();
+$attribute->set_name('Talla');
+$attribute->set_options(['S', 'M', 'L', 'XL']);
+$attribute->set_visible(true);
+$attribute->set_variation(true);
+
+$product->set_attributes([$attribute]);
+\`\`\`
+
+## Personalización para el mercado chileno
+
+### Agregar campo RUT en checkout
+
+Este código agrega validación de RUT chileno en el proceso de compra:
+
+\`\`\`php
+// functions.php del tema
+add_filter('woocommerce_checkout_fields', 'agregar_campo_rut');
+
+function agregar_campo_rut($fields) {
+    $fields['billing']['billing_rut'] = array(
+        'label' => 'RUT',
+        'placeholder' => 'Ej: 12.345.678-9',
+        'required' => true,
+        'class' => array('form-row-wide'),
+        'clear' => true,
+        'priority' => 25,
+        'validate' => array('validar_rut_chileno')
+    );
+    return $fields;
+}
+
+// Función validación RUT
+function validar_rut_chileno($rut) {
+    $rut = preg_replace('/[^k0-9]/i', '', $rut);
+    $dv = substr($rut, -1);
+    $numero = substr($rut, 0, strlen($rut)-1);
+    
+    $i = 2;
+    $suma = 0;
+    foreach(array_reverse(str_split($numero)) as $v) {
+        if($i == 8) $i = 2;
+        $suma += $v * $i;
+        ++$i;
+    }
+    
+    $dvr = 11 - ($suma % 11);
+    if($dvr == 11) $dvr = 0;
+    if($dvr == 10) $dvr = 'K';
+    
+    return strtoupper($dv) == strtoupper($dvr);
+}
+
+add_action('woocommerce_checkout_process', 'validar_rut_checkout');
+function validar_rut_checkout() {
+    if (!validar_rut_chileno($_POST['billing_rut'])) {
+        wc_add_notice('RUT inválido. Por favor verifica.', 'error');
+    }
+}
+\`\`\`
+
+### Configurar regiones y comunas chilenas
+
+\`\`\`php
+// Agregar todas las regiones y comunas de Chile
+add_filter('woocommerce_states', 'regiones_chile');
+
+function regiones_chile($states) {
+    $states['CL'] = array(
+        'RM' => 'Región Metropolitana',
+        'VA' => 'Región de Valparaíso',
+        'BI' => 'Región del Biobío',
+        'AR' => 'Región de la Araucanía',
+        'LR' => 'Región de Los Ríos',
+        'LL' => 'Región de Los Lagos',
+        // ... todas las regiones
+    );
+    return $states;
+}
+\`\`\`
+
+### Integración Transbank Webpay Plus
+
+Plugin recomendado: **Transbank Webpay Plus for WooCommerce** (oficial)
+
+\`\`\`php
+// Configuración básica
+// 1. Instalar plugin desde WordPress.org
+// 2. WooCommerce > Ajustes > Pagos > Webpay Plus
+// 3. Ingresar código de comercio (proporcionado por Transbank)
+// 4. Configurar ambiente: Integración o Producción
+// 5. Activar método de pago
+
+// Hook para personalizar mensaje post-pago
+add_filter('woocommerce_thankyou_order_received_text', 'mensaje_webpay', 10, 2);
+function mensaje_webpay($text, $order) {
+    if ($order->get_payment_method() == 'transbank_webpay_plus') {
+        $text = '¡Gracias! Tu pago con Webpay fue procesado exitosamente.';
+    }
+    return $text;
+}
+\`\`\`
+
+## Optimización de rendimiento
+
+### Problemas comunes de rendimiento
+
+Las tiendas WooCommerce pueden volverse lentas sin optimización adecuada:
+
+**Causas principales:**
+- Muchas variaciones de producto (>50 por producto)
+- Imágenes sin optimizar (archivos >500KB)
+- Demasiados plugins activos (>30)
+- Falta de caché de objetos
+- Queries de base de datos no optimizadas
+- Sesiones de WooCommerce en BD (en vez de caché)
+
+### Soluciones de optimización
+
+#### 1. Caché de objetos (Redis/Memcached)
+
+\`\`\`php
+// wp-config.php
+define('WP_CACHE', true);
+define('WP_REDIS_HOST', 'localhost');
+define('WP_REDIS_PORT', 6379);
+\`\`\`
+
+#### 2. Lazy loading de imágenes
+
+\`\`\`php
+// Activar lazy loading nativo
+add_filter('wp_lazy_loading_enabled', '__return_true');
+\`\`\`
+
+#### 3. Deshabilitar scripts innecesarios
+
+\`\`\`php
+// Descargar scripts WC solo en páginas necesarias
+add_action('wp_enqueue_scripts', 'optimizar_scripts_woocommerce', 99);
+function optimizar_scripts_woocommerce() {
+    if (!is_woocommerce() && !is_cart() && !is_checkout()) {
+        // Quitar scripts en páginas no-tienda
+        wp_dequeue_style('woocommerce-layout');
+        wp_dequeue_style('woocommerce-general');
+        wp_dequeue_script('wc-cart-fragments');
+    }
+}
+\`\`\`
+
+#### 4. Optimizar consultas de productos
+
+Usar transients para cachear consultas pesadas:
+
+\`\`\`php
+function obtener_productos_destacados_cache() {
+    $transient_key = 'productos_destacados_v1';
+    $productos = get_transient($transient_key);
+    
+    if (false === $productos) {
+        $args = array(
+            'post_type' => 'product',
+            'posts_per_page' => 8,
+            'meta_key' => '_featured',
+            'meta_value' => 'yes'
+        );
+        $productos = new WP_Query($args);
+        set_transient($transient_key, $productos, 6 * HOUR_IN_SECONDS);
+    }
+    
+    return $productos;
+}
+\`\`\`
+
+## Seguridad en WooCommerce
+
+### Amenazas comunes
+
+- **Ataques de fuerza bruta** al login
+- **Injection SQL** en formularios
+- **XSS** en campos de búsqueda
+- **Robo de sesiones** de clientes
+- **Fraude con tarjetas** robadas
+
+### Medidas de protección
+
+#### 1. SSL/HTTPS obligatorio
+
+\`\`\`php
+// Forzar HTTPS en checkout
+add_action('template_redirect', 'forzar_https_checkout');
+function forzar_https_checkout() {
+    if (is_checkout() && !is_ssl()) {
+        wp_redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 301);
+        exit();
+    }
+}
+\`\`\`
+
+#### 2. Autenticación de dos factores (2FA)
+
+Plugins recomendados:
+- **WooCommerce Two-Factor Authentication**
+- **miniOrange Google Authenticator**
+
+#### 3. Firewall de aplicación (WAF)
+
+Servicios recomendados para Chile:
+- Cloudflare (plan gratuito disponible)
+- Sucuri Website Firewall
+- Wordfence Security
+
+#### 4. Limitar intentos de login
+
+\`\`\`php
+// Usar plugin: Limit Login Attempts Reloaded
+// Configuración sugerida:
+// - 3 intentos permitidos
+// - 20 minutos de bloqueo
+// - Notificación por email al admin
+\`\`\`
+
+## Extensiones esenciales para Chile
+
+### Plugins imprescindibles
+
+1. **Transbank Webpay Plus for WooCommerce** (Gratis)
+   - Integración oficial con Transbank
+   - Soporte tarjetas crédito/débito
+
+2. **Mercado Pago for WooCommerce** (Gratis)
+   - Múltiples métodos de pago
+   - Cuotas sin interés
+
+3. **Chilexpress Official** (Pago, ~$89.990/año)
+   - Cálculo automático tarifas
+   - Seguimiento de envíos
+
+4. **Facturación Electrónica SII** (Pago, ~$49.990/año)
+   - Boletas y facturas electrónicas
+   - Integración con SII
+
+5. **WooCommerce PDF Invoices & Packing Slips** (Gratis)
+   - Generar PDFs de órdenes
+   - Guías de despacho
+
+### Plugins de optimización
+
+- **WP Rocket** (Premium): Caché todo-en-uno
+- **ShortPixel**: Optimización de imágenes
+- **WP-Optimize**: Limpieza de base de datos
+- **Query Monitor**: Debug de queries lentas
+
+## WooCommerce vs Competencia
+
+### Comparación con Shopify
+
+| Característica | WooCommerce | Shopify |
+|---|---|---|
+| Costo mensual | $0 (+ hosting) | Desde $29 USD/mes |
+| Comisión por venta | 0% | 2% (plan básico) |
+| Control de datos | Total | Limitado |
+| Personalización | Ilimitada | Restrictiva |
+| Apps/Plugins | 50,000+ | 8,000+ |
+| Hosting | Debes contratar | Incluido |
+| Soporte | Comunidad | 24/7 oficial |
+| Ideal para | PYMES Chile | Tiendas globales |
+
+**Recomendación Chile:** WooCommerce es más rentable para emprendedores locales. Shopify conviene si vendes internacionalmente.
+
+### Comparación con PrestaShop
+
+| Característica | WooCommerce | PrestaShop |
+|---|---|---|
+| Facilidad de uso | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Ecosistema | WordPress (43% web) | Standalone |
+| Curva aprendizaje | Baja | Media-Alta |
+| Multiidioma | Plugins | Nativo |
+| SEO | Excelente (WP) | Bueno |
+| Comunidad Chile | Grande | Pequeña |
+
+**Recomendación:** WooCommerce gana por ecosistema WordPress y facilidad de uso.
+
+## Casos de uso exitosos en Chile
+
+### Pequeño emprendimiento
+
+**Perfil:** Artesanías hechas a mano
+- 50-100 productos
+- Ventas: 20-40 pedidos/mes
+- Hosting: Plan WooCommerce ($8.990/mes)
+- Plugins: Gratis + Webpay
+- **Inversión inicial:** ~$150.000 CLP
+
+### Tienda mediana
+
+**Perfil:** Tienda de ropa online
+- 500-1,000 productos
+- Ventas: 200-500 pedidos/mes
+- Hosting: VPS ($29.990/mes)
+- Plugins: Premium (~$200.000/año)
+- **Inversión inicial:** ~$800.000 CLP
+
+### E-commerce enterprise
+
+**Perfil:** Retailer multicanal
+- 10,000+ productos
+- Ventas: 2,000+ pedidos/mes
+- Hosting: Servidor dedicado ($199.990/mes)
+- Desarrollo custom: $5M+ CLP
+- **Inversión inicial:** ~$15M CLP
+
+## Hosting recomendado para WooCommerce en Chile
+
+### Características críticas
+
+1. **Ubicación del servidor**: Chile o Latam
+2. **PHP 8.1+**: Performance superior
+3. **MySQL optimizado**: Índices correctos
+4. **Caché**: Redis o Memcached
+5. **CDN**: CloudFlare o similar
+6. **SSL gratuito**: Let's Encrypt
+7. **Backups diarios**: Automáticos
+8. **Staging**: Ambiente de pruebas
+9. **Soporte WooCommerce**: Técnicos especializados
+10. **Escalabilidad**: Upgrades sin downtime
+
+### Planes por tamaño de tienda
+
+**Tienda pequeña (0-50 productos):**
+- Hosting compartido WooCommerce
+- 2 GB RAM, 20 GB SSD
+- ~$8.990/mes
+
+**Tienda mediana (50-500 productos):**
+- VPS WooCommerce
+- 4 GB RAM, 80 GB SSD
+- ~$29.990/mes
+
+**Tienda grande (500+ productos):**
+- Servidor dedicado
+- 16 GB RAM, 500 GB SSD
+- ~$199.990/mes
+
+## Recursos y aprendizaje
+
+### Documentación oficial
+
+- [WooCommerce Docs](https://woocommerce.com/documentation/)
+- [WooCommerce Code Reference](https://woocommerce.github.io/code-reference/)
+- [WooCommerce REST API](https://woocommerce.github.io/woocommerce-rest-api-docs/)
+
+### Comunidad chilena
+
+- Grupo Facebook "WooCommerce Chile"
+- Meetups WordPress Santiago
+- Foro WooCommerce en español
+
+### Cursos recomendados
+
+- Udemy: "WooCommerce para principiantes"
+- LinkedIn Learning: "WooCommerce Essential Training"
+- YouTube: Canal "WooCommerce en español"
+
+## Conclusión
+
+WooCommerce es la solución ideal para emprendedores chilenos que quieren:
+
+✅ **Control total** de su tienda online
+✅ **Costos predecibles** sin comisiones por venta
+✅ **Integración local** con Transbank, Mercado Pago, Chilexpress
+✅ **Escalabilidad** desde 10 hasta 100,000 productos
+✅ **Flexibilidad** ilimitada de personalización
+
+Con el hosting adecuado en Chile, WooCommerce puede competir con cualquier plataforma internacional, ofreciendo velocidad de carga, bajo costo operacional y adaptación total al mercado local.`,
     category: 'woocommerce',
     cms: 'wordpress',
     tags: ['ecommerce', 'tienda-online', 'woocommerce', 'ventas'],
     level: 'medio',
-    related: ['wordpress', 'transbank', 'shipping-methods'],
-    hostingRequirements: ['SSL certificado', 'PHP 8.0+', 'MySQL optimizado', 'Backup automático'],
+    related: ['wordpress', 'transbank', 'shipping-methods', 'ssl-certificado', 'cdn'],
+    hostingRequirements: ['SSL certificado', 'PHP 8.0+', 'MySQL optimizado', 'Backup automático', 'Redis/Memcached'],
+    toc: [
+      { title: '¿Qué es WooCommerce?', anchor: 'que-es-woocommerce' },
+      { title: 'WooCommerce en Chile: Ventajas específicas', anchor: 'woocommerce-en-chile-ventajas-especificas' },
+      { title: '¿Cómo funciona WooCommerce?', anchor: 'como-funciona-woocommerce' },
+      { title: 'Instalación y configuración inicial', anchor: 'instalacion-y-configuracion-inicial' },
+      { title: 'Gestión de productos en WooCommerce', anchor: 'gestion-de-productos-en-woocommerce' },
+      { title: 'Personalización para el mercado chileno', anchor: 'personalizacion-para-el-mercado-chileno' },
+      { title: 'Optimización de rendimiento', anchor: 'optimizacion-de-rendimiento' },
+      { title: 'Seguridad en WooCommerce', anchor: 'seguridad-en-woocommerce' },
+      { title: 'Extensiones esenciales para Chile', anchor: 'extensiones-esenciales-para-chile' },
+      { title: 'WooCommerce vs Competencia', anchor: 'woocommerce-vs-competencia' },
+      { title: 'Hosting recomendado para WooCommerce en Chile', anchor: 'hosting-recomendado-para-woocommerce-en-chile' }
+    ],
+    faq: [
+      {
+        question: '¿Cuánto cuesta WooCommerce en Chile?',
+        answer: 'WooCommerce es 100% gratuito. Solo pagas por hosting ($8.990-$199.990/mes según tamaño), dominio (~$12.990/año), y plugins premium opcionales. No hay comisiones por venta ni tarifas mensuales obligatorias.'
+      },
+      {
+        question: '¿WooCommerce funciona con Transbank en Chile?',
+        answer: 'Sí, existe el plugin oficial "Transbank Webpay Plus for WooCommerce" que integra tarjetas de crédito y débito chilenas. Es gratuito y certificado por Transbank.'
+      },
+      {
+        question: '¿Necesito saber programar para usar WooCommerce?',
+        answer: 'No es necesario. La configuración básica es visual mediante asistentes. Sin embargo, conocimientos de PHP ayudan para personalizaciones avanzadas como validación de RUT o integraciones custom.'
+      },
+      {
+        question: '¿Cuántos productos puedo tener en WooCommerce?',
+        answer: 'No hay límite técnico. Tiendas pequeñas manejan 50-500 productos sin problemas. Con hosting optimizado (VPS/dedicado), puedes gestionar 10,000-100,000 productos.'
+      },
+      {
+        question: '¿WooCommerce es mejor que Shopify para Chile?',
+        answer: 'Para el mercado chileno sí, porque: 1) No pagas comisiones por venta, 2) Mejor integración con Transbank/SII, 3) Costos mensuales más bajos, 4) Control total de datos. Shopify conviene si vendes internacionalmente.'
+      },
+      {
+        question: '¿Cómo integro facturación electrónica SII con WooCommerce?',
+        answer: 'Usa plugins como "Facturación WooCommerce Chile" o "SimpleFactura" que generan boletas/facturas electrónicas automáticamente tras cada venta y las envían al SII.'
+      },
+      {
+        question: '¿Qué pasarelas de pago chilenas soporta WooCommerce?',
+        answer: 'WooCommerce soporta: Transbank Webpay Plus, Mercado Pago, Flow, Khipu, GetNet, PayPal, transferencia bancaria manual, y pago contra entrega. Todos mediante plugins gratuitos o premium.'
+      },
+      {
+        question: '¿Cómo optimizo la velocidad de mi tienda WooCommerce?',
+        answer: 'Claves: 1) Hosting WooCommerce con caché Redis, 2) Plugin de caché (WP Rocket), 3) Optimizar imágenes (ShortPixel), 4) CDN (Cloudflare), 5) Lazy loading, 6) Eliminar plugins innecesarios.'
+      },
+      {
+        question: '¿Puedo vender productos digitales con WooCommerce?',
+        answer: 'Sí, WooCommerce soporta productos descargables nativamente. Ideal para vender: ebooks, cursos, software, música, plantillas, licencias. El cliente recibe el link de descarga tras el pago.'
+      },
+      {
+        question: '¿WooCommerce requiere certificado SSL?',
+        answer: 'Sí, es obligatorio para procesar pagos. Las pasarelas como Transbank exigen HTTPS. La mayoría de hostings chilenos incluyen SSL gratuito (Let\'s Encrypt) en sus planes WooCommerce.'
+      }
+    ],
     cta: {
       plan: 'E-commerce Pro',
       copy: 'Hosting especializado WooCommerce con SSL y performance garantizada',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=86'
     },
-    proofPoints: ['SSL gratuito', 'WooCommerce pre-instalado', 'Backup diario'],
+    proofPoints: ['SSL gratuito', 'WooCommerce pre-instalado', 'Backup diario', 'Redis incluido'],
     whenToUse: 'Esencial para cualquier negocio que quiera vender online',
-    synonyms: ['tienda virtual', 'e-commerce WordPress'],
+    synonyms: ['tienda virtual', 'e-commerce WordPress', 'tienda online WordPress'],
+    links: [
+      {
+        title: 'Documentación oficial WooCommerce',
+        url: 'https://woocommerce.com/documentation/'
+      },
+      {
+        title: 'Plugin Transbank Webpay Plus',
+        url: 'https://wordpress.org/plugins/transbank-webpay-plus-rest/'
+      },
+      {
+        title: 'WooCommerce REST API Docs',
+        url: 'https://woocommerce.github.io/woocommerce-rest-api-docs/'
+      },
+      {
+        title: 'Guía facturación electrónica Chile',
+        url: 'https://www.sii.cl/factura_electronica/'
+      }
+    ],
     lastUpdated: '2025-01-15'
   },
   // === PHASE 2 TERMS: Performance, Security, Email, CDN ===
