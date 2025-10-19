@@ -1,6 +1,10 @@
 {
-  "updated": "2025-10-19T07:12:31.256Z",
+  "updated": "2025-10-19T08:16:41.670Z",
   "domains": [
+    {
+      "d": "garena.cl",
+      "date": "2025-10-19T04:40:52Z"
+    },
     {
       "d": "rutrutificador.cl",
       "date": "2025-10-19T03:49:09Z"
@@ -1000,18 +1004,6 @@
     {
       "d": "dehan.cl",
       "date": "2025-10-18T05:31:55Z"
-    },
-    {
-      "d": "round.cl",
-      "date": "2025-10-18T05:07:29Z"
-    },
-    {
-      "d": "inversoraparalela.cl",
-      "date": "2025-10-18T04:53:20Z"
-    },
-    {
-      "d": "indesis.cl",
-      "date": "2025-10-18T04:39:24Z"
     }
   ]
 }
