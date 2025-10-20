@@ -1,6 +1,10 @@
 {
-  "updated": "2025-10-20T07:15:23.597Z",
+  "updated": "2025-10-20T08:27:02.379Z",
   "domains": [
+    {
+      "d": "trapstar.cl",
+      "date": "2025-10-20T04:27:52Z"
+    },
     {
       "d": "hostalvinedos.cl",
       "date": "2025-10-20T03:50:12Z"
@@ -936,10 +940,6 @@
     {
       "d": "eleccionesmunicipales.cl",
       "date": "2025-10-19T06:45:42Z"
-    },
-    {
-      "d": "garena.cl",
-      "date": "2025-10-19T04:40:52Z"
     }
   ]
 }
