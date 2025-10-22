@@ -44,7 +44,8 @@ const TCOCalculatorPage = () => {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "CLP",
-              "availability": "https://schema.org/InStock"
+              "availability": "https://schema.org/InStock",
+              "priceValidUntil": "2026-12-31"
             },
             "author": {
               "@type": "Organization",
