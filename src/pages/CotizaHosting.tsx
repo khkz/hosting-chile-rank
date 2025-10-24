@@ -488,7 +488,7 @@ const CotizaHosting = () => {
                 <CardContent className="space-y-4">
                   <div className="flex justify-center mb-4">
                     <img 
-                      src="/images/hostingplus-logo.png"
+                      src="/logo-hostingplus-official.png"
                       alt="HostingPlus" 
                       className="h-12"
                       loading="lazy"
@@ -623,7 +623,7 @@ const CotizaHosting = () => {
               <Card className="text-center hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
                   <img 
-                    src="/images/hostingplus-logo.png"
+                    src="/logo-hostingplus-official.png"
                     alt="HostingPlus"
                     className="h-12 mx-auto mb-4"
                     loading="lazy"

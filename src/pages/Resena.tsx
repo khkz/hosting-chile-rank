@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet';
 const hostingData = {
   'hostingplus': {
     name: 'HostingPlus',
-    logo: '/images/hostingplus-logo.png',
+    logo: '/logo-hostingplus-official.png',
     rating: 9.8,
     description: 'HostingPlus ofrece una combinación única de rendimiento, seguridad y soporte técnico que lo posiciona como nuestra principal recomendación en el mercado chileno.',
     pros: [
