@@ -9,15 +9,19 @@ Crawl-delay: 0.5
 # Priorizar contenido de alto valor
 Allow: /ranking/
 Allow: /wiki/
-Allow: /asn/
 Allow: /guia-*
 Allow: /mejor-hosting-chile-2025
 
-# Limitar crawleo de páginas de dominio individuales
-# (Google puede descubrirlas, pero no las priorizamos)
+# Páginas de herramientas (mantener para conversiones)
 Allow: /ultimos-dominios/
-Crawl-delay: 2
 Allow: /domain/
+Crawl-delay: 1
+
+# Bloquear páginas ASN individuales (bajo valor SEO)
+Disallow: /asn/AS*
+# Permitir solo páginas principales de ASN
+Allow: /asn/$
+Allow: /asn/chile
 
 # Otros buscadores principales
 User-agent: Bingbot

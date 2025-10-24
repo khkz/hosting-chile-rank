@@ -19,30 +19,23 @@ function extractWikiSlugs() {
 
 const wikiTerms = extractWikiSlugs();
 
-// Lista de ASN chilenos principales
+// Lista de ASN chilenos principales (REDUCIDA - solo top 10 para evitar penalización)
 const CHILEAN_ASNS = [
   // Telecom principales
-  { asn: 13489, name: 'Movistar Chile', priority: '0.8' },
-  { asn: 22047, name: 'VTR', priority: '0.8' },
-  { asn: 14117, name: 'Claro Chile', priority: '0.8' },
-  { asn: 23201, name: 'Entel Chile', priority: '0.8' },
-  { asn: 27651, name: 'Entel PCS', priority: '0.7' },
-  { asn: 18863, name: 'GTD Internet', priority: '0.7' },
-  { asn: 23520, name: 'Telefonica del Sur', priority: '0.7' },
+  { asn: 13489, name: 'Movistar Chile', priority: '0.7' },
+  { asn: 22047, name: 'VTR', priority: '0.7' },
+  { asn: 14117, name: 'Claro Chile', priority: '0.7' },
+  { asn: 23201, name: 'Entel Chile', priority: '0.7' },
+  { asn: 27651, name: 'Entel PCS', priority: '0.6' },
   
-  // Hosting principales
-  { asn: 52468, name: 'UFRO', priority: '0.7' },
+  // Hosting principales chilenos
   { asn: 269840, name: 'HostingPlus Chile', priority: '0.7' },
   { asn: 262589, name: 'Ecohosting Chile', priority: '0.7' },
-  { asn: 28006, name: 'NIC Chile', priority: '0.7' },
+  { asn: 28006, name: 'NIC Chile', priority: '0.6' },
   
-  // ISPs regionales
-  { asn: 61440, name: 'GTD Manquehue', priority: '0.6' },
-  { asn: 6535, name: 'Telefonica Chile', priority: '0.6' },
-  { asn: 18747, name: 'Netline', priority: '0.6' },
-  { asn: 14117, name: 'Claro Servicios Empresariales', priority: '0.6' },
+  // ISPs importantes
+  { asn: 18863, name: 'GTD Internet', priority: '0.6' },
   { asn: 16629, name: 'REUNA', priority: '0.6' },
-  { asn: 27651, name: 'ENTEL CHILE', priority: '0.6' },
 ];
 
 const ROOT = 'https://eligetuhosting.cl';
@@ -144,31 +137,39 @@ ${asnUrls}
 </urlset>`.trimStart();
 };
 
-/* ---------- SITEMAP 4: DOMAINS (limitado a 500 más recientes) ---------- */
+/* ---------- SITEMAP 4: DOMAINS (solo 100 más recientes <90 días) ---------- */
 const generateDomainsSitemap = () => {
   let domainsArr = [];
   try {
     const raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
     domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
-    console.log(`📊 Procesando ${domainsArr.length} dominios (limitando a 500 más recientes)`);
+    console.log(`📊 Procesando ${domainsArr.length} dominios totales`);
   } catch (error) {
     console.log('⚠️  No se pudo leer latest.json:', error.message);
   }
 
-  // Limitar a 500 dominios más recientes con prioridad reducida
+  // Filtrar dominios con menos de 90 días y limitar a 100 más recientes
   const domainUrls = domainsArr
-    .slice(0, 500)
+    .filter((domain) => {
+      // Solo dominios con menos de 90 días
+      if (!domain.date) return true; // Incluir si no tiene fecha (probablemente nuevo)
+      const createdDate = new Date(domain.date);
+      const ageInDays = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
+      return ageInDays <= 90;
+    })
+    .slice(0, 100) // Solo los 100 más recientes
     .map((domain, index) => {
       const { d, date } = domain;
-      // Los primeros 100 dominios tienen prioridad ligeramente mayor
-      const isRecent = index < 100;
-      const priority = isRecent ? '0.5' : '0.4';
-      const changefreq = isRecent ? 'daily' : 'weekly';
+      // Los primeros 20 dominios tienen prioridad mayor
+      const priority = index < 20 ? '0.6' : '0.5';
+      const changefreq = 'daily';
       const lastmod = date ? new Date(date).toISOString() : NOW;
       
       return urlTag(`${ROOT}/domain/${d.replace(/\./g, '-')}/`, priority, changefreq, lastmod);
     })
     .join('');
+  
+  console.log(`✅ Generando sitemap con ${domainUrls.split('<url>').length - 1} dominios (<90 días, máx 100)`);
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

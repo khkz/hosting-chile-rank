@@ -361,10 +361,10 @@ const WhoisDomain = () => {
             {/* Unique SEO Content Section */}
             <DomainUniqueContent domainName={domainName} domainData={domainData} />
             
-            {/* AI SEO Analysis Section */}
-            <div className="mt-12">
+            {/* AI SEO Analysis Section - DESACTIVADO TEMPORALMENTE */}
+            {/* <div className="mt-12">
               <SEOAnalysis />
-            </div>
+            </div> */}
             
             {/* Recommendation section */}
             <div className="mt-12 bg-white p-6 rounded-lg shadow-md">

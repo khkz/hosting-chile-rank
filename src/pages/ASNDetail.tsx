@@ -117,6 +117,7 @@ const ASNDetail: React.FC = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={`Detalle del ASN AS${asnNum}: prefijos IPv4/IPv6, tamaño de rangos y peers.`} />
+        <meta name="robots" content="noindex, follow" />
         <link rel="canonical" href={canonical} />
         <meta httpEquiv="content-language" content="es-CL" />
         <link rel="alternate" hrefLang="es-cl" href={canonical} />
@@ -441,14 +442,14 @@ const ASNDetail: React.FC = () => {
             </Card>
           )}
           
-          {/* AI Content Generator Section */}
-          <div className="mt-8">
+          {/* AI Content Generator Section - DESACTIVADO TEMPORALMENTE */}
+          {/* <div className="mt-8">
             <ASNContentGenerator 
               asn={`AS${data.overview.asn}`}
               asnName={data.overview.name || undefined}
               description={data.overview.description || undefined}
             />
-          </div>
+          </div> */}
 
           {/* Strategic Internal Linking Section */}
           <section className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200">
