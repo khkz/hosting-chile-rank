@@ -29,7 +29,7 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
   "hostingplus": {
     id: "hostingplus",
     name: "HostingPlus.cl",
-    logo: "/logo-hostingplus-new.svg",
+    logo: "/logo-hostingplus-official.png",
     description: "HostingPlus es uno de los proveedores líderes de hosting en Chile, con servidores propios ubicados en Santiago. Ofrecen una combinación de alta velocidad, seguridad avanzada y soporte técnico 24/7.",
     rating: 9.9,
     yearFounded: 2013,

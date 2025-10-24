@@ -11,7 +11,7 @@ const hostingData = [
     position: 1,
     name: "HostingPlus.cl",
     displayName: { first: "Hosting", second: "Plus", firstColor: "text-[#2B2D42]", secondColor: "text-[#EF233C]" },
-    logo: "/logo-hostingplus.png",
+    logo: "/logo-hostingplus-official.png",
     rating: 9.9,
     speedRating: 9.8,
     priceRating: 9.5,
