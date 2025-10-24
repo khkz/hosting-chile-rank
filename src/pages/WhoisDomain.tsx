@@ -287,32 +287,35 @@ const WhoisDomain = () => {
           </div>
         ) : domainData ? (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-bold">
-                {capitalizedDomainName} <span className="text-blue-700">- Análisis completo</span>
-              </h1>
-              
-              <Button 
-                onClick={handleRefresh} 
-                variant="outline" 
-                disabled={refreshing} 
-                className="flex items-center gap-2"
-              >
-                <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-                {refreshing ? 'Analizando...' : 'Actualizar análisis'}
-              </Button>
-            </div>
+          <div className="flex justify-between items-center mb-6 animate-fade-in-up">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              <span className="text-gradient">{capitalizedDomainName}</span>{' '}
+              <span className="text-muted-foreground">- Análisis completo</span>
+            </h1>
+            
+            <Button 
+              onClick={handleRefresh} 
+              variant="gradient" 
+              disabled={refreshing} 
+              className={`flex items-center gap-2 ${refreshing ? 'animate-pulse' : ''}`}
+            >
+              <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Analizando...' : 'Actualizar'}
+            </Button>
+          </div>
             
             {/* Enhanced status indicators */}
             {usingLiveData && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-sm text-green-800">
-                  <Check className="inline-block h-4 w-4 mr-1 mb-1" />
+              <div className="mb-6 relative overflow-hidden bg-gradient-to-br from-green-50 via-emerald-50 to-green-50 border-2 border-green-200 rounded-xl p-5 shadow-md animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-100/30 to-transparent animate-shimmer" />
+                <p className="text-sm text-green-800 flex items-center gap-2 relative z-10 font-medium">
+                  <Check className="h-5 w-5 animate-scale-in" />
                   Análisis en vivo completado. Esta información fue obtenida en tiempo real.
                 </p>
                 {domainData.whois.created_date !== 'No disponible' && (
-                  <p className="text-xs text-green-700 mt-1">
-                    ✓ Datos WHOIS reales obtenidos desde NIC Chile
+                  <p className="text-xs text-green-700 mt-2 relative z-10 flex items-center gap-1">
+                    <Check className="h-3 w-3" />
+                    Datos WHOIS reales obtenidos desde NIC Chile
                   </p>
                 )}
               </div>
@@ -320,10 +323,11 @@ const WhoisDomain = () => {
             
             {/* New warning for non-Chilean IPs - Fixed condition */}
             {hasValidIP(domainData.basic.ip) && !domainData.basic.ip_chile && (
-              <Alert variant="destructive" className="mb-6 bg-red-50 border-red-200">
-                <AlertTriangle className="h-5 w-5 text-red-600" />
-                <AlertTitle className="text-red-700">Alojamiento fuera de Chile</AlertTitle>
-                <AlertDescription className="text-red-700">
+              <Alert variant="destructive" className="mb-6 relative overflow-hidden bg-gradient-to-br from-red-50 via-orange-50 to-red-50 border-2 border-red-200 shadow-md animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+                <div className="absolute inset-0 bg-gradient-to-r from-red-100/30 to-transparent animate-shimmer" />
+                <AlertTriangle className="h-5 w-5 text-red-600 animate-pulse relative z-10" />
+                <AlertTitle className="text-red-700 font-semibold relative z-10">Alojamiento fuera de Chile</AlertTitle>
+                <AlertDescription className="text-red-700 relative z-10">
                   Este sitio web tiene una IP extranjera, lo que puede representar riesgos para la soberanía de 
                   datos chilenos, afectar velocidad de carga en Chile y podría estar sujeto a leyes de privacidad 
                   diferentes. Se recomienda alojar contenido chileno en servidores locales.
@@ -331,9 +335,9 @@ const WhoisDomain = () => {
               </Alert>
             )}
             
-            <div className="grid lg:grid-cols-3 gap-8 mt-8">
+            <div className="grid lg:grid-cols-3 gap-8 mt-8 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
               {/* Main analysis tabs */}
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 space-y-6">
                 <WhoisTabs data={domainData} isLoading={refreshing} />
               </div>
               

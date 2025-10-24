@@ -63,38 +63,40 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
 
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-6">
-        <TabsTrigger value="overview" className="flex items-center gap-2">
-          <Globe className="h-4 w-4" />
-          Resumen
+      <TabsList className="grid w-full grid-cols-6 bg-muted p-1 rounded-lg relative">
+        <TabsTrigger value="overview" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-background data-[state=active]:to-accent transition-all duration-300 group">
+          <Globe className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">Resumen</span>
         </TabsTrigger>
-        <TabsTrigger value="dns" className="flex items-center gap-2">
-          <Server className="h-4 w-4" />
-          DNS
+        <TabsTrigger value="dns" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-background data-[state=active]:to-accent transition-all duration-300 group">
+          <Server className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">DNS</span>
         </TabsTrigger>
-        <TabsTrigger value="whois" className="flex items-center gap-2">
-          <FileText className="h-4 w-4" />
-          WHOIS
+        <TabsTrigger value="whois" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-background data-[state=active]:to-accent transition-all duration-300 group">
+          <FileText className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">WHOIS</span>
         </TabsTrigger>
-        <TabsTrigger value="security" className="flex items-center gap-2">
-          <Shield className="h-4 w-4" />
-          Seguridad
+        <TabsTrigger value="security" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-background data-[state=active]:to-accent transition-all duration-300 group">
+          <Shield className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">Seguridad</span>
         </TabsTrigger>
-        <TabsTrigger value="performance" className="flex items-center gap-2">
-          <Zap className="h-4 w-4" />
-          Rendimiento
+        <TabsTrigger value="performance" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-background data-[state=active]:to-accent transition-all duration-300 group">
+          <Zap className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">Rendimiento</span>
         </TabsTrigger>
-        <TabsTrigger value="technology" className="flex items-center gap-2">
-          <Code className="h-4 w-4" />
-          Tecnología
+        <TabsTrigger value="technology" className="flex items-center gap-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-background data-[state=active]:to-accent transition-all duration-300 group">
+          <Code className="h-4 w-4 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">Tecnología</span>
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="overview" className="space-y-4">
-        <Card>
+      <TabsContent value="overview" className="space-y-4 animate-fade-in">
+        <Card variant="hover-lift">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Globe className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg">
+                <Globe className="h-5 w-5 text-primary" />
+              </div>
               Información General
             </CardTitle>
           </CardHeader>

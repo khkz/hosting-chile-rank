@@ -53,10 +53,13 @@ const SitePreview: React.FC<SitePreviewProps> = ({ domain, className = '' }) => 
   const renderPreviewContent = () => {
     if (previewState.loading) {
       return (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="text-center">
-            <RefreshCw className="h-8 w-8 mx-auto animate-spin text-gray-400" />
-            <p className="mt-2 text-sm text-gray-500">Capturando vista previa...</p>
+        <div className="absolute inset-0 bg-gradient-to-br from-muted/30 via-muted/50 to-muted/30 bg-[length:200%_200%] animate-gradient overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-background/50 to-transparent animate-shimmer" />
+          <div className="flex items-center justify-center h-full relative z-10">
+            <div className="text-center">
+              <RefreshCw className="h-8 w-8 mx-auto animate-spin text-primary" />
+              <p className="mt-2 text-sm text-muted-foreground font-medium">Capturando vista previa...</p>
+            </div>
           </div>
         </div>
       );
@@ -67,11 +70,11 @@ const SitePreview: React.FC<SitePreviewProps> = ({ domain, className = '' }) => 
 
     if (result.success && result.imageUrl) {
       return (
-        <>
+        <div className="relative w-full h-full group overflow-hidden">
           <img 
             src={result.imageUrl}
             alt={`Vista previa de ${domain}`} 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
             onError={() => setPreviewState(prev => ({
               ...prev,
               result: {
@@ -80,12 +83,13 @@ const SitePreview: React.FC<SitePreviewProps> = ({ domain, className = '' }) => 
               }
             }))}
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           {result.provider && (
-            <div className="absolute bottom-1 right-1 bg-black bg-opacity-50 text-white text-xs px-1 py-0.5 rounded">
+            <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-lg">
               {result.provider}
             </div>
           )}
-        </>
+        </div>
       );
     }
 
@@ -134,27 +138,32 @@ const SitePreview: React.FC<SitePreviewProps> = ({ domain, className = '' }) => 
   };
 
   return (
-    <Card className={`border overflow-hidden shadow-md bg-white ${className}`}>
+    <Card variant="hover-lift" className={`overflow-hidden ${className}`}>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Globe className="h-5 w-5 text-blue-700" />
+        <CardTitle className="text-lg flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg group-hover:scale-110 transition-transform">
+            <Globe className="h-5 w-5 text-primary" />
+          </div>
           Vista previa del sitio
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="h-[200px] relative overflow-hidden bg-gray-100">
+        <div className="h-[200px] relative overflow-hidden bg-muted">
           {renderPreviewContent()}
         </div>
-        <div className="p-3 bg-white border-t">
+        <div className="p-4 bg-card border-t">
           <a 
             href={`https://${domain}`} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="text-sm text-blue-600 hover:underline flex items-center"
+            className="group inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm font-medium"
           >
-            <Globe className="h-3 w-3 mr-1" />
-            Visitar sitio
-            <ExternalLink className="h-3 w-3 ml-1" />
+            <Globe className="h-4 w-4" />
+            <span className="relative">
+              Visitar sitio
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+            </span>
+            <ExternalLink className="h-3 w-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </a>
         </div>
       </CardContent>

@@ -127,9 +127,11 @@ export const DomainUniqueContent: React.FC<DomainUniqueContentProps> = ({ domain
   return (
     <div className="space-y-8 mt-8">
       {/* 1. Análisis del Propietario */}
-      <section className="bg-white p-6 rounded-lg border">
-        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-          <Building className="h-6 w-6 text-primary" />
+      <section className="group bg-gradient-to-br from-card to-muted/20 hover:from-card hover:to-accent/10 p-6 rounded-2xl border border-border hover:border-primary/30 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+            <Building className="h-6 w-6 text-primary" />
+          </div>
           Información del Propietario de {domainName}
         </h2>
         <p className="text-gray-700 mb-4">
@@ -157,9 +159,11 @@ export const DomainUniqueContent: React.FC<DomainUniqueContentProps> = ({ domain
       </section>
 
       {/* 2. Análisis Temporal */}
-      <section className="bg-white p-6 rounded-lg border">
-        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-          <Calendar className="h-6 w-6 text-primary" />
+      <section className="group bg-gradient-to-br from-card to-muted/20 hover:from-card hover:to-accent/10 p-6 rounded-2xl border border-border hover:border-primary/30 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+            <Calendar className="h-6 w-6 text-primary" />
+          </div>
           Antigüedad y Ciclo de Vida de {domainName}
         </h2>
         
@@ -228,9 +232,11 @@ export const DomainUniqueContent: React.FC<DomainUniqueContentProps> = ({ domain
       </section>
 
       {/* 3. Análisis de Nameservers */}
-      <section className="bg-white p-6 rounded-lg border">
-        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-          <Server className="h-6 w-6 text-primary" />
+      <section className="group bg-gradient-to-br from-card to-muted/20 hover:from-card hover:to-accent/10 p-6 rounded-2xl border border-border hover:border-primary/30 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+            <Server className="h-6 w-6 text-primary" />
+          </div>
           Configuración de Nameservers de {domainName}
         </h2>
         
@@ -292,8 +298,10 @@ export const DomainUniqueContent: React.FC<DomainUniqueContentProps> = ({ domain
       </section>
 
       {/* 4. Comparación con Dominios Similares */}
-      <section className="bg-white p-6 rounded-lg border">
-        <h2 className="text-2xl font-bold mb-4">📊 Comparación con Otros Dominios .CL</h2>
+      <section className="group bg-gradient-to-br from-card to-muted/20 hover:from-card hover:to-accent/10 p-6 rounded-2xl border border-border hover:border-primary/30 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <span className="text-2xl">📊</span> Comparación con Otros Dominios .CL
+        </h2>
         
         <div className="grid md:grid-cols-3 gap-4">
           <Card>
@@ -349,8 +357,11 @@ export const DomainUniqueContent: React.FC<DomainUniqueContentProps> = ({ domain
       </section>
 
       {/* 5. Recomendaciones Personalizadas */}
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border">
-        <h2 className="text-2xl font-bold mb-4">💡 Recomendaciones Específicas para {domainName}</h2>
+      <section className="group relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6 rounded-2xl border-2 border-blue-200 hover:border-blue-300 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-100/30 to-purple-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2 relative z-10">
+          <span className="text-2xl">💡</span> Recomendaciones Específicas para {domainName}
+        </h2>
         
         <div className="space-y-4">
           {domainAge.isNew && (
