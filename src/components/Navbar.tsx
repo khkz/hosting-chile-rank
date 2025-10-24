@@ -59,13 +59,15 @@ const Navbar = () => {
         
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-1">
-          <a 
-            href="https://eligetuhosting.cl" 
-            className={`${navLinkClasses} px-3 py-2 group`}
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => 
+              `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2 group`
+            }
           >
             <Home className={iconClasses} />
             Inicio
-          </a>
+          </NavLink>
           
           <NavLink 
             to="/ranking" 
@@ -254,13 +256,15 @@ const Navbar = () => {
                   <Logo variant="option-a" className="h-8 w-auto mr-2" />
                 </a>
                 
-                <a 
-                  href="https://eligetuhosting.cl" 
-                  className={mobileNavLinkClasses}
+                <NavLink 
+                  to="/" 
+                  className={({ isActive }) => 
+                    `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                  }
                 >
                   <Home className="h-5 w-5 mr-2" />
                   Inicio
-                </a>
+                </NavLink>
                 
                 <NavLink 
                   to="/ranking" 
