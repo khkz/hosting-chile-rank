@@ -112,11 +112,6 @@
     @apply transition-[all] duration-300 ease-in-out;
   }
   
-  /* Animations for content appearance */
-  .animate-fade-in {
-    @apply animate-fade-in;
-  }
-  
   /* Gradient utilities */
   .gradient-text {
     background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.7));
