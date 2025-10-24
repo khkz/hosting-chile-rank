@@ -8,3 +8,9 @@ verify_jwt = false
 
 [functions.reverse-ip-proxy]
 verify_jwt = false
+
+[functions.seo-analysis]
+verify_jwt = false
+
+[functions.asn-content-generator]
+verify_jwt = false

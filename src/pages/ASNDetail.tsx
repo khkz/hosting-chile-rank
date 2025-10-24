@@ -17,6 +17,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGri
 import { isChileanASN } from '@/utils/ipDetection';
 import { getHostingCompanyFromASN, classifyASN, isHostingASN } from '@/services/hostingASNService';
 import { ReverseIpLookup } from '@/components/ReverseIpLookup';
+import { ASNContentGenerator } from '@/components/ASNContentGenerator';
 
 const ASNDetail: React.FC = () => {
   const { asn: asnParam } = useParams();
@@ -440,6 +441,15 @@ const ASNDetail: React.FC = () => {
             </Card>
           )}
           
+          {/* AI Content Generator Section */}
+          <div className="mt-8">
+            <ASNContentGenerator 
+              asn={`AS${data.overview.asn}`}
+              asnName={data.overview.name || undefined}
+              description={data.overview.description || undefined}
+            />
+          </div>
+
           {/* Strategic Internal Linking Section */}
           <section className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200">
             <h3 className="text-lg font-bold mb-3">📚 Aprende Más sobre Hosting en Chile</h3>
