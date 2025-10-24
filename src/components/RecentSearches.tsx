@@ -12,17 +12,14 @@ const RecentSearches = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load the domains from GitHub raw content
     const loadDomains = async () => {
       try {
-        // GitHub raw URL for the latest.json file
-        const githubRawUrl = "https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json";
-        // Add timestamp to URL to avoid cache
-        const timestamp = Date.now();
-        const response = await fetch(`${githubRawUrl}?ts=${timestamp}`);
+        const response = await fetch('/data/latest.json', {
+          headers: { 'Cache-Control': 'no-cache' }
+        });
         
         if (!response.ok) {
-          throw new Error(`No se pudieron cargar los dominios desde GitHub: ${response.status} ${response.statusText}`);
+          throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
         }
         
         const data = await response.json();
@@ -30,15 +27,14 @@ const RecentSearches = () => {
           // Sort domains by date in descending order and take first 10
           const sortedDomains = [...data.domains]
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            .slice(0, 10)  // Show only 10 domains for this component
+            .slice(0, 10)
             .map(item => item.d);
           setDomains(sortedDomains);
         } else {
           throw new Error('Datos de dominios inválidos o vacíos');
         }
       } catch (error) {
-        console.error('Error loading domains from GitHub:', error);
-        // Use fallback domains when the GitHub API request fails
+        console.error('Error loading domains:', error);
         setDomains(fallbackDomains);
       } finally {
         setIsLoading(false);

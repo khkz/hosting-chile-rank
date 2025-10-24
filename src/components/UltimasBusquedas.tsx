@@ -11,30 +11,31 @@ const UltimasBusquedas = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   useEffect(() => {
-    // Load the domains from GitHub raw content
     const loadDomains = async () => {
       try {
         setIsLoading(true);
-        // GitHub raw URL for the latest.json file
-        const githubRawUrl = "https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json";
-        // Add timestamp to URL to avoid cache
-        const timestamp = Date.now();
-        const response = await fetch(`${githubRawUrl}?ts=${timestamp}`);
+        const response = await fetch('/data/latest.json', {
+          headers: { 'Cache-Control': 'no-cache' }
+        });
+        
         if (!response.ok) {
-          throw new Error(`No se pudieron cargar los dominios desde GitHub: ${response.status} ${response.statusText}`);
+          throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
         }
+        
         const data = await response.json();
         if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
           // Sort domains by date in descending order and take first 20
-          const sortedDomains = [...data.domains].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 20).map(item => item.d);
+          const sortedDomains = [...data.domains]
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .slice(0, 20)
+            .map(item => item.d);
           setDomains(sortedDomains);
           setLastUpdated(data.updated || new Date().toISOString());
         } else {
-          throw new Error('Datos de dominios inválidos o vacíos en GitHub');
+          throw new Error('Datos de dominios inválidos o vacíos');
         }
       } catch (error) {
-        console.error('Error loading domains from GitHub:', error);
-        // Use fallback domains when the GitHub API request fails
+        console.error('Error loading domains:', error);
         setDomains(fallbackDomains);
       } finally {
         setIsLoading(false);

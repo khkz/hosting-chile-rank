@@ -163,23 +163,25 @@ const UltimosDominios = () => {
     }
   };
 
-  // Load domains from GitHub raw content
+  // Load domains from local file
   const loadDomains = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // GitHub raw URL for the latest.json file
-      const githubRawUrl = "https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json";
-      // Add timestamp to URL to avoid cache
-      const timestamp = Date.now();
-      const response = await fetch(`${githubRawUrl}?ts=${timestamp}`);
+      const response = await fetch('/data/latest.json', {
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      
       if (!response.ok) {
-        throw new Error(`No se pudieron cargar los dominios desde GitHub: ${response.status} ${response.statusText}`);
+        throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
       }
+      
       const data: ApiResponse = await response.json();
       if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
         // Sort domains by date in descending order
-        const sortedDomains = [...data.domains].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        const sortedDomains = [...data.domains].sort((a, b) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
         setDomains(sortedDomains);
         setLastUpdated(data.updated);
         toast({
@@ -191,8 +193,7 @@ const UltimosDominios = () => {
         throw new Error('Datos de dominios inválidos o vacíos');
       }
     } catch (error) {
-      console.error('Error loading domains from GitHub:', error);
-      // Use fallback domains when the API is not available
+      console.error('Error loading domains:', error);
       setDomains(fallbackDomains);
       setError('No pudimos cargar los últimos dominios en este momento. Intenta nuevamente en unos minutos.');
       toast({
@@ -206,9 +207,6 @@ const UltimosDominios = () => {
   };
   useEffect(() => {
     loadDomains();
-
-    // Add console log to help with debugging
-    console.log("💡 UltimosDominios: Intentando cargar dominios desde GitHub");
   }, []);
 
   // Filter domains based on search term
