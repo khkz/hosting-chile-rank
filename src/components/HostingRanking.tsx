@@ -166,15 +166,15 @@ const HostingRanking = () => {
   };
   
   return (
-    <section id="ranking" className="py-20 bg-gradient-to-b from-white to-[#F7F9FC]">
+    <section id="ranking" className="py-12 md:py-20 bg-gradient-to-b from-white to-[#F7F9FC]">
       <div className="container mx-auto px-4">
         
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-4">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
             Top 3 Mejores Hostings Chile
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto">
             Ranking independiente basado en pruebas técnicas reales de velocidad, uptime y soporte
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-6 rounded-full"></div>
@@ -183,19 +183,22 @@ const HostingRanking = () => {
         <script type="application/ld+json">{generateSchemaData()}</script>
         
         {/* Sort Controls */}
-        <div className="flex justify-center mb-12">
-          <ToggleGroup type="single" value={sortCriteria} onValueChange={(value) => value && setSortCriteria(value)} className="bg-white rounded-2xl p-2 shadow-lg border border-gray-100">
-            <ToggleGroupItem value="overall" variant="outline" className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${sortCriteria === 'overall' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
-              <Award className="w-4 h-4 mr-2" />
-              General
+        <div className="flex justify-center mb-8 md:mb-12">
+          <ToggleGroup type="single" value={sortCriteria} onValueChange={(value) => value && setSortCriteria(value)} className="bg-white rounded-2xl p-1.5 md:p-2 shadow-lg border border-gray-100">
+            <ToggleGroupItem value="overall" variant="outline" className={`px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'overall' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
+              <Award className="w-4 h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">General</span>
+              <span className="sm:hidden">★</span>
             </ToggleGroupItem>
-            <ToggleGroupItem value="speed" variant="outline" className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${sortCriteria === 'speed' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
-              <Zap className="w-4 h-4 mr-2" />
-              Velocidad
+            <ToggleGroupItem value="speed" variant="outline" className={`px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'speed' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
+              <Zap className="w-4 h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Velocidad</span>
+              <span className="sm:hidden">⚡</span>
             </ToggleGroupItem>
-            <ToggleGroupItem value="price" variant="outline" className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${sortCriteria === 'price' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
-              <Shield className="w-4 h-4 mr-2" />
-              Precio
+            <ToggleGroupItem value="price" variant="outline" className={`px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'price' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
+              <Shield className="w-4 h-4 mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Precio</span>
+              <span className="sm:hidden">$</span>
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
@@ -219,15 +222,15 @@ const HostingRanking = () => {
               
               <div className="relative bg-white border-2 border-gray-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
                 {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
+                <div className="absolute top-3 md:top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
                   {sortedHostingData[1].badges?.map((badge, idx) => (
-                    <span key={idx} className="px-2 py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-xs font-medium rounded-full">
+                    <span key={idx} className="px-2 py-0.5 md:py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-[10px] md:text-xs font-medium rounded-full">
                       {badge}
                     </span>
                   ))}
                 </div>
                 
-                <div className="p-8 pt-16">
+                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16">
                   {/* Header */}
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-bold mb-2">
@@ -286,23 +289,23 @@ const HostingRanking = () => {
                 )}
               </div>
               
-              <div className={`relative bg-white border-4 ${sortedHostingData[0].borderColor} rounded-3xl overflow-hidden shadow-2xl transform md:scale-110 hover:shadow-3xl transition-all duration-500`}>
+              <div className={`relative bg-white border-4 ${sortedHostingData[0].borderColor} rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500`}>
                 {/* Winner Glow Effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#EF233C]/5 to-transparent"></div>
                 
                 {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
+                <div className="absolute top-3 md:top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
                   {sortedHostingData[0].badges?.map((badge, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-xs font-medium rounded-full shadow-lg">
+                    <span key={idx} className="px-2 md:px-3 py-0.5 md:py-1 bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-[10px] md:text-xs font-medium rounded-full shadow-lg">
                       {badge}
                     </span>
                   ))}
                 </div>
                 
-                <div className="p-8 pt-16 relative">
+                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16 relative">
                   {/* Header */}
-                  <div className="text-center mb-6">
-                    <h3 className="text-3xl font-bold mb-3">
+                  <div className="text-center mb-4 md:mb-6">
+                    <h3 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">
                       <span className={sortedHostingData[0].displayName.firstColor}>{sortedHostingData[0].displayName.first}</span>
                       <span className={sortedHostingData[0].displayName.secondColor}>{sortedHostingData[0].displayName.second}</span>
                     </h3>
@@ -312,22 +315,22 @@ const HostingRanking = () => {
                           <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <span className="text-3xl font-bold text-[#EF233C]">{getRatingLabel(sortedHostingData[0])}</span>
+                      <span className="text-2xl md:text-3xl font-bold text-[#EF233C]">{getRatingLabel(sortedHostingData[0])}</span>
                     </div>
                   </div>
                   
                   {/* Features */}
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8 text-sm md:text-base">
                     {sortedHostingData[0].features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-[#EF233C] mt-0.5 flex-shrink-0" />
+                      <li key={index} className="flex items-start gap-2 md:gap-3">
+                        <Check className="w-4 md:w-5 h-4 md:h-5 text-[#EF233C] mt-0.5 flex-shrink-0" />
                         <span className="text-gray-700 font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
                   
                   {/* CTA */}
-                  <Button asChild className={`w-full ${sortedHostingData[0].buttonColor} hover:opacity-90 text-white py-4 rounded-xl font-bold text-lg shadow-2xl hover:shadow-[#EF233C]/30 transition-all duration-300 transform hover:scale-105`}>
+                  <Button asChild className={`w-full ${sortedHostingData[0].buttonColor} hover:opacity-90 text-white py-3 md:py-4 rounded-xl font-bold text-base md:text-lg shadow-2xl hover:shadow-[#EF233C]/30 transition-all duration-300 transform hover:scale-105`}>
                     <a href={sortedHostingData[0].url} target="_blank" rel="noopener noreferrer">
                       Elegir HostingPlus
                     </a>
@@ -351,15 +354,15 @@ const HostingRanking = () => {
               
               <div className="relative bg-white border-2 border-amber-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
                 {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
+                <div className="absolute top-3 md:top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
                   {sortedHostingData[2].badges?.map((badge, idx) => (
-                    <span key={idx} className="px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-200 text-amber-700 text-xs font-medium rounded-full">
+                    <span key={idx} className="px-2 py-0.5 md:py-1 bg-gradient-to-r from-amber-100 to-orange-200 text-amber-700 text-[10px] md:text-xs font-medium rounded-full">
                       {badge}
                     </span>
                   ))}
                 </div>
                 
-                <div className="p-8 pt-16">
+                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16">
                   {/* Header */}
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-bold mb-2">

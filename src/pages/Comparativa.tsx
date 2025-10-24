@@ -186,10 +186,10 @@ const ComparativaPage = () => {
       <Navbar />
       
       {/* section 1: Hero */}
-      <section className="bg-[#F7F9FC] py-16 text-center">
+      <section className="bg-[#F7F9FC] py-8 md:py-16 text-center">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42]">Comparativa Hosting Chile 2025</h1>
-          <p className="mt-4 text-lg text-[#555] max-w-2xl mx-auto">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#2B2D42]">Comparativa Hosting Chile 2025</h1>
+          <p className="mt-4 text-base md:text-lg text-[#555] max-w-2xl mx-auto">
             Analiza y compara lado a lado los mejores proveedores de hosting en Chile.
             Filtra por características y encuentra el ideal para tu sitio web.
           </p>

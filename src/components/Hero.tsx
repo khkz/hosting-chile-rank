@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <section className="relative py-20 text-center bg-gradient-to-br from-[#F7F9FC] via-white to-[#EDF2F4] overflow-hidden">
+    <section className="relative py-12 md:py-20 text-center bg-gradient-to-br from-[#F7F9FC] via-white to-[#EDF2F4] overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 bg-[#EF233C] rounded-full blur-3xl"></div>
@@ -15,7 +15,7 @@ const Hero = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         {/* Trust Badges */}
-        <div className="flex justify-center items-center gap-6 mb-8 flex-wrap">
+        <div className="flex justify-center items-center gap-3 md:gap-6 mb-6 md:mb-8 flex-wrap">
           <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-gray-100">
             <Award className="w-4 h-4 text-[#EF233C]" />
             <span className="text-sm font-medium text-[#2B2D42]">5 años de experiencia</span>
@@ -30,7 +30,7 @@ const Hero = () => {
           </div>
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-bold text-[#2B2D42] mb-6 leading-tight">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-[#2B2D42] mb-6 leading-tight">
           Elige el <span className="text-[#EF233C] relative">
             Mejor Hosting
             <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 rounded-full"></div>
@@ -38,7 +38,7 @@ const Hero = () => {
           Chileno <span className="text-2xl md:text-4xl text-gray-600">2025</span>
         </h1>
         
-        <p className="mt-6 text-xl text-[#555] max-w-3xl mx-auto leading-relaxed">
+        <p className="mt-6 text-base md:text-xl text-[#555] max-w-3xl mx-auto leading-relaxed">
           Obtén una <strong>cotización personalizada</strong> para tu proyecto web con los 
           <strong className="text-[#EF233C]"> mejores proveedores de Chile</strong>.
           <br />
@@ -58,8 +58,8 @@ const Hero = () => {
         </div>
         
         {/* Main CTA */}
-        <div className="mt-10">
-          <Button asChild className="bg-gradient-to-r from-[#EF233C] to-[#c41e3a] hover:from-[#b3001b] hover:to-[#8b0000] text-white px-10 py-6 text-xl rounded-xl shadow-2xl hover:shadow-[#EF233C]/25 transform hover:scale-105 transition-all duration-300 font-semibold">
+        <div className="mt-8 md:mt-10">
+          <Button asChild className="bg-gradient-to-r from-[#EF233C] to-[#c41e3a] hover:from-[#b3001b] hover:to-[#8b0000] text-white px-8 md:px-10 py-3 md:py-6 text-base md:text-lg lg:text-xl rounded-xl shadow-2xl hover:shadow-[#EF233C]/25 transform hover:scale-105 transition-all duration-300 font-semibold">
             <Link to="/cotiza-hosting">
               Cotiza tu hosting gratis
               <span className="ml-2">→</span>

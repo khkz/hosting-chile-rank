@@ -209,3 +209,26 @@ html {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
+
+/* Responsive Typography Utilities */
+@layer utilities {
+  .text-responsive-xl {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg md:text-xl lg:text-2xl;
+  }
+  
+  .text-responsive-base {
+    @apply text-base md:text-lg;
+  }
+  
+  .section-py {
+    @apply py-8 md:py-12 lg:py-16;
+  }
+  
+  .section-px {
+    @apply px-4 md:px-6 lg:px-8;
+  }
+}

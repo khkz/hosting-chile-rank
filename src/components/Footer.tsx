@@ -10,8 +10,8 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 py-8 md:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           
           {/* Brand Column */}
           <div className="md:col-span-1">
@@ -82,7 +82,7 @@ const Footer = () => {
         </div>
 
         {/* Separator */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent my-12"></div>
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent my-8 md:my-12"></div>
 
         {/* Recent Searches */}
         <div className="mb-12">
@@ -104,7 +104,7 @@ const Footer = () => {
             </div>
             
             {/* Trust Indicators */}
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4">
               <div className="flex items-center gap-2 px-3 py-1 bg-green-900/30 rounded-full border border-green-700/50">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span className="text-xs text-green-300">Datos actualizados</span>

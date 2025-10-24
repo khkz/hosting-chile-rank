@@ -293,11 +293,11 @@ const RankingPage = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[60vh]">
-        <h1 className="text-3xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
+      <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[40vh] md:min-h-[60vh]">
+        <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
           Ranking Hosting Chile 2025
         </h1>
-        <p className="text-gray-600 max-w-lg mx-auto mb-8">
+        <p className="text-sm md:text-base text-gray-600 max-w-lg mx-auto mb-8">
           Analizamos los mejores proveedores de hosting en Chile según velocidad, 
           soporte técnico, seguridad y soberanía digital.
         </p>
@@ -399,7 +399,7 @@ const RankingPage = () => {
         <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
           Explora por tipo de servicio
         </h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {categories.map((category, index) => (
             <a 
               key={index} 
@@ -426,7 +426,7 @@ const RankingPage = () => {
         <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
           Lo que dicen nuestros usuarios
         </h2>
-        <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {testimonials.map((testimonial, index) => (
             <Card key={index} className="p-4 shadow-sm hover:shadow transition-shadow">
               <blockquote className="italic text-gray-600 mb-4">

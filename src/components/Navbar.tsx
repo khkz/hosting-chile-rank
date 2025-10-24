@@ -52,9 +52,9 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm animate-fade-in">
-      <div className="container mx-auto px-4 flex justify-between items-center h-20">
+      <div className="container mx-auto px-4 flex justify-between items-center h-16 md:h-20">
         <a href="https://eligetuhosting.cl" className="flex items-center">
-          <Logo variant="option-a" className="h-12 w-auto mr-2" />
+          <Logo variant="option-a" className="h-10 md:h-12 w-auto mr-2" />
         </a>
         
         {/* Desktop Menu */}
