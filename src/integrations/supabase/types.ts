@@ -352,6 +352,140 @@ export type Database = {
         }
         Relationships: []
       }
+      hosting_companies: {
+        Row: {
+          claimed_at: string | null
+          claimed_by: string | null
+          contact_address: string | null
+          contact_email: string | null
+          contact_hours: string | null
+          contact_phone: string | null
+          created_at: string | null
+          datacenter_location: string | null
+          description: string | null
+          id: string
+          is_featured: boolean | null
+          is_verified: boolean | null
+          logo_url: string | null
+          name: string
+          overall_rating: number | null
+          price_rating: number | null
+          slug: string
+          speed_rating: number | null
+          support_rating: number | null
+          total_reviews: number | null
+          updated_at: string | null
+          verified_reviews: number | null
+          website: string | null
+          year_founded: number | null
+        }
+        Insert: {
+          claimed_at?: string | null
+          claimed_by?: string | null
+          contact_address?: string | null
+          contact_email?: string | null
+          contact_hours?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          datacenter_location?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_verified?: boolean | null
+          logo_url?: string | null
+          name: string
+          overall_rating?: number | null
+          price_rating?: number | null
+          slug: string
+          speed_rating?: number | null
+          support_rating?: number | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          verified_reviews?: number | null
+          website?: string | null
+          year_founded?: number | null
+        }
+        Update: {
+          claimed_at?: string | null
+          claimed_by?: string | null
+          contact_address?: string | null
+          contact_email?: string | null
+          contact_hours?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          datacenter_location?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_verified?: boolean | null
+          logo_url?: string | null
+          name?: string
+          overall_rating?: number | null
+          price_rating?: number | null
+          slug?: string
+          speed_rating?: number | null
+          support_rating?: number | null
+          total_reviews?: number | null
+          updated_at?: string | null
+          verified_reviews?: number | null
+          website?: string | null
+          year_founded?: number | null
+        }
+        Relationships: []
+      }
+      hosting_plans: {
+        Row: {
+          bandwidth: string | null
+          company_id: string
+          created_at: string | null
+          display_order: number | null
+          domains_allowed: number | null
+          features: Json | null
+          id: string
+          is_active: boolean | null
+          name: string
+          price_monthly: number | null
+          storage_gb: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          bandwidth?: string | null
+          company_id: string
+          created_at?: string | null
+          display_order?: number | null
+          domains_allowed?: number | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          price_monthly?: number | null
+          storage_gb?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          bandwidth?: string | null
+          company_id?: string
+          created_at?: string | null
+          display_order?: number | null
+          domains_allowed?: number | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          price_monthly?: number | null
+          storage_gb?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hosting_plans_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_boards_data: {
         Row: {
           created_at: string | null
@@ -398,6 +532,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      news_articles: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          excerpt: string | null
+          id: string
+          image_url: string | null
+          indexed: boolean | null
+          original_source: string | null
+          original_url: string | null
+          published_at: string | null
+          rewritten_content: string
+          slug: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          indexed?: boolean | null
+          original_source?: string | null
+          original_url?: string | null
+          published_at?: string | null
+          rewritten_content: string
+          slug: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          indexed?: boolean | null
+          original_source?: string | null
+          original_url?: string | null
+          published_at?: string | null
+          rewritten_content?: string
+          slug?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       performance_metrics: {
         Row: {
@@ -656,6 +838,27 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       whois_info: {
         Row: {
           address: string | null
@@ -733,7 +936,7 @@ export type Database = {
     }
     Functions: {
       get_public_domains: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           analyzed_at: string
           business_type: string
@@ -747,9 +950,16 @@ export type Database = {
           timestamp: string
         }[]
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "hosting_provider" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -876,6 +1086,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "hosting_provider", "user"],
+    },
   },
 } as const

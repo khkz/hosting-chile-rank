@@ -13,6 +13,7 @@ import Comparativa from './pages/Comparativa';
 import CotizaHosting from './pages/CotizaHosting';
 import WhoisDomain from './pages/WhoisDomain';
 import { Toaster } from '@/components/ui/toaster';
+import { AuthProvider } from './providers/AuthProvider';
 import UltimosDominios from './pages/UltimosDominios';
 import GuiaElegirHosting from './pages/GuiaElegirHosting';
 import GuiaElegirVPS from './pages/GuiaElegirVPS';
@@ -42,12 +43,13 @@ import BlogPost from './pages/BlogPost';
 
 function App() {
   return (
-    <Router>
-      <DomainRedirect />
-      <ScrollToTop />
-      <Toaster />
-      <SEOOrganization />
-      <Routes>
+    <AuthProvider>
+      <Router>
+        <DomainRedirect />
+        <ScrollToTop />
+        <Toaster />
+        <SEOOrganization />
+        <Routes>
         {/* Rutas para archivos estáticos */}
         <Route path="/sitemap.xml" element={<StaticSitemap />} />
         <Route path="/robots.txt" element={<StaticRobots />} />
@@ -94,6 +96,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
+    </AuthProvider>
   );
 }
 
