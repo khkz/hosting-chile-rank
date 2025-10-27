@@ -42,6 +42,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import AdminDashboard from './pages/admin/Dashboard';
 import ReviewModeration from './pages/admin/ReviewModeration';
+import Setup from './pages/admin/Setup';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
@@ -111,6 +112,11 @@ function App() {
             <Route path="/admin/reviews" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <ReviewModeration />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/setup" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Setup />
               </ProtectedRoute>
             } />
             <Route path="/provider/dashboard" element={
