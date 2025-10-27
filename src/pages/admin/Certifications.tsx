@@ -1,16 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Award, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Award, CheckCircle, XCircle, Clock, Link2, Link2Off, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 export default function AdminCertifications() {
-  const { data: certifications, isLoading, refetch } = useQuery({
+  const queryClient = useQueryClient();
+
+  const { data: certifications, isLoading } = useQuery({
     queryKey: ['admin-certifications'],
     queryFn: async () => {
       const { data } = await supabase
@@ -25,22 +27,47 @@ export default function AdminCertifications() {
     },
   });
 
-  const updateStatus = async (id: string, newStatus: 'active' | 'pending' | 'revoked' | 'expired') => {
-    const { error } = await supabase
-      .from('company_certifications')
-      .update({ 
-        status: newStatus,
-        granted_at: newStatus === 'active' ? new Date().toISOString() : null
-      })
-      .eq('id', id);
+  const updateStatus = useMutation({
+    mutationFn: async ({ id, newStatus }: { id: string; newStatus: 'active' | 'pending' | 'revoked' | 'expired' }) => {
+      const { error } = await supabase
+        .from('company_certifications')
+        .update({ 
+          status: newStatus,
+          granted_at: newStatus === 'active' ? new Date().toISOString() : null
+        })
+        .eq('id', id);
 
-    if (error) {
-      toast.error('Error actualizando certificación');
-    } else {
-      toast.success(`Certificación ${newStatus === 'active' ? 'activada' : newStatus === 'revoked' ? 'revocada' : 'actualizada'}`);
-      refetch();
-    }
-  };
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success('Estado actualizado correctamente');
+      queryClient.invalidateQueries({ queryKey: ['admin-certifications'] });
+    },
+    onError: (error: any) => {
+      toast.error('Error actualizando estado: ' + error.message);
+    },
+  });
+
+  const verifyBadge = useMutation({
+    mutationFn: async (certId: string) => {
+      const { data, error } = await supabase.functions.invoke('verify-badge-installation', {
+        body: { certificationId: certId },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data.verified) {
+        toast.success(data.message);
+      } else {
+        toast.warning(data.message);
+      }
+      queryClient.invalidateQueries({ queryKey: ['admin-certifications'] });
+    },
+    onError: (error: any) => {
+      toast.error('Error verificando badge: ' + error.message);
+    },
+  });
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -143,6 +170,17 @@ export default function AdminCertifications() {
                       <h3 className="text-xl font-bold">{cert.hosting_companies?.name}</h3>
                       {getStatusBadge(cert.status)}
                       {getTierBadge(cert.tier)}
+                      {cert.link_back_verified ? (
+                        <Badge variant="default" className="bg-green-600">
+                          <Link2 className="h-3 w-3 mr-1" />
+                          Badge Verificado
+                        </Badge>
+                      ) : cert.requires_link_back ? (
+                        <Badge variant="outline">
+                          <Link2Off className="h-3 w-3 mr-1" />
+                          Badge No Verificado
+                        </Badge>
+                      ) : null}
                     </div>
                     
                     <div className="flex items-center gap-2 text-lg mb-3">
@@ -171,7 +209,8 @@ export default function AdminCertifications() {
                     {cert.status !== 'active' && (
                       <Button
                         size="sm"
-                        onClick={() => updateStatus(cert.id, 'active')}
+                        onClick={() => updateStatus.mutate({ id: cert.id, newStatus: 'active' })}
+                        disabled={updateStatus.isPending}
                       >
                         <CheckCircle className="h-4 w-4 mr-1" />
                         Aprobar
@@ -182,7 +221,8 @@ export default function AdminCertifications() {
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => updateStatus(cert.id, 'revoked')}
+                        onClick={() => updateStatus.mutate({ id: cert.id, newStatus: 'revoked' })}
+                        disabled={updateStatus.isPending}
                       >
                         <XCircle className="h-4 w-4 mr-1" />
                         Revocar
@@ -193,9 +233,31 @@ export default function AdminCertifications() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => updateStatus(cert.id, 'pending')}
+                        onClick={() => updateStatus.mutate({ id: cert.id, newStatus: 'pending' })}
+                        disabled={updateStatus.isPending}
                       >
                         Pausar
+                      </Button>
+                    )}
+                    
+                    {cert.requires_link_back && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => verifyBadge.mutate(cert.id)}
+                        disabled={verifyBadge.isPending}
+                      >
+                        {verifyBadge.isPending ? (
+                          <>
+                            <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                            Verificando...
+                          </>
+                        ) : (
+                          <>
+                            <Link2 className="h-3 w-3 mr-1" />
+                            Verificar Badge
+                          </>
+                        )}
                       </Button>
                     )}
                   </div>

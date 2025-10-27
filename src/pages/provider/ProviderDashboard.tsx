@@ -167,6 +167,19 @@ export default function ProviderDashboard() {
               </Button>
             </Link>
           </Card>
+
+          <Card className="p-8 hover:shadow-lg transition-shadow">
+            <Star className="w-12 h-12 text-yellow-500 mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Badges</h2>
+            <p className="text-muted-foreground mb-4">
+              Genera código para instalar tus badges
+            </p>
+            <Link to="/provider/badges">
+              <Button className="w-full" disabled={!company}>
+                Ver Badges
+              </Button>
+            </Link>
+          </Card>
         </div>
 
         {/* Tips Section */}

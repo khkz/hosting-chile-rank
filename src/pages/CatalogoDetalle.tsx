@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import HostingCompanyInfo from '@/components/HostingCompanyInfo';
+import CertificationBadges from '@/components/CertificationBadges';
 import { getHostingCompanyBySlug } from '@/data/hostingCompanies';
 import { Helmet } from 'react-helmet';
 
@@ -64,6 +65,7 @@ const CatalogoDetalle = () => {
       <Navbar />
       
       <main className="container mx-auto px-4 py-8 md:py-12">
+        <CertificationBadges companySlug={company.id} variant="horizontal" size="medium" />
         <HostingCompanyInfo company={company} />
       </main>
       

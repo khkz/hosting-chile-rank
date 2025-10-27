@@ -51,6 +51,7 @@ import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
 import ReviewResponses from './pages/provider/ReviewResponses';
 import ProviderCertifications from './pages/provider/Certifications';
+import BadgeGenerator from './pages/provider/BadgeGenerator';
 import Certificaciones from './pages/Certificaciones';
 import Auth from './pages/Auth';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -157,6 +158,11 @@ function App() {
             <Route path="/provider/certifications" element={
               <ProtectedRoute allowedRoles={['hosting_provider']}>
                 <ProviderCertifications />
+              </ProtectedRoute>
+            } />
+            <Route path="/provider/badges" element={
+              <ProtectedRoute allowedRoles={['hosting_provider']}>
+                <BadgeGenerator />
               </ProtectedRoute>
             } />
             <Route path="/certificaciones" element={<Certificaciones />} />
