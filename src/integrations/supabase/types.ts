@@ -486,6 +486,86 @@ export type Database = {
           },
         ]
       }
+      hosting_reviews: {
+        Row: {
+          comment: string
+          company_id: string
+          cons: string[] | null
+          created_at: string | null
+          helpful_count: number | null
+          id: string
+          is_verified_customer: boolean | null
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_notes: string | null
+          overall_rating: number
+          price_rating: number | null
+          pros: string[] | null
+          speed_rating: number | null
+          status: Database["public"]["Enums"]["review_status"] | null
+          support_rating: number | null
+          title: string | null
+          updated_at: string | null
+          user_id: string
+          verification_method: string | null
+          verification_proof_url: string | null
+        }
+        Insert: {
+          comment: string
+          company_id: string
+          cons?: string[] | null
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          is_verified_customer?: boolean | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          overall_rating: number
+          price_rating?: number | null
+          pros?: string[] | null
+          speed_rating?: number | null
+          status?: Database["public"]["Enums"]["review_status"] | null
+          support_rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+          user_id: string
+          verification_method?: string | null
+          verification_proof_url?: string | null
+        }
+        Update: {
+          comment?: string
+          company_id?: string
+          cons?: string[] | null
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          is_verified_customer?: boolean | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          overall_rating?: number
+          price_rating?: number | null
+          pros?: string[] | null
+          speed_rating?: number | null
+          status?: Database["public"]["Enums"]["review_status"] | null
+          support_rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verification_method?: string | null
+          verification_proof_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hosting_reviews_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_boards_data: {
         Row: {
           created_at: string | null
@@ -681,6 +761,51 @@ export type Database = {
           ip_prefix?: string
         }
         Relationships: []
+      }
+      review_responses: {
+        Row: {
+          company_id: string
+          created_at: string | null
+          id: string
+          responded_by: string
+          response_text: string
+          review_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string | null
+          id?: string
+          responded_by: string
+          response_text: string
+          review_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string | null
+          id?: string
+          responded_by?: string
+          response_text?: string
+          review_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_responses_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "review_responses_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: true
+            referencedRelation: "hosting_reviews"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sii_data: {
         Row: {
@@ -960,6 +1085,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "hosting_provider" | "user"
+      review_status: "pending" | "approved" | "rejected" | "flagged"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1088,6 +1214,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "hosting_provider", "user"],
+      review_status: ["pending", "approved", "rejected", "flagged"],
     },
   },
 } as const

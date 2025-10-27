@@ -40,6 +40,8 @@ import WikiTerm from './pages/WikiTerm';
 import WikiCategory from './pages/WikiCategory';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import AdminDashboard from './pages/admin/Dashboard';
+import ReviewModeration from './pages/admin/ReviewModeration';
 
 function App() {
   return (
@@ -93,6 +95,8 @@ function App() {
         <Route path="/wiki/:slug" element={<WikiTerm />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/reviews" element={<ReviewModeration />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
