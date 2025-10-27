@@ -1,6 +1,7 @@
 import { useAuth } from '@/providers/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,6 @@ import { Textarea } from '@/components/ui/textarea';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet';
-import { useState } from 'react';
 import { toast } from 'sonner';
 import { Building2 } from 'lucide-react';
 
@@ -35,6 +35,7 @@ export default function CompanyProfile() {
     name: company?.name || '',
     description: company?.description || '',
     website: company?.website || '',
+    logo_url: company?.logo_url || '',
     contact_email: company?.contact_email || '',
     contact_phone: company?.contact_phone || '',
     contact_address: company?.contact_address || '',
@@ -42,6 +43,24 @@ export default function CompanyProfile() {
     datacenter_location: company?.datacenter_location || '',
     year_founded: company?.year_founded || 0,
   });
+
+  // Update formData when company loads
+  useEffect(() => {
+    if (company) {
+      setFormData({
+        name: company.name || '',
+        description: company.description || '',
+        website: company.website || '',
+        logo_url: company.logo_url || '',
+        contact_email: company.contact_email || '',
+        contact_phone: company.contact_phone || '',
+        contact_address: company.contact_address || '',
+        contact_hours: company.contact_hours || '',
+        datacenter_location: company.datacenter_location || '',
+        year_founded: company.year_founded || new Date().getFullYear(),
+      });
+    }
+  }, [company]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,6 +154,32 @@ export default function CompanyProfile() {
                   required
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="logo_url">URL del Logo</Label>
+              <Input
+                id="logo_url"
+                type="url"
+                value={formData.logo_url}
+                onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
+                placeholder="/logo-empresa.svg o https://ejemplo.com/logo.png"
+              />
+              <p className="text-xs text-muted-foreground">
+                Puedes usar rutas locales (/logo-empresa.svg) o URLs externas
+              </p>
+              {formData.logo_url && (
+                <div className="mt-2 p-4 bg-gray-50 rounded-lg flex justify-center">
+                  <img
+                    src={formData.logo_url}
+                    alt="Preview logo"
+                    className="max-h-20 object-contain"
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder.svg';
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">

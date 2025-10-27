@@ -4,14 +4,27 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Building2, Search, Edit, CheckCircle, XCircle } from 'lucide-react';
+import { Building2, Search, Edit, CheckCircle, XCircle, Image } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export default function AdminCompanies() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [editingLogo, setEditingLogo] = useState<{ id: string; currentUrl: string; name: string } | null>(null);
+  const [newLogoUrl, setNewLogoUrl] = useState('');
 
   const { data: companies, isLoading, refetch } = useQuery({
     queryKey: ['admin-companies'],
@@ -43,6 +56,27 @@ export default function AdminCompanies() {
   const filteredCompanies = companies?.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const updateLogo = async () => {
+    if (!editingLogo || !newLogoUrl.trim()) {
+      toast.error('Debes ingresar una URL válida');
+      return;
+    }
+
+    const { error } = await supabase
+      .from('hosting_companies')
+      .update({ logo_url: newLogoUrl })
+      .eq('id', editingLogo.id);
+
+    if (error) {
+      toast.error('Error actualizando logo');
+    } else {
+      toast.success('Logo actualizado correctamente');
+      setEditingLogo(null);
+      setNewLogoUrl('');
+      refetch();
+    }
+  };
 
   return (
     <>
@@ -126,6 +160,77 @@ export default function AdminCompanies() {
                   </div>
 
                   <div className="flex flex-col gap-2">
+                    <Dialog open={editingLogo?.id === company.id} onOpenChange={(open) => {
+                      if (!open) {
+                        setEditingLogo(null);
+                        setNewLogoUrl('');
+                      }
+                    }}>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setEditingLogo({
+                              id: company.id,
+                              currentUrl: company.logo_url || '',
+                              name: company.name
+                            });
+                            setNewLogoUrl(company.logo_url || '');
+                          }}
+                        >
+                          <Image className="h-4 w-4 mr-1" />
+                          Cambiar Logo
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Actualizar Logo de {company.name}</DialogTitle>
+                          <DialogDescription>
+                            Ingresa la URL del nuevo logo. Puedes usar logos desde /public o URLs externas.
+                          </DialogDescription>
+                        </DialogHeader>
+                        
+                        <div className="space-y-4">
+                          <div className="flex justify-center p-4 bg-gray-50 rounded-lg">
+                            <img
+                              src={newLogoUrl || company.logo_url || '/placeholder.svg'}
+                              alt="Preview"
+                              className="max-h-32 object-contain"
+                              onError={(e) => {
+                                e.currentTarget.src = '/placeholder.svg';
+                              }}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="logo-url">URL del Logo</Label>
+                            <Input
+                              id="logo-url"
+                              placeholder="/logo-empresa.svg o https://..."
+                              value={newLogoUrl}
+                              onChange={(e) => setNewLogoUrl(e.target.value)}
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Ejemplos: /logo-hostingplus.svg, https://ejemplo.com/logo.png
+                            </p>
+                          </div>
+                        </div>
+
+                        <DialogFooter>
+                          <Button variant="outline" onClick={() => {
+                            setEditingLogo(null);
+                            setNewLogoUrl('');
+                          }}>
+                            Cancelar
+                          </Button>
+                          <Button onClick={updateLogo}>
+                            Actualizar Logo
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+
                     <Button
                       variant="outline"
                       size="sm"
