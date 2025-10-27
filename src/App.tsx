@@ -42,6 +42,10 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import AdminDashboard from './pages/admin/Dashboard';
 import ReviewModeration from './pages/admin/ReviewModeration';
+import ProviderDashboard from './pages/provider/ProviderDashboard';
+import CompanyProfile from './pages/provider/CompanyProfile';
+import PlanManagement from './pages/provider/PlanManagement';
+import ReviewResponses from './pages/provider/ReviewResponses';
 import Certificaciones from './pages/Certificaciones';
 
 function App() {
@@ -96,10 +100,14 @@ function App() {
         <Route path="/wiki/:slug" element={<WikiTerm />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/reviews" element={<ReviewModeration />} />
-        <Route path="/certificaciones" element={<Certificaciones />} />
-        <Route path="*" element={<NotFound />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/reviews" element={<ReviewModeration />} />
+            <Route path="/provider/dashboard" element={<ProviderDashboard />} />
+            <Route path="/provider/company" element={<CompanyProfile />} />
+            <Route path="/provider/plans" element={<PlanManagement />} />
+            <Route path="/provider/reviews" element={<ReviewResponses />} />
+            <Route path="/certificaciones" element={<Certificaciones />} />
+            <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
     </AuthProvider>
