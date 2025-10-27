@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Building2, Award, TrendingUp } from 'lucide-react';
+import { MessageSquare, Building2, Award, TrendingUp, Database } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -85,6 +85,12 @@ export default function AdminDashboard() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Link to="/admin/setup">
+              <Button variant="outline" className="w-full justify-start">
+                <Database className="w-4 h-4 mr-2" />
+                Configuración Inicial
+              </Button>
+            </Link>
             <Link to="/admin/reviews">
               <Button variant="outline" className="w-full justify-start">
                 <MessageSquare className="w-4 h-4 mr-2" />
@@ -95,6 +101,12 @@ export default function AdminDashboard() {
               <Button variant="outline" className="w-full justify-start">
                 <Building2 className="w-4 h-4 mr-2" />
                 Gestionar Empresas
+              </Button>
+            </Link>
+            <Link to="/admin/certificaciones">
+              <Button variant="outline" className="w-full justify-start">
+                <Award className="w-4 h-4 mr-2" />
+                Gestionar Certificaciones
               </Button>
             </Link>
           </div>

@@ -15,7 +15,8 @@ import {
   ArrowRight,
   User,
   LogOut,
-  LayoutDashboard
+  LayoutDashboard,
+  Award
 } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import Logo from './Logo';
@@ -114,6 +115,16 @@ const Navbar = () => {
           >
             <BookOpen className={iconClasses} />
             Wiki
+          </NavLink>
+          
+          <NavLink 
+            to="/certificaciones" 
+            className={({ isActive }) => 
+              `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2 group`
+            }
+          >
+            <Award className={iconClasses} />
+            Certificaciones
           </NavLink>
           
           {/* Dropdown Menu for "Herramientas" */}
@@ -339,6 +350,16 @@ const Navbar = () => {
                 >
                   <BookOpen className="h-5 w-5 mr-2" />
                   Wiki
+                </NavLink>
+                
+                <NavLink 
+                  to="/certificaciones" 
+                  className={({ isActive }) => 
+                    `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                  }
+                >
+                  <Award className="h-5 w-5 mr-2" />
+                  Certificaciones
                 </NavLink>
                 
                 {/* User Menu / Login Button */}

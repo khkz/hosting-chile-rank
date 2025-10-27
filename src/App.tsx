@@ -24,6 +24,7 @@ import GuiaMigrarHosting from './pages/GuiaMigrarHosting';
 import GuiaSeguridadWeb from './pages/GuiaSeguridadWeb';
 import GuiaHostingWordPress from './pages/GuiaHostingWordPress';
 import Resena from './pages/Resena';
+import Catalogo from './pages/Catalogo';
 import CatalogoDetalle from './pages/CatalogoDetalle';
 import Benchmark from './pages/Benchmark';
 import MejorHostingChile2025 from './pages/MejorHostingChile2025';
@@ -43,10 +44,13 @@ import BlogPost from './pages/BlogPost';
 import AdminDashboard from './pages/admin/Dashboard';
 import ReviewModeration from './pages/admin/ReviewModeration';
 import Setup from './pages/admin/Setup';
+import Companies from './pages/admin/Companies';
+import AdminCertifications from './pages/admin/Certifications';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
 import ReviewResponses from './pages/provider/ReviewResponses';
+import ProviderCertifications from './pages/provider/Certifications';
 import Certificaciones from './pages/Certificaciones';
 import Auth from './pages/Auth';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -88,6 +92,7 @@ function App() {
         <Route path="/guia-hosting-wordpress" element={<GuiaHostingWordPress />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/resenas/:slug" element={<Resena />} />
+        <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
@@ -119,6 +124,16 @@ function App() {
                 <Setup />
               </ProtectedRoute>
             } />
+            <Route path="/admin/empresas" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Companies />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/certificaciones" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminCertifications />
+              </ProtectedRoute>
+            } />
             <Route path="/provider/dashboard" element={
               <ProtectedRoute allowedRoles={['hosting_provider']}>
                 <ProviderDashboard />
@@ -137,6 +152,11 @@ function App() {
             <Route path="/provider/reviews" element={
               <ProtectedRoute allowedRoles={['hosting_provider']}>
                 <ReviewResponses />
+              </ProtectedRoute>
+            } />
+            <Route path="/provider/certifications" element={
+              <ProtectedRoute allowedRoles={['hosting_provider']}>
+                <ProviderCertifications />
               </ProtectedRoute>
             } />
             <Route path="/certificaciones" element={<Certificaciones />} />
