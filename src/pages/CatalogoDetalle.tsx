@@ -65,7 +65,7 @@ const CatalogoDetalle = () => {
       <Navbar />
       
       <main className="container mx-auto px-4 py-8 md:py-12">
-        <CertificationBadges companySlug={company.id} variant="horizontal" size="medium" />
+        <CertificationBadges companySlug={slug || ''} variant="horizontal" size="medium" />
         <HostingCompanyInfo company={company} />
       </main>
       

@@ -4,35 +4,49 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Copy, Check, Code2 } from 'lucide-react';
+import { Copy, Check, Code2, Download } from 'lucide-react';
 import { toast } from 'sonner';
+import BadgeImageGenerator from './BadgeImageGenerator';
 
 interface BadgeEmbedCodeProps {
   certificationId: string;
   categoryName: string;
   position: number;
+  icon?: string;
 }
 
-export default function BadgeEmbedCode({ certificationId, categoryName, position }: BadgeEmbedCodeProps) {
+export default function BadgeEmbedCode({ certificationId, categoryName, position, icon = '⚡' }: BadgeEmbedCodeProps) {
   const [copied, setCopied] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [badgeDataUrl, setBadgeDataUrl] = useState<string>('');
 
-  const badgeUrl = `https://oegvwjxrlmtwortyhsrv.supabase.co/functions/v1/badge-generator?id=${certificationId}&size=${selectedSize}`;
-  
   const htmlCode = `<!-- Badge EligeTuHosting.cl -->
 <a href="https://eligetuhosting.cl/certificaciones" target="_blank" rel="noopener">
-  <img src="${badgeUrl}" 
+  <img src="badge-eligetuhosting.png" 
        alt="#${position} ${categoryName} - Chile 2025" 
-       width="200" height="60" />
+       width="200" height="200" />
 </a>`;
 
-  const markdownCode = `[![#${position} ${categoryName}](${badgeUrl})](https://eligetuhosting.cl/certificaciones)`;
+  const markdownCode = `[![#${position} ${categoryName}](badge-eligetuhosting.png)](https://eligetuhosting.cl/certificaciones)`;
 
   const handleCopy = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
     setCopied(type);
     toast.success('Código copiado al portapapeles');
     setTimeout(() => setCopied(null), 2000);
+  };
+
+  const handleDownload = () => {
+    if (!badgeDataUrl) {
+      toast.error('La imagen no está lista. Intenta nuevamente.');
+      return;
+    }
+
+    const link = document.createElement('a');
+    link.download = `badge-eligetuhosting-${position}-${categoryName.toLowerCase().replace(/\s+/g, '-')}.png`;
+    link.href = badgeDataUrl;
+    link.click();
+    toast.success('Badge descargado exitosamente');
   };
 
   return (
@@ -66,16 +80,32 @@ export default function BadgeEmbedCode({ certificationId, categoryName, position
           </div>
         </div>
 
-        {/* Preview */}
+        {/* Preview and Download */}
         <div className="space-y-2">
-          <Label>Vista Previa</Label>
+          <div className="flex items-center justify-between">
+            <Label>Vista Previa del Badge</Label>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownload}
+              disabled={!badgeDataUrl}
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Descargar PNG
+            </Button>
+          </div>
           <div className="bg-muted p-6 rounded-lg flex items-center justify-center">
-            <img 
-              src={badgeUrl} 
-              alt={`#${position} ${categoryName}`}
-              className="max-h-20"
+            <BadgeImageGenerator
+              position={position}
+              categoryName={categoryName}
+              icon={icon}
+              size={selectedSize}
+              onImageGenerated={setBadgeDataUrl}
             />
           </div>
+          <p className="text-xs text-muted-foreground text-center">
+            Descarga esta imagen y súbela a tu servidor web
+          </p>
         </div>
 
         {/* Code Tabs */}
@@ -138,33 +168,16 @@ export default function BadgeEmbedCode({ certificationId, categoryName, position
           </TabsContent>
         </Tabs>
 
-        {/* Direct Link */}
-        <div className="space-y-2">
-          <Label>URL Directa del Badge</Label>
-          <div className="flex gap-2">
-            <Input 
-              value={badgeUrl} 
-              readOnly 
-              className="font-mono text-xs"
-            />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleCopy(badgeUrl, 'url')}
-            >
-              {copied === 'url' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            </Button>
-          </div>
-        </div>
-
         {/* Instructions */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
-          <p className="font-semibold text-blue-900 mb-2">📝 Instrucciones:</p>
-          <ol className="list-decimal list-inside space-y-1 text-blue-800">
-            <li>Copia el código HTML o Markdown</li>
-            <li>Pégalo en el footer o sidebar de tu sitio web</li>
-            <li>El badge debe enlazar a eligetuhosting.cl/certificaciones</li>
-            <li>Una vez instalado, solicita verificación en tu panel</li>
+          <p className="font-semibold text-blue-900 mb-2">📝 Instrucciones de Instalación:</p>
+          <ol className="list-decimal list-inside space-y-2 text-blue-800">
+            <li><strong>Descarga el badge PNG</strong> usando el botón "Descargar PNG"</li>
+            <li><strong>Sube la imagen</strong> a tu servidor web (ej: /images/badge-eligetuhosting.png)</li>
+            <li><strong>Actualiza el código HTML/Markdown</strong> con la ruta correcta de la imagen en tu servidor</li>
+            <li><strong>Pega el código</strong> en el footer o sidebar de tu sitio web</li>
+            <li><strong>Verifica que el enlace</strong> apunte a eligetuhosting.cl/certificaciones</li>
+            <li><strong>Solicita verificación</strong> en tu panel una vez instalado</li>
           </ol>
         </div>
       </CardContent>
