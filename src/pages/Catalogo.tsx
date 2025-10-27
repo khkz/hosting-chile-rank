@@ -3,7 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ExternalLink, Award } from 'lucide-react';
 import { getAllHostingCompanies } from '@/data/hostingCompanies';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -61,6 +62,12 @@ const CatalogoPage = () => {
                     <div className="text-sm text-gray-500">
                       Desde {company.yearFounded}
                     </div>
+                    {company.rating >= 9 && (
+                      <Badge variant="secondary" className="gap-1">
+                        <Award className="h-3 w-3" />
+                        Certificado
+                      </Badge>
+                    )}
                   </div>
                   <p className="text-sm text-gray-600 line-clamp-3">
                     {company.description}

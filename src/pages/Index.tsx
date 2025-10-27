@@ -12,6 +12,7 @@ import FAQ from '@/components/FAQ';
 import UltimasBusquedas from '@/components/UltimasBusquedas';
 import TransparencyNotice from '@/components/TransparencyNotice';
 import FinalCTA from '@/components/FinalCTA';
+import CertificationsBanner from '@/components/CertificationsBanner';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import MiniNav from '@/components/MiniNav';
@@ -91,7 +92,10 @@ const Index = () => {
         {/* section 10: FAQ */}
         <FAQ />
         
-        {/* section 11: Final CTA */}
+        {/* section 11: Certifications Banner */}
+        <CertificationsBanner />
+        
+        {/* section 12: Final CTA */}
         <FinalCTA />
         
         {/* Mini Nav sticky */}

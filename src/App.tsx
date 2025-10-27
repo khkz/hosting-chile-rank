@@ -48,6 +48,7 @@ import PlanManagement from './pages/provider/PlanManagement';
 import ReviewResponses from './pages/provider/ReviewResponses';
 import Certificaciones from './pages/Certificaciones';
 import Auth from './pages/Auth';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -102,12 +103,36 @@ function App() {
         <Route path="/wiki/:slug" element={<WikiTerm />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/reviews" element={<ReviewModeration />} />
-            <Route path="/provider/dashboard" element={<ProviderDashboard />} />
-            <Route path="/provider/company" element={<CompanyProfile />} />
-            <Route path="/provider/plans" element={<PlanManagement />} />
-            <Route path="/provider/reviews" element={<ReviewResponses />} />
+            <Route path="/admin/dashboard" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reviews" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <ReviewModeration />
+              </ProtectedRoute>
+            } />
+            <Route path="/provider/dashboard" element={
+              <ProtectedRoute allowedRoles={['hosting_provider']}>
+                <ProviderDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/provider/company" element={
+              <ProtectedRoute allowedRoles={['hosting_provider']}>
+                <CompanyProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/provider/plans" element={
+              <ProtectedRoute allowedRoles={['hosting_provider']}>
+                <PlanManagement />
+              </ProtectedRoute>
+            } />
+            <Route path="/provider/reviews" element={
+              <ProtectedRoute allowedRoles={['hosting_provider']}>
+                <ReviewResponses />
+              </ProtectedRoute>
+            } />
             <Route path="/certificaciones" element={<Certificaciones />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
