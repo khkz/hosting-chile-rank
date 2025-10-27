@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Menu, 
   ChevronDown,
@@ -12,8 +12,12 @@ import {
   Star,
   BookOpen,
   Wrench,
-  ArrowRight
+  ArrowRight,
+  User,
+  LogOut,
+  LayoutDashboard
 } from 'lucide-react';
+import { useAuth } from '@/providers/AuthProvider';
 import Logo from './Logo';
 import {
   Sheet,
@@ -43,6 +47,19 @@ const Navbar = () => {
   const [isGuideMenuOpen, setIsGuideMenuOpen] = useState(false);
   const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, role, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
+  const getDashboardLink = () => {
+    if (role === 'admin') return '/admin/dashboard';
+    if (role === 'hosting_provider') return '/provider/dashboard';
+    return '/';
+  };
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -229,8 +246,36 @@ const Navbar = () => {
           </DropdownMenu>
         </div>
         
-        {/* CTA Button */}
-        <div className="hidden md:block">
+        {/* CTA Button and User Menu */}
+        <div className="hidden md:flex items-center gap-3">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="flex flex-col space-y-1 px-2 py-1.5">
+                  <p className="text-sm font-medium">{user.email}</p>
+                  <p className="text-xs text-muted-foreground capitalize">{role || 'user'}</p>
+                </div>
+                <DropdownMenuItem onClick={() => navigate(getDashboardLink())}>
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  Mi Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Cerrar Sesión
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button asChild variant="ghost">
+              <Link to="/auth">Iniciar Sesión</Link>
+            </Button>
+          )}
+          
           <Button 
             asChild 
             className="bg-[#EF233C] hover:bg-[#EF233C]/90 text-white hover:scale-105 transition-transform duration-300 flex items-center gap-2"
@@ -295,6 +340,47 @@ const Navbar = () => {
                   <BookOpen className="h-5 w-5 mr-2" />
                   Wiki
                 </NavLink>
+                
+                {/* User Menu / Login Button */}
+                {user ? (
+                  <div className="border-t pt-4 mt-4">
+                    <div className="flex items-center gap-2 mb-3 px-1">
+                      <User className="h-5 w-5 text-[#2B2D42]" />
+                      <div>
+                        <p className="text-sm font-medium text-[#2B2D42]">{user.email}</p>
+                        <p className="text-xs text-muted-foreground capitalize">{role || 'user'}</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={() => navigate(getDashboardLink())}
+                      >
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        Mi Dashboard
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start"
+                        onClick={handleSignOut}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Cerrar Sesión
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="border-t pt-4 mt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => navigate('/auth')}
+                    >
+                      Iniciar Sesión
+                    </Button>
+                  </div>
+                )}
                 
                 {/* Accordion for Herramientas */}
                 <Accordion type="single" collapsible className="w-full">

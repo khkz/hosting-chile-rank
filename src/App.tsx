@@ -47,6 +47,7 @@ import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
 import ReviewResponses from './pages/provider/ReviewResponses';
 import Certificaciones from './pages/Certificaciones';
+import Auth from './pages/Auth';
 
 function App() {
   return (
@@ -91,6 +92,7 @@ function App() {
         <Route path="/mejor-hosting-chile" element={<Navigate to="/mejor-hosting-chile-2025" replace />} />
         <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
         <Route path="/acerca-de" element={<AcercaDe />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="/asn" element={<ASNDirectory />} />
         <Route path="/asn/chile" element={<ASNChile />} />
