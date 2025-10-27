@@ -92,6 +92,138 @@ export type Database = {
         }
         Relationships: []
       }
+      certification_categories: {
+        Row: {
+          badge_image_url: string | null
+          created_at: string | null
+          criteria: Json | null
+          description: string | null
+          display_order: number | null
+          free_tier_features: Json | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          premium_features: Json | null
+          premium_price_clp: number | null
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          badge_image_url?: string | null
+          created_at?: string | null
+          criteria?: Json | null
+          description?: string | null
+          display_order?: number | null
+          free_tier_features?: Json | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          premium_features?: Json | null
+          premium_price_clp?: number | null
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          badge_image_url?: string | null
+          created_at?: string | null
+          criteria?: Json | null
+          description?: string | null
+          display_order?: number | null
+          free_tier_features?: Json | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          premium_features?: Json | null
+          premium_price_clp?: number | null
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      company_certifications: {
+        Row: {
+          category_id: string
+          company_id: string
+          created_at: string | null
+          display_order: number | null
+          expires_at: string | null
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          link_back_verified: boolean | null
+          link_back_verified_at: string | null
+          payment_amount: number | null
+          payment_date: string | null
+          payment_reference: string | null
+          payment_status: string | null
+          position: number | null
+          requires_link_back: boolean | null
+          status: Database["public"]["Enums"]["certification_status"] | null
+          tier: Database["public"]["Enums"]["certification_tier"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          category_id: string
+          company_id: string
+          created_at?: string | null
+          display_order?: number | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          link_back_verified?: boolean | null
+          link_back_verified_at?: string | null
+          payment_amount?: number | null
+          payment_date?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
+          position?: number | null
+          requires_link_back?: boolean | null
+          status?: Database["public"]["Enums"]["certification_status"] | null
+          tier?: Database["public"]["Enums"]["certification_tier"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          category_id?: string
+          company_id?: string
+          created_at?: string | null
+          display_order?: number | null
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          link_back_verified?: boolean | null
+          link_back_verified_at?: string | null
+          payment_amount?: number | null
+          payment_date?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
+          position?: number | null
+          requires_link_back?: boolean | null
+          status?: Database["public"]["Enums"]["certification_status"] | null
+          tier?: Database["public"]["Enums"]["certification_tier"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_certifications_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "certification_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_certifications_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_history: {
         Row: {
           contact_date: string
@@ -1085,6 +1217,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "hosting_provider" | "user"
+      certification_status: "pending" | "active" | "expired" | "revoked"
+      certification_tier: "free" | "premium"
       review_status: "pending" | "approved" | "rejected" | "flagged"
     }
     CompositeTypes: {
@@ -1214,6 +1348,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "hosting_provider", "user"],
+      certification_status: ["pending", "active", "expired", "revoked"],
+      certification_tier: ["free", "premium"],
       review_status: ["pending", "approved", "rejected", "flagged"],
     },
   },

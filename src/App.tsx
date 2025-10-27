@@ -42,6 +42,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import AdminDashboard from './pages/admin/Dashboard';
 import ReviewModeration from './pages/admin/ReviewModeration';
+import Certificaciones from './pages/Certificaciones';
 
 function App() {
   return (
@@ -97,6 +98,7 @@ function App() {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/reviews" element={<ReviewModeration />} />
+        <Route path="/certificaciones" element={<Certificaciones />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
