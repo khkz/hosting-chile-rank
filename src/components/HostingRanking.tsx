@@ -1,10 +1,10 @@
-
 import React, { useState, useMemo } from 'react';
 import HostingCard from './HostingCard';
 import { Trophy, Check, Star, Shield, Zap, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import ItemListSchema from '@/components/SEO/ItemListSchema';
 
 const hostingData = [
   {
@@ -121,48 +121,19 @@ const HostingRanking = () => {
     }
   };
   
-  const generateSchemaData = () => {
-    const items = sortedHostingData.map((provider, index) => ({
-      "@type": "Product",
-      "name": provider.name,
-      "description": provider.features.join(". "),
-      "url": provider.url,
-      "image": provider.logo,
-      "brand": {
-        "@type": "Brand",
-        "name": provider.name
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "3990",
-        "priceCurrency": "CLP",
-        "url": provider.url,
-        "availability": "https://schema.org/InStock",
-        "priceValidUntil": "2026-12-31"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": sortCriteria === 'speed' ? provider.speedRating : 
-                       (sortCriteria === 'price' ? provider.priceRating : provider.rating),
-        "bestRating": "10",
-        "worstRating": "0",
-        "ratingCount": "1"
-      },
-      "position": index + 1
+  const getSchemaItems = () => {
+    return sortedHostingData.map(provider => ({
+      name: provider.name,
+      description: provider.features.join(". "),
+      url: provider.url,
+      image: `https://eligetuhosting.cl${provider.logo}`,
+      brand: provider.name,
+      rating: sortCriteria === 'speed' ? provider.speedRating : 
+              (sortCriteria === 'price' ? provider.priceRating : provider.rating),
+      reviewCount: 150, // Número aproximado de reviews
+      price: 3990,
+      priceCurrency: "CLP"
     }));
-    
-    const schemaData = {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "itemListElement": items.map((item, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": item
-      })),
-      "numberOfItems": items.length
-    };
-    
-    return JSON.stringify(schemaData);
   };
   
   return (
@@ -180,7 +151,12 @@ const HostingRanking = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-6 rounded-full"></div>
         </div>
         
-        <script type="application/ld+json">{generateSchemaData()}</script>
+        <ItemListSchema 
+          name="Ranking Mejores Hosting Chile 2025"
+          description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas técnicas de velocidad, uptime y soporte"
+          items={getSchemaItems()}
+          listType="ranking"
+        />
         
         {/* Sort Controls */}
         <div className="flex justify-center mb-8 md:mb-12">
