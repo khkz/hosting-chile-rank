@@ -16,11 +16,18 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 347 77% 50%;
+    --primary: 16 100% 61%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 347 77% 95%;
+    --secondary: 16 96% 69%;
     --secondary-foreground: 347 77% 15%;
+    
+    --warm-orange: 16 100% 61%;
+    --warm-orange-light: 16 96% 69%;
+    --warm-orange-dark: 30 100% 48%;
+    --warm-cream: 30 100% 97%;
+    --warm-peach: 20 100% 93%;
+    --warm-yellow: 40 100% 50%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
