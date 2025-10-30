@@ -46,6 +46,7 @@ import ReviewModeration from './pages/admin/ReviewModeration';
 import Setup from './pages/admin/Setup';
 import Companies from './pages/admin/Companies';
 import AdminCertifications from './pages/admin/Certifications';
+import DataMigration from './pages/admin/DataMigration';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
@@ -136,6 +137,11 @@ function App() {
                 <AdminCertifications />
               </ProtectedRoute>
             } />
+            <Route path="/admin/migracion" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DataMigration />
+              </ProtectedRoute>
+            } />
             <Route path="/provider/dashboard" element={
               <ProtectedRoute allowedRoles={['hosting_provider']}>
                 <ProviderDashboard />
@@ -167,7 +173,8 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/certificaciones" element={<Certificaciones />} />
-            <Route path="/directorio-hosting-chile" element={<DirectorioHosting />} />
+            {/* 301 Redirect: Consolidate directorio into catalogo */}
+            <Route path="/directorio-hosting-chile" element={<Navigate to="/catalogo" replace />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

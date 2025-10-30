@@ -1,78 +1,35 @@
 import { supabase } from '@/integrations/supabase/client';
+import { getAllHostingCompanies } from '@/data/hostingCompanies';
 
-// Datos de ejemplo de hostingCompanies (adaptar según tu estructura real)
-const hostingCompaniesData = [
-  {
-    id: 'hostingplus',
-    name: 'HostingPlus',
-    logo: '/logo-hostingplus.svg',
-    description: 'Hosting premium con servidores en Chile',
-    rating: 9.5,
-    yearFounded: 2010,
-    datacenterLocation: 'Santiago, Chile',
-    website: 'https://hostingplus.cl',
-    contactInfo: {
-      phone: '+56 2 2345 6789',
-      email: 'contacto@hostingplus.cl',
-      address: 'Av. Providencia 123, Santiago',
-      hours: 'Lun-Vie 9:00-18:00'
-    },
-    plans: [
-      {
-        name: 'Plan Básico',
-        price: 2990,
-        storage: '5GB',
-        bandwidth: 'Ilimitado',
-        domains: 1,
-        features: ['SSL Gratis', 'Soporte 24/7', 'cPanel']
-      },
-      {
-        name: 'Plan Pro',
-        price: 5990,
-        storage: '20GB',
-        bandwidth: 'Ilimitado',
-        domains: 5,
-        features: ['SSL Gratis', 'Soporte 24/7', 'cPanel', 'Backup Diario']
-      }
-    ]
-  },
-  {
-    id: 'hostname',
-    name: 'HostName',
-    logo: '/logo-hostname.svg',
-    description: 'Soluciones de hosting confiables',
-    rating: 9.0,
-    yearFounded: 2012,
-    datacenterLocation: 'Santiago, Chile',
-    website: 'https://hostname.cl',
-    contactInfo: {
-      phone: '+56 2 3456 7890',
-      email: 'info@hostname.cl',
-      address: 'Las Condes, Santiago',
-      hours: '24/7'
-    },
-    plans: [
-      {
-        name: 'Starter',
-        price: 1990,
-        storage: '3GB',
-        bandwidth: '50GB',
-        domains: 1,
-        features: ['SSL Gratis', 'Email Ilimitado']
-      }
-    ]
-  }
-];
+/**
+ * Migration script to transfer all hosting companies from static data
+ * to Supabase database with their plans
+ */
 
 export async function migrateHostingCompanies() {
-  console.log('🚀 Iniciando migración de datos de hosting...');
+  console.log('🚀 Iniciando migración de datos de hosting desde hostingCompanies.ts...');
   
+  const hostingCompaniesData = getAllHostingCompanies();
   let migratedCount = 0;
   let errorCount = 0;
+  let skippedCount = 0;
 
   for (const company of hostingCompaniesData) {
     try {
-      // 1. Insertar empresa
+      // Check if company already exists
+      const { data: existingCompany } = await supabase
+        .from('hosting_companies')
+        .select('id, slug')
+        .eq('slug', company.id)
+        .maybeSingle();
+
+      if (existingCompany) {
+        console.log(`⏭️  Empresa ya existe: ${company.name} (slug: ${company.id})`);
+        skippedCount++;
+        continue;
+      }
+
+      // 1. Insert company
       const { data: insertedCompany, error: companyError } = await supabase
         .from('hosting_companies')
         .insert({
@@ -101,17 +58,24 @@ export async function migrateHostingCompanies() {
 
       console.log(`✅ Empresa migrada: ${company.name}`);
 
-      // 2. Insertar planes
+      // 2. Insert plans
       if (company.plans && company.plans.length > 0) {
         for (const plan of company.plans) {
+          // Extract storage as number (remove "GB", "SSD", etc.)
+          const storageMatch = plan.storage.match(/(\d+)/);
+          const storageGb = storageMatch ? parseInt(storageMatch[1]) : null;
+
           const { error: planError } = await supabase.from('hosting_plans').insert({
             company_id: insertedCompany.id,
             name: plan.name,
             price_monthly: plan.price,
-            storage_gb: parseInt(plan.storage) || null,
+            storage_gb: storageGb,
             bandwidth: plan.bandwidth,
             domains_allowed: plan.domains,
-            features: plan.features,
+            features: plan.features.map(f => ({
+              name: f.name,
+              included: f.included
+            })),
           });
 
           if (planError) {
@@ -131,11 +95,15 @@ export async function migrateHostingCompanies() {
 
   console.log('\n📊 Resumen de migración:');
   console.log(`✅ Empresas migradas: ${migratedCount}`);
+  console.log(`⏭️  Empresas omitidas (ya existían): ${skippedCount}`);
   console.log(`❌ Errores: ${errorCount}`);
+  console.log(`📦 Total procesadas: ${hostingCompaniesData.length}`);
   console.log('🎉 Migración completada!');
 
   return {
     success: migratedCount,
-    errors: errorCount
+    skipped: skippedCount,
+    errors: errorCount,
+    total: hostingCompaniesData.length
   };
 }
