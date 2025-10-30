@@ -12,7 +12,16 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet';
 import { toast } from 'sonner';
-import { Building2 } from 'lucide-react';
+import { Building2, Facebook, Twitter, Instagram, Linkedin, Youtube, Server } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+
+interface SocialMedia {
+  facebook?: string;
+  twitter?: string;
+  instagram?: string;
+  linkedin?: string;
+  youtube?: string;
+}
 
 export default function CompanyProfile() {
   const { user, role, loading } = useAuth();
@@ -42,7 +51,26 @@ export default function CompanyProfile() {
     contact_hours: company?.contact_hours || '',
     datacenter_location: company?.datacenter_location || '',
     year_founded: company?.year_founded || 0,
+    technologies: (company?.technologies as string[]) || [],
+    social_media: (company?.social_media as SocialMedia) || {},
   });
+
+  const commonTechnologies = [
+    'cPanel',
+    'Plesk',
+    'DirectAdmin',
+    'LiteSpeed',
+    'Apache',
+    'Nginx',
+    'CloudLinux',
+    'Softaculous',
+    'JetBackup',
+    'Imunify360',
+    'SSL Gratis',
+    'SSD NVMe',
+    'CDN',
+    'WordPress Optimizado',
+  ];
 
   // Update formData when company loads
   useEffect(() => {
@@ -58,19 +86,45 @@ export default function CompanyProfile() {
         contact_hours: company.contact_hours || '',
         datacenter_location: company.datacenter_location || '',
         year_founded: company.year_founded || new Date().getFullYear(),
+        technologies: (company.technologies as string[]) || [],
+        social_media: (company.social_media as SocialMedia) || {},
       });
     }
   }, [company]);
+
+  const toggleTechnology = (tech: string) => {
+    setFormData(prev => ({
+      ...prev,
+      technologies: prev.technologies.includes(tech)
+        ? prev.technologies.filter(t => t !== tech)
+        : [...prev.technologies, tech]
+    }));
+  };
+
+  const updateSocialMedia = (platform: keyof SocialMedia, url: string) => {
+    setFormData(prev => ({
+      ...prev,
+      social_media: {
+        ...(prev.social_media as SocialMedia),
+        [platform]: url
+      }
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
 
     try {
+      const dataToSave = {
+        ...formData,
+        social_media: formData.social_media as any,
+      };
+
       if (company) {
         const { error } = await supabase
           .from('hosting_companies')
-          .update(formData)
+          .update(dataToSave)
           .eq('id', company.id);
 
         if (error) throw error;
@@ -79,7 +133,7 @@ export default function CompanyProfile() {
         const { error } = await supabase
           .from('hosting_companies')
           .insert([{
-            ...formData,
+            ...dataToSave,
             claimed_by: user!.id,
             slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
             is_verified: false,
@@ -256,6 +310,120 @@ export default function CompanyProfile() {
                   placeholder="2020"
                 />
               </div>
+
+            {/* Technologies Section */}
+            <div className="space-y-4 pt-6 border-t">
+              <div className="flex items-center gap-2">
+                <Server className="w-5 h-5 text-primary" />
+                <h3 className="text-lg font-semibold">Tecnologías y Características</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Selecciona las tecnologías que ofreces en tus planes de hosting
+              </p>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {commonTechnologies.map((tech) => (
+                  <div key={tech} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`tech-${tech}`}
+                      checked={formData.technologies.includes(tech)}
+                      onCheckedChange={() => toggleTechnology(tech)}
+                    />
+                    <Label
+                      htmlFor={`tech-${tech}`}
+                      className="text-sm font-normal cursor-pointer"
+                    >
+                      {tech}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Social Media Section */}
+            <div className="space-y-4 pt-6 border-t">
+              <h3 className="text-lg font-semibold">Redes Sociales</h3>
+              <p className="text-sm text-muted-foreground">
+                Agrega tus perfiles de redes sociales para mejorar la visibilidad
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Facebook className="w-5 h-5 text-blue-600" />
+                  <div className="flex-1">
+                    <Label htmlFor="facebook" className="text-sm">Facebook</Label>
+                    <Input
+                      id="facebook"
+                      type="url"
+                      value={formData.social_media.facebook || ''}
+                      onChange={(e) => updateSocialMedia('facebook', e.target.value)}
+                      placeholder="https://facebook.com/tuempresa"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Twitter className="w-5 h-5 text-blue-400" />
+                  <div className="flex-1">
+                    <Label htmlFor="twitter" className="text-sm">Twitter / X</Label>
+                    <Input
+                      id="twitter"
+                      type="url"
+                      value={formData.social_media.twitter || ''}
+                      onChange={(e) => updateSocialMedia('twitter', e.target.value)}
+                      placeholder="https://twitter.com/tuempresa"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Instagram className="w-5 h-5 text-pink-600" />
+                  <div className="flex-1">
+                    <Label htmlFor="instagram" className="text-sm">Instagram</Label>
+                    <Input
+                      id="instagram"
+                      type="url"
+                      value={formData.social_media.instagram || ''}
+                      onChange={(e) => updateSocialMedia('instagram', e.target.value)}
+                      placeholder="https://instagram.com/tuempresa"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Linkedin className="w-5 h-5 text-blue-700" />
+                  <div className="flex-1">
+                    <Label htmlFor="linkedin" className="text-sm">LinkedIn</Label>
+                    <Input
+                      id="linkedin"
+                      type="url"
+                      value={formData.social_media.linkedin || ''}
+                      onChange={(e) => updateSocialMedia('linkedin', e.target.value)}
+                      placeholder="https://linkedin.com/company/tuempresa"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Youtube className="w-5 h-5 text-red-600" />
+                  <div className="flex-1">
+                    <Label htmlFor="youtube" className="text-sm">YouTube</Label>
+                    <Input
+                      id="youtube"
+                      type="url"
+                      value={formData.social_media.youtube || ''}
+                      onChange={(e) => updateSocialMedia('youtube', e.target.value)}
+                      placeholder="https://youtube.com/@tuempresa"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="flex gap-4">
               <Button type="submit" disabled={saving} className="flex-1">

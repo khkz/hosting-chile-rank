@@ -503,8 +503,10 @@ export type Database = {
           overall_rating: number | null
           price_rating: number | null
           slug: string
+          social_media: Json | null
           speed_rating: number | null
           support_rating: number | null
+          technologies: string[] | null
           total_reviews: number | null
           updated_at: string | null
           verified_reviews: number | null
@@ -529,8 +531,10 @@ export type Database = {
           overall_rating?: number | null
           price_rating?: number | null
           slug: string
+          social_media?: Json | null
           speed_rating?: number | null
           support_rating?: number | null
+          technologies?: string[] | null
           total_reviews?: number | null
           updated_at?: string | null
           verified_reviews?: number | null
@@ -555,8 +559,10 @@ export type Database = {
           overall_rating?: number | null
           price_rating?: number | null
           slug?: string
+          social_media?: Json | null
           speed_rating?: number | null
           support_rating?: number | null
+          technologies?: string[] | null
           total_reviews?: number | null
           updated_at?: string | null
           verified_reviews?: number | null
