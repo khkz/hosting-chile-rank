@@ -11,11 +11,12 @@ interface MedalBadgeProps {
 }
 
 const getMedalImage = (position: number) => {
+  const timestamp = '?v=2';
   switch (position) {
-    case 1: return '/badges/medal-gold.png';
-    case 2: return '/badges/medal-silver.png';
-    case 3: return '/badges/medal-bronze.png';
-    default: return '/badges/medal-blue.png';
+    case 1: return `/badges/medal-gold.png${timestamp}`;
+    case 2: return `/badges/medal-silver.png${timestamp}`;
+    case 3: return `/badges/medal-bronze.png${timestamp}`;
+    default: return `/badges/medal-blue.png${timestamp}`;
   }
 };
 
