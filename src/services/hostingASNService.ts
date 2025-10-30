@@ -25,10 +25,11 @@ const knownHostingASNs: HostingASNMapping[] = [
   },
   {
     asnNumber: 'AS52368',
-    hostingCompany: 'SolucionHost',
+    hostingCompany: 'BlueHost.cl',
+    companyLogo: '/logo-bluehost.svg',
     companyRating: 4.0,
-    companyUrl: 'https://www.solucionhost.com',
-    companySlug: 'solucionhost'
+    companyUrl: 'https://www.bluehost.cl',
+    companySlug: 'bluehost'
   },
   {
     asnNumber: 'AS266879',
