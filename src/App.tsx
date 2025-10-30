@@ -23,6 +23,10 @@ import GuiaElegirSSL from './pages/GuiaElegirSSL';
 import GuiaMigrarHosting from './pages/GuiaMigrarHosting';
 import GuiaSeguridadWeb from './pages/GuiaSeguridadWeb';
 import GuiaHostingWordPress from './pages/GuiaHostingWordPress';
+import GuiaCompletaElegirHosting from './pages/GuiaCompletaElegirHosting';
+import ErroresComunesHosting from './pages/ErroresComunesHosting';
+import MejorHostingWordPressChile from './pages/MejorHostingWordPressChile';
+import MejorHostingEcommerceChile from './pages/MejorHostingEcommerceChile';
 import Resena from './pages/Resena';
 import Catalogo from './pages/Catalogo';
 import CatalogoDetalle from './pages/CatalogoDetalle';
@@ -93,6 +97,10 @@ function App() {
         <Route path="/guia-migrar-hosting" element={<GuiaMigrarHosting />} />
         <Route path="/guia-seguridad-web" element={<GuiaSeguridadWeb />} />
         <Route path="/guia-hosting-wordpress" element={<GuiaHostingWordPress />} />
+        <Route path="/guia-completa-elegir-hosting-chile-2025" element={<GuiaCompletaElegirHosting />} />
+        <Route path="/errores-comunes-elegir-hosting" element={<ErroresComunesHosting />} />
+        <Route path="/mejor-hosting-wordpress-chile-2025" element={<MejorHostingWordPressChile />} />
+        <Route path="/mejor-hosting-ecommerce-chile-2025" element={<MejorHostingEcommerceChile />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/resenas/:slug" element={<Resena />} />
         <Route path="/catalogo" element={<Catalogo />} />
