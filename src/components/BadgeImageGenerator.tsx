@@ -8,28 +8,12 @@ interface BadgeImageGeneratorProps {
   onImageGenerated?: (dataUrl: string) => void;
 }
 
-const getPodiumColors = (position: number) => {
+const getMedalImage = (position: number) => {
   switch (position) {
-    case 1: return {
-      gradient: { start: '#facc15', end: '#d97706' }, // yellow-400 to amber-600
-      border: '#eab308', // yellow-500
-      text: '#713f12' // yellow-900
-    };
-    case 2: return {
-      gradient: { start: '#d1d5db', end: '#6b7280' }, // gray-300 to gray-500
-      border: '#9ca3af', // gray-400
-      text: '#111827' // gray-900
-    };
-    case 3: return {
-      gradient: { start: '#fb923c', end: '#ea580c' }, // orange-400 to orange-600
-      border: '#f97316', // orange-500
-      text: '#7c2d12' // orange-900
-    };
-    default: return {
-      gradient: { start: '#60a5fa', end: '#2563eb' }, // blue-400 to blue-600
-      border: '#3b82f6', // blue-500
-      text: '#1e3a8a' // blue-900
-    };
+    case 1: return '/badges/medal-gold.png';
+    case 2: return '/badges/medal-silver.png';
+    case 3: return '/badges/medal-bronze.png';
+    default: return '/badges/medal-blue.png';
   }
 };
 
@@ -57,84 +41,57 @@ const BadgeImageGenerator = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const colors = getPodiumColors(position);
+    const medalImage = new Image();
+    medalImage.crossOrigin = 'anonymous';
+    medalImage.src = getMedalImage(position);
 
-    // Clear canvas
-    ctx.clearRect(0, 0, canvasSize, canvasSize);
+    medalImage.onload = () => {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvasSize, canvasSize);
 
-    // Create circular badge with gradient
-    const centerX = canvasSize / 2;
-    const centerY = canvasSize / 2;
-    const radius = (canvasSize / 2) - 20;
+      // Draw medal background
+      ctx.drawImage(medalImage, 0, 0, canvasSize, canvasSize);
 
-    // Create gradient
-    const gradient = ctx.createLinearGradient(0, 0, canvasSize, canvasSize);
-    gradient.addColorStop(0, colors.gradient.start);
-    gradient.addColorStop(1, colors.gradient.end);
+      // Text settings
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 4;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 2;
 
-    // Draw circle with gradient
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.fillStyle = gradient;
-    ctx.fill();
+      const centerX = canvasSize / 2;
+      const centerY = canvasSize / 2;
 
-    // Draw border
-    ctx.lineWidth = 8;
-    ctx.strokeStyle = colors.border;
-    ctx.stroke();
+      // Draw position number
+      ctx.font = `bold ${canvasSize * 0.2}px sans-serif`;
+      ctx.fillText(`#${position}`, centerX, centerY - canvasSize * 0.12);
 
-    // Add shine effect (top-left white gradient overlay)
-    const shineGradient = ctx.createRadialGradient(
-      centerX - radius * 0.3,
-      centerY - radius * 0.3,
-      0,
-      centerX - radius * 0.3,
-      centerY - radius * 0.3,
-      radius * 0.8
-    );
-    shineGradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
-    shineGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      // Draw category icon
+      ctx.font = `${canvasSize * 0.15}px sans-serif`;
+      ctx.fillText(icon, centerX, centerY + canvasSize * 0.02);
 
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.fillStyle = shineGradient;
-    ctx.fill();
+      // Draw year
+      ctx.font = `bold ${canvasSize * 0.1}px sans-serif`;
+      ctx.fillText('CHILE 2025', centerX, centerY + canvasSize * 0.16);
 
-    // Draw text - Position number
-    ctx.fillStyle = '#ffffff';
-    ctx.font = `bold ${canvasSize * 0.15}px sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    
-    // Add text shadow for better readability
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-    ctx.shadowBlur = 10;
-    ctx.shadowOffsetX = 2;
-    ctx.shadowOffsetY = 2;
-    
-    ctx.fillText(`#${position}`, centerX, centerY - canvasSize * 0.08);
+      // Reset shadow
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
 
-    // Draw emoji icon
-    ctx.font = `${canvasSize * 0.18}px sans-serif`;
-    ctx.shadowBlur = 5;
-    ctx.fillText(icon, centerX, centerY + canvasSize * 0.05);
+      // Generate data URL and call callback
+      if (onImageGenerated) {
+        const dataUrl = canvas.toDataURL('image/png');
+        onImageGenerated(dataUrl);
+      }
+    };
 
-    // Draw year
-    ctx.font = `bold ${canvasSize * 0.12}px sans-serif`;
-    ctx.shadowBlur = 8;
-    ctx.fillText('2025', centerX, centerY + canvasSize * 0.18);
-
-    // Reset shadow
-    ctx.shadowColor = 'transparent';
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-
-    // Generate data URL and call callback
-    if (onImageGenerated) {
-      const dataUrl = canvas.toDataURL('image/png');
-      onImageGenerated(dataUrl);
-    }
+    medalImage.onerror = () => {
+      console.error('Failed to load medal image');
+    };
   }, [position, icon, size, canvasSize, onImageGenerated]);
 
   return (
