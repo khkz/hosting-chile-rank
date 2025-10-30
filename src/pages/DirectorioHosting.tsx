@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Award, ExternalLink, CheckCircle } from 'lucide-react';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 
 export default function DirectorioHosting() {
   // Fetch empresas con certificaciones activas
@@ -110,6 +111,14 @@ export default function DirectorioHosting() {
       />
 
       <Navbar />
+      
+      <div className="container mx-auto px-4 pt-8">
+        <SEOBreadcrumbs 
+          items={[
+            { name: 'Directorio Hosting Chile', href: '/directorio-hosting-chile' }
+          ]}
+        />
+      </div>
       
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-brand-red via-brand-red-dark to-[#2B2D42] text-white py-16">

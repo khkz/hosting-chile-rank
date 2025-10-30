@@ -57,8 +57,10 @@ const generateMainSitemap = () => {
     ['/mejor-hosting-chile-2025', '1.0', 'daily'],
     ['/', '0.9', 'daily'],
     ['/ranking', '0.9', 'daily'],
+    ['/directorio-hosting-chile', '0.9', 'daily'],
     
     // Páginas de alta prioridad
+    ['/catalogo', '0.8', 'daily'],
     ['/mejor-hosting-chile', '0.8', 'daily'],
     ['/comparativa', '0.8', 'weekly'],
     ['/cotiza-hosting', '0.8', 'weekly'],

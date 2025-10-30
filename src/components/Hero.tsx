@@ -67,7 +67,9 @@ const Hero = () => {
             {/* Descripción - Alineada a la izquierda en desktop */}
             <p className="mt-6 text-lg md:text-xl text-[#555] leading-relaxed">
               Te ayudamos a elegir entre los{' '}
-              <strong className="text-brand-red">mejores proveedores chilenos</strong>.
+              <Link to="/directorio-hosting-chile" className="text-brand-red font-semibold hover:underline">
+                mejores proveedores certificados de Chile
+              </Link>.
               <br />
               Comparamos velocidad, seguridad y precios para que tú no tengas que hacerlo.
               <br />

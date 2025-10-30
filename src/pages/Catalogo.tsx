@@ -10,6 +10,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import { Helmet } from 'react-helmet';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 
 const CatalogoPage = () => {
   const hostingCompanies = getAllHostingCompanies();
@@ -25,6 +26,14 @@ const CatalogoPage = () => {
       </Helmet>
     
       <Navbar />
+      
+      <div className="container mx-auto px-4 pt-8">
+        <SEOBreadcrumbs 
+          items={[
+            { name: 'Catálogo', href: '/catalogo' }
+          ]}
+        />
+      </div>
       
       {/* Hero section */}
       <section className="bg-[#F7F9FC] py-16 text-center">

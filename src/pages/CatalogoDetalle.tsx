@@ -12,6 +12,7 @@ import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { PublicReviewsList } from '@/components/reviews/PublicReviewsList';
 import { ReviewForm } from '@/components/reviews/ReviewForm';
 import { Card } from '@/components/ui/card';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 
 const CatalogoDetalle = () => {
   const { slug } = useParams<{slug: string}>();
@@ -63,6 +64,13 @@ const CatalogoDetalle = () => {
       <Navbar />
       
       <main className="container mx-auto px-4 py-8 md:py-12">
+        <SEOBreadcrumbs 
+          items={[
+            { name: 'Catálogo', href: '/catalogo' },
+            { name: company.name, href: `/catalogo/${slug}` }
+          ]}
+        />
+        
         <CertificationBadges companySlug={slug || ''} variant="horizontal" size="medium" />
         <HostingCompanyInfo company={company} />
         
