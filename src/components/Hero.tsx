@@ -6,17 +6,35 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <section className="relative py-16 md:py-24 bg-gradient-to-br from-warm-cream via-white to-warm-peach overflow-hidden">
-      {/* Background Pattern - Círculos rojos sutiles */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-10 left-10 w-40 h-40 bg-brand-red rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-48 h-48 bg-brand-red rounded-full blur-3xl"></div>
+    <section className="relative py-20 md:py-28 lg:py-32 bg-gradient-to-br from-warm-cream via-white to-warm-peach overflow-hidden">
+      {/* Círculos decorativos de fondo */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute top-20 left-10 w-40 h-40 bg-brand-red rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-[60%] w-48 h-48 bg-brand-red rounded-full blur-3xl"></div>
       </div>
       
+      {/* Imagen de fondo grande con degradados - Solo desktop */}
+      <div className="absolute inset-0 hidden md:block">
+        {/* Imagen hero */}
+        <img 
+          src="/images/hero-person.png"
+          alt="Persona eligiendo el mejor hosting para su proyecto"
+          className="absolute right-0 top-0 bottom-0 w-[60%] h-full object-cover object-[70%_center]"
+          loading="eager"
+        />
+        
+        {/* Degradado principal - Izquierda a Derecha */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white from-35% via-white/95 via-55% to-transparent to-85%"></div>
+        
+        {/* Degradado secundario - Tonalidad cálida sutil */}
+        <div className="absolute inset-0 bg-gradient-to-b from-warm-cream/20 via-transparent to-warm-peach/10"></div>
+      </div>
+      
+      {/* Contenido - Encima de todo */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid md:grid-cols-[60%_40%] gap-12 items-center">
+        <div className="max-w-2xl">
           
-          {/* Columna Izquierda - Contenido */}
+          {/* Columna Contenido */}
           <div className="text-center md:text-left">
             
             {/* Trust Badges - Alineados a la izquierda en desktop */}
@@ -36,7 +54,7 @@ const Hero = () => {
             </div>
 
             {/* Headline - Grande, alineado a la izquierda en desktop */}
-            <h1 className="font-poppins text-4xl md:text-5xl lg:text-6xl font-bold text-[#2B2D42] mb-8 leading-tight">
+            <h1 className="font-poppins text-4xl md:text-6xl lg:text-7xl font-bold text-[#2B2D42] mb-8 leading-tight">
               Encuentra el{' '}
               <span className="text-brand-red relative inline-block">
                 mejor hosting
@@ -108,20 +126,6 @@ const Hero = () => {
               </div>
             </div>
             
-          </div>
-          
-          {/* Columna Derecha - Imagen */}
-          <div className="relative hidden md:block">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-brand-red/10">
-              <img 
-                src="/images/hero-people.png"
-                alt="Personas eligiendo el mejor hosting para su proyecto juntas"
-                className="w-full h-auto object-cover"
-                loading="eager"
-              />
-            </div>
-            {/* Elemento decorativo */}
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-brand-red/20 rounded-full blur-3xl"></div>
           </div>
           
         </div>
