@@ -41,11 +41,11 @@ const complaintData: Record<string, ComplaintInfo> = {
     reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=hosting.cl"
   },
   
-  // BlueHost.cl - AS52368 (ZAM LTDA)
+  // BlueHosting.cl - AS52368 (ZAM LTDA)
   "AS52368": {
     count: 8,
     level: 'low',
-    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=bluehost.cl"
+    reclamosUrl: "https://www.reclamos.cl/busqueda?concepto=bluehosting.cl"
   },
   
   // GRUPO ZGH SPA - AS263702 - Updated URL to use "zgh" instead of "grupo%20zgh"
@@ -102,7 +102,7 @@ export const detectProviderFromASN = (asn: string, ispName: string): string | nu
     'AS266855': 'EcoHosting', 
     'AS19871': 'HostGator',
     'AS265839': 'Hosting.cl',
-    'AS52368': 'BlueHost.cl',
+    'AS52368': 'BlueHosting.cl',
     'AS263702': 'GRUPO ZGH SPA'
   };
   
@@ -118,7 +118,7 @@ export const detectProviderFromASN = (asn: string, ispName: string): string | nu
   if (lowerIspName.includes('hostgator')) return 'HostGator';
   if (lowerIspName.includes('hosting.cl')) return 'Hosting.cl';
   if (lowerIspName.includes('planetahosting')) return 'PlanetaHosting';
-  if (lowerIspName.includes('zam ltda') || lowerIspName.includes('bluehost')) return 'BlueHost.cl';
+  if (lowerIspName.includes('zam ltda') || lowerIspName.includes('bluehosting')) return 'BlueHosting.cl';
   if (lowerIspName.includes('grupo zgh') || lowerIspName.includes('zgh spa')) return 'GRUPO ZGH SPA';
   
   return null;

@@ -25,11 +25,11 @@ const knownHostingASNs: HostingASNMapping[] = [
   },
   {
     asnNumber: 'AS52368',
-    hostingCompany: 'BlueHost.cl',
-    companyLogo: '/logo-bluehost.svg',
+    hostingCompany: 'BlueHosting.cl',
+    companyLogo: '/logo-bluehosting.svg',
     companyRating: 4.0,
-    companyUrl: 'https://www.bluehost.cl',
-    companySlug: 'bluehost'
+    companyUrl: 'https://www.bluehosting.cl',
+    companySlug: 'bluehosting'
   },
   {
     asnNumber: 'AS266879',
