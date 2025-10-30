@@ -30,7 +30,7 @@ const CatalogoPage = () => {
       <section className="bg-[#F7F9FC] py-16 text-center">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-4">
-            Catálogo de Empresas de Hosting en Chile
+            Mejor Hosting Chile 2025: Directorio Completo
           </h1>
           <p className="mt-4 text-lg text-[#555] max-w-2xl mx-auto">
             Encuentra información completa sobre proveedores de hosting en Chile: planes, 

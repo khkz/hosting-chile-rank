@@ -20,14 +20,31 @@ export default function BadgeEmbedCode({ certificationId, categoryName, position
   const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('medium');
   const [badgeDataUrl, setBadgeDataUrl] = useState<string>('');
 
-  const htmlCode = `<!-- Badge EligeTuHosting.cl -->
-<a href="https://eligetuhosting.cl/certificaciones" target="_blank" rel="noopener">
+  const getSizeInPixels = () => {
+    switch (selectedSize) {
+      case 'small': return 120;
+      case 'medium': return 180;
+      case 'large': return 240;
+      default: return 180;
+    }
+  };
+
+  const pixels = getSizeInPixels();
+
+  const htmlCode = `<!-- Badge EligeTuHosting.cl - Certificación ${categoryName} #${position} -->
+<a href="https://eligetuhosting.cl/directorio-hosting-chile" 
+   target="_blank" 
+   rel="nofollow sponsored" 
+   title="Directorio Hosting Chile Certificado - EligeTuHosting.cl">
   <img src="badge-eligetuhosting.png" 
-       alt="#${position} ${categoryName} - Chile 2025" 
-       width="200" height="200" />
+       alt="Certificado #${position} ${categoryName} Chile 2025 | Mejor Hosting Chile - EligeTuHosting.cl"
+       title="Certificación ${categoryName} por EligeTuHosting.cl"
+       width="${pixels}" 
+       height="${pixels}"
+       loading="lazy" />
 </a>`;
 
-  const markdownCode = `[![#${position} ${categoryName}](badge-eligetuhosting.png)](https://eligetuhosting.cl/certificaciones)`;
+  const markdownCode = `[![Certificado #${position} ${categoryName} Chile 2025 | Mejor Hosting Chile](badge-eligetuhosting.png)](https://eligetuhosting.cl/directorio-hosting-chile "Directorio Hosting Chile Certificado")`;
 
   const handleCopy = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
@@ -176,9 +193,14 @@ export default function BadgeEmbedCode({ certificationId, categoryName, position
             <li><strong>Sube la imagen</strong> a tu servidor web (ej: /images/badge-eligetuhosting.png)</li>
             <li><strong>Actualiza el código HTML/Markdown</strong> con la ruta correcta de la imagen en tu servidor</li>
             <li><strong>Pega el código</strong> en el footer o sidebar de tu sitio web</li>
-            <li><strong>Verifica que el enlace</strong> apunte a eligetuhosting.cl/certificaciones</li>
+            <li><strong>El badge enlaza a nuestro Directorio de Hosting Chile</strong> (aumenta tu visibilidad)</li>
             <li><strong>Solicita verificación</strong> en tu panel una vez instalado</li>
           </ol>
+          <p className="mt-3 text-xs text-blue-700">
+            💡 <strong>Beneficio:</strong> Aparecer destacado en nuestro directorio público aumenta 
+            tu visibilidad y genera confianza en potenciales clientes. El badge incluye optimización SEO 
+            con keywords estratégicas.
+          </p>
         </div>
       </CardContent>
     </Card>

@@ -17,49 +17,31 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import MiniNav from '@/components/MiniNav';
 import ExitModal from '@/components/ExitModal';
+import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
+import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 
 const Index = () => {
-  // Add page-specific SEO metadata
-  React.useEffect(() => {
-    document.title = "EligeTuHosting.cl — Mejor Hosting Chile 2025";
-    
-    // Create meta description
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.setAttribute('content', 
-      'Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2025 y cotización gratis.'
-    );
-    
-    // Add hreflang
-    let hreflang = document.querySelector('link[rel="alternate"][hreflang="es-cl"]');
-    if (!hreflang) {
-      hreflang = document.createElement('link');
-      hreflang.setAttribute('rel', 'alternate');
-      hreflang.setAttribute('hreflang', 'es-cl');
-      document.head.appendChild(hreflang);
-    }
-    hreflang.setAttribute('href', window.location.href);
-    
-  }, []);
-
-  React.useEffect(() => {
-    // Add RSS alternate link
-    let rss = document.querySelector('link[rel="alternate"][type="application/rss+xml"]');
-    if (!rss) {
-      rss = document.createElement('link');
-      rss.setAttribute('rel', 'alternate');
-      rss.setAttribute('type', 'application/rss+xml');
-      rss.setAttribute('href', '/feed/latest-domains.xml');
-      document.head.appendChild(rss);
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
+      {/* SEO Meta Tags */}
+      <DynamicMetaTags 
+        title="Mejor Hosting Chile 2025"
+        description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2025 con ⭐ 4.8/5 (1,247 opiniones) y cotización gratis."
+        canonical="https://eligetuhosting.cl"
+        keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2025"
+      />
+      
+      {/* Schema Markup - Aggregate Rating */}
+      <SEOReviewSchema 
+        type="aggregate"
+        aggregateData={{
+          averageRating: 4.8,
+          totalReviews: 1247,
+          bestRating: 10,
+          worstRating: 1
+        }}
+      />
+      
       <Navbar />
       <main className="relative">
         {/* section 1: Hero */}

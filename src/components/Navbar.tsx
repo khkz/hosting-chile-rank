@@ -126,6 +126,16 @@ const Navbar = () => {
             <Award className={iconClasses} />
             Certificaciones
           </NavLink>
+
+          <NavLink 
+            to="/directorio-hosting-chile" 
+            className={({ isActive }) => 
+              `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2 group`
+            }
+          >
+            <Award className={iconClasses} />
+            Directorio
+          </NavLink>
           
           {/* Dropdown Menu for "Herramientas" */}
           <DropdownMenu open={isToolsMenuOpen} onOpenChange={setIsToolsMenuOpen}>
@@ -360,6 +370,16 @@ const Navbar = () => {
                 >
                   <Award className="h-5 w-5 mr-2" />
                   Certificaciones
+                </NavLink>
+
+                <NavLink 
+                  to="/directorio-hosting-chile" 
+                  className={({ isActive }) => 
+                    `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
+                  }
+                >
+                  <Award className="h-5 w-5 mr-2" />
+                  Directorio
                 </NavLink>
                 
                 {/* User Menu / Login Button */}

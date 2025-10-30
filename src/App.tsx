@@ -53,6 +53,7 @@ import ReviewResponses from './pages/provider/ReviewResponses';
 import ProviderCertifications from './pages/provider/Certifications';
 import BadgeGenerator from './pages/provider/BadgeGenerator';
 import Certificaciones from './pages/Certificaciones';
+import DirectorioHosting from './pages/DirectorioHosting';
 import Auth from './pages/Auth';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -166,6 +167,7 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/certificaciones" element={<Certificaciones />} />
+            <Route path="/directorio-hosting-chile" element={<DirectorioHosting />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
