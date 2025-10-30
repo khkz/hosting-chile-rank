@@ -9,6 +9,9 @@ import CertificationBadges from '@/components/CertificationBadges';
 import { getHostingCompanyBySlug } from '@/data/hostingCompanies';
 import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
+import { PublicReviewsList } from '@/components/reviews/PublicReviewsList';
+import { ReviewForm } from '@/components/reviews/ReviewForm';
+import { Card } from '@/components/ui/card';
 
 const CatalogoDetalle = () => {
   const { slug } = useParams<{slug: string}>();
@@ -62,6 +65,26 @@ const CatalogoDetalle = () => {
       <main className="container mx-auto px-4 py-8 md:py-12">
         <CertificationBadges companySlug={slug || ''} variant="horizontal" size="medium" />
         <HostingCompanyInfo company={company} />
+        
+        {/* Public Reviews List */}
+        <section className="mt-12">
+          <h2 className="text-3xl font-bold mb-6">Opiniones de Clientes</h2>
+          <PublicReviewsList 
+            companyId={company.id}
+            companyName={company.name}
+          />
+        </section>
+
+        {/* Review Form */}
+        <section className="mt-12">
+          <Card className="p-8">
+            <h2 className="text-2xl font-bold mb-6">Comparte tu Experiencia</h2>
+            <ReviewForm 
+              companyId={company.id}
+              companyName={company.name}
+            />
+          </Card>
+        </section>
       </main>
       
       <StickyCTA />

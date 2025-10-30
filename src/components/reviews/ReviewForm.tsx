@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Star, Zap, Headphones, DollarSign } from 'lucide-react';
 
@@ -28,6 +30,10 @@ export function ReviewForm({ companyId, companyName, onSuccess }: ReviewFormProp
     price_rating: 8,
     title: '',
     comment: '',
+    is_verified_customer: false,
+    customer_duration: '',
+    would_recommend: true,
+    verification_email: '',
   });
 
   const submitReview = useMutation({
@@ -37,7 +43,16 @@ export function ReviewForm({ companyId, companyName, onSuccess }: ReviewFormProp
       const { error } = await supabase.from('hosting_reviews').insert({
         company_id: companyId,
         user_id: user.id,
-        ...formData,
+        overall_rating: formData.overall_rating,
+        speed_rating: formData.speed_rating,
+        support_rating: formData.support_rating,
+        price_rating: formData.price_rating,
+        title: formData.title.trim() || null,
+        comment: formData.comment,
+        is_verified_customer: formData.is_verified_customer,
+        customer_duration: formData.is_verified_customer && formData.customer_duration ? formData.customer_duration : null,
+        would_recommend: formData.would_recommend,
+        verification_email: formData.is_verified_customer && formData.verification_email ? formData.verification_email.trim() : null,
       });
 
       if (error) throw error;
@@ -153,6 +168,68 @@ export function ReviewForm({ companyId, companyName, onSuccess }: ReviewFormProp
           placeholder="Cuéntanos tu experiencia con este hosting..."
           rows={6}
         />
+      </div>
+
+      {/* Verified Customer Section */}
+      <div className="space-y-4 p-4 bg-secondary/30 rounded-lg mb-6">
+        <div className="flex items-center space-x-2">
+          <Checkbox 
+            id="verified"
+            checked={formData.is_verified_customer}
+            onCheckedChange={(checked) => setFormData({ ...formData, is_verified_customer: checked as boolean })}
+          />
+          <Label htmlFor="verified" className="cursor-pointer">
+            Soy cliente actual de {companyName}
+          </Label>
+        </div>
+
+        {formData.is_verified_customer && (
+          <>
+            <div>
+              <Label htmlFor="duration">¿Cuánto tiempo llevas con ellos?</Label>
+              <Select 
+                value={formData.customer_duration} 
+                onValueChange={(value) => setFormData({ ...formData, customer_duration: value })}
+              >
+                <SelectTrigger id="duration">
+                  <SelectValue placeholder="Selecciona..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0-1">Menos de 1 año</SelectItem>
+                  <SelectItem value="1-3">1-3 años</SelectItem>
+                  <SelectItem value="3+">Más de 3 años</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="verification-email">
+                Email asociado a tu cuenta (para verificación)
+              </Label>
+              <Input
+                id="verification-email"
+                type="email"
+                value={formData.verification_email}
+                onChange={(e) => setFormData({ ...formData, verification_email: e.target.value })}
+                placeholder="tu@email.com"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                No será publicado. Solo para verificar que eres cliente real.
+              </p>
+            </div>
+          </>
+        )}
+
+        <div className="flex items-center space-x-2">
+          <Checkbox 
+            id="recommend"
+            checked={formData.would_recommend}
+            onCheckedChange={(checked) => setFormData({ ...formData, would_recommend: checked as boolean })}
+          />
+          <Label htmlFor="recommend" className="cursor-pointer">
+            ¿Recomendarías este hosting a otras personas?
+          </Label>
+        </div>
       </div>
 
       <Button

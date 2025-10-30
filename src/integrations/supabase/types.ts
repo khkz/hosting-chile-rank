@@ -624,6 +624,7 @@ export type Database = {
           company_id: string
           cons: string[] | null
           created_at: string | null
+          customer_duration: string | null
           helpful_count: number | null
           id: string
           is_verified_customer: boolean | null
@@ -639,14 +640,17 @@ export type Database = {
           title: string | null
           updated_at: string | null
           user_id: string
+          verification_email: string | null
           verification_method: string | null
           verification_proof_url: string | null
+          would_recommend: boolean | null
         }
         Insert: {
           comment: string
           company_id: string
           cons?: string[] | null
           created_at?: string | null
+          customer_duration?: string | null
           helpful_count?: number | null
           id?: string
           is_verified_customer?: boolean | null
@@ -662,14 +666,17 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           user_id: string
+          verification_email?: string | null
           verification_method?: string | null
           verification_proof_url?: string | null
+          would_recommend?: boolean | null
         }
         Update: {
           comment?: string
           company_id?: string
           cons?: string[] | null
           created_at?: string | null
+          customer_duration?: string | null
           helpful_count?: number | null
           id?: string
           is_verified_customer?: boolean | null
@@ -685,8 +692,10 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
           user_id?: string
+          verification_email?: string | null
           verification_method?: string | null
           verification_proof_url?: string | null
+          would_recommend?: boolean | null
         }
         Relationships: [
           {
@@ -893,6 +902,38 @@ export type Database = {
           ip_prefix?: string
         }
         Relationships: []
+      }
+      review_helpful_votes: {
+        Row: {
+          created_at: string | null
+          id: string
+          ip_address: unknown
+          review_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          review_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown
+          review_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_helpful_votes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_reviews"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       review_responses: {
         Row: {
