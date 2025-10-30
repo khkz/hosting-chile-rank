@@ -1,15 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Link } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Helmet } from 'react-helmet';
-import { Award, TrendingUp } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
+import { Award, ArrowRight } from 'lucide-react';
+import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import { Button } from '@/components/ui/button';
 
-export default function CertificacionesHub() {
-  const { data: categories, isLoading: categoriesLoading } = useQuery({
-    queryKey: ['certification-categories'],
+export default function Certificaciones() {
+  const { data: categories } = useQuery({
+    queryKey: ['certification-categories-public'],
     queryFn: async () => {
       const { data } = await supabase
         .from('certification_categories')
@@ -20,211 +23,132 @@ export default function CertificacionesHub() {
     },
   });
 
-  const { data: certifications, isLoading: certificationsLoading } = useQuery({
+  const { data: activeCertifications } = useQuery({
     queryKey: ['active-certifications'],
     queryFn: async () => {
       const { data } = await supabase
         .from('company_certifications')
         .select(`
           *,
-          hosting_companies (name, slug, logo_url),
-          certification_categories (name, slug, icon)
+          hosting_companies (name, slug, logo_url, overall_rating, total_reviews),
+          certification_categories (name, icon, slug)
         `)
         .eq('status', 'active')
-        .order('position');
+        .order('position', { ascending: true });
       return data;
     },
   });
 
-  const getCertificationsByCategory = (categoryId: string) => {
-    return certifications?.filter(cert => cert.category_id === categoryId) ?? [];
-  };
-
-  const getPodiumColor = (position: number) => {
-    switch (position) {
-      case 1:
-        return {
-          border: 'border-yellow-400 border-4',
-          text: 'text-yellow-500',
-          bg: 'bg-yellow-50'
-        };
-      case 2:
-        return {
-          border: 'border-gray-300 border-2',
-          text: 'text-gray-400',
-          bg: 'bg-gray-50'
-        };
-      case 3:
-        return {
-          border: 'border-amber-600 border-2',
-          text: 'text-amber-600',
-          bg: 'bg-amber-50'
-        };
-      default:
-        return {
-          border: 'border-border',
-          text: 'text-muted-foreground',
-          bg: 'bg-muted'
-        };
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
-      <Helmet>
-        <title>Certificaciones de Hosting Chile 2025 | Rankings Oficiales</title>
-        <meta 
-          name="description" 
-          content="Rankings oficiales de los mejores hosting de Chile 2025. Certificaciones basadas en reviews verificadas y pruebas técnicas independientes." 
-        />
-      </Helmet>
+    <>
+      <DynamicMetaTags
+        title="Certificaciones de Hosting en Chile 2025"
+        description="Descubre las empresas de hosting certificadas en Chile. Reconocimientos oficiales por excelencia en servicio, soporte, seguridad y más."
+        keywords="certificaciones hosting chile, mejor hosting certificado, hosting premium chile, reconocimientos hosting"
+      />
 
       <Navbar />
       
-      <div className="container mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Award className="w-12 h-12 text-primary" />
-            <h1 className="text-4xl font-bold">
-              Certificaciones de Hosting Chile 2025
-            </h1>
+      <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
+        {/* Hero Section */}
+        <section className="bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 py-16">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <SEOBreadcrumbs
+              items={[
+                { name: 'Certificaciones', href: '/certificaciones' }
+              ]}
+            />
+            
+            <div className="text-center max-w-3xl mx-auto mt-8">
+              <Award className="w-16 h-16 mx-auto mb-6 text-primary" />
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                Certificaciones de Hosting Chile 2025
+              </h1>
+              <p className="text-xl text-muted-foreground mb-8">
+                Reconocemos la excelencia de los mejores proveedores de hosting en Chile
+              </p>
+            </div>
           </div>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Rankings oficiales basados en reviews verificadas y pruebas técnicas independientes
-          </p>
-        </div>
+        </section>
 
-        {/* Loading State */}
-        {(categoriesLoading || certificationsLoading) && (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            <p className="mt-4 text-muted-foreground">Cargando certificaciones...</p>
-          </div>
-        )}
+        {/* Categories Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <h2 className="text-3xl font-bold mb-8 text-center">Categorías de Certificación</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              {categories?.map((category) => {
+                const categoryCerts = activeCertifications?.filter(
+                  cert => cert.category_id === category.id
+                );
+                
+                return (
+                  <Card key={category.id} className="p-6 hover:shadow-xl transition-shadow">
+                    <div className="text-center mb-4">
+                      <span className="text-5xl mb-3 block">{category.icon}</span>
+                      <h3 className="text-xl font-bold mb-2">{category.name}</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {category.description}
+                      </p>
+                      <Badge variant="secondary">
+                        {categoryCerts?.length || 0} empresas certificadas
+                      </Badge>
+                    </div>
 
-        {/* Categories with Certifications */}
-        <div className="space-y-12">
-          {categories?.map((category) => {
-            const certs = getCertificationsByCategory(category.id);
-
-            return (
-              <Card key={category.id} className="p-8 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-5xl">{category.icon}</span>
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold">{category.name}</h2>
-                    <p className="text-muted-foreground">{category.description}</p>
-                  </div>
-                  <TrendingUp className="w-8 h-8 text-primary opacity-50" />
-                </div>
-
-                {/* Podio Top 3 */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {[1, 2, 3].map((position) => {
-                    const cert = certs.find(c => c.position === position);
-                    const colors = getPodiumColor(position);
-
-                    if (!cert) {
-                      return (
-                        <div 
-                          key={position} 
-                          className={`text-center py-12 rounded-lg border-2 border-dashed ${colors.bg}`}
-                        >
-                          <div className={`text-3xl font-black mb-2 ${colors.text}`}>
-                            #{position}
-                          </div>
-                          <p className="text-sm text-muted-foreground">Posición disponible</p>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <Link
-                        key={cert.id}
-                        to={`/catalogo/${cert.hosting_companies.slug}`}
-                        className="block group"
-                      >
-                        <Card className={`p-6 text-center hover:shadow-xl transition-all duration-300 ${colors.border} ${colors.bg}`}>
-                          <div className={`text-5xl font-black mb-4 ${colors.text} group-hover:scale-110 transition-transform`}>
-                            #{position}
-                          </div>
-
-                          <img
-                            src={cert.hosting_companies.logo_url}
-                            alt={cert.hosting_companies.name}
-                            className="h-16 mx-auto mb-4 object-contain group-hover:scale-105 transition-transform"
-                          />
-
-                          <h3 className="font-bold text-lg mb-2">
-                            {cert.hosting_companies.name}
-                          </h3>
-
-                          {cert.tier === 'premium' && (
-                            <span className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs rounded-full">
-                              ✨ Premium
+                    {/* Top 3 Companies */}
+                    {categoryCerts && categoryCerts.length > 0 && (
+                      <div className="mt-6 space-y-2">
+                        {categoryCerts.slice(0, 3).map((cert) => (
+                          <Link
+                            key={cert.id}
+                            to={`/catalogo/${cert.hosting_companies?.slug}`}
+                            className="flex items-center gap-2 p-2 rounded hover:bg-secondary/50 transition-colors"
+                          >
+                            <span className="font-bold text-primary">#{cert.position}</span>
+                            <img
+                              src={cert.hosting_companies?.logo_url || '/placeholder.svg'}
+                              alt={cert.hosting_companies?.name}
+                              className="w-8 h-8 object-contain"
+                            />
+                            <span className="text-sm font-medium flex-1 truncate">
+                              {cert.hosting_companies?.name}
                             </span>
-                          )}
-
-                          <div className="mt-4 text-sm text-muted-foreground">
-                            Ver perfil completo →
-                          </div>
-                        </Card>
-                      </Link>
-                    );
-                  })}
-                </div>
-
-                {/* Category Footer */}
-                {certs.length > 0 && (
-                  <div className="text-center mt-6">
-                    <p className="text-sm text-muted-foreground">
-                      Basado en múltiples reviews verificadas
-                    </p>
-                  </div>
-                )}
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Empty State */}
-        {!categoriesLoading && categories && categories.length === 0 && (
-          <Card className="p-12 text-center">
-            <Award className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Próximamente</h3>
-            <p className="text-muted-foreground">
-              Las certificaciones estarán disponibles pronto. Estamos evaluando a los mejores hosting de Chile.
-            </p>
-          </Card>
-        )}
-
-        {/* Info Box */}
-        <Card className="mt-12 p-8 bg-primary/5 border-primary/20">
-          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <Award className="w-6 h-6 text-primary" />
-            ¿Cómo funcionan las certificaciones?
-          </h3>
-          <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground">
-            <div>
-              <h4 className="font-semibold text-foreground mb-2">Metodología Transparente</h4>
-              <p>
-                Evaluamos cada hosting basándonos en reviews verificadas de usuarios reales, 
-                pruebas técnicas de velocidad, uptime y calidad de soporte.
-              </p>
+                            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </Card>
+                );
+              })}
             </div>
-            <div>
-              <h4 className="font-semibold text-foreground mb-2">Actualización Trimestral</h4>
-              <p>
-                Los rankings se actualizan cada 3 meses para reflejar el rendimiento actual 
-                y las mejoras implementadas por cada proveedor.
+
+            {/* CTA for Providers */}
+            <Card className="p-8 text-center bg-gradient-to-r from-primary/10 to-purple-500/10">
+              <Award className="w-12 h-12 mx-auto mb-4 text-primary" />
+              <h3 className="text-2xl font-bold mb-3">¿Eres proveedor de hosting?</h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                Solicita certificaciones para destacar tu empresa y demostrar tu excelencia en el mercado chileno
               </p>
-            </div>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Link to="/provider/certifications">
+                  <Button size="lg" className="gap-2">
+                    Solicitar Certificación
+                    <ArrowRight className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link to="/directorio-hosting-chile">
+                  <Button size="lg" variant="outline">
+                    Ver Directorio Completo
+                  </Button>
+                </Link>
+              </div>
+            </Card>
           </div>
-        </Card>
+        </section>
       </div>
-
+      
       <Footer />
-    </div>
+    </>
   );
 }

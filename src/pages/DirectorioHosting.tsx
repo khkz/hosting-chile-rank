@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Star, Award, ExternalLink, CheckCircle } from 'lucide-react';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import CertificationBadges from '@/components/CertificationBadges';
 
 export default function DirectorioHosting() {
   // Fetch empresas con certificaciones activas
@@ -188,18 +189,9 @@ export default function DirectorioHosting() {
                   {company.description}
                 </p>
 
-                {/* Certifications */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {company.certifications.map((cert: any, idx: number) => (
-                    <Badge 
-                      key={idx} 
-                      variant={cert.linkBackVerified ? "default" : "secondary"}
-                      className="gap-1"
-                    >
-                      {cert.linkBackVerified && <CheckCircle className="w-3 h-3" />}
-                      {cert.category} #{cert.position}
-                    </Badge>
-                  ))}
+                {/* Certification Badges */}
+                <div className="mb-4">
+                  <CertificationBadges companySlug={company.slug} variant="horizontal" size="small" />
                 </div>
 
                 {/* Actions */}
