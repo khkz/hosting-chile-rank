@@ -23,7 +23,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({
         <p className="mt-2">{subtitle}</p>
         <Button 
           asChild
-          className="mt-4 bg-gradient-to-r from-warm-orange to-warm-orange-dark hover:from-warm-orange-dark hover:to-warm-orange-dark text-white px-8 py-3 rounded-xl font-poppins font-semibold shadow-lg shadow-warm-orange/30 hover:shadow-xl hover:shadow-warm-orange/40 transform hover:scale-105 transition-all duration-300"
+          className="mt-4 bg-gradient-to-r from-brand-red to-brand-red-dark hover:from-brand-red-dark hover:to-brand-red-dark text-white px-8 py-3 rounded-xl font-poppins font-semibold shadow-lg shadow-brand-red/30 hover:shadow-xl hover:shadow-brand-red/40 transform hover:scale-105 transition-all duration-300"
         >
           {buttonLink.startsWith('http') ? (
             <a href={buttonLink} target="_blank" rel="noopener noreferrer">

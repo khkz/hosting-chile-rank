@@ -24,14 +24,14 @@ export default {
 				poppins: ["Poppins", "sans-serif"],
 			},
 			colors: {
-				'warm-orange': {
-					DEFAULT: '#FF6B35',
-					light: '#FF8C61',
-					dark: '#F77F00',
-				},
-				'warm-cream': '#FFF8F0',
-				'warm-peach': '#FFE5D9',
-				'warm-yellow': '#FFB800',
+      'brand-red': {
+        DEFAULT: '#EF233C',
+        light: '#FF4D61',
+        dark: '#D01F35',
+      },
+      'warm-cream': '#FFF8F0',
+      'warm-peach': '#FFE5D9',
+      'warm-yellow': '#FFC107',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
