@@ -5,10 +5,35 @@ import Footer from '@/components/Footer';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import HowToSchema from '@/components/SEO/HowToSchema';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import RelatedArticles from '@/components/RelatedArticles';
 import { Card } from '@/components/ui/card';
 import { CheckCircle2, AlertCircle, TrendingUp, Shield, Zap, DollarSign, Users, Clock } from 'lucide-react';
 
 const GuiaCompletaElegirHosting = () => {
+  const breadcrumbItems = [
+    { name: 'Inicio', href: '/' },
+    { name: 'Recursos', href: '/recursos-hosting-chile' },
+    { name: 'Guía Completa', href: '/guia-completa-elegir-hosting-chile' }
+  ];
+
+  const relatedArticles = [
+    {
+      title: 'Errores Comunes al Elegir Hosting',
+      description: 'Evita los 8 errores más costosos',
+      path: '/errores-comunes-hosting-chile'
+    },
+    {
+      title: 'Mejor Hosting WordPress Chile',
+      description: 'Ranking especializado para WordPress',
+      path: '/mejor-hosting-wordpress-chile'
+    },
+    {
+      title: 'Calculadora TCO',
+      description: 'Calcula el costo real de tu hosting',
+      path: '/calculadora-tco-hosting'
+    }
+  ];
   const steps = [
     {
       name: "Define tus necesidades y presupuesto",
@@ -116,7 +141,8 @@ const GuiaCompletaElegirHosting = () => {
       <SEOFAQSchema faqs={faqs} />
 
       <div className="min-h-screen bg-background">
-        <Navbar />
+      <Navbar />
+      <SEOBreadcrumbs items={breadcrumbItems} />
         
         <main className="container mx-auto px-4 py-12">
           {/* Header */}
@@ -249,10 +275,12 @@ const GuiaCompletaElegirHosting = () => {
                 </Link>
               </div>
             </Card>
-          </section>
-        </main>
+        </section>
 
-        <Footer />
+        <RelatedArticles articles={relatedArticles} />
+      </main>
+
+      <Footer />
       </div>
     </>
   );

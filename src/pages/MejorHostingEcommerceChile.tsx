@@ -4,10 +4,35 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import RelatedArticles from '@/components/RelatedArticles';
 import { Card } from '@/components/ui/card';
 import { ShoppingCart, Shield, CreditCard, Zap, TrendingUp, Lock, Clock } from 'lucide-react';
 
 const MejorHostingEcommerceChile = () => {
+  const breadcrumbItems = [
+    { name: 'Inicio', href: '/' },
+    { name: 'Recursos', href: '/recursos-hosting-chile' },
+    { name: 'E-commerce', href: '/mejor-hosting-ecommerce-chile' }
+  ];
+
+  const relatedArticles = [
+    {
+      title: 'Guía de Seguridad Web',
+      description: 'Seguridad crítica para e-commerce',
+      path: '/guia-seguridad-web-chile'
+    },
+    {
+      title: 'Guía para Elegir SSL',
+      description: 'Certificados para tiendas online',
+      path: '/guia-elegir-ssl-chile'
+    },
+    {
+      title: 'Calculadora TCO',
+      description: 'Costo real de tu infraestructura',
+      path: '/calculadora-tco-hosting'
+    }
+  ];
   const topProviders = [
     {
       name: "HostingPlus E-Commerce",
@@ -112,7 +137,8 @@ const MejorHostingEcommerceChile = () => {
       />
 
       <div className="min-h-screen bg-background">
-        <Navbar />
+      <Navbar />
+      <SEOBreadcrumbs items={breadcrumbItems} />
         
         <main className="container mx-auto px-4 py-12">
           {/* Header */}
@@ -350,10 +376,12 @@ const MejorHostingEcommerceChile = () => {
                 </Link>
               </div>
             </Card>
-          </section>
-        </main>
+        </section>
 
-        <Footer />
+        <RelatedArticles articles={relatedArticles} />
+      </main>
+
+      <Footer />
       </div>
     </>
   );

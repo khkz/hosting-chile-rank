@@ -3,10 +3,35 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import RelatedArticles from '@/components/RelatedArticles';
 import { Card } from '@/components/ui/card';
 import { AlertTriangle, XCircle, TrendingDown, DollarSign, Shield, Zap, Clock, Scale } from 'lucide-react';
 
 const ErroresComunesHosting = () => {
+  const breadcrumbItems = [
+    { name: 'Inicio', href: '/' },
+    { name: 'Recursos', href: '/recursos-hosting-chile' },
+    { name: 'Errores Comunes', href: '/errores-comunes-hosting-chile' }
+  ];
+
+  const relatedArticles = [
+    {
+      title: 'Guía Completa para Elegir Hosting',
+      description: 'Todo lo que necesitas saber',
+      path: '/guia-completa-elegir-hosting-chile'
+    },
+    {
+      title: 'Guía de Seguridad Web',
+      description: 'Protege tu sitio correctamente',
+      path: '/guia-seguridad-web-chile'
+    },
+    {
+      title: 'Ranking Hosting Chile 2025',
+      description: 'Proveedores verificados y probados',
+      path: '/ranking'
+    }
+  ];
   const errors = [
     {
       title: "Elegir solo por el precio más bajo",
@@ -123,7 +148,8 @@ const ErroresComunesHosting = () => {
       />
 
       <div className="min-h-screen bg-background">
-        <Navbar />
+      <Navbar />
+      <SEOBreadcrumbs items={breadcrumbItems} />
         
         <main className="container mx-auto px-4 py-12">
           {/* Header */}
@@ -275,10 +301,12 @@ const ErroresComunesHosting = () => {
                 </Link>
               </div>
             </Card>
-          </section>
-        </main>
+        </section>
 
-        <Footer />
+        <RelatedArticles articles={relatedArticles} />
+      </main>
+
+      <Footer />
       </div>
     </>
   );
