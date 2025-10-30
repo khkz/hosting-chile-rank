@@ -20,9 +20,9 @@ const getMedalImage = (position: number) => {
 };
 
 const sizeMap = {
-  small: { container: 120, text: { position: 'text-xl', category: 'text-xs', year: 'text-xs' } },
-  medium: { container: 180, text: { position: 'text-3xl', category: 'text-sm', year: 'text-sm' } },
-  large: { container: 240, text: { position: 'text-5xl', category: 'text-base', year: 'text-base' } }
+  small: { container: 120, text: { position: 'text-lg', category: 'text-[10px]', year: 'text-[9px]' } },
+  medium: { container: 180, text: { position: 'text-2xl', category: 'text-xs', year: 'text-[10px]' } },
+  large: { container: 240, text: { position: 'text-4xl', category: 'text-sm', year: 'text-xs' } }
 };
 
 const MedalBadge = ({ 
