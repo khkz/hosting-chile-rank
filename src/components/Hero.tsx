@@ -7,6 +7,17 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
   return (
     <section className="relative py-20 md:py-28 lg:py-32 bg-gradient-to-br from-warm-cream via-white to-warm-peach overflow-hidden">
+      {/* Mobile background image */}
+      <div className="absolute inset-0 md:hidden">
+        <img 
+          src="/images/hero-people.png"
+          alt="Personas eligiendo hosting"
+          className="w-full h-full object-cover"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/85"></div>
+      </div>
+      
       {/* Círculos decorativos de fondo */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-20 left-10 w-40 h-40 bg-brand-red rounded-full blur-3xl"></div>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { ChevronDown, ChevronUp, Check } from 'lucide-react';
+import ContextualLinks from './ContextualLinks';
 
 interface HostingCardProps {
   position: number;
@@ -20,6 +21,8 @@ interface HostingCardProps {
   originalPrice?: string;
   ctaText?: string;
   ctaMicroCopy?: string;
+  companySlug?: string;
+  showContextualLinks?: boolean;
 }
 
 const HostingCard: React.FC<HostingCardProps> = ({ 
@@ -36,9 +39,11 @@ const HostingCard: React.FC<HostingCardProps> = ({
   price,
   originalPrice,
   ctaText = 'Visitar Hosting',
-  ctaMicroCopy = '✓ Sin tarjeta ✓ Cancela cuando quieras'
+  ctaMicroCopy = '✓ Sin tarjeta ✓ Cancela cuando quieras',
+  companySlug,
+  showContextualLinks = true,
 }) => {
-  const [showSpecs, setShowSpecs] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   
   // Determine styling based on position
   let positionColor = '';
@@ -91,65 +96,80 @@ const HostingCard: React.FC<HostingCardProps> = ({
           </AspectRatio>
         </div>
       </div>
-      <h3 className="text-2xl font-semibold text-[#2B2D42]">
-        {name} <span className="font-bold">★ {rating}/10</span>
-      </h3>
-      <ul className="list-disc list-inside mt-4 text-sm text-[#555] space-y-1">
-        {features.map((feature, index) => (
-          <li key={index}>{feature}</li>
-        ))}
-      </ul>
+      {/* Collapsed View - Just essentials */}
+      <div className="mb-4">
+        <h3 className="text-2xl font-semibold text-foreground">
+          {name} <span className="font-bold text-primary">★ {rating}/10</span>
+        </h3>
+        
+        {/* Pricing always visible */}
+        {(price || originalPrice) && (
+          <div className="mt-3 flex items-baseline gap-2">
+            {originalPrice && (
+              <span className="text-lg text-muted-foreground line-through">
+                {originalPrice}
+              </span>
+            )}
+            {price && (
+              <span className="text-2xl font-bold text-foreground">
+                {price}
+              </span>
+            )}
+            {originalPrice && price && (
+              <span className="text-sm font-semibold text-primary">
+                Ahorras {Math.round((1 - parseInt(price.replace(/[^\d]/g, '')) / parseInt(originalPrice.replace(/[^\d]/g, ''))) * 100)}%
+              </span>
+            )}
+          </div>
+        )}
+      </div>
       
-      {/* Toggle specs button */}
-      {specs && specs.length > 0 && (
-        <Button 
-          variant="outline"
-          onClick={() => setShowSpecs(!showSpecs)}
-          className="w-full mt-4 text-sm justify-between"
-        >
-          {showSpecs ? 'Ocultar especificaciones' : 'Ver especificaciones'}
-          {showSpecs ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </Button>
-      )}
+      {/* Toggle details button */}
+      <Button 
+        variant="outline"
+        onClick={() => setShowDetails(!showDetails)}
+        className="w-full mb-3 text-sm justify-between min-h-[44px] touch-manipulation"
+      >
+        {showDetails ? 'Ocultar detalles' : 'Ver características y especificaciones'}
+        {showDetails ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </Button>
       
-      {/* Specs content */}
-      {showSpecs && specs && (
-        <div className="mt-3 p-3 bg-[#F7F9FC] rounded-lg">
-          <ul className="space-y-2">
-            {specs.map((spec, index) => (
-              <li key={index} className="text-sm flex items-center">
-                <Check size={16} className="text-[#EF233C] mr-2" /> {spec}
-              </li>
-            ))}
-          </ul>
+      {/* Expandable content */}
+      {showDetails && (
+        <div className="space-y-4 mb-4 animate-accordion-down">
+          {/* Features */}
+          {features && features.length > 0 && (
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-2">Características principales</h4>
+              <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                {features.map((feature, index) => (
+                  <li key={index}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          {/* Specs */}
+          {specs && specs.length > 0 && (
+            <div className="p-3 bg-muted/30 rounded-lg">
+              <h4 className="text-sm font-semibold text-foreground mb-2">Especificaciones técnicas</h4>
+              <ul className="space-y-2">
+                {specs.map((spec, index) => (
+                  <li key={index} className="text-sm flex items-center">
+                    <Check size={16} className="text-primary mr-2 flex-shrink-0" /> {spec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
       
-      {/* Pricing with anchor pricing */}
-      {(price || originalPrice) && (
-        <div className="mt-4 flex items-baseline gap-2">
-          {originalPrice && (
-            <span className="text-lg text-muted-foreground line-through">
-              {originalPrice}
-            </span>
-          )}
-          {price && (
-            <span className="text-2xl font-bold text-foreground">
-              {price}
-            </span>
-          )}
-          {originalPrice && price && (
-            <span className="text-sm font-semibold text-primary">
-              Ahorras {Math.round((1 - parseInt(price.replace(/[^\d]/g, '')) / parseInt(originalPrice.replace(/[^\d]/g, ''))) * 100)}%
-            </span>
-          )}
-        </div>
-      )}
-      
-      <div className="mt-4 space-y-2">
+      {/* CTA Section */}
+      <div className="space-y-2">
         <Button 
           asChild
-          className={`inline-block ${isTopRated ? 'bg-[#EF233C]' : 'bg-[#2B2D42]'} text-white px-5 py-2 rounded-lg hover:opacity-90 transition-opacity w-full justify-center`}
+          className={`inline-block ${isTopRated ? 'bg-[#EF233C]' : 'bg-[#2B2D42]'} text-white px-5 py-3 rounded-lg hover:opacity-90 transition-opacity w-full justify-center min-h-[44px] touch-manipulation text-base`}
         >
           <a href={url} target="_blank" rel="nofollow sponsored noopener noreferrer">
             {ctaText}
@@ -161,6 +181,14 @@ const HostingCard: React.FC<HostingCardProps> = ({
           </p>
         )}
       </div>
+      
+      {/* Contextual Links */}
+      {showContextualLinks && companySlug && (
+        <ContextualLinks 
+          companySlug={companySlug}
+          companyName={name}
+        />
+      )}
     </Card>
   );
 };

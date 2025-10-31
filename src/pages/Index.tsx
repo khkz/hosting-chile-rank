@@ -24,10 +24,14 @@ import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import SocialProofFeed from '@/components/SocialProofFeed';
 import LimitedOfferBanner from '@/components/LimitedOfferBanner';
+import ScrollProgress from '@/components/ScrollProgress';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
+      {/* Scroll Progress Bar */}
+      <ScrollProgress />
+      
       {/* Limited Offer Banner */}
       <LimitedOfferBanner />
       
