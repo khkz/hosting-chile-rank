@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
+import AvailabilityBadge from './AvailabilityBadge';
 
 const hostingData = [
   {
@@ -31,7 +32,14 @@ const hostingData = [
     isRecommended: true,
     buttonColor: "bg-gradient-to-r from-[#EF233C] to-[#c41e3a]",
     borderColor: "border-[#EF233C]",
-    badges: ["Más Popular", "Hecho en Chile", "0 Reclamos"]
+    badges: ["Más Popular", "Hecho en Chile", "0 Reclamos"],
+    ctaText: "Probar 30 días gratis",
+    ctaMicroCopy: "✓ Sin tarjeta ✓ Cancela cuando quieras",
+    price: {
+      current: 3469,
+      original: 19900,
+      period: "mensual"
+    }
   },
   {
     position: 2,
@@ -56,7 +64,14 @@ const hostingData = [
     url: "https://www.ecohosting.cl/",
     buttonColor: "bg-gradient-to-r from-green-600 to-green-700",
     borderColor: "border-green-200",
-    badges: ["Eco-Friendly", "Mejor Precio"]
+    badges: ["Eco-Friendly", "Mejor Precio"],
+    ctaText: "Ver planes desde $1.658/mes",
+    ctaMicroCopy: "✓ Dominio .CL gratis",
+    price: {
+      current: 1658,
+      original: 4990,
+      period: "mensual"
+    }
   },
   {
     position: 3,
@@ -81,7 +96,14 @@ const hostingData = [
     url: "https://www.hostgator.cl/",
     buttonColor: "bg-gradient-to-r from-orange-500 to-orange-600",
     borderColor: "border-orange-200",
-    badges: ["Experiencia", "Confiable"]
+    badges: ["Experiencia", "Confiable"],
+    ctaText: "Migración gratis incluida",
+    ctaMicroCopy: "✓ 99.9% uptime garantizado",
+    price: {
+      current: 3490,
+      original: null,
+      period: "mensual"
+    }
   }
 ];
 
@@ -158,20 +180,20 @@ const HostingRanking = () => {
           listType="ranking"
         />
         
-        {/* Sort Controls */}
+        {/* Sort Controls - Mobile UX fix (Sprint 1) */}
         <div className="flex justify-center mb-8 md:mb-12">
           <ToggleGroup type="single" value={sortCriteria} onValueChange={(value) => value && setSortCriteria(value)} className="bg-white rounded-2xl p-1.5 md:p-2 shadow-lg border border-gray-100">
-            <ToggleGroupItem value="overall" variant="outline" className={`px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'overall' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
+            <ToggleGroupItem value="overall" variant="outline" className={`px-6 md:px-6 py-3 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'overall' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'} min-h-[44px] touch-manipulation`}>
               <Award className="w-4 h-4 mr-1 md:mr-2" />
               <span className="hidden sm:inline">General</span>
               <span className="sm:hidden">★</span>
             </ToggleGroupItem>
-            <ToggleGroupItem value="speed" variant="outline" className={`px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'speed' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
+            <ToggleGroupItem value="speed" variant="outline" className={`px-6 md:px-6 py-3 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'speed' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'} min-h-[44px] touch-manipulation`}>
               <Zap className="w-4 h-4 mr-1 md:mr-2" />
               <span className="hidden sm:inline">Velocidad</span>
               <span className="sm:hidden">⚡</span>
             </ToggleGroupItem>
-            <ToggleGroupItem value="price" variant="outline" className={`px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'price' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'}`}>
+            <ToggleGroupItem value="price" variant="outline" className={`px-6 md:px-6 py-3 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'price' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'} min-h-[44px] touch-manipulation`}>
               <Shield className="w-4 h-4 mr-1 md:mr-2" />
               <span className="hidden sm:inline">Precio</span>
               <span className="sm:hidden">$</span>
@@ -233,12 +255,41 @@ const HostingRanking = () => {
                     ))}
                   </ul>
                   
+                  {/* Pricing */}
+                  {sortedHostingData[1].price && (
+                    <div className="mb-4 text-center">
+                      <div className="flex items-baseline justify-center gap-2">
+                        {sortedHostingData[1].price.original && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            ${sortedHostingData[1].price.original.toLocaleString('es-CL')}
+                          </span>
+                        )}
+                        <span className="text-3xl font-bold text-foreground">
+                          ${sortedHostingData[1].price.current.toLocaleString('es-CL')}
+                        </span>
+                        <span className="text-sm text-muted-foreground">/{sortedHostingData[1].price.period}</span>
+                      </div>
+                      {sortedHostingData[1].price.original && (
+                        <p className="text-xs font-semibold text-green-600 mt-1">
+                          Ahorras {Math.round((1 - sortedHostingData[1].price.current / sortedHostingData[1].price.original) * 100)}%
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  
                   {/* CTA */}
-                  <Button asChild className={`w-full ${sortedHostingData[1].buttonColor} hover:opacity-90 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300`}>
-                    <a href={sortedHostingData[1].url} target="_blank" rel="noopener noreferrer">
-                      Ver Hosting
-                    </a>
-                  </Button>
+                  <div className="space-y-2">
+                    <Button asChild className={`w-full ${sortedHostingData[1].buttonColor} hover:opacity-90 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300`}>
+                      <a href={sortedHostingData[1].url} target="_blank" rel="noopener noreferrer">
+                        {sortedHostingData[1].ctaText || "Ver Hosting"}
+                      </a>
+                    </Button>
+                    {sortedHostingData[1].ctaMicroCopy && (
+                      <p className="text-xs text-center text-muted-foreground">
+                        {sortedHostingData[1].ctaMicroCopy}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -278,6 +329,11 @@ const HostingRanking = () => {
                   ))}
                 </div>
                 
+                {/* Availability Badge */}
+                <div className="absolute top-14 md:top-16 left-3 md:left-4 z-10">
+                  <AvailabilityBadge providerName={sortedHostingData[0].name} offerType="trial" />
+                </div>
+                
                 <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16 relative">
                   {/* Header */}
                   <div className="text-center mb-4 md:mb-6">
@@ -296,7 +352,7 @@ const HostingRanking = () => {
                   </div>
                   
                   {/* Features */}
-                  <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8 text-sm md:text-base">
+                  <ul className="space-y-2 md:space-y-3 mb-4 md:mb-6 text-sm md:text-base">
                     {sortedHostingData[0].features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-2 md:gap-3">
                         <Check className="w-4 md:w-5 h-4 md:h-5 text-[#EF233C] mt-0.5 flex-shrink-0" />
@@ -305,12 +361,41 @@ const HostingRanking = () => {
                     ))}
                   </ul>
                   
+                  {/* Pricing */}
+                  {sortedHostingData[0].price && (
+                    <div className="mb-6 text-center">
+                      <div className="flex items-baseline justify-center gap-2">
+                        {sortedHostingData[0].price.original && (
+                          <span className="text-base text-muted-foreground line-through">
+                            ${sortedHostingData[0].price.original.toLocaleString('es-CL')}
+                          </span>
+                        )}
+                        <span className="text-4xl font-bold text-[#EF233C]">
+                          ${sortedHostingData[0].price.current.toLocaleString('es-CL')}
+                        </span>
+                        <span className="text-sm text-muted-foreground">/{sortedHostingData[0].price.period}</span>
+                      </div>
+                      {sortedHostingData[0].price.original && (
+                        <p className="text-sm font-semibold text-green-600 mt-1">
+                          Ahorras {Math.round((1 - sortedHostingData[0].price.current / sortedHostingData[0].price.original) * 100)}%
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  
                   {/* CTA */}
-                  <Button asChild className={`w-full ${sortedHostingData[0].buttonColor} hover:opacity-90 text-white py-3 md:py-4 rounded-xl font-bold text-base md:text-lg shadow-2xl hover:shadow-[#EF233C]/30 transition-all duration-300 transform hover:scale-105`}>
-                    <a href={sortedHostingData[0].url} target="_blank" rel="noopener noreferrer">
-                      Elegir HostingPlus
-                    </a>
-                  </Button>
+                  <div className="space-y-2">
+                    <Button asChild className={`w-full ${sortedHostingData[0].buttonColor} hover:opacity-90 text-white py-3 md:py-4 rounded-xl font-bold text-base md:text-lg shadow-2xl hover:shadow-[#EF233C]/30 transition-all duration-300 transform hover:scale-105`}>
+                      <a href={sortedHostingData[0].url} target="_blank" rel="noopener noreferrer">
+                        {sortedHostingData[0].ctaText || "Elegir HostingPlus"}
+                      </a>
+                    </Button>
+                    {sortedHostingData[0].ctaMicroCopy && (
+                      <p className="text-xs text-center text-white/80">
+                        {sortedHostingData[0].ctaMicroCopy}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -338,6 +423,11 @@ const HostingRanking = () => {
                   ))}
                 </div>
                 
+                {/* Availability Badge */}
+                <div className="absolute top-14 md:top-16 left-3 md:left-4 z-10">
+                  <AvailabilityBadge providerName={sortedHostingData[2].name} offerType="migration" />
+                </div>
+                
                 <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16">
                   {/* Header */}
                   <div className="text-center mb-6">
@@ -356,7 +446,7 @@ const HostingRanking = () => {
                   </div>
                   
                   {/* Features */}
-                  <ul className="space-y-3 mb-8 text-sm">
+                  <ul className="space-y-3 mb-4 text-sm">
                     {sortedHostingData[2].features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -365,12 +455,41 @@ const HostingRanking = () => {
                     ))}
                   </ul>
                   
+                  {/* Pricing */}
+                  {sortedHostingData[2].price && (
+                    <div className="mb-4 text-center">
+                      <div className="flex items-baseline justify-center gap-2">
+                        {sortedHostingData[2].price.original && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            ${sortedHostingData[2].price.original.toLocaleString('es-CL')}
+                          </span>
+                        )}
+                        <span className="text-3xl font-bold text-foreground">
+                          ${sortedHostingData[2].price.current.toLocaleString('es-CL')}
+                        </span>
+                        <span className="text-sm text-muted-foreground">/{sortedHostingData[2].price.period}</span>
+                      </div>
+                      {sortedHostingData[2].price.original && (
+                        <p className="text-xs font-semibold text-green-600 mt-1">
+                          Ahorras {Math.round((1 - sortedHostingData[2].price.current / sortedHostingData[2].price.original) * 100)}%
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  
                   {/* CTA */}
-                  <Button asChild className={`w-full ${sortedHostingData[2].buttonColor} hover:opacity-90 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300`}>
-                    <a href={sortedHostingData[2].url} target="_blank" rel="noopener noreferrer">
-                      Ver Hosting
-                    </a>
-                  </Button>
+                  <div className="space-y-2">
+                    <Button asChild className={`w-full ${sortedHostingData[2].buttonColor} hover:opacity-90 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300`}>
+                      <a href={sortedHostingData[2].url} target="_blank" rel="noopener noreferrer">
+                        {sortedHostingData[2].ctaText || "Ver Hosting"}
+                      </a>
+                    </Button>
+                    {sortedHostingData[2].ctaMicroCopy && (
+                      <p className="text-xs text-center text-muted-foreground">
+                        {sortedHostingData[2].ctaMicroCopy}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,8 +1,44 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Star, Users, Award, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+// Dynamic Activity Counter Component
+const DynamicActivityCounter = () => {
+  const [activity, setActivity] = useState({
+    count: 8,
+    city: 'Santiago',
+    provider: 'HostingPlus'
+  });
+
+  const cities = ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Temuco', 'Antofagasta'];
+  const providers = ['HostingPlus', 'EcoHosting', 'HostGator'];
+
+  useEffect(() => {
+    const updateActivity = () => {
+      setActivity({
+        count: Math.floor(Math.random() * 8) + 8, // 8-15
+        city: cities[Math.floor(Math.random() * cities.length)],
+        provider: providers[Math.floor(Math.random() * providers.length)]
+      });
+    };
+
+    // Update every 30 seconds
+    const interval = setInterval(updateActivity, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
+      <div className="flex items-center gap-2 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full animate-pulse-subtle">
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-ping-slow"></div>
+        <span className="text-sm font-medium text-green-700">
+          {activity.count} usuarios de {activity.city} eligieron {activity.provider} esta semana
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const Hero = () => {
   return (
@@ -56,14 +92,7 @@ const Hero = () => {
             </div>
 
             {/* Dynamic Social Proof Counter */}
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
-              <div className="flex items-center gap-2 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full animate-pulse-subtle">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-ping-slow"></div>
-                <span className="text-sm font-medium text-green-700">
-                  12 usuarios eligieron su hosting hoy
-                </span>
-              </div>
-            </div>
+            <DynamicActivityCounter />
             
             {/* Trust Badges - Alineados a la izquierda en desktop */}
             <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-8">
