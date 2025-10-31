@@ -49,17 +49,17 @@ export default function CertificationBadges({
 
   return (
     <div className="my-3">
-      <div className="flex items-center gap-1 mb-2">
-        <Award className="w-3 h-3 text-primary" />
-        <h3 className="font-semibold text-xs">Certificaciones 2025</h3>
+      <div className="flex items-center gap-1.5 mb-2">
+        <Award className="w-4 h-4 text-primary" />
+        <h3 className="font-semibold text-sm text-primary">Certificaciones 2025</h3>
       </div>
       
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2 md:gap-3">
         {certifications.map((cert: any) => {
           return (
             <div
               key={cert.id}
-              className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity duration-200"
+              className="flex flex-col items-center gap-1 hover:scale-105 hover:opacity-90 transition-all duration-200"
             >
               <MedalBadge
                 position={cert.position}

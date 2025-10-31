@@ -22,7 +22,7 @@ const getMedalImage = (position: number) => {
 
 const sizeMap = {
   tiny: { container: 56, text: { position: 'text-sm', category: 'text-[7px]', year: 'text-[6px]' } },
-  small: { container: 120, text: { position: 'text-lg', category: 'text-[10px]', year: 'text-[9px]' } },
+  small: { container: 120, text: { position: 'text-lg', category: 'text-[9px]', year: 'text-[9px]' } },
   medium: { container: 180, text: { position: 'text-2xl', category: 'text-xs', year: 'text-[10px]' } },
   large: { container: 240, text: { position: 'text-4xl', category: 'text-sm', year: 'text-xs' } }
 };
@@ -64,7 +64,7 @@ const MedalBadge = ({
         {/* Category name */}
         <div className={cn(
           dimensions.text.category,
-          "font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] mt-0.5 leading-tight"
+          "font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] mt-0.5 leading-tight break-words max-w-[90%] text-center"
         )}>
           {categoryName.toUpperCase()}
         </div>
