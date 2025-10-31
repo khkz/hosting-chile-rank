@@ -5,13 +5,25 @@ import Footer from '@/components/Footer';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Award, ArrowRight } from 'lucide-react';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function Certificaciones() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleCertificationRequest = () => {
+    if (!user) {
+      navigate('/auth?redirect=/provider/certifications');
+    } else {
+      navigate('/provider/certifications');
+    }
+  };
+
   const { data: categories } = useQuery({
     queryKey: ['certification-categories-public'],
     queryFn: async () => {
@@ -133,12 +145,10 @@ export default function Certificaciones() {
                 Solicita certificaciones para destacar tu empresa y demostrar tu excelencia en el mercado chileno
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
-                <Link to="/provider/certifications">
-                  <Button size="lg" className="gap-2">
-                    Solicitar Certificación
-                    <ArrowRight className="h-5 w-5" />
-                  </Button>
-                </Link>
+                <Button size="lg" className="gap-2" onClick={handleCertificationRequest}>
+                  {user ? 'Solicitar Certificación' : 'Iniciar Sesión para Certificar'}
+                  <ArrowRight className="h-5 w-5" />
+                </Button>
                 <Link to="/directorio-hosting-chile">
                   <Button size="lg" variant="outline">
                     Ver Directorio Completo
