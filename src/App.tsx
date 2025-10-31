@@ -13,6 +13,7 @@ import Comparativa from './pages/Comparativa';
 import CotizaHosting from './pages/CotizaHosting';
 import WhoisDomain from './pages/WhoisDomain';
 import { Toaster } from '@/components/ui/toaster';
+import { Toaster as Sonner } from 'sonner';
 import { AuthProvider } from './providers/AuthProvider';
 import UltimosDominios from './pages/UltimosDominios';
 import GuiaElegirHosting from './pages/GuiaElegirHosting';
@@ -72,6 +73,7 @@ function App() {
         <DomainRedirect />
         <ScrollToTop />
         <Toaster />
+        <Sonner />
         <SEOOrganization />
         <Routes>
         {/* Rutas para archivos estáticos */}
