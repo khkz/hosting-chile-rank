@@ -37,6 +37,23 @@ const Hero = () => {
           {/* Columna Contenido */}
           <div className="text-center md:text-left">
             
+            {/* Emotional Pre-Headline */}
+            <div className="mb-4">
+              <p className="text-brand-red font-semibold text-sm md:text-base animate-fade-in">
+                ¿Cansado de hosting lento que frustra a tus clientes?
+              </p>
+            </div>
+
+            {/* Dynamic Social Proof Counter */}
+            <div className="flex items-center justify-center md:justify-start gap-2 mb-6">
+              <div className="flex items-center gap-2 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full animate-pulse-subtle">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-ping-slow"></div>
+                <span className="text-sm font-medium text-green-700">
+                  12 usuarios eligieron su hosting hoy
+                </span>
+              </div>
+            </div>
+            
             {/* Trust Badges - Alineados a la izquierda en desktop */}
             <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-8">
               <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-brand-red/20">

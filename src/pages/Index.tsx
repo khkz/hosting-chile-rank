@@ -3,6 +3,8 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import StatsTicker from '@/components/StatsTicker';
+import BeforeAfter from '@/components/BeforeAfter';
+import HostingQuiz from '@/components/HostingQuiz';
 import HostingRanking from '@/components/HostingRanking';
 import Benefits from '@/components/Benefits';
 import Testimonial from '@/components/Testimonial';
@@ -75,34 +77,40 @@ const Index = () => {
         {/* section 2: Stats ticker */}
         <StatsTicker />
         
-        {/* section 3: Ranking cards */}
+        {/* section 3: Before/After comparison */}
+        <BeforeAfter />
+        
+        {/* section 4: Interactive Quiz */}
+        <HostingQuiz />
+        
+        {/* section 5: Ranking cards */}
         <HostingRanking />
         
-        {/* section 4: Transparency Notice */}
+        {/* section 6: Transparency Notice */}
         <TransparencyNotice />
         
-        {/* section 5: Benefits */}
+        {/* section 7: Benefits */}
         <Benefits />
         
-        {/* section 6: Testimonials + Partners */}
+        {/* section 8: Testimonials + Partners */}
         <Testimonial />
         
-        {/* section 7: Last Searches */}
+        {/* section 9: Last Searches */}
         <UltimasBusquedas />
         
-        {/* section 8: Migration CTA */}
+        {/* section 10: Migration CTA */}
         <Migration />
         
-        {/* section 9: Categories */}
+        {/* section 11: Categories */}
         <Categories />
         
-        {/* section 10: FAQ */}
+        {/* section 12: FAQ */}
         <FAQ />
         
-        {/* section 11: Certifications Banner */}
+        {/* section 13: Certifications Banner */}
         <CertificationsBanner />
         
-        {/* section 12: Final CTA */}
+        {/* section 14: Final CTA */}
         <FinalCTA />
         
         {/* Mini Nav sticky */}
