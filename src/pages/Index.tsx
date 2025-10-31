@@ -23,7 +23,7 @@ import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import SocialProofFeed from '@/components/SocialProofFeed';
-import LimitedOfferBanner from '@/components/LimitedOfferBanner';
+
 import ScrollProgress from '@/components/ScrollProgress';
 import TrustReport from '@/components/TrustReport';
 import OpenDataBadge from '@/components/OpenDataBadge';
@@ -35,7 +35,7 @@ const Index = () => {
       <ScrollProgress />
       
       {/* Limited Offer Banner */}
-      <LimitedOfferBanner />
+      
       
       {/* SEO Meta Tags */}
       <DynamicMetaTags
