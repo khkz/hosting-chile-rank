@@ -54,12 +54,6 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/85"></div>
       </div>
       
-      {/* Círculos decorativos de fondo */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-20 left-10 w-40 h-40 bg-brand-red rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-[60%] w-48 h-48 bg-brand-red rounded-full blur-3xl"></div>
-      </div>
-      
       {/* Imagen de fondo grande con degradados - Solo desktop */}
       <div className="absolute inset-0 hidden md:block">
         {/* Imagen hero */}
@@ -90,39 +84,31 @@ const Hero = () => {
                 ¿Cansado de hosting lento que frustra a tus clientes?
               </p>
             </div>
-
-            {/* Dynamic Social Proof Counter */}
-            <DynamicActivityCounter />
             
-            {/* Trust Badges - Alineados a la izquierda en desktop */}
-            <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-8">
-              <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-brand-red/20">
-                <Award className="w-4 h-4 text-brand-red" />
-                <span className="text-sm font-medium text-[#2B2D42]">5 años de experiencia</span>
+            {/* Trust Badges - Minimalistas */}
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-8">
+              <div className="flex items-center gap-2 text-gray-700">
+                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                <span className="text-sm font-medium">5 años evaluando hosting</span>
               </div>
-              <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-brand-red/20">
-                <Users className="w-4 h-4 text-brand-red" />
-                <span className="text-sm font-medium text-[#2B2D42]">+22,000 sitios evaluados</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-brand-red/20">
-                <Shield className="w-4 h-4 text-brand-red" />
-                <span className="text-sm font-medium text-[#2B2D42]">100% independiente</span>
+              <div className="flex items-center gap-2 text-gray-700">
+                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                <span className="text-sm font-medium">+22.000 sitios analizados</span>
               </div>
             </div>
 
-            {/* Headline - Grande, alineado a la izquierda en desktop */}
-            <h1 className="font-poppins text-4xl md:text-6xl lg:text-7xl font-bold text-[#2B2D42] mb-8 leading-tight">
+            {/* Headline - Moderado, sin subrayado animado */}
+            <h1 className="font-poppins text-3xl md:text-5xl lg:text-6xl font-bold text-[#2B2D42] mb-6 leading-tight">
               Encuentra el{' '}
-              <span className="text-brand-red relative inline-block">
+              <span className="text-brand-red">
                 mejor hosting
-                <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-brand-red to-brand-red-light rounded-full"></div>
               </span>
               <br />
               para tu proyecto
             </h1>
             
-            {/* Descripción - Alineada a la izquierda en desktop */}
-            <p className="mt-6 text-lg md:text-xl text-[#555] leading-relaxed">
+            {/* Descripción - Tamaño moderado */}
+            <p className="mt-4 text-base md:text-lg text-gray-600 leading-relaxed">
               Te ayudamos a elegir entre los{' '}
               <Link to="/directorio-hosting-chile" className="text-brand-red font-semibold hover:underline">
                 mejores proveedores certificados de Chile
@@ -130,7 +116,7 @@ const Hero = () => {
               <br />
               Comparamos velocidad, seguridad y precios para que tú no tengas que hacerlo.
               <br />
-              <span className="text-base text-brand-red-dark font-medium">
+              <span className="text-sm text-gray-700 font-medium">
                 Servidores en Santiago y soporte 24/7 en Chile
               </span>
             </p>
@@ -147,25 +133,19 @@ const Hero = () => {
               </span>
             </div>
             
-            {/* CTA Button - Alineado a la izquierda en desktop */}
-            <div className="mt-10">
+            {/* CTA Button */}
+            <div className="mt-8">
               <Button 
                 asChild 
-                className="bg-gradient-to-r from-brand-red to-brand-red-dark 
-                           hover:from-brand-red-dark hover:to-brand-red-dark 
-                           text-white px-12 py-6 text-xl rounded-2xl 
-                           shadow-xl shadow-brand-red/30 
-                           hover:shadow-2xl hover:shadow-brand-red/40 
-                           transform hover:scale-105 transition-all duration-300 
-                           font-poppins font-semibold"
+                className="cta-primary px-10 py-5 text-lg rounded-xl font-poppins font-semibold"
               >
                 <Link to="/cotiza-hosting">
                   Empieza ahora gratis
                   <span className="ml-2">→</span>
                 </Link>
               </Button>
-              <p className="text-sm text-gray-500 mt-4">
-                ✓ Gratis y sin compromiso ✓ Te respondemos en 24h ✓ Análisis honesto
+              <p className="text-sm text-gray-500 mt-3">
+                ✓ Gratis y sin compromiso ✓ Análisis honesto
               </p>
             </div>
             

@@ -6,18 +6,18 @@ import { Truck } from 'lucide-react';
 
 const Migration = () => {
   return (
-    <section className="bg-[#F7F9FC] py-12">
-      <div className="container mx-auto flex flex-col md:flex-row items-center gap-6 px-4">
-        <div className="text-4xl">
-          <Truck size={48} className="text-[#EF233C]" />
+    <section className="bg-white border-y border-gray-200 py-8">
+      <div className="container mx-auto flex flex-col md:flex-row items-center gap-4 px-4">
+        <div className="flex-shrink-0">
+          <Truck size={20} className="text-gray-600" />
         </div>
-        <div className="flex-1">
-          <h3 className="text-xl font-semibold text-[#2B2D42]">Migración gratuita y sin cortes</h3>
-          <p className="text-sm mt-2 text-[#555]">Trasladamos tu sitio en menos de 24 h con soporte dedicado.</p>
+        <div className="flex-1 text-center md:text-left">
+          <h3 className="text-lg font-semibold text-gray-900">Migración incluida sin costo</h3>
+          <p className="text-sm mt-1 text-gray-600">Trasladamos tu sitio con soporte dedicado</p>
         </div>
         <Button 
           asChild
-          className="bg-[#2B2D42] hover:bg-[#1a1b29] text-white"
+          className="cta-tertiary"
         >
           <Link to="/cotiza-tu-hosting">Solicitar migración</Link>
         </Button>

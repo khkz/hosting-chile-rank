@@ -169,7 +169,7 @@ const HostingCard: React.FC<HostingCardProps> = ({
       <div className="space-y-2">
         <Button 
           asChild
-          className={`inline-block ${isTopRated ? 'bg-[#EF233C]' : 'bg-[#2B2D42]'} text-white px-5 py-3 rounded-lg hover:opacity-90 transition-opacity w-full justify-center min-h-[44px] touch-manipulation text-base`}
+          className={`inline-block ${isTopRated ? 'cta-primary' : 'cta-secondary'} w-full justify-center min-h-[44px] touch-manipulation text-base`}
         >
           <a href={url} target="_blank" rel="nofollow sponsored noopener noreferrer">
             {ctaText}

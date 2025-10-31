@@ -270,4 +270,28 @@ html {
   .animate-ping-slow {
     animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
+
+  /* Sistema de jerarquía de CTAs */
+  .cta-primary {
+    @apply bg-[#EF233C] hover:bg-[#d41f35] text-white 
+           px-6 py-3 rounded-lg font-medium shadow-sm hover:shadow-md 
+           transition-all duration-200;
+  }
+
+  .cta-secondary {
+    @apply bg-gray-900 hover:bg-gray-800 text-white 
+           px-5 py-2.5 rounded-lg font-medium 
+           transition-colors duration-200;
+  }
+
+  .cta-tertiary {
+    @apply border border-gray-300 hover:border-gray-400 
+           bg-white text-gray-700 px-4 py-2 rounded-lg font-medium
+           transition-colors duration-200;
+  }
+
+  /* Separador de secciones */
+  .section-separator {
+    @apply w-full h-px bg-gray-200 my-12;
+  }
 }

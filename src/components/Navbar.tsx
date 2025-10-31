@@ -299,7 +299,7 @@ const Navbar = () => {
           
           <Button 
             asChild 
-            className="bg-[#EF233C] hover:bg-[#EF233C]/90 text-white hover:scale-105 transition-transform duration-300 flex items-center gap-2"
+            className="cta-primary flex items-center gap-2"
           >
             <a href={CTA_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
               Contratar ahora

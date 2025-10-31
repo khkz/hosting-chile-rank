@@ -88,32 +88,50 @@ const Index = () => {
         {/* section 2: Stats ticker */}
         <StatsTicker />
         
+        <div className="section-separator"></div>
+        
         {/* section 3: Before/After comparison */}
         <BeforeAfter />
+        
+        <div className="section-separator"></div>
         
         {/* section 4: Interactive Quiz */}
         <HostingQuiz />
         
+        <div className="section-separator"></div>
+        
         {/* section 5: Ranking cards */}
         <HostingRanking />
+        
+        <div className="section-separator"></div>
         
         {/* section 5.5: Trust Report - Verification Section */}
         <TrustReport />
         
+        <div className="section-separator"></div>
+        
         {/* section 6: Transparency Notice */}
         <TransparencyNotice />
+        
+        <div className="section-separator"></div>
         
         {/* section 7: Benefits */}
         <Benefits />
         
+        <div className="section-separator"></div>
+        
         {/* section 8: Testimonials + Partners */}
         <Testimonial />
+        
+        <div className="section-separator"></div>
         
         {/* section 9: Last Searches */}
         <UltimasBusquedas />
         
         {/* section 10: Migration CTA */}
         <Migration />
+        
+        <div className="section-separator"></div>
         
         {/* section 11: Categories */}
         <Categories />
