@@ -77,43 +77,41 @@ export default function CertificationBadges({
   };
 
   return (
-    <div className="my-4">
-      <div className="flex items-center gap-1.5 mb-3">
-        <Award className="w-3.5 h-3.5 text-primary" />
-        <h3 className="font-semibold text-sm">Certificaciones 2025</h3>
+    <div className="my-3">
+      <div className="flex items-center gap-1 mb-2">
+        <Award className="w-3 h-3 text-primary" />
+        <h3 className="font-semibold text-xs">Certificaciones 2025</h3>
       </div>
       
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1.5">
         {certifications.map((cert: any) => {
           const colors = getPodiumColor(cert.position);
           
           return (
             <div
               key={cert.id}
-              className={`${colors.bg} ${colors.border} border rounded-md px-2.5 py-2 flex items-center gap-2 hover:scale-[1.02] transition-all duration-200 ${colors.shadow}`}
+              className={`${colors.bg} ${colors.border} border rounded-md px-2 py-1.5 flex items-center gap-2 hover:scale-[1.01] transition-all duration-200`}
             >
-              {/* Medal Badge primero - más pequeño */}
               <MedalBadge
                 position={cert.position}
                 categoryName={cert.certification_categories.name}
                 categoryIcon={cert.certification_categories.icon}
-                size="small"
-                className="flex-shrink-0 w-8 h-8"
+                size="tiny"
+                className="flex-shrink-0"
               />
               
               <div className="flex-1 min-w-0">
-                <div className={`font-semibold ${colors.text} text-xs leading-tight flex items-center gap-1.5`}>
-                  <span className="text-[10px] opacity-80">#{cert.position}</span>
-                  <span className="truncate">{cert.certification_categories.name}</span>
+                <div className={`font-medium ${colors.text} text-[11px] leading-tight`}>
+                  #{cert.position} {cert.certification_categories.name}
                 </div>
                 {cert.tier === 'premium' && (
-                  <span className="inline-block mt-0.5 text-[9px] bg-purple-600 text-white px-1 py-0.5 rounded font-medium">
+                  <span className="inline-block mt-0.5 text-[8px] bg-purple-600 text-white px-1 py-0.5 rounded font-medium">
                     Premium
                   </span>
                 )}
               </div>
               
-              <div className="text-base flex-shrink-0 opacity-80">{cert.certification_categories.icon}</div>
+              <div className="text-sm flex-shrink-0 opacity-70">{cert.certification_categories.icon}</div>
             </div>
           );
         })}
