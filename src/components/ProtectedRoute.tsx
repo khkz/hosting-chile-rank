@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -29,6 +30,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
 
   // Redirect to home if user doesn't have the required role
   if (role && !allowedRoles.includes(role)) {
+    toast.error(`Esta sección requiere permisos de ${allowedRoles.join(' o ')}`);
     return <Navigate to="/" replace />;
   }
 

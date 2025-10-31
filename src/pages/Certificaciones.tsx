@@ -11,14 +11,17 @@ import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/providers/AuthProvider';
+import { toast } from 'sonner';
 
 export default function Certificaciones() {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const navigate = useNavigate();
 
   const handleCertificationRequest = () => {
     if (!user) {
       navigate('/auth?redirect=/provider/certifications');
+    } else if (role !== 'hosting_provider') {
+      toast.error('Debes tener una cuenta de proveedor de hosting para solicitar certificaciones');
     } else {
       navigate('/provider/certifications');
     }
@@ -146,7 +149,9 @@ export default function Certificaciones() {
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
                 <Button size="lg" className="gap-2" onClick={handleCertificationRequest}>
-                  {user ? 'Solicitar Certificación' : 'Iniciar Sesión para Certificar'}
+                  {!user ? 'Iniciar Sesión para Certificar' : 
+                   role !== 'hosting_provider' ? 'Solo para Proveedores' : 
+                   'Solicitar Certificación'}
                   <ArrowRight className="h-5 w-5" />
                 </Button>
                 <Link to="/directorio-hosting-chile">

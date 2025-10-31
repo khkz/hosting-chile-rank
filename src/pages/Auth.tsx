@@ -21,11 +21,20 @@ export default function Auth() {
   const [registerRole, setRegisterRole] = useState<'user' | 'hosting_provider'>('user');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Get redirect parameter from URL
+  const searchParams = new URLSearchParams(window.location.search);
+  const redirectPath = searchParams.get('redirect') || '/';
+
   // Redirect if already logged in
   if (user && role) {
-    if (role === 'admin') navigate('/admin/dashboard');
-    else if (role === 'hosting_provider') navigate('/provider/dashboard');
-    else navigate('/');
+    // Use redirect parameter if present, otherwise role-based redirect
+    if (redirectPath && redirectPath !== '/') {
+      navigate(redirectPath);
+    } else {
+      if (role === 'admin') navigate('/admin/dashboard');
+      else if (role === 'hosting_provider') navigate('/provider/dashboard');
+      else navigate('/');
+    }
     return null;
   }
 
@@ -36,6 +45,10 @@ export default function Auth() {
     try {
       await signIn(loginEmail, loginPassword);
       toast.success('¡Bienvenido de vuelta!');
+      // Wait for AuthProvider to update role, then navigate
+      setTimeout(() => {
+        navigate(redirectPath);
+      }, 100);
     } catch (error: any) {
       toast.error(error.message || 'Error al iniciar sesión');
     } finally {
