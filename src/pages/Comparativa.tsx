@@ -14,6 +14,7 @@ import {
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import StickyCTA from '../components/StickyCTA';
+import HostingSectionsNav from '../components/HostingSectionsNav';
 import { Helmet } from 'react-helmet';
 import { useIsMobile } from '../hooks/use-mobile';
 import HostingProviderCard from '../components/HostingProviderCard';
@@ -184,6 +185,7 @@ const ComparativaPage = () => {
       </Helmet>
     
       <Navbar />
+      <HostingSectionsNav />
       
       {/* section 1: Hero */}
       <section className="bg-[#F7F9FC] py-8 md:py-16 text-center">

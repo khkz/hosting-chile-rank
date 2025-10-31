@@ -12,6 +12,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import HostingSectionsNav from '@/components/HostingSectionsNav';
 import {
   Accordion,
   AccordionContent,
@@ -291,6 +292,7 @@ const RankingPage = () => {
       </Helmet>
 
       <Navbar />
+      <HostingSectionsNav />
 
       {/* Hero Section */}
       <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[40vh] md:min-h-[60vh]">

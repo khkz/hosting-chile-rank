@@ -14,6 +14,8 @@ import { PublicReviewsList } from '@/components/reviews/PublicReviewsList';
 import { ReviewForm } from '@/components/reviews/ReviewForm';
 import { Card } from '@/components/ui/card';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import HostingSectionsNav from '@/components/HostingSectionsNav';
+import CompanyPresence from '@/components/CompanyPresence';
 
 const CatalogoDetalle = () => {
   const { slug } = useParams<{slug: string}>();
@@ -165,6 +167,7 @@ const CatalogoDetalle = () => {
       </script>
 
       <Navbar />
+      <HostingSectionsNav />
       
       <main className="container mx-auto px-4 py-8 md:py-12">
         <SEOBreadcrumbs 
@@ -175,6 +178,18 @@ const CatalogoDetalle = () => {
         />
         
         <CertificationBadges companySlug={slug || ''} variant="horizontal" size="medium" />
+        
+        {/* Company Presence in Other Sections */}
+        <div className="my-8">
+          <CompanyPresence 
+            companySlug={slug || ''}
+            companyName={company.name}
+            rankingPosition={undefined}
+            hasCertifications={true}
+            inComparison={true}
+          />
+        </div>
+        
         <HostingCompanyInfo company={companyData} />
         
         {/* Public Reviews List */}

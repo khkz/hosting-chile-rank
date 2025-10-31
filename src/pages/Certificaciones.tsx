@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import HostingSectionsNav from '@/components/HostingSectionsNav';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -48,6 +49,7 @@ export default function Certificaciones() {
       />
 
       <Navbar />
+      <HostingSectionsNav />
       
       <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
         {/* Hero Section */}

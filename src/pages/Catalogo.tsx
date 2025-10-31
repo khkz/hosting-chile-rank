@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import HostingSectionsNav from '@/components/HostingSectionsNav';
 
 const CatalogoPage = () => {
   const [sortBy, setSortBy] = useState<'rating' | 'price' | 'name'>('rating');
@@ -65,6 +66,7 @@ const CatalogoPage = () => {
       />
     
       <Navbar />
+      <HostingSectionsNav />
       
       <div className="container mx-auto px-4 pt-8">
         <SEOBreadcrumbs 
