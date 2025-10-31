@@ -22,12 +22,17 @@ import ExitModal from '@/components/ExitModal';
 import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
+import SocialProofFeed from '@/components/SocialProofFeed';
+import LimitedOfferBanner from '@/components/LimitedOfferBanner';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
+      {/* Limited Offer Banner */}
+      <LimitedOfferBanner />
+      
       {/* SEO Meta Tags */}
-      <DynamicMetaTags 
+      <DynamicMetaTags
         title="Mejor Hosting Chile 2025"
         description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2025 con ⭐ 4.8/5 (1,247 opiniones) y cotización gratis."
         canonical="https://eligetuhosting.cl"
@@ -121,6 +126,9 @@ const Index = () => {
         
         {/* Exit Intent Modal */}
         <ExitModal />
+        
+        {/* Social Proof Feed */}
+        <SocialProofFeed />
       </main>
       <Footer />
     </div>

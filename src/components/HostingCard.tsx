@@ -16,6 +16,10 @@ interface HostingCardProps {
   isTopRated?: boolean;
   isRecommended?: boolean;
   specs?: string[];
+  price?: string;
+  originalPrice?: string;
+  ctaText?: string;
+  ctaMicroCopy?: string;
 }
 
 const HostingCard: React.FC<HostingCardProps> = ({ 
@@ -28,7 +32,11 @@ const HostingCard: React.FC<HostingCardProps> = ({
   isPodium = false,
   isTopRated = false,
   isRecommended = false,
-  specs = []
+  specs = [],
+  price,
+  originalPrice,
+  ctaText = 'Visitar Hosting',
+  ctaMicroCopy = '✓ Sin tarjeta ✓ Cancela cuando quieras'
 }) => {
   const [showSpecs, setShowSpecs] = useState(false);
   
@@ -117,12 +125,42 @@ const HostingCard: React.FC<HostingCardProps> = ({
         </div>
       )}
       
-      <Button 
-        asChild
-        className={`mt-6 inline-block ${isTopRated ? 'bg-[#EF233C]' : 'bg-[#2B2D42]'} text-white px-5 py-2 rounded-lg hover:opacity-90 transition-opacity w-full justify-center`}
-      >
-        <a href={url} target="_blank" rel="nofollow sponsored noopener noreferrer">Visitar Hosting</a>
-      </Button>
+      {/* Pricing with anchor pricing */}
+      {(price || originalPrice) && (
+        <div className="mt-4 flex items-baseline gap-2">
+          {originalPrice && (
+            <span className="text-lg text-muted-foreground line-through">
+              {originalPrice}
+            </span>
+          )}
+          {price && (
+            <span className="text-2xl font-bold text-foreground">
+              {price}
+            </span>
+          )}
+          {originalPrice && price && (
+            <span className="text-sm font-semibold text-primary">
+              Ahorras {Math.round((1 - parseInt(price.replace(/[^\d]/g, '')) / parseInt(originalPrice.replace(/[^\d]/g, ''))) * 100)}%
+            </span>
+          )}
+        </div>
+      )}
+      
+      <div className="mt-4 space-y-2">
+        <Button 
+          asChild
+          className={`inline-block ${isTopRated ? 'bg-[#EF233C]' : 'bg-[#2B2D42]'} text-white px-5 py-2 rounded-lg hover:opacity-90 transition-opacity w-full justify-center`}
+        >
+          <a href={url} target="_blank" rel="nofollow sponsored noopener noreferrer">
+            {ctaText}
+          </a>
+        </Button>
+        {ctaMicroCopy && (
+          <p className="text-xs text-center text-muted-foreground">
+            {ctaMicroCopy}
+          </p>
+        )}
+      </div>
     </Card>
   );
 };
