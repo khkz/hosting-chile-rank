@@ -49,6 +49,10 @@ const ProductSchema: React.FC<ProductSchemaProps> = ({
     "brand": {
       "@type": "Brand",
       "name": brand
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": brand
     }
   };
 

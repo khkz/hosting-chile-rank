@@ -39,14 +39,13 @@ const ItemListSchema: React.FC<ItemListSchemaProps> = ({
         "item": {
           "@type": "Product",
           "name": item.name,
-          "url": item.url
+          "url": item.url,
+          "description": item.description || `Plan de hosting ${item.name} en Chile`
         }
       };
 
-      // Add optional fields
-      if (item.description) {
-        listItem.item.description = item.description;
-      }
+      // Add optional fields are now required for better SEO
+      // Description is now always included above
 
       if (item.image) {
         listItem.item.image = item.image;

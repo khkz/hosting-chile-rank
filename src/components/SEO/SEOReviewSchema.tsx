@@ -17,6 +17,11 @@ interface Company {
   website: string;
   rating: number;
   reviewCount: number;
+  description?: string;
+  priceRange?: {
+    min: string;
+    max: string;
+  };
 }
 
 interface AggregateData {
@@ -64,6 +69,7 @@ const SEOReviewSchema: React.FC<SEOReviewSchemaProps> = ({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": company.name,
+      "description": `Proveedor de hosting profesional en Chile - ${company.name}`,
       "image": `https://eligetuhosting.cl${company.logo}`,
       "url": `https://eligetuhosting.cl/catalogo/${company.slug}`,
       "aggregateRating": {
