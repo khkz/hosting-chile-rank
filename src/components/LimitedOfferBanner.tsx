@@ -16,10 +16,32 @@ const LimitedOfferBanner = () => {
       return;
     }
 
-    // Show banner after 5 seconds
-    const timer = setTimeout(() => setVisible(true), 5000);
+    // Show banner after 5 seconds initially
+    const initialTimer = setTimeout(() => setVisible(true), 5000);
 
-    return () => clearTimeout(timer);
+    // Cycle: Show for 15s, hide for 45s
+    const cycleInterval = setInterval(() => {
+      setVisible(prev => !prev);
+    }, 15000); // Toggle every 15 seconds (15s visible, then 15s hidden pattern)
+
+    // Better pattern: Show 15s, hide 45s
+    let showTimer: NodeJS.Timeout;
+    const startCycle = () => {
+      setVisible(true);
+      showTimer = setTimeout(() => {
+        setVisible(false);
+        setTimeout(startCycle, 45000); // Hide for 45 seconds before showing again
+      }, 15000); // Show for 15 seconds
+    };
+
+    const cycleTimer = setTimeout(startCycle, 5000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearTimeout(cycleTimer);
+      clearTimeout(showTimer);
+      clearInterval(cycleInterval);
+    };
   }, []);
 
   useEffect(() => {
