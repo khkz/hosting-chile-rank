@@ -78,39 +78,38 @@ export default function CertificationBadges({
 
   return (
     <div className="my-6">
-      <div className="flex items-center gap-2 mb-3">
-        <Award className="w-5 h-5 text-primary" />
-        <h3 className="font-semibold text-lg">Certificaciones 2025</h3>
+      <div className="flex items-center gap-2 mb-4">
+        <Award className="w-4 h-4 text-primary" />
+        <h3 className="font-semibold text-base">Certificaciones 2025</h3>
       </div>
       
-      <div className={variant === 'grid' ? 'grid grid-cols-2 gap-4' : 'flex flex-wrap gap-4'}>
+      <div className={variant === 'grid' ? 'grid grid-cols-2 gap-3' : 'flex flex-wrap gap-3'}>
         {certifications.map((cert: any) => {
           const colors = getPodiumColor(cert.position);
           
           return (
             <div
               key={cert.id}
-              className={`${colors.bg} ${colors.border} border-2 rounded-xl p-4 flex items-center gap-4 hover:scale-105 transition-all duration-300 ${colors.shadow}`}
+              className={`${colors.bg} ${colors.border} border rounded-lg p-3 flex items-center gap-3 hover:scale-105 transition-all duration-300 ${colors.shadow}`}
             >
-              <div className="text-3xl">{cert.certification_categories.icon}</div>
-              <div className="flex-1">
-                <div className={`font-bold ${colors.text} text-base mb-1`}>
+              <div className="text-xl flex-shrink-0">{cert.certification_categories.icon}</div>
+              <div className="flex-1 min-w-0">
+                <div className={`font-semibold ${colors.text} text-sm leading-tight`}>
                   #{cert.position} {cert.certification_categories.name}
                 </div>
-                <div className="text-xs text-gray-700">Certificación 2025</div>
                 {cert.tier === 'premium' && (
-                  <span className="inline-block mt-1 text-xs bg-purple-600 text-white px-2 py-0.5 rounded-full">
+                  <span className="inline-block mt-1 text-[10px] bg-purple-600 text-white px-1.5 py-0.5 rounded-full font-medium">
                     ✨ Premium
                   </span>
                 )}
               </div>
               
-              {/* Medal Badge */}
+              {/* Medal Badge - más pequeño */}
               <MedalBadge
                 position={cert.position}
                 categoryName={cert.certification_categories.name}
                 categoryIcon={cert.certification_categories.icon}
-                size={size}
+                size="small"
                 className="flex-shrink-0"
               />
             </div>
