@@ -77,41 +77,43 @@ export default function CertificationBadges({
   };
 
   return (
-    <div className="my-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Award className="w-4 h-4 text-primary" />
-        <h3 className="font-semibold text-base">Certificaciones 2025</h3>
+    <div className="my-4">
+      <div className="flex items-center gap-1.5 mb-3">
+        <Award className="w-3.5 h-3.5 text-primary" />
+        <h3 className="font-semibold text-sm">Certificaciones 2025</h3>
       </div>
       
-      <div className={variant === 'grid' ? 'grid grid-cols-2 gap-3' : 'flex flex-wrap gap-3'}>
+      <div className="flex flex-col gap-2">
         {certifications.map((cert: any) => {
           const colors = getPodiumColor(cert.position);
           
           return (
             <div
               key={cert.id}
-              className={`${colors.bg} ${colors.border} border rounded-lg p-3 flex items-center gap-3 hover:scale-105 transition-all duration-300 ${colors.shadow}`}
+              className={`${colors.bg} ${colors.border} border rounded-md px-2.5 py-2 flex items-center gap-2 hover:scale-[1.02] transition-all duration-200 ${colors.shadow}`}
             >
-              <div className="text-xl flex-shrink-0">{cert.certification_categories.icon}</div>
-              <div className="flex-1 min-w-0">
-                <div className={`font-semibold ${colors.text} text-sm leading-tight`}>
-                  #{cert.position} {cert.certification_categories.name}
-                </div>
-                {cert.tier === 'premium' && (
-                  <span className="inline-block mt-1 text-[10px] bg-purple-600 text-white px-1.5 py-0.5 rounded-full font-medium">
-                    ✨ Premium
-                  </span>
-                )}
-              </div>
-              
-              {/* Medal Badge - más pequeño */}
+              {/* Medal Badge primero - más pequeño */}
               <MedalBadge
                 position={cert.position}
                 categoryName={cert.certification_categories.name}
                 categoryIcon={cert.certification_categories.icon}
                 size="small"
-                className="flex-shrink-0"
+                className="flex-shrink-0 w-8 h-8"
               />
+              
+              <div className="flex-1 min-w-0">
+                <div className={`font-semibold ${colors.text} text-xs leading-tight flex items-center gap-1.5`}>
+                  <span className="text-[10px] opacity-80">#{cert.position}</span>
+                  <span className="truncate">{cert.certification_categories.name}</span>
+                </div>
+                {cert.tier === 'premium' && (
+                  <span className="inline-block mt-0.5 text-[9px] bg-purple-600 text-white px-1 py-0.5 rounded font-medium">
+                    Premium
+                  </span>
+                )}
+              </div>
+              
+              <div className="text-base flex-shrink-0 opacity-80">{cert.certification_categories.icon}</div>
             </div>
           );
         })}
