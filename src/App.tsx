@@ -62,6 +62,8 @@ import Certificaciones from './pages/Certificaciones';
 import DirectorioHosting from './pages/DirectorioHosting';
 import Auth from './pages/Auth';
 import ProtectedRoute from './components/ProtectedRoute';
+import NuestroMetodo from './pages/NuestroMetodo';
+import HostingWordPressBlogPersonal from './pages/HostingWordPressBlogPersonal';
 
 function App() {
   return (
@@ -126,6 +128,8 @@ function App() {
         <Route path="/wiki/:slug" element={<WikiTerm />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/nuestro-metodo" element={<NuestroMetodo />} />
+        <Route path="/hosting-wordpress-blog-personal-chile" element={<HostingWordPressBlogPersonal />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />

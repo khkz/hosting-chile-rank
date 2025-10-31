@@ -25,6 +25,8 @@ import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import SocialProofFeed from '@/components/SocialProofFeed';
 import LimitedOfferBanner from '@/components/LimitedOfferBanner';
 import ScrollProgress from '@/components/ScrollProgress';
+import TrustReport from '@/components/TrustReport';
+import OpenDataBadge from '@/components/OpenDataBadge';
 
 const Index = () => {
   return (
@@ -95,6 +97,9 @@ const Index = () => {
         {/* section 5: Ranking cards */}
         <HostingRanking />
         
+        {/* section 5.5: Trust Report - Verification Section */}
+        <TrustReport />
+        
         {/* section 6: Transparency Notice */}
         <TransparencyNotice />
         
@@ -112,6 +117,13 @@ const Index = () => {
         
         {/* section 11: Categories */}
         <Categories />
+        
+        {/* section 11.5: Open Data Badge */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <OpenDataBadge />
+          </div>
+        </section>
         
         {/* section 12: FAQ */}
         <FAQ />
