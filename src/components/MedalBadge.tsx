@@ -61,20 +61,12 @@ const MedalBadge = ({
           #{position}
         </div>
         
-        {/* Category (icon or name) */}
+        {/* Category name */}
         <div className={cn(
           dimensions.text.category,
-          "font-semibold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] mt-1"
+          "font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] mt-0.5 leading-tight"
         )}>
-          {showCategoryName ? categoryName.toUpperCase() : categoryIcon}
-        </div>
-        
-        {/* Year */}
-        <div className={cn(
-          dimensions.text.year,
-          "font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] mt-0.5"
-        )}>
-          CHILE {year}
+          {categoryName.toUpperCase()}
         </div>
       </div>
     </div>
