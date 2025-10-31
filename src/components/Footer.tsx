@@ -49,6 +49,7 @@ const Footer = () => {
               <li><Link to="/comparativa" className="text-gray-300 hover:text-[#EF233C] transition-colors">Comparativas</Link></li>
               <li><Link to="/guia-elegir-hosting" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guías de Compra</Link></li>
               <li><Link to="/benchmark" className="text-gray-300 hover:text-[#EF233C] transition-colors">Benchmarks</Link></li>
+              <li><Link to="/catalogo" className="text-gray-300 hover:text-[#EF233C] transition-colors">Catálogo Completo</Link></li>
             </ul>
           </div>
 
@@ -56,13 +57,15 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Recursos</h4>
             <ul className="space-y-2 text-sm">
+              <li><Link to="/blog" className="text-gray-300 hover:text-[#EF233C] transition-colors">Blog</Link></li>
               <li><Link to="/wiki" className="text-gray-300 hover:text-[#EF233C] transition-colors">Wiki de Hosting</Link></li>
               <li><Link to="/certificaciones" className="text-gray-300 hover:text-[#EF233C] transition-colors">Certificaciones</Link></li>
               <li><Link to="/ultimos-dominios" className="text-gray-300 hover:text-[#EF233C] transition-colors">Últimos Dominios</Link></li>
               <li><Link to="/asn" className="text-gray-300 hover:text-[#EF233C] transition-colors">Mapa ASN</Link></li>
               <li><Link to="/guia-elegir-vps" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guía VPS</Link></li>
               <li><Link to="/guia-elegir-ssl" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guía SSL</Link></li>
-              <li><Link to="/acerca-de" className="text-gray-300 hover:text-[#EF233C] transition-colors">Acerca de</Link></li>
+              <li><Link to="/guia-migrar-hosting" className="text-gray-300 hover:text-[#EF233C] transition-colors">Guía Migración</Link></li>
+              <li><Link to="/guia-seguridad-web" className="text-gray-300 hover:text-[#EF233C] transition-colors">Seguridad Web</Link></li>
             </ul>
           </div>
 

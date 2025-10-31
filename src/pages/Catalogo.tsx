@@ -13,6 +13,8 @@ import StickyCTA from '@/components/StickyCTA';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
+import TechnicalGlossary from '@/components/TechnicalGlossary';
+import RelatedContent from '@/components/RelatedContent';
 
 const CatalogoPage = () => {
   const [sortBy, setSortBy] = useState<'rating' | 'price' | 'name'>('rating');
@@ -200,6 +202,20 @@ const CatalogoPage = () => {
               })}
             </div>
           )}
+        </div>
+      </section>
+      
+      {/* Technical Glossary */}
+      <section className="py-12 bg-background">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <TechnicalGlossary />
+        </div>
+      </section>
+      
+      {/* Related Content */}
+      <section className="py-12 bg-[#F7F9FC]">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <RelatedContent currentPage="general" />
         </div>
       </section>
       
