@@ -1,6 +1,14 @@
 {
-  "updated": "2025-11-03T07:15:43.382Z",
+  "updated": "2025-11-03T08:21:28.593Z",
   "domains": [
+    {
+      "d": "ckv.cl",
+      "date": "2025-11-03T05:09:56Z"
+    },
+    {
+      "d": "saferescue.cl",
+      "date": "2025-11-03T04:18:13Z"
+    },
     {
       "d": "projectchile.cl",
       "date": "2025-11-03T03:30:20Z"
@@ -1172,18 +1180,6 @@
     {
       "d": "bittensor.cl",
       "date": "2025-11-02T05:28:06Z"
-    },
-    {
-      "d": "abogadopymes.cl",
-      "date": "2025-11-02T04:53:14Z"
-    },
-    {
-      "d": "abogadoempresa.cl",
-      "date": "2025-11-02T04:53:12Z"
-    },
-    {
-      "d": "diagnoticoia.cl",
-      "date": "2025-11-02T04:31:38Z"
     }
   ]
 }
