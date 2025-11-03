@@ -1,6 +1,10 @@
 {
-  "updated": "2025-11-03T06:23:35.066Z",
+  "updated": "2025-11-03T07:15:43.382Z",
   "domains": [
+    {
+      "d": "projectchile.cl",
+      "date": "2025-11-03T03:30:20Z"
+    },
     {
       "d": "cfiacrux.cl",
       "date": "2025-11-03T03:02:11Z"
@@ -1180,10 +1184,6 @@
     {
       "d": "diagnoticoia.cl",
       "date": "2025-11-02T04:31:38Z"
-    },
-    {
-      "d": "teaserhost.cl",
-      "date": "2025-11-02T03:27:08Z"
     }
   ]
 }
