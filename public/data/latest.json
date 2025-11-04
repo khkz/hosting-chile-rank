@@ -1,6 +1,10 @@
 {
-  "updated": "2025-11-04T07:14:45.409Z",
+  "updated": "2025-11-04T08:20:48.307Z",
   "domains": [
+    {
+      "d": "sugarcascade.cl",
+      "date": "2025-11-04T04:43:30Z"
+    },
     {
       "d": "mmimportaciones.cl",
       "date": "2025-11-04T03:33:50Z"
@@ -2456,14 +2460,6 @@
     {
       "d": "tiempopyme.cl",
       "date": "2025-11-03T06:45:45Z"
-    },
-    {
-      "d": "ckv.cl",
-      "date": "2025-11-03T05:09:56Z"
-    },
-    {
-      "d": "saferescue.cl",
-      "date": "2025-11-03T04:18:13Z"
     }
   ]
 }
