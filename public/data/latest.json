@@ -1,6 +1,14 @@
 {
-  "updated": "2025-11-05T08:20:48.518Z",
+  "updated": "2025-11-05T09:17:01.396Z",
   "domains": [
+    {
+      "d": "neptune.cl",
+      "date": "2025-11-05T05:54:30Z"
+    },
+    {
+      "d": "luminiastore.cl",
+      "date": "2025-11-05T05:30:28Z"
+    },
     {
       "d": "mechrevo.cl",
       "date": "2025-11-05T04:40:44Z"
@@ -2416,10 +2424,6 @@
     {
       "d": "vinosinmisterios.cl",
       "date": "2025-11-04T06:43:01Z"
-    },
-    {
-      "d": "ascadi.cl",
-      "date": "2025-11-04T05:50:14Z"
     }
   ]
 }
