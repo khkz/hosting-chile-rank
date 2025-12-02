@@ -1,6 +1,10 @@
 {
-  "updated": "2025-12-02T04:25:53.558Z",
+  "updated": "2025-12-02T05:15:43.037Z",
   "domains": [
+    {
+      "d": "coupon.cl",
+      "date": "2025-12-02T01:50:25Z"
+    },
     {
       "d": "construcserviccg.cl",
       "date": "2025-12-02T01:25:50Z"
@@ -2236,10 +2240,6 @@
     {
       "d": "creaycorte.cl",
       "date": "2025-12-01T02:18:36Z"
-    },
-    {
-      "d": "rvsolucioneslegales.cl",
-      "date": "2025-12-01T01:44:38Z"
     }
   ]
 }
