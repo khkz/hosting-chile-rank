@@ -1,10 +1,8 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, AlertCircle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Search, AlertCircle, ArrowRight } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const DomainAnalysisSearch = () => {
@@ -12,7 +10,6 @@ const DomainAnalysisSearch = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Simple domain validation
   const validateDomain = (domain: string): boolean => {
     const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/;
     return domainRegex.test(domain.trim());
@@ -32,7 +29,6 @@ const DomainAnalysisSearch = () => {
     }
 
     setError(null);
-    // Convert domain to slug format for URL (replace dots with hyphens)
     const domainSlug = trimmedDomain.replace(/\./g, '-');
     navigate(`/domain/${domainSlug}/`);
   };
@@ -43,53 +39,67 @@ const DomainAnalysisSearch = () => {
     }
   };
 
+  const exampleDomains = ['google.cl', 'mercadolibre.cl', 'falabella.cl'];
+
   return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="text-xl flex items-center gap-2">
+    <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8 shadow-sm">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 text-white">
           <Search className="h-5 w-5" />
-          Analizar cualquier dominio
-        </CardTitle>
-        <p className="text-gray-600 text-sm">
-          Ingresa cualquier dominio .cl para obtener información completa: WHOIS, DNS, SSL y más
-        </p>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-2">
-          <div className="flex-1">
-            <Input
-              type="text"
-              placeholder="Ingresa un dominio (ej: ejemplo.cl)"
-              value={domainInput}
-              onChange={(e) => {
-                setDomainInput(e.target.value);
-                setError(null);
-              }}
-              onKeyPress={handleKeyPress}
-              className={error ? 'border-red-500' : ''}
-            />
-          </div>
-          <Button 
-            onClick={handleAnalyzeDomain}
-            className="px-6 bg-[#2B2D42] text-white hover:bg-[#2B2D42]/90"
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold text-slate-800">Analizar cualquier dominio</h2>
+          <p className="text-sm text-slate-500">Obtén información WHOIS, DNS, SSL y más</p>
+        </div>
+      </div>
+      
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex-1 relative">
+          <Input
+            type="text"
+            placeholder="Ingresa un dominio (ej: ejemplo.cl)"
+            value={domainInput}
+            onChange={(e) => {
+              setDomainInput(e.target.value);
+              setError(null);
+            }}
+            onKeyPress={handleKeyPress}
+            className={`h-12 text-base bg-slate-50 border-slate-200 focus:bg-white transition-colors ${error ? 'border-red-300 focus:border-red-500' : ''}`}
+          />
+        </div>
+        <Button 
+          onClick={handleAnalyzeDomain}
+          size="lg"
+          className="h-12 px-6 bg-slate-900 hover:bg-slate-800 text-white font-medium"
+        >
+          Analizar
+          <ArrowRight className="h-4 w-4 ml-2" />
+        </Button>
+      </div>
+      
+      {error && (
+        <Alert variant="destructive" className="mt-3">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      
+      <div className="flex flex-wrap items-center gap-2 mt-4">
+        <span className="text-xs text-slate-400">Ejemplos:</span>
+        {exampleDomains.map((domain) => (
+          <button
+            key={domain}
+            onClick={() => {
+              setDomainInput(domain);
+              setError(null);
+            }}
+            className="text-xs px-2 py-1 rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
           >
-            <Search className="h-4 w-4 mr-2" />
-            Analizar
-          </Button>
-        </div>
-        
-        {error && (
-          <Alert variant="destructive" className="mt-3">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        
-        <div className="mt-3 text-xs text-gray-500">
-          Ejemplos: google.cl, mercadolibre.cl, github.cl
-        </div>
-      </CardContent>
-    </Card>
+            {domain}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 };
 
