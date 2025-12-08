@@ -1,6 +1,10 @@
 {
-  "updated": "2025-12-08T08:24:19.329Z",
+  "updated": "2025-12-08T09:22:51.094Z",
   "domains": [
+    {
+      "d": "gestionventas.cl",
+      "date": "2025-12-08T05:38:30Z"
+    },
     {
       "d": "cledor.cl",
       "date": "2025-12-08T05:19:56Z"
@@ -940,14 +944,6 @@
     {
       "d": "motellacasablanca.cl",
       "date": "2025-12-07T06:44:59Z"
-    },
-    {
-      "d": "cognimirror.cl",
-      "date": "2025-12-07T05:31:52Z"
-    },
-    {
-      "d": "antoniobozzo.cl",
-      "date": "2025-12-07T05:28:28Z"
     }
   ]
 }
