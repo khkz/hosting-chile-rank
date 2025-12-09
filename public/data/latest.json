@@ -1,6 +1,14 @@
 {
-  "updated": "2025-12-09T07:18:19.032Z",
+  "updated": "2025-12-09T09:19:19.049Z",
   "domains": [
+    {
+      "d": "mascotasosorno.cl",
+      "date": "2025-12-09T05:42:20Z"
+    },
+    {
+      "d": "etransfer-interac.cl",
+      "date": "2025-12-09T05:03:53Z"
+    },
     {
       "d": "ondah.cl",
       "date": "2025-12-09T03:54:05Z"
@@ -1228,14 +1236,6 @@
     {
       "d": "serviciodigital-posicionamiento.cl",
       "date": "2025-12-08T06:23:57Z"
-    },
-    {
-      "d": "gestionventas.cl",
-      "date": "2025-12-08T05:38:30Z"
-    },
-    {
-      "d": "cledor.cl",
-      "date": "2025-12-08T05:19:56Z"
     }
   ]
 }
