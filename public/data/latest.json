@@ -1,6 +1,10 @@
 {
-  "updated": "2025-12-21T08:19:50.576Z",
+  "updated": "2025-12-21T09:15:16.040Z",
   "domains": [
+    {
+      "d": "rutscan.cl",
+      "date": "2025-12-21T05:26:14Z"
+    },
     {
       "d": "huellanativacalama.cl",
       "date": "2025-12-21T04:51:05Z"
@@ -932,10 +936,6 @@
     {
       "d": "dunasandboard.cl",
       "date": "2025-12-20T06:44:59Z"
-    },
-    {
-      "d": "foyertome.cl",
-      "date": "2025-12-20T05:21:44Z"
     }
   ]
 }
