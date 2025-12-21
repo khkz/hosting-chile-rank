@@ -1,6 +1,14 @@
 {
-  "updated": "2025-12-21T10:15:17.202Z",
+  "updated": "2025-12-21T11:12:34.535Z",
   "domains": [
+    {
+      "d": "svelte.cl",
+      "date": "2025-12-21T08:03:08Z"
+    },
+    {
+      "d": "mexicano.cl",
+      "date": "2025-12-21T07:21:47Z"
+    },
     {
       "d": "starvalp.cl",
       "date": "2025-12-21T07:08:26Z"
@@ -884,18 +892,6 @@
     {
       "d": "ccsecurity.cl",
       "date": "2025-12-20T08:48:48Z"
-    },
-    {
-      "d": "librofertas.cl",
-      "date": "2025-12-20T07:31:28Z"
-    },
-    {
-      "d": "primerainfancia.cl",
-      "date": "2025-12-20T07:22:13Z"
-    },
-    {
-      "d": "smog.cl",
-      "date": "2025-12-20T07:15:37Z"
     }
   ]
 }
