@@ -1,6 +1,18 @@
 {
-  "updated": "2025-12-28T04:40:05.919Z",
+  "updated": "2025-12-28T05:19:27.460Z",
   "domains": [
+    {
+      "d": "centralcamaras.cl",
+      "date": "2025-12-28T02:04:18Z"
+    },
+    {
+      "d": "icyt.cl",
+      "date": "2025-12-28T02:01:12Z"
+    },
+    {
+      "d": "jacquesspa.cl",
+      "date": "2025-12-28T01:48:58Z"
+    },
     {
       "d": "lindohogar.cl",
       "date": "2025-12-28T01:35:28Z"
@@ -1060,14 +1072,6 @@
     {
       "d": "repuestoselsol.cl",
       "date": "2025-12-27T02:25:06Z"
-    },
-    {
-      "d": "freeflowlabs.cl",
-      "date": "2025-12-27T01:57:03Z"
-    },
-    {
-      "d": "nexuslogistic.cl",
-      "date": "2025-12-27T01:55:25Z"
     }
   ]
 }
