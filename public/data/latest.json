@@ -1,6 +1,174 @@
 {
-  "updated": "2025-12-29T23:15:06.113Z",
+  "updated": "2025-12-30T01:15:05.906Z",
   "domains": [
+    {
+      "d": "tiasesorias.cl",
+      "date": "2025-12-29T22:15:04Z"
+    },
+    {
+      "d": "lunsaflow.cl",
+      "date": "2025-12-29T22:14:27Z"
+    },
+    {
+      "d": "comunitas.cl",
+      "date": "2025-12-29T22:12:26Z"
+    },
+    {
+      "d": "crecimiento360.cl",
+      "date": "2025-12-29T22:07:33Z"
+    },
+    {
+      "d": "opentrails.cl",
+      "date": "2025-12-29T22:05:27Z"
+    },
+    {
+      "d": "profesoremanuel.cl",
+      "date": "2025-12-29T22:01:57Z"
+    },
+    {
+      "d": "borealnexus.cl",
+      "date": "2025-12-29T22:00:12Z"
+    },
+    {
+      "d": "senselearning.cl",
+      "date": "2025-12-29T21:58:07Z"
+    },
+    {
+      "d": "tumentordigital.cl",
+      "date": "2025-12-29T21:54:42Z"
+    },
+    {
+      "d": "kaneli.cl",
+      "date": "2025-12-29T21:54:20Z"
+    },
+    {
+      "d": "architekton.cl",
+      "date": "2025-12-29T21:51:41Z"
+    },
+    {
+      "d": "portalcentromulchen.cl",
+      "date": "2025-12-29T21:51:11Z"
+    },
+    {
+      "d": "feriacampesinacuranilahue.cl",
+      "date": "2025-12-29T21:48:00Z"
+    },
+    {
+      "d": "servitecarengo.cl",
+      "date": "2025-12-29T21:42:36Z"
+    },
+    {
+      "d": "hyperclean.cl",
+      "date": "2025-12-29T21:41:50Z"
+    },
+    {
+      "d": "resenasreales.cl",
+      "date": "2025-12-29T21:37:33Z"
+    },
+    {
+      "d": "kavex.cl",
+      "date": "2025-12-29T21:33:50Z"
+    },
+    {
+      "d": "sistecchile.cl",
+      "date": "2025-12-29T21:32:23Z"
+    },
+    {
+      "d": "jtym.cl",
+      "date": "2025-12-29T21:32:22Z"
+    },
+    {
+      "d": "smileandmove.cl",
+      "date": "2025-12-29T21:32:16Z"
+    },
+    {
+      "d": "climatotal.cl",
+      "date": "2025-12-29T21:31:43Z"
+    },
+    {
+      "d": "consultaescrita.cl",
+      "date": "2025-12-29T21:25:41Z"
+    },
+    {
+      "d": "seget.cl",
+      "date": "2025-12-29T21:22:32Z"
+    },
+    {
+      "d": "rksmotos.cl",
+      "date": "2025-12-29T21:15:48Z"
+    },
+    {
+      "d": "auditorep.cl",
+      "date": "2025-12-29T21:13:24Z"
+    },
+    {
+      "d": "nutraelite.cl",
+      "date": "2025-12-29T21:08:54Z"
+    },
+    {
+      "d": "eppcontrol.cl",
+      "date": "2025-12-29T21:08:02Z"
+    },
+    {
+      "d": "pamelanavarro.cl",
+      "date": "2025-12-29T21:06:55Z"
+    },
+    {
+      "d": "traus-consultores.cl",
+      "date": "2025-12-29T21:06:23Z"
+    },
+    {
+      "d": "rhinowalk.cl",
+      "date": "2025-12-29T20:57:19Z"
+    },
+    {
+      "d": "gomining.cl",
+      "date": "2025-12-29T20:56:35Z"
+    },
+    {
+      "d": "abogadodeherencia.cl",
+      "date": "2025-12-29T20:55:06Z"
+    },
+    {
+      "d": "dinnamarch.cl",
+      "date": "2025-12-29T20:51:11Z"
+    },
+    {
+      "d": "expertopublicitario.cl",
+      "date": "2025-12-29T20:49:23Z"
+    },
+    {
+      "d": "sunsetsandbikinis.cl",
+      "date": "2025-12-29T20:48:12Z"
+    },
+    {
+      "d": "bolkskate.cl",
+      "date": "2025-12-29T20:41:12Z"
+    },
+    {
+      "d": "artbreak.cl",
+      "date": "2025-12-29T20:26:54Z"
+    },
+    {
+      "d": "contableremota.cl",
+      "date": "2025-12-29T20:23:59Z"
+    },
+    {
+      "d": "mujeresqueflorecen.cl",
+      "date": "2025-12-29T20:21:10Z"
+    },
+    {
+      "d": "aikenarquitectura.cl",
+      "date": "2025-12-29T20:20:50Z"
+    },
+    {
+      "d": "meconsulting.cl",
+      "date": "2025-12-29T20:16:55Z"
+    },
+    {
+      "d": "fastbot.cl",
+      "date": "2025-12-29T20:15:44Z"
+    },
     {
       "d": "binex.cl",
       "date": "2025-12-29T20:13:54Z"
@@ -1776,126 +1944,6 @@
     {
       "d": "fonotracker.cl",
       "date": "2025-12-28T22:17:06Z"
-    },
-    {
-      "d": "elecmaq.cl",
-      "date": "2025-12-28T22:13:17Z"
-    },
-    {
-      "d": "hojaluna.cl",
-      "date": "2025-12-28T22:10:14Z"
-    },
-    {
-      "d": "educasaludisapre.cl",
-      "date": "2025-12-28T22:09:35Z"
-    },
-    {
-      "d": "durfen.cl",
-      "date": "2025-12-28T22:08:31Z"
-    },
-    {
-      "d": "valherlo.cl",
-      "date": "2025-12-28T22:01:42Z"
-    },
-    {
-      "d": "domconcept.cl",
-      "date": "2025-12-28T22:00:04Z"
-    },
-    {
-      "d": "australoverland.cl",
-      "date": "2025-12-28T21:58:03Z"
-    },
-    {
-      "d": "hojadeluna.cl",
-      "date": "2025-12-28T21:58:02Z"
-    },
-    {
-      "d": "tamagochiproducciones.cl",
-      "date": "2025-12-28T21:51:09Z"
-    },
-    {
-      "d": "latazzina.cl",
-      "date": "2025-12-28T21:48:39Z"
-    },
-    {
-      "d": "kumekafe.cl",
-      "date": "2025-12-28T21:45:38Z"
-    },
-    {
-      "d": "centinelapp.cl",
-      "date": "2025-12-28T21:45:21Z"
-    },
-    {
-      "d": "comercializadoraabizi.cl",
-      "date": "2025-12-28T21:45:02Z"
-    },
-    {
-      "d": "rosaurora.cl",
-      "date": "2025-12-28T21:41:51Z"
-    },
-    {
-      "d": "enruiz.cl",
-      "date": "2025-12-28T21:39:30Z"
-    },
-    {
-      "d": "chiledesafio.cl",
-      "date": "2025-12-28T21:34:04Z"
-    },
-    {
-      "d": "mattias.cl",
-      "date": "2025-12-28T21:25:10Z"
-    },
-    {
-      "d": "solvanta.cl",
-      "date": "2025-12-28T21:23:52Z"
-    },
-    {
-      "d": "lakusitienda.cl",
-      "date": "2025-12-28T21:20:27Z"
-    },
-    {
-      "d": "educaciber.cl",
-      "date": "2025-12-28T21:14:38Z"
-    },
-    {
-      "d": "vargasdigital.cl",
-      "date": "2025-12-28T21:13:47Z"
-    },
-    {
-      "d": "infieri.cl",
-      "date": "2025-12-28T21:12:14Z"
-    },
-    {
-      "d": "anfertec.cl",
-      "date": "2025-12-28T20:53:26Z"
-    },
-    {
-      "d": "superfreezer.cl",
-      "date": "2025-12-28T20:46:47Z"
-    },
-    {
-      "d": "comercialfuenzalida.cl",
-      "date": "2025-12-28T20:45:54Z"
-    },
-    {
-      "d": "gruappchile.cl",
-      "date": "2025-12-28T20:39:35Z"
-    },
-    {
-      "d": "cristiancalderonv.cl",
-      "date": "2025-12-28T20:37:30Z"
-    },
-    {
-      "d": "gudminds.cl",
-      "date": "2025-12-28T20:29:52Z"
-    },
-    {
-      "d": "integralsur.cl",
-      "date": "2025-12-28T20:29:48Z"
-    },
-    {
-      "d": "vexor.cl",
-      "date": "2025-12-28T20:16:17Z"
     }
   ]
 }
