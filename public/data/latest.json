@@ -1,6 +1,10 @@
 {
-  "updated": "2025-12-30T07:19:12.908Z",
+  "updated": "2025-12-30T08:22:39.233Z",
   "domains": [
+    {
+      "d": "telesalud-castillo.cl",
+      "date": "2025-12-30T05:10:10Z"
+    },
     {
       "d": "kaibutsu.cl",
       "date": "2025-12-30T03:54:34Z"
@@ -2040,18 +2044,6 @@
     {
       "d": "funerariaalborada.cl",
       "date": "2025-12-29T05:56:38Z"
-    },
-    {
-      "d": "buscomaestros.cl",
-      "date": "2025-12-29T04:52:52Z"
-    },
-    {
-      "d": "myvo.cl",
-      "date": "2025-12-29T04:51:26Z"
-    },
-    {
-      "d": "rigshop.cl",
-      "date": "2025-12-29T04:51:00Z"
     }
   ]
 }
