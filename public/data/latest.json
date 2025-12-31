@@ -1,6 +1,14 @@
 {
-  "updated": "2025-12-31T06:25:52.396Z",
+  "updated": "2025-12-31T07:19:49.910Z",
   "domains": [
+    {
+      "d": "aulakit.cl",
+      "date": "2025-12-31T04:14:27Z"
+    },
+    {
+      "d": "legaltest.cl",
+      "date": "2025-12-31T03:59:25Z"
+    },
     {
       "d": "softlicom.cl",
       "date": "2025-12-31T02:58:56Z"
@@ -1876,18 +1884,6 @@
     {
       "d": "telesalud-castillo.cl",
       "date": "2025-12-30T05:10:10Z"
-    },
-    {
-      "d": "kaibutsu.cl",
-      "date": "2025-12-30T03:54:34Z"
-    },
-    {
-      "d": "subraya.cl",
-      "date": "2025-12-30T03:47:51Z"
-    },
-    {
-      "d": "halsa.cl",
-      "date": "2025-12-30T03:39:48Z"
     }
   ]
 }
