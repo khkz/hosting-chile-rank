@@ -1,6 +1,10 @@
 {
-  "updated": "2026-01-04T06:24:06.121Z",
+  "updated": "2026-01-04T07:17:38.071Z",
   "domains": [
+    {
+      "d": "mujerprime.cl",
+      "date": "2026-01-04T03:47:02Z"
+    },
     {
       "d": "brillosutil.cl",
       "date": "2026-01-04T02:52:07Z"
@@ -944,18 +948,6 @@
     {
       "d": "ackertransportes.cl",
       "date": "2026-01-03T04:37:05Z"
-    },
-    {
-      "d": "ubicalogps.cl",
-      "date": "2026-01-03T04:14:45Z"
-    },
-    {
-      "d": "zenki.cl",
-      "date": "2026-01-03T03:42:42Z"
-    },
-    {
-      "d": "emergenciasmejillones.cl",
-      "date": "2026-01-03T03:32:38Z"
     }
   ]
 }
