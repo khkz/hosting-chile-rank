@@ -179,7 +179,7 @@ const Navbar = () => {
             <DropdownMenuTrigger asChild>
               <button 
                 className={`${navLinkClasses} px-3 py-2 flex items-center gap-1 group ${
-                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl', '/guia-elegir-cdn', '/mejor-hosting-chile-2025', '/guia-migrar-hosting', '/guia-seguridad-web', '/guia-hosting-wordpress'].includes(location.pathname) 
+                  ['/guia-elegir-hosting', '/guia-elegir-vps', '/guia-elegir-servidor-dedicado', '/guia-elegir-ssl', '/guia-elegir-cdn', '/mejor-hosting-chile-2026', '/guia-migrar-hosting', '/guia-seguridad-web', '/guia-hosting-wordpress'].includes(location.pathname) 
                     ? activeNavLinkClasses 
                     : ''
                 }`}
@@ -192,11 +192,11 @@ const Navbar = () => {
             <DropdownMenuContent align="end" className="w-64 bg-white z-50 animate-scale-in">
               <DropdownMenuItem asChild>
                 <Link 
-                  to="/mejor-hosting-chile-2025" 
-                  className={`w-full px-2 py-2 flex items-center gap-2 ${isActive('/mejor-hosting-chile-2025') ? 'text-[#EF233C]' : ''}`}
+                  to="/mejor-hosting-chile-2026" 
+                  className={`w-full px-2 py-2 flex items-center gap-2 ${isActive('/mejor-hosting-chile-2026') ? 'text-[#EF233C]' : ''}`}
                 >
                   <Star className="h-4 w-4" />
-                  Mejor Hosting Chile 2025
+                  Mejor Hosting Chile 2026
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>

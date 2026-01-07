@@ -14,8 +14,9 @@ import ProductSchema from '@/components/SEO/ProductSchema';
 import HowToSchema from '@/components/SEO/HowToSchema';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
+import { CURRENT_YEAR, getLastUpdatedText, getLastUpdatedDate, getYearStartDate } from '@/utils/dateHelpers';
 
-const MejorHostingChile2025 = () => {
+const MejorHostingChile2026 = () => {
   const hostingProviders = [
     {
       name: "HostingPlus.cl",
@@ -118,7 +119,7 @@ const MejorHostingChile2025 = () => {
     {
       icon: <Clock className="w-6 h-6" />,
       title: "Uptime y Disponibilidad",
-      description: "Un hosting confiable debe garantizar al menos 99.9% de uptime. Analizamos el tiempo de actividad real de cada proveedor durante 2024-2025."
+      description: `Un hosting confiable debe garantizar al menos 99.9% de uptime. Analizamos el tiempo de actividad real de cada proveedor durante 2025-${CURRENT_YEAR}.`
     },
     {
       icon: <Zap className="w-6 h-6" />,
@@ -149,7 +150,7 @@ const MejorHostingChile2025 = () => {
 
   const faqs = [
     {
-      question: "¿Cuál es realmente el mejor hosting en Chile en 2025?",
+      question: `¿Cuál es realmente el mejor hosting en Chile en ${CURRENT_YEAR}?`,
       answer: "Según nuestro análisis exhaustivo, HostingPlus.cl lidera el ranking con 9.9/10, ofreciendo 99.98% de uptime, tecnología LiteSpeed Enterprise, servidores propios en Santiago y 0 reclamos registrados en Reclamos.cl desde 2020."
     },
     {
@@ -169,7 +170,7 @@ const MejorHostingChile2025 = () => {
       answer: "Debe incluir: instalación automática de WordPress, LiteSpeed o tecnología de caché, SSL gratuito, backups automáticos, soporte especializado en WordPress y optimizaciones específicas."
     },
     {
-      question: "¿Cuánto cuesta un hosting de calidad en Chile en 2025?",
+      question: `¿Cuánto cuesta un hosting de calidad en Chile en ${CURRENT_YEAR}?`,
       answer: "Un hosting de calidad profesional en Chile cuesta entre $3.469 y $7.990 CLP mensuales. HostingPlus.cl ofrece la mejor relación calidad-precio desde $3.469/mes, mientras que opciones como EcoHosting permiten ahorrar con pagos anuales ($19.900/año)."
     },
     {
@@ -192,29 +193,29 @@ const MejorHostingChile2025 = () => {
   return (
     <>
       <Helmet>
-        <title>Mejor Hosting Chile 2025 | Guía Completa | EligeTuHosting.cl</title>
+        <title>Mejor Hosting Chile {CURRENT_YEAR} | Guía Completa | EligeTuHosting.cl</title>
         <meta 
           name="description" 
-          content="Descubre cuál es el mejor hosting en Chile 2025. Comparativa completa de velocidad, uptime y precios. Guía definitiva para elegir hosting SSD rápido." 
+          content={`Descubre cuál es el mejor hosting en Chile ${CURRENT_YEAR}. Comparativa completa de velocidad, uptime y precios. Guía definitiva para elegir hosting SSD rápido.`}
         />
-        <meta name="keywords" content="mejor hosting Chile, cuál es el mejor hosting en Chile, hosting rápido SSD en Chile, mejor hosting chileno 2025, hosting confiable Chile, hosting WordPress Chile" />
-        <link rel="canonical" href="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
-        <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
+        <meta name="keywords" content={`mejor hosting Chile, cuál es el mejor hosting en Chile, hosting rápido SSD en Chile, mejor hosting chileno ${CURRENT_YEAR}, hosting confiable Chile, hosting WordPress Chile`} />
+        <link rel="canonical" href="https://eligetuhosting.cl/mejor-hosting-chile-2026" />
+        <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/mejor-hosting-chile-2026" />
         <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
-        <meta property="og:title" content="¿Cuál es el mejor hosting en Chile en 2025? Guía definitiva" />
-        <meta property="og:description" content="Comparativa exhaustiva del mejor hosting Chile 2025. Análisis de velocidad, uptime y precios de los principales proveedores." />
+        <meta property="og:title" content={`¿Cuál es el mejor hosting en Chile en ${CURRENT_YEAR}? Guía definitiva`} />
+        <meta property="og:description" content={`Comparativa exhaustiva del mejor hosting Chile ${CURRENT_YEAR}. Análisis de velocidad, uptime y precios de los principales proveedores.`} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content="https://eligetuhosting.cl/mejor-hosting-chile-2025" />
+        <meta property="og:url" content="https://eligetuhosting.cl/mejor-hosting-chile-2026" />
         <meta property="og:image" content="https://eligetuhosting.cl/images/mejor-hosting-chile-hero.png" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            headline: "¿Cuál es el mejor hosting en Chile en 2025? Guía definitiva y comparativa",
+            headline: `¿Cuál es el mejor hosting en Chile en ${CURRENT_YEAR}? Guía definitiva y comparativa`,
             author: { "@type": "Organization", name: "eligetuhosting.cl" },
-            datePublished: "2025-01-01",
-            dateModified: new Date().toISOString().slice(0,10),
-            description: "Análisis completo de los mejores proveedores de hosting en Chile para 2025, incluyendo comparativas de velocidad, uptime y precios."
+            datePublished: getYearStartDate(),
+            dateModified: getLastUpdatedDate(),
+            description: `Análisis completo de los mejores proveedores de hosting en Chile para ${CURRENT_YEAR}, incluyendo comparativas de velocidad, uptime y precios.`
           })}
         </script>
         <script type="application/ld+json">
@@ -233,7 +234,7 @@ const MejorHostingChile2025 = () => {
       {/* Enhanced Product Schema for Top Provider */}
       <ProductSchema 
         name={`Hosting ${hostingProviders[0].name}`}
-        description={`El mejor hosting en Chile 2025 con ${hostingProviders[0].uptime} de uptime, velocidad ${hostingProviders[0].velocidad}, servidores en ${hostingProviders[0].datacenter}`}
+        description={`El mejor hosting en Chile ${CURRENT_YEAR} con ${hostingProviders[0].uptime} de uptime, velocidad ${hostingProviders[0].velocidad}, servidores en ${hostingProviders[0].datacenter}`}
         brand={hostingProviders[0].name}
         image={`https://eligetuhosting.cl${hostingProviders[0].logo}`}
         url={hostingProviders[0].url}
@@ -254,7 +255,7 @@ const MejorHostingChile2025 = () => {
 
       {/* ItemList Schema for Ranking */}
       <ItemListSchema 
-        name="Mejores Hosting Chile 2025 - Ranking Completo"
+        name={`Mejores Hosting Chile ${CURRENT_YEAR} - Ranking Completo`}
         description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas de uptime, velocidad y análisis de reclamos"
         items={hostingProviders.map(p => ({
           name: p.name,
@@ -319,7 +320,7 @@ const MejorHostingChile2025 = () => {
           {
             id: "review-1",
             author: "Juan Pérez",
-            datePublished: "2025-01-15",
+            datePublished: `${CURRENT_YEAR}-01-15`,
             ratingValue: 10,
             reviewBody: "Excelente servicio, llevo 3 años con ellos y nunca he tenido problemas. Soporte rápido y profesional.",
             title: "El mejor hosting que he probado"
@@ -327,7 +328,7 @@ const MejorHostingChile2025 = () => {
           {
             id: "review-2",
             author: "María González",
-            datePublished: "2025-01-10",
+            datePublished: `${CURRENT_YEAR}-01-10`,
             ratingValue: 9,
             reviewBody: "Muy buen uptime y velocidad. El precio se mantiene estable en renovación, algo difícil de encontrar.",
             title: "Relación calidad-precio excelente"
@@ -336,7 +337,7 @@ const MejorHostingChile2025 = () => {
       />
 
       <Navbar />
-      <SEOBreadcrumbs items={[{ name: 'Ranking', href: '/ranking' }]} pageName="Mejor hosting Chile 2025" />
+      <SEOBreadcrumbs items={[{ name: 'Ranking', href: '/ranking' }]} pageName={`Mejor hosting Chile ${CURRENT_YEAR}`} />
 
       <main className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -344,14 +345,14 @@ const MejorHostingChile2025 = () => {
           {/* Header */}
           <header className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-6 leading-tight">
-              ¿Cuál es el <span className="text-[#EF233C]">mejor hosting en Chile</span> en 2025?
+              ¿Cuál es el <span className="text-[#EF233C]">mejor hosting en Chile</span> en {CURRENT_YEAR}?
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
               Guía definitiva y comparativa basada en pruebas reales de velocidad, uptime y precios
             </p>
             <div className="flex flex-wrap justify-center gap-2 mb-6">
               <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                Actualizado Enero 2025
+                {getLastUpdatedText()}
               </Badge>
               <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                 Análisis Independiente
@@ -373,9 +374,9 @@ const MejorHostingChile2025 = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
-                  Después de analizar exhaustivamente <strong>más de 15 proveedores de hosting en Chile</strong> durante 2024-2025, 
+                  Después de analizar exhaustivamente <strong>más de 15 proveedores de hosting en Chile</strong> durante 2025-{CURRENT_YEAR}, 
                   evaluando criterios como uptime, velocidad de carga, calidad del soporte y <strong>transparencia en precios</strong>, 
-                  <strong className="text-[#EF233C]">HostingPlus.cl emerge como el mejor hosting Chile 2025</strong>.
+                  <strong className="text-[#EF233C]">HostingPlus.cl emerge como el mejor hosting Chile {CURRENT_YEAR}</strong>.
                 </p>
                 <p>
                   Con un impresionante <strong>99.98% de uptime verificado</strong>, tecnología LiteSpeed Enterprise, 
@@ -451,7 +452,7 @@ const MejorHostingChile2025 = () => {
               <CardContent className="space-y-3 text-gray-700">
                 <p>
                   Consulta nuestro dataset público con los factores y pesos usados en el estudio:
-                  <a href="/data/estudio-2025.json" className="text-[#EF233C] hover:underline ml-1" target="_blank" rel="noopener noreferrer">estudio-2025.json</a>
+                  <a href="/data/estudio-2026.json" className="text-[#EF233C] hover:underline ml-1" target="_blank" rel="noopener noreferrer">estudio-2026.json</a>
                 </p>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Reclamos y reputación: <a href="https://www.reclamos.cl" className="text-[#EF233C] hover:underline" target="_blank" rel="noopener noreferrer">Reclamos.cl</a></li>
@@ -466,7 +467,7 @@ const MejorHostingChile2025 = () => {
           {/* Tabla Comparativa */}
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-[#2B2D42] mb-8 text-center">
-              Comparativa: Top 5 Mejores Hosting Chile 2025
+              Comparativa: Top 5 Mejores Hosting Chile {CURRENT_YEAR}
             </h2>
             
             <div className="overflow-x-auto shadow-lg rounded-lg">
@@ -563,11 +564,11 @@ const MejorHostingChile2025 = () => {
             </div>
             
             <div className="mt-4 text-sm text-gray-600 space-y-2">
-              <p>* <strong>Precios de renovación</strong> mostrados para transparencia total. Datos actualizados a Enero 2025.</p>
+              <p>* <strong>Precios de renovación</strong> mostrados para transparencia total. Datos actualizados a {getLastUpdatedText().replace('Actualizado ', '')}.</p>
               <p>* <strong>Precios promocionales iniciales:</strong> EcoHosting $1.658/mes (primer año), HostGator desde $1.390/mes (36m, luego sube 144%)</p>
               <p>* <strong>Precios estables sin sorpresas:</strong> HostingPlus $3.469/mes (plan 36m), mismo precio en renovación</p>
               <p>* <strong>Ahorro vs competencia:</strong> HostingPlus ahorra $4.526/mes vs Hosting.cl, $689/mes vs PlanetaHosting</p>
-              <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (2020-2025)</p>
+              <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (2020-{CURRENT_YEAR})</p>
               <p>* Fuentes: Datos de velocidad verificados con <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">GTmetrix</a></p>
             </div>
           </section>
@@ -577,7 +578,7 @@ const MejorHostingChile2025 = () => {
             <Card className="border-l-4 border-l-[#EF233C] shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-[#2B2D42]">
-                  ¿Por qué HostingPlus.cl es el Mejor Hosting Chile 2025?
+                  ¿Por qué HostingPlus.cl es el Mejor Hosting Chile {CURRENT_YEAR}?
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -646,7 +647,7 @@ const MejorHostingChile2025 = () => {
                   <p className="text-sm text-gray-700">
                     <strong>Dato verificado:</strong> Según el monitoreo independiente realizado por 
                     <a href="https://uptimerobot.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline"> UptimeRobot</a> 
-                    durante 2024, HostingPlus.cl registró solo 1.7 horas de downtime en todo el año, 
+                    durante {CURRENT_YEAR - 1}, HostingPlus.cl registró solo 1.7 horas de downtime en todo el año,
                     estableciendo un nuevo récord para proveedores chilenos.
                   </p>
                 </div>
@@ -681,7 +682,7 @@ const MejorHostingChile2025 = () => {
             <Card className="bg-gradient-to-r from-[#EF233C] to-[#c41e3a] text-white shadow-xl">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-4">
-                  ¿Listo para contratar el mejor hosting Chile 2025?
+                  ¿Listo para contratar el mejor hosting Chile {CURRENT_YEAR}?
                 </h3>
                 <p className="text-lg mb-6 opacity-90">
                   Únete a miles de empresas que confían en HostingPlus.cl para su presencia web. 
@@ -720,4 +721,4 @@ const MejorHostingChile2025 = () => {
   );
 };
 
-export default MejorHostingChile2025;
+export default MejorHostingChile2026;

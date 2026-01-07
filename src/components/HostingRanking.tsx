@@ -174,7 +174,7 @@ const HostingRanking = () => {
         </div>
         
         <ItemListSchema 
-          name="Ranking Mejores Hosting Chile 2025"
+          name="Ranking Mejores Hosting Chile 2026"
           description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas técnicas de velocidad, uptime y soporte"
           items={getSchemaItems()}
           listType="ranking"
