@@ -77,13 +77,13 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label, u
 
 const Benchmark = () => {
   useEffect(() => {
-    document.title = "Benchmark de Hosting Chile 2025 | eligetuhosting.cl";
+    document.title = "Benchmark de Hosting Chile 2026 | eligetuhosting.cl";
   }, []);
 
   return (
     <>
       <Helmet>
-        <title>Benchmark Hosting Chile 2025 | EligeTuHosting.cl</title>
+        <title>Benchmark Hosting Chile 2026 | EligeTuHosting.cl</title>
         <meta 
           name="description" 
           content="Comparativa técnica y benchmark de los principales proveedores de hosting en Chile. Analizamos velocidad, uptime, seguridad y más." 
@@ -97,7 +97,7 @@ const Benchmark = () => {
         <section className="py-16 text-center">
           <div className="container mx-auto px-4">
             <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-4">
-              Benchmark de Hosting Chile 2025
+              Benchmark de Hosting Chile 2026
             </h1>
             <p className="text-lg text-[#555] max-w-2xl mx-auto">
               Análisis técnico detallado de los principales proveedores de hosting en Chile. 
@@ -113,7 +113,7 @@ const Benchmark = () => {
             <div className="max-w-3xl mx-auto">
               <p className="mb-4">
                 Nuestro benchmark se basa en mediciones reales realizadas durante un período de 3 meses 
-                (Enero - Marzo 2025) utilizando sitios web idénticos alojados en cada proveedor.
+                (Enero - Marzo 2026) utilizando sitios web idénticos alojados en cada proveedor.
               </p>
               <div className="grid md:grid-cols-2 gap-6 mt-8">
                 <div className="bg-gray-50 p-5 rounded-lg">

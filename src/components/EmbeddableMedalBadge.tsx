@@ -55,7 +55,7 @@ const EmbeddableMedalBadge = ({
   categoryName, 
   categoryIcon = '🏆',
   companyName,
-  year = '2025',
+  year = '2026',
   size = 'medium',
   className 
 }: EmbeddableMedalBadgeProps) => {

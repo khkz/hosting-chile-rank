@@ -31,7 +31,7 @@ const MedalBadge = ({
   position, 
   categoryName, 
   categoryIcon = '🏆',
-  year = '2025',
+  year = '2026',
   size = 'medium',
   showCategoryName = false,
   className 

@@ -58,7 +58,7 @@ export default function Certificaciones() {
   return (
     <>
       <DynamicMetaTags
-        title="Certificaciones de Hosting en Chile 2025"
+        title="Certificaciones de Hosting en Chile 2026"
         description="Descubre las empresas de hosting certificadas en Chile. Reconocimientos oficiales por excelencia en servicio, soporte, seguridad y más."
         keywords="certificaciones hosting chile, mejor hosting certificado, hosting premium chile, reconocimientos hosting"
       />
@@ -79,7 +79,7 @@ export default function Certificaciones() {
             <div className="text-center max-w-3xl mx-auto mt-8">
               <Award className="w-16 h-16 mx-auto mb-6 text-primary" />
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Certificaciones de Hosting Chile 2025
+                Certificaciones de Hosting Chile 2026
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
                 Reconocemos la excelencia de los mejores proveedores de hosting en Chile

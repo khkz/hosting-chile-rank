@@ -273,7 +273,7 @@ const RankingPage = () => {
   return (
     <>
       <Helmet>
-        <title>Ranking Hosting Chile 2025 | EligeTuHosting.cl</title>
+        <title>Ranking Hosting Chile 2026 | EligeTuHosting.cl</title>
         <meta name="description" content="Comparativa actualizada de los mejores hosting en Chile. Evaluamos velocidad, soporte local y seguridad para tu sitio web." />
         <link rel="canonical" href="https://eligetuhosting.cl/ranking" />
         <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/ranking" />
@@ -297,7 +297,7 @@ const RankingPage = () => {
       {/* Hero Section */}
       <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[40vh] md:min-h-[60vh]">
         <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
-          Ranking Hosting Chile 2025
+          Ranking Hosting Chile 2026
         </h1>
         <p className="text-sm md:text-base text-gray-600 max-w-lg mx-auto mb-8">
           Analizamos los mejores proveedores de hosting en Chile según velocidad, 
