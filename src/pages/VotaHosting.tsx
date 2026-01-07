@@ -75,7 +75,7 @@ const VotaHosting = () => {
       nombre: "Carlos Muñoz",
       calificacion: "5",
       comentario: "Increíble servicio. El soporte técnico respondió en menos de 5 minutos a mi consulta y logré solucionar un problema que tenía hace días. La velocidad de carga de mi sitio mejoró notablemente al migrar a ellos.",
-      fecha: "Mayo 2, 2025"
+      fecha: "Enero 7, 2026"
     },
     {
       id: 2,
@@ -83,7 +83,7 @@ const VotaHosting = () => {
       nombre: "Daniela Vargas",
       calificacion: "4",
       comentario: "Me encanta que usen energías renovables. El panel de control es muy intuitivo y todo funciona muy bien. El único inconveniente es que a veces el soporte tarda en responder los fines de semana.",
-      fecha: "Abril 28, 2025"
+      fecha: "Enero 5, 2026"
     },
     {
       id: 3,
@@ -91,7 +91,7 @@ const VotaHosting = () => {
       nombre: "Felipe Araya",
       calificacion: "5",
       comentario: "Relación precio/calidad inmejorable. Tengo mi tienda online con ellos y nunca he tenido problemas de disponibilidad. El servidor es rápido y tienen un excelente plan de precios.",
-      fecha: "Abril 25, 2025"
+      fecha: "Enero 3, 2026"
     }
   ]);
 

@@ -70,7 +70,7 @@ const defaultArticles: Record<string, RelatedArticle[]> = {
     {
       title: 'Ranking de Hosting',
       url: '/ranking',
-      description: 'Los mejores hostings de Chile 2025'
+      description: 'Los mejores hostings de Chile 2026'
     },
     {
       title: 'Guía de Migración',

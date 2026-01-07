@@ -102,13 +102,16 @@ function App() {
         <Route path="/guia-migrar-hosting" element={<GuiaMigrarHosting />} />
         <Route path="/guia-seguridad-web" element={<GuiaSeguridadWeb />} />
         <Route path="/guia-hosting-wordpress" element={<GuiaHostingWordPress />} />
-        <Route path="/guia-completa-elegir-hosting-chile-2025" element={<GuiaCompletaElegirHosting />} />
+        <Route path="/guia-completa-elegir-hosting-chile-2026" element={<GuiaCompletaElegirHosting />} />
+        <Route path="/guia-completa-elegir-hosting-chile-2025" element={<Navigate to="/guia-completa-elegir-hosting-chile-2026" replace />} />
         <Route path="/guia-completa-elegir-hosting-chile" element={<GuiaCompletaElegirHosting />} />
         <Route path="/errores-comunes-elegir-hosting" element={<ErroresComunesHosting />} />
         <Route path="/errores-comunes-hosting-chile" element={<ErroresComunesHosting />} />
-        <Route path="/mejor-hosting-wordpress-chile-2025" element={<MejorHostingWordPressChile />} />
+        <Route path="/mejor-hosting-wordpress-chile-2026" element={<MejorHostingWordPressChile />} />
+        <Route path="/mejor-hosting-wordpress-chile-2025" element={<Navigate to="/mejor-hosting-wordpress-chile-2026" replace />} />
         <Route path="/mejor-hosting-wordpress-chile" element={<MejorHostingWordPressChile />} />
-        <Route path="/mejor-hosting-ecommerce-chile-2025" element={<MejorHostingEcommerceChile />} />
+        <Route path="/mejor-hosting-ecommerce-chile-2026" element={<MejorHostingEcommerceChile />} />
+        <Route path="/mejor-hosting-ecommerce-chile-2025" element={<Navigate to="/mejor-hosting-ecommerce-chile-2026" replace />} />
         <Route path="/mejor-hosting-ecommerce-chile" element={<MejorHostingEcommerceChile />} />
         <Route path="/recursos-hosting-chile" element={<RecursosHosting />} />
         <Route path="/reseñas/:slug" element={<Resena />} />

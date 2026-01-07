@@ -36,7 +36,7 @@ export interface WikiTerm {
   title: string;
   shortDefinition: string;
   longDefinition?: string;
-  category: 'wordpress' | 'builders' | 'seo' | 'performance' | 'security' | 'woocommerce' | 'lms' | 'cms' | 'cdn' | 'infrastructure' | 'email' | 'devops' | 'migration' | 'analytics' | 'trends-2025' | 'hosting-fundamentals' | 'domains' | 'ssl-security';
+  category: 'wordpress' | 'builders' | 'seo' | 'performance' | 'security' | 'woocommerce' | 'lms' | 'cms' | 'cdn' | 'infrastructure' | 'email' | 'devops' | 'migration' | 'analytics' | 'trends-2026' | 'hosting-fundamentals' | 'domains' | 'ssl-security';
   cms: 'wordpress' | 'joomla' | 'moodle' | 'general' | 'drupal' | 'prestashop';
   tags: string[];
   level: 'basico' | 'medio' | 'avanzado';
@@ -127,8 +127,8 @@ export const wikiCategories: WikiCategory[] = [
     termCount: 2
   },
   {
-    id: 'trends-2025',
-    name: 'Tendencias 2025',
+    id: 'trends-2026',
+    name: 'Tendencias 2026',
     description: 'IA, nuevas tecnologías y el futuro del hosting',
     icon: '🚀',
     termCount: 12
@@ -1861,7 +1861,7 @@ add_action('wp_scheduled_backup_check', 'check_daily_backup');
 
 ## El problema del spam en Chile
 
-### **Estadísticas email Chile 2025**
+### **Estadísticas email Chile 2026**
 - 73% de emails marketing van a spam
 - Solo 15% de emails reach inbox sin autenticación
 - Pérdida promedio: $3.2M CLP anuales por mala deliverability
@@ -3111,7 +3111,7 @@ Ideal para tiendas que priorizan funcionalidad comercial sobre flexibilidad de c
 - Archivos históricos permanentes
 
 El futuro descentralizado de la web está aquí.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['web3', 'blockchain', 'ipfs', 'descentralizado', 'ens'],
     level: 'avanzado',
@@ -3159,8 +3159,8 @@ self.addEventListener('fetch', event => {
 - 💰 Menor costo que apps nativas
 - 🌐 Un solo desarrollo multiplataforma
 
-Las PWA son el estándar 2025 para experiencias móviles.`,
-    category: 'trends-2025',
+Las PWA son el estándar 2026 para experiencias móviles.`,
+    category: 'trends-2026',
     cms: 'general',
     tags: ['pwa', 'mobile', 'offline', 'service-workers', 'app-like'],
     level: 'medio',
@@ -3200,8 +3200,8 @@ Las PWA son el estándar 2025 para experiencias móviles.`,
 - 💰 Costos reducidos de hosting
 - 📈 Escalabilidad automática
 
-Tendencia dominante para sitios modernos en 2025.`,
-    category: 'trends-2025',
+Tendencia dominante para sitios modernos en 2026.`,
+    category: 'trends-2026',
     cms: 'general',
     tags: ['jamstack', 'static-site', 'nextjs', 'gatsby', 'performance'],
     level: 'avanzado',
@@ -3243,7 +3243,7 @@ Tendencia dominante para sitios modernos en 2025.`,
 - API caching inteligente
 
 El futuro del web performance está en el edge.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['edge-computing', 'cdn', 'latencia', 'performance', 'serverless'],
     level: 'avanzado',
@@ -3291,7 +3291,7 @@ function generate_ai_content($prompt) {
 \`\`\`
 
 Transformando la creación de contenido en 2025.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['ai', 'contenido', 'automatizacion', 'chatgpt', 'machine-learning'],
     level: 'medio',
@@ -3340,7 +3340,7 @@ export default function Productos({ productos }) {
 \`\`\`
 
 Esencial para sitios que necesitan SEO + interactividad.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['ssr', 'nextjs', 'seo', 'performance', 'react'],
     level: 'avanzado',
@@ -3397,7 +3397,7 @@ module.exports = {
 \`\`\`
 
 Ideal para equipos grandes y aplicaciones complejas.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['micro-frontends', 'arquitectura', 'escalabilidad', 'webpack', 'modular'],
     level: 'avanzado',
@@ -3457,7 +3457,7 @@ init().then(() => {
 \`\`\`
 
 El futuro del high-performance web computing.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['webassembly', 'wasm', 'performance', 'rust', 'native'],
     level: 'avanzado',
@@ -3505,7 +3505,7 @@ El futuro del high-performance web computing.`,
 - **AI optimization**: Recursos dinámicos
 
 El hosting del futuro es verde y eficiente.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['green-hosting', 'sustentabilidad', 'energia-renovable', 'carbono-neutral'],
     level: 'medio',
@@ -3566,7 +3566,7 @@ const productos = await client.request(\`
 \`\`\`
 
 El futuro del e-commerce es headless y omnicanal.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['headless-ecommerce', 'api-first', 'omnichannel', 'jamstack', 'performance'],
     level: 'avanzado',
@@ -3627,7 +3627,7 @@ El futuro del e-commerce es headless y omnicanal.`,
 - Local pack appearances
 
 La voz es el futuro de la búsqueda web.`,
-    category: 'trends-2025',
+    category: 'trends-2026',
     cms: 'general',
     tags: ['voice-search', 'seo', 'featured-snippets', 'conversational', 'alexa'],
     level: 'medio',
@@ -3686,8 +3686,8 @@ getTTFB(console.log);
 - **Lighthouse**: Auditoría completa
 - **Core Web Vitals Report**: Search Console
 
-CWV 2025 son más estrictos y determinantes para SEO.`,
-    category: 'trends-2025',
+CWV 2026 son más estrictos y determinantes para SEO.`,
+    category: 'trends-2026',
     cms: 'general',
     tags: ['core-web-vitals', 'performance', 'inp', 'lcp', 'google', 'seo'],
     level: 'medio',

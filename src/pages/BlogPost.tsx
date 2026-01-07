@@ -9,10 +9,10 @@ import { Separator } from '@/components/ui/separator';
 
 // Datos simulados de un post del blog
 const posts = {
-  'mejores-servidores-web-2025': {
-    title: 'Los 5 mejores servidores web en 2025',
+  'mejores-servidores-web-2026': {
+    title: 'Los 5 mejores servidores web en 2026',
     excerpt: 'Una comparativa detallada de los servidores web más eficientes y seguros para tu sitio. Analizamos LiteSpeed, Nginx, Apache y alternativas emergentes.',
-    date: '2 de mayo, 2025',
+    date: '7 de enero, 2026',
     author: 'Ana Martínez',
     authorPosition: 'Especialista en Infraestructura Web',
     authorImage: '/placeholder.svg',
@@ -20,7 +20,7 @@ const posts = {
     image: '/placeholder.svg',
     readTime: '8 min',
     content: `
-      <p>La elección del servidor web adecuado puede marcar una diferencia significativa en el rendimiento, la seguridad y la escalabilidad de tu sitio. En 2025, con el continuo crecimiento del tráfico web y las exigencias de los usuarios por experiencias rápidas y seguras, esta decisión es más importante que nunca.</p>
+      <p>La elección del servidor web adecuado puede marcar una diferencia significativa en el rendimiento, la seguridad y la escalabilidad de tu sitio. En 2026, con el continuo crecimiento del tráfico web y las exigencias de los usuarios por experiencias rápidas y seguras, esta decisión es más importante que nunca.</p>
       
       <p>En este artículo, analizaremos los 5 servidores web que están destacando este año, comparando sus características, ventajas y casos de uso ideales para ayudarte a tomar la mejor decisión para tu proyecto.</p>
       
@@ -58,7 +58,7 @@ const posts = {
       
       <h2>3. Apache HTTP Server</h2>
       
-      <p>El veterano Apache sigue siendo relevante en 2025, gracias a su continua evolución y su incomparable flexibilidad.</p>
+      <p>El veterano Apache sigue siendo relevante en 2026, gracias a su continua evolución y su incomparable flexibilidad.</p>
       
       <h3>Ventajas principales:</h3>
       
@@ -74,7 +74,7 @@ const posts = {
       
       <h2>4. OpenLiteSpeed</h2>
       
-      <p>La versión de código abierto de LiteSpeed ha ganado popularidad significativa en 2025, especialmente entre usuarios que buscan el rendimiento de LiteSpeed sin el costo de la versión Enterprise.</p>
+      <p>La versión de código abierto de LiteSpeed ha ganado popularidad significativa en 2026, especialmente entre usuarios que buscan el rendimiento de LiteSpeed sin el costo de la versión Enterprise.</p>
       
       <h3>Ventajas principales:</h3>
       
@@ -90,7 +90,7 @@ const posts = {
       
       <h2>5. Caddy</h2>
       
-      <p>Caddy ha emergido como una alternativa moderna y segura que está ganando terreno rápidamente en 2025.</p>
+      <p>Caddy ha emergido como una alternativa moderna y segura que está ganando terreno rápidamente en 2026.</p>
       
       <h3>Ventajas principales:</h3>
       
@@ -106,7 +106,7 @@ const posts = {
       
       <h2>Conclusión</h2>
       
-      <p>En 2025, la elección del servidor web depende en gran medida de tus necesidades específicas:</p>
+      <p>En 2026, la elección del servidor web depende en gran medida de tus necesidades específicas:</p>
       
       <ul>
         <li><strong>Para sitios WordPress o WooCommerce:</strong> LiteSpeed es la opción superior, con OpenLiteSpeed como alternativa económica.</li>
@@ -121,7 +121,7 @@ const posts = {
   'optimizacion-wordpress-hosting': {
     title: 'Cómo optimizar tu WordPress en cualquier hosting',
     excerpt: 'Guía paso a paso para mejorar el rendimiento de tu sitio WordPress independientemente del proveedor de hosting que utilices.',
-    date: '28 de abril, 2025',
+    date: '7 de enero, 2026',
     author: 'Carlos Vega',
     authorPosition: 'Desarrollador WordPress',
     authorImage: '/placeholder.svg',
@@ -300,7 +300,7 @@ const posts = {
   'default': {
     title: 'Artículo del blog',
     excerpt: 'Este es un artículo de nuestro blog sobre hosting y desarrollo web.',
-    date: '1 de mayo, 2025',
+    date: '7 de enero, 2026',
     author: 'Equipo eligetuhosting.cl',
     authorPosition: 'Especialistas en hosting',
     authorImage: '/placeholder.svg',
@@ -315,7 +315,7 @@ const posts = {
       <h2>Artículos recomendados</h2>
       
       <ul>
-        <li>Los 5 mejores servidores web en 2025</li>
+        <li>Los 5 mejores servidores web en 2026</li>
         <li>Cómo optimizar tu WordPress en cualquier hosting</li>
         <li>Hosting ecológico: La tendencia que está cambiando la industria</li>
       </ul>
@@ -326,22 +326,22 @@ const posts = {
 // Artículos relacionados (simulados)
 const relatedPosts = [
   {
-    slug: 'mejores-servidores-web-2025',
-    title: 'Los 5 mejores servidores web en 2025',
+    slug: 'mejores-servidores-web-2026',
+    title: 'Los 5 mejores servidores web en 2026',
     image: '/placeholder.svg',
-    date: '2 de mayo, 2025'
+    date: '7 de enero, 2026'
   },
   {
     slug: 'optimizacion-wordpress-hosting',
     title: 'Cómo optimizar tu WordPress en cualquier hosting',
     image: '/placeholder.svg',
-    date: '28 de abril, 2025'
+    date: '7 de enero, 2026'
   },
   {
     slug: 'hosting-ecologico-tendencia',
     title: 'Hosting ecológico: La tendencia que está cambiando la industria',
     image: '/placeholder.svg',
-    date: '15 de abril, 2025'
+    date: '5 de enero, 2026'
   }
 ];
 
