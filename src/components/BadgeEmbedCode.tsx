@@ -37,14 +37,14 @@ export default function BadgeEmbedCode({ certificationId, categoryName, position
    rel="nofollow sponsored" 
    title="Directorio Hosting Chile Certificado - EligeTuHosting.cl">
   <img src="badge-eligetuhosting.png" 
-       alt="Certificado #${position} ${categoryName} Chile 2025 | Mejor Hosting Chile - EligeTuHosting.cl"
+       alt="Certificado #${position} ${categoryName} Chile 2026 | Mejor Hosting Chile - EligeTuHosting.cl"
        title="Certificación ${categoryName} por EligeTuHosting.cl"
        width="${pixels}" 
        height="${pixels}"
        loading="lazy" />
 </a>`;
 
-  const markdownCode = `[![Certificado #${position} ${categoryName} Chile 2025 | Mejor Hosting Chile](badge-eligetuhosting.png)](https://eligetuhosting.cl/directorio-hosting-chile "Directorio Hosting Chile Certificado")`;
+  const markdownCode = `[![Certificado #${position} ${categoryName} Chile 2026 | Mejor Hosting Chile](badge-eligetuhosting.png)](https://eligetuhosting.cl/directorio-hosting-chile "Directorio Hosting Chile Certificado")`;
 
   const handleCopy = (code: string, type: string) => {
     navigator.clipboard.writeText(code);

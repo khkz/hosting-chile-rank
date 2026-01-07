@@ -103,7 +103,7 @@ const CatalogoDetalle = () => {
     <>
       {/* SEO Meta Tags */}
       <DynamicMetaTags 
-        title={`${company.name} ⭐ ${(company.overall_rating || 0).toFixed(1)}/10 - Review Completa 2025`}
+        title={`${company.name} ⭐ ${(company.overall_rating || 0).toFixed(1)}/10 - Review Completa 2026`}
         description={`${(company.description || '').slice(0, 140)}... Desde $${minPrice.toLocaleString('es-CL')}/mes. Hosting verificado en Chile. Opiniones reales y actualizadas.`}
         canonical={`https://eligetuhosting.cl/catalogo/${slug}`}
         ogImage={company.logo_url ? `https://eligetuhosting.cl${company.logo_url}` : undefined}
