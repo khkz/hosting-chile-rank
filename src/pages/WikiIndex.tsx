@@ -40,7 +40,7 @@ const WikiIndex: React.FC = () => {
     setSelectedCategory(null);
   };
 
-  const trendingTerms = wikiTerms.filter(term => term.category === 'trends-2025').slice(0, 4);
+  const trendingTerms = wikiTerms.filter(term => term.category === 'trends-2026').slice(0, 4);
   const performanceTerms = wikiTerms.filter(term => term.category === 'performance').slice(0, 4);
 
   const breadcrumbItems = [
@@ -50,10 +50,10 @@ const WikiIndex: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Wiki Hosting 2025 | EligeTuHosting.cl</title>
+        <title>Wiki Hosting 2026 | EligeTuHosting.cl</title>
         <meta 
           name="description" 
-          content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2025. Guías técnicas para elegir el mejor hosting en Chile." 
+          content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026. Guías técnicas para elegir el mejor hosting en Chile." 
         />
         <meta name="keywords" content="wiki hosting, wordpress, moodle, joomla, elementor, woocommerce, litespeed, cache, seguridad, hosting chile" />
         <link rel="canonical" href="https://hostingchile.net/wiki" />
@@ -100,7 +100,7 @@ const WikiIndex: React.FC = () => {
                 Glosario Completo de Hosting
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Todo sobre WordPress, Moodle, Joomla, Elementor, WooCommerce y las últimas tendencias tecnológicas 2025. 
+                Todo sobre WordPress, Moodle, Joomla, Elementor, WooCommerce y las últimas tendencias tecnológicas 2026. 
                 Encuentra el hosting perfecto para cada tecnología.
               </p>
             </div>
@@ -156,12 +156,12 @@ const WikiIndex: React.FC = () => {
               </section>
             )}
 
-            {/* Tendencias 2025 (si no hay búsqueda activa) */}
+            {/* Tendencias 2026 (si no hay búsqueda activa) */}
             {searchResults.length === wikiTerms.length && !selectedCategory && (
               <section className="space-y-6">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
-                  <h2 className="text-2xl font-bold">Tendencias 2025</h2>
+                  <h2 className="text-2xl font-bold">Tendencias 2026</h2>
                   <Badge variant="default">Nuevo</Badge>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

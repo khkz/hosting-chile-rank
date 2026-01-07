@@ -126,13 +126,13 @@ const GuiaCompletaElegirHosting = () => {
   return (
     <>
       <DynamicMetaTags
-        title="Guía Completa para Elegir Hosting en Chile 2025"
+        title="Guía Completa para Elegir Hosting en Chile 2026"
         description="Guía paso a paso con checklist, errores comunes a evitar y recomendaciones de expertos para elegir el mejor hosting para tu sitio web en Chile."
         keywords="guía elegir hosting, cómo elegir hosting chile, checklist hosting, errores hosting"
       />
       
       <HowToSchema
-        name="Cómo Elegir el Mejor Hosting en Chile - Guía Completa 2025"
+        name="Cómo Elegir el Mejor Hosting en Chile - Guía Completa 2026"
         description="Guía paso a paso para seleccionar el hosting ideal según tus necesidades, presupuesto y objetivos de negocio en Chile."
         totalTime="PT20M"
         steps={steps}
@@ -148,7 +148,7 @@ const GuiaCompletaElegirHosting = () => {
           {/* Header */}
           <header className="max-w-4xl mx-auto text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Guía Completa para Elegir Hosting en Chile 2025
+              Guía Completa para Elegir Hosting en Chile 2026
             </h1>
             <p className="text-xl text-muted-foreground mb-4">
               Todo lo que necesitas saber para tomar la decisión correcta
@@ -159,7 +159,7 @@ const GuiaCompletaElegirHosting = () => {
                 Lectura: 20 min
               </span>
               <span>•</span>
-              <span>Actualizado: Enero 2025</span>
+              <span>Actualizado: Enero 2026</span>
             </div>
           </header>
 

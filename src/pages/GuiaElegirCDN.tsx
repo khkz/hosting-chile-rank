@@ -10,7 +10,7 @@ const GuiaElegirCDN = () => {
   return (
     <>
       <Helmet>
-        <title>Guía CDN Chile 2025 | EligeTuHosting.cl</title>
+        <title>Guía CDN Chile 2026 | EligeTuHosting.cl</title>
         <meta name="description" content="Guía completa para elegir el mejor CDN (Content Delivery Network) en Chile. Mejora la velocidad de carga y optimiza el rendimiento de tu sitio web." />
       </Helmet>
       

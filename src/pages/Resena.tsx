@@ -207,7 +207,7 @@ const Resena = () => {
               reviewBody: hosting.description,
               reviewRating: { "@type": "Rating", ratingValue: hosting.rating, bestRating: 10 },
               author: { "@type": "Organization", name: "eligetuhosting.cl" },
-              datePublished: "2025-01-01"
+              datePublished: "2026-01-01"
             },
             aggregateRating: { "@type": "AggregateRating", ratingValue: hosting.rating, bestRating: 10, ratingCount: 1 },
             dateModified: new Date().toISOString().slice(0,10)

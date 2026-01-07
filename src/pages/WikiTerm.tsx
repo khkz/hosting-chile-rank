@@ -68,8 +68,8 @@ const WikiTerm: React.FC = () => {
                 "headline": term.title,
                 "description": term.shortDefinition,
                 "url": `https://eligetuhosting.cl/wiki/${term.slug}`,
-                "datePublished": term.lastUpdated || "2025-01-01",
-                "dateModified": term.lastUpdated || "2025-01-01",
+                "datePublished": term.lastUpdated || "2026-01-01",
+                "dateModified": term.lastUpdated || "2026-01-01",
                 "author": {
                   "@type": "Organization",
                   "name": "EligeTuHosting.cl"
