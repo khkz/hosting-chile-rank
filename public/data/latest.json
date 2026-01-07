@@ -1,6 +1,10 @@
 {
-  "updated": "2026-01-07T07:21:07.062Z",
+  "updated": "2026-01-07T08:23:29.017Z",
   "domains": [
+    {
+      "d": "mamabanquera.cl",
+      "date": "2026-01-07T05:17:20Z"
+    },
     {
       "d": "henrymorgan.cl",
       "date": "2026-01-07T03:30:53Z"
@@ -2336,10 +2340,6 @@
     {
       "d": "mineslot.cl",
       "date": "2026-01-06T06:12:57Z"
-    },
-    {
-      "d": "grupoinsomnio.cl",
-      "date": "2026-01-06T04:30:45Z"
     }
   ]
 }
