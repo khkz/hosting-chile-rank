@@ -77,7 +77,7 @@ const RightRailOffer: React.FC<RightRailOfferProps> = ({
       <Card className="sticky top-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
         <CardHeader className="text-center pb-3">
           <Badge variant="default" className="self-center mb-2">
-            #1 Ranking Hosting Chile 2025
+            #1 Ranking Hosting Chile 2026
           </Badge>
           <CardTitle className="text-xl">¿Necesitas hosting rápido?</CardTitle>
           <div className="text-3xl font-bold text-primary">WordPress Turbo</div>

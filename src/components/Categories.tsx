@@ -7,9 +7,9 @@ import { Card } from '@/components/ui/card';
 const Categories = () => {
   const categoryData = [
     {
-      title: "Mejor Hosting 2025",
+      title: "Mejor Hosting 2026",
       icon: <Star className="h-8 w-8 text-yellow-600" />,
-      href: "/mejor-hosting-chile-2025",
+      href: "/mejor-hosting-chile-2026",
       featured: true
     },
     {
@@ -52,7 +52,7 @@ const Categories = () => {
                 {category.title}
               </h3>
               {category.featured && (
-                <p className="text-xs text-[#EF233C] mt-1 font-medium">Guía actualizada 2025</p>
+                <p className="text-xs text-[#EF233C] mt-1 font-medium">Guía actualizada 2026</p>
               )}
             </Card>
           </Link>

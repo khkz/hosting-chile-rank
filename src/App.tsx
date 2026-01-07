@@ -33,7 +33,7 @@ import Resena from './pages/Resena';
 import Catalogo from './pages/Catalogo';
 import CatalogoDetalle from './pages/CatalogoDetalle';
 import Benchmark from './pages/Benchmark';
-import MejorHostingChile2025 from './pages/MejorHostingChile2025';
+import MejorHostingChile2026 from './pages/MejorHostingChile2026';
 import Sitemap from './pages/Sitemap';
 import NotFound from './pages/NotFound';
 import TCOCalculatorPage from './pages/TCOCalculatorPage';
@@ -116,8 +116,9 @@ function App() {
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
-        <Route path="/mejor-hosting-chile-2025" element={<MejorHostingChile2025 />} />
-        <Route path="/mejor-hosting-chile" element={<Navigate to="/mejor-hosting-chile-2025" replace />} />
+        <Route path="/mejor-hosting-chile-2026" element={<MejorHostingChile2026 />} />
+        <Route path="/mejor-hosting-chile-2025" element={<Navigate to="/mejor-hosting-chile-2026" replace />} />
+        <Route path="/mejor-hosting-chile" element={<Navigate to="/mejor-hosting-chile-2026" replace />} />
         <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
         <Route path="/acerca-de" element={<AcercaDe />} />
         <Route path="/auth" element={<Auth />} />

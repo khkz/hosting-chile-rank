@@ -39,10 +39,10 @@ const Index = () => {
       
       {/* SEO Meta Tags */}
       <DynamicMetaTags
-        title="Mejor Hosting Chile 2025"
-        description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2025 con ⭐ 4.8/5 (1,247 opiniones) y cotización gratis."
+        title="Mejor Hosting Chile 2026"
+        description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2026 con ⭐ 4.8/5 (1,247 opiniones) y cotización gratis."
         canonical="https://eligetuhosting.cl"
-        keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2025"
+        keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2026"
       />
       
       {/* Schema Markup - Aggregate Rating */}
@@ -59,7 +59,7 @@ const Index = () => {
       {/* Schema Markup - FAQ */}
       <SEOFAQSchema faqs={[
         {
-          question: "¿Cuál es el mejor hosting en Chile 2025?",
+          question: "¿Cuál es el mejor hosting en Chile 2026?",
           answer: "Según nuestras pruebas independientes, los mejores hostings de Chile incluyen HostingPlus (9.9/10), Ecohosting (9.8/10) y 1Hosting (9.5/10), destacando en velocidad LiteSpeed, soporte 24/7 y precios competitivos desde $3.469/mes."
         },
         {
