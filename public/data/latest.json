@@ -1,6 +1,22 @@
 {
-  "updated": "2026-01-11T03:45:20.967Z",
+  "updated": "2026-01-11T04:42:48.350Z",
   "domains": [
+    {
+      "d": "abogadoconcepcion.cl",
+      "date": "2026-01-11T01:35:54Z"
+    },
+    {
+      "d": "mundomania.cl",
+      "date": "2026-01-11T01:16:27Z"
+    },
+    {
+      "d": "aranian.cl",
+      "date": "2026-01-11T01:11:07Z"
+    },
+    {
+      "d": "barky.cl",
+      "date": "2026-01-11T00:49:14Z"
+    },
     {
       "d": "maquenrro.cl",
       "date": "2026-01-11T00:33:59Z"
@@ -1172,46 +1188,6 @@
     {
       "d": "entity.cl",
       "date": "2026-01-10T02:02:26Z"
-    },
-    {
-      "d": "pehuenpulli.cl",
-      "date": "2026-01-10T01:30:20Z"
-    },
-    {
-      "d": "pewenpulli.cl",
-      "date": "2026-01-10T01:30:19Z"
-    },
-    {
-      "d": "g3pro.cl",
-      "date": "2026-01-10T01:19:32Z"
-    },
-    {
-      "d": "languagecenterchile.cl",
-      "date": "2026-01-10T01:18:08Z"
-    },
-    {
-      "d": "huevosdonpio.cl",
-      "date": "2026-01-10T01:00:35Z"
-    },
-    {
-      "d": "tiendaquicu.cl",
-      "date": "2026-01-10T00:54:30Z"
-    },
-    {
-      "d": "quicu.cl",
-      "date": "2026-01-10T00:52:55Z"
-    },
-    {
-      "d": "rippling.cl",
-      "date": "2026-01-10T00:52:31Z"
-    },
-    {
-      "d": "huggingface.cl",
-      "date": "2026-01-10T00:52:31Z"
-    },
-    {
-      "d": "chorus.cl",
-      "date": "2026-01-10T00:52:30Z"
     }
   ]
 }
