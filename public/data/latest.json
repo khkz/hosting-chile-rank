@@ -1,6 +1,14 @@
 {
-  "updated": "2026-01-18T04:37:47.707Z",
+  "updated": "2026-01-18T05:19:28.254Z",
   "domains": [
+    {
+      "d": "rtr.cl",
+      "date": "2026-01-18T01:52:46Z"
+    },
+    {
+      "d": "revision-tecnica-rechazada.cl",
+      "date": "2026-01-18T01:47:22Z"
+    },
     {
       "d": "laboratorioac.cl",
       "date": "2026-01-18T01:35:43Z"
@@ -1296,10 +1304,6 @@
     {
       "d": "grupoeduca.cl",
       "date": "2026-01-17T02:21:26Z"
-    },
-    {
-      "d": "blackber.cl",
-      "date": "2026-01-17T01:44:04Z"
     }
   ]
 }
