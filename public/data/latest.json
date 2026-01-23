@@ -1,6 +1,14 @@
 {
-  "updated": "2026-01-23T06:27:07.581Z",
+  "updated": "2026-01-23T07:21:11.182Z",
   "domains": [
+    {
+      "d": "cerkapp.cl",
+      "date": "2026-01-23T04:18:49Z"
+    },
+    {
+      "d": "electroenergiastalca.cl",
+      "date": "2026-01-23T03:33:14Z"
+    },
     {
       "d": "labrocha.cl",
       "date": "2026-01-23T02:44:57Z"
@@ -2216,10 +2224,6 @@
     {
       "d": "crazyfamily.cl",
       "date": "2026-01-22T04:35:52Z"
-    },
-    {
-      "d": "xiramed.cl",
-      "date": "2026-01-22T03:34:32Z"
     }
   ]
 }
