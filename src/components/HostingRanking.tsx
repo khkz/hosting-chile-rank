@@ -334,7 +334,7 @@ const HostingRanking = () => {
                   <AvailabilityBadge providerName={sortedHostingData[0].name} offerType="trial" />
                 </div>
                 
-                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16 relative">
+                <div className="p-4 md:p-6 lg:p-8 pt-24 md:pt-28 relative">
                   {/* Header */}
                   <div className="text-center mb-4 md:mb-6">
                     <h3 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">
