@@ -60,7 +60,7 @@ const Hero = () => {
         <img 
           src="/images/hero-person.png"
           alt="Persona eligiendo el mejor hosting para su proyecto"
-          className="absolute right-0 top-0 bottom-0 w-[60%] h-full object-cover object-[70%_center]"
+          className="absolute right-0 top-0 bottom-0 w-[70%] lg:w-[60%] h-full object-cover object-[70%_center]"
           loading="eager"
         />
         
@@ -137,14 +137,14 @@ const Hero = () => {
             <div className="mt-8">
               <Button 
                 asChild 
-                className="cta-primary px-10 py-5 text-lg rounded-xl font-poppins font-semibold"
+                className="cta-primary px-10 py-5 text-lg rounded-xl font-poppins font-semibold shadow-lg hover:shadow-xl animate-pulse-subtle hover:animate-none min-h-[44px] touch-manipulation"
               >
                 <Link to="/cotiza-hosting">
                   Empieza ahora gratis
                   <span className="ml-2">→</span>
                 </Link>
               </Button>
-              <p className="text-sm text-gray-500 mt-3">
+              <p className="text-sm text-gray-600 mt-3">
                 ✓ Gratis y sin compromiso ✓ Análisis honesto
               </p>
             </div>

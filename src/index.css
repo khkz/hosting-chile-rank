@@ -103,8 +103,8 @@
   }
   
   /* Improve accessibility */
-  a:focus, button:focus, input:focus, textarea:focus, select:focus {
-    @apply outline-none ring-2 ring-accent ring-offset-2;
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
   }
   
   /* Improve animations */

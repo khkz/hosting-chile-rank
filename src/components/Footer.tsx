@@ -99,10 +99,10 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
             <div className="text-center md:text-left">
-              <p className="text-gray-400">
+              <p className="text-gray-300">
                 © {currentYear} eligetuhosting.cl | Algunos enlaces pueden generar una comisión sin costo para ti.
               </p>
-              <p className="text-gray-500 mt-1">
+              <p className="text-gray-400 mt-1">
                 Puntajes basados en métricas públicas y pruebas internas verificables.
               </p>
             </div>
