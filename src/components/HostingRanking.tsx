@@ -321,7 +321,7 @@ const HostingRanking = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#EF233C]/5 to-transparent"></div>
                 
                 {/* Badges */}
-                <div className="absolute top-3 md:top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
+                <div className="absolute -top-3 md:-top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
                   {sortedHostingData[0].badges?.map((badge, idx) => (
                     <span key={idx} className="px-2 md:px-3 py-0.5 md:py-1 bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-[10px] md:text-xs font-medium rounded-full shadow-lg">
                       {badge}
