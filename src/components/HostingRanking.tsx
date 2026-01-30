@@ -218,9 +218,9 @@ const HostingRanking = () => {
                 </div>
               </div>
               
-              <div className="relative bg-white border-2 border-gray-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                {/* Badges */}
-                <div className="absolute top-3 md:top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
+              <div className="relative bg-white border-2 border-gray-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+                {/* Badges - positioned outside the card */}
+                <div className="absolute -top-3 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-20">
                   {sortedHostingData[1].badges?.map((badge, idx) => (
                     <span key={idx} className="px-2 py-0.5 md:py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-[10px] md:text-xs font-medium rounded-full">
                       {badge}
@@ -414,9 +414,9 @@ const HostingRanking = () => {
                 </div>
               </div>
               
-              <div className="relative bg-white border-2 border-amber-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                {/* Badges */}
-                <div className="absolute top-3 md:top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
+              <div className="relative bg-white border-2 border-amber-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+                {/* Badges - positioned outside the card */}
+                <div className="absolute -top-3 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-20">
                   {sortedHostingData[2].badges?.map((badge, idx) => (
                     <span key={idx} className="px-2 py-0.5 md:py-1 bg-gradient-to-r from-amber-100 to-orange-200 text-amber-700 text-[10px] md:text-xs font-medium rounded-full">
                       {badge}
