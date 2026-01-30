@@ -93,16 +93,16 @@ const Testimonial = () => {
           </h3>
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
             <div className="group">
-              <img src="/logo-hostingplus-official.png" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="HostingPlus" />
+              <img src="/logo-hostingplus-official.png" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de HostingPlus - Hosting #1 en Chile" />
             </div>
             <div className="group">
-              <img src="/logo-ecohosting-new.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="EcoHosting" />
+              <img src="/logo-ecohosting-new.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de EcoHosting - Hosting ecológico en Chile" />
             </div>
             <div className="group">
-              <img src="/logo-hostgator.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="HostGator" />
+              <img src="/logo-hostgator.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de HostGator Chile - 12 años de experiencia" />
             </div>
             <div className="group">
-              <img src="/logo-godaddy.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="GoDaddy" />
+              <img src="/logo-godaddy.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de GoDaddy - Proveedor internacional de hosting" />
             </div>
           </div>
         </div>

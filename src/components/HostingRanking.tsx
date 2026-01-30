@@ -295,7 +295,7 @@ const HostingRanking = () => {
             </div>
             
             {/* First Place - Winner */}
-            <div className="order-1 md:order-2 w-full md:w-1/3 z-10">
+            <div className="order-1 md:order-2 w-full md:w-1/3 z-10 mb-8 md:mb-0">
               <div className="relative text-center pb-6">
                 <div className="inline-flex items-center justify-center">
                   <div className="relative">
@@ -392,7 +392,7 @@ const HostingRanking = () => {
                       </a>
                     </Button>
                     {sortedHostingData[0].ctaMicroCopy && (
-                      <p className="text-xs text-center text-white/80">
+                      <p className="text-xs text-center text-muted-foreground">
                         {sortedHostingData[0].ctaMicroCopy}
                       </p>
                     )}
@@ -424,18 +424,19 @@ const HostingRanking = () => {
                   ))}
                 </div>
                 
-                {/* Availability Badge */}
-                <div className="absolute top-14 md:top-16 left-3 md:left-4 z-10">
-                  <AvailabilityBadge providerName={sortedHostingData[2].name} offerType="migration" />
-                </div>
-                
-                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16">
+                <div className="p-4 md:p-6 lg:p-8 pt-8 md:pt-10">
                   {/* Header */}
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-bold mb-2">
                       <span className={sortedHostingData[2].displayName.firstColor}>{sortedHostingData[2].displayName.first}</span>
                       <span className={sortedHostingData[2].displayName.secondColor}>{sortedHostingData[2].displayName.second}</span>
                     </h3>
+                    
+                    {/* AvailabilityBadge dentro del flujo */}
+                    <div className="flex justify-center mb-3">
+                      <AvailabilityBadge providerName={sortedHostingData[2].name} offerType="migration" />
+                    </div>
+                    
                     <div className="flex items-center justify-center gap-2 mb-4">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (

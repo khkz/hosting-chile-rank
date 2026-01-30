@@ -66,8 +66,8 @@ const SocialProofFeed = () => {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-24 md:bottom-6 left-4 md:left-6 z-30 max-w-sm">
-      <Card className="bg-white border border-gray-200 shadow-md p-3 animate-fade-in">
+    <div className="fixed bottom-28 md:bottom-6 left-4 md:left-6 z-30 max-w-xs md:max-w-sm">
+      <Card className="bg-white/95 backdrop-blur-sm border border-gray-100 shadow-sm p-2.5 animate-fade-in">
         <div className="flex items-start gap-3">
           <div className="bg-gray-100 rounded-full p-2 mt-0.5">
             <Users className="w-4 h-4 text-gray-600" />

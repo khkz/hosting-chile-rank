@@ -136,7 +136,7 @@ const HostingQuiz = () => {
                       setProjectType(option.value as ProjectType);
                       setStep(2);
                     }}
-                    className="p-6 border-2 border-gray-200 rounded-xl hover:border-brand-red hover:bg-brand-red/5 transition-all text-center group"
+                    className="p-6 border-2 border-gray-200 rounded-xl hover:border-brand-red hover:bg-brand-red/5 transition-all text-center group active:scale-95 min-h-[44px] touch-manipulation"
                   >
                     <div className="text-4xl mb-3">{option.icon}</div>
                     <div className="font-semibold text-gray-800 group-hover:text-brand-red transition-colors">
@@ -166,7 +166,7 @@ const HostingQuiz = () => {
                       setTrafficLevel(option.value as TrafficLevel);
                       setStep(3);
                     }}
-                    className="w-full p-5 border-2 border-gray-200 rounded-xl hover:border-brand-red hover:bg-brand-red/5 transition-all text-left group"
+                    className="w-full p-5 border-2 border-gray-200 rounded-xl hover:border-brand-red hover:bg-brand-red/5 transition-all text-left group active:scale-[0.98] min-h-[44px] touch-manipulation"
                   >
                     <div className="font-semibold text-gray-800 group-hover:text-brand-red transition-colors">
                       {option.label}
@@ -202,7 +202,7 @@ const HostingQuiz = () => {
                       setBudget(option.value as Budget);
                       setStep('result');
                     }}
-                    className="w-full p-5 border-2 border-gray-200 rounded-xl hover:border-brand-red hover:bg-brand-red/5 transition-all text-left group"
+                    className="w-full p-5 border-2 border-gray-200 rounded-xl hover:border-brand-red hover:bg-brand-red/5 transition-all text-left group active:scale-[0.98] min-h-[44px] touch-manipulation"
                   >
                     <div className="font-semibold text-gray-800 group-hover:text-brand-red transition-colors">
                       {option.label}

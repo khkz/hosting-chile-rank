@@ -17,9 +17,9 @@ const Migration = () => {
         </div>
         <Button 
           asChild
-          className="cta-tertiary"
+          className="cta-tertiary min-h-[44px] touch-manipulation"
         >
-          <Link to="/cotiza-tu-hosting">Solicitar migración</Link>
+          <Link to="/cotiza-hosting">Solicitar migración</Link>
         </Button>
       </div>
     </section>
