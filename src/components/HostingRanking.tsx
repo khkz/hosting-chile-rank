@@ -316,12 +316,12 @@ const HostingRanking = () => {
                 )}
               </div>
               
-              <div className={`relative bg-white border-4 ${sortedHostingData[0].borderColor} rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500`}>
+              <div className={`relative bg-white border-4 ${sortedHostingData[0].borderColor} rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500`}>
                 {/* Winner Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#EF233C]/5 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#EF233C]/5 to-transparent rounded-3xl"></div>
                 
-                {/* Badges */}
-                <div className="absolute -top-3 md:-top-4 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-10">
+                {/* Badges - positioned outside the card */}
+                <div className="absolute -top-3 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-20">
                   {sortedHostingData[0].badges?.map((badge, idx) => (
                     <span key={idx} className="px-2 md:px-3 py-0.5 md:py-1 bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-[10px] md:text-xs font-medium rounded-full shadow-lg">
                       {badge}
