@@ -329,18 +329,19 @@ const HostingRanking = () => {
                   ))}
                 </div>
                 
-                {/* Availability Badge */}
-                <div className="absolute top-14 md:top-16 left-3 md:left-4 z-10">
-                  <AvailabilityBadge providerName={sortedHostingData[0].name} offerType="trial" />
-                </div>
-                
-                <div className="p-4 md:p-6 lg:p-8 pt-24 md:pt-28 relative">
+                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-14 relative">
                   {/* Header */}
                   <div className="text-center mb-4 md:mb-6">
                     <h3 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">
                       <span className={sortedHostingData[0].displayName.firstColor}>{sortedHostingData[0].displayName.first}</span>
                       <span className={sortedHostingData[0].displayName.secondColor}>{sortedHostingData[0].displayName.second}</span>
                     </h3>
+                    
+                    {/* AvailabilityBadge dentro del flujo */}
+                    <div className="flex justify-center mb-3">
+                      <AvailabilityBadge providerName={sortedHostingData[0].name} offerType="trial" />
+                    </div>
+                    
                     <div className="flex items-center justify-center gap-2 mb-4">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
