@@ -11,10 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ScoreBadge } from "./ScoreBadge";
 import { AnalyzeButton } from "./AnalyzeButton";
 import { PurchaseDialog } from "./PurchaseDialog";
-import { Eye, Trash2, Clock, CheckCircle, XCircle, ShoppingBag, AlertCircle } from "lucide-react";
+import { Eye, Trash2, Clock, CheckCircle, XCircle, ShoppingBag, AlertCircle, Camera, Globe } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
@@ -34,6 +35,11 @@ interface DomainOpportunity {
   estimated_value: number | null;
   detected_at: string | null;
   analyzed_at: string | null;
+  wayback_snapshots: number | null;
+  wayback_first_seen: string | null;
+  wayback_last_seen: string | null;
+  wayback_content_type: string | null;
+  had_website: boolean | null;
 }
 
 const statusConfig: Record<DomainOpportunityStatus, { label: string; icon: React.ReactNode; variant: "default" | "secondary" | "destructive" | "outline" }> = {
@@ -54,7 +60,7 @@ export function OpportunitiesTable() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("domain_opportunities")
-        .select("*")
+        .select("id, domain_name, tld, source, expiration_date, status, ai_score, ai_category, ai_rationale, estimated_value, detected_at, analyzed_at, wayback_snapshots, wayback_first_seen, wayback_last_seen, wayback_content_type, had_website")
         .order("ai_score", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false });
 
@@ -116,60 +122,86 @@ export function OpportunitiesTable() {
   }
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Dominio</TableHead>
-            <TableHead>Score IA</TableHead>
-            <TableHead>Categoría</TableHead>
-            <TableHead>Valor Est.</TableHead>
-            <TableHead>Estado</TableHead>
-            <TableHead>Detectado</TableHead>
-            <TableHead className="text-right">Acciones</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {opportunities.map((opp) => {
-            const status = statusConfig[opp.status];
-            return (
-              <TableRow key={opp.id}>
-                <TableCell className="font-medium">
-                  {opp.domain_name}
-                  {opp.source && (
-                    <span className="text-xs text-muted-foreground ml-2">
-                      ({opp.source})
-                    </span>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <ScoreBadge score={opp.ai_score} />
-                </TableCell>
-                <TableCell>
-                  {opp.ai_category ? (
-                    <Badge variant="outline">{opp.ai_category}</Badge>
-                  ) : (
-                    <span className="text-muted-foreground">-</span>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {opp.estimated_value ? (
-                    formatCurrency(opp.estimated_value)
-                  ) : (
-                    <span className="text-muted-foreground">-</span>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Badge variant={status.variant} className="gap-1">
-                    {status.icon}
-                    {status.label}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  {opp.detected_at
-                    ? format(new Date(opp.detected_at), "dd MMM yyyy", { locale: es })
-                    : "-"}
-                </TableCell>
+    <TooltipProvider>
+      <div className="rounded-md border overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Dominio</TableHead>
+              <TableHead>Score</TableHead>
+              <TableHead>Wayback</TableHead>
+              <TableHead>Categoría</TableHead>
+              <TableHead>Valor Est.</TableHead>
+              <TableHead>Estado</TableHead>
+              <TableHead className="text-right">Acciones</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {opportunities.map((opp) => {
+              const status = statusConfig[opp.status];
+              return (
+                <TableRow key={opp.id}>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center gap-2">
+                      {opp.had_website && (
+                        <Globe className="w-3 h-3 text-green-500 flex-shrink-0" />
+                      )}
+                      <span>{opp.domain_name}</span>
+                    </div>
+                    {opp.source && (
+                      <span className="text-xs text-muted-foreground block">
+                        {opp.source}
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <ScoreBadge score={opp.ai_score} />
+                  </TableCell>
+                  <TableCell>
+                    {opp.wayback_snapshots && opp.wayback_snapshots > 0 ? (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Badge variant="outline" className="gap-1 cursor-help">
+                            <Camera className="w-3 h-3" />
+                            {opp.wayback_snapshots}
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs space-y-1">
+                            <p><strong>Tipo:</strong> {opp.wayback_content_type || "desconocido"}</p>
+                            {opp.wayback_first_seen && (
+                              <p><strong>Desde:</strong> {format(new Date(opp.wayback_first_seen), "MMM yyyy", { locale: es })}</p>
+                            )}
+                            {opp.wayback_last_seen && (
+                              <p><strong>Hasta:</strong> {format(new Date(opp.wayback_last_seen), "MMM yyyy", { locale: es })}</p>
+                            )}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    ) : (
+                      <span className="text-muted-foreground text-xs">Sin historial</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {opp.ai_category ? (
+                      <Badge variant="outline">{opp.ai_category}</Badge>
+                    ) : (
+                      <span className="text-muted-foreground">-</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {opp.estimated_value ? (
+                      formatCurrency(opp.estimated_value)
+                    ) : (
+                      <span className="text-muted-foreground">-</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={status.variant} className="gap-1">
+                      {status.icon}
+                      {status.label}
+                    </Badge>
+                  </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
                     <AnalyzeButton
@@ -194,12 +226,13 @@ export function OpportunitiesTable() {
                       </Button>
                     )}
                   </div>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
+    </TooltipProvider>
   );
 }

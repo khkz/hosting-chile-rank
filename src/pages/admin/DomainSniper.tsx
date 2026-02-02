@@ -14,6 +14,7 @@ import { PortfolioList } from "@/components/domain-sniper/PortfolioList";
 import { InquiriesList } from "@/components/domain-sniper/InquiriesList";
 import { SniperSettings } from "@/components/domain-sniper/SniperSettings";
 import { SyncNicButton } from "@/components/domain-sniper/SyncNicButton";
+import { BatchAnalyzePanel } from "@/components/domain-sniper/BatchAnalyzePanel";
 import {
   Crosshair,
   Briefcase,
@@ -231,6 +232,7 @@ export default function DomainSniper() {
           </TabsList>
 
           <TabsContent value="radar" className="space-y-4">
+            <BatchAnalyzePanel pendingCount={stats?.pendingAnalysis ?? 0} />
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Crosshair className="w-5 h-5" />
