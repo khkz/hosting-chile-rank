@@ -75,7 +75,7 @@ serve(async (req) => {
     // Get pending domains
     const { data: pendingDomains, error: fetchError } = await supabase
       .from("domain_opportunities")
-      .select("id, domain_name, wayback_snapshots, wayback_first_seen, wayback_last_seen, wayback_content_type, had_website")
+      .select("id, domain_name, wayback_snapshots, wayback_first_seen, wayback_last_seen, wayback_content_type, had_website, wayback_checked")
       .eq("status", "pending_analysis")
       .order("created_at", { ascending: true })
       .limit(batch_size);
@@ -124,15 +124,25 @@ serve(async (req) => {
           last_seen: domain.wayback_last_seen,
           content_type: domain.wayback_content_type,
           had_website: domain.had_website || false,
+          checked: domain.wayback_checked || false,
         };
 
-        if (enrich_first && !domain.had_website && domain.wayback_snapshots === null) {
+        // Fix: Check if Wayback was never consulted (wayback_checked = false)
+        // Previously this only checked for null, but DEFAULT 0 meant it was never null
+        const needsEnrichment = !waybackData.checked && !waybackData.had_website;
+
+        if (enrich_first && needsEnrichment) {
           try {
             const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(domain.domain_name)}&output=json&fl=timestamp,statuscode,mimetype&filter=statuscode:200&collapse=timestamp:6`;
+            
+            console.log(`📡 Fetching Wayback for ${domain.domain_name}`);
             
             const cdxResponse = await fetch(cdxUrl, {
               headers: { "User-Agent": "EligeTuHosting/1.0 (Domain Research)" },
             });
+
+            // Mark as checked regardless of result
+            waybackData.checked = true;
 
             if (cdxResponse.ok) {
               const cdxData = await cdxResponse.json();
@@ -147,10 +157,14 @@ serve(async (req) => {
                   waybackData.first_seen = `${firstTimestamp.slice(0, 4)}-${firstTimestamp.slice(4, 6)}-${firstTimestamp.slice(6, 8)}`;
                   waybackData.last_seen = `${lastTimestamp.slice(0, 4)}-${lastTimestamp.slice(4, 6)}-${lastTimestamp.slice(6, 8)}`;
                 }
+                console.log(`✅ Wayback found ${snapshots.length} snapshots for ${domain.domain_name}`);
+              } else {
+                console.log(`⚪ No Wayback history for ${domain.domain_name}`);
               }
             }
           } catch (waybackError) {
             console.error(`Wayback error for ${domain.domain_name}:`, waybackError);
+            waybackData.checked = true; // Still mark as checked to avoid retry loops
           }
         }
 
@@ -250,6 +264,7 @@ Devuelve EXACTAMENTE este formato JSON:
             wayback_last_seen: waybackData.last_seen,
             wayback_content_type: waybackData.content_type,
             had_website: waybackData.had_website,
+            wayback_checked: waybackData.checked,
             tld,
             analyzed_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),

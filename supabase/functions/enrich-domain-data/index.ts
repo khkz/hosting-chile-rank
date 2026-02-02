@@ -139,6 +139,7 @@ serve(async (req) => {
         wayback_last_seen: waybackData.last_seen,
         wayback_content_type: waybackData.content_type,
         had_website: waybackData.had_website,
+        wayback_checked: true, // Mark as checked regardless of result
         updated_at: new Date().toISOString(),
       })
       .eq("domain_name", domain_name);

@@ -488,6 +488,7 @@ export type Database = {
             | null
           tld: string | null
           updated_at: string | null
+          wayback_checked: boolean | null
           wayback_content_type: string | null
           wayback_first_seen: string | null
           wayback_last_seen: string | null
@@ -512,6 +513,7 @@ export type Database = {
             | null
           tld?: string | null
           updated_at?: string | null
+          wayback_checked?: boolean | null
           wayback_content_type?: string | null
           wayback_first_seen?: string | null
           wayback_last_seen?: string | null
@@ -536,6 +538,7 @@ export type Database = {
             | null
           tld?: string | null
           updated_at?: string | null
+          wayback_checked?: boolean | null
           wayback_content_type?: string | null
           wayback_first_seen?: string | null
           wayback_last_seen?: string | null
