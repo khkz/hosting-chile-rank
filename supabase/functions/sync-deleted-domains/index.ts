@@ -75,23 +75,45 @@ Deno.serve(async (req) => {
     console.log(`📄 Received ${html.length} bytes of HTML`);
 
     // Parse domains from HTML
-    // The pattern matches domains in the table format
     const domains: string[] = [];
     
-    // Multiple regex patterns to catch different formats
-    const patterns = [
-      /([a-z0-9áéíóúñü-]+\.cl)\s*<br>/gi,
-      />([a-z0-9áéíóúñü-]+\.cl)</gi,
-      /Whois\.do\?d=([a-z0-9-]+\.cl)/gi,
-    ];
+    // Exclude infrastructure and system domains
+    const excludedDomains = new Set([
+      'nic.cl',
+      'www.nic.cl',
+      'clientes.nic.cl',
+      'google.cl',
+      'recaptcha.cl',
+      'gstatic.cl',
+      'googleapis.cl',
+    ]);
 
-    for (const pattern of patterns) {
-      let match;
-      while ((match = pattern.exec(html)) !== null) {
-        const domain = match[1].toLowerCase();
-        if (!domains.includes(domain) && domain.length > 3) {
-          domains.push(domain);
-        }
+    // Find the relevant section of the HTML (the deleted domains table)
+    const sectionStart = html.indexOf('Listado Dominios Eliminados');
+    const sectionEnd = html.indexOf('</table>', sectionStart > 0 ? sectionStart : 0);
+    const relevantHtml = sectionStart > 0 && sectionEnd > sectionStart
+      ? html.slice(sectionStart, sectionEnd + 10)
+      : html;
+
+    console.log(`🔍 Parsing section: ${relevantHtml.length} chars (from ${sectionStart} to ${sectionEnd})`);
+
+    // Pattern that captures .cl domains with word boundaries
+    const domainPattern = /\b([a-z0-9][a-z0-9-]{1,61}\.cl)\b/gi;
+    
+    let match;
+    while ((match = domainPattern.exec(relevantHtml)) !== null) {
+      const domain = match[1].toLowerCase();
+      
+      // Validation filters
+      if (
+        domain.length > 4 &&                    // Minimum 5 characters (x.cl = 4)
+        !excludedDomains.has(domain) &&         // Not in exclusion list
+        !domain.includes('--') &&               // No double dashes
+        !domain.startsWith('-') &&              // Doesn't start with dash
+        !domain.endsWith('-.cl') &&             // Doesn't end with dash before .cl
+        !domains.includes(domain)               // Not already in list
+      ) {
+        domains.push(domain);
       }
     }
 
