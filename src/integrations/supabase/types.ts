@@ -479,6 +479,7 @@ export type Database = {
           domain_name: string
           estimated_value: number | null
           expiration_date: string | null
+          had_website: boolean | null
           id: string
           source: string | null
           source_url: string | null
@@ -487,6 +488,10 @@ export type Database = {
             | null
           tld: string | null
           updated_at: string | null
+          wayback_content_type: string | null
+          wayback_first_seen: string | null
+          wayback_last_seen: string | null
+          wayback_snapshots: number | null
         }
         Insert: {
           ai_category?: string | null
@@ -498,6 +503,7 @@ export type Database = {
           domain_name: string
           estimated_value?: number | null
           expiration_date?: string | null
+          had_website?: boolean | null
           id?: string
           source?: string | null
           source_url?: string | null
@@ -506,6 +512,10 @@ export type Database = {
             | null
           tld?: string | null
           updated_at?: string | null
+          wayback_content_type?: string | null
+          wayback_first_seen?: string | null
+          wayback_last_seen?: string | null
+          wayback_snapshots?: number | null
         }
         Update: {
           ai_category?: string | null
@@ -517,6 +527,7 @@ export type Database = {
           domain_name?: string
           estimated_value?: number | null
           expiration_date?: string | null
+          had_website?: boolean | null
           id?: string
           source?: string | null
           source_url?: string | null
@@ -525,6 +536,10 @@ export type Database = {
             | null
           tld?: string | null
           updated_at?: string | null
+          wayback_content_type?: string | null
+          wayback_first_seen?: string | null
+          wayback_last_seen?: string | null
+          wayback_snapshots?: number | null
         }
         Relationships: []
       }
