@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -15,6 +16,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ScoreBadge } from "./ScoreBadge";
 import { AnalyzeButton } from "./AnalyzeButton";
 import { PurchaseDialog } from "./PurchaseDialog";
+import { DataStatusBadge } from "./DataStatusBadge";
+import { EnrichmentStats } from "./EnrichmentStats";
+import { QuickFilters, FilterType } from "./QuickFilters";
 import { Eye, Trash2, Clock, CheckCircle, XCircle, ShoppingBag, AlertCircle, Camera, Globe } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -54,6 +58,7 @@ const statusConfig: Record<DomainOpportunityStatus, { label: string; icon: React
 export function OpportunitiesTable() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
 
   const { data: opportunities, isLoading } = useQuery({
     queryKey: ["domain-opportunities"],
@@ -99,6 +104,65 @@ export function OpportunitiesTable() {
     queryClient.invalidateQueries({ queryKey: ["domain-opportunities"] });
   };
 
+  // Calculate stats and filter counts
+  const stats = useMemo(() => {
+    if (!opportunities) return { total: 0, enriched: 0, analyzed: 0, withWebsite: 0 };
+    return {
+      total: opportunities.length,
+      enriched: opportunities.filter(o => o.wayback_snapshots && o.wayback_snapshots > 0).length,
+      analyzed: opportunities.filter(o => o.status === "analyzed").length,
+      withWebsite: opportunities.filter(o => o.had_website).length,
+    };
+  }, [opportunities]);
+
+  const filterCounts = useMemo(() => {
+    if (!opportunities) return { all: 0, withWeb: 0, highScore: 0, pending: 0, discarded: 0 };
+    return {
+      all: opportunities.length,
+      withWeb: opportunities.filter(o => o.had_website || (o.wayback_snapshots && o.wayback_snapshots > 0)).length,
+      highScore: opportunities.filter(o => o.ai_score && o.ai_score >= 7).length,
+      pending: opportunities.filter(o => o.status === "pending_analysis").length,
+      discarded: opportunities.filter(o => o.status === "discarded").length,
+    };
+  }, [opportunities]);
+
+  // Filter and sort opportunities
+  const filteredOpportunities = useMemo(() => {
+    if (!opportunities) return [];
+    
+    let filtered = opportunities;
+    
+    switch (activeFilter) {
+      case "with_web":
+        filtered = opportunities.filter(o => o.had_website || (o.wayback_snapshots && o.wayback_snapshots > 0));
+        break;
+      case "high_score":
+        filtered = opportunities.filter(o => o.ai_score && o.ai_score >= 7);
+        break;
+      case "pending":
+        filtered = opportunities.filter(o => o.status === "pending_analysis");
+        break;
+      case "discarded":
+        filtered = opportunities.filter(o => o.status === "discarded");
+        break;
+    }
+
+    // Sort: prioritize score + web history
+    return [...filtered].sort((a, b) => {
+      const aHasWeb = a.had_website || (a.wayback_snapshots && a.wayback_snapshots > 0);
+      const bHasWeb = b.had_website || (b.wayback_snapshots && b.wayback_snapshots > 0);
+      const aScore = a.ai_score || 0;
+      const bScore = b.ai_score || 0;
+
+      // Priority: high score + web > high score > web only > nothing
+      const aPriority = (aScore >= 7 ? 2 : 0) + (aHasWeb ? 1 : 0);
+      const bPriority = (bScore >= 7 ? 2 : 0) + (bHasWeb ? 1 : 0);
+
+      if (bPriority !== aPriority) return bPriority - aPriority;
+      return bScore - aScore;
+    });
+  }, [opportunities, activeFilter]);
+
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -123,21 +187,41 @@ export function OpportunitiesTable() {
 
   return (
     <TooltipProvider>
-      <div className="rounded-md border overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Dominio</TableHead>
-              <TableHead>Score</TableHead>
-              <TableHead>Wayback</TableHead>
-              <TableHead>Categoría</TableHead>
-              <TableHead>Valor Est.</TableHead>
-              <TableHead>Estado</TableHead>
-              <TableHead className="text-right">Acciones</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {opportunities.map((opp) => {
+      <div className="space-y-4">
+        {/* Stats Cards */}
+        <EnrichmentStats
+          total={stats.total}
+          enriched={stats.enriched}
+          analyzed={stats.analyzed}
+          withWebsite={stats.withWebsite}
+        />
+
+        {/* Quick Filters */}
+        <QuickFilters
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+          counts={filterCounts}
+        />
+
+        {/* Table */}
+        <div className="rounded-md border overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Dominio</TableHead>
+                <TableHead>Datos</TableHead>
+                <TableHead>Score</TableHead>
+                <TableHead>Wayback</TableHead>
+                <TableHead>Categoría</TableHead>
+                <TableHead>Valor Est.</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead className="text-right">Acciones</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredOpportunities.map((opp) => {
+                const hasAiAnalysis = opp.status === "analyzed";
+                const hasWaybackData = (opp.wayback_snapshots ?? 0) > 0;
               const status = statusConfig[opp.status];
               return (
                 <TableRow key={opp.id}>
@@ -153,6 +237,13 @@ export function OpportunitiesTable() {
                         {opp.source}
                       </span>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <DataStatusBadge
+                      hasAiAnalysis={hasAiAnalysis}
+                      hasWaybackData={hasWaybackData}
+                      waybackSnapshots={opp.wayback_snapshots}
+                    />
                   </TableCell>
                   <TableCell>
                     <ScoreBadge score={opp.ai_score} />
@@ -230,8 +321,9 @@ export function OpportunitiesTable() {
                 </TableRow>
               );
             })}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </TooltipProvider>
   );
