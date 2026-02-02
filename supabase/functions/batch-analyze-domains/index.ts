@@ -68,7 +68,7 @@ serve(async (req) => {
       );
     }
 
-    const { batch_size = 10, delay_ms = 2000, enrich_first = true }: BatchRequest = await req.json();
+    const { batch_size = 3, delay_ms = 2000, enrich_first = true }: BatchRequest = await req.json();
 
     console.log(`🚀 Starting batch analysis: batch_size=${batch_size}, delay_ms=${delay_ms}, enrich_first=${enrich_first}`);
 
@@ -137,9 +137,16 @@ serve(async (req) => {
             
             console.log(`📡 Fetching Wayback for ${domain.domain_name}`);
             
+            // AbortController with 5s timeout for Wayback API
+            const waybackController = new AbortController();
+            const waybackTimeout = setTimeout(() => waybackController.abort(), 5000);
+            
             const cdxResponse = await fetch(cdxUrl, {
               headers: { "User-Agent": "EligeTuHosting/1.0 (Domain Research)" },
+              signal: waybackController.signal,
             });
+            
+            clearTimeout(waybackTimeout);
 
             // Mark as checked regardless of result
             waybackData.checked = true;
