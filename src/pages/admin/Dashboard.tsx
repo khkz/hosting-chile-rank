@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Building2, Award, TrendingUp, Database } from 'lucide-react';
+import { MessageSquare, Building2, Award, TrendingUp, Database, Crosshair } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -14,10 +14,11 @@ export default function AdminDashboard() {
   const { data: stats } = useQuery({
     queryKey: ['admin-stats'],
     queryFn: async () => {
-      const [pendingReviews, companies, pendingCompanies] = await Promise.all([
+      const [pendingReviews, companies, pendingCompanies, domainOpportunities] = await Promise.all([
         supabase.from('hosting_reviews').select('id', { count: 'exact' }).eq('status', 'pending'),
         supabase.from('hosting_companies').select('id', { count: 'exact' }).eq('is_verified', true),
         supabase.from('hosting_companies').select('id', { count: 'exact' }).eq('is_verified', false),
+        supabase.from('domain_opportunities').select('id', { count: 'exact' }),
       ]);
 
       return {
@@ -25,6 +26,7 @@ export default function AdminDashboard() {
         totalCompanies: companies.count ?? 0,
         pendingCompanies: pendingCompanies.count ?? 0,
         activeCertifications: 0,
+        domainOpportunities: domainOpportunities.count ?? 0,
       };
     },
   });
@@ -91,6 +93,19 @@ export default function AdminDashboard() {
               <Button variant="outline" className="w-full mt-4">Ver Todas</Button>
             </Link>
           </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-center gap-4">
+              <Crosshair className="w-12 h-12 text-green-500" />
+              <div>
+                <p className="text-sm text-muted-foreground">Dominios en Radar</p>
+                <p className="text-3xl font-bold">{stats?.domainOpportunities ?? 0}</p>
+              </div>
+            </div>
+            <Link to="/admin/domain-sniper">
+              <Button variant="outline" className="w-full mt-4">Domain Sniper</Button>
+            </Link>
+          </Card>
         </div>
 
         <Card className="p-6">
@@ -122,6 +137,12 @@ export default function AdminDashboard() {
               <Button variant="outline" className="w-full justify-start">
                 <Award className="w-4 h-4 mr-2" />
                 Gestionar Certificaciones
+              </Button>
+            </Link>
+            <Link to="/admin/domain-sniper">
+              <Button variant="outline" className="w-full justify-start">
+                <Crosshair className="w-4 h-4 mr-2" />
+                Domain Sniper
               </Button>
             </Link>
           </div>

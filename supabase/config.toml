@@ -14,3 +14,12 @@ verify_jwt = false
 
 [functions.asn-content-generator]
 verify_jwt = false
+
+[functions.analyze-domain-potential]
+verify_jwt = false
+
+[functions.openprovider-domain-check]
+verify_jwt = false
+
+[functions.openprovider-domain-purchase]
+verify_jwt = false
