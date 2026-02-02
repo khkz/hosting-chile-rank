@@ -421,6 +421,143 @@ export type Database = {
           },
         ]
       }
+      domain_inquiries: {
+        Row: {
+          created_at: string | null
+          domain_id: string
+          email: string
+          id: string
+          message: string | null
+          name: string | null
+          offer_amount: number | null
+          phone: string | null
+          status: Database["public"]["Enums"]["inquiry_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          domain_id: string
+          email: string
+          id?: string
+          message?: string | null
+          name?: string | null
+          offer_amount?: number | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["inquiry_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          domain_id?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string | null
+          offer_amount?: number | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["inquiry_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "domain_inquiries_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "my_domain_portfolio"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      domain_opportunities: {
+        Row: {
+          ai_category: string | null
+          ai_rationale: string | null
+          ai_score: number | null
+          analyzed_at: string | null
+          created_at: string | null
+          detected_at: string | null
+          domain_name: string
+          estimated_value: number | null
+          expiration_date: string | null
+          id: string
+          source: string | null
+          source_url: string | null
+          status:
+            | Database["public"]["Enums"]["domain_opportunity_status"]
+            | null
+          tld: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ai_category?: string | null
+          ai_rationale?: string | null
+          ai_score?: number | null
+          analyzed_at?: string | null
+          created_at?: string | null
+          detected_at?: string | null
+          domain_name: string
+          estimated_value?: number | null
+          expiration_date?: string | null
+          id?: string
+          source?: string | null
+          source_url?: string | null
+          status?:
+            | Database["public"]["Enums"]["domain_opportunity_status"]
+            | null
+          tld?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ai_category?: string | null
+          ai_rationale?: string | null
+          ai_score?: number | null
+          analyzed_at?: string | null
+          created_at?: string | null
+          detected_at?: string | null
+          domain_name?: string
+          estimated_value?: number | null
+          expiration_date?: string | null
+          id?: string
+          source?: string | null
+          source_url?: string | null
+          status?:
+            | Database["public"]["Enums"]["domain_opportunity_status"]
+            | null
+          tld?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      domain_sniper_settings: {
+        Row: {
+          auto_sniper_enabled: boolean | null
+          daily_budget: number | null
+          id: string
+          max_domain_price: number | null
+          min_score_auto_buy: number | null
+          notify_email: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          auto_sniper_enabled?: boolean | null
+          daily_budget?: number | null
+          id?: string
+          max_domain_price?: number | null
+          min_score_auto_buy?: number | null
+          notify_email?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          auto_sniper_enabled?: boolean | null
+          daily_budget?: number | null
+          id?: string
+          max_domain_price?: number | null
+          min_score_auto_buy?: number | null
+          notify_email?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       domain_trends: {
         Row: {
           count: number | null
@@ -759,6 +896,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      my_domain_portfolio: {
+        Row: {
+          annual_cost: number | null
+          created_at: string | null
+          domain_name: string
+          id: string
+          inquiries_count: number | null
+          is_for_sale: boolean | null
+          listing_price: number | null
+          notes: string | null
+          page_views: number | null
+          purchase_date: string | null
+          purchase_price: number | null
+          purchase_reference: string | null
+          purchase_source: string | null
+          renewal_date: string | null
+          sale_status: Database["public"]["Enums"]["domain_sale_status"] | null
+          tld: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          annual_cost?: number | null
+          created_at?: string | null
+          domain_name: string
+          id?: string
+          inquiries_count?: number | null
+          is_for_sale?: boolean | null
+          listing_price?: number | null
+          notes?: string | null
+          page_views?: number | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          purchase_reference?: string | null
+          purchase_source?: string | null
+          renewal_date?: string | null
+          sale_status?: Database["public"]["Enums"]["domain_sale_status"] | null
+          tld?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          annual_cost?: number | null
+          created_at?: string | null
+          domain_name?: string
+          id?: string
+          inquiries_count?: number | null
+          is_for_sale?: boolean | null
+          listing_price?: number | null
+          notes?: string | null
+          page_views?: number | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          purchase_reference?: string | null
+          purchase_source?: string | null
+          renewal_date?: string | null
+          sale_status?: Database["public"]["Enums"]["domain_sale_status"] | null
+          tld?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       news_articles: {
         Row: {
@@ -1266,6 +1463,20 @@ export type Database = {
       app_role: "admin" | "hosting_provider" | "user"
       certification_status: "pending" | "active" | "expired" | "revoked"
       certification_tier: "free" | "premium"
+      domain_opportunity_status:
+        | "pending_analysis"
+        | "analyzed"
+        | "discarded"
+        | "queued_for_buy"
+        | "purchased"
+        | "failed"
+      domain_sale_status: "available" | "negotiating" | "sold" | "not_for_sale"
+      inquiry_status:
+        | "new"
+        | "contacted"
+        | "negotiating"
+        | "closed"
+        | "rejected"
       review_status: "pending" | "approved" | "rejected" | "flagged"
     }
     CompositeTypes: {
@@ -1397,6 +1608,16 @@ export const Constants = {
       app_role: ["admin", "hosting_provider", "user"],
       certification_status: ["pending", "active", "expired", "revoked"],
       certification_tier: ["free", "premium"],
+      domain_opportunity_status: [
+        "pending_analysis",
+        "analyzed",
+        "discarded",
+        "queued_for_buy",
+        "purchased",
+        "failed",
+      ],
+      domain_sale_status: ["available", "negotiating", "sold", "not_for_sale"],
+      inquiry_status: ["new", "contacted", "negotiating", "closed", "rejected"],
       review_status: ["pending", "approved", "rejected", "flagged"],
     },
   },

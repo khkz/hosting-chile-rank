@@ -53,6 +53,7 @@ import Setup from './pages/admin/Setup';
 import Companies from './pages/admin/Companies';
 import AdminCertifications from './pages/admin/Certifications';
 import DataMigration from './pages/admin/DataMigration';
+import DomainSniper from './pages/admin/DomainSniper';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
@@ -65,6 +66,7 @@ import Auth from './pages/Auth';
 import ProtectedRoute from './components/ProtectedRoute';
 import NuestroMetodo from './pages/NuestroMetodo';
 import HostingWordPressBlogPersonal from './pages/HostingWordPressBlogPersonal';
+import DominiosPremium from './pages/DominiosPremium';
 
 function App() {
   return (
@@ -136,6 +138,7 @@ function App() {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/nuestro-metodo" element={<NuestroMetodo />} />
         <Route path="/hosting-wordpress-blog-personal-chile" element={<HostingWordPressBlogPersonal />} />
+        <Route path="/dominios-premium" element={<DominiosPremium />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
@@ -164,6 +167,11 @@ function App() {
             <Route path="/admin/migracion" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DataMigration />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/domain-sniper" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DomainSniper />
               </ProtectedRoute>
             } />
             <Route path="/provider/dashboard" element={
