@@ -481,6 +481,8 @@ export type Database = {
           expiration_date: string | null
           had_website: boolean | null
           id: string
+          page_rank: number | null
+          page_rank_updated_at: string | null
           source: string | null
           source_url: string | null
           status:
@@ -506,6 +508,8 @@ export type Database = {
           expiration_date?: string | null
           had_website?: boolean | null
           id?: string
+          page_rank?: number | null
+          page_rank_updated_at?: string | null
           source?: string | null
           source_url?: string | null
           status?:
@@ -531,6 +535,8 @@ export type Database = {
           expiration_date?: string | null
           had_website?: boolean | null
           id?: string
+          page_rank?: number | null
+          page_rank_updated_at?: string | null
           source?: string | null
           source_url?: string | null
           status?:
