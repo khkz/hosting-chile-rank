@@ -216,6 +216,7 @@ export function OpportunitiesTable() {
                 <TableHead>Dominio</TableHead>
                 <TableHead>Datos</TableHead>
                 <TableHead>PR</TableHead>
+                <TableHead>Edad</TableHead>
                 <TableHead>Score</TableHead>
                 <TableHead>Wayback</TableHead>
                 <TableHead>Categoría</TableHead>
@@ -258,7 +259,22 @@ export function OpportunitiesTable() {
                     />
                   </TableCell>
                   <TableCell>
-                    <ScoreBadge score={opp.ai_score} />
+                    {opp.wayback_first_seen ? (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="text-sm font-medium">
+                            {Math.floor((new Date().getTime() - new Date(opp.wayback_first_seen).getTime()) / (1000 * 60 * 60 * 24 * 365))}a
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-xs">Desde {format(new Date(opp.wayback_first_seen), "MMM yyyy", { locale: es })}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    ) : (
+                      <span className="text-muted-foreground text-xs">-</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
                   </TableCell>
                   <TableCell>
                     {opp.wayback_snapshots && opp.wayback_snapshots > 0 ? (
