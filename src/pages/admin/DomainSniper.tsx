@@ -13,6 +13,7 @@ import { OpportunitiesTable } from "@/components/domain-sniper/OpportunitiesTabl
 import { PortfolioList } from "@/components/domain-sniper/PortfolioList";
 import { InquiriesList } from "@/components/domain-sniper/InquiriesList";
 import { SniperSettings } from "@/components/domain-sniper/SniperSettings";
+import { SyncNicButton } from "@/components/domain-sniper/SyncNicButton";
 import {
   Crosshair,
   Briefcase,
@@ -116,35 +117,42 @@ export default function DomainSniper() {
       <Navbar />
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <Crosshair className="w-8 h-8 text-primary" />
-              Domain Sniper
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Detecta, analiza y compra dominios de alto valor
-            </p>
+        <div className="flex flex-col gap-4 mb-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold flex items-center gap-3">
+                <Crosshair className="w-8 h-8 text-primary" />
+                Domain Sniper
+              </h1>
+              <p className="text-muted-foreground mt-1">
+                Detecta, analiza y compra dominios de alto valor
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Input
+                placeholder="ejemplo.cl"
+                value={newDomain}
+                onChange={(e) => setNewDomain(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleAddDomain()}
+                className="w-48"
+              />
+              <Button onClick={handleAddDomain} disabled={isAdding}>
+                {isAdding ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4 mr-1" />
+                    Agregar
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Input
-              placeholder="ejemplo.cl"
-              value={newDomain}
-              onChange={(e) => setNewDomain(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAddDomain()}
-              className="w-48"
-            />
-            <Button onClick={handleAddDomain} disabled={isAdding}>
-              {isAdding ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <>
-                  <Plus className="w-4 h-4 mr-1" />
-                  Agregar
-                </>
-              )}
-            </Button>
+          {/* Sync button row */}
+          <div className="flex items-center justify-between border-t pt-4">
+            <SyncNicButton />
           </div>
         </div>
 

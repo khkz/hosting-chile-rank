@@ -23,3 +23,6 @@ verify_jwt = false
 
 [functions.openprovider-domain-purchase]
 verify_jwt = false
+
+[functions.sync-deleted-domains]
+verify_jwt = false
