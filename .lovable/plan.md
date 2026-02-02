@@ -1,152 +1,152 @@
 
-# Plan: Agregar ordenamiento por columnas a la tabla de oportunidades
+
+# Plan: Agregar Paginación a la Tabla de Oportunidades
 
 ## Resumen
 
-Permitir que el usuario haga clic en los encabezados de columna para ordenar la tabla de dominios por diferentes criterios (PageRank, Edad, Score, Wayback, Valor Estimado, etc.).
+Implementar paginación en la tabla de dominios para mejorar el rendimiento y usabilidad cuando hay cientos o miles de dominios en el radar.
 
 ---
 
 ## Implementación
 
-### Estado de ordenamiento
+### Estado de Paginación
 
-Agregar un estado para controlar la columna activa y dirección:
-
-```typescript
-type SortField = "domain" | "page_rank" | "age" | "ai_score" | "wayback" | "estimated_value" | "status";
-type SortDirection = "asc" | "desc";
-
-const [sortField, setSortField] = useState<SortField>("ai_score");
-const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-```
-
-### Encabezados clickeables
-
-Crear un componente o función para encabezados ordenables:
+Agregar estados para controlar la página actual y tamaño de página:
 
 ```typescript
-const SortableHeader = ({ field, label }: { field: SortField; label: string }) => (
-  <TableHead 
-    className="cursor-pointer hover:bg-muted/50 select-none"
-    onClick={() => handleSort(field)}
-  >
-    <div className="flex items-center gap-1">
-      {label}
-      {sortField === field && (
-        sortDirection === "desc" 
-          ? <ArrowDown className="w-3 h-3" />
-          : <ArrowUp className="w-3 h-3" />
-      )}
-    </div>
-  </TableHead>
-);
+const [currentPage, setCurrentPage] = useState(1);
+const [pageSize, setPageSize] = useState(25);
 ```
 
-### Función de ordenamiento
+### Cálculo de Páginas
 
 ```typescript
-const handleSort = (field: SortField) => {
-  if (sortField === field) {
-    setSortDirection(prev => prev === "asc" ? "desc" : "asc");
-  } else {
-    setSortField(field);
-    setSortDirection("desc");
-  }
-};
+const totalPages = Math.ceil(filteredOpportunities.length / pageSize);
+const startIndex = (currentPage - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+const paginatedOpportunities = filteredOpportunities.slice(startIndex, endIndex);
 ```
 
-### Lógica de sorting en useMemo
+### Selector de Tamaño de Página
 
-Modificar `filteredOpportunities` para aplicar el orden seleccionado:
+Agregar un selector para que el usuario elija cuántos dominios ver por página:
+- Opciones: 10, 25, 50, 100
 
-```typescript
-const sortedOpportunities = useMemo(() => {
-  const sorted = [...filtered].sort((a, b) => {
-    let aVal, bVal;
-    
-    switch (sortField) {
-      case "domain":
-        aVal = a.domain_name;
-        bVal = b.domain_name;
-        break;
-      case "page_rank":
-        aVal = a.page_rank ?? -1;
-        bVal = b.page_rank ?? -1;
-        break;
-      case "age":
-        aVal = a.wayback_first_seen ? new Date(a.wayback_first_seen).getTime() : 0;
-        bVal = b.wayback_first_seen ? new Date(b.wayback_first_seen).getTime() : 0;
-        break;
-      case "ai_score":
-        aVal = a.ai_score ?? -1;
-        bVal = b.ai_score ?? -1;
-        break;
-      case "wayback":
-        aVal = a.wayback_snapshots ?? 0;
-        bVal = b.wayback_snapshots ?? 0;
-        break;
-      case "estimated_value":
-        aVal = a.estimated_value ?? 0;
-        bVal = b.estimated_value ?? 0;
-        break;
-      default:
-        return 0;
-    }
-    
-    if (typeof aVal === "string") {
-      return sortDirection === "asc" 
-        ? aVal.localeCompare(bVal as string)
-        : (bVal as string).localeCompare(aVal);
-    }
-    
-    return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
-  });
-  
-  return sorted;
-}, [filtered, sortField, sortDirection]);
-```
+### Componente de Paginación
+
+Usar los componentes existentes de `@/components/ui/pagination`:
+- Botones Anterior/Siguiente
+- Números de página con ellipsis para rangos grandes
+- Indicador de rango actual ("Mostrando 1-25 de 340")
 
 ---
 
-## Columnas ordenables
-
-| Columna | Campo | Ordenamiento |
-|---------|-------|--------------|
-| Dominio | `domain_name` | Alfabético A-Z / Z-A |
-| PR | `page_rank` | Mayor a menor / Menor a mayor |
-| Edad | `wayback_first_seen` | Más antiguo / Más reciente |
-| Score | `ai_score` | Mayor a menor / Menor a mayor |
-| Wayback | `wayback_snapshots` | Más snapshots / Menos |
-| Valor Est. | `estimated_value` | Mayor valor / Menor valor |
-
----
-
-## Visual
-
-- Icono de flecha (↑/↓) junto al encabezado activo
-- Hover effect en encabezados ordenables
-- Cursor pointer para indicar interactividad
-- Importar `ArrowUp` y `ArrowDown` de lucide-react
-
----
-
-## Archivo a modificar
+## Cambios en el Archivo
 
 ```
 src/components/domain-sniper/OpportunitiesTable.tsx
-- Agregar estados sortField y sortDirection
-- Crear componente SortableHeader
-- Modificar TableHeader con encabezados clickeables
-- Actualizar useMemo para aplicar ordenamiento
-- Importar iconos ArrowUp/ArrowDown
+
+1. Agregar imports:
+   - Pagination, PaginationContent, PaginationItem, PaginationLink,
+     PaginationNext, PaginationPrevious, PaginationEllipsis
+   - Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+
+2. Agregar estados:
+   - currentPage (número, default: 1)
+   - pageSize (número, default: 25)
+
+3. Agregar useMemo para paginación:
+   - Calcular totalPages, startIndex, endIndex
+   - Crear paginatedOpportunities
+
+4. Resetear página cuando cambia el filtro:
+   - Agregar useEffect que resetea currentPage a 1
+
+5. Agregar UI de paginación debajo de la tabla:
+   - Indicador: "Mostrando X-Y de Z dominios"
+   - Selector de tamaño de página
+   - Controles de navegación
+```
+
+---
+
+## Estructura Visual
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│  [Stats Cards]                                              │
+│  [Quick Filters]                                            │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │ Dominio | Datos | PR | Edad | Score | Wayback | ...     ││
+│  ├─────────────────────────────────────────────────────────┤│
+│  │ ejemplo1.cl | ... | 6.5 | 5a | 8.2 | 45 | ...          ││
+│  │ ejemplo2.cl | ... | 3.2 | 2a | 6.1 | 12 | ...          ││
+│  │ ... (25 filas por defecto)                              ││
+│  └─────────────────────────────────────────────────────────┘│
+├─────────────────────────────────────────────────────────────┤
+│  Mostrando 1-25 de 340    [10|25|50|100]                    │
+│                                                             │
+│  [← Anterior] [1] [2] [3] [...] [14] [Siguiente →]          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Lógica de Números de Página
+
+Para evitar mostrar demasiados números cuando hay muchas páginas:
+
+```typescript
+const getVisiblePages = () => {
+  const pages: (number | "ellipsis")[] = [];
+  
+  if (totalPages <= 7) {
+    // Mostrar todas las páginas si son 7 o menos
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    // Siempre mostrar primera página
+    pages.push(1);
+    
+    if (currentPage > 3) {
+      pages.push("ellipsis");
+    }
+    
+    // Páginas alrededor de la actual
+    for (let i = Math.max(2, currentPage - 1); 
+         i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      pages.push(i);
+    }
+    
+    if (currentPage < totalPages - 2) {
+      pages.push("ellipsis");
+    }
+    
+    // Siempre mostrar última página
+    pages.push(totalPages);
+  }
+  
+  return pages;
+};
 ```
 
 ---
 
 ## UX
 
-- Por defecto: ordenar por Score descendente (comportamiento actual)
-- Click en columna activa: invierte dirección
-- Click en nueva columna: ordena descendente por esa columna
-- Valores null/undefined van al final
+- Página 1 por defecto
+- Al cambiar filtro, volver a página 1
+- Al cambiar tamaño de página, volver a página 1
+- Deshabilitar botón "Anterior" en página 1
+- Deshabilitar botón "Siguiente" en última página
+- Mantener scroll en la parte superior al cambiar página
+
+---
+
+## Archivo a Modificar
+
+```
+src/components/domain-sniper/OpportunitiesTable.tsx
+```
+
