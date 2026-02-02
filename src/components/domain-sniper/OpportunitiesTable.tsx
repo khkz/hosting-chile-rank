@@ -19,6 +19,8 @@ import { PurchaseDialog } from "./PurchaseDialog";
 import { DataStatusBadge } from "./DataStatusBadge";
 import { EnrichmentStats } from "./EnrichmentStats";
 import { QuickFilters, FilterType } from "./QuickFilters";
+import { PageRankBadge } from "./PageRankBadge";
+import { FetchPageRankButton } from "./FetchPageRankButton";
 import { Eye, Trash2, Clock, CheckCircle, XCircle, ShoppingBag, AlertCircle, Camera, Globe } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -44,6 +46,8 @@ interface DomainOpportunity {
   wayback_last_seen: string | null;
   wayback_content_type: string | null;
   had_website: boolean | null;
+  page_rank: number | null;
+  page_rank_updated_at: string | null;
 }
 
 const statusConfig: Record<DomainOpportunityStatus, { label: string; icon: React.ReactNode; variant: "default" | "secondary" | "destructive" | "outline" }> = {
@@ -65,7 +69,8 @@ export function OpportunitiesTable() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("domain_opportunities")
-        .select("id, domain_name, tld, source, expiration_date, status, ai_score, ai_category, ai_rationale, estimated_value, detected_at, analyzed_at, wayback_snapshots, wayback_first_seen, wayback_last_seen, wayback_content_type, had_website")
+        .select("id, domain_name, tld, source, expiration_date, status, ai_score, ai_category, ai_rationale, estimated_value, detected_at, analyzed_at, wayback_snapshots, wayback_first_seen, wayback_last_seen, wayback_content_type, had_website, page_rank, page_rank_updated_at")
+        .order("ai_score", { ascending: false, nullsFirst: false })
         .order("ai_score", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false });
 
@@ -210,6 +215,7 @@ export function OpportunitiesTable() {
               <TableRow>
                 <TableHead>Dominio</TableHead>
                 <TableHead>Datos</TableHead>
+                <TableHead>PR</TableHead>
                 <TableHead>Score</TableHead>
                 <TableHead>Wayback</TableHead>
                 <TableHead>Categoría</TableHead>
@@ -243,6 +249,12 @@ export function OpportunitiesTable() {
                       hasAiAnalysis={hasAiAnalysis}
                       hasWaybackData={hasWaybackData}
                       waybackSnapshots={opp.wayback_snapshots}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <PageRankBadge 
+                      pageRank={opp.page_rank} 
+                      updatedAt={opp.page_rank_updated_at} 
                     />
                   </TableCell>
                   <TableCell>
@@ -294,7 +306,11 @@ export function OpportunitiesTable() {
                     </Badge>
                   </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
+                  <div className="flex items-center justify-end gap-1">
+                    <FetchPageRankButton
+                      domainName={opp.domain_name}
+                      hasPageRank={opp.page_rank !== null}
+                    />
                     <AnalyzeButton
                       domainName={opp.domain_name}
                       isAnalyzed={opp.status === "analyzed"}
