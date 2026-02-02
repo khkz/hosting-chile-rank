@@ -32,16 +32,21 @@ export function BatchAnalyzePanel({ pendingCount }: Props) {
   const stopRef = useRef(false);
   const pauseRef = useRef(false);
 
-  const runBatch = useCallback(async () => {
-    const BATCH_SIZE = 10;
+  const runBatch = useCallback(async (retryCount = 0): Promise<number> => {
+    const BATCH_SIZE = 3; // Reduced to fit within Edge Function timeout (~24s)
     const DELAY_MS = 2000;
+    const MAX_RETRIES = 2;
 
     try {
       const { data: session } = await supabase.auth.getSession();
       if (!session?.session?.access_token) {
         toast({ title: "Error", description: "Sesión no válida", variant: "destructive" });
-        return;
+        return -1;
       }
+
+      // AbortController with 25s timeout (Edge Function times out at ~26s)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 25000);
 
       const response = await fetch(
         `https://oegvwjxrlmtwortyhsrv.supabase.co/functions/v1/batch-analyze-domains`,
@@ -56,8 +61,11 @@ export function BatchAnalyzePanel({ pendingCount }: Props) {
             delay_ms: DELAY_MS,
             enrich_first: true,
           }),
+          signal: controller.signal,
         }
       );
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -92,6 +100,17 @@ export function BatchAnalyzePanel({ pendingCount }: Props) {
       return data.remaining;
     } catch (error) {
       console.error("Batch error:", error);
+      
+      // Check if it's a timeout/abort error and retry
+      const isTimeoutError = error instanceof Error && 
+        (error.name === "AbortError" || error.message.includes("Failed to fetch"));
+      
+      if (isTimeoutError && retryCount < MAX_RETRIES) {
+        console.log(`Retrying batch (attempt ${retryCount + 2})...`);
+        await new Promise(r => setTimeout(r, 3000)); // Wait 3s before retry
+        return runBatch(retryCount + 1);
+      }
+      
       toast({
         title: "Error en el análisis",
         description: error instanceof Error ? error.message : "Error desconocido",
@@ -156,8 +175,9 @@ export function BatchAnalyzePanel({ pendingCount }: Props) {
   };
 
   const progressPercent = progress.total > 0 ? (progress.processed / progress.total) * 100 : 0;
+  // Updated ETA: ~8s per domain with batch size of 3
   const eta = progress.total > 0 && progress.processed > 0
-    ? Math.ceil(((progress.total - progress.processed) * 2.5) / 60)
+    ? Math.ceil(((progress.total - progress.processed) * 8) / 60)
     : null;
 
   if (pendingCount === 0 && !isRunning) {
@@ -248,8 +268,8 @@ export function BatchAnalyzePanel({ pendingCount }: Props) {
 
         {!isRunning && pendingCount > 0 && (
           <p className="text-sm text-muted-foreground">
-            Se analizarán en lotes de 10 dominios con enriquecimiento de datos históricos de Wayback Machine.
-            Tiempo estimado: ~{Math.ceil((pendingCount * 2.5) / 60)} minutos.
+            Se analizarán en lotes de 3 dominios con enriquecimiento de datos históricos de Wayback Machine.
+            Tiempo estimado: ~{Math.ceil((pendingCount * 8) / 60)} minutos.
           </p>
         )}
       </div>
