@@ -1,150 +1,173 @@
 
+# Plan: Implementar Open PageRank API + Verificación de Disponibilidad NIC.cl
 
-# Plan: Corregir Timeout en Análisis Masivo
+## Resumen
 
-## Problema Identificado
-
-El análisis batch se "pega" por un **timeout de la Edge Function**:
-
-```
-Error del servidor: "Http: connection closed before message completed"
-Error del cliente: "TypeError: Failed to fetch"
-```
-
-**Causa**: Cada batch de 10 dominios toma ~40-70 segundos, pero las Edge Functions tienen timeout de ~26 segundos.
-
-| Operación | Tiempo estimado |
-|-----------|-----------------|
-| Wayback Machine API | 1-3 segundos |
-| IA Analysis (Gemini) | 2-4 segundos |
-| Delay entre requests | 2 segundos |
-| **Total por dominio** | **5-9 segundos** |
-| **Total batch (10)** | **50-90 segundos** |
-| **Timeout Edge Function** | **~26 segundos** ❌ |
+Agregar dos nuevas funcionalidades al Domain Sniper:
+1. **Open PageRank API** - Obtener métricas de autoridad de dominio (PageRank 0-10)
+2. **Botón verificar disponibilidad** - Consultar si el dominio está libre en NIC.cl vía WHOIS
 
 ---
 
-## Solución: Reducir Batch Size a 3
+## 1. Open PageRank API
 
-La solución más simple y efectiva es reducir el batch size para completar dentro del timeout:
+### API Gratuita
 
-```
-3 dominios × ~8s = ~24 segundos (dentro del límite)
-```
-
-### Cambios en BatchAnalyzePanel.tsx
-
-```typescript
-// Antes
-const BATCH_SIZE = 10;
-
-// Después  
-const BATCH_SIZE = 3;  // Completar dentro de timeout de 26s
-```
-
-### Cambios en batch-analyze-domains/index.ts
-
-```typescript
-// Agregar timeout más agresivo para Wayback
-const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s max
-
-const cdxResponse = await fetch(cdxUrl, {
-  headers: { "User-Agent": "EligeTuHosting/1.0" },
-  signal: controller.signal,
-});
-```
-
----
-
-## Flujo Mejorado
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                   Cliente (Browser)                     │
-├─────────────────────────────────────────────────────────┤
-│  1. Iniciar análisis (143 dominios pendientes)          │
-│  2. Enviar batch de 3 → Esperar ~20s → Recibir          │
-│  3. Actualizar UI (3/143, 2%)                           │
-│  4. Enviar siguiente batch → Esperar ~20s → ...         │
-│  5. Repetir hasta completar (~48 batches = ~16 min)     │
-└─────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────┐
-│                 Edge Function (Server)                  │
-├─────────────────────────────────────────────────────────┤
-│  ✅ Dominio 1: Wayback (3s) + IA (4s) + delay (2s)      │
-│  ✅ Dominio 2: Wayback (2s) + IA (5s) + delay (2s)      │
-│  ✅ Dominio 3: Wayback (2s) + IA (3s)                   │
-│  ✅ Total: ~23 segundos (dentro de timeout)             │
-│  → Responder JSON con 3 resultados                      │
-└─────────────────────────────────────────────────────────┘
-```
-
----
-
-## Mejoras Adicionales
-
-### 1. Manejo de errores con retry
-
-```typescript
-// En BatchAnalyzePanel - retry automático en caso de error de red
-if (remaining === -1) {
-  // Esperar 3 segundos y reintentar
-  await new Promise(r => setTimeout(r, 3000));
-  remaining = await runBatch();
-  if (remaining === -1) break; // Si falla 2 veces, detener
+- **URL**: `https://openpagerank.com/api/v1.0/getPageRank?domains[]=example.com`
+- **Límite gratuito**: 100 consultas/día
+- **Response**:
+```json
+{
+  "status_code": 200,
+  "response": [
+    {
+      "status_code": 200,
+      "page_rank_integer": 7,
+      "page_rank_decimal": 6.85,
+      "rank": "1500",
+      "domain": "example.com"
+    }
+  ]
 }
 ```
 
-### 2. Timeout client-side con AbortController
+### Cambios en Base de Datos
+
+Agregar columnas a `domain_opportunities`:
+- `page_rank` (numeric) - PageRank decimal (0.0-10.0)
+- `page_rank_updated_at` (timestamp) - Última consulta
+
+### Nueva Edge Function: `pagerank-lookup`
 
 ```typescript
-const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 25000);
+// Consultar PageRank para un dominio
+// Requiere API Key de Open PageRank (gratis)
+GET /pagerank-lookup?domain=ejemplo.cl
 
-const response = await fetch(url, {
-  signal: controller.signal,
-  // ...
-});
-clearTimeout(timeoutId);
-```
-
-### 3. Actualizar ETA con batch size real
-
-```typescript
-// Antes: asumía 2.5 min/dominio con batch de 10
-// Después: ~8s/dominio con batch de 3
-const eta = Math.ceil((remaining * 8) / 60); // minutos
+Response: {
+  page_rank: 6.5,
+  rank: "1500",
+  success: true
+}
 ```
 
 ---
 
-## Archivos a Modificar
+## 2. Verificar Disponibilidad NIC.cl
+
+### Método
+
+Usar la función WHOIS existente (`whois-lookup`) que ya conecta directamente a `whois.nic.cl:43`.
+
+Si el dominio está **libre**, el WHOIS retorna un mensaje como:
+```
+% whois.nic.cl
+% No match for "dominio-libre.cl"
+```
+
+Si está **registrado**, retorna datos del titular.
+
+### Nueva Edge Function: `check-domain-availability`
+
+```typescript
+// Verificar si dominio está libre en NIC.cl
+POST /check-domain-availability
+Body: { domain: "ejemplo.cl" }
+
+Response: {
+  available: true,
+  domain: "ejemplo.cl",
+  registrar: null,
+  expires_date: null
+}
+
+// o si está registrado:
+{
+  available: false,
+  domain: "ejemplo.cl",
+  registrar: "NIC Chile",
+  expires_date: "2026-06-28"
+}
+```
+
+---
+
+## 3. Cambios en UI
+
+### Nuevas columnas en OpportunitiesTable
+
+| Dominio | PR | Score | Wayback | Disponible | Acciones |
+|---------|-----|-------|---------|------------|----------|
+| ejemplo.cl | 6.5 | 8.2 | 45 | ✅ Libre | [Verificar] [Analizar] |
+
+### Botones de Acción
+
+1. **Verificar Disponibilidad** - Icono de check, consulta WHOIS y muestra badge verde/rojo
+2. **Obtener PageRank** - Icono de barra, consulta Open PageRank API
+
+---
+
+## Archivos a Crear/Modificar
 
 ```
-MODIFICAR:
-├── src/components/domain-sniper/BatchAnalyzePanel.tsx
-│   - BATCH_SIZE = 3 (antes 10)
-│   - Agregar AbortController con timeout 25s
-│   - Retry automático en caso de error de red
-│   - Actualizar cálculo de ETA
+CREAR:
+├── supabase/functions/pagerank-lookup/index.ts
+│   - Consultar Open PageRank API
+│   - Requiere secret: OPENPAGERANK_API_KEY
 │
-└── supabase/functions/batch-analyze-domains/index.ts
-    - Agregar timeout de 5s para Wayback API
-    - Batch size por defecto = 3
+└── supabase/functions/check-domain-availability/index.ts
+    - Reutilizar lógica de whois-lookup
+    - Determinar si dominio está libre
+
+MODIFICAR:
+├── src/components/domain-sniper/OpportunitiesTable.tsx
+│   - Agregar columna "PR" (PageRank)
+│   - Agregar columna "Disponible"
+│   - Agregar botón "Verificar"
+│
+├── src/components/domain-sniper/CheckAvailabilityButton.tsx (NUEVO)
+│   - Botón que consulta disponibilidad
+│   - Muestra badge verde/rojo
+│
+├── src/components/domain-sniper/PageRankBadge.tsx (NUEVO)
+│   - Badge con color según PageRank (0-3 gris, 4-6 amarillo, 7-10 verde)
+│
+└── supabase/migrations/xxx_add_pagerank_availability.sql
+    - ALTER TABLE domain_opportunities
+    - ADD COLUMN page_rank numeric
+    - ADD COLUMN page_rank_updated_at timestamp
+    - ADD COLUMN is_available boolean
+    - ADD COLUMN availability_checked_at timestamp
 ```
 
 ---
 
-## Resultado Esperado
+## Flujo de Usuario
 
-| Métrica | Antes | Después |
-|---------|-------|---------|
-| Batch size | 10 | 3 |
-| Tiempo por batch | 50-90s ❌ | 20-25s ✅ |
-| Timeouts | Frecuentes | Ninguno |
-| ETA para 143 dominios | N/A (se pegaba) | ~16 minutos |
+```
+1. Usuario ve lista de dominios en el radar
+2. Hace clic en botón "Verificar" → Consulta WHOIS NIC.cl
+3. Se muestra badge: ✅ Libre o ❌ Registrado
+4. Si está libre y tiene buen score, puede comprarlo
 
-El análisis continuará de forma estable con progreso visible en la UI.
+Alternativo:
+1. Batch "Verificar todos" → Consulta disponibilidad de todos los pendientes
+2. Se actualiza la columna "Disponible" en cada fila
+```
 
+---
+
+## Secret Requerido
+
+Se necesita agregar el API key de Open PageRank:
+- **Nombre**: `OPENPAGERANK_API_KEY`
+- **Obtener gratis**: https://www.domcop.com/openpagerank/
+
+---
+
+## Integración con Análisis Batch (Opcional)
+
+Agregar PageRank al flujo de análisis masivo:
+- Después de Wayback Machine, consultar PageRank
+- Incluir PageRank en el contexto para la IA
+- Dominios con PageRank alto = mayor valor estimado
