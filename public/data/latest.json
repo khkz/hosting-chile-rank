@@ -1,6 +1,14 @@
 {
-  "updated": "2026-02-07T08:24:22.685Z",
+  "updated": "2026-02-07T09:25:29.472Z",
   "domains": [
+    {
+      "d": "opusmaris.cl",
+      "date": "2026-02-07T05:47:00Z"
+    },
+    {
+      "d": "opusaustralis.cl",
+      "date": "2026-02-07T05:43:15Z"
+    },
     {
       "d": "qorum.cl",
       "date": "2026-02-07T05:15:02Z"
@@ -2056,14 +2064,6 @@
     {
       "d": "daemparral.cl",
       "date": "2026-02-06T06:45:49Z"
-    },
-    {
-      "d": "dalebuho.cl",
-      "date": "2026-02-06T05:47:57Z"
-    },
-    {
-      "d": "delitools.cl",
-      "date": "2026-02-06T05:30:15Z"
     }
   ]
 }
