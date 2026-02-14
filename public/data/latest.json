@@ -1,6 +1,14 @@
 {
-  "updated": "2026-02-14T10:20:35.485Z",
+  "updated": "2026-02-14T11:18:12.977Z",
   "domains": [
+    {
+      "d": "geosumin.cl",
+      "date": "2026-02-14T07:51:20Z"
+    },
+    {
+      "d": "calculolaboral.cl",
+      "date": "2026-02-14T07:26:16Z"
+    },
     {
       "d": "empirica.cl",
       "date": "2026-02-14T07:11:04Z"
@@ -2036,10 +2044,6 @@
     {
       "d": "puntoasesorias.cl",
       "date": "2026-02-13T08:19:22Z"
-    },
-    {
-      "d": "zou.cl",
-      "date": "2026-02-13T07:29:52Z"
     }
   ]
 }
