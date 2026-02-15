@@ -1,6 +1,10 @@
 {
-  "updated": "2026-02-15T07:34:20.185Z",
+  "updated": "2026-02-15T08:26:49.003Z",
   "domains": [
+    {
+      "d": "samr.cl",
+      "date": "2026-02-15T04:42:15Z"
+    },
     {
       "d": "luzceneida.cl",
       "date": "2026-02-15T04:28:20Z"
@@ -928,22 +932,6 @@
     {
       "d": "posiciones.cl",
       "date": "2026-02-14T05:39:54Z"
-    },
-    {
-      "d": "bioaustralconsulting.cl",
-      "date": "2026-02-14T05:09:13Z"
-    },
-    {
-      "d": "bioaustral.cl",
-      "date": "2026-02-14T05:09:12Z"
-    },
-    {
-      "d": "newfeng.cl",
-      "date": "2026-02-14T04:42:27Z"
-    },
-    {
-      "d": "rapidus.cl",
-      "date": "2026-02-14T04:42:26Z"
     }
   ]
 }
