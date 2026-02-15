@@ -1,6 +1,14 @@
 {
-  "updated": "2026-02-15T13:41:15.323Z",
+  "updated": "2026-02-15T14:21:59.544Z",
   "domains": [
+    {
+      "d": "enrisk.cl",
+      "date": "2026-02-15T11:08:53Z"
+    },
+    {
+      "d": "storeplay.cl",
+      "date": "2026-02-15T10:47:37Z"
+    },
     {
       "d": "iaya.cl",
       "date": "2026-02-15T10:41:04Z"
@@ -884,26 +892,6 @@
     {
       "d": "portalimportador.cl",
       "date": "2026-02-14T11:43:54Z"
-    },
-    {
-      "d": "economystore.cl",
-      "date": "2026-02-14T11:20:17Z"
-    },
-    {
-      "d": "proinsum.cl",
-      "date": "2026-02-14T11:18:14Z"
-    },
-    {
-      "d": "fasezero.cl",
-      "date": "2026-02-14T10:53:30Z"
-    },
-    {
-      "d": "fisherfresh.cl",
-      "date": "2026-02-14T10:50:51Z"
-    },
-    {
-      "d": "vittamove.cl",
-      "date": "2026-02-14T10:47:06Z"
     }
   ]
 }
