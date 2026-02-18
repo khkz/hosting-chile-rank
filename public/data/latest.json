@@ -1,6 +1,10 @@
 {
-  "updated": "2026-02-18T07:01:14.782Z",
+  "updated": "2026-02-18T08:38:07.825Z",
   "domains": [
+    {
+      "d": "vendora.cl",
+      "date": "2026-02-18T04:38:43Z"
+    },
     {
       "d": "abogadosanmartin.cl",
       "date": "2026-02-18T03:27:35Z"
@@ -2128,18 +2132,6 @@
     {
       "d": "t120media.cl",
       "date": "2026-02-17T06:22:57Z"
-    },
-    {
-      "d": "mae-capacita.cl",
-      "date": "2026-02-17T05:10:51Z"
-    },
-    {
-      "d": "geomatia.cl",
-      "date": "2026-02-17T04:20:29Z"
-    },
-    {
-      "d": "aglachile.cl",
-      "date": "2026-02-17T04:05:42Z"
     }
   ]
 }
