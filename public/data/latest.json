@@ -1,6 +1,10 @@
 {
-  "updated": "2026-02-22T06:40:37.997Z",
+  "updated": "2026-02-22T07:32:46.433Z",
   "domains": [
+    {
+      "d": "docuwallet.cl",
+      "date": "2026-02-22T04:09:45Z"
+    },
     {
       "d": "diegoavendano.cl",
       "date": "2026-02-22T03:26:23Z"
@@ -1120,10 +1124,6 @@
     {
       "d": "deltacore.cl",
       "date": "2026-02-21T04:43:18Z"
-    },
-    {
-      "d": "estudiovalmor.cl",
-      "date": "2026-02-21T03:54:48Z"
     }
   ]
 }
