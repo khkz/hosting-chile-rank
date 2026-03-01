@@ -10,6 +10,7 @@ import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 
 const BeforeAfter = React.lazy(() => import('@/components/BeforeAfter'));
 const HostingQuiz = React.lazy(() => import('@/components/HostingQuiz'));
+const TransparencyAlert = React.lazy(() => import('@/components/TransparencyAlert'));
 const HostingRanking = React.lazy(() => import('@/components/HostingRanking'));
 const Benefits = React.lazy(() => import('@/components/Benefits'));
 const Testimonial = React.lazy(() => import('@/components/Testimonial'));
@@ -77,6 +78,7 @@ const Index = () => {
           <HostingQuiz />
           
           <div className="section-separator"></div>
+          <TransparencyAlert />
           <HostingRanking />
           
           <div className="section-separator"></div>
