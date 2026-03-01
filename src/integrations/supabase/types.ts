@@ -143,6 +143,47 @@ export type Database = {
         }
         Relationships: []
       }
+      company_audit_log: {
+        Row: {
+          company_id: string
+          complaints_data: Json | null
+          created_at: string
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          scraped_data: Json | null
+          status: string
+        }
+        Insert: {
+          company_id: string
+          complaints_data?: Json | null
+          created_at?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          scraped_data?: Json | null
+          status?: string
+        }
+        Update: {
+          company_id?: string
+          complaints_data?: Json | null
+          created_at?: string
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          scraped_data?: Json | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_audit_log_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       company_certifications: {
         Row: {
           category_id: string

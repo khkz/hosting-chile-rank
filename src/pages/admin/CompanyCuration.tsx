@@ -11,11 +11,13 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import {
   CheckCircle, XCircle, AlertCircle, Globe, Edit, Shield, ShieldOff,
-  RefreshCw, Star, Loader2
+  RefreshCw, Star, Loader2, ClipboardCheck
 } from 'lucide-react';
+import AuditReviewPanel from '@/components/admin/AuditReviewPanel';
 
 type Filter = 'all' | 'curated' | 'pending' | 'down';
 
@@ -157,130 +159,145 @@ export default function CompanyCuration() {
           </Button>
         </div>
 
-        {/* Filters */}
-        <div className="flex gap-2 mb-6 flex-wrap">
-          {([['all', 'Todas'], ['curated', 'Curadas'], ['pending', 'Pendientes'], ['down', 'Website Caído']] as const).map(([key, label]) => (
-            <Button
-              key={key}
-              variant={filter === key ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setFilter(key)}
-            >
-              {label} ({companies?.filter((c: any) => {
-                if (key === 'curated') return c.is_curated;
-                if (key === 'pending') return !c.is_curated;
-                if (key === 'down') return c.website_status === 'down' || c.website_status === 'not_found';
-                return true;
-              }).length ?? 0})
-            </Button>
-          ))}
-        </div>
+        <Tabs defaultValue="empresas" className="mb-6">
+          <TabsList>
+            <TabsTrigger value="empresas">Empresas</TabsTrigger>
+            <TabsTrigger value="auditorias" className="flex items-center gap-1">
+              <ClipboardCheck className="w-4 h-4" />Auditorías Pendientes
+            </TabsTrigger>
+          </TabsList>
 
-        {isLoading ? (
-          <div className="text-center py-12"><Loader2 className="w-8 h-8 animate-spin mx-auto" /></div>
-        ) : (
-          <div className="space-y-4">
-            {filtered.map((company: any) => (
-              <Card key={company.id} className="p-4">
-                <div className="flex flex-col md:flex-row gap-4">
-                  {/* Logo */}
-                  <div className="w-16 h-16 flex-shrink-0 bg-muted rounded flex items-center justify-center overflow-hidden">
-                    <img
-                      src={company.logo_url || '/placeholder.svg'}
-                      alt={company.name}
-                      className="w-full h-full object-contain"
-                      onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
-                    />
-                  </div>
+          <TabsContent value="auditorias">
+            <AuditReviewPanel />
+          </TabsContent>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <h3 className="font-bold text-lg">{company.name}</h3>
-                      {company.is_verified && <Badge className="bg-blue-100 text-blue-800">Verificada</Badge>}
-                      {company.is_curated && <Badge className="bg-green-100 text-green-800">Curada</Badge>}
-                      {statusBadge(company.website_status || 'unknown')}
-                    </div>
-                    <p className="text-sm text-muted-foreground truncate">{company.website || 'Sin website'}</p>
-                    <p className="text-sm text-muted-foreground truncate">{company.description || 'Sin descripción'}</p>
+          <TabsContent value="empresas">
+            {/* Filters */}
+            <div className="flex gap-2 mb-6 flex-wrap">
+              {([['all', 'Todas'], ['curated', 'Curadas'], ['pending', 'Pendientes'], ['down', 'Website Caído']] as const).map(([key, label]) => (
+                <Button
+                  key={key}
+                  variant={filter === key ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setFilter(key)}
+                >
+                  {label} ({companies?.filter((c: any) => {
+                    if (key === 'curated') return c.is_curated;
+                    if (key === 'pending') return !c.is_curated;
+                    if (key === 'down') return c.website_status === 'down' || c.website_status === 'not_found';
+                    return true;
+                  }).length ?? 0})
+                </Button>
+              ))}
+            </div>
 
-                    {/* Completeness */}
-                    <div className="flex items-center gap-2 mt-2">
-                      <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-primary rounded-full transition-all"
-                          style={{ width: `${getCompletenessScore(company)}%` }}
+            {isLoading ? (
+              <div className="text-center py-12"><Loader2 className="w-8 h-8 animate-spin mx-auto" /></div>
+            ) : (
+              <div className="space-y-4">
+                {filtered.map((company: any) => (
+                  <Card key={company.id} className="p-4">
+                    <div className="flex flex-col md:flex-row gap-4">
+                      {/* Logo */}
+                      <div className="w-16 h-16 flex-shrink-0 bg-muted rounded flex items-center justify-center overflow-hidden">
+                        <img
+                          src={company.logo_url || '/placeholder.svg'}
+                          alt={company.name}
+                          className="w-full h-full object-contain"
+                          onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
                         />
                       </div>
-                      <span className="text-xs text-muted-foreground">{getCompletenessScore(company)}%</span>
-                      {company.overall_rating > 0 && (
-                        <span className="text-xs flex items-center gap-1 ml-2">
-                          <Star className="w-3 h-3 fill-yellow-500 text-yellow-500" />
-                          {Number(company.overall_rating).toFixed(1)}
-                        </span>
-                      )}
-                    </div>
 
-                    {company.curation_notes && (
-                      <p className="text-xs text-muted-foreground mt-1 italic">Notas: {company.curation_notes}</p>
-                    )}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex flex-wrap gap-2 items-start">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => verifyWebsite.mutate(company.id)}
-                      disabled={verifyWebsite.isPending}
-                    >
-                      <Globe className="w-4 h-4 mr-1" />Verificar
-                    </Button>
-
-                    {!company.is_curated ? (
-                      curatingId === company.id ? (
-                        <div className="flex gap-1 items-center">
-                          <Input
-                            placeholder="Notas..."
-                            value={curationNotes}
-                            onChange={(e) => setCurationNotes(e.target.value)}
-                            className="w-40 h-8 text-sm"
-                          />
-                          <Button size="sm" onClick={() => toggleCurated.mutate({ id: company.id, curated: true, notes: curationNotes })}>
-                            <CheckCircle className="w-4 h-4" />
-                          </Button>
-                          <Button size="sm" variant="ghost" onClick={() => setCuratingId(null)}>
-                            <XCircle className="w-4 h-4" />
-                          </Button>
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <h3 className="font-bold text-lg">{company.name}</h3>
+                          {company.is_verified && <Badge className="bg-blue-100 text-blue-800">Verificada</Badge>}
+                          {company.is_curated && <Badge className="bg-green-100 text-green-800">Curada</Badge>}
+                          {statusBadge(company.website_status || 'unknown')}
                         </div>
-                      ) : (
-                        <Button size="sm" onClick={() => { setCuratingId(company.id); setCurationNotes(''); }}>
-                          <Shield className="w-4 h-4 mr-1" />Curar
+                        <p className="text-sm text-muted-foreground truncate">{company.website || 'Sin website'}</p>
+                        <p className="text-sm text-muted-foreground truncate">{company.description || 'Sin descripción'}</p>
+
+                        {/* Completeness */}
+                        <div className="flex items-center gap-2 mt-2">
+                          <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-primary rounded-full transition-all"
+                              style={{ width: `${getCompletenessScore(company)}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-muted-foreground">{getCompletenessScore(company)}%</span>
+                          {company.overall_rating > 0 && (
+                            <span className="text-xs flex items-center gap-1 ml-2">
+                              <Star className="w-3 h-3 fill-yellow-500 text-yellow-500" />
+                              {Number(company.overall_rating).toFixed(1)}
+                            </span>
+                          )}
+                        </div>
+
+                        {company.curation_notes && (
+                          <p className="text-xs text-muted-foreground mt-1 italic">Notas: {company.curation_notes}</p>
+                        )}
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex flex-wrap gap-2 items-start">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => verifyWebsite.mutate(company.id)}
+                          disabled={verifyWebsite.isPending}
+                        >
+                          <Globe className="w-4 h-4 mr-1" />Verificar
                         </Button>
-                      )
-                    ) : (
-                      <Button size="sm" variant="destructive" onClick={() => toggleCurated.mutate({ id: company.id, curated: false })}>
-                        <ShieldOff className="w-4 h-4 mr-1" />Descurar
-                      </Button>
-                    )}
 
-                    <Button
-                      size="sm"
-                      variant={company.is_verified ? 'destructive' : 'default'}
-                      onClick={() => toggleVerified.mutate({ id: company.id, verified: !company.is_verified })}
-                    >
-                      {company.is_verified ? 'Desverificar' : 'Verificar'}
-                    </Button>
+                        {!company.is_curated ? (
+                          curatingId === company.id ? (
+                            <div className="flex gap-1 items-center">
+                              <Input
+                                placeholder="Notas..."
+                                value={curationNotes}
+                                onChange={(e) => setCurationNotes(e.target.value)}
+                                className="w-40 h-8 text-sm"
+                              />
+                              <Button size="sm" onClick={() => toggleCurated.mutate({ id: company.id, curated: true, notes: curationNotes })}>
+                                <CheckCircle className="w-4 h-4" />
+                              </Button>
+                              <Button size="sm" variant="ghost" onClick={() => setCuratingId(null)}>
+                                <XCircle className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          ) : (
+                            <Button size="sm" onClick={() => { setCuratingId(company.id); setCurationNotes(''); }}>
+                              <Shield className="w-4 h-4 mr-1" />Curar
+                            </Button>
+                          )
+                        ) : (
+                          <Button size="sm" variant="destructive" onClick={() => toggleCurated.mutate({ id: company.id, curated: false })}>
+                            <ShieldOff className="w-4 h-4 mr-1" />Descurar
+                          </Button>
+                        )}
 
-                    <Button size="sm" variant="outline" onClick={() => setEditCompany({ ...company })}>
-                      <Edit className="w-4 h-4 mr-1" />Editar
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
+                        <Button
+                          size="sm"
+                          variant={company.is_verified ? 'destructive' : 'default'}
+                          onClick={() => toggleVerified.mutate({ id: company.id, verified: !company.is_verified })}
+                        >
+                          {company.is_verified ? 'Desverificar' : 'Verificar'}
+                        </Button>
+
+                        <Button size="sm" variant="outline" onClick={() => setEditCompany({ ...company })}>
+                          <Edit className="w-4 h-4 mr-1" />Editar
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Edit Dialog */}
