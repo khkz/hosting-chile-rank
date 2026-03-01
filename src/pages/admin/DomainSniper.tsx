@@ -15,6 +15,7 @@ import { InquiriesList } from "@/components/domain-sniper/InquiriesList";
 import { SniperSettings } from "@/components/domain-sniper/SniperSettings";
 import { SyncNicButton } from "@/components/domain-sniper/SyncNicButton";
 import { BatchAnalyzePanel } from "@/components/domain-sniper/BatchAnalyzePanel";
+import OSINTScanner from "@/components/domain-sniper/OSINTScanner";
 import {
   Crosshair,
   Briefcase,
@@ -25,6 +26,7 @@ import {
   Eye,
   ShoppingCart,
   Loader2,
+  Search,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -212,10 +214,14 @@ export default function DomainSniper() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="radar" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-flex">
             <TabsTrigger value="radar" className="gap-2">
               <Crosshair className="w-4 h-4" />
               <span className="hidden sm:inline">Radar</span>
+            </TabsTrigger>
+            <TabsTrigger value="osint" className="gap-2">
+              <Search className="w-4 h-4" />
+              <span className="hidden sm:inline">OSINT</span>
             </TabsTrigger>
             <TabsTrigger value="portfolio" className="gap-2">
               <Briefcase className="w-4 h-4" />
@@ -240,6 +246,10 @@ export default function DomainSniper() {
               </h2>
               <OpportunitiesTable />
             </Card>
+          </TabsContent>
+
+          <TabsContent value="osint" className="space-y-4">
+            <OSINTScanner />
           </TabsContent>
 
           <TabsContent value="portfolio" className="space-y-4">
