@@ -7,10 +7,11 @@ import StatsTicker from '@/components/StatsTicker';
 import ScrollProgress from '@/components/ScrollProgress';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
+import TransparencyAlert from '@/components/TransparencyAlert';
+import MethodologySection from '@/components/MethodologySection';
 
 const BeforeAfter = React.lazy(() => import('@/components/BeforeAfter'));
 const HostingQuiz = React.lazy(() => import('@/components/HostingQuiz'));
-const TransparencyAlert = React.lazy(() => import('@/components/TransparencyAlert'));
 const HostingRanking = React.lazy(() => import('@/components/HostingRanking'));
 const Benefits = React.lazy(() => import('@/components/Benefits'));
 const Testimonial = React.lazy(() => import('@/components/Testimonial'));
@@ -27,7 +28,6 @@ const MiniNav = React.lazy(() => import('@/components/MiniNav'));
 const ExitModal = React.lazy(() => import('@/components/ExitModal'));
 const TrustReport = React.lazy(() => import('@/components/TrustReport'));
 const OpenDataBadge = React.lazy(() => import('@/components/OpenDataBadge'));
-const MethodologySection = React.lazy(() => import('@/components/MethodologySection'));
 
 const Index = () => {
   return (
