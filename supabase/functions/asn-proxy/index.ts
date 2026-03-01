@@ -47,6 +47,11 @@ const CONGLOMERATE_MAP: Record<string, string> = {
   ihost: "Grupo Casamayor",
   todohosting: "Grupo Casamayor",
   "iswl": "Grupo Casamayor",
+  // ── Grupo Hostname ──
+  hostname: "Grupo Hostname",
+  "host.cl": "Grupo Hostname",
+  "hn.cl": "Grupo Hostname",
+  "inc.cl": "Grupo Hostname",
 };
 
 interface MonopolyResult {
@@ -66,6 +71,11 @@ const BRAND_ALIASES: Record<string, string> = {
   "comparahosting.cl": "Grupo Casamayor",
   "ihost.cl": "Grupo Casamayor",
   "todohosting.cl": "Grupo Casamayor",
+  // ── Grupo Hostname ──
+  "hostname.cl": "Grupo Hostname",
+  "hn.cl": "Grupo Hostname",
+  "host.cl": "Grupo Hostname",
+  "inc.cl": "Grupo Hostname",
   // ── Grupo BlueHosting ──
   "bluehosting.cl": "Grupo BlueHosting",
   "www.bluehosting.cl": "Grupo BlueHosting",
