@@ -29,8 +29,11 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
       
-      {/* Canonical */}
+      {/* Canonical & hreflang */}
       <link rel="canonical" href={url} />
+      <link rel="alternate" hrefLang="es-CL" href={url} />
+      <link rel="alternate" hrefLang="es" href={url} />
+      <link rel="alternate" hrefLang="x-default" href={url} />
       
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
@@ -39,6 +42,7 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       <meta property="og:url" content={url} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:site_name" content="EligeTuHosting.cl" />
+      <meta property="og:locale" content="es_CL" />
       
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
