@@ -1,43 +1,38 @@
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import StatsTicker from '@/components/StatsTicker';
-import BeforeAfter from '@/components/BeforeAfter';
-import HostingQuiz from '@/components/HostingQuiz';
-import HostingRanking from '@/components/HostingRanking';
-import Benefits from '@/components/Benefits';
-import Testimonial from '@/components/Testimonial';
-import Migration from '@/components/Migration';
-import Categories from '@/components/Categories';
-import FAQ from '@/components/FAQ';
-import UltimasBusquedas from '@/components/UltimasBusquedas';
-import TransparencyNotice from '@/components/TransparencyNotice';
-import FinalCTA from '@/components/FinalCTA';
-import CertificationsBanner from '@/components/CertificationsBanner';
-import Footer from '@/components/Footer';
-import StickyCTA from '@/components/StickyCTA';
-import MiniNav from '@/components/MiniNav';
-import ExitModal from '@/components/ExitModal';
+import ScrollProgress from '@/components/ScrollProgress';
 import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
-import SocialProofFeed from '@/components/SocialProofFeed';
 
-import ScrollProgress from '@/components/ScrollProgress';
-import TrustReport from '@/components/TrustReport';
-import OpenDataBadge from '@/components/OpenDataBadge';
+const BeforeAfter = React.lazy(() => import('@/components/BeforeAfter'));
+const HostingQuiz = React.lazy(() => import('@/components/HostingQuiz'));
+const HostingRanking = React.lazy(() => import('@/components/HostingRanking'));
+const Benefits = React.lazy(() => import('@/components/Benefits'));
+const Testimonial = React.lazy(() => import('@/components/Testimonial'));
+const Migration = React.lazy(() => import('@/components/Migration'));
+const Categories = React.lazy(() => import('@/components/Categories'));
+const FAQ = React.lazy(() => import('@/components/FAQ'));
+const UltimasBusquedas = React.lazy(() => import('@/components/UltimasBusquedas'));
+const TransparencyNotice = React.lazy(() => import('@/components/TransparencyNotice'));
+const FinalCTA = React.lazy(() => import('@/components/FinalCTA'));
+const CertificationsBanner = React.lazy(() => import('@/components/CertificationsBanner'));
+const Footer = React.lazy(() => import('@/components/Footer'));
+const StickyCTA = React.lazy(() => import('@/components/StickyCTA'));
+const MiniNav = React.lazy(() => import('@/components/MiniNav'));
+const ExitModal = React.lazy(() => import('@/components/ExitModal'));
+const SocialProofFeed = React.lazy(() => import('@/components/SocialProofFeed'));
+const TrustReport = React.lazy(() => import('@/components/TrustReport'));
+const OpenDataBadge = React.lazy(() => import('@/components/OpenDataBadge'));
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
-      {/* Scroll Progress Bar */}
       <ScrollProgress />
       
-      {/* Limited Offer Banner */}
-      
-      
-      {/* SEO Meta Tags */}
       <DynamicMetaTags
         title="Mejor Hosting Chile 2026"
         description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2026 con ⭐ 4.8/5 (1,247 opiniones) y cotización gratis."
@@ -45,7 +40,6 @@ const Index = () => {
         keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2026"
       />
       
-      {/* Schema Markup - Aggregate Rating */}
       <SEOReviewSchema 
         type="aggregate"
         aggregateData={{
@@ -56,7 +50,6 @@ const Index = () => {
         }}
       />
       
-      {/* Schema Markup - FAQ */}
       <SEOFAQSchema faqs={[
         {
           question: "¿Cuál es el mejor hosting en Chile 2026?",
@@ -82,89 +75,57 @@ const Index = () => {
       
       <Navbar />
       <main className="relative">
-        {/* section 1: Hero */}
         <Hero />
-        
-        {/* section 2: Stats ticker */}
         <StatsTicker />
         
-        <div className="section-separator"></div>
-        
-        {/* section 3: Before/After comparison */}
-        <BeforeAfter />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 4: Interactive Quiz */}
-        <HostingQuiz />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 5: Ranking cards */}
-        <HostingRanking />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 5.5: Trust Report - Verification Section */}
-        <TrustReport />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 6: Transparency Notice */}
-        <TransparencyNotice />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 7: Benefits */}
-        <Benefits />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 8: Testimonials + Partners */}
-        <Testimonial />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 9: Last Searches */}
-        <UltimasBusquedas />
-        
-        {/* section 10: Migration CTA */}
-        <Migration />
-        
-        <div className="section-separator"></div>
-        
-        {/* section 11: Categories */}
-        <Categories />
-        
-        {/* section 11.5: Open Data Badge */}
-        <section className="py-12 bg-background">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <OpenDataBadge />
-          </div>
-        </section>
-        
-        {/* section 12: FAQ */}
-        <FAQ />
-        
-        {/* section 13: Certifications Banner */}
-        <CertificationsBanner />
-        
-        {/* section 14: Final CTA */}
-        <FinalCTA />
-        
-        {/* Mini Nav sticky */}
-        <MiniNav />
-        
-        {/* CTA sticky mobile */}
-        <StickyCTA />
-        
-        {/* Exit Intent Modal */}
-        <ExitModal />
-        
-        {/* Social Proof Feed */}
-        <SocialProofFeed />
+        <Suspense fallback={null}>
+          <div className="section-separator"></div>
+          <BeforeAfter />
+          
+          <div className="section-separator"></div>
+          <HostingQuiz />
+          
+          <div className="section-separator"></div>
+          <HostingRanking />
+          
+          <div className="section-separator"></div>
+          <TrustReport />
+          
+          <div className="section-separator"></div>
+          <TransparencyNotice />
+          
+          <div className="section-separator"></div>
+          <Benefits />
+          
+          <div className="section-separator"></div>
+          <Testimonial />
+          
+          <div className="section-separator"></div>
+          <UltimasBusquedas />
+          
+          <Migration />
+          
+          <div className="section-separator"></div>
+          <Categories />
+          
+          <section className="py-12 bg-background">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <OpenDataBadge />
+            </div>
+          </section>
+          
+          <FAQ />
+          <CertificationsBanner />
+          <FinalCTA />
+          <MiniNav />
+          <StickyCTA />
+          <ExitModal />
+          <SocialProofFeed />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
