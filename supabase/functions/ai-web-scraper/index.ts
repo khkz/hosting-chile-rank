@@ -60,28 +60,67 @@ serve(async (req) => {
 
     for (const pageUrl of pagesToScrape) {
       try {
+        // Try Jina AI first with longer timeout
         const jinaResponse = await fetch(`https://r.jina.ai/${pageUrl}`, {
           headers: { 'Accept': 'application/json' },
-          signal: AbortSignal.timeout(8000),
+          signal: AbortSignal.timeout(15000),
         });
         if (jinaResponse.ok) {
           const jinaData = await jinaResponse.json();
           const text = (jinaData.data?.content || jinaData.content || '').slice(0, 4000);
           if (text.length > 100) {
             pageTexts.push(`=== PÁGINA: ${pageUrl} ===\n${text}`);
-            console.log(`✅ ${pageUrl}: ${text.length} chars`);
+            console.log(`✅ Jina ${pageUrl}: ${text.length} chars`);
+            continue;
           }
         } else {
           await jinaResponse.text();
-          console.log(`⚠️ ${pageUrl}: HTTP ${jinaResponse.status}`);
+          console.log(`⚠️ Jina ${pageUrl}: HTTP ${jinaResponse.status}`);
         }
       } catch (e) {
-        console.log(`⚠️ ${pageUrl}: timeout/error`);
+        console.log(`⚠️ Jina ${pageUrl}: timeout/error`);
+      }
+
+      // Fallback: direct fetch + strip HTML tags
+      try {
+        const directResponse = await fetch(pageUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; MejorHostingBot/1.0)',
+            'Accept': 'text/html',
+          },
+          signal: AbortSignal.timeout(10000),
+          redirect: 'follow',
+        });
+        if (directResponse.ok) {
+          const html = await directResponse.text();
+          // Strip HTML tags and extract text content
+          const text = html
+            .replace(/<script[\s\S]*?<\/script>/gi, '')
+            .replace(/<style[\s\S]*?<\/style>/gi, '')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 4000);
+          if (text.length > 100) {
+            pageTexts.push(`=== PÁGINA: ${pageUrl} ===\n${text}`);
+            console.log(`✅ Direct ${pageUrl}: ${text.length} chars`);
+          }
+        }
+      } catch (e2) {
+        console.log(`⚠️ Direct ${pageUrl}: fallback also failed`);
       }
     }
 
     if (pageTexts.length === 0) {
-      throw new Error('No content extracted from any page');
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: 'No content extracted - site may block automated access',
+        url,
+        pages_scraped: 0 
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const combinedText = pageTexts.join('\n\n').slice(0, 12000);
