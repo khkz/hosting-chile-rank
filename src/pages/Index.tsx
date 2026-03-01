@@ -2,6 +2,7 @@
 import React, { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import TLDRVerdict from '@/components/TLDRVerdict';
 import StatsTicker from '@/components/StatsTicker';
 import ScrollProgress from '@/components/ScrollProgress';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
@@ -65,6 +66,7 @@ const Index = () => {
       <Navbar />
       <main className="relative">
         <Hero />
+        <TLDRVerdict />
         <StatsTicker />
         
         <Suspense fallback={null}>
