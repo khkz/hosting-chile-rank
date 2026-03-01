@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import StatsTicker from '@/components/StatsTicker';
 import ScrollProgress from '@/components/ScrollProgress';
-import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 
@@ -34,19 +33,9 @@ const Index = () => {
       
       <DynamicMetaTags
         title="Mejor Hosting Chile 2026"
-        description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2026 con ⭐ 4.8/5 (1,247 opiniones) y cotización gratis."
+        description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2026 con +5.700 dominios analizados y 20 proveedores verificados."
         canonical="https://eligetuhosting.cl"
         keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2026"
-      />
-      
-      <SEOReviewSchema 
-        type="aggregate"
-        aggregateData={{
-          averageRating: 4.8,
-          totalReviews: 1247,
-          bestRating: 10,
-          worstRating: 1
-        }}
       />
       
       <SEOFAQSchema faqs={[

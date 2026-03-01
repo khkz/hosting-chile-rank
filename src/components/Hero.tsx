@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Check, Star } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
@@ -51,7 +51,7 @@ const Hero = () => {
               </div>
               <div className="flex items-center gap-2 text-gray-700">
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                <span className="text-sm font-medium">+22.000 sitios analizados</span>
+                <span className="text-sm font-medium">+5.700 dominios .CL analizados</span>
               </div>
             </div>
 
@@ -78,14 +78,15 @@ const Hero = () => {
             </p>
             
             <div className="flex items-center justify-center md:justify-start gap-2 mt-6 mb-8">
-              <div className="flex">
-                {[1,2,3,4,5].map((star) => (
-                  <Star key={star} className="w-5 h-5 fill-warm-yellow text-warm-yellow" />
-                ))}
+              <div className="flex items-center gap-1 text-sm text-gray-600">
+                <Check className="w-4 h-4 text-brand-red" />
+                <span>20 proveedores verificados</span>
               </div>
-              <span className="text-sm text-gray-600 ml-2">
-                Más de 500 usuarios satisfechos nos recomiendan
-              </span>
+              <span className="text-gray-300">·</span>
+              <div className="flex items-center gap-1 text-sm text-gray-600">
+                <Check className="w-4 h-4 text-brand-red" />
+                <span>+5.700 dominios analizados</span>
+              </div>
             </div>
             
             <div className="mt-8">
