@@ -141,8 +141,22 @@ const CatalogoDetalle = () => {
           ]}
         />
 
+        {/* Fake Comparison Site Warning */}
+        {(company as any).is_fake_comparison && (
+          <div className="mb-6 p-4 bg-destructive/10 rounded-lg border border-destructive/30 flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-destructive mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-destructive">⚠️ Sitio de Comparación No Independiente</p>
+              <p className="text-xs text-muted-foreground">
+                Este sitio se presenta como un comparador de hosting, pero pertenece al grupo empresarial <strong>{company.corporate_group}</strong>, 
+                que opera sus propias marcas de hosting. Las recomendaciones pueden no ser imparciales.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Corporate Group Transparency */}
-        {company.corporate_group && (
+        {company.corporate_group && !(company as any).is_fake_comparison && (
           <div className="mb-6 p-4 bg-muted/50 rounded-lg border flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
             <div>
