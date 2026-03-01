@@ -653,15 +653,19 @@ export type Database = {
           contact_email: string | null
           contact_hours: string | null
           contact_phone: string | null
+          corporate_group: string | null
           created_at: string | null
           curated_at: string | null
           curation_notes: string | null
           datacenter_location: string | null
           description: string | null
+          foundation_year: number | null
           id: string
           is_curated: boolean | null
           is_featured: boolean | null
+          is_independent: boolean | null
           is_verified: boolean | null
+          legal_name: string | null
           logo_url: string | null
           name: string
           overall_rating: number | null
@@ -685,15 +689,19 @@ export type Database = {
           contact_email?: string | null
           contact_hours?: string | null
           contact_phone?: string | null
+          corporate_group?: string | null
           created_at?: string | null
           curated_at?: string | null
           curation_notes?: string | null
           datacenter_location?: string | null
           description?: string | null
+          foundation_year?: number | null
           id?: string
           is_curated?: boolean | null
           is_featured?: boolean | null
+          is_independent?: boolean | null
           is_verified?: boolean | null
+          legal_name?: string | null
           logo_url?: string | null
           name: string
           overall_rating?: number | null
@@ -717,15 +725,19 @@ export type Database = {
           contact_email?: string | null
           contact_hours?: string | null
           contact_phone?: string | null
+          corporate_group?: string | null
           created_at?: string | null
           curated_at?: string | null
           curation_notes?: string | null
           datacenter_location?: string | null
           description?: string | null
+          foundation_year?: number | null
           id?: string
           is_curated?: boolean | null
           is_featured?: boolean | null
+          is_independent?: boolean | null
           is_verified?: boolean | null
+          legal_name?: string | null
           logo_url?: string | null
           name?: string
           overall_rating?: number | null
