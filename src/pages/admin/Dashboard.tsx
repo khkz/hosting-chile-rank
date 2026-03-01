@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Building2, Award, TrendingUp, Database, Crosshair } from 'lucide-react';
+import { MessageSquare, Building2, Award, TrendingUp, Database, Crosshair, ClipboardCheck } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -143,6 +143,12 @@ export default function AdminDashboard() {
               <Button variant="outline" className="w-full justify-start">
                 <Crosshair className="w-4 h-4 mr-2" />
                 Domain Sniper
+              </Button>
+            </Link>
+            <Link to="/admin/company-curation">
+              <Button variant="outline" className="w-full justify-start">
+                <ClipboardCheck className="w-4 h-4 mr-2" />
+                Curación de Empresas
               </Button>
             </Link>
           </div>

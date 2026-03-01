@@ -35,3 +35,6 @@ verify_jwt = false
 
 [functions.pagerank-lookup]
 verify_jwt = false
+
+[functions.verify-company-website]
+verify_jwt = false
