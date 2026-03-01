@@ -54,6 +54,7 @@ import Companies from './pages/admin/Companies';
 import AdminCertifications from './pages/admin/Certifications';
 import DataMigration from './pages/admin/DataMigration';
 import DomainSniper from './pages/admin/DomainSniper';
+import CompanyCuration from './pages/admin/CompanyCuration';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
@@ -172,6 +173,11 @@ function App() {
             <Route path="/admin/domain-sniper" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DomainSniper />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/company-curation" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <CompanyCuration />
               </ProtectedRoute>
             } />
             <Route path="/provider/dashboard" element={

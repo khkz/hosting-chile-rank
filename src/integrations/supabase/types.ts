@@ -654,9 +654,12 @@ export type Database = {
           contact_hours: string | null
           contact_phone: string | null
           created_at: string | null
+          curated_at: string | null
+          curation_notes: string | null
           datacenter_location: string | null
           description: string | null
           id: string
+          is_curated: boolean | null
           is_featured: boolean | null
           is_verified: boolean | null
           logo_url: string | null
@@ -672,6 +675,7 @@ export type Database = {
           updated_at: string | null
           verified_reviews: number | null
           website: string | null
+          website_status: string | null
           year_founded: number | null
         }
         Insert: {
@@ -682,9 +686,12 @@ export type Database = {
           contact_hours?: string | null
           contact_phone?: string | null
           created_at?: string | null
+          curated_at?: string | null
+          curation_notes?: string | null
           datacenter_location?: string | null
           description?: string | null
           id?: string
+          is_curated?: boolean | null
           is_featured?: boolean | null
           is_verified?: boolean | null
           logo_url?: string | null
@@ -700,6 +707,7 @@ export type Database = {
           updated_at?: string | null
           verified_reviews?: number | null
           website?: string | null
+          website_status?: string | null
           year_founded?: number | null
         }
         Update: {
@@ -710,9 +718,12 @@ export type Database = {
           contact_hours?: string | null
           contact_phone?: string | null
           created_at?: string | null
+          curated_at?: string | null
+          curation_notes?: string | null
           datacenter_location?: string | null
           description?: string | null
           id?: string
+          is_curated?: boolean | null
           is_featured?: boolean | null
           is_verified?: boolean | null
           logo_url?: string | null
@@ -728,6 +739,7 @@ export type Database = {
           updated_at?: string | null
           verified_reviews?: number | null
           website?: string | null
+          website_status?: string | null
           year_founded?: number | null
         }
         Relationships: []

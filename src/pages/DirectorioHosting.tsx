@@ -12,18 +12,19 @@ import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import CertificationBadges from '@/components/CertificationBadges';
 
 export default function DirectorioHosting() {
-  // Fetch empresas con certificaciones activas
+  // Fetch empresas curadas (fallback a verificadas si no hay curadas)
   const { data: certifiedCompanies } = useQuery({
     queryKey: ['certified-companies-directory'],
     queryFn: async () => {
-      const { data } = await supabase
+      // Try curated first
+      const { data: curated } = await supabase
         .from('company_certifications')
         .select(`
           id,
           position,
           category_id,
           link_back_verified,
-          hosting_companies (
+          hosting_companies!inner (
             id,
             slug,
             name,
@@ -31,7 +32,9 @@ export default function DirectorioHosting() {
             overall_rating,
             total_reviews,
             website,
-            description
+            description,
+            is_curated,
+            is_verified
           ),
           certification_categories (
             name,
@@ -40,8 +43,15 @@ export default function DirectorioHosting() {
         `)
         .eq('status', 'active')
         .order('position', { ascending: true });
+
+      // Filter: prefer curated+verified, fallback to just verified
+      const hasCurated = curated?.some((c: any) => c.hosting_companies?.is_curated);
+      const filtered = curated?.filter((c: any) => {
+        if (hasCurated) return c.hosting_companies?.is_curated && c.hosting_companies?.is_verified;
+        return c.hosting_companies?.is_verified;
+      });
       
-      return data;
+      return filtered;
     }
   });
 
@@ -99,10 +109,10 @@ export default function DirectorioHosting() {
   return (
     <>
       <DynamicMetaTags 
-        title="Directorio Hosting Chile 2025 | Proveedores Certificados"
+        title="Directorio Hosting Chile 2026 | Proveedores Certificados"
         description="Directorio oficial de empresas de hosting certificadas en Chile. Encuentra el mejor proveedor según velocidad, soporte, seguridad y precio."
         canonical="https://eligetuhosting.cl/directorio-hosting-chile"
-        keywords="hosting chile, directorio hosting, proveedores hosting chile, mejor hosting chile 2025"
+        keywords="hosting chile, directorio hosting, proveedores hosting chile, mejor hosting chile 2026"
       />
 
       {/* Schema Markup */}
@@ -125,7 +135,7 @@ export default function DirectorioHosting() {
       <section className="bg-gradient-to-br from-brand-red via-brand-red-dark to-[#2B2D42] text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Directorio Hosting Chile 2025
+            Directorio Hosting Chile 2026
           </h1>
           <p className="text-xl md:text-2xl mb-6 opacity-90">
             Proveedores Certificados por EligeTuHosting.cl
