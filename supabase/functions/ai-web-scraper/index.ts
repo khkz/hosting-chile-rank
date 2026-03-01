@@ -6,13 +6,36 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
+const SYSTEM_PROMPT = `Eres un bot auditor OSINT especializado en empresas de hosting chilenas. Lee el texto de una página web y extrae TODA la información empresarial disponible. Devuelve ESTRICTAMENTE un JSON válido con estos campos (usa null si no encuentras el dato):
+
+{
+  "mission_statement": "Resumen sobrio de máximo 30 palabras de su promesa corporativa",
+  "description_seo": "Descripción profesional de 2-3 oraciones para SEO, mencionando servicios principales, ventajas y público objetivo",
+  "cheapest_plan_clp": número entero del plan más barato en CLP mensual (sin IVA si es posible),
+  "plans": [{"name": "Nombre", "price_clp": número, "storage": "10GB SSD", "bandwidth": "Ilimitada", "domains": 1}],
+  "contact_phone": "teléfono principal",
+  "contact_email": "email de contacto/ventas",
+  "contact_address": "dirección física completa",
+  "social_media": {"facebook": "url", "instagram": "url", "twitter": "url", "linkedin": "url"},
+  "technologies": ["cPanel", "LiteSpeed", "CloudLinux", etc.],
+  "datacenter_location": "ubicación del datacenter",
+  "team_info": "información sobre equipo, fundadores o dueños mencionados",
+  "rut_detected": "RUT si aparece en la web (ej: 76.xxx.xxx-x)",
+  "years_experience": número de años de experiencia mencionados,
+  "total_clients": número de clientes mencionados,
+  "uptime_guarantee": "99.9%" o similar,
+  "has_ssl_free": true/false,
+  "has_migration_free": true/false,
+  "payment_methods": ["Webpay", "PayPal", etc.]
+}`;
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { url } = await req.json();
+    const { url, mode } = await req.json();
     if (!url) {
       return new Response(JSON.stringify({ error: 'url is required' }), {
         status: 400,
@@ -25,28 +48,46 @@ serve(async (req) => {
       throw new Error('OPENAI_API_KEY not configured');
     }
 
-    // Step 1: Fetch clean text via Jina AI Reader
-    console.log('📄 Fetching content via Jina AI for:', url);
-    const jinaResponse = await fetch(`https://r.jina.ai/${url}`, {
-      headers: { 'Accept': 'application/json' },
-    });
+    // Determine pages to scrape based on mode
+    const baseUrl = url.replace(/\/$/, '');
+    const pagesToScrape = mode === 'full'
+      ? [baseUrl, `${baseUrl}/nosotros`, `${baseUrl}/planes`, `${baseUrl}/contacto`]
+      : [baseUrl];
 
-    if (!jinaResponse.ok) {
-      const errText = await jinaResponse.text();
-      console.error('Jina error:', jinaResponse.status, errText);
-      throw new Error(`Jina AI fetch failed: ${jinaResponse.status}`);
+    // Scrape all pages via Jina AI
+    console.log(`📄 Scraping ${pagesToScrape.length} pages for:`, baseUrl);
+    const pageTexts: string[] = [];
+
+    for (const pageUrl of pagesToScrape) {
+      try {
+        const jinaResponse = await fetch(`https://r.jina.ai/${pageUrl}`, {
+          headers: { 'Accept': 'application/json' },
+          signal: AbortSignal.timeout(8000),
+        });
+        if (jinaResponse.ok) {
+          const jinaData = await jinaResponse.json();
+          const text = (jinaData.data?.content || jinaData.content || '').slice(0, 4000);
+          if (text.length > 100) {
+            pageTexts.push(`=== PÁGINA: ${pageUrl} ===\n${text}`);
+            console.log(`✅ ${pageUrl}: ${text.length} chars`);
+          }
+        } else {
+          await jinaResponse.text();
+          console.log(`⚠️ ${pageUrl}: HTTP ${jinaResponse.status}`);
+        }
+      } catch (e) {
+        console.log(`⚠️ ${pageUrl}: timeout/error`);
+      }
     }
 
-    const jinaData = await jinaResponse.json();
-    const pageText = (jinaData.data?.content || jinaData.content || '').slice(0, 6000);
-
-    if (!pageText) {
-      throw new Error('No content extracted from URL');
+    if (pageTexts.length === 0) {
+      throw new Error('No content extracted from any page');
     }
 
-    console.log(`✅ Extracted ${pageText.length} chars from Jina`);
+    const combinedText = pageTexts.join('\n\n').slice(0, 12000);
+    console.log(`📊 Total combined: ${combinedText.length} chars from ${pageTexts.length} pages`);
 
-    // Step 2: Send to OpenAI for structured extraction
+    // Send to OpenAI
     const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -56,14 +97,11 @@ serve(async (req) => {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          {
-            role: 'system',
-            content: 'Eres un bot auditor OSINT. Lee este texto de una web de hosting. Devuelve ESTRICTAMENTE un JSON válido con: mission_statement (Resumen sobrio de 15 palabras de su promesa corporativa) y cheapest_plan_clp (El precio mensual más barato en números enteros).',
-          },
-          { role: 'user', content: pageText },
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: combinedText },
         ],
-        temperature: 0.3,
-        max_tokens: 300,
+        temperature: 0.2,
+        max_tokens: 1500,
       }),
     });
 
@@ -76,16 +114,15 @@ serve(async (req) => {
     const aiData = await openaiResponse.json();
     const raw = aiData.choices[0].message.content;
 
-    // Parse JSON from potential markdown code blocks
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error('AI did not return valid JSON');
     }
 
     const result = JSON.parse(jsonMatch[0]);
-    console.log('✅ AI extraction complete:', result);
+    console.log('✅ Full AI extraction complete');
 
-    return new Response(JSON.stringify({ success: true, url, ...result }), {
+    return new Response(JSON.stringify({ success: true, url, pages_scraped: pageTexts.length, ...result }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {

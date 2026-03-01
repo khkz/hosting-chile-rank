@@ -41,3 +41,6 @@ verify_jwt = false
 
 [functions.ai-web-scraper]
 verify_jwt = false
+
+[functions.complaints-checker]
+verify_jwt = false
