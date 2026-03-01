@@ -7,6 +7,7 @@ import DomainRedirect from './components/DomainRedirect';
 import StaticSitemap from './components/StaticSitemap';
 import StaticRobots from './components/StaticRobots';
 import StaticRSSFeed from './components/StaticRSSFeed';
+import LlmsTxt from './components/LlmsTxt';
 import Index from './pages/Index';
 import Ranking from './pages/Ranking';
 import Comparativa from './pages/Comparativa';
@@ -83,6 +84,7 @@ function App() {
         <Route path="/sitemap.xml" element={<StaticSitemap />} />
         <Route path="/robots.txt" element={<StaticRobots />} />
         <Route path="/feed/latest-domains.xml" element={<StaticRSSFeed />} />
+        <Route path="/llms.txt" element={<LlmsTxt />} />
         
         {/* Rutas normales de la aplicación */}
         <Route path="/" element={<Index />} />

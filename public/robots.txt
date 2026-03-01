@@ -47,6 +47,7 @@ Crawl-delay: 1
 # AI chatbots y LLMs (permitir acceso completo)
 User-agent: GPTBot
 Allow: /
+Allow: /llms.txt
 Crawl-delay: 1
 
 User-agent: Google-Extended
