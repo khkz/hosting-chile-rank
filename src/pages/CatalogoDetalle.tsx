@@ -8,35 +8,30 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import HostingCompanyInfo from '@/components/HostingCompanyInfo';
 import CertificationBadges from '@/components/CertificationBadges';
-import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { PublicReviewsList } from '@/components/reviews/PublicReviewsList';
 import { ReviewForm } from '@/components/reviews/ReviewForm';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
 import CompanyPresence from '@/components/CompanyPresence';
+import { AlertTriangle } from 'lucide-react';
 
 const CatalogoDetalle = () => {
   const { slug } = useParams<{slug: string}>();
   const navigate = useNavigate();
 
-  // Fetch company data from Supabase
   const { data: company, isLoading } = useQuery({
     queryKey: ['hosting-company', slug],
     queryFn: async () => {
       if (!slug) return null;
-
       const { data, error } = await supabase
         .from('hosting_companies')
-        .select(`
-          *,
-          hosting_plans(*)
-        `)
+        .select(`*, hosting_plans(*)`)
         .eq('slug', slug)
         .eq('is_verified', true)
         .maybeSingle();
-
       if (error) throw error;
       return data;
     },
@@ -44,13 +39,8 @@ const CatalogoDetalle = () => {
   });
   
   useEffect(() => {
-    if (!isLoading && !company && slug) {
-      navigate('/catalogo', { replace: true });
-    }
-    
-    if (company) {
-      document.title = `${company.name} - Información Detallada | eligetuhosting.cl`;
-    }
+    if (!isLoading && !company && slug) navigate('/catalogo', { replace: true });
+    if (company) document.title = `${company.name} - Información Detallada | eligetuhosting.cl`;
   }, [company, navigate, slug, isLoading]);
 
   if (isLoading) {
@@ -65,20 +55,18 @@ const CatalogoDetalle = () => {
     );
   }
 
-  if (!company) {
-    return null; // Will navigate away in useEffect
-  }
+  if (!company) return null;
 
-  const minPrice = company.hosting_plans && company.hosting_plans.length > 0
+  const minPrice = company.hosting_plans?.length > 0
     ? Math.min(...company.hosting_plans.map((plan: any) => plan.price_monthly))
     : 0;
 
-  // Transform company data to match HostingCompanyInfo interface
   const companyData = {
     id: company.slug,
     name: company.name,
     logo: company.logo_url || '',
     description: company.description || '',
+    descriptionEditorial: (company as any).description_editorial || '',
     rating: company.overall_rating || 0,
     yearFounded: company.year_founded || 0,
     datacenterLocation: company.datacenter_location || '',
@@ -96,31 +84,36 @@ const CatalogoDetalle = () => {
       bandwidth: plan.bandwidth || 'Ilimitada',
       domains: plan.domains_allowed || 1,
       features: plan.features || []
-    }))
+    })),
+    technologies: company.technologies || [],
+    uptimeGuarantee: (company as any).uptime_guarantee || undefined,
+    hasSslFree: (company as any).has_ssl_free ?? undefined,
+    hasMigrationFree: (company as any).has_migration_free ?? undefined,
+    paymentMethods: (company as any).payment_methods || undefined,
+    pros: (company as any).pros || undefined,
+    cons: (company as any).cons || undefined,
+    uniqueSellingPoint: (company as any).unique_selling_point || undefined,
+    corporateGroup: company.corporate_group || undefined,
+    lastScrapedAt: (company as any).last_scraped_at || undefined,
   };
 
   return (
     <>
-      {/* SEO Meta Tags */}
       <DynamicMetaTags 
         title={`${company.name} ⭐ ${(company.overall_rating || 0).toFixed(1)}/10 - Review Completa 2026`}
-        description={`${(company.description || '').slice(0, 140)}... Desde $${minPrice.toLocaleString('es-CL')}/mes. Hosting verificado en Chile. Opiniones reales y actualizadas.`}
+        description={`${((company as any).description_editorial || company.description || '').slice(0, 140)}... Desde $${minPrice.toLocaleString('es-CL')}/mes. Hosting verificado en Chile.`}
         canonical={`https://eligetuhosting.cl/catalogo/${slug}`}
         ogImage={company.logo_url ? `https://eligetuhosting.cl${company.logo_url}` : undefined}
-        keywords={`${company.name}, hosting ${company.name}, review ${company.name}, precio ${company.name}, opiniones ${company.name}, ${company.datacenter_location}`}
+        keywords={`${company.name}, hosting ${company.name}, review ${company.name}, precio ${company.name}`}
       />
 
-      {/* Schema Markup - Product with Offers */}
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Product",
           "name": `Hosting ${company.name}`,
-          "description": company.description,
-          "brand": {
-            "@type": "Brand",
-            "name": company.name
-          },
+          "description": (company as any).description_editorial || company.description,
+          "brand": { "@type": "Brand", "name": company.name },
           "offers": {
             "@type": "AggregateOffer",
             "lowPrice": minPrice,
@@ -128,41 +121,12 @@ const CatalogoDetalle = () => {
             "offerCount": company.hosting_plans?.length || 0,
             "availability": "https://schema.org/InStock"
           },
-          "aggregateRating": {
+          "aggregateRating": company.total_reviews ? {
             "@type": "AggregateRating",
             "ratingValue": company.overall_rating,
             "bestRating": 10,
-            "reviewCount": company.total_reviews || 0
-          }
-        })}
-      </script>
-
-      {/* LocalBusiness Schema */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "name": company.name,
-          "image": company.logo_url,
-          "url": company.website,
-          "telephone": company.contact_phone,
-          "email": company.contact_email,
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": company.datacenter_location,
-            "addressCountry": "CL"
-          },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "addressCountry": "CL"
-          },
-          "priceRange": "$$",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": company.overall_rating,
-            "bestRating": 10,
-            "reviewCount": company.total_reviews || 0
-          }
+            "reviewCount": company.total_reviews
+          } : undefined
         })}
       </script>
 
@@ -176,10 +140,23 @@ const CatalogoDetalle = () => {
             { name: company.name, href: `/catalogo/${slug}` }
           ]}
         />
+
+        {/* Corporate Group Transparency */}
+        {company.corporate_group && (
+          <div className="mb-6 p-4 bg-muted/50 rounded-lg border flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-medium">Transparencia Corporativa</p>
+              <p className="text-xs text-muted-foreground">
+                {company.name} pertenece al grupo empresarial <strong>{company.corporate_group}</strong>. 
+                Otras marcas del mismo grupo pueden compartir infraestructura y soporte técnico.
+              </p>
+            </div>
+          </div>
+        )}
         
         <CertificationBadges companySlug={slug || ''} variant="horizontal" size="medium" />
         
-        {/* Company Presence in Other Sections */}
         <div className="my-8">
           <CompanyPresence 
             companySlug={slug || ''}
@@ -192,23 +169,15 @@ const CatalogoDetalle = () => {
         
         <HostingCompanyInfo company={companyData} />
         
-        {/* Public Reviews List */}
         <section className="mt-12">
           <h2 className="text-3xl font-bold mb-6">Opiniones de Clientes</h2>
-          <PublicReviewsList 
-            companyId={company.id}
-            companyName={company.name}
-          />
+          <PublicReviewsList companyId={company.id} companyName={company.name} />
         </section>
 
-        {/* Review Form */}
         <section className="mt-12">
           <Card className="p-8">
             <h2 className="text-2xl font-bold mb-6">Comparte tu Experiencia</h2>
-            <ReviewForm 
-              companyId={company.id}
-              companyName={company.name}
-            />
+            <ReviewForm companyId={company.id} companyName={company.name} />
           </Card>
         </section>
       </main>

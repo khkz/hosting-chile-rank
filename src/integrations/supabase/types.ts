@@ -690,6 +690,7 @@ export type Database = {
         Row: {
           claimed_at: string | null
           claimed_by: string | null
+          cons: string[] | null
           contact_address: string | null
           contact_email: string | null
           contact_hours: string | null
@@ -698,26 +699,35 @@ export type Database = {
           created_at: string | null
           curated_at: string | null
           curation_notes: string | null
+          data_confidence: Json | null
           datacenter_location: string | null
           description: string | null
+          description_editorial: string | null
           foundation_year: number | null
+          has_migration_free: boolean | null
+          has_ssl_free: boolean | null
           id: string
           is_curated: boolean | null
           is_featured: boolean | null
           is_independent: boolean | null
           is_verified: boolean | null
+          last_scraped_at: string | null
           legal_name: string | null
           logo_url: string | null
           name: string
           overall_rating: number | null
+          payment_methods: string[] | null
           price_rating: number | null
+          pros: string[] | null
           slug: string
           social_media: Json | null
           speed_rating: number | null
           support_rating: number | null
           technologies: string[] | null
           total_reviews: number | null
+          unique_selling_point: string | null
           updated_at: string | null
+          uptime_guarantee: string | null
           verified_reviews: number | null
           website: string | null
           website_status: string | null
@@ -726,6 +736,7 @@ export type Database = {
         Insert: {
           claimed_at?: string | null
           claimed_by?: string | null
+          cons?: string[] | null
           contact_address?: string | null
           contact_email?: string | null
           contact_hours?: string | null
@@ -734,26 +745,35 @@ export type Database = {
           created_at?: string | null
           curated_at?: string | null
           curation_notes?: string | null
+          data_confidence?: Json | null
           datacenter_location?: string | null
           description?: string | null
+          description_editorial?: string | null
           foundation_year?: number | null
+          has_migration_free?: boolean | null
+          has_ssl_free?: boolean | null
           id?: string
           is_curated?: boolean | null
           is_featured?: boolean | null
           is_independent?: boolean | null
           is_verified?: boolean | null
+          last_scraped_at?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name: string
           overall_rating?: number | null
+          payment_methods?: string[] | null
           price_rating?: number | null
+          pros?: string[] | null
           slug: string
           social_media?: Json | null
           speed_rating?: number | null
           support_rating?: number | null
           technologies?: string[] | null
           total_reviews?: number | null
+          unique_selling_point?: string | null
           updated_at?: string | null
+          uptime_guarantee?: string | null
           verified_reviews?: number | null
           website?: string | null
           website_status?: string | null
@@ -762,6 +782,7 @@ export type Database = {
         Update: {
           claimed_at?: string | null
           claimed_by?: string | null
+          cons?: string[] | null
           contact_address?: string | null
           contact_email?: string | null
           contact_hours?: string | null
@@ -770,26 +791,35 @@ export type Database = {
           created_at?: string | null
           curated_at?: string | null
           curation_notes?: string | null
+          data_confidence?: Json | null
           datacenter_location?: string | null
           description?: string | null
+          description_editorial?: string | null
           foundation_year?: number | null
+          has_migration_free?: boolean | null
+          has_ssl_free?: boolean | null
           id?: string
           is_curated?: boolean | null
           is_featured?: boolean | null
           is_independent?: boolean | null
           is_verified?: boolean | null
+          last_scraped_at?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name?: string
           overall_rating?: number | null
+          payment_methods?: string[] | null
           price_rating?: number | null
+          pros?: string[] | null
           slug?: string
           social_media?: Json | null
           speed_rating?: number | null
           support_rating?: number | null
           technologies?: string[] | null
           total_reviews?: number | null
+          unique_selling_point?: string | null
           updated_at?: string | null
+          uptime_guarantee?: string | null
           verified_reviews?: number | null
           website?: string | null
           website_status?: string | null
