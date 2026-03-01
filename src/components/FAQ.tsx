@@ -36,22 +36,6 @@ const FAQ = () => {
             </AccordionItem>
           ))}
         </Accordion>
-        
-        {/* Schema.org FAQPage markup */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `
-          {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": ${JSON.stringify(faqItems.map(item => ({
-              "@type": "Question",
-              "name": item.question,
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": item.answer
-              }
-            })))}
-          }
-        `}} />
       </div>
     </section>
   );

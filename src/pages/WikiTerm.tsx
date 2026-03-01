@@ -59,8 +59,7 @@ const WikiTerm: React.FC = () => {
         <meta name="twitter:description" content={term.shortDefinition} />
         
         {/* Enhanced Schema.org with Article + FAQPage + BreadcrumbList */}
-        <script type="application/ld+json">
-          {JSON.stringify({
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@graph": [
               {
@@ -70,19 +69,9 @@ const WikiTerm: React.FC = () => {
                 "url": `https://eligetuhosting.cl/wiki/${term.slug}`,
                 "datePublished": term.lastUpdated || "2026-01-01",
                 "dateModified": term.lastUpdated || "2026-01-01",
-                "author": {
-                  "@type": "Organization",
-                  "name": "EligeTuHosting.cl"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "EligeTuHosting.cl",
-                  "url": "https://eligetuhosting.cl"
-                },
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": `https://eligetuhosting.cl/wiki/${term.slug}`
-                },
+                "author": { "@type": "Organization", "name": "EligeTuHosting.cl" },
+                "publisher": { "@type": "Organization", "name": "EligeTuHosting.cl", "url": "https://eligetuhosting.cl" },
+                "mainEntityOfPage": { "@type": "WebPage", "@id": `https://eligetuhosting.cl/wiki/${term.slug}` },
                 "keywords": term.tags.join(', ')
               },
               {
@@ -90,38 +79,18 @@ const WikiTerm: React.FC = () => {
                 "name": term.title,
                 "description": term.shortDefinition,
                 "url": `https://eligetuhosting.cl/wiki/${term.slug}`,
-                "inDefinedTermSet": {
-                  "@type": "DefinedTermSet",
-                  "name": "Wiki de Hosting Chile",
-                  "url": "https://eligetuhosting.cl/wiki"
-                }
+                "inDefinedTermSet": { "@type": "DefinedTermSet", "name": "Wiki de Hosting Chile", "url": "https://eligetuhosting.cl/wiki" }
               },
               {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
-                  {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Inicio",
-                    "item": "https://eligetuhosting.cl"
-                  },
-                  {
-                    "@type": "ListItem", 
-                    "position": 2,
-                    "name": "Wiki",
-                    "item": "https://eligetuhosting.cl/wiki"
-                  },
-                  {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "name": term.title,
-                    "item": `https://eligetuhosting.cl/wiki/${term.slug}`
-                  }
+                  { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://eligetuhosting.cl" },
+                  { "@type": "ListItem", "position": 2, "name": "Wiki", "item": "https://eligetuhosting.cl/wiki" },
+                  { "@type": "ListItem", "position": 3, "name": term.title, "item": `https://eligetuhosting.cl/wiki/${term.slug}` }
                 ]
               }
             ]
-          })}
-        </script>
+          }) }} />
       </Helmet>
 
       <Navbar />

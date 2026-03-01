@@ -207,8 +207,7 @@ const MejorHostingChile2026 = () => {
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://eligetuhosting.cl/mejor-hosting-chile-2026" />
         <meta property="og:image" content="https://eligetuhosting.cl/images/mejor-hosting-chile-hero.png" />
-        <script type="application/ld+json">
-          {JSON.stringify({
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
             headline: `¿Cuál es el mejor hosting en Chile en ${CURRENT_YEAR}? Guía definitiva y comparativa`,
@@ -216,10 +215,8 @@ const MejorHostingChile2026 = () => {
             datePublished: getYearStartDate(),
             dateModified: getLastUpdatedDate(),
             description: `Análisis completo de los mejores proveedores de hosting en Chile para ${CURRENT_YEAR}, incluyendo comparativas de velocidad, uptime y precios.`
-          })}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify({
+          }) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: faqs.map(f => ({
@@ -227,8 +224,7 @@ const MejorHostingChile2026 = () => {
               name: f.question,
               acceptedAnswer: { "@type": "Answer", text: f.answer }
             }))
-          })}
-        </script>
+          }) }} />
       </Helmet>
 
       {/* Enhanced Product Schema for Top Provider */}
