@@ -82,6 +82,7 @@ const OSINTScanner = () => {
   // Batch mode
   const [batchRunning, setBatchRunning] = useState(false);
   const [batchProgress, setBatchProgress] = useState("");
+  const [batchResults, setBatchResults] = useState<{ name: string; status: "success" | "blocked" | "error"; pages?: number }[]>([]);
 
   const extractDomain = (input: string): string => {
     return input.replace(/^https?:\/\//, "").replace(/\/.*$/, "").replace(/^www\./, "");
@@ -261,6 +262,7 @@ const OSINTScanner = () => {
 
   const runBatchAudit = async () => {
     setBatchRunning(true);
+    setBatchResults([]);
     try {
       const { data: companies, error } = await supabase
         .from("hosting_companies")
@@ -290,7 +292,7 @@ const OSINTScanner = () => {
           const s = scraperRes.data || {};
           const comp = complaintsRes.data || {};
 
-          if (s.success) {
+          if (s.success && s.pages_scraped > 0) {
             await supabase
               .from("hosting_companies")
               .update({
@@ -306,16 +308,22 @@ const OSINTScanner = () => {
                 curated_at: new Date().toISOString(),
               })
               .eq("slug", c.slug);
+
+            setBatchResults(prev => [...prev, { name: c.name, status: "success", pages: s.pages_scraped }]);
+          } else {
+            // Scraper returned success:false or 0 pages — site blocked
+            setBatchResults(prev => [...prev, { name: c.name, status: "blocked", pages: 0 }]);
           }
 
-          // Small delay to avoid rate limits
           await new Promise(r => setTimeout(r, 3000));
         } catch (e) {
           console.error(`Error auditing ${c.name}:`, e);
+          setBatchResults(prev => [...prev, { name: c.name, status: "error" }]);
         }
       }
 
-      toast.success(`✅ Batch completo: ${companies.length} empresas auditadas`);
+      const successCount = batchResults.filter(r => r.status === "success").length + 1; // approximate
+      toast.success(`✅ Batch completo: ${companies.length} empresas procesadas`);
     } catch (err: any) {
       toast.error(err.message || "Error en batch");
     } finally {
@@ -349,6 +357,36 @@ const OSINTScanner = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Batch Results */}
+        {batchResults.length > 0 && (
+          <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-semibold text-sm">Resultados del Batch</h4>
+              <div className="flex gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1"><CheckCircle2 className="h-3 w-3 text-green-600" /> {batchResults.filter(r => r.status === "success").length} OK</span>
+                <span className="flex items-center gap-1"><ShieldAlert className="h-3 w-3 text-yellow-600" /> {batchResults.filter(r => r.status === "blocked").length} Bloqueados</span>
+                <span className="flex items-center gap-1"><XCircle className="h-3 w-3 text-red-600" /> {batchResults.filter(r => r.status === "error").length} Error</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1.5 max-h-48 overflow-y-auto">
+              {batchResults.map((r, i) => (
+                <div key={i} className={`flex items-center gap-2 text-xs px-2 py-1.5 rounded ${
+                  r.status === "success" ? "bg-green-500/10 text-green-700" :
+                  r.status === "blocked" ? "bg-yellow-500/10 text-yellow-700" :
+                  "bg-red-500/10 text-red-700"
+                }`}>
+                  {r.status === "success" ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> :
+                   r.status === "blocked" ? <ShieldAlert className="h-3.5 w-3.5 shrink-0" /> :
+                   <XCircle className="h-3.5 w-3.5 shrink-0" />}
+                  <span className="truncate font-medium">{r.name}</span>
+                  {r.status === "success" && r.pages && <span className="ml-auto text-[10px] opacity-70">{r.pages}p</span>}
+                  {r.status === "blocked" && <span className="ml-auto text-[10px] opacity-70">anti-bot</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Input */}
         <div className="flex gap-3">
           <Input
