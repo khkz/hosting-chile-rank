@@ -60,6 +60,13 @@ const BRAND_ALIASES: Record<string, string> = {
   "ninjahosting.cl": "Grupo Hosting.cl",
   "planetahosting.cl": "Grupo Hosting.cl",
   "hostingcenter.cl": "Grupo Hosting.cl",
+  // ── Grupo BlueHosting ──
+  "bluehosting.cl": "Grupo BlueHosting",
+  "www.bluehosting.cl": "Grupo BlueHosting",
+  "hosty.cl": "Grupo BlueHosting",
+  "solutionhost.cl": "Grupo BlueHosting",
+  "livehost.cl": "Grupo BlueHosting",
+  "boxhosting.cl": "Grupo BlueHosting",
 };
 
 // ── Detect conglomerate from ASN description ──
