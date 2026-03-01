@@ -25,6 +25,11 @@ export interface RankingProvider {
     original: number | null;
     period: string;
   };
+  // Anti-monopolio fields
+  legalName: string;
+  foundationYear: number;
+  isIndependent: boolean;
+  corporateGroup?: string;
 }
 
 export const rankingProviders: RankingProvider[] = [
@@ -59,7 +64,10 @@ export const rankingProviders: RankingProvider[] = [
       current: 3469,
       original: 19900,
       period: "mensual"
-    }
+    },
+    legalName: "HostingPlus SpA",
+    foundationYear: 2015,
+    isIndependent: true,
   },
   {
     position: 2,
@@ -91,7 +99,10 @@ export const rankingProviders: RankingProvider[] = [
       current: 1658,
       original: 4990,
       period: "mensual"
-    }
+    },
+    legalName: "EcoHosting SpA",
+    foundationYear: 2018,
+    isIndependent: true,
   },
   {
     position: 3,
@@ -123,6 +134,10 @@ export const rankingProviders: RankingProvider[] = [
       current: 3490,
       original: null,
       period: "mensual"
-    }
+    },
+    legalName: "Newfold Digital Inc. (ex-EIG)",
+    foundationYear: 1996,
+    isIndependent: false,
+    corporateGroup: "Newfold Digital (EIG)",
   }
 ];

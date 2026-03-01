@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import AvailabilityBadge from './AvailabilityBadge';
+import IndependenceBadge from './IndependenceBadge';
 import { rankingProviders } from '@/data/rankingProviders';
 
 const HostingRanking = () => {
@@ -139,6 +140,9 @@ const HostingRanking = () => {
                       <span className={sortedHostingData[1].displayName.firstColor}>{sortedHostingData[1].displayName.first}</span>
                       <span className={sortedHostingData[1].displayName.secondColor}>{sortedHostingData[1].displayName.second}</span>
                     </h3>
+                    <div className="flex justify-center mb-2">
+                      <IndependenceBadge isIndependent={sortedHostingData[1].isIndependent} corporateGroup={sortedHostingData[1].corporateGroup} legalName={sortedHostingData[1].legalName} />
+                    </div>
                     <div className="flex items-center justify-center gap-2 mb-4">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
@@ -252,6 +256,9 @@ const HostingRanking = () => {
                       <span className={sortedHostingData[0].displayName.firstColor}>{sortedHostingData[0].displayName.first}</span>
                       <span className={sortedHostingData[0].displayName.secondColor}>{sortedHostingData[0].displayName.second}</span>
                     </h3>
+                    <div className="flex justify-center mb-2">
+                      <IndependenceBadge isIndependent={sortedHostingData[0].isIndependent} corporateGroup={sortedHostingData[0].corporateGroup} legalName={sortedHostingData[0].legalName} />
+                    </div>
                     
                     {/* AvailabilityBadge dentro del flujo */}
                     <div className="flex justify-center mb-3">
@@ -359,6 +366,9 @@ const HostingRanking = () => {
                       <span className={sortedHostingData[2].displayName.firstColor}>{sortedHostingData[2].displayName.first}</span>
                       <span className={sortedHostingData[2].displayName.secondColor}>{sortedHostingData[2].displayName.second}</span>
                     </h3>
+                    <div className="flex justify-center mb-2">
+                      <IndependenceBadge isIndependent={sortedHostingData[2].isIndependent} corporateGroup={sortedHostingData[2].corporateGroup} legalName={sortedHostingData[2].legalName} />
+                    </div>
                     
                     {/* AvailabilityBadge dentro del flujo */}
                     <div className="flex justify-center mb-3">
