@@ -25,6 +25,7 @@ const MiniNav = React.lazy(() => import('@/components/MiniNav'));
 const ExitModal = React.lazy(() => import('@/components/ExitModal'));
 const TrustReport = React.lazy(() => import('@/components/TrustReport'));
 const OpenDataBadge = React.lazy(() => import('@/components/OpenDataBadge'));
+const MethodologySection = React.lazy(() => import('@/components/MethodologySection'));
 
 const Index = () => {
   return (
@@ -103,6 +104,7 @@ const Index = () => {
           </section>
           
           <FAQ />
+          <MethodologySection />
           <CertificationsBanner />
           <FinalCTA />
           <MiniNav />
