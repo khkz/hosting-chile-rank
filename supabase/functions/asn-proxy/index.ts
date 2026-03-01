@@ -39,11 +39,14 @@ const CONGLOMERATE_MAP: Record<string, string> = {
   alibaba: "Alibaba Cloud",
   tencent: "Tencent Cloud",
   // ── Grupo Hosting.cl (Chile) ──
-  "hosting.cl": "Grupo Hosting.cl",
-  ninjahosting: "Grupo Hosting.cl",
-  planetahosting: "Grupo Hosting.cl",
-  hostingcenter: "Grupo Hosting.cl",
-  "iswl": "Grupo Hosting.cl",
+  "hosting.cl": "Grupo Casamayor",
+  ninjahosting: "Grupo Casamayor",
+  planetahosting: "Grupo Casamayor",
+  hostingcenter: "Grupo Casamayor",
+  comparahosting: "Grupo Casamayor",
+  ihost: "Grupo Casamayor",
+  todohosting: "Grupo Casamayor",
+  "iswl": "Grupo Casamayor",
 };
 
 interface MonopolyResult {
@@ -56,10 +59,13 @@ interface MonopolyResult {
 
 // ── Known brand aliases (domain → group) ──
 const BRAND_ALIASES: Record<string, string> = {
-  "hosting.cl": "Grupo Hosting.cl",
-  "ninjahosting.cl": "Grupo Hosting.cl",
-  "planetahosting.cl": "Grupo Hosting.cl",
-  "hostingcenter.cl": "Grupo Hosting.cl",
+  "hosting.cl": "Grupo Casamayor",
+  "ninjahosting.cl": "Grupo Casamayor",
+  "planetahosting.cl": "Grupo Casamayor",
+  "hostingcenter.cl": "Grupo Casamayor",
+  "comparahosting.cl": "Grupo Casamayor",
+  "ihost.cl": "Grupo Casamayor",
+  "todohosting.cl": "Grupo Casamayor",
   // ── Grupo BlueHosting ──
   "bluehosting.cl": "Grupo BlueHosting",
   "www.bluehosting.cl": "Grupo BlueHosting",
