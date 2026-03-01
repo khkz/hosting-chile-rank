@@ -24,7 +24,6 @@ const Footer = React.lazy(() => import('@/components/Footer'));
 const StickyCTA = React.lazy(() => import('@/components/StickyCTA'));
 const MiniNav = React.lazy(() => import('@/components/MiniNav'));
 const ExitModal = React.lazy(() => import('@/components/ExitModal'));
-const SocialProofFeed = React.lazy(() => import('@/components/SocialProofFeed'));
 const TrustReport = React.lazy(() => import('@/components/TrustReport'));
 const OpenDataBadge = React.lazy(() => import('@/components/OpenDataBadge'));
 
@@ -120,7 +119,6 @@ const Index = () => {
           <MiniNav />
           <StickyCTA />
           <ExitModal />
-          <SocialProofFeed />
         </Suspense>
       </main>
       <Suspense fallback={null}>
