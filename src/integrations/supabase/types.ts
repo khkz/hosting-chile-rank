@@ -708,6 +708,7 @@ export type Database = {
           has_ssl_free: boolean | null
           id: string
           is_curated: boolean | null
+          is_fake_comparison: boolean | null
           is_featured: boolean | null
           is_independent: boolean | null
           is_verified: boolean | null
@@ -719,6 +720,7 @@ export type Database = {
           payment_methods: string[] | null
           price_rating: number | null
           pros: string[] | null
+          site_type: string | null
           slug: string
           social_media: Json | null
           speed_rating: number | null
@@ -754,6 +756,7 @@ export type Database = {
           has_ssl_free?: boolean | null
           id?: string
           is_curated?: boolean | null
+          is_fake_comparison?: boolean | null
           is_featured?: boolean | null
           is_independent?: boolean | null
           is_verified?: boolean | null
@@ -765,6 +768,7 @@ export type Database = {
           payment_methods?: string[] | null
           price_rating?: number | null
           pros?: string[] | null
+          site_type?: string | null
           slug: string
           social_media?: Json | null
           speed_rating?: number | null
@@ -800,6 +804,7 @@ export type Database = {
           has_ssl_free?: boolean | null
           id?: string
           is_curated?: boolean | null
+          is_fake_comparison?: boolean | null
           is_featured?: boolean | null
           is_independent?: boolean | null
           is_verified?: boolean | null
@@ -811,6 +816,7 @@ export type Database = {
           payment_methods?: string[] | null
           price_rating?: number | null
           pros?: string[] | null
+          site_type?: string | null
           slug?: string
           social_media?: Json | null
           speed_rating?: number | null
