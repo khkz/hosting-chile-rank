@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Check, RefreshCw, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import RecentSearches from '@/components/RecentSearches';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';

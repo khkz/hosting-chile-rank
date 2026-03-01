@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 // Datos completos para reseñas de hosting
 const hostingData = {

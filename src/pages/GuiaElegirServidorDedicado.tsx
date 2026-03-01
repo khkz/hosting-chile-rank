@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const GuiaElegirServidorDedicado = () => {
   return (

@@ -15,7 +15,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import StickyCTA from '../components/StickyCTA';
 import HostingSectionsNav from '../components/HostingSectionsNav';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useIsMobile } from '../hooks/use-mobile';
 import HostingProviderCard from '../components/HostingProviderCard';
 import { Check, X, Filter } from 'lucide-react';

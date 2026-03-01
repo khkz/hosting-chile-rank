@@ -8,7 +8,7 @@ import { DomainFilters } from "@/components/domain-marketplace/DomainFilters";
 import { MarketplaceFAQ } from "@/components/domain-marketplace/MarketplaceFAQ";
 import { Badge } from "@/components/ui/badge";
 import { Globe, Sparkles, Shield, Zap } from "lucide-react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export default function DominiosPremium() {
   const [tldFilter, setTldFilter] = useState<string>("all");

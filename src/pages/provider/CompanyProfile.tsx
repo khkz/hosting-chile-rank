@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { toast } from 'sonner';
 import { Building2, Facebook, Twitter, Instagram, Linkedin, Youtube, Server } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 interface DynamicMetaTagsProps {
   title: string;
@@ -18,8 +19,9 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
   keywords,
   type = 'website'
 }) => {
+  const location = useLocation();
   const fullTitle = `${title} | EligeTuHosting.cl`;
-  const url = canonical || `https://eligetuhosting.cl${window.location.pathname}`;
+  const url = canonical || `https://eligetuhosting.cl${location.pathname}`;
 
   return (
     <Helmet>
