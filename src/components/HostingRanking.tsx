@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import HostingCard from './HostingCard';
 import { Trophy, Check, Star, Shield, Zap, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,15 +6,183 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import AvailabilityBadge from './AvailabilityBadge';
 import IndependenceBadge from './IndependenceBadge';
-import { rankingProviders } from '@/data/rankingProviders';
+import { rankingProviders, RankingProvider } from '@/data/rankingProviders';
 
+// ── Reusable card for any position ──────────────────────────────
+interface RankingCardProps {
+  provider: RankingProvider & { sortPosition: number };
+  ratingLabel: string;
+  isWinner: boolean;
+}
+
+const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinner }) => {
+  const borderClass = isWinner ? `border-4 ${provider.borderColor}` : 'border-2 border-border';
+  const numberSize = isWinner ? 'w-16 h-16 text-2xl md:w-20 md:h-20 md:text-3xl' : 'w-14 h-14 text-xl md:w-16 md:h-16 md:text-2xl';
+  const numberBg = isWinner
+    ? 'bg-gradient-to-br from-yellow-400 to-orange-500'
+    : provider.sortPosition === 2
+      ? 'bg-gradient-to-br from-gray-400 to-gray-500'
+      : 'bg-gradient-to-br from-amber-600 to-amber-700';
+
+  const badgeGradient = isWinner
+    ? 'from-[#EF233C] to-pink-500 text-white'
+    : provider.sortPosition === 2
+      ? 'from-gray-100 to-gray-200 text-gray-700'
+      : 'from-amber-100 to-orange-200 text-amber-700';
+
+  const ratingColor = isWinner ? 'text-[#EF233C]' : provider.sortPosition === 2 ? 'text-gray-600' : 'text-amber-600';
+
+  return (
+    <article
+      className="w-full"
+      aria-label={`Posición ${provider.sortPosition}: ${provider.name}`}
+      itemScope
+      itemType="https://schema.org/SoftwareApplication"
+    >
+      <meta itemProp="name" content={provider.name} />
+      <meta itemProp="applicationCategory" content="Web Hosting Service" />
+      <meta itemProp="operatingSystem" content="Linux" />
+
+      {/* Position number */}
+      <div className="relative text-center pb-4">
+        <div className="inline-flex items-center justify-center">
+          <div className="relative">
+            <span className={`inline-flex items-center justify-center ${numberSize} ${numberBg} text-white rounded-full shadow-2xl font-black border-4 border-background`}>
+              {provider.sortPosition}
+            </span>
+            {isWinner && <Trophy className="w-6 h-6 md:w-8 md:h-8 text-yellow-500 absolute -top-2 -right-6 md:-right-8" />}
+          </div>
+        </div>
+        {isWinner && provider.isRecommended && (
+          <div className="mt-2 flex justify-center">
+            <span className="bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-xs md:text-sm px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
+              <Check size={14} /> Más Recomendado
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Card */}
+      <div className={`relative bg-card ${borderClass} rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300`}>
+        {isWinner && <div className="absolute inset-0 bg-gradient-to-br from-[#EF233C]/5 to-transparent rounded-3xl pointer-events-none" />}
+
+        {/* Top badges */}
+        <div className="absolute -top-3 left-3 flex flex-wrap gap-1.5 z-20">
+          {provider.badges?.map((badge, idx) => (
+            <span key={idx} className={`px-2.5 py-1 bg-gradient-to-r ${badgeGradient} text-[10px] md:text-xs font-medium rounded-full ${isWinner ? 'shadow-lg' : ''}`}>
+              {badge}
+            </span>
+          ))}
+        </div>
+
+        <div className="p-5 md:p-6 lg:p-8 pt-10 md:pt-12 relative">
+          {/* Header */}
+          <div className="text-center mb-4">
+            <h3 className={`${isWinner ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-bold mb-2`}>
+              <span className={provider.displayName.firstColor}>{provider.displayName.first}</span>
+              <span className={provider.displayName.secondColor}>{provider.displayName.second}</span>
+            </h3>
+
+            {/* Independence Badge — reads from data model */}
+            <div className="flex justify-center mb-2">
+              <IndependenceBadge
+                isIndependent={provider.isIndependent}
+                corporateGroup={provider.corporateGroup}
+                legalName={provider.legalName}
+              />
+            </div>
+
+            {/* Urgency badge */}
+            <div className="flex justify-center mb-3">
+              <AvailabilityBadge providerName={provider.name} offerType={isWinner ? 'trial' : provider.sortPosition === 3 ? 'migration' : 'trial'} />
+            </div>
+
+            {/* Rating */}
+            <div className="flex items-center justify-center gap-2">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className={`${isWinner ? 'w-5 h-5' : 'w-4 h-4'} fill-yellow-400 text-yellow-400`} />
+                ))}
+              </div>
+              <span
+                className={`${isWinner ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-bold ${ratingColor}`}
+                itemProp="aggregateRating"
+                itemScope
+                itemType="https://schema.org/AggregateRating"
+              >
+                <meta itemProp="ratingValue" content={String(provider.rating)} />
+                <meta itemProp="bestRating" content="10" />
+                <meta itemProp="ratingCount" content="1" />
+                {ratingLabel}
+              </span>
+            </div>
+          </div>
+
+          {/* Features */}
+          <ul className="space-y-2 mb-4 text-sm">
+            {provider.features.map((feature, index) => (
+              <li key={index} className="flex items-start gap-2">
+                <Check className={`w-4 h-4 ${isWinner ? 'text-[#EF233C]' : 'text-green-500'} mt-0.5 flex-shrink-0`} />
+                <span className="text-muted-foreground font-medium">{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Pricing */}
+          {provider.price && (
+            <div className="mb-5 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+              <meta itemProp="priceCurrency" content="CLP" />
+              <meta itemProp="price" content={String(provider.price.current)} />
+              <meta itemProp="availability" content="https://schema.org/InStock" />
+              <link itemProp="url" href={provider.url} />
+              <div className="flex items-baseline justify-center gap-2">
+                {provider.price.original && (
+                  <span className="text-sm text-muted-foreground line-through">
+                    ${provider.price.original.toLocaleString('es-CL')}
+                  </span>
+                )}
+                <span className={`${isWinner ? 'text-4xl' : 'text-3xl'} font-bold text-foreground`}>
+                  ${provider.price.current.toLocaleString('es-CL')}
+                </span>
+                <span className="text-sm text-muted-foreground">/{provider.price.period}</span>
+              </div>
+              {provider.price.original && (
+                <p className="text-xs font-semibold text-green-600 mt-1">
+                  Ahorras {Math.round((1 - provider.price.current / provider.price.original) * 100)}%
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* CTA — MASSIVE on mobile for touch conversion */}
+          <div className="space-y-2">
+            <Button
+              asChild
+              className={`w-full ${provider.buttonColor} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
+            >
+              <a href={provider.url} target="_blank" rel="noopener noreferrer">
+                {provider.ctaText || 'Ver Oferta'}
+              </a>
+            </Button>
+            {provider.ctaMicroCopy && (
+              <p className="text-xs text-center text-muted-foreground">
+                {provider.ctaMicroCopy}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+};
+
+// ── Main Ranking Component ──────────────────────────────────────
 const HostingRanking = () => {
   const [sortCriteria, setSortCriteria] = useState('overall');
-  
-  // Sort hosting data based on selected criteria
+
   const sortedHostingData = useMemo(() => {
-    let sortedData = [...rankingProviders];
-    
+    const sortedData = [...rankingProviders];
+
     switch (sortCriteria) {
       case 'speed':
         sortedData.sort((a, b) => b.speedRating - a.speedRating);
@@ -23,18 +190,18 @@ const HostingRanking = () => {
       case 'price':
         sortedData.sort((a, b) => b.priceRating - a.priceRating);
         break;
-      default: // 'overall'
+      default:
         sortedData.sort((a, b) => b.rating - a.rating);
         break;
     }
-    
+
     return sortedData.map((provider, index) => ({
       ...provider,
-      sortPosition: index + 1
+      sortPosition: index + 1,
     }));
   }, [sortCriteria]);
-  
-  const getRatingLabel = (provider) => {
+
+  const getRatingLabel = (provider: RankingProvider) => {
     switch (sortCriteria) {
       case 'speed':
         return `${provider.speedRating}/10`;
@@ -44,419 +211,109 @@ const HostingRanking = () => {
         return `${provider.rating}/10`;
     }
   };
-  
-  const getSchemaItems = () => {
-    return sortedHostingData.map(provider => ({
+
+  const getSchemaItems = () =>
+    sortedHostingData.map((provider) => ({
       name: provider.name,
-      description: provider.features.join(". "),
+      description: provider.features.join('. '),
       url: provider.url,
       image: `https://eligetuhosting.cl${provider.logo}`,
       brand: provider.name,
       rating: provider.rating,
       reviewCount: 1,
       price: provider.price.current,
-      priceCurrency: "CLP"
+      priceCurrency: 'CLP',
     }));
-  };
-  
+
   return (
-    <section id="ranking" className="py-12 md:py-20 bg-gradient-to-b from-white to-[#F7F9FC]">
+    <section id="ranking" className="py-10 md:py-20 bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4">
-        
         {/* Section Header */}
-        <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
+        <div className="text-center mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
             Top 3 Mejores Hostings Chile
           </h2>
-          <p className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Ranking independiente basado en pruebas técnicas reales de velocidad, uptime y soporte
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-6 rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-5 rounded-full" />
         </div>
-        
-        <ItemListSchema 
+
+        <ItemListSchema
           name="Ranking Mejores Hosting Chile 2026"
           description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas técnicas de velocidad, uptime y soporte"
           items={getSchemaItems()}
           listType="ranking"
         />
-        
-        {/* Sort Controls - Mobile UX fix (Sprint 1) */}
+
+        {/* Sort Controls */}
         <div className="flex justify-center mb-8 md:mb-12">
-          <ToggleGroup type="single" value={sortCriteria} onValueChange={(value) => value && setSortCriteria(value)} className="bg-white rounded-2xl p-1.5 md:p-2 shadow-lg border border-gray-100">
-            <ToggleGroupItem value="overall" variant="outline" className={`px-6 md:px-6 py-3 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'overall' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'} min-h-[44px] touch-manipulation`}>
-              <Award className="w-4 h-4 mr-1 md:mr-2" />
-              <span className="hidden sm:inline">General</span>
-              <span className="sm:hidden">★</span>
+          <ToggleGroup
+            type="single"
+            value={sortCriteria}
+            onValueChange={(value) => value && setSortCriteria(value)}
+            className="bg-card rounded-2xl p-1.5 shadow-lg border border-border"
+          >
+            <ToggleGroupItem
+              value="overall"
+              variant="outline"
+              className={`px-4 md:px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 min-h-[44px] touch-manipulation ${
+                sortCriteria === 'overall' ? 'bg-foreground text-background shadow-lg' : 'hover:bg-muted'
+              }`}
+            >
+              <Award className="w-4 h-4 mr-1.5" />
+              General
             </ToggleGroupItem>
-            <ToggleGroupItem value="speed" variant="outline" className={`px-6 md:px-6 py-3 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'speed' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'} min-h-[44px] touch-manipulation`}>
-              <Zap className="w-4 h-4 mr-1 md:mr-2" />
-              <span className="hidden sm:inline">Velocidad</span>
-              <span className="sm:hidden">⚡</span>
+            <ToggleGroupItem
+              value="speed"
+              variant="outline"
+              className={`px-4 md:px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 min-h-[44px] touch-manipulation ${
+                sortCriteria === 'speed' ? 'bg-foreground text-background shadow-lg' : 'hover:bg-muted'
+              }`}
+            >
+              <Zap className="w-4 h-4 mr-1.5" />
+              Velocidad
             </ToggleGroupItem>
-            <ToggleGroupItem value="price" variant="outline" className={`px-6 md:px-6 py-3 md:py-3 rounded-xl text-sm md:text-base font-medium transition-all duration-300 ${sortCriteria === 'price' ? 'bg-[#2B2D42] text-white shadow-lg' : 'hover:bg-gray-50'} min-h-[44px] touch-manipulation`}>
-              <Shield className="w-4 h-4 mr-1 md:mr-2" />
-              <span className="hidden sm:inline">Precio</span>
-              <span className="sm:hidden">$</span>
+            <ToggleGroupItem
+              value="price"
+              variant="outline"
+              className={`px-4 md:px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 min-h-[44px] touch-manipulation ${
+                sortCriteria === 'price' ? 'bg-foreground text-background shadow-lg' : 'hover:bg-muted'
+              }`}
+            >
+              <Shield className="w-4 h-4 mr-1.5" />
+              Precio
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
-        
-        {/* Podium Layout — semantic list for AI crawlers */}
-        <ol className="mb-12 list-none p-0 m-0" aria-label="Ranking de los mejores hostings en Chile 2026">
-          <li className="contents">
-          <div className="flex flex-col md:flex-row w-full justify-center items-end gap-6 md:gap-8 max-w-6xl mx-auto">
-            
-            {/* Second Place */}
-            <article className="order-2 md:order-1 w-full md:w-1/3" aria-label={`Posición ${sortedHostingData[1].sortPosition}: ${sortedHostingData[1].name}`} itemScope itemType="https://schema.org/SoftwareApplication">
-              <meta itemProp="name" content={sortedHostingData[1].name} />
-              <meta itemProp="applicationCategory" content="Web Hosting Service" />
-              <meta itemProp="operatingSystem" content="Linux" />
-              <div className="relative text-center pb-6">
-                <div className="inline-flex items-center justify-center">
-                  <div className="relative">
-                    <span className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-500 text-white rounded-full shadow-2xl font-black text-2xl border-4 border-white">
-                      {sortedHostingData[1].sortPosition}
-                    </span>
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full"></div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="relative bg-white border-2 border-gray-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                {/* Badges - positioned outside the card */}
-                <div className="absolute -top-3 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-20">
-                  {sortedHostingData[1].badges?.map((badge, idx) => (
-                    <span key={idx} className="px-2 py-0.5 md:py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-[10px] md:text-xs font-medium rounded-full">
-                      {badge}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-16">
-                  {/* Header */}
-                  <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold mb-2">
-                      <span className={sortedHostingData[1].displayName.firstColor}>{sortedHostingData[1].displayName.first}</span>
-                      <span className={sortedHostingData[1].displayName.secondColor}>{sortedHostingData[1].displayName.second}</span>
-                    </h3>
-                    <div className="flex justify-center mb-2">
-                      <IndependenceBadge isIndependent={sortedHostingData[1].isIndependent} corporateGroup={sortedHostingData[1].corporateGroup} legalName={sortedHostingData[1].legalName} />
-                    </div>
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                      <span className="text-2xl font-bold text-gray-600" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
-                        <meta itemProp="ratingValue" content={String(sortedHostingData[1].rating)} />
-                        <meta itemProp="bestRating" content="10" />
-                        <meta itemProp="ratingCount" content="1" />
-                        {getRatingLabel(sortedHostingData[1])}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Features */}
-                  <ul className="space-y-3 mb-8 text-sm">
-                    {sortedHostingData[1].features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  {/* Pricing */}
-                  {sortedHostingData[1].price && (
-                    <div className="mb-4 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                      <meta itemProp="priceCurrency" content="CLP" />
-                      <meta itemProp="price" content={String(sortedHostingData[1].price.current)} />
-                      <meta itemProp="availability" content="https://schema.org/InStock" />
-                      <link itemProp="url" href={sortedHostingData[1].url} />
-                      <div className="flex items-baseline justify-center gap-2">
-                        {sortedHostingData[1].price.original && (
-                          <span className="text-sm text-muted-foreground line-through">
-                            ${sortedHostingData[1].price.original.toLocaleString('es-CL')}
-                          </span>
-                        )}
-                        <span className="text-3xl font-bold text-foreground">
-                          ${sortedHostingData[1].price.current.toLocaleString('es-CL')}
-                        </span>
-                        <span className="text-sm text-muted-foreground">/{sortedHostingData[1].price.period}</span>
-                      </div>
-                      {sortedHostingData[1].price.original && (
-                        <p className="text-xs font-semibold text-green-600 mt-1">
-                          Ahorras {Math.round((1 - sortedHostingData[1].price.current / sortedHostingData[1].price.original) * 100)}%
-                        </p>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* CTA */}
-                  <div className="space-y-2">
-                    <Button asChild className={`w-full ${sortedHostingData[1].buttonColor} hover:opacity-90 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300`}>
-                      <a href={sortedHostingData[1].url} target="_blank" rel="noopener noreferrer">
-                        {sortedHostingData[1].ctaText || "Ver Hosting"}
-                      </a>
-                    </Button>
-                    {sortedHostingData[1].ctaMicroCopy && (
-                      <p className="text-xs text-center text-muted-foreground">
-                        {sortedHostingData[1].ctaMicroCopy}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </article>
-            
-            {/* First Place - Winner */}
-            <article className="order-1 md:order-2 w-full md:w-1/3 z-10 mb-8 md:mb-0" aria-label={`Posición ${sortedHostingData[0].sortPosition}: ${sortedHostingData[0].name}`} itemScope itemType="https://schema.org/SoftwareApplication">
-              <meta itemProp="name" content={sortedHostingData[0].name} />
-              <meta itemProp="applicationCategory" content="Web Hosting Service" />
-              <meta itemProp="operatingSystem" content="Linux" />
-              <div className="relative text-center pb-6">
-                <div className="inline-flex items-center justify-center">
-                  <div className="relative">
-                    <span className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 text-white rounded-full shadow-2xl font-black text-3xl border-4 border-white">
-                      {sortedHostingData[0].sortPosition}
-                    </span>
-                    <Trophy className="w-8 h-8 ml-2 text-yellow-500 absolute -top-2 -right-8" />
-                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-                {sortedHostingData[0].isRecommended && (
-                  <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
-                    <div className="bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-sm px-6 py-2 rounded-full flex items-center whitespace-nowrap shadow-lg">
-                      <Check size={16} className="mr-2" /> 
-                      Más Recomendado
-                    </div>
-                  </div>
-                )}
-              </div>
-              
-              <div className={`relative bg-white border-4 ${sortedHostingData[0].borderColor} rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500`}>
-                {/* Winner Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#EF233C]/5 to-transparent rounded-3xl"></div>
-                
-                {/* Badges - positioned outside the card */}
-                <div className="absolute -top-3 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-20">
-                  {sortedHostingData[0].badges?.map((badge, idx) => (
-                    <span key={idx} className="px-2 md:px-3 py-0.5 md:py-1 bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-[10px] md:text-xs font-medium rounded-full shadow-lg">
-                      {badge}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="p-4 md:p-6 lg:p-8 pt-12 md:pt-14 relative">
-                  {/* Header */}
-                  <div className="text-center mb-4 md:mb-6">
-                    <h3 className="text-2xl md:text-3xl font-bold mb-2 md:mb-3">
-                      <span className={sortedHostingData[0].displayName.firstColor}>{sortedHostingData[0].displayName.first}</span>
-                      <span className={sortedHostingData[0].displayName.secondColor}>{sortedHostingData[0].displayName.second}</span>
-                    </h3>
-                    <div className="flex justify-center mb-2">
-                      <IndependenceBadge isIndependent={sortedHostingData[0].isIndependent} corporateGroup={sortedHostingData[0].corporateGroup} legalName={sortedHostingData[0].legalName} />
-                    </div>
-                    
-                    {/* AvailabilityBadge dentro del flujo */}
-                    <div className="flex justify-center mb-3">
-                      <AvailabilityBadge providerName={sortedHostingData[0].name} offerType="trial" />
-                    </div>
-                    
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                      <span className="text-2xl md:text-3xl font-bold text-[#EF233C]" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
-                        <meta itemProp="ratingValue" content={String(sortedHostingData[0].rating)} />
-                        <meta itemProp="bestRating" content="10" />
-                        <meta itemProp="ratingCount" content="1" />
-                        {getRatingLabel(sortedHostingData[0])}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Features */}
-                  <ul className="space-y-2 md:space-y-3 mb-4 md:mb-6 text-sm md:text-base">
-                    {sortedHostingData[0].features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2 md:gap-3">
-                        <Check className="w-4 md:w-5 h-4 md:h-5 text-[#EF233C] mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700 font-medium">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  {/* Pricing */}
-                  {sortedHostingData[0].price && (
-                    <div className="mb-6 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                      <meta itemProp="priceCurrency" content="CLP" />
-                      <meta itemProp="price" content={String(sortedHostingData[0].price.current)} />
-                      <meta itemProp="availability" content="https://schema.org/InStock" />
-                      <link itemProp="url" href={sortedHostingData[0].url} />
-                      <div className="flex items-baseline justify-center gap-2">
-                        {sortedHostingData[0].price.original && (
-                          <span className="text-base text-muted-foreground line-through">
-                            ${sortedHostingData[0].price.original.toLocaleString('es-CL')}
-                          </span>
-                        )}
-                        <span className="text-4xl font-bold text-[#EF233C]">
-                          ${sortedHostingData[0].price.current.toLocaleString('es-CL')}
-                        </span>
-                        <span className="text-sm text-muted-foreground">/{sortedHostingData[0].price.period}</span>
-                      </div>
-                      {sortedHostingData[0].price.original && (
-                        <p className="text-sm font-semibold text-green-600 mt-1">
-                          Ahorras {Math.round((1 - sortedHostingData[0].price.current / sortedHostingData[0].price.original) * 100)}%
-                        </p>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* CTA */}
-                  <div className="space-y-2">
-                    <Button asChild className={`w-full ${sortedHostingData[0].buttonColor} hover:opacity-90 text-white py-3 md:py-4 rounded-xl font-bold text-base md:text-lg shadow-2xl hover:shadow-[#EF233C]/30 transition-all duration-300 transform hover:scale-105`}>
-                      <a href={sortedHostingData[0].url} target="_blank" rel="noopener noreferrer">
-                        {sortedHostingData[0].ctaText || "Elegir HostingPlus"}
-                      </a>
-                    </Button>
-                    {sortedHostingData[0].ctaMicroCopy && (
-                      <p className="text-xs text-center text-muted-foreground">
-                        {sortedHostingData[0].ctaMicroCopy}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </article>
-            
-            {/* Third Place */}
-            <article className="order-3 w-full md:w-1/3" aria-label={`Posición ${sortedHostingData[2].sortPosition}: ${sortedHostingData[2].name}`} itemScope itemType="https://schema.org/SoftwareApplication">
-              <meta itemProp="name" content={sortedHostingData[2].name} />
-              <meta itemProp="applicationCategory" content="Web Hosting Service" />
-              <meta itemProp="operatingSystem" content="Linux" />
-              <div className="relative text-center pb-6">
-                <div className="inline-flex items-center justify-center">
-                  <div className="relative">
-                    <span className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-600 to-amber-700 text-white rounded-full shadow-2xl font-black text-2xl border-4 border-white">
-                      {sortedHostingData[2].sortPosition}
-                    </span>
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-amber-400 to-amber-500 rounded-full"></div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="relative bg-white border-2 border-amber-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                {/* Badges - positioned outside the card */}
-                <div className="absolute -top-3 left-3 md:left-4 flex flex-wrap gap-1.5 md:gap-2 z-20">
-                  {sortedHostingData[2].badges?.map((badge, idx) => (
-                    <span key={idx} className="px-2 py-0.5 md:py-1 bg-gradient-to-r from-amber-100 to-orange-200 text-amber-700 text-[10px] md:text-xs font-medium rounded-full">
-                      {badge}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="p-4 md:p-6 lg:p-8 pt-8 md:pt-10">
-                  {/* Header */}
-                  <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold mb-2">
-                      <span className={sortedHostingData[2].displayName.firstColor}>{sortedHostingData[2].displayName.first}</span>
-                      <span className={sortedHostingData[2].displayName.secondColor}>{sortedHostingData[2].displayName.second}</span>
-                    </h3>
-                    <div className="flex justify-center mb-2">
-                      <IndependenceBadge isIndependent={sortedHostingData[2].isIndependent} corporateGroup={sortedHostingData[2].corporateGroup} legalName={sortedHostingData[2].legalName} />
-                    </div>
-                    
-                    {/* AvailabilityBadge dentro del flujo */}
-                    <div className="flex justify-center mb-3">
-                      <AvailabilityBadge providerName={sortedHostingData[2].name} offerType="migration" />
-                    </div>
-                    
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                      <span className="text-2xl font-bold text-amber-600" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
-                        <meta itemProp="ratingValue" content={String(sortedHostingData[2].rating)} />
-                        <meta itemProp="bestRating" content="10" />
-                        <meta itemProp="ratingCount" content="1" />
-                        {getRatingLabel(sortedHostingData[2])}
-                      </span>
-                  </div>
-                  
-                  {/* Features */}
-                  <ul className="space-y-3 mb-4 text-sm">
-                    {sortedHostingData[2].features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  {/* Pricing */}
-                  {sortedHostingData[2].price && (
-                    <div className="mb-4 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                      <meta itemProp="priceCurrency" content="CLP" />
-                      <meta itemProp="price" content={String(sortedHostingData[2].price.current)} />
-                      <meta itemProp="availability" content="https://schema.org/InStock" />
-                      <link itemProp="url" href={sortedHostingData[2].url} />
-                      <div className="flex items-baseline justify-center gap-2">
-                        {sortedHostingData[2].price.original && (
-                          <span className="text-sm text-muted-foreground line-through">
-                            ${sortedHostingData[2].price.original.toLocaleString('es-CL')}
-                          </span>
-                        )}
-                        <span className="text-3xl font-bold text-foreground">
-                          ${sortedHostingData[2].price.current.toLocaleString('es-CL')}
-                        </span>
-                        <span className="text-sm text-muted-foreground">/{sortedHostingData[2].price.period}</span>
-                      </div>
-                      {sortedHostingData[2].price.original && (
-                        <p className="text-xs font-semibold text-green-600 mt-1">
-                          Ahorras {Math.round((1 - sortedHostingData[2].price.current / sortedHostingData[2].price.original) * 100)}%
-                        </p>
-                      )}
-                    </div>
-                  )}
-                  
-                  {/* CTA */}
-                  <div className="space-y-2">
-                    <Button asChild className={`w-full ${sortedHostingData[2].buttonColor} hover:opacity-90 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300`}>
-                      <a href={sortedHostingData[2].url} target="_blank" rel="noopener noreferrer">
-                        {sortedHostingData[2].ctaText || "Ver Hosting"}
-                      </a>
-                    </Button>
-                    {sortedHostingData[2].ctaMicroCopy && (
-                      <p className="text-xs text-center text-muted-foreground">
-                        {sortedHostingData[2].ctaMicroCopy}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              </div>
-            </article>
-          </div>
-          </li>
+
+        {/* ── Cards: flex-col on mobile, row on desktop ── */}
+        <ol className="flex flex-col md:flex-row md:items-end md:justify-center gap-6 md:gap-8 max-w-6xl mx-auto mb-12 list-none p-0 m-0" aria-label="Ranking de los mejores hostings en Chile 2026">
+          {sortedHostingData.map((provider) => (
+            <li key={provider.name} className={`w-full md:w-1/3 ${provider.sortPosition === 1 ? 'md:order-2 md:z-10' : provider.sortPosition === 2 ? 'md:order-1' : 'md:order-3'}`}>
+              <RankingCard
+                provider={provider}
+                ratingLabel={getRatingLabel(provider)}
+                isWinner={provider.sortPosition === 1}
+              />
+            </li>
+          ))}
         </ol>
-        
+
         {/* More Providers Link */}
         <div className="text-center">
-          <div className="inline-block bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-            <h3 className="text-xl font-semibold text-[#2B2D42] mb-4">
+          <div className="inline-block bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border">
+            <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3">
               ¿Necesitas más opciones?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-4 text-sm md:text-base">
               Revisa nuestro ranking completo con 9 proveedores analizados
             </p>
-            <Link to="/ranking" className="inline-flex items-center gap-2 text-[#EF233C] hover:text-[#b3001b] font-semibold text-lg transition-colors duration-300 group">
-              Ver ranking completo 
+            <Link
+              to="/ranking"
+              className="inline-flex items-center gap-2 text-[#EF233C] hover:text-[#b3001b] font-semibold text-base md:text-lg transition-colors duration-300 group"
+            >
+              Ver ranking completo
               <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </Link>
           </div>
