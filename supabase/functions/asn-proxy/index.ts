@@ -38,6 +38,12 @@ const CONGLOMERATE_MAP: Record<string, string> = {
   oracle: "Oracle Cloud",
   alibaba: "Alibaba Cloud",
   tencent: "Tencent Cloud",
+  // ── Grupo Hosting.cl (Chile) ──
+  "hosting.cl": "Grupo Hosting.cl",
+  ninjahosting: "Grupo Hosting.cl",
+  planetahosting: "Grupo Hosting.cl",
+  hostingcenter: "Grupo Hosting.cl",
+  "iswl": "Grupo Hosting.cl",
 };
 
 interface MonopolyResult {
@@ -48,8 +54,24 @@ interface MonopolyResult {
   suggest_corporate_group: string | null;
 }
 
+// ── Known brand aliases (domain → group) ──
+const BRAND_ALIASES: Record<string, string> = {
+  "hosting.cl": "Grupo Hosting.cl",
+  "ninjahosting.cl": "Grupo Hosting.cl",
+  "planetahosting.cl": "Grupo Hosting.cl",
+  "hostingcenter.cl": "Grupo Hosting.cl",
+};
+
 // ── Detect conglomerate from ASN description ──
-function detectConglomerate(asnName: string): { independent: boolean; group: string | null } {
+function detectConglomerate(asnName: string, domain?: string): { independent: boolean; group: string | null } {
+  // First check domain-level brand aliases
+  if (domain) {
+    const cleanDomain = domain.replace(/^www\./, "").toLowerCase();
+    if (BRAND_ALIASES[cleanDomain]) {
+      return { independent: false, group: BRAND_ALIASES[cleanDomain] };
+    }
+  }
+  // Then check ASN name
   const lower = asnName.toLowerCase();
   for (const [keyword, group] of Object.entries(CONGLOMERATE_MAP)) {
     if (lower.includes(keyword)) {
@@ -172,11 +194,9 @@ serve(async (req) => {
       let suggestIndependent = true;
       let suggestGroup: string | null = null;
 
-      if (asnName) {
-        const detection = detectConglomerate(asnName);
-        suggestIndependent = detection.independent;
-        suggestGroup = detection.group;
-      }
+      const detection = detectConglomerate(asnName || "", domain);
+      suggestIndependent = detection.independent;
+      suggestGroup = detection.group;
 
       const result: MonopolyResult = {
         ip,
