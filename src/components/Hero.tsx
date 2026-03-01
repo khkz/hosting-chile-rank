@@ -49,6 +49,8 @@ const Hero = () => {
           src="/images/hero-people.png"
           alt="Personas eligiendo hosting"
           className="w-full h-full object-cover"
+          width={800}
+          height={600}
           loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/85"></div>
@@ -61,6 +63,8 @@ const Hero = () => {
           src="/images/hero-person.png"
           alt="Persona eligiendo el mejor hosting para su proyecto"
           className="absolute right-0 top-0 bottom-0 w-[70%] lg:w-[60%] h-full object-cover object-[70%_center]"
+          width={1200}
+          height={800}
           loading="eager"
         />
         
