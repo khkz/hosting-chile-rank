@@ -266,7 +266,7 @@ const OSINTScanner = () => {
     try {
       const { data: companies, error } = await supabase
         .from("hosting_companies")
-        .select("slug, website, name")
+        .select("id, slug, website, name")
         .eq("is_verified", true)
         .order("name");
 
@@ -292,26 +292,19 @@ const OSINTScanner = () => {
           const s = scraperRes.data || {};
           const comp = complaintsRes.data || {};
 
-          if (s.success && s.pages_scraped > 0) {
-            await supabase
-              .from("hosting_companies")
-              .update({
-                description: s.description_seo || s.mission_statement || undefined,
-                contact_phone: s.contact_phone || undefined,
-                contact_email: s.contact_email || undefined,
-                contact_address: s.contact_address || undefined,
-                datacenter_location: s.datacenter_location || undefined,
-                technologies: s.technologies || undefined,
-                social_media: s.social_media || undefined,
-                curation_notes: `Batch OSINT ${new Date().toISOString()}. Complaints severity: ${comp.severity || 'N/A'}.`,
-                is_curated: true,
-                curated_at: new Date().toISOString(),
-              })
-              .eq("slug", c.slug);
+          // Insert into audit log instead of direct update
+          await supabase
+            .from("company_audit_log")
+            .insert({
+              company_id: c.id,
+              scraped_data: s as any,
+              complaints_data: comp as any,
+              status: (s.success && s.pages_scraped > 0) ? 'pending' : 'blocked',
+            } as any);
 
+          if (s.success && s.pages_scraped > 0) {
             setBatchResults(prev => [...prev, { name: c.name, status: "success", pages: s.pages_scraped }]);
           } else {
-            // Scraper returned success:false or 0 pages — site blocked
             setBatchResults(prev => [...prev, { name: c.name, status: "blocked", pages: 0 }]);
           }
 
