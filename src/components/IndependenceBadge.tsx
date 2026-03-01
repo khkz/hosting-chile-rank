@@ -1,6 +1,7 @@
 import React from 'react';
 import { Shield, Link2 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
 
 interface IndependenceBadgeProps {
   isIndependent: boolean;
@@ -17,17 +18,20 @@ const IndependenceBadge: React.FC<IndependenceBadgeProps> = ({
 }) => {
   if (isIndependent) {
     return (
-      <TooltipProvider>
+      <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200 ${className}`}>
+            <Badge
+              variant="outline"
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-green-50 text-green-800 border-green-300 hover:bg-green-100 cursor-help transition-colors ${className}`}
+            >
               <Shield className="w-3.5 h-3.5" />
-              🛡️ Independiente
-            </span>
+              🛡️ Infraestructura Independiente
+            </Badge>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="max-w-xs">
-            <p className="text-xs">
-              <strong>{legalName}</strong> opera con infraestructura propia sin pertenecer a un conglomerado.
+          <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground shadow-xl border p-3">
+            <p className="text-xs leading-relaxed">
+              Razón Social verificada: <strong>{legalName}</strong>
             </p>
           </TooltipContent>
         </Tooltip>
@@ -36,17 +40,20 @@ const IndependenceBadge: React.FC<IndependenceBadgeProps> = ({
   }
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 border border-orange-200 ${className}`}>
+          <Badge
+            variant="outline"
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-800 border-orange-300 hover:bg-orange-100 cursor-help transition-colors ${className}`}
+          >
             <Link2 className="w-3.5 h-3.5" />
-            🔗 Conglomerado
-          </span>
+            🔗 Marca de Conglomerado
+          </Badge>
         </TooltipTrigger>
-        <TooltipContent side="bottom" className="max-w-xs">
-          <p className="text-xs">
-            <strong>{legalName}</strong> pertenece al grupo <strong>{corporateGroup}</strong>. Comparte matriz con otras marcas del mercado.
+        <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground shadow-xl border p-3">
+          <p className="text-xs leading-relaxed">
+            Comparte matriz corporativa/red con: <strong>{corporateGroup}</strong>
           </p>
         </TooltipContent>
       </Tooltip>
