@@ -1,54 +1,55 @@
 
 
-## Sprint 3-5: Arquitectura, Credibilidad y Limpieza
+## Sistema para Pulir Empresas del Directorio
 
-### Sprint 3: Extraer datos de ranking a archivo centralizado
+### Problema actual
+Las 20 empresas en `hosting_companies` fueron migradas automáticamente desde datos estáticos. Muchas probablemente no son reales (ej: "CloudHosting.cl", "ZipHosting.cl", "SmartHost.cl" con logos SVG genéricos). El directorio actualmente solo muestra las 15 con certificaciones activas, pero no hay forma de validar si los sitios web existen, si los logos son reales, o de marcar empresas como "curadas".
 
-**1. Crear `src/data/rankingProviders.ts`**
-- Mover el array `hostingData` (lines 10-108) de `HostingRanking.tsx` a un nuevo archivo
-- Exportar como `export const rankingProviders = [...]` con una interfaz `RankingProvider` tipada
+### Plan
 
-**2. Actualizar `src/components/HostingRanking.tsx`**
-- Reemplazar la definición inline de `hostingData` por `import { rankingProviders } from '@/data/rankingProviders'`
-- Cambiar todas las referencias de `hostingData` a `rankingProviders`
+**1. Agregar columna `is_curated` y `curation_notes` a `hosting_companies`**
+- Migración SQL: `ALTER TABLE hosting_companies ADD COLUMN is_curated boolean DEFAULT false, ADD COLUMN curation_notes text, ADD COLUMN curated_at timestamptz, ADD COLUMN website_status text DEFAULT 'unknown'`
+- `is_curated`: marca que un admin revisó manualmente la empresa
+- `website_status`: 'active' | 'down' | 'unknown' | 'not_found'
 
-### Sprint 4: Refactorizar Navbar para eliminar duplicacion
+**2. Crear panel de curación en admin (`src/pages/admin/CompanyCuration.tsx`)**
+- Lista todas las empresas con indicadores visuales:
+  - Logo carga correctamente (via `onError` en `<img>`)
+  - Website status badge (unknown/active/down)
+  - Tiene descripción, contacto, etc.
+  - Estado curado vs pendiente
+- Acciones por empresa:
+  - "Verificar website" — hace fetch al website y marca status
+  - "Marcar como curada" — con campo de notas
+  - "Desverificar" — quita `is_verified` para que no aparezca en el directorio público
+  - "Editar rápido" — modal para corregir nombre, website, logo_url, descripción
+- Filtros: Todas | Solo curadas | Pendientes | Website caído
+- Ordenar por: rating, nombre, estado de curación
 
-**3. Refactorizar `src/components/Navbar.tsx`**
-- Crear arrays de configuracion de nav items al inicio del componente:
-  - `mainNavItems`: array con `{ to, label, icon }` para los 6 links principales (Inicio, Ranking, Comparativa, Wiki, Certificaciones, Directorio)
-  - `toolsItems`: array con `{ to, label, icon }` para Herramientas (Cotiza hosting, Ultimos dominios)
-  - `guidesItems`: array con `{ to, label, icon? }` para las 9 guias
-- Renderizar desktop y mobile desde los mismos arrays usando `.map()`
-- Corregir el link mobile de "Mejor Hosting Chile 2025" a "2026" (bug detectado en linea 471/477)
-- Cambiar CTA "Contratar ahora" (que apunta a HostingPlus) por "Compara ahora" apuntando a `/ranking`
+**3. Edge function `verify-company-website` para verificar websites**
+- Recibe `company_id`, hace HEAD request al `website` de la empresa
+- Actualiza `website_status` en la DB ('active' si 2xx, 'down' si error/timeout, 'not_found' si 404)
+- Opción de "verificar todas" en batch
 
-### Sprint 5a: Eliminar fake social proof
+**4. Actualizar `DirectorioHosting.tsx`**
+- Cambiar query del directorio para mostrar solo empresas verificadas Y curadas (`is_verified = true AND is_curated = true`), o como fallback, solo `is_verified = true` si ninguna está curada aún
+- Añadir enlace externo con `rel="nofollow noopener"` para no perder SEO
+- Actualizar año 2025 → 2026
 
-**4. Eliminar `DynamicActivityCounter` de `src/components/Hero.tsx`**
-- Remover la definicion completa del componente (lineas 6-41) y el import de `useState, useEffect` (ya no necesarios)
-- El componente nunca se usa en el render, solo se define — limpieza de codigo muerto
+**5. Agregar ruta admin**
+- Añadir `/admin/company-curation` en `App.tsx`
+- Añadir link en el dashboard admin
 
-**5. Eliminar `src/components/SocialProofFeed.tsx`**
-- Borrar el archivo completo
+### Archivos
+- Migración SQL (nueva columna)
+- `supabase/functions/verify-company-website/index.ts` (nuevo)
+- `src/pages/admin/CompanyCuration.tsx` (nuevo)
+- `src/pages/DirectorioHosting.tsx` (filtro curadas + fix año)
+- `src/App.tsx` (nueva ruta)
+- `src/pages/admin/Dashboard.tsx` (link al panel)
 
-**6. Actualizar `src/pages/Index.tsx`**
-- Remover la linea `const SocialProofFeed = React.lazy(...)` (linea 27)
-- Remover `<SocialProofFeed />` del render (linea 123)
-
-### Sprint 5b: Limpieza de scripts
-
-**7. Eliminar `package-scripts.json`** (archivo raiz)
-- Los scripts ya estan definidos en `package.json`; este archivo es redundante y no se usa por npm
-
----
-
-### Archivos modificados
-- `src/data/rankingProviders.ts` (nuevo)
-- `src/components/HostingRanking.tsx` (import de datos externos)
-- `src/components/Navbar.tsx` (refactor con arrays de nav items + fix CTA + fix 2025→2026)
-- `src/components/Hero.tsx` (remover DynamicActivityCounter muerto)
-- `src/components/SocialProofFeed.tsx` (eliminar)
-- `src/pages/Index.tsx` (remover SocialProofFeed)
-- `package-scripts.json` (eliminar)
+### Detalle técnico
+- La verificación de websites se hace via edge function porque el browser no puede hacer requests cross-origin directamente
+- El panel muestra un "completeness score" por empresa (tiene logo + descripción + website activo + contacto = 100%)
+- Las empresas no curadas siguen visibles en admin pero no en el directorio público
 
