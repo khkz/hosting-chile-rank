@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
@@ -82,6 +83,7 @@ const OSINTScanner = () => {
   // Batch mode
   const [batchRunning, setBatchRunning] = useState(false);
   const [batchProgress, setBatchProgress] = useState("");
+  const [batchProgressPercent, setBatchProgressPercent] = useState(0);
   const [batchResults, setBatchResults] = useState<{ name: string; status: "success" | "blocked" | "error"; pages?: number }[]>([]);
 
   const extractDomain = (input: string): string => {
@@ -263,6 +265,7 @@ const OSINTScanner = () => {
   const runBatchAudit = async () => {
     setBatchRunning(true);
     setBatchResults([]);
+    setBatchProgressPercent(0);
     try {
       const { data: companies, error } = await supabase
         .from("hosting_companies")
@@ -279,6 +282,7 @@ const OSINTScanner = () => {
       for (let i = 0; i < companies.length; i++) {
         const c = companies[i];
         setBatchProgress(`[${i + 1}/${companies.length}] Auditando ${c.name}...`);
+        setBatchProgressPercent(Math.round(((i + 1) / companies.length) * 100));
 
         try {
           const domain = c.website?.replace(/^https?:\/\//, "").replace(/\/$/, "") || `${c.slug}.cl`;
@@ -315,13 +319,13 @@ const OSINTScanner = () => {
         }
       }
 
-      const successCount = batchResults.filter(r => r.status === "success").length + 1; // approximate
       toast.success(`✅ Batch completo: ${companies.length} empresas procesadas`);
     } catch (err: any) {
       toast.error(err.message || "Error en batch");
     } finally {
       setBatchRunning(false);
       setBatchProgress("");
+      setBatchProgressPercent(0);
     }
   };
 
@@ -351,8 +355,17 @@ const OSINTScanner = () => {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Batch Results */}
-        {batchResults.length > 0 && (
+        {(batchResults.length > 0 || batchRunning) && (
           <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+            {batchRunning && batchProgressPercent > 0 && (
+              <div className="space-y-1 mb-3">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{batchProgress}</span>
+                  <span>{batchProgressPercent}%</span>
+                </div>
+                <Progress value={batchProgressPercent} className="h-2" />
+              </div>
+            )}
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-semibold text-sm">Resultados del Batch</h4>
               <div className="flex gap-3 text-xs text-muted-foreground">

@@ -7,10 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { CheckCircle, XCircle, ChevronDown, ChevronUp, Loader2, History } from 'lucide-react';
+import { CheckCircle, XCircle, ChevronDown, ChevronUp, Loader2, History, ShieldCheck, ShieldAlert, ShieldX } from 'lucide-react';
 
 const FIELD_LABELS: Record<string, string> = {
   description: 'Descripción',
+  description_editorial: 'Descripción Editorial',
   contact_phone: 'Teléfono',
   contact_email: 'Email',
   contact_address: 'Dirección',
@@ -20,10 +21,18 @@ const FIELD_LABELS: Record<string, string> = {
   legal_name: 'Razón Social',
   corporate_group: 'Grupo Corporativo',
   foundation_year: 'Año Fundación',
+  uptime_guarantee: 'Uptime Garantizado',
+  has_ssl_free: 'SSL Gratis',
+  has_migration_free: 'Migración Gratis',
+  payment_methods: 'Métodos de Pago',
+  pros: 'Ventajas',
+  cons: 'Desventajas',
+  unique_selling_point: 'Diferenciador',
 };
 
 const MAPPABLE_FIELDS: Record<string, string> = {
   description_seo: 'description',
+  description_editorial: 'description_editorial',
   mission_statement: 'description',
   contact_phone: 'contact_phone',
   contact_email: 'contact_email',
@@ -34,6 +43,13 @@ const MAPPABLE_FIELDS: Record<string, string> = {
   legal_name: 'legal_name',
   corporate_group: 'corporate_group',
   foundation_year: 'foundation_year',
+  uptime_guarantee: 'uptime_guarantee',
+  has_ssl_free: 'has_ssl_free',
+  has_migration_free: 'has_migration_free',
+  payment_methods: 'payment_methods',
+  pros: 'pros',
+  cons: 'cons',
+  unique_selling_point: 'unique_selling_point',
 };
 
 function extractMappedFields(scraped: any): Record<string, any> {
@@ -49,9 +65,25 @@ function extractMappedFields(scraped: any): Record<string, any> {
 
 function formatValue(val: any): string {
   if (val == null || val === '') return '—';
+  if (typeof val === 'boolean') return val ? 'Sí' : 'No';
   if (Array.isArray(val)) return val.join(', ');
   if (typeof val === 'object') return JSON.stringify(val, null, 2);
   return String(val);
+}
+
+function ConfidenceBadge({ level }: { level?: string }) {
+  if (!level) return null;
+  if (level === 'verified') return <Badge className="bg-green-100 text-green-800 text-[9px] px-1 py-0"><ShieldCheck className="w-2.5 h-2.5 mr-0.5" />verificado</Badge>;
+  if (level === 'inferred') return <Badge className="bg-yellow-100 text-yellow-800 text-[9px] px-1 py-0"><ShieldAlert className="w-2.5 h-2.5 mr-0.5" />inferido</Badge>;
+  return <Badge className="bg-red-100 text-red-800 text-[9px] px-1 py-0"><ShieldX className="w-2.5 h-2.5 mr-0.5" />no encontrado</Badge>;
+}
+
+function getConfidenceForField(scraped: any, scraperKey: string): string | undefined {
+  const confidence = scraped?.confidence;
+  if (!confidence) return undefined;
+  // Map scraper keys to confidence keys
+  const key = scraperKey === 'description_seo' || scraperKey === 'mission_statement' ? undefined : scraperKey;
+  return key ? confidence[key] : undefined;
 }
 
 function AuditList({ statusFilter }: { statusFilter: 'pending' | 'history' }) {
@@ -104,14 +136,22 @@ function AuditList({ statusFilter }: { statusFilter: 'pending' | 'history' }) {
       const mapped = fields || extractMappedFields(scraped);
       if (Object.keys(mapped).length === 0) throw new Error('No hay campos para aplicar');
 
+      // Add confidence metadata and last_scraped_at
+      const updatePayload: any = {
+        ...mapped,
+        is_curated: true,
+        curated_at: new Date().toISOString(),
+        last_scraped_at: new Date().toISOString(),
+        curation_notes: `Aprobado desde audit log ${new Date().toISOString()}. Complaints: ${(audit.complaints_data as any)?.severity || 'N/A'}`,
+      };
+
+      if (scraped.confidence) {
+        updatePayload.data_confidence = scraped.confidence;
+      }
+
       const { error: updateError } = await supabase
         .from('hosting_companies')
-        .update({
-          ...mapped,
-          is_curated: true,
-          curated_at: new Date().toISOString(),
-          curation_notes: `Aprobado desde audit log ${new Date().toISOString()}. Complaints: ${(audit.complaints_data as any)?.severity || 'N/A'}`,
-        })
+        .update(updatePayload)
         .eq('id', audit.company_id);
       if (updateError) throw updateError;
 
@@ -181,6 +221,13 @@ function AuditList({ statusFilter }: { statusFilter: 'pending' | 'history' }) {
         const isExpanded = expandedId === audit.id;
         const selected = selectedFields[audit.id] || new Set();
         const isPending = audit.status === 'pending';
+        const confidence = scraped.confidence || {};
+
+        // Count confidence levels
+        const confidenceValues = Object.values(confidence) as string[];
+        const verifiedCount = confidenceValues.filter(v => v === 'verified').length;
+        const inferredCount = confidenceValues.filter(v => v === 'inferred').length;
+        const notFoundCount = confidenceValues.filter(v => v === 'not_found').length;
 
         return (
           <Card key={audit.id} className="p-4">
@@ -199,6 +246,11 @@ function AuditList({ statusFilter }: { statusFilter: 'pending' | 'history' }) {
                     {new Date(audit.created_at).toLocaleString('es-CL')}
                     {complaints.severity && <Badge variant="outline" className="ml-2 text-[10px]">Quejas: {complaints.severity}</Badge>}
                     {scraped.pages_scraped != null && <span className="ml-2">{scraped.pages_scraped} páginas</span>}
+                    {confidenceValues.length > 0 && (
+                      <span className="ml-2 text-[10px]">
+                        🟢{verifiedCount} 🟡{inferredCount} 🔴{notFoundCount}
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -221,12 +273,39 @@ function AuditList({ statusFilter }: { statusFilter: 'pending' | 'history' }) {
 
             {isExpanded && (
               <div className="mt-4 space-y-3">
+                {/* Editorial description preview */}
+                {scraped.description_editorial && (
+                  <div className="p-3 bg-muted/50 rounded-lg">
+                    <p className="text-xs font-medium text-muted-foreground mb-1">📝 Descripción Editorial</p>
+                    <p className="text-sm">{scraped.description_editorial}</p>
+                  </div>
+                )}
+
+                {/* Pros/Cons preview */}
+                {(scraped.pros?.length > 0 || scraped.cons?.length > 0) && (
+                  <div className="grid grid-cols-2 gap-3">
+                    {scraped.pros?.length > 0 && (
+                      <div className="p-3 bg-green-500/5 rounded-lg">
+                        <p className="text-xs font-medium text-green-700 mb-1">✅ Ventajas</p>
+                        <ul className="text-xs space-y-1">{scraped.pros.map((p: string, i: number) => <li key={i}>• {p}</li>)}</ul>
+                      </div>
+                    )}
+                    {scraped.cons?.length > 0 && (
+                      <div className="p-3 bg-red-500/5 rounded-lg">
+                        <p className="text-xs font-medium text-red-700 mb-1">⚠️ Desventajas</p>
+                        <ul className="text-xs space-y-1">{scraped.cons.map((c: string, i: number) => <li key={i}>• {c}</li>)}</ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm border rounded">
                     <thead>
                       <tr className="bg-muted">
                         {isPending && <th className="text-left p-2 w-8"></th>}
                         <th className="text-left p-2">Campo</th>
+                        <th className="text-left p-2">Confianza</th>
                         <th className="text-left p-2">Valor Actual</th>
                         <th className="text-left p-2">Valor Scrapeado</th>
                       </tr>
@@ -235,6 +314,14 @@ function AuditList({ statusFilter }: { statusFilter: 'pending' | 'history' }) {
                       {Object.entries(mapped).map(([field, newVal]) => {
                         const currentVal = company?.[field];
                         const changed = formatValue(currentVal) !== formatValue(newVal);
+                        // Find the scraper key that maps to this field
+                        const scraperKey = Object.entries(MAPPABLE_FIELDS).find(([, v]) => v === field)?.[0];
+                        const fieldConfidence = scraperKey ? getConfidenceForField(scraped, scraperKey) : undefined;
+                        const isNotFound = fieldConfidence === 'not_found';
+
+                        // Hide not_found fields that have null new values
+                        if (isNotFound && (newVal == null || newVal === '')) return null;
+
                         return (
                           <tr key={field} className={changed ? 'bg-yellow-500/5' : ''}>
                             {isPending && (
@@ -243,6 +330,7 @@ function AuditList({ statusFilter }: { statusFilter: 'pending' | 'history' }) {
                               </td>
                             )}
                             <td className="p-2 font-medium">{FIELD_LABELS[field] || field}</td>
+                            <td className="p-2"><ConfidenceBadge level={fieldConfidence} /></td>
                             <td className="p-2 text-muted-foreground max-w-[200px] truncate">{formatValue(currentVal)}</td>
                             <td className={`p-2 max-w-[200px] truncate ${changed ? 'font-semibold text-foreground' : 'text-muted-foreground'}`}>
                               {formatValue(newVal)}

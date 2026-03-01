@@ -144,15 +144,22 @@ const CatalogoPage = () => {
                     <CardContent className="flex-grow pt-6">
                       <div className="flex items-start justify-between mb-2">
                         <h2 className="text-xl font-semibold">{company.name}</h2>
-                        {company.is_verified && (
-                          <Badge variant="secondary" className="gap-1 ml-2">
-                            <Award className="h-3 w-3" />
-                            ✓
-                          </Badge>
-                        )}
+                        <div className="flex gap-1 ml-2">
+                          {company.is_curated && company.is_verified && (
+                            <Badge className="bg-green-100 text-green-800 text-[10px] gap-0.5">
+                              <Award className="h-3 w-3" />
+                              Verificado
+                            </Badge>
+                          )}
+                          {company.corporate_group && (
+                            <Badge variant="outline" className="text-[10px]">
+                              Grupo {company.corporate_group}
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                       
-                      <div className="flex items-center gap-3 mb-4">
+                      <div className="flex items-center gap-3 mb-3">
                         <div className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded-md text-sm font-medium">
                           <Star className="h-3 w-3 fill-current" />
                           {company.overall_rating?.toFixed(1) || 'N/A'}/10
@@ -163,9 +170,15 @@ const CatalogoPage = () => {
                           </div>
                         )}
                       </div>
+
+                      {(company as any).unique_selling_point && (
+                        <p className="text-xs font-medium text-primary bg-primary/5 px-2 py-1 rounded mb-3">
+                          💡 {(company as any).unique_selling_point}
+                        </p>
+                      )}
                       
                       <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
-                        {company.description}
+                        {(company as any).description_editorial || company.description}
                       </p>
                       
                       <div className="space-y-2 text-sm">

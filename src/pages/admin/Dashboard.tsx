@@ -14,11 +14,12 @@ export default function AdminDashboard() {
   const { data: stats } = useQuery({
     queryKey: ['admin-stats'],
     queryFn: async () => {
-      const [pendingReviews, companies, pendingCompanies, domainOpportunities] = await Promise.all([
+      const [pendingReviews, companies, pendingCompanies, domainOpportunities, pendingAudits] = await Promise.all([
         supabase.from('hosting_reviews').select('id', { count: 'exact' }).eq('status', 'pending'),
         supabase.from('hosting_companies').select('id', { count: 'exact' }).eq('is_verified', true),
         supabase.from('hosting_companies').select('id', { count: 'exact' }).eq('is_verified', false),
         supabase.from('domain_opportunities').select('id', { count: 'exact' }),
+        supabase.from('company_audit_log' as any).select('id', { count: 'exact' }).eq('status', 'pending'),
       ]);
 
       return {
@@ -27,6 +28,7 @@ export default function AdminDashboard() {
         pendingCompanies: pendingCompanies.count ?? 0,
         activeCertifications: 0,
         domainOpportunities: domainOpportunities.count ?? 0,
+        pendingAudits: pendingAudits.count ?? 0,
       };
     },
   });
@@ -104,6 +106,19 @@ export default function AdminDashboard() {
             </div>
             <Link to="/admin/domain-sniper">
               <Button variant="outline" className="w-full mt-4">Domain Sniper</Button>
+            </Link>
+          </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow border-primary/30">
+            <div className="flex items-center gap-4">
+              <ClipboardCheck className="w-12 h-12 text-purple-500" />
+              <div>
+                <p className="text-sm text-muted-foreground">Auditorías Pendientes</p>
+                <p className="text-3xl font-bold">{stats?.pendingAudits ?? 0}</p>
+              </div>
+            </div>
+            <Link to="/admin/company-curation">
+              <Button variant="outline" className="w-full mt-4">Revisar Auditorías</Button>
             </Link>
           </Card>
         </div>
