@@ -33,54 +33,52 @@ const ItemListSchema: React.FC<ItemListSchemaProps> = ({
     "numberOfItems": items.length,
     "itemListOrder": listType === 'ranking' ? "https://schema.org/ItemListOrderDescending" : "https://schema.org/ItemListUnordered",
     "itemListElement": items.map((item, index) => {
-      const listItem: any = {
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "Product",
-          "name": item.name,
-          "url": item.url,
-          "description": item.description || `Plan de hosting ${item.name} en Chile`
-        }
+      const itemData: Record<string, unknown> = {
+        "@type": "SoftwareApplication",
+        "name": item.name,
+        "url": item.url,
+        "description": item.description || `Servicio de hosting web ${item.name} en Chile`,
+        "applicationCategory": "WebApplication",
+        "operatingSystem": "Linux"
       };
 
-      // Add optional fields are now required for better SEO
-      // Description is now always included above
-
       if (item.image) {
-        listItem.item.image = item.image;
+        itemData.image = item.image;
       }
 
       if (item.brand) {
-        listItem.item.brand = {
+        itemData.brand = {
           "@type": "Brand",
           "name": item.brand
         };
       }
 
-      // Add offers if price is available
       if (item.price) {
-        listItem.item.offers = {
+        itemData.offers = {
           "@type": "Offer",
           "price": item.price,
           "priceCurrency": item.priceCurrency || "CLP",
           "availability": "https://schema.org/InStock",
-          "url": item.url
+          "url": item.url,
+          "priceValidUntil": new Date(new Date().getFullYear(), 11, 31).toISOString().split('T')[0]
         };
       }
 
-      // Add aggregateRating if rating is available
-      if (item.rating && item.reviewCount) {
-        listItem.item.aggregateRating = {
+      if (item.rating) {
+        itemData.aggregateRating = {
           "@type": "AggregateRating",
           "ratingValue": item.rating.toFixed(1),
-          "reviewCount": item.reviewCount,
+          "ratingCount": item.reviewCount || 1,
           "bestRating": "10",
           "worstRating": "1"
         };
       }
 
-      return listItem;
+      return {
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": itemData
+      };
     })
   };
 
