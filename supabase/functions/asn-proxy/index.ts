@@ -76,6 +76,7 @@ const BRAND_ALIASES: Record<string, string> = {
   "hn.cl": "Grupo Hostname",
   "host.cl": "Grupo Hostname",
   "inc.cl": "Grupo Hostname",
+  "mejorhosting.cl": "Grupo Hostname",
   // ── Grupo BlueHosting ──
   "bluehosting.cl": "Grupo BlueHosting",
   "www.bluehosting.cl": "Grupo BlueHosting",
