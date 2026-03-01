@@ -38,3 +38,6 @@ verify_jwt = false
 
 [functions.verify-company-website]
 verify_jwt = false
+
+[functions.ai-web-scraper]
+verify_jwt = false
