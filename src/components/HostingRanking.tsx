@@ -51,10 +51,9 @@ const HostingRanking = () => {
       url: provider.url,
       image: `https://eligetuhosting.cl${provider.logo}`,
       brand: provider.name,
-      rating: sortCriteria === 'speed' ? provider.speedRating : 
-              (sortCriteria === 'price' ? provider.priceRating : provider.rating),
-      reviewCount: 150, // Número aproximado de reviews
-      price: 3990,
+      rating: provider.rating,
+      reviewCount: 1,
+      price: provider.price.current,
       priceCurrency: "CLP"
     }));
   };
@@ -102,12 +101,16 @@ const HostingRanking = () => {
           </ToggleGroup>
         </div>
         
-        {/* Podium Layout */}
-        <div className="mb-12">
+        {/* Podium Layout — semantic list for AI crawlers */}
+        <ol className="mb-12 list-none p-0 m-0" aria-label="Ranking de los mejores hostings en Chile 2026">
+          <li className="contents">
           <div className="flex flex-col md:flex-row w-full justify-center items-end gap-6 md:gap-8 max-w-6xl mx-auto">
             
             {/* Second Place */}
-            <div className="order-2 md:order-1 w-full md:w-1/3">
+            <article className="order-2 md:order-1 w-full md:w-1/3" aria-label={`Posición ${sortedHostingData[1].sortPosition}: ${sortedHostingData[1].name}`} itemScope itemType="https://schema.org/SoftwareApplication">
+              <meta itemProp="name" content={sortedHostingData[1].name} />
+              <meta itemProp="applicationCategory" content="Web Hosting Service" />
+              <meta itemProp="operatingSystem" content="Linux" />
               <div className="relative text-center pb-6">
                 <div className="inline-flex items-center justify-center">
                   <div className="relative">
@@ -142,7 +145,12 @@ const HostingRanking = () => {
                           <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <span className="text-2xl font-bold text-gray-600">{getRatingLabel(sortedHostingData[1])}</span>
+                      <span className="text-2xl font-bold text-gray-600" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+                        <meta itemProp="ratingValue" content={String(sortedHostingData[1].rating)} />
+                        <meta itemProp="bestRating" content="10" />
+                        <meta itemProp="ratingCount" content="1" />
+                        {getRatingLabel(sortedHostingData[1])}
+                      </span>
                     </div>
                   </div>
                   
@@ -158,7 +166,11 @@ const HostingRanking = () => {
                   
                   {/* Pricing */}
                   {sortedHostingData[1].price && (
-                    <div className="mb-4 text-center">
+                    <div className="mb-4 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                      <meta itemProp="priceCurrency" content="CLP" />
+                      <meta itemProp="price" content={String(sortedHostingData[1].price.current)} />
+                      <meta itemProp="availability" content="https://schema.org/InStock" />
+                      <link itemProp="url" href={sortedHostingData[1].url} />
                       <div className="flex items-baseline justify-center gap-2">
                         {sortedHostingData[1].price.original && (
                           <span className="text-sm text-muted-foreground line-through">
@@ -193,10 +205,13 @@ const HostingRanking = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </article>
             
             {/* First Place - Winner */}
-            <div className="order-1 md:order-2 w-full md:w-1/3 z-10 mb-8 md:mb-0">
+            <article className="order-1 md:order-2 w-full md:w-1/3 z-10 mb-8 md:mb-0" aria-label={`Posición ${sortedHostingData[0].sortPosition}: ${sortedHostingData[0].name}`} itemScope itemType="https://schema.org/SoftwareApplication">
+              <meta itemProp="name" content={sortedHostingData[0].name} />
+              <meta itemProp="applicationCategory" content="Web Hosting Service" />
+              <meta itemProp="operatingSystem" content="Linux" />
               <div className="relative text-center pb-6">
                 <div className="inline-flex items-center justify-center">
                   <div className="relative">
@@ -249,7 +264,12 @@ const HostingRanking = () => {
                           <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <span className="text-2xl md:text-3xl font-bold text-[#EF233C]">{getRatingLabel(sortedHostingData[0])}</span>
+                      <span className="text-2xl md:text-3xl font-bold text-[#EF233C]" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+                        <meta itemProp="ratingValue" content={String(sortedHostingData[0].rating)} />
+                        <meta itemProp="bestRating" content="10" />
+                        <meta itemProp="ratingCount" content="1" />
+                        {getRatingLabel(sortedHostingData[0])}
+                      </span>
                     </div>
                   </div>
                   
@@ -265,7 +285,11 @@ const HostingRanking = () => {
                   
                   {/* Pricing */}
                   {sortedHostingData[0].price && (
-                    <div className="mb-6 text-center">
+                    <div className="mb-6 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                      <meta itemProp="priceCurrency" content="CLP" />
+                      <meta itemProp="price" content={String(sortedHostingData[0].price.current)} />
+                      <meta itemProp="availability" content="https://schema.org/InStock" />
+                      <link itemProp="url" href={sortedHostingData[0].url} />
                       <div className="flex items-baseline justify-center gap-2">
                         {sortedHostingData[0].price.original && (
                           <span className="text-base text-muted-foreground line-through">
@@ -300,10 +324,13 @@ const HostingRanking = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </article>
             
             {/* Third Place */}
-            <div className="order-3 w-full md:w-1/3">
+            <article className="order-3 w-full md:w-1/3" aria-label={`Posición ${sortedHostingData[2].sortPosition}: ${sortedHostingData[2].name}`} itemScope itemType="https://schema.org/SoftwareApplication">
+              <meta itemProp="name" content={sortedHostingData[2].name} />
+              <meta itemProp="applicationCategory" content="Web Hosting Service" />
+              <meta itemProp="operatingSystem" content="Linux" />
               <div className="relative text-center pb-6">
                 <div className="inline-flex items-center justify-center">
                   <div className="relative">
@@ -344,8 +371,12 @@ const HostingRanking = () => {
                           <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <span className="text-2xl font-bold text-amber-600">{getRatingLabel(sortedHostingData[2])}</span>
-                    </div>
+                      <span className="text-2xl font-bold text-amber-600" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
+                        <meta itemProp="ratingValue" content={String(sortedHostingData[2].rating)} />
+                        <meta itemProp="bestRating" content="10" />
+                        <meta itemProp="ratingCount" content="1" />
+                        {getRatingLabel(sortedHostingData[2])}
+                      </span>
                   </div>
                   
                   {/* Features */}
@@ -360,7 +391,11 @@ const HostingRanking = () => {
                   
                   {/* Pricing */}
                   {sortedHostingData[2].price && (
-                    <div className="mb-4 text-center">
+                    <div className="mb-4 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                      <meta itemProp="priceCurrency" content="CLP" />
+                      <meta itemProp="price" content={String(sortedHostingData[2].price.current)} />
+                      <meta itemProp="availability" content="https://schema.org/InStock" />
+                      <link itemProp="url" href={sortedHostingData[2].url} />
                       <div className="flex items-baseline justify-center gap-2">
                         {sortedHostingData[2].price.original && (
                           <span className="text-sm text-muted-foreground line-through">
@@ -395,9 +430,11 @@ const HostingRanking = () => {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            </article>
           </div>
-        </div>
+          </li>
+        </ol>
         
         {/* More Providers Link */}
         <div className="text-center">
