@@ -5,8 +5,23 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Testimonial = () => {
+  const { data: companies, isLoading: loadingCompanies } = useQuery({
+    queryKey: ['verified-companies-logos'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('hosting_companies')
+        .select('name, slug, logo_url')
+        .eq('is_verified', true)
+        .order('overall_rating', { ascending: false })
+        .limit(8);
+      return data ?? [];
+    },
+    staleTime: 1000 * 60 * 30,
+  });
+
   const { data: reviews, isLoading } = useQuery({
     queryKey: ['approved-reviews-home'],
     queryFn: async () => {
@@ -96,21 +111,30 @@ const Testimonial = () => {
         {/* Partners Section */}
         <div className="text-center">
           <h3 className="text-2xl font-semibold text-[#2B2D42] mb-8">
-            Proveedores que recomendamos
+            Proveedores verificados en Chile
           </h3>
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
-            <div className="group">
-              <img src="/logo-hostingplus-official.png" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de HostingPlus - Hosting #1 en Chile" />
-            </div>
-            <div className="group">
-              <img src="/logo-ecohosting-new.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de EcoHosting - Hosting ecológico en Chile" />
-            </div>
-            <div className="group">
-              <img src="/logo-hostgator.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de HostGator Chile - 12 años de experiencia" />
-            </div>
-            <div className="group">
-              <img src="/logo-godaddy.svg" className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300" alt="Logo de GoDaddy - Proveedor internacional de hosting" />
-            </div>
+            {loadingCompanies ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-10 w-28 rounded" />
+              ))
+            ) : (
+              companies?.map((company) => (
+                <Link
+                  key={company.slug}
+                  to={`/catalogo/${company.slug}`}
+                  className="group"
+                  title={`Ver ficha de ${company.name}`}
+                >
+                  <img
+                    src={company.logo_url || '/placeholder.svg'}
+                    className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300"
+                    alt={`Logo de ${company.name} - Hosting verificado en Chile`}
+                    loading="lazy"
+                  />
+                </Link>
+              ))
+            )}
           </div>
         </div>
       </div>
