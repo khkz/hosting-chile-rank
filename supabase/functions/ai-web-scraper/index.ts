@@ -3,8 +3,34 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-admin-api-key, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
+
+// ── Admin API Key Guard ─────────────────────────────────────────
+function validateAdminKey(req: Request): Response | null {
+  const adminKey = req.headers.get('x-admin-api-key');
+  const expectedKey = Deno.env.get('ADMIN_SECRET_KEY');
+  if (!expectedKey || adminKey !== expectedKey) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized — invalid or missing x-admin-api-key' }),
+      { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+    );
+  }
+  return null; // key is valid
+}
+
+// ── Timeout-safe fetch wrapper ──────────────────────────────────
+async function safeFetch(url: string, options: RequestInit & { timeoutMs?: number } = {}): Promise<Response> {
+  const { timeoutMs = 15000, ...fetchOpts } = options;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { ...fetchOpts, signal: controller.signal });
+    return response;
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 const SYSTEM_PROMPT = `Eres un bot auditor OSINT especializado en empresas de hosting chilenas. Lee el texto de una página web y extrae TODA la información empresarial disponible. Devuelve ESTRICTAMENTE un JSON válido.
 
@@ -64,6 +90,10 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // ── Auth gate ──
+  const authError = validateAdminKey(req);
+  if (authError) return authError;
+
   try {
     const { url, mode } = await req.json();
     if (!url) {
@@ -88,9 +118,9 @@ serve(async (req) => {
 
     for (const pageUrl of pagesToScrape) {
       try {
-        const jinaResponse = await fetch(`https://r.jina.ai/${pageUrl}`, {
+        const jinaResponse = await safeFetch(`https://r.jina.ai/${pageUrl}`, {
           headers: { 'Accept': 'application/json' },
-          signal: AbortSignal.timeout(15000),
+          timeoutMs: 15000,
         });
         if (jinaResponse.ok) {
           const jinaData = await jinaResponse.json();
@@ -109,12 +139,12 @@ serve(async (req) => {
       }
 
       try {
-        const directResponse = await fetch(pageUrl, {
+        const directResponse = await safeFetch(pageUrl, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (compatible; MejorHostingBot/1.0)',
             'Accept': 'text/html',
           },
-          signal: AbortSignal.timeout(10000),
+          timeoutMs: 10000,
           redirect: 'follow',
         });
         if (directResponse.ok) {
@@ -151,7 +181,8 @@ serve(async (req) => {
     const combinedText = pageTexts.join('\n\n').slice(0, 12000);
     console.log(`📊 Total combined: ${combinedText.length} chars from ${pageTexts.length} pages`);
 
-    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    // ── OpenAI call with defensive timeout ──
+    const openaiResponse = await safeFetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
@@ -166,11 +197,18 @@ serve(async (req) => {
         temperature: 0.15,
         max_tokens: 2000,
       }),
+      timeoutMs: 30000,
     });
 
     if (!openaiResponse.ok) {
       const errText = await openaiResponse.text();
       console.error('OpenAI error:', openaiResponse.status, errText);
+      if (openaiResponse.status === 429) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'OpenAI rate limit exceeded. Try again later.' }),
+          { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
       throw new Error(`OpenAI API error: ${openaiResponse.status}`);
     }
 
@@ -190,9 +228,10 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error('❌ ai-web-scraper error:', error);
+    const isTimeout = error instanceof DOMException && error.name === 'AbortError';
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      JSON.stringify({ success: false, error: isTimeout ? 'External API timeout — try again later' : (error instanceof Error ? error.message : 'Unknown error') }),
+      { status: isTimeout ? 503 : 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
   }
 });
