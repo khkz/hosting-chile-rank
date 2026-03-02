@@ -1,22 +1,57 @@
 import React, { useState, useMemo } from 'react';
 import { Trophy, Check, Star, Shield, Zap, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Skeleton } from '@/components/ui/skeleton';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import AvailabilityBadge from './AvailabilityBadge';
 import IndependenceBadge from './IndependenceBadge';
-import { rankingProviders, RankingProvider } from '@/data/rankingProviders';
+
+// ── Types mapped to Supabase columns ────────────────────────────
+interface RankingCompany {
+  id: string;
+  name: string;
+  slug: string;
+  website: string | null;
+  logo_url: string | null;
+  overall_rating: number;
+  speed_rating: number;
+  price_rating: number;
+  is_independent: boolean | null;
+  corporate_group: string | null;
+  legal_name: string | null;
+  foundation_year: number | null;
+  ranking_position: number;
+  is_recommended: boolean;
+  ranking_features: string[];
+  ranking_badges: string[];
+  cta_text: string | null;
+  cta_micro_copy: string | null;
+  button_color: string | null;
+  border_color: string | null;
+  display_name_first: string | null;
+  display_name_second: string | null;
+  display_name_first_color: string | null;
+  display_name_second_color: string | null;
+  promo_price: number | null;
+  original_price: number | null;
+  price_period: string;
+  // derived
+  sortPosition: number;
+}
 
 // ── Reusable card for any position ──────────────────────────────
 interface RankingCardProps {
-  provider: RankingProvider & { sortPosition: number };
+  provider: RankingCompany;
   ratingLabel: string;
   isWinner: boolean;
 }
 
 const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinner }) => {
-  const borderClass = isWinner ? `border-4 ${provider.borderColor}` : 'border-2 border-border';
+  const borderClass = isWinner ? `border-4 ${provider.border_color || 'border-primary'}` : 'border-2 border-border';
   const numberSize = isWinner ? 'w-16 h-16 text-2xl md:w-20 md:h-20 md:text-3xl' : 'w-14 h-14 text-xl md:w-16 md:h-16 md:text-2xl';
   const numberBg = isWinner
     ? 'bg-gradient-to-br from-yellow-400 to-orange-500'
@@ -53,7 +88,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
             {isWinner && <Trophy className="w-6 h-6 md:w-8 md:h-8 text-yellow-500 absolute -top-2 -right-6 md:-right-8" />}
           </div>
         </div>
-        {isWinner && provider.isRecommended && (
+        {isWinner && provider.is_recommended && (
           <div className="mt-2 flex justify-center">
             <span className="bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-xs md:text-sm px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
               <Check size={14} /> Más Recomendado
@@ -68,7 +103,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
 
         {/* Top badges */}
         <div className="absolute -top-3 left-3 flex flex-wrap gap-1.5 z-20">
-          {provider.badges?.map((badge, idx) => (
+          {provider.ranking_badges?.map((badge, idx) => (
             <span key={idx} className={`px-2.5 py-1 bg-gradient-to-r ${badgeGradient} text-[10px] md:text-xs font-medium rounded-full ${isWinner ? 'shadow-lg' : ''}`}>
               {badge}
             </span>
@@ -79,16 +114,16 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
           {/* Header */}
           <div className="text-center mb-4">
             <h3 className={`${isWinner ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-bold mb-2`}>
-              <span className={provider.displayName.firstColor}>{provider.displayName.first}</span>
-              <span className={provider.displayName.secondColor}>{provider.displayName.second}</span>
+              <span className={provider.display_name_first_color || 'text-foreground'}>{provider.display_name_first || provider.name}</span>
+              <span className={provider.display_name_second_color || 'text-foreground'}>{provider.display_name_second || ''}</span>
             </h3>
 
-            {/* Independence Badge — reads from data model */}
+            {/* Independence Badge */}
             <div className="flex justify-center mb-2">
               <IndependenceBadge
-                isIndependent={provider.isIndependent}
-                corporateGroup={provider.corporateGroup}
-                legalName={provider.legalName}
+                isIndependent={provider.is_independent ?? true}
+                corporateGroup={provider.corporate_group ?? undefined}
+                legalName={provider.legal_name ?? undefined}
               />
             </div>
 
@@ -110,7 +145,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                 itemScope
                 itemType="https://schema.org/AggregateRating"
               >
-                <meta itemProp="ratingValue" content={String(provider.rating)} />
+                <meta itemProp="ratingValue" content={String(provider.overall_rating)} />
                 <meta itemProp="bestRating" content="10" />
                 <meta itemProp="ratingCount" content="1" />
                 {ratingLabel}
@@ -120,7 +155,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
 
           {/* Features */}
           <ul className="space-y-2 mb-4 text-sm">
-            {provider.features.map((feature, index) => (
+            {provider.ranking_features?.map((feature, index) => (
               <li key={index} className="flex items-start gap-2">
                 <Check className={`w-4 h-4 ${isWinner ? 'text-[#EF233C]' : 'text-green-500'} mt-0.5 flex-shrink-0`} />
                 <span className="text-muted-foreground font-medium">{feature}</span>
@@ -129,44 +164,44 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
           </ul>
 
           {/* Pricing */}
-          {provider.price && (
+          {provider.promo_price && (
             <div className="mb-5 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
               <meta itemProp="priceCurrency" content="CLP" />
-              <meta itemProp="price" content={String(provider.price.current)} />
+              <meta itemProp="price" content={String(provider.promo_price)} />
               <meta itemProp="availability" content="https://schema.org/InStock" />
-              <link itemProp="url" href={provider.url} />
+              <link itemProp="url" href={provider.website || ''} />
               <div className="flex items-baseline justify-center gap-2">
-                {provider.price.original && (
+                {provider.original_price && (
                   <span className="text-sm text-muted-foreground line-through">
-                    ${provider.price.original.toLocaleString('es-CL')}
+                    ${provider.original_price.toLocaleString('es-CL')}
                   </span>
                 )}
                 <span className={`${isWinner ? 'text-4xl' : 'text-3xl'} font-bold text-foreground`}>
-                  ${provider.price.current.toLocaleString('es-CL')}
+                  ${provider.promo_price.toLocaleString('es-CL')}
                 </span>
-                <span className="text-sm text-muted-foreground">/{provider.price.period}</span>
+                <span className="text-sm text-muted-foreground">/{provider.price_period}</span>
               </div>
-              {provider.price.original && (
+              {provider.original_price && (
                 <p className="text-xs font-semibold text-green-600 mt-1">
-                  Ahorras {Math.round((1 - provider.price.current / provider.price.original) * 100)}%
+                  Ahorras {Math.round((1 - provider.promo_price / provider.original_price) * 100)}%
                 </p>
               )}
             </div>
           )}
 
-          {/* CTA — MASSIVE on mobile for touch conversion */}
+          {/* CTA */}
           <div className="space-y-2">
             <Button
               asChild
-              className={`w-full ${provider.buttonColor} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
+              className={`w-full ${provider.button_color || 'bg-primary'} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
             >
-              <a href={provider.url} target="_blank" rel="noopener noreferrer">
-                {provider.ctaText || 'Ver Oferta'}
+              <a href={provider.website || '#'} target="_blank" rel="noopener noreferrer">
+                {provider.cta_text || 'Ver Oferta'}
               </a>
             </Button>
-            {provider.ctaMicroCopy && (
+            {provider.cta_micro_copy && (
               <p className="text-xs text-center text-muted-foreground">
-                {provider.ctaMicroCopy}
+                {provider.cta_micro_copy}
               </p>
             )}
           </div>
@@ -176,52 +211,89 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
   );
 };
 
+// ── Loading skeleton ────────────────────────────────────────────
+const RankingSkeleton = () => (
+  <div className="flex flex-col md:flex-row md:items-end md:justify-center gap-6 md:gap-8 max-w-6xl mx-auto">
+    {[1, 2, 3].map((i) => (
+      <div key={i} className="w-full md:w-1/3">
+        <div className="text-center pb-4">
+          <Skeleton className="w-16 h-16 rounded-full mx-auto" />
+        </div>
+        <div className="bg-card border-2 border-border rounded-3xl p-6 space-y-4">
+          <Skeleton className="h-8 w-3/4 mx-auto" />
+          <Skeleton className="h-4 w-1/2 mx-auto" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-10 w-2/3 mx-auto" />
+          <Skeleton className="h-14 w-full rounded-xl" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 // ── Main Ranking Component ──────────────────────────────────────
 const HostingRanking = () => {
   const [sortCriteria, setSortCriteria] = useState('overall');
 
+  const { data: companies, isLoading } = useQuery({
+    queryKey: ['ranking-companies'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('hosting_companies')
+        .select('id, name, slug, website, logo_url, overall_rating, speed_rating, price_rating, is_independent, corporate_group, legal_name, foundation_year, ranking_position, is_recommended, ranking_features, ranking_badges, cta_text, cta_micro_copy, button_color, border_color, display_name_first, display_name_second, display_name_first_color, display_name_second_color, promo_price, original_price, price_period')
+        .eq('is_verified', true)
+        .not('ranking_position', 'is', null)
+        .order('ranking_position');
+
+      if (error) throw error;
+      return data as unknown as Omit<RankingCompany, 'sortPosition'>[];
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const sortedHostingData = useMemo(() => {
-    const sortedData = [...rankingProviders];
+    if (!companies) return [];
+    const sorted = [...companies];
 
     switch (sortCriteria) {
       case 'speed':
-        sortedData.sort((a, b) => b.speedRating - a.speedRating);
+        sorted.sort((a, b) => (b.speed_rating ?? 0) - (a.speed_rating ?? 0));
         break;
       case 'price':
-        sortedData.sort((a, b) => b.priceRating - a.priceRating);
+        sorted.sort((a, b) => (b.price_rating ?? 0) - (a.price_rating ?? 0));
         break;
       default:
-        sortedData.sort((a, b) => b.rating - a.rating);
+        sorted.sort((a, b) => (b.overall_rating ?? 0) - (a.overall_rating ?? 0));
         break;
     }
 
-    return sortedData.map((provider, index) => ({
-      ...provider,
-      sortPosition: index + 1,
-    }));
-  }, [sortCriteria]);
+    return sorted.map((c, index) => ({ ...c, sortPosition: index + 1 }));
+  }, [companies, sortCriteria]);
 
-  const getRatingLabel = (provider: RankingProvider) => {
+  const getRatingLabel = (provider: Omit<RankingCompany, 'sortPosition'>) => {
     switch (sortCriteria) {
       case 'speed':
-        return `${provider.speedRating}/10`;
+        return `${provider.speed_rating ?? 0}/10`;
       case 'price':
-        return `${provider.priceRating}/10`;
+        return `${provider.price_rating ?? 0}/10`;
       default:
-        return `${provider.rating}/10`;
+        return `${provider.overall_rating ?? 0}/10`;
     }
   };
 
   const getSchemaItems = () =>
     sortedHostingData.map((provider) => ({
       name: provider.name,
-      description: provider.features.join('. '),
-      url: provider.url,
-      image: `https://eligetuhosting.cl${provider.logo}`,
+      description: (provider.ranking_features || []).join('. '),
+      url: provider.website || '',
+      image: `https://eligetuhosting.cl${provider.logo_url || ''}`,
       brand: provider.name,
-      rating: provider.rating,
+      rating: provider.overall_rating ?? 0,
       reviewCount: 1,
-      price: provider.price.current,
+      price: provider.promo_price ?? 0,
       priceCurrency: 'CLP',
     }));
 
@@ -239,12 +311,14 @@ const HostingRanking = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-5 rounded-full" />
         </div>
 
-        <ItemListSchema
-          name="Ranking Mejores Hosting Chile 2026"
-          description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas técnicas de velocidad, uptime y soporte"
-          items={getSchemaItems()}
-          listType="ranking"
-        />
+        {!isLoading && sortedHostingData.length > 0 && (
+          <ItemListSchema
+            name="Ranking Mejores Hosting Chile 2026"
+            description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas técnicas de velocidad, uptime y soporte"
+            items={getSchemaItems()}
+            listType="ranking"
+          />
+        )}
 
         {/* Sort Controls */}
         <div className="flex justify-center mb-8 md:mb-12">
@@ -287,18 +361,22 @@ const HostingRanking = () => {
           </ToggleGroup>
         </div>
 
-        {/* ── Cards: flex-col on mobile, row on desktop ── */}
-        <ol className="flex flex-col md:flex-row md:items-end md:justify-center gap-6 md:gap-8 max-w-6xl mx-auto mb-12 list-none p-0 m-0" aria-label="Ranking de los mejores hostings en Chile 2026">
-          {sortedHostingData.map((provider) => (
-            <li key={provider.name} className={`w-full md:w-1/3 ${provider.sortPosition === 1 ? 'md:order-2 md:z-10' : provider.sortPosition === 2 ? 'md:order-1' : 'md:order-3'}`}>
-              <RankingCard
-                provider={provider}
-                ratingLabel={getRatingLabel(provider)}
-                isWinner={provider.sortPosition === 1}
-              />
-            </li>
-          ))}
-        </ol>
+        {/* Cards */}
+        {isLoading ? (
+          <RankingSkeleton />
+        ) : (
+          <ol className="flex flex-col md:flex-row md:items-end md:justify-center gap-6 md:gap-8 max-w-6xl mx-auto mb-12 list-none p-0 m-0" aria-label="Ranking de los mejores hostings en Chile 2026">
+            {sortedHostingData.map((provider) => (
+              <li key={provider.id} className={`w-full md:w-1/3 ${provider.sortPosition === 1 ? 'md:order-2 md:z-10' : provider.sortPosition === 2 ? 'md:order-1' : 'md:order-3'}`}>
+                <RankingCard
+                  provider={provider}
+                  ratingLabel={getRatingLabel(provider)}
+                  isWinner={provider.sortPosition === 1}
+                />
+              </li>
+            ))}
+          </ol>
+        )}
 
         {/* More Providers Link */}
         <div className="text-center">
