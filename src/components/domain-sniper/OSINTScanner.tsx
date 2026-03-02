@@ -108,6 +108,8 @@ const OSINTScanner = () => {
     try {
       setScanProgress(["🔎 Consultando registro NIC Chile..."]);
 
+      const adminHeaders = { 'x-admin-api-key': import.meta.env.VITE_ADMIN_SECRET_KEY || '' };
+
       // Phase 1: WHOIS + ASN + AI Scraper (parallel)
       const [whoisRes, asnRes, scraperRes] = await Promise.all([
         supabase.functions.invoke("whois-lookup", {
@@ -121,6 +123,7 @@ const OSINTScanner = () => {
           setScanProgress(p => [...p, "🤖 Analizando web con IA (homepage, planes, nosotros, contacto)..."]);
           return supabase.functions.invoke("ai-web-scraper", {
             body: { url: fullUrl, mode: "full" },
+            headers: adminHeaders,
           });
         })(),
       ]);
@@ -130,6 +133,7 @@ const OSINTScanner = () => {
       // Phase 2: Complaints (after we have the company name)
       const complaintsRes = await supabase.functions.invoke("complaints-checker", {
         body: { company_name: companyName, domain },
+        headers: adminHeaders,
       });
 
       const whois = whoisRes.data || {};
@@ -288,9 +292,10 @@ const OSINTScanner = () => {
           const domain = c.website?.replace(/^https?:\/\//, "").replace(/\/$/, "") || `${c.slug}.cl`;
           const fullUrl = c.website || `https://${c.slug}.cl`;
 
+          const batchAdminHeaders = { 'x-admin-api-key': import.meta.env.VITE_ADMIN_SECRET_KEY || '' };
           const [scraperRes, complaintsRes] = await Promise.all([
-            supabase.functions.invoke("ai-web-scraper", { body: { url: fullUrl, mode: "full" } }),
-            supabase.functions.invoke("complaints-checker", { body: { company_name: c.name, domain } }),
+            supabase.functions.invoke("ai-web-scraper", { body: { url: fullUrl, mode: "full" }, headers: batchAdminHeaders }),
+            supabase.functions.invoke("complaints-checker", { body: { company_name: c.name, domain }, headers: batchAdminHeaders }),
           ]);
 
           const s = scraperRes.data || {};
