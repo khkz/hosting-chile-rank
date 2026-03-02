@@ -688,6 +688,8 @@ export type Database = {
       }
       hosting_companies: {
         Row: {
+          border_color: string | null
+          button_color: string | null
           claimed_at: string | null
           claimed_by: string | null
           cons: string[] | null
@@ -697,12 +699,18 @@ export type Database = {
           contact_phone: string | null
           corporate_group: string | null
           created_at: string | null
+          cta_micro_copy: string | null
+          cta_text: string | null
           curated_at: string | null
           curation_notes: string | null
           data_confidence: Json | null
           datacenter_location: string | null
           description: string | null
           description_editorial: string | null
+          display_name_first: string | null
+          display_name_first_color: string | null
+          display_name_second: string | null
+          display_name_second_color: string | null
           foundation_year: number | null
           has_migration_free: boolean | null
           has_ssl_free: boolean | null
@@ -711,15 +719,22 @@ export type Database = {
           is_fake_comparison: boolean | null
           is_featured: boolean | null
           is_independent: boolean | null
+          is_recommended: boolean
           is_verified: boolean | null
           last_scraped_at: string | null
           legal_name: string | null
           logo_url: string | null
           name: string
+          original_price: number | null
           overall_rating: number | null
           payment_methods: string[] | null
+          price_period: string
           price_rating: number | null
+          promo_price: number | null
           pros: string[] | null
+          ranking_badges: string[]
+          ranking_features: string[]
+          ranking_position: number | null
           site_type: string | null
           slug: string
           social_media: Json | null
@@ -736,6 +751,8 @@ export type Database = {
           year_founded: number | null
         }
         Insert: {
+          border_color?: string | null
+          button_color?: string | null
           claimed_at?: string | null
           claimed_by?: string | null
           cons?: string[] | null
@@ -745,12 +762,18 @@ export type Database = {
           contact_phone?: string | null
           corporate_group?: string | null
           created_at?: string | null
+          cta_micro_copy?: string | null
+          cta_text?: string | null
           curated_at?: string | null
           curation_notes?: string | null
           data_confidence?: Json | null
           datacenter_location?: string | null
           description?: string | null
           description_editorial?: string | null
+          display_name_first?: string | null
+          display_name_first_color?: string | null
+          display_name_second?: string | null
+          display_name_second_color?: string | null
           foundation_year?: number | null
           has_migration_free?: boolean | null
           has_ssl_free?: boolean | null
@@ -759,15 +782,22 @@ export type Database = {
           is_fake_comparison?: boolean | null
           is_featured?: boolean | null
           is_independent?: boolean | null
+          is_recommended?: boolean
           is_verified?: boolean | null
           last_scraped_at?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name: string
+          original_price?: number | null
           overall_rating?: number | null
           payment_methods?: string[] | null
+          price_period?: string
           price_rating?: number | null
+          promo_price?: number | null
           pros?: string[] | null
+          ranking_badges?: string[]
+          ranking_features?: string[]
+          ranking_position?: number | null
           site_type?: string | null
           slug: string
           social_media?: Json | null
@@ -784,6 +814,8 @@ export type Database = {
           year_founded?: number | null
         }
         Update: {
+          border_color?: string | null
+          button_color?: string | null
           claimed_at?: string | null
           claimed_by?: string | null
           cons?: string[] | null
@@ -793,12 +825,18 @@ export type Database = {
           contact_phone?: string | null
           corporate_group?: string | null
           created_at?: string | null
+          cta_micro_copy?: string | null
+          cta_text?: string | null
           curated_at?: string | null
           curation_notes?: string | null
           data_confidence?: Json | null
           datacenter_location?: string | null
           description?: string | null
           description_editorial?: string | null
+          display_name_first?: string | null
+          display_name_first_color?: string | null
+          display_name_second?: string | null
+          display_name_second_color?: string | null
           foundation_year?: number | null
           has_migration_free?: boolean | null
           has_ssl_free?: boolean | null
@@ -807,15 +845,22 @@ export type Database = {
           is_fake_comparison?: boolean | null
           is_featured?: boolean | null
           is_independent?: boolean | null
+          is_recommended?: boolean
           is_verified?: boolean | null
           last_scraped_at?: string | null
           legal_name?: string | null
           logo_url?: string | null
           name?: string
+          original_price?: number | null
           overall_rating?: number | null
           payment_methods?: string[] | null
+          price_period?: string
           price_rating?: number | null
+          promo_price?: number | null
           pros?: string[] | null
+          ranking_badges?: string[]
+          ranking_features?: string[]
+          ranking_position?: number | null
           site_type?: string | null
           slug?: string
           social_media?: Json | null
