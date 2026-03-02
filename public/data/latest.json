@@ -1,6 +1,10 @@
 {
-  "updated": "2026-03-02T05:48:16.510Z",
+  "updated": "2026-03-02T06:50:29.068Z",
   "domains": [
+    {
+      "d": "innervoice.cl",
+      "date": "2026-03-02T03:24:32Z"
+    },
     {
       "d": "corazonverdeproductosnaturales.cl",
       "date": "2026-03-02T02:14:51Z"
@@ -1440,30 +1444,6 @@
     {
       "d": "somosempresa.cl",
       "date": "2026-03-01T04:02:01Z"
-    },
-    {
-      "d": "mercadovivo.cl",
-      "date": "2026-03-01T03:33:08Z"
-    },
-    {
-      "d": "horaciocastellon.cl",
-      "date": "2026-03-01T03:28:20Z"
-    },
-    {
-      "d": "theonestore.cl",
-      "date": "2026-03-01T03:20:46Z"
-    },
-    {
-      "d": "sententia.cl",
-      "date": "2026-03-01T03:08:49Z"
-    },
-    {
-      "d": "calendarioqlgrande.cl",
-      "date": "2026-03-01T03:01:00Z"
-    },
-    {
-      "d": "entregaplus.cl",
-      "date": "2026-03-01T02:48:48Z"
     }
   ]
 }
