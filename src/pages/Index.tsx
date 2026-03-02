@@ -7,6 +7,7 @@ import StatsTicker from '@/components/StatsTicker';
 import ScrollProgress from '@/components/ScrollProgress';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
+import ItemListSchema from '@/components/SEO/ItemListSchema';
 import TransparencyAlert from '@/components/TransparencyAlert';
 import MethodologySection from '@/components/MethodologySection';
 
