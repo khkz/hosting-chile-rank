@@ -1,6 +1,14 @@
 {
-  "updated": "2026-03-03T05:44:02.430Z",
+  "updated": "2026-03-03T06:42:51.737Z",
   "domains": [
+    {
+      "d": "kinohistorico.cl",
+      "date": "2026-03-03T03:32:42Z"
+    },
+    {
+      "d": "radiomaconline.cl",
+      "date": "2026-03-03T03:12:40Z"
+    },
     {
       "d": "nextplan.cl",
       "date": "2026-03-03T02:39:17Z"
@@ -2728,10 +2736,6 @@
     {
       "d": "pulxo.cl",
       "date": "2026-03-02T03:58:02Z"
-    },
-    {
-      "d": "innervoice.cl",
-      "date": "2026-03-02T03:24:32Z"
     }
   ]
 }
