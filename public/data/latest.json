@@ -1,6 +1,238 @@
 {
-  "updated": "2026-03-16T20:32:11.598Z",
+  "updated": "2026-03-16T21:33:41.609Z",
   "domains": [
+    {
+      "d": "pymerentable.cl",
+      "date": "2026-03-16T18:33:07Z"
+    },
+    {
+      "d": "repos.cl",
+      "date": "2026-03-16T18:32:57Z"
+    },
+    {
+      "d": "grismara.cl",
+      "date": "2026-03-16T18:32:41Z"
+    },
+    {
+      "d": "pgrconsultores.cl",
+      "date": "2026-03-16T18:31:14Z"
+    },
+    {
+      "d": "neblin.cl",
+      "date": "2026-03-16T18:30:57Z"
+    },
+    {
+      "d": "rauempresas.cl",
+      "date": "2026-03-16T18:30:31Z"
+    },
+    {
+      "d": "telecomarica.cl",
+      "date": "2026-03-16T18:29:49Z"
+    },
+    {
+      "d": "marmoll.cl",
+      "date": "2026-03-16T18:29:45Z"
+    },
+    {
+      "d": "marmolgranito.cl",
+      "date": "2026-03-16T18:29:45Z"
+    },
+    {
+      "d": "marmolbrunopapa.cl",
+      "date": "2026-03-16T18:29:44Z"
+    },
+    {
+      "d": "cuarzomarfil.cl",
+      "date": "2026-03-16T18:29:43Z"
+    },
+    {
+      "d": "blancocarrara.cl",
+      "date": "2026-03-16T18:29:42Z"
+    },
+    {
+      "d": "marmolcarrara.cl",
+      "date": "2026-03-16T18:29:41Z"
+    },
+    {
+      "d": "ignisia.cl",
+      "date": "2026-03-16T18:29:33Z"
+    },
+    {
+      "d": "miativa.cl",
+      "date": "2026-03-16T18:29:03Z"
+    },
+    {
+      "d": "mayoristabigclothes.cl",
+      "date": "2026-03-16T18:28:10Z"
+    },
+    {
+      "d": "aycmarket.cl",
+      "date": "2026-03-16T18:27:42Z"
+    },
+    {
+      "d": "aycbelong.cl",
+      "date": "2026-03-16T18:27:40Z"
+    },
+    {
+      "d": "valposur.cl",
+      "date": "2026-03-16T18:27:06Z"
+    },
+    {
+      "d": "tumundoregalo.cl",
+      "date": "2026-03-16T18:26:33Z"
+    },
+    {
+      "d": "pulze.cl",
+      "date": "2026-03-16T18:25:55Z"
+    },
+    {
+      "d": "radiosantacruz.cl",
+      "date": "2026-03-16T18:24:46Z"
+    },
+    {
+      "d": "vetdomicilio.cl",
+      "date": "2026-03-16T18:23:11Z"
+    },
+    {
+      "d": "lezama.cl",
+      "date": "2026-03-16T18:21:51Z"
+    },
+    {
+      "d": "orientasun.cl",
+      "date": "2026-03-16T18:21:47Z"
+    },
+    {
+      "d": "invjvc.cl",
+      "date": "2026-03-16T18:21:00Z"
+    },
+    {
+      "d": "vinaisladeyaquil.cl",
+      "date": "2026-03-16T18:20:51Z"
+    },
+    {
+      "d": "jaimegalte.cl",
+      "date": "2026-03-16T18:20:49Z"
+    },
+    {
+      "d": "plautovidrios.cl",
+      "date": "2026-03-16T18:20:06Z"
+    },
+    {
+      "d": "newenia.cl",
+      "date": "2026-03-16T18:18:14Z"
+    },
+    {
+      "d": "cosmostore.cl",
+      "date": "2026-03-16T18:17:55Z"
+    },
+    {
+      "d": "guardiasdeseguridadchile.cl",
+      "date": "2026-03-16T18:17:51Z"
+    },
+    {
+      "d": "ingemaqrental.cl",
+      "date": "2026-03-16T18:16:13Z"
+    },
+    {
+      "d": "barrio-digital.cl",
+      "date": "2026-03-16T18:15:57Z"
+    },
+    {
+      "d": "modoavion.cl",
+      "date": "2026-03-16T18:15:13Z"
+    },
+    {
+      "d": "viveroraicesdelnorte.cl",
+      "date": "2026-03-16T18:14:01Z"
+    },
+    {
+      "d": "matiasdaza.cl",
+      "date": "2026-03-16T18:12:36Z"
+    },
+    {
+      "d": "carvalabogados.cl",
+      "date": "2026-03-16T18:11:09Z"
+    },
+    {
+      "d": "jmaseguridad.cl",
+      "date": "2026-03-16T18:10:30Z"
+    },
+    {
+      "d": "transtagchile.cl",
+      "date": "2026-03-16T18:10:15Z"
+    },
+    {
+      "d": "jurisnorte.cl",
+      "date": "2026-03-16T18:07:31Z"
+    },
+    {
+      "d": "flashwashchile.cl",
+      "date": "2026-03-16T18:05:53Z"
+    },
+    {
+      "d": "justiciadelnorte.cl",
+      "date": "2026-03-16T18:03:33Z"
+    },
+    {
+      "d": "cabanapucura.cl",
+      "date": "2026-03-16T18:00:35Z"
+    },
+    {
+      "d": "juanferrer.cl",
+      "date": "2026-03-16T17:59:18Z"
+    },
+    {
+      "d": "vicait.cl",
+      "date": "2026-03-16T17:57:21Z"
+    },
+    {
+      "d": "proyectolechuga.cl",
+      "date": "2026-03-16T17:57:20Z"
+    },
+    {
+      "d": "advizer.cl",
+      "date": "2026-03-16T17:57:02Z"
+    },
+    {
+      "d": "juegaconmadera.cl",
+      "date": "2026-03-16T17:52:47Z"
+    },
+    {
+      "d": "draramirez.cl",
+      "date": "2026-03-16T17:50:51Z"
+    },
+    {
+      "d": "seglow.cl",
+      "date": "2026-03-16T17:48:42Z"
+    },
+    {
+      "d": "termok.cl",
+      "date": "2026-03-16T17:47:38Z"
+    },
+    {
+      "d": "tierstyle.cl",
+      "date": "2026-03-16T17:46:19Z"
+    },
+    {
+      "d": "rutaproservicios.cl",
+      "date": "2026-03-16T17:42:32Z"
+    },
+    {
+      "d": "aseomasterchile.cl",
+      "date": "2026-03-16T17:42:18Z"
+    },
+    {
+      "d": "spb.cl",
+      "date": "2026-03-16T17:37:12Z"
+    },
+    {
+      "d": "juridicointegral.cl",
+      "date": "2026-03-16T17:36:05Z"
+    },
+    {
+      "d": "chilecursosia.cl",
+      "date": "2026-03-16T17:35:15Z"
+    },
     {
       "d": "invkidasabi.cl",
       "date": "2026-03-16T17:31:34Z"
@@ -2392,66 +2624,6 @@
     {
       "d": "nutriquimik.cl",
       "date": "2026-03-15T18:37:07Z"
-    },
-    {
-      "d": "0-day.cl",
-      "date": "2026-03-15T18:33:14Z"
-    },
-    {
-      "d": "kwabogados.cl",
-      "date": "2026-03-15T18:29:18Z"
-    },
-    {
-      "d": "loquediosunio.cl",
-      "date": "2026-03-15T18:21:13Z"
-    },
-    {
-      "d": "magnavirtus.cl",
-      "date": "2026-03-15T18:17:16Z"
-    },
-    {
-      "d": "graffitigrafia.cl",
-      "date": "2026-03-15T18:16:13Z"
-    },
-    {
-      "d": "legalseis.cl",
-      "date": "2026-03-15T18:10:55Z"
-    },
-    {
-      "d": "puntoglacetienda.cl",
-      "date": "2026-03-15T18:02:27Z"
-    },
-    {
-      "d": "kadenz.cl",
-      "date": "2026-03-15T18:01:29Z"
-    },
-    {
-      "d": "reksecurity.cl",
-      "date": "2026-03-15T17:57:43Z"
-    },
-    {
-      "d": "plagabest.cl",
-      "date": "2026-03-15T17:57:41Z"
-    },
-    {
-      "d": "rovitecspa.cl",
-      "date": "2026-03-15T17:50:21Z"
-    },
-    {
-      "d": "91bs.cl",
-      "date": "2026-03-15T17:47:01Z"
-    },
-    {
-      "d": "messirve.cl",
-      "date": "2026-03-15T17:45:12Z"
-    },
-    {
-      "d": "mesirve.cl",
-      "date": "2026-03-15T17:45:11Z"
-    },
-    {
-      "d": "waveops.cl",
-      "date": "2026-03-15T17:40:05Z"
     }
   ]
 }
