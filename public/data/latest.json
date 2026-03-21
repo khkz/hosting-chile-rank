@@ -1,6 +1,10 @@
 {
-  "updated": "2026-03-21T06:35:49.607Z",
+  "updated": "2026-03-21T07:29:25.175Z",
   "domains": [
+    {
+      "d": "sincretismo.cl",
+      "date": "2026-03-21T04:00:28Z"
+    },
     {
       "d": "contacore.cl",
       "date": "2026-03-21T02:56:20Z"
@@ -2256,10 +2260,6 @@
     {
       "d": "sosbpanic.cl",
       "date": "2026-03-20T05:18:48Z"
-    },
-    {
-      "d": "marcopuntotv.cl",
-      "date": "2026-03-20T03:53:21Z"
     }
   ]
 }
