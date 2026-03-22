@@ -1,6 +1,14 @@
 {
-  "updated": "2026-03-22T08:28:00.665Z",
+  "updated": "2026-03-22T09:26:50.718Z",
   "domains": [
+    {
+      "d": "metodica.cl",
+      "date": "2026-03-22T06:21:46Z"
+    },
+    {
+      "d": "tacet.cl",
+      "date": "2026-03-22T06:18:25Z"
+    },
     {
       "d": "srlabs.cl",
       "date": "2026-03-22T04:36:36Z"
@@ -1380,10 +1388,6 @@
     {
       "d": "hoteltorremayorprovidencia.cl",
       "date": "2026-03-21T06:45:55Z"
-    },
-    {
-      "d": "atexphones.cl",
-      "date": "2026-03-21T05:31:19Z"
     }
   ]
 }
