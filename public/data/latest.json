@@ -1,6 +1,10 @@
 {
-  "updated": "2026-03-22T06:43:17.777Z",
+  "updated": "2026-03-22T07:34:37.925Z",
   "domains": [
+    {
+      "d": "yogano.cl",
+      "date": "2026-03-22T03:55:53Z"
+    },
     {
       "d": "transitocabildo.cl",
       "date": "2026-03-22T03:07:18Z"
@@ -1392,10 +1396,6 @@
     {
       "d": "gemaintegrativa.cl",
       "date": "2026-03-21T04:46:11Z"
-    },
-    {
-      "d": "sincretismo.cl",
-      "date": "2026-03-21T04:00:28Z"
     }
   ]
 }
