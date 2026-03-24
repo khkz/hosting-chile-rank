@@ -291,21 +291,8 @@ const UltimosDominios = () => {
         <meta property="og:url" content="https://eligetuhosting.cl/ultimos-dominios/" />
         <link rel="canonical" href="https://eligetuhosting.cl/ultimos-dominios/" />
         {!isLoading && domains.length > 0 && <script type="application/ld+json">{generateSchemaData()}</script>}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Dataset",
-            "name": "Dominios .cl registrados en Chile",
-            "description": "Dataset público de los últimos dominios .cl registrados en NIC Chile",
-            "url": "https://eligetuhosting.cl/ultimos-dominios/",
-            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
-            "creator": { "@type": "Organization", "name": "EligeTuHosting.cl" },
-            "distribution": [
-              { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://eligetuhosting.cl/data/latest.json" },
-              { "@type": "DataDownload", "encodingFormat": "application/xml", "contentUrl": "https://eligetuhosting.cl/feeds/latest-domains.xml" }
-            ]
-          })}
-        </script>
+        <script type="application/ld+json">{generateWebPageSchema()}</script>
+        <script type="application/ld+json">{generateFAQSchema()}</script>
         <link rel="alternate" type="application/rss+xml" title="Últimos dominios registrados en Chile" href="/feeds/latest-domains.xml" />
       </Helmet>
       
