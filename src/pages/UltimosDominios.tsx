@@ -147,6 +147,78 @@ const UltimosDominios = () => {
     });
   };
 
+  const generateWebPageSchema = () => {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Últimos Dominios .CL Registrados en Chile",
+      "description": "Monitoreo en tiempo real de los dominios .cl registrados en NIC Chile. Datos actualizados cada hora.",
+      "url": "https://eligetuhosting.cl/ultimos-dominios/",
+      "inLanguage": "es-CL",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "EligeTuHosting.cl",
+        "url": "https://eligetuhosting.cl"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["#geo-editorial", "#geo-faq"]
+      },
+      "mainEntity": {
+        "@type": "Dataset",
+        "name": "Dominios .cl registrados en Chile",
+        "description": "Dataset público de los últimos dominios .cl registrados en NIC Chile, actualizado cada hora.",
+        "url": "https://eligetuhosting.cl/ultimos-dominios/",
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "dateModified": lastUpdated || new Date().toISOString(),
+        "temporalCoverage": "P1D",
+        "creator": { "@type": "Organization", "name": "EligeTuHosting.cl", "url": "https://eligetuhosting.cl" },
+        "distribution": [
+          { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://eligetuhosting.cl/data/latest.json" },
+          { "@type": "DataDownload", "encodingFormat": "application/xml", "contentUrl": "https://eligetuhosting.cl/feeds/latest-domains.xml" }
+        ]
+      }
+    });
+  };
+
+  const faqItems = [
+    {
+      question: "¿Cuántos dominios .cl se registran por día en Chile?",
+      answer: "En promedio se registran entre 300 y 600 dominios .cl nuevos cada día hábil en Chile, según datos públicos de NIC Chile. Los lunes y martes suelen ser los días con mayor actividad de registro."
+    },
+    {
+      question: "¿Cómo puedo saber si un dominio .cl está disponible?",
+      answer: "Puedes verificar la disponibilidad de un dominio .cl directamente en NIC Chile (nic.cl) o usando nuestra herramienta de análisis WHOIS. Si el dominio no aparece en el registro de NIC, está disponible para ser inscrito."
+    },
+    {
+      question: "¿Cuánto cuesta registrar un dominio .cl?",
+      answer: "El costo de inscripción de un dominio .cl en NIC Chile es de aproximadamente $15.900 CLP + IVA por dos años. Algunos proveedores de hosting incluyen el dominio gratis al contratar un plan de alojamiento."
+    },
+    {
+      question: "¿De dónde provienen los datos de esta página?",
+      answer: "Los datos se obtienen directamente del registro público de NIC Chile (nic.cl), el organismo oficial que administra los dominios .cl. Nuestro sistema automatizado actualiza la información cada hora mediante GitHub Actions."
+    },
+    {
+      question: "¿Puedo recibir alertas de nuevos dominios registrados?",
+      answer: "Sí, puedes suscribirte a nuestro feed RSS en formato XML o JSON para recibir notificaciones automáticas de nuevos dominios .cl registrados. Los enlaces están disponibles en esta página."
+    }
+  ];
+
+  const generateFAQSchema = () => {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    });
+  };
+
   const loadDomains = async () => {
     setIsLoading(true);
     setError(null);
