@@ -30,14 +30,25 @@ export const loadDomains = async (): Promise<ApiResponse> => {
   }
 
   try {
-    console.log('🔄 Loading domain data from local file...');
+    console.log('🔄 Loading domain data...');
     
-    // Load from local public folder (served as static asset)
-    const response = await fetch('/data/latest.json', {
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    });
+    // Try GitHub raw URL first (always up-to-date from GitHub Actions)
+    const githubUrl = 'https://raw.githubusercontent.com/khkzulox/hosting-chile-rank/main/public/data/latest.json';
+    let response: Response;
+    
+    try {
+      response = await fetch(githubUrl, {
+        headers: { 'Cache-Control': 'no-cache' },
+      });
+      if (!response.ok) throw new Error('GitHub fetch failed');
+      console.log('✅ Loaded from GitHub');
+    } catch {
+      // Fallback to local file
+      console.log('⚠️ GitHub unavailable, using local file');
+      response = await fetch('/data/latest.json', {
+        headers: { 'Cache-Control': 'no-cache' },
+      });
+    }
 
     if (!response.ok) {
       throw new Error(`Failed to load domains: ${response.status} ${response.statusText}`);
