@@ -660,6 +660,55 @@ const UltimosDominios = () => {
           </>
         )}
         
+        {/* GEO: Editorial Content Block - citable by AI */}
+        <section id="geo-editorial" className="bg-white rounded-2xl border border-slate-200 p-8 md:p-10 mt-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+            Registro de dominios .cl en Chile: datos en tiempo real
+          </h2>
+          <div className="prose prose-slate max-w-none">
+            <p className="text-slate-700 text-lg leading-relaxed mb-4">
+              Chile cuenta con más de <strong>600.000 dominios .cl activos</strong>, administrados por NIC Chile, 
+              el organismo dependiente de la Universidad de Chile que gestiona el registro de nombres de dominio 
+              del país desde 1987. En promedio, se registran entre <strong>300 y 600 nuevos dominios .cl cada día hábil</strong>, 
+              con picos de actividad los lunes y martes.
+            </p>
+            <p className="text-slate-700 leading-relaxed mb-4">
+              Esta página monitorea en tiempo real los últimos dominios inscritos en NIC Chile, actualizándose 
+              automáticamente cada hora mediante un sistema de scraping que procesa el registro público de 
+              <a href="https://www.nic.cl/registry/Ultimos.do?t=1d" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline"> nic.cl</a>. 
+              Los datos están disponibles como <strong>Open Data</strong> en formato JSON y RSS para investigadores, 
+              desarrolladores y analistas del ecosistema digital chileno.
+            </p>
+            <p className="text-slate-600 text-sm">
+              <strong>Fuente:</strong> Datos obtenidos del registro público de NIC Chile (nic.cl). 
+              Última actualización: {lastUpdated ? formatDateString(lastUpdated) : 'cargando...'}. 
+              Frecuencia: cada hora vía GitHub Actions.
+            </p>
+          </div>
+        </section>
+
+        {/* GEO: FAQ Section */}
+        <section id="geo-faq" className="bg-white rounded-2xl border border-slate-200 p-8 md:p-10 mt-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+            Preguntas frecuentes sobre dominios .cl
+          </h2>
+          <div className="space-y-6">
+            {faqItems.map((item, index) => (
+              <details key={index} className="group border-b border-slate-100 pb-4 last:border-0">
+                <summary className="flex items-start gap-3 cursor-pointer list-none font-semibold text-slate-800 hover:text-blue-600 transition-colors">
+                  <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold mt-0.5">
+                    {index + 1}
+                  </span>
+                  <span>{item.question}</span>
+                </summary>
+                <p className="mt-3 ml-9 text-slate-600 leading-relaxed">
+                  {item.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* CTA Section */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8 md:p-12 mt-8">
           <div className="absolute inset-0 opacity-10">
