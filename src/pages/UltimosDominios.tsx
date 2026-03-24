@@ -163,20 +163,6 @@ const UltimosDominios = () => {
       "speakable": {
         "@type": "SpeakableSpecification",
         "cssSelector": ["#geo-editorial", "#geo-faq"]
-      },
-      "mainEntity": {
-        "@type": "Dataset",
-        "name": "Dominios .cl registrados en Chile",
-        "description": "Dataset público de los últimos dominios .cl registrados en NIC Chile, actualizado cada hora.",
-        "url": "https://eligetuhosting.cl/ultimos-dominios/",
-        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
-        "dateModified": lastUpdated || new Date().toISOString(),
-        "temporalCoverage": "P1D",
-        "creator": { "@type": "Organization", "name": "EligeTuHosting.cl", "url": "https://eligetuhosting.cl" },
-        "distribution": [
-          { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://eligetuhosting.cl/data/latest.json" },
-          { "@type": "DataDownload", "encodingFormat": "application/xml", "contentUrl": "https://eligetuhosting.cl/feeds/latest-domains.xml" }
-        ]
       }
     });
   };
