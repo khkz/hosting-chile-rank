@@ -147,6 +147,78 @@ const UltimosDominios = () => {
     });
   };
 
+  const generateWebPageSchema = () => {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Últimos Dominios .CL Registrados en Chile",
+      "description": "Monitoreo en tiempo real de los dominios .cl registrados en NIC Chile. Datos actualizados cada hora.",
+      "url": "https://eligetuhosting.cl/ultimos-dominios/",
+      "inLanguage": "es-CL",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "EligeTuHosting.cl",
+        "url": "https://eligetuhosting.cl"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["#geo-editorial", "#geo-faq"]
+      },
+      "mainEntity": {
+        "@type": "Dataset",
+        "name": "Dominios .cl registrados en Chile",
+        "description": "Dataset público de los últimos dominios .cl registrados en NIC Chile, actualizado cada hora.",
+        "url": "https://eligetuhosting.cl/ultimos-dominios/",
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "dateModified": lastUpdated || new Date().toISOString(),
+        "temporalCoverage": "P1D",
+        "creator": { "@type": "Organization", "name": "EligeTuHosting.cl", "url": "https://eligetuhosting.cl" },
+        "distribution": [
+          { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://eligetuhosting.cl/data/latest.json" },
+          { "@type": "DataDownload", "encodingFormat": "application/xml", "contentUrl": "https://eligetuhosting.cl/feeds/latest-domains.xml" }
+        ]
+      }
+    });
+  };
+
+  const faqItems = [
+    {
+      question: "¿Cuántos dominios .cl se registran por día en Chile?",
+      answer: "En promedio se registran entre 300 y 600 dominios .cl nuevos cada día hábil en Chile, según datos públicos de NIC Chile. Los lunes y martes suelen ser los días con mayor actividad de registro."
+    },
+    {
+      question: "¿Cómo puedo saber si un dominio .cl está disponible?",
+      answer: "Puedes verificar la disponibilidad de un dominio .cl directamente en NIC Chile (nic.cl) o usando nuestra herramienta de análisis WHOIS. Si el dominio no aparece en el registro de NIC, está disponible para ser inscrito."
+    },
+    {
+      question: "¿Cuánto cuesta registrar un dominio .cl?",
+      answer: "El costo de inscripción de un dominio .cl en NIC Chile es de aproximadamente $15.900 CLP + IVA por dos años. Algunos proveedores de hosting incluyen el dominio gratis al contratar un plan de alojamiento."
+    },
+    {
+      question: "¿De dónde provienen los datos de esta página?",
+      answer: "Los datos se obtienen directamente del registro público de NIC Chile (nic.cl), el organismo oficial que administra los dominios .cl. Nuestro sistema automatizado actualiza la información cada hora mediante GitHub Actions."
+    },
+    {
+      question: "¿Puedo recibir alertas de nuevos dominios registrados?",
+      answer: "Sí, puedes suscribirte a nuestro feed RSS en formato XML o JSON para recibir notificaciones automáticas de nuevos dominios .cl registrados. Los enlaces están disponibles en esta página."
+    }
+  ];
+
+  const generateFAQSchema = () => {
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    });
+  };
+
   const loadDomains = async () => {
     setIsLoading(true);
     setError(null);
@@ -219,21 +291,8 @@ const UltimosDominios = () => {
         <meta property="og:url" content="https://eligetuhosting.cl/ultimos-dominios/" />
         <link rel="canonical" href="https://eligetuhosting.cl/ultimos-dominios/" />
         {!isLoading && domains.length > 0 && <script type="application/ld+json">{generateSchemaData()}</script>}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Dataset",
-            "name": "Dominios .cl registrados en Chile",
-            "description": "Dataset público de los últimos dominios .cl registrados en NIC Chile",
-            "url": "https://eligetuhosting.cl/ultimos-dominios/",
-            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
-            "creator": { "@type": "Organization", "name": "EligeTuHosting.cl" },
-            "distribution": [
-              { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://eligetuhosting.cl/data/latest.json" },
-              { "@type": "DataDownload", "encodingFormat": "application/xml", "contentUrl": "https://eligetuhosting.cl/feeds/latest-domains.xml" }
-            ]
-          })}
-        </script>
+        <script type="application/ld+json">{generateWebPageSchema()}</script>
+        <script type="application/ld+json">{generateFAQSchema()}</script>
         <link rel="alternate" type="application/rss+xml" title="Últimos dominios registrados en Chile" href="/feeds/latest-domains.xml" />
       </Helmet>
       
@@ -601,6 +660,55 @@ const UltimosDominios = () => {
           </>
         )}
         
+        {/* GEO: Editorial Content Block - citable by AI */}
+        <section id="geo-editorial" className="bg-white rounded-2xl border border-slate-200 p-8 md:p-10 mt-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+            Registro de dominios .cl en Chile: datos en tiempo real
+          </h2>
+          <div className="prose prose-slate max-w-none">
+            <p className="text-slate-700 text-lg leading-relaxed mb-4">
+              Chile cuenta con más de <strong>600.000 dominios .cl activos</strong>, administrados por NIC Chile, 
+              el organismo dependiente de la Universidad de Chile que gestiona el registro de nombres de dominio 
+              del país desde 1987. En promedio, se registran entre <strong>300 y 600 nuevos dominios .cl cada día hábil</strong>, 
+              con picos de actividad los lunes y martes.
+            </p>
+            <p className="text-slate-700 leading-relaxed mb-4">
+              Esta página monitorea en tiempo real los últimos dominios inscritos en NIC Chile, actualizándose 
+              automáticamente cada hora mediante un sistema de scraping que procesa el registro público de 
+              <a href="https://www.nic.cl/registry/Ultimos.do?t=1d" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline"> nic.cl</a>. 
+              Los datos están disponibles como <strong>Open Data</strong> en formato JSON y RSS para investigadores, 
+              desarrolladores y analistas del ecosistema digital chileno.
+            </p>
+            <p className="text-slate-600 text-sm">
+              <strong>Fuente:</strong> Datos obtenidos del registro público de NIC Chile (nic.cl). 
+              Última actualización: {lastUpdated ? formatDateString(lastUpdated) : 'cargando...'}. 
+              Frecuencia: cada hora vía GitHub Actions.
+            </p>
+          </div>
+        </section>
+
+        {/* GEO: FAQ Section */}
+        <section id="geo-faq" className="bg-white rounded-2xl border border-slate-200 p-8 md:p-10 mt-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
+            Preguntas frecuentes sobre dominios .cl
+          </h2>
+          <div className="space-y-6">
+            {faqItems.map((item, index) => (
+              <details key={index} className="group border-b border-slate-100 pb-4 last:border-0">
+                <summary className="flex items-start gap-3 cursor-pointer list-none font-semibold text-slate-800 hover:text-blue-600 transition-colors">
+                  <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold mt-0.5">
+                    {index + 1}
+                  </span>
+                  <span>{item.question}</span>
+                </summary>
+                <p className="mt-3 ml-9 text-slate-600 leading-relaxed">
+                  {item.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* CTA Section */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8 md:p-12 mt-8">
           <div className="absolute inset-0 opacity-10">
