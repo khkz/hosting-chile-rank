@@ -28,7 +28,7 @@ const StickyCTA = React.lazy(() => import('@/components/StickyCTA'));
 const MiniNav = React.lazy(() => import('@/components/MiniNav'));
 const ExitModal = React.lazy(() => import('@/components/ExitModal'));
 const TrustReport = React.lazy(() => import('@/components/TrustReport'));
-const OpenDataBadge = React.lazy(() => import('@/components/OpenDataBadge'));
+
 
 const Index = () => {
   return (
@@ -102,11 +102,6 @@ const Index = () => {
           <div className="section-separator"></div>
           <Categories />
           
-          <section className="py-12 bg-background">
-            <div className="container mx-auto px-4 max-w-4xl">
-              <OpenDataBadge />
-            </div>
-          </section>
           
           <FAQ />
           <MethodologySection />
