@@ -102,11 +102,6 @@ const Index = () => {
           <div className="section-separator"></div>
           <Categories />
           
-          <section className="py-12 bg-background">
-            <div className="container mx-auto px-4 max-w-4xl">
-              <OpenDataBadge />
-            </div>
-          </section>
           
           <FAQ />
           <MethodologySection />
