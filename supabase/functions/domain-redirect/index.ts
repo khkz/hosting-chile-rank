@@ -53,7 +53,7 @@ serve(async (req: Request) => {
     console.error('Error in domain-redirect function:', error);
     return Response.json({
       error: 'Internal server error',
-      message: error.message
+      message: (error as Error).message
     }, {
       status: 500,
       headers: corsHeaders
