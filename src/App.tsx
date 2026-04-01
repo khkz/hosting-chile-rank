@@ -70,6 +70,7 @@ import NuestroMetodo from './pages/NuestroMetodo';
 import HostingWordPressBlogPersonal from './pages/HostingWordPressBlogPersonal';
 import DominiosPremium from './pages/DominiosPremium';
 import TransparenciaHosting from './pages/TransparenciaHosting';
+import VsComparison from './pages/VsComparison';
 
 function App() {
   return (
