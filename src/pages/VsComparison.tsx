@@ -214,7 +214,7 @@ const VsComparison = () => {
                       <span className="block text-xs text-muted-foreground">{feature.detail}</span>
                     </td>
                     <td className="text-center py-3 px-4">
-                      <Check className="w-5 h-5 text-green-600 mx-auto" />
+                      <Check className="w-5 h-5 text-primary mx-auto" />
                     </td>
                     <td className="text-center py-3 px-4">
                       <X className="w-5 h-5 text-destructive mx-auto" />
