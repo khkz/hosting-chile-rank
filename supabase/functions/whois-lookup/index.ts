@@ -23,7 +23,7 @@ interface OsintResult {
 
 // ── TCP WHOIS query to NIC Chile with robust timeout ──
 const queryNicChile = async (domain: string, timeoutMs = 10000): Promise<string | null> => {
-  let conn: Deno.Conn | null = null;
+  let conn: any = null;
   try {
     console.log(`[TCP] Connecting to whois.nic.cl:43 for ${domain}`);
 
@@ -234,7 +234,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('💥 ERROR:', error);
     return new Response(
-      JSON.stringify({ error: 'Failed to fetch WHOIS data', details: error.message }),
+      JSON.stringify({ error: 'Failed to fetch WHOIS data', details: (error as Error).message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

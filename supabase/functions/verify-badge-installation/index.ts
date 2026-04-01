@@ -45,7 +45,8 @@ serve(async (req) => {
       );
     }
 
-    const companyWebsite = cert.hosting_companies.website;
+    const company = cert.hosting_companies as unknown as { website: string; name: string };
+    const companyWebsite = company.website;
     
     if (!companyWebsite) {
       return new Response(
@@ -54,7 +55,7 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Verifying badge installation for ${cert.hosting_companies.name} at ${companyWebsite}`);
+    console.log(`Verifying badge installation for ${company.name} at ${companyWebsite}`);
 
     // Fetch company website
     let websiteHtml = '';
@@ -132,7 +133,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Badge verification error:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: (error as Error).message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
