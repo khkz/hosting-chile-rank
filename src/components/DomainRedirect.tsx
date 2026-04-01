@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 const DomainRedirect: React.FC = () => {
   useEffect(() => {
     try {
       const isInIframe = window.self !== window.top;
       const isLovablePreview = window.location.search.includes('__lovable_token');
-      if (isInIframe || isLovablePreview) return;
-
       const targetDomain = 'eligetuhosting.cl';
-      const currentHost = window.location.host;
+      const currentHost = window.location.host.toLowerCase();
+      const isPreviewOrDevHost =
+        currentHost.includes('lovable.app') ||
+        currentHost.startsWith('localhost') ||
+        currentHost.startsWith('127.0.0.1');
+
+      if (isInIframe || isLovablePreview || isPreviewOrDevHost) return;
 
       // If we're already on the target domain, do nothing
       if (currentHost.includes(targetDomain)) return;
@@ -22,12 +25,7 @@ const DomainRedirect: React.FC = () => {
       if (redirectUrl === currentHref) return;
 
       // Redirect to the canonical domain
-      window.location.href = redirectUrl;
-
-      // Fire-and-forget ping for logging (does not affect redirect)
-      void supabase.functions.invoke('domain-redirect', {
-        body: { path: currentPath, search: currentSearch }
-      }).catch(() => {});
+      window.location.replace(redirectUrl);
     } catch (error) {
       console.error('Error in domain redirect check:', error);
     }
