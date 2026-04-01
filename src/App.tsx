@@ -70,6 +70,7 @@ import NuestroMetodo from './pages/NuestroMetodo';
 import HostingWordPressBlogPersonal from './pages/HostingWordPressBlogPersonal';
 import DominiosPremium from './pages/DominiosPremium';
 import TransparenciaHosting from './pages/TransparenciaHosting';
+import VsComparison from './pages/VsComparison';
 
 function App() {
   return (
@@ -144,6 +145,7 @@ function App() {
         <Route path="/hosting-wordpress-blog-personal-chile" element={<HostingWordPressBlogPersonal />} />
         <Route path="/dominios-premium" element={<DominiosPremium />} />
         <Route path="/transparencia-hosting-chile" element={<TransparenciaHosting />} />
+        <Route path="/vs/:rival" element={<VsComparison />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
