@@ -3,16 +3,22 @@ import React, { useEffect } from 'react';
 const DomainRedirect: React.FC = () => {
   useEffect(() => {
     try {
-      const isInIframe = window.self !== window.top;
-      const isLovablePreview = window.location.search.includes('__lovable_token');
-      const targetDomain = 'eligetuhosting.cl';
+      let isInIframe = false;
+      try {
+        isInIframe = window.self !== window.top;
+      } catch {
+        isInIframe = true; // cross-origin iframe
+      }
       const currentHost = window.location.host.toLowerCase();
       const isPreviewOrDevHost =
         currentHost.includes('lovable.app') ||
+        currentHost.includes('lovableproject.com') ||
+        currentHost.includes('webcontainer') ||
         currentHost.startsWith('localhost') ||
-        currentHost.startsWith('127.0.0.1');
+        currentHost.startsWith('127.0.0.1') ||
+        currentHost.includes('id-preview');
 
-      if (isInIframe || isLovablePreview || isPreviewOrDevHost) return;
+      const targetDomain = 'eligetuhosting.cl';
 
       // If we're already on the target domain, do nothing
       if (currentHost.includes(targetDomain)) return;
