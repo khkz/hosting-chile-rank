@@ -145,6 +145,7 @@ function App() {
         <Route path="/hosting-wordpress-blog-personal-chile" element={<HostingWordPressBlogPersonal />} />
         <Route path="/dominios-premium" element={<DominiosPremium />} />
         <Route path="/transparencia-hosting-chile" element={<TransparenciaHosting />} />
+        <Route path="/vs/:rival" element={<VsComparison />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
