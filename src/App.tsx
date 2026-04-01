@@ -69,6 +69,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import NuestroMetodo from './pages/NuestroMetodo';
 import HostingWordPressBlogPersonal from './pages/HostingWordPressBlogPersonal';
 import DominiosPremium from './pages/DominiosPremium';
+import TransparenciaHosting from './pages/TransparenciaHosting';
 
 function App() {
   return (
