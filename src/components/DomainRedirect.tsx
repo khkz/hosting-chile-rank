@@ -18,7 +18,7 @@ const DomainRedirect: React.FC = () => {
         currentHost.startsWith('127.0.0.1') ||
         currentHost.includes('id-preview');
 
-      if (isInIframe || isPreviewOrDevHost) return;
+      const targetDomain = 'eligetuhosting.cl';
 
       // If we're already on the target domain, do nothing
       if (currentHost.includes(targetDomain)) return;
