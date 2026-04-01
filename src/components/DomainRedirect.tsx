@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-const DomainRedirect: React.FC = () => {
+const DomainRedirect = () => {
   useEffect(() => {
     try {
       let isInIframe = false;
@@ -9,32 +9,35 @@ const DomainRedirect: React.FC = () => {
       } catch {
         isInIframe = true; // cross-origin iframe
       }
+
+      // Never redirect inside any iframe (Lovable editor, embedding, etc.)
+      if (isInIframe) return;
+
       const currentHost = window.location.host.toLowerCase();
-      const isPreviewOrDevHost =
-        currentHost.includes('lovable.app') ||
-        currentHost.includes('lovableproject.com') ||
-        currentHost.includes('webcontainer') ||
-        currentHost.startsWith('localhost') ||
-        currentHost.startsWith('127.0.0.1') ||
-        currentHost.includes('id-preview');
-
-      // Never redirect inside Lovable preview/editor or local development.
-      if (isInIframe || isPreviewOrDevHost) return;
-
       const targetDomain = 'eligetuhosting.cl';
 
-      // If we're already on the target domain, do nothing
+      // Only redirect if we are on a KNOWN non-target production domain.
+      // If the host is anything other than a recognizable production alias,
+      // do nothing (safe for Lovable editor, preview, localhost, etc.).
       if (currentHost.includes(targetDomain)) return;
+
+      // Whitelist: only redirect from known production aliases
+      const productionAliases = [
+        'hosting-chile-rank.lovable.app', // published Lovable URL
+      ];
+
+      const isKnownProductionAlias = productionAliases.some(alias =>
+        currentHost === alias
+      );
+
+      // If NOT a known production alias, do nothing (dev/preview/editor/localhost)
+      if (!isKnownProductionAlias) return;
 
       const currentPath = window.location.pathname;
       const currentSearch = window.location.search;
-      const redirectUrl = `https://${targetDomain}${currentPath}${currentSearch}${window.location.hash || ''}`;
-
-      const currentHref = window.location.href;
-      if (redirectUrl === currentHref) return;
-
-      // Redirect to the canonical domain
-      window.location.replace(redirectUrl);
+      window.location.replace(
+        `https://${targetDomain}${currentPath}${currentSearch}${window.location.hash || ''}`
+      );
     } catch (error) {
       console.error('Error in domain redirect check:', error);
     }
