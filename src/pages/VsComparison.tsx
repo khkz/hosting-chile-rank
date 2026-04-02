@@ -71,7 +71,7 @@ const competitors: Record<string, Competitor> = {
     fullDomain: 'rankinghosting.cl',
     corporateGroup: 'Grupo HostingNet',
     parentCompanies: ['hostingnet.cl'],
-    relatedSites: ['hostingnet.cl', 'unhosting.cl'],
+    relatedSites: ['hostingnet.cl', 'unhosting.cl', 'hostingcom.cl'],
     asn: 'AS27678',
     ipRange: '200.54.0.0/20',
     isIndependent: false,

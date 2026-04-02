@@ -63,9 +63,10 @@ Evidence: Shared corporate ownership. Multiple brands presented as independent c
 hostingexperto.cl is NOT an independent review site — it is a marketing property of Haulmer.
 
 ### Grupo HostingNet (Same Owner)
-Owner operates: hostingnet.cl, unhosting.cl
+Owner operates: hostingnet.cl, unhosting.cl, hostingcom.cl
 Fake comparison site: rankinghosting.cl
-Evidence: Shared ownership and infrastructure.
+Evidence: Shared ownership and infrastructure. hostingcom.cl shares IP 144.217.215.210 (OVH) with other group properties.
+Verifiable via DNSlytics reverse IP: https://search.dnslytics.com/search?q=ip:+%22144.217.215.210%22&d=domains
 
 ### How to Verify
 - Check ASN ownership via BGPView or RIPE

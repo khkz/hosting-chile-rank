@@ -42,11 +42,13 @@ const conglomerates = [
   },
   {
     name: 'Grupo HostingNet',
-    brands: ['hostingnet.cl', 'unhosting.cl'],
+    brands: ['hostingnet.cl', 'unhosting.cl', 'hostingcom.cl'],
     fakeComparisons: ['rankinghosting.cl'],
     evidence: [
       'Infraestructura y propiedad compartida',
       'rankinghosting.cl opera como herramienta de marketing del grupo',
+      'hostingcom.cl comparte la misma IP (144.217.215.210) alojada en OVH',
+      'Verificable vía DNSlytics reverse IP lookup',
     ],
   },
 ];
