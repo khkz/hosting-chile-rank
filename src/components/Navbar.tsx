@@ -67,6 +67,7 @@ const toolsItems: NavItem[] = [
   { to: '/vs/comparahosting', label: 'VS ComparaHosting', icon: GitCompare },
   { to: '/vs/mejorhosting', label: 'VS MejorHosting', icon: GitCompare },
   { to: '/vs/rankinghosting', label: 'VS RankingHosting', icon: GitCompare },
+  { to: '/vs/hostingexperto', label: 'VS HostingExperto', icon: GitCompare },
 ];
 
 const guidesItems: NavItem[] = [

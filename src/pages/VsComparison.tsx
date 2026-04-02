@@ -86,6 +86,27 @@ const competitors: Record<string, Competitor> = {
       'Metodología de evaluación opaca y no replicable',
     ],
   },
+  hostingexperto: {
+    slug: 'hostingexperto',
+    name: 'HostingExperto.cl',
+    fullDomain: 'hostingexperto.cl',
+    corporateGroup: 'Grupo Haulmer',
+    parentCompanies: ['bluehosting.cl', 'hosty.cl'],
+    relatedSites: ['bluehosting.cl', 'hosty.cl', 'rackeo.cl', 'solucionhost.cl', 'boxhosting.cl', 'livehost.cl', 'sitiohost.cl'],
+    asn: 'AS264668',
+    ipRange: '—',
+    isIndependent: false,
+    isFakeComparison: true,
+    whyFake: 'HostingExperto.cl es operado por Haulmer, el mismo grupo dueño de bluehosting.cl, hosty.cl, rackeo.cl, solucionhost.cl, boxhosting.cl, livehost.cl y sitiohost.cl. Presenta sus marcas como las mejores opciones sin revelar la propiedad compartida.',
+    evidencePoints: [
+      'Propiedad corporativa compartida con bluehosting.cl y hosty.cl (Haulmer)',
+      'Mismo grupo opera al menos 7 marcas de hosting distintas',
+      'Recomienda sistemáticamente las marcas del grupo en primeras posiciones',
+      'No declara conflicto de interés ni vinculación corporativa',
+      'Se presenta como sitio "experto" independiente sin serlo',
+      'Múltiples marcas (rackeo, solucionhost, boxhosting, livehost, sitiohost) bajo la misma entidad',
+    ],
+  },
 };
 
 const eligeTuHostingFeatures = [
