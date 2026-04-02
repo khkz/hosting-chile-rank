@@ -31,11 +31,13 @@ const conglomerates = [
   },
   {
     name: 'Grupo Haulmer',
-    brands: ['bluehosting.cl', 'hosty.cl'],
-    fakeComparisons: [],
+    brands: ['bluehosting.cl', 'hosty.cl', 'rackeo.cl', 'solucionhost.cl', 'boxhosting.cl', 'livehost.cl', 'sitiohost.cl'],
+    fakeComparisons: ['hostingexperto.cl'],
     evidence: [
       'Misma matriz corporativa según registros públicos',
       'Marcas que se presentan como empresas independientes pero comparten propiedad',
+      'hostingexperto.cl opera como sitio de "comparación" pero pertenece al mismo grupo',
+      'Múltiples marcas (rackeo, solucionhost, boxhosting, livehost, sitiohost) bajo la misma entidad',
     ],
   },
   {
