@@ -128,7 +128,7 @@ const Testimonial = () => {
                 >
                   <img
                     src={company.logo_url || '/placeholder.svg'}
-                    className="h-10 grayscale group-hover:grayscale-0 transition-all duration-300"
+                    className="h-7 grayscale group-hover:grayscale-0 transition-all duration-300"
                     alt={`Logo de ${company.name} - Hosting verificado en Chile`}
                     loading="lazy"
                   />
