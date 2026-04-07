@@ -1,6 +1,282 @@
 {
-  "updated": "2026-04-07T13:07:36.086Z",
+  "updated": "2026-04-07T15:02:47.233Z",
   "domains": [
+    {
+      "d": "gravitae.cl",
+      "date": "2026-04-07T11:02:46Z"
+    },
+    {
+      "d": "cognix.cl",
+      "date": "2026-04-07T11:02:23Z"
+    },
+    {
+      "d": "sebagorestobar.cl",
+      "date": "2026-04-07T10:58:38Z"
+    },
+    {
+      "d": "mbtransporte.cl",
+      "date": "2026-04-07T10:57:17Z"
+    },
+    {
+      "d": "centrosanjuanbrinck.cl",
+      "date": "2026-04-07T10:55:20Z"
+    },
+    {
+      "d": "geoinfobusiness.cl",
+      "date": "2026-04-07T10:55:18Z"
+    },
+    {
+      "d": "taxijet.cl",
+      "date": "2026-04-07T10:54:06Z"
+    },
+    {
+      "d": "ronaldchefonline.cl",
+      "date": "2026-04-07T10:52:25Z"
+    },
+    {
+      "d": "farmaciacaifu.cl",
+      "date": "2026-04-07T10:51:47Z"
+    },
+    {
+      "d": "tiotesischile.cl",
+      "date": "2026-04-07T10:49:51Z"
+    },
+    {
+      "d": "pcpl.cl",
+      "date": "2026-04-07T10:47:43Z"
+    },
+    {
+      "d": "agricolacopahue.cl",
+      "date": "2026-04-07T10:44:04Z"
+    },
+    {
+      "d": "derechoensalud.cl",
+      "date": "2026-04-07T10:42:36Z"
+    },
+    {
+      "d": "keybus.cl",
+      "date": "2026-04-07T10:42:12Z"
+    },
+    {
+      "d": "qualit.cl",
+      "date": "2026-04-07T10:39:01Z"
+    },
+    {
+      "d": "activocontrol.cl",
+      "date": "2026-04-07T10:36:50Z"
+    },
+    {
+      "d": "rammsygroup.cl",
+      "date": "2026-04-07T10:36:46Z"
+    },
+    {
+      "d": "newhorizonmining.cl",
+      "date": "2026-04-07T10:36:16Z"
+    },
+    {
+      "d": "larutadelbuenamor.cl",
+      "date": "2026-04-07T10:35:02Z"
+    },
+    {
+      "d": "fupda.cl",
+      "date": "2026-04-07T10:33:04Z"
+    },
+    {
+      "d": "pizarratactica.cl",
+      "date": "2026-04-07T10:32:42Z"
+    },
+    {
+      "d": "sincronauta.cl",
+      "date": "2026-04-07T10:32:07Z"
+    },
+    {
+      "d": "tradelt.cl",
+      "date": "2026-04-07T10:31:52Z"
+    },
+    {
+      "d": "scoutbid.cl",
+      "date": "2026-04-07T10:31:19Z"
+    },
+    {
+      "d": "companyfact.cl",
+      "date": "2026-04-07T10:31:14Z"
+    },
+    {
+      "d": "contafintech.cl",
+      "date": "2026-04-07T10:29:57Z"
+    },
+    {
+      "d": "fight360chile.cl",
+      "date": "2026-04-07T10:28:35Z"
+    },
+    {
+      "d": "academiafight360chile.cl",
+      "date": "2026-04-07T10:28:34Z"
+    },
+    {
+      "d": "marvalsolar.cl",
+      "date": "2026-04-07T10:26:37Z"
+    },
+    {
+      "d": "securityalarm.cl",
+      "date": "2026-04-07T10:26:07Z"
+    },
+    {
+      "d": "goalhub.cl",
+      "date": "2026-04-07T10:25:29Z"
+    },
+    {
+      "d": "academiafight360.cl",
+      "date": "2026-04-07T10:24:34Z"
+    },
+    {
+      "d": "organizamer.cl",
+      "date": "2026-04-07T10:24:29Z"
+    },
+    {
+      "d": "fangobanqueteria.cl",
+      "date": "2026-04-07T10:24:15Z"
+    },
+    {
+      "d": "workandfun.cl",
+      "date": "2026-04-07T10:23:43Z"
+    },
+    {
+      "d": "induila.cl",
+      "date": "2026-04-07T10:23:24Z"
+    },
+    {
+      "d": "siempreverdereciclajes.cl",
+      "date": "2026-04-07T10:23:09Z"
+    },
+    {
+      "d": "rilu.cl",
+      "date": "2026-04-07T10:23:01Z"
+    },
+    {
+      "d": "viankaluna.cl",
+      "date": "2026-04-07T10:20:28Z"
+    },
+    {
+      "d": "mysembotelladora.cl",
+      "date": "2026-04-07T10:20:13Z"
+    },
+    {
+      "d": "ebyte.cl",
+      "date": "2026-04-07T10:18:47Z"
+    },
+    {
+      "d": "cegrizly.cl",
+      "date": "2026-04-07T10:17:53Z"
+    },
+    {
+      "d": "eldoradochile.cl",
+      "date": "2026-04-07T10:17:29Z"
+    },
+    {
+      "d": "2bikes.cl",
+      "date": "2026-04-07T10:16:24Z"
+    },
+    {
+      "d": "safetattoo.cl",
+      "date": "2026-04-07T10:14:23Z"
+    },
+    {
+      "d": "callaqui.cl",
+      "date": "2026-04-07T10:12:18Z"
+    },
+    {
+      "d": "webnova.cl",
+      "date": "2026-04-07T10:11:30Z"
+    },
+    {
+      "d": "blackgroupasset.cl",
+      "date": "2026-04-07T10:10:48Z"
+    },
+    {
+      "d": "muucam.cl",
+      "date": "2026-04-07T10:07:34Z"
+    },
+    {
+      "d": "blitzgroup.cl",
+      "date": "2026-04-07T10:05:15Z"
+    },
+    {
+      "d": "talentoseguro.cl",
+      "date": "2026-04-07T10:04:01Z"
+    },
+    {
+      "d": "healthsecure.cl",
+      "date": "2026-04-07T10:02:14Z"
+    },
+    {
+      "d": "cencis.cl",
+      "date": "2026-04-07T10:02:13Z"
+    },
+    {
+      "d": "simplemercado.cl",
+      "date": "2026-04-07T09:59:26Z"
+    },
+    {
+      "d": "edgarcamposh.cl",
+      "date": "2026-04-07T09:56:46Z"
+    },
+    {
+      "d": "comoeschile.cl",
+      "date": "2026-04-07T09:56:05Z"
+    },
+    {
+      "d": "municipiodigitalpac.cl",
+      "date": "2026-04-07T09:51:21Z"
+    },
+    {
+      "d": "glaspen.cl",
+      "date": "2026-04-07T09:48:10Z"
+    },
+    {
+      "d": "clinicaprodental.cl",
+      "date": "2026-04-07T09:47:02Z"
+    },
+    {
+      "d": "vantageconsulting.cl",
+      "date": "2026-04-07T09:43:29Z"
+    },
+    {
+      "d": "cendm.cl",
+      "date": "2026-04-07T09:41:44Z"
+    },
+    {
+      "d": "vueltaciclistachile.cl",
+      "date": "2026-04-07T09:38:10Z"
+    },
+    {
+      "d": "nowgestion.cl",
+      "date": "2026-04-07T09:32:27Z"
+    },
+    {
+      "d": "uctvirtual.cl",
+      "date": "2026-04-07T09:30:49Z"
+    },
+    {
+      "d": "operagnis.cl",
+      "date": "2026-04-07T09:27:16Z"
+    },
+    {
+      "d": "andresgiacaman.cl",
+      "date": "2026-04-07T09:26:25Z"
+    },
+    {
+      "d": "grandala.cl",
+      "date": "2026-04-07T09:23:25Z"
+    },
+    {
+      "d": "smileflowclinic.cl",
+      "date": "2026-04-07T09:20:54Z"
+    },
+    {
+      "d": "inversioneselcardonal.cl",
+      "date": "2026-04-07T09:09:40Z"
+    },
     {
       "d": "bingazo.cl",
       "date": "2026-04-07T09:05:01Z"
@@ -2660,374 +2936,6 @@
     {
       "d": "parquepehuen3y4.cl",
       "date": "2026-04-06T11:03:34Z"
-    },
-    {
-      "d": "emporiolabs.cl",
-      "date": "2026-04-06T11:02:08Z"
-    },
-    {
-      "d": "lakichyreciclaje.cl",
-      "date": "2026-04-06T11:00:21Z"
-    },
-    {
-      "d": "sejoychile.cl",
-      "date": "2026-04-06T11:00:11Z"
-    },
-    {
-      "d": "bitacoradevuelo.cl",
-      "date": "2026-04-06T10:59:46Z"
-    },
-    {
-      "d": "papaizudinese.cl",
-      "date": "2026-04-06T10:59:44Z"
-    },
-    {
-      "d": "avicolaschilenas.cl",
-      "date": "2026-04-06T10:58:50Z"
-    },
-    {
-      "d": "kairosedu.cl",
-      "date": "2026-04-06T10:58:16Z"
-    },
-    {
-      "d": "ingenieriatsj.cl",
-      "date": "2026-04-06T10:57:56Z"
-    },
-    {
-      "d": "matildajordan.cl",
-      "date": "2026-04-06T10:56:18Z"
-    },
-    {
-      "d": "josetroncoso.cl",
-      "date": "2026-04-06T10:55:50Z"
-    },
-    {
-      "d": "mimiarmstrong.cl",
-      "date": "2026-04-06T10:55:49Z"
-    },
-    {
-      "d": "fuentedesodalakollita.cl",
-      "date": "2026-04-06T10:54:31Z"
-    },
-    {
-      "d": "jodominguez.cl",
-      "date": "2026-04-06T10:54:29Z"
-    },
-    {
-      "d": "raphaella.cl",
-      "date": "2026-04-06T10:54:02Z"
-    },
-    {
-      "d": "seguroseguros.cl",
-      "date": "2026-04-06T10:52:58Z"
-    },
-    {
-      "d": "josefinasalas.cl",
-      "date": "2026-04-06T10:52:34Z"
-    },
-    {
-      "d": "maderasjara.cl",
-      "date": "2026-04-06T10:51:20Z"
-    },
-    {
-      "d": "siluetaperfecta.cl",
-      "date": "2026-04-06T10:48:01Z"
-    },
-    {
-      "d": "soportebiosystems.cl",
-      "date": "2026-04-06T10:47:35Z"
-    },
-    {
-      "d": "casemit.cl",
-      "date": "2026-04-06T10:46:55Z"
-    },
-    {
-      "d": "mangeles.cl",
-      "date": "2026-04-06T10:45:46Z"
-    },
-    {
-      "d": "prosaludgmd.cl",
-      "date": "2026-04-06T10:44:52Z"
-    },
-    {
-      "d": "tiendaimperiopapel.cl",
-      "date": "2026-04-06T10:44:47Z"
-    },
-    {
-      "d": "mgxdsgn.cl",
-      "date": "2026-04-06T10:44:17Z"
-    },
-    {
-      "d": "simplisafe.cl",
-      "date": "2026-04-06T10:44:16Z"
-    },
-    {
-      "d": "boaondachile.cl",
-      "date": "2026-04-06T10:42:35Z"
-    },
-    {
-      "d": "miskinspa.cl",
-      "date": "2026-04-06T10:41:11Z"
-    },
-    {
-      "d": "s-g.cl",
-      "date": "2026-04-06T10:41:04Z"
-    },
-    {
-      "d": "altocoronel.cl",
-      "date": "2026-04-06T10:40:52Z"
-    },
-    {
-      "d": "isidorabulnes.cl",
-      "date": "2026-04-06T10:40:42Z"
-    },
-    {
-      "d": "micsantiago.cl",
-      "date": "2026-04-06T10:40:35Z"
-    },
-    {
-      "d": "correadiaz.cl",
-      "date": "2026-04-06T10:39:54Z"
-    },
-    {
-      "d": "yodigital.cl",
-      "date": "2026-04-06T10:38:39Z"
-    },
-    {
-      "d": "horizonx.cl",
-      "date": "2026-04-06T10:38:11Z"
-    },
-    {
-      "d": "babyjoy.cl",
-      "date": "2026-04-06T10:35:31Z"
-    },
-    {
-      "d": "captura2.cl",
-      "date": "2026-04-06T10:34:58Z"
-    },
-    {
-      "d": "tudomiciliotributarioseguro.cl",
-      "date": "2026-04-06T10:34:11Z"
-    },
-    {
-      "d": "fomi.cl",
-      "date": "2026-04-06T10:32:32Z"
-    },
-    {
-      "d": "campingsanpedro.cl",
-      "date": "2026-04-06T10:32:11Z"
-    },
-    {
-      "d": "isidroleon.cl",
-      "date": "2026-04-06T10:31:25Z"
-    },
-    {
-      "d": "loginexo.cl",
-      "date": "2026-04-06T10:31:10Z"
-    },
-    {
-      "d": "obratumbes.cl",
-      "date": "2026-04-06T10:31:03Z"
-    },
-    {
-      "d": "profejuanjo.cl",
-      "date": "2026-04-06T10:31:01Z"
-    },
-    {
-      "d": "h35.cl",
-      "date": "2026-04-06T10:30:03Z"
-    },
-    {
-      "d": "barbarediciones.cl",
-      "date": "2026-04-06T10:27:13Z"
-    },
-    {
-      "d": "fullcredipluss.cl",
-      "date": "2026-04-06T10:23:19Z"
-    },
-    {
-      "d": "dintransingenieria.cl",
-      "date": "2026-04-06T10:23:18Z"
-    },
-    {
-      "d": "icgltda.cl",
-      "date": "2026-04-06T10:18:45Z"
-    },
-    {
-      "d": "marquinaconstrucciones.cl",
-      "date": "2026-04-06T10:15:20Z"
-    },
-    {
-      "d": "propiedadesmaira.cl",
-      "date": "2026-04-06T10:14:20Z"
-    },
-    {
-      "d": "npga.cl",
-      "date": "2026-04-06T10:13:11Z"
-    },
-    {
-      "d": "ingetra.cl",
-      "date": "2026-04-06T10:12:13Z"
-    },
-    {
-      "d": "kurakai.cl",
-      "date": "2026-04-06T10:12:01Z"
-    },
-    {
-      "d": "ilpilo.cl",
-      "date": "2026-04-06T10:10:58Z"
-    },
-    {
-      "d": "miem.cl",
-      "date": "2026-04-06T10:09:39Z"
-    },
-    {
-      "d": "miemsoluciones.cl",
-      "date": "2026-04-06T10:09:38Z"
-    },
-    {
-      "d": "psicologomiguelignacio.cl",
-      "date": "2026-04-06T10:06:25Z"
-    },
-    {
-      "d": "elfogondelallave.cl",
-      "date": "2026-04-06T10:06:19Z"
-    },
-    {
-      "d": "rutadelaprendiz.cl",
-      "date": "2026-04-06T09:59:59Z"
-    },
-    {
-      "d": "cerromining.cl",
-      "date": "2026-04-06T09:54:38Z"
-    },
-    {
-      "d": "consultorams2.cl",
-      "date": "2026-04-06T09:53:18Z"
-    },
-    {
-      "d": "etscomercial.cl",
-      "date": "2026-04-06T09:52:46Z"
-    },
-    {
-      "d": "salmonmeets.cl",
-      "date": "2026-04-06T09:51:48Z"
-    },
-    {
-      "d": "andek.cl",
-      "date": "2026-04-06T09:51:42Z"
-    },
-    {
-      "d": "lefara.cl",
-      "date": "2026-04-06T09:51:12Z"
-    },
-    {
-      "d": "dedicasong.cl",
-      "date": "2026-04-06T09:51:06Z"
-    },
-    {
-      "d": "growth-systems.cl",
-      "date": "2026-04-06T09:49:17Z"
-    },
-    {
-      "d": "growth-architects.cl",
-      "date": "2026-04-06T09:49:16Z"
-    },
-    {
-      "d": "growth-system.cl",
-      "date": "2026-04-06T09:49:15Z"
-    },
-    {
-      "d": "quantumauditores.cl",
-      "date": "2026-04-06T09:47:22Z"
-    },
-    {
-      "d": "jesmar.cl",
-      "date": "2026-04-06T09:44:58Z"
-    },
-    {
-      "d": "surmonterestampados.cl",
-      "date": "2026-04-06T09:42:11Z"
-    },
-    {
-      "d": "californiainstituteoftechnology.cl",
-      "date": "2026-04-06T09:38:18Z"
-    },
-    {
-      "d": "etera.cl",
-      "date": "2026-04-06T09:38:01Z"
-    },
-    {
-      "d": "burgueadictos.cl",
-      "date": "2026-04-06T09:37:13Z"
-    },
-    {
-      "d": "zyzventanas.cl",
-      "date": "2026-04-06T09:36:13Z"
-    },
-    {
-      "d": "asincronik.cl",
-      "date": "2026-04-06T09:32:54Z"
-    },
-    {
-      "d": "espaciosinfin.cl",
-      "date": "2026-04-06T09:31:45Z"
-    },
-    {
-      "d": "hotelapalta.cl",
-      "date": "2026-04-06T09:29:37Z"
-    },
-    {
-      "d": "estudiojuridicopacheco.cl",
-      "date": "2026-04-06T09:28:06Z"
-    },
-    {
-      "d": "yescoffee.cl",
-      "date": "2026-04-06T09:27:33Z"
-    },
-    {
-      "d": "voopets.cl",
-      "date": "2026-04-06T09:26:59Z"
-    },
-    {
-      "d": "lightled.cl",
-      "date": "2026-04-06T09:26:09Z"
-    },
-    {
-      "d": "sangrialemu.cl",
-      "date": "2026-04-06T09:26:01Z"
-    },
-    {
-      "d": "cervecerialemu.cl",
-      "date": "2026-04-06T09:26:00Z"
-    },
-    {
-      "d": "alpinahouse.cl",
-      "date": "2026-04-06T09:25:32Z"
-    },
-    {
-      "d": "soara.cl",
-      "date": "2026-04-06T09:20:40Z"
-    },
-    {
-      "d": "notariamjs.cl",
-      "date": "2026-04-06T09:19:04Z"
-    },
-    {
-      "d": "jugandoyriendo.cl",
-      "date": "2026-04-06T09:16:24Z"
-    },
-    {
-      "d": "loretoautora.cl",
-      "date": "2026-04-06T09:16:04Z"
-    },
-    {
-      "d": "aurahogar.cl",
-      "date": "2026-04-06T09:14:20Z"
-    },
-    {
-      "d": "petitatelierchile.cl",
-      "date": "2026-04-06T09:13:20Z"
     }
   ]
 }
