@@ -150,6 +150,9 @@ function App() {
         <Route path="/dominios-premium" element={<DominiosPremium />} />
         <Route path="/transparencia-hosting-chile" element={<TransparenciaHosting />} />
         <Route path="/vs/:rival" element={<VsComparison />} />
+        {/* Aliases que consolidan variantes hacia /vs/:rival para evitar duplicados */}
+        <Route path="/comparar/:rival" element={<VsComparison />} />
+        <Route path="/comparativa/:rival" element={<VsComparison />} />
         <Route path="/reclamos" element={<Reclamos />} />
         <Route path="/verificar-reclamo" element={<VerificarReclamo />} />
             <Route path="/admin/dashboard" element={
