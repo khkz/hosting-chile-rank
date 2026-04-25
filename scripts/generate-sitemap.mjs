@@ -284,22 +284,32 @@ console.log('✅  sitemap-domains.xml generado (limitado a 500 dominios)');
 
 console.log('✨  Sistema de sitemaps jerárquico completado');
 
-/* ---------- notificar a Google sobre actualización del sitemap --------- */
-async function notifyGoogle() {
+/* ---------- IndexNow (reemplaza pings deprecados de Google/Bing) ---------- */
+async function notifyIndexNow() {
+  const KEY = 'a7f3e9b2c84d4f1e8d6a2b5c9e0f3a17';
   try {
-    const sitemapUrl = encodeURIComponent(`${ROOT}/sitemap.xml`);
-    const pingUrl = `http://www.google.com/ping?sitemap=${sitemapUrl}`;
-    
-    const response = await fetch(pingUrl);
-    if (response.ok) {
-      console.log('✅  Google notificado sobre actualización del sitemap');
-    } else {
-      console.log('⚠️  No se pudo notificar a Google (esto es normal)');
-    }
-  } catch (error) {
-    console.log('⚠️  Error al notificar a Google:', error.message);
+    const urls = [
+      `${ROOT}/`,
+      `${ROOT}/sitemap.xml`,
+      `${ROOT}/transparencia-hosting-chile`,
+      `${ROOT}/ranking`,
+      `${ROOT}/catalogo`,
+      ...VS_RIVALS.map(s => `${ROOT}/vs/${s}`),
+    ];
+    const res = await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        host: 'eligetuhosting.cl',
+        key: KEY,
+        keyLocation: `${ROOT}/${KEY}.txt`,
+        urlList: urls,
+      }),
+    });
+    console.log(res.ok ? `✅  IndexNow notificado (${urls.length} URLs)` : `⚠️  IndexNow status: ${res.status}`);
+  } catch (e) {
+    console.log('⚠️  Error IndexNow:', e.message);
   }
 }
 
-// Notificar a Google
-await notifyGoogle();
+await notifyIndexNow();
