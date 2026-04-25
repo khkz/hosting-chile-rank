@@ -88,13 +88,13 @@ export default function SitemapMonitorPanel() {
                 key={r.url}
                 className={`p-3 rounded-md border text-sm ${
                   r.ok
-                    ? 'bg-emerald-500/5 border-emerald-500/20'
+                    ? 'bg-primary/5 border-primary/20'
                     : 'bg-destructive/5 border-destructive/30'
                 }`}
               >
                 <div className="flex items-start gap-2">
                   {r.ok ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   ) : (
                     <AlertTriangle className="w-4 h-4 text-destructive mt-0.5 shrink-0" />
                   )}
