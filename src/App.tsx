@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import ScrollToTop from './components/ScrollToTop';
 import WhoisRedirect from './components/WhoisRedirect';
 import DomainRedirect from './components/DomainRedirect';
+import CanonicalRedirect from './components/CanonicalRedirect';
 import StaticSitemap from './components/StaticSitemap';
 import StaticRobots from './components/StaticRobots';
 import StaticRSSFeed from './components/StaticRSSFeed';
