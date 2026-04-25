@@ -1,6 +1,33 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
-import providers from './providers.json' assert { type: 'json' };
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const providers = require('./providers.json');
+
+// Slugs de comparativas vs/ rivales (sitios de comparación falsa)
+const VS_RIVALS = ['comparahosting', 'mejorhosting', 'rankinghosting', 'hostingexperto'];
+
+// Fetch slugs verificados desde Supabase REST (sin SDK para evitar deps)
+async function fetchVerifiedCompanySlugs() {
+  const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hpqhylsvojzazmmaviek.supabase.co';
+  const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+  if (!ANON) {
+    console.log('⚠️  Sin SUPABASE_ANON_KEY: omitiendo slugs de /catalogo/');
+    return [];
+  }
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug,updated_at&is_verified=eq.true`, {
+      headers: { apikey: ANON, Authorization: `Bearer ${ANON}` },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    console.log(`📦 ${data.length} empresas verificadas para /catalogo/`);
+    return data;
+  } catch (e) {
+    console.log('⚠️  Error fetching companies:', e.message);
+    return [];
+  }
+}
 
 // Read wiki terms from TypeScript file as text and extract slugs
 function extractWikiSlugs() {
@@ -51,22 +78,32 @@ const urlTag = (loc, prio = '0.7', changefreq = 'weekly', lastmod = NOW) => `
   </url>`;
 
 /* ---------- SITEMAP 1: MAIN (páginas principales) ---------------------- */
-const generateMainSitemap = () => {
+const generateMainSitemap = (companySlugs = []) => {
   const staticUrls = [
     // Páginas de máxima prioridad
-    ['/mejor-hosting-chile-2025', '1.0', 'daily'],
+    ['/mejor-hosting-chile-2026', '1.0', 'daily'],
+    ['/mejor-hosting-chile-2025', '0.9', 'monthly'],
     ['/', '0.9', 'daily'],
     ['/ranking', '0.9', 'daily'],
     ['/directorio-hosting-chile', '0.9', 'daily'],
-    
+
+    // Transparencia y comparativas anti-fake (CRÍTICO para SEO/GEO)
+    ['/transparencia-hosting-chile', '0.9', 'weekly'],
+
     // Páginas de alta prioridad
     ['/catalogo', '0.8', 'daily'],
     ['/mejor-hosting-chile', '0.8', 'daily'],
+    ['/mejor-hosting-wordpress-chile', '0.8', 'weekly'],
+    ['/mejor-hosting-ecommerce-chile', '0.8', 'weekly'],
     ['/comparativa', '0.8', 'weekly'],
     ['/cotiza-hosting', '0.8', 'weekly'],
-    
+    ['/recursos-hosting-chile', '0.7', 'weekly'],
+    ['/dominios-premium', '0.7', 'weekly'],
+    ['/certificaciones', '0.7', 'monthly'],
+
     // Guías (contenido de valor)
     ['/guia-elegir-hosting', '0.8', 'weekly'],
+    ['/guia-completa-elegir-hosting', '0.8', 'weekly'],
     ['/guia-hosting-wordpress', '0.8', 'weekly'],
     ['/guia-elegir-vps', '0.8', 'weekly'],
     ['/guia-elegir-ssl', '0.8', 'weekly'],
@@ -74,7 +111,11 @@ const generateMainSitemap = () => {
     ['/guia-elegir-servidor-dedicado', '0.8', 'weekly'],
     ['/guia-migrar-hosting', '0.8', 'weekly'],
     ['/guia-seguridad-web', '0.8', 'weekly'],
-    
+    ['/errores-comunes-hosting', '0.7', 'monthly'],
+    ['/hosting-wordpress-blog-personal-chile', '0.7', 'weekly'],
+    ['/nuestro-metodo', '0.7', 'monthly'],
+    ['/blog', '0.7', 'daily'],
+
     // Páginas secundarias
     ['/ultimos-dominios', '0.7', 'daily'],
     ['/contacto', '0.6', 'monthly'],
@@ -84,23 +125,35 @@ const generateMainSitemap = () => {
     ['/benchmark', '0.6', 'weekly'],
   ].map(([path, prio, freq]) => urlTag(`${ROOT}${path}`, prio, freq)).join('');
 
-  // Páginas "VS" de proveedores
+  // Páginas "VS" de proveedores (comparativas internas)
   const providerUrls = providers
     .map(slug => urlTag(`${ROOT}/comparativa/${slug}`, '0.7', 'weekly'))
     .join('');
 
+  // Comparativas VS rivales falsos (CRÍTICO: indexar para captar búsquedas de los rankings truchos)
+  const vsRivalUrls = VS_RIVALS
+    .map(slug => urlTag(`${ROOT}/vs/${slug}`, '0.9', 'weekly'))
+    .join('');
+
   // Páginas de reseñas de hosting
   const hostingReviews = [
-    'hostingplus', 'ecohosting', '1hosting', 'hostgator', 
+    'hostingplus', 'ecohosting', '1hosting', 'hostgator',
     'bluehost', 'donweb', 'godaddy', 'siteground'
   ].map(slug => urlTag(`${ROOT}/resena/${slug}`, '0.8', 'weekly'))
    .join('');
+
+  // Detalle de empresas verificadas (/catalogo/:slug) desde Supabase
+  const catalogoUrls = companySlugs
+    .map(c => urlTag(`${ROOT}/catalogo/${c.slug}`, '0.7', 'weekly', c.updated_at || NOW))
+    .join('');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticUrls}
 ${providerUrls}
+${vsRivalUrls}
 ${hostingReviews}
+${catalogoUrls}
 </urlset>`.trimStart();
 };
 
@@ -210,10 +263,11 @@ const sitemapIndex = generateSitemapIndex();
 await fs.writeFile('public/sitemap.xml', sitemapIndex, 'utf8');
 console.log('✅  sitemap.xml (index) generado');
 
-// Generar sitemap-main.xml
-const mainSitemap = generateMainSitemap();
+// Generar sitemap-main.xml (con slugs de catálogo desde Supabase)
+const companySlugs = await fetchVerifiedCompanySlugs();
+const mainSitemap = generateMainSitemap(companySlugs);
 await fs.writeFile('public/sitemap-main.xml', mainSitemap, 'utf8');
-console.log('✅  sitemap-main.xml generado');
+console.log(`✅  sitemap-main.xml generado (incluye ${VS_RIVALS.length} VS-rivals + ${companySlugs.length} catálogo)`);
 
 // Generar sitemap-wiki.xml
 const wikiSitemap = generateWikiSitemap();
@@ -232,22 +286,32 @@ console.log('✅  sitemap-domains.xml generado (limitado a 500 dominios)');
 
 console.log('✨  Sistema de sitemaps jerárquico completado');
 
-/* ---------- notificar a Google sobre actualización del sitemap --------- */
-async function notifyGoogle() {
+/* ---------- IndexNow (reemplaza pings deprecados de Google/Bing) ---------- */
+async function notifyIndexNow() {
+  const KEY = 'a7f3e9b2c84d4f1e8d6a2b5c9e0f3a17';
   try {
-    const sitemapUrl = encodeURIComponent(`${ROOT}/sitemap.xml`);
-    const pingUrl = `http://www.google.com/ping?sitemap=${sitemapUrl}`;
-    
-    const response = await fetch(pingUrl);
-    if (response.ok) {
-      console.log('✅  Google notificado sobre actualización del sitemap');
-    } else {
-      console.log('⚠️  No se pudo notificar a Google (esto es normal)');
-    }
-  } catch (error) {
-    console.log('⚠️  Error al notificar a Google:', error.message);
+    const urls = [
+      `${ROOT}/`,
+      `${ROOT}/sitemap.xml`,
+      `${ROOT}/transparencia-hosting-chile`,
+      `${ROOT}/ranking`,
+      `${ROOT}/catalogo`,
+      ...VS_RIVALS.map(s => `${ROOT}/vs/${s}`),
+    ];
+    const res = await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        host: 'eligetuhosting.cl',
+        key: KEY,
+        keyLocation: `${ROOT}/${KEY}.txt`,
+        urlList: urls,
+      }),
+    });
+    console.log(res.ok ? `✅  IndexNow notificado (${urls.length} URLs)` : `⚠️  IndexNow status: ${res.status}`);
+  } catch (e) {
+    console.log('⚠️  Error IndexNow:', e.message);
   }
 }
 
-// Notificar a Google
-await notifyGoogle();
+await notifyIndexNow();
