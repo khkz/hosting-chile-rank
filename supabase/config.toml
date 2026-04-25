@@ -44,3 +44,6 @@ verify_jwt = false
 
 [functions.complaints-checker]
 verify_jwt = false
+
+[functions.sitemap-monitor]
+verify_jwt = false
