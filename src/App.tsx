@@ -71,6 +71,8 @@ import HostingWordPressBlogPersonal from './pages/HostingWordPressBlogPersonal';
 import DominiosPremium from './pages/DominiosPremium';
 import TransparenciaHosting from './pages/TransparenciaHosting';
 import VsComparison from './pages/VsComparison';
+import Reclamos from './pages/Reclamos';
+import VerificarReclamo from './pages/VerificarReclamo';
 
 function App() {
   return (
@@ -146,6 +148,8 @@ function App() {
         <Route path="/dominios-premium" element={<DominiosPremium />} />
         <Route path="/transparencia-hosting-chile" element={<TransparenciaHosting />} />
         <Route path="/vs/:rival" element={<VsComparison />} />
+        <Route path="/reclamos" element={<Reclamos />} />
+        <Route path="/verificar-reclamo" element={<VerificarReclamo />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
