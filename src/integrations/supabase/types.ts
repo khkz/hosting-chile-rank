@@ -265,6 +265,76 @@ export type Database = {
           },
         ]
       }
+      complaint_verifications: {
+        Row: {
+          complaint_id: string
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          token: string
+          used_at: string | null
+        }
+        Insert: {
+          complaint_id: string
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          token: string
+          used_at?: string | null
+        }
+        Update: {
+          complaint_id?: string
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          token?: string
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "complaint_verifications_complaint_id_fkey"
+            columns: ["complaint_id"]
+            isOneToOne: false
+            referencedRelation: "public_complaints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      complaint_votes: {
+        Row: {
+          complaint_id: string
+          created_at: string
+          id: string
+          ip_hash: string
+          user_id: string | null
+        }
+        Insert: {
+          complaint_id: string
+          created_at?: string
+          id?: string
+          ip_hash: string
+          user_id?: string | null
+        }
+        Update: {
+          complaint_id?: string
+          created_at?: string
+          id?: string
+          ip_hash?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "complaint_votes_complaint_id_fkey"
+            columns: ["complaint_id"]
+            isOneToOne: false
+            referencedRelation: "public_complaints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_history: {
         Row: {
           contact_date: string
@@ -1246,6 +1316,86 @@ export type Database = {
         }
         Relationships: []
       }
+      public_complaints: {
+        Row: {
+          admin_notes: string | null
+          category: Database["public"]["Enums"]["complaint_category"]
+          company_id: string
+          created_at: string
+          description: string
+          email_verified: boolean
+          evidence_url: string | null
+          id: string
+          incident_date: string | null
+          ip_hash: string | null
+          provider_responded_at: string | null
+          provider_responded_by: string | null
+          provider_response: string | null
+          reporter_email: string
+          reporter_name: string | null
+          severity: number
+          status: Database["public"]["Enums"]["complaint_status"]
+          title: string
+          updated_at: string
+          verified_at: string | null
+          votes_count: number
+        }
+        Insert: {
+          admin_notes?: string | null
+          category?: Database["public"]["Enums"]["complaint_category"]
+          company_id: string
+          created_at?: string
+          description: string
+          email_verified?: boolean
+          evidence_url?: string | null
+          id?: string
+          incident_date?: string | null
+          ip_hash?: string | null
+          provider_responded_at?: string | null
+          provider_responded_by?: string | null
+          provider_response?: string | null
+          reporter_email: string
+          reporter_name?: string | null
+          severity?: number
+          status?: Database["public"]["Enums"]["complaint_status"]
+          title: string
+          updated_at?: string
+          verified_at?: string | null
+          votes_count?: number
+        }
+        Update: {
+          admin_notes?: string | null
+          category?: Database["public"]["Enums"]["complaint_category"]
+          company_id?: string
+          created_at?: string
+          description?: string
+          email_verified?: boolean
+          evidence_url?: string | null
+          id?: string
+          incident_date?: string | null
+          ip_hash?: string | null
+          provider_responded_at?: string | null
+          provider_responded_by?: string | null
+          provider_response?: string | null
+          reporter_email?: string
+          reporter_name?: string | null
+          severity?: number
+          status?: Database["public"]["Enums"]["complaint_status"]
+          title?: string
+          updated_at?: string
+          verified_at?: string | null
+          votes_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_complaints_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reverse_ip_cache: {
         Row: {
           cached_at: string | null
@@ -1633,6 +1783,20 @@ export type Database = {
       app_role: "admin" | "hosting_provider" | "user"
       certification_status: "pending" | "active" | "expired" | "revoked"
       certification_tier: "free" | "premium"
+      complaint_category:
+        | "service_quality"
+        | "support"
+        | "billing"
+        | "downtime"
+        | "cancellation"
+        | "misleading_advertising"
+        | "other"
+      complaint_status:
+        | "pending_verification"
+        | "verified"
+        | "resolved"
+        | "rejected"
+        | "flagged"
       domain_opportunity_status:
         | "pending_analysis"
         | "analyzed"
@@ -1778,6 +1942,22 @@ export const Constants = {
       app_role: ["admin", "hosting_provider", "user"],
       certification_status: ["pending", "active", "expired", "revoked"],
       certification_tier: ["free", "premium"],
+      complaint_category: [
+        "service_quality",
+        "support",
+        "billing",
+        "downtime",
+        "cancellation",
+        "misleading_advertising",
+        "other",
+      ],
+      complaint_status: [
+        "pending_verification",
+        "verified",
+        "resolved",
+        "rejected",
+        "flagged",
+      ],
       domain_opportunity_status: [
         "pending_analysis",
         "analyzed",
