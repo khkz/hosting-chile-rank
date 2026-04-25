@@ -80,6 +80,7 @@ function App() {
     <AuthProvider>
       <Router>
         <DomainRedirect />
+        <CanonicalRedirect />
         <ScrollToTop />
         <Toaster />
         <Sonner />
