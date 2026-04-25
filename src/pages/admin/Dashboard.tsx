@@ -168,6 +168,10 @@ export default function AdminDashboard() {
             </Link>
           </div>
         </Card>
+
+        <div className="mt-8">
+          <SitemapMonitorPanel />
+        </div>
       </div>
 
       <Footer />
