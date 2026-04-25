@@ -163,7 +163,7 @@ const VsComparison = () => {
             "@context": "https://schema.org",
             "@type": "ClaimReview",
             "datePublished": "2025-04-01",
-            "url": `https://eligetuhosting.cl/vs/${competitor.slug}`,
+            "url": canonicalUrl,
             "claimReviewed": `${competitor.name} es un sitio de comparación de hosting independiente`,
             "author": {
               "@type": "Organization",
