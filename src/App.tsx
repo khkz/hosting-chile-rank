@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import ScrollToTop from './components/ScrollToTop';
 import WhoisRedirect from './components/WhoisRedirect';
 import DomainRedirect from './components/DomainRedirect';
+import CanonicalRedirect from './components/CanonicalRedirect';
+import VsAliasRedirect from './components/VsAliasRedirect';
 import StaticSitemap from './components/StaticSitemap';
 import StaticRobots from './components/StaticRobots';
 import StaticRSSFeed from './components/StaticRSSFeed';
@@ -79,6 +81,7 @@ function App() {
     <AuthProvider>
       <Router>
         <DomainRedirect />
+        <CanonicalRedirect />
         <ScrollToTop />
         <Toaster />
         <Sonner />
@@ -148,6 +151,9 @@ function App() {
         <Route path="/dominios-premium" element={<DominiosPremium />} />
         <Route path="/transparencia-hosting-chile" element={<TransparenciaHosting />} />
         <Route path="/vs/:rival" element={<VsComparison />} />
+        {/* 301 a canonical /vs/:rival para evitar duplicados */}
+        <Route path="/comparar/:rival" element={<VsAliasRedirect />} />
+        <Route path="/comparativa/:rival" element={<VsAliasRedirect />} />
         <Route path="/reclamos" element={<Reclamos />} />
         <Route path="/verificar-reclamo" element={<VerificarReclamo />} />
             <Route path="/admin/dashboard" element={

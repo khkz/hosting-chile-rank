@@ -122,13 +122,21 @@ const eligeTuHostingFeatures = [
 
 const VsComparison = () => {
   const { rival } = useParams<{ rival: string }>();
-  
-  const competitor = rival ? competitors[rival] : null;
-  
+
+  // Normalize slug: lowercase + strip trailing slash/whitespace to avoid duplicates
+  const normalizedRival = rival?.toLowerCase().trim().replace(/\/+$/, '') ?? '';
+  const competitor = normalizedRival ? competitors[normalizedRival] : null;
+
+  // If slug differs after normalization, 301-style client redirect to canonical
+  if (rival && normalizedRival && rival !== normalizedRival && competitors[normalizedRival]) {
+    return <Navigate to={`/vs/${normalizedRival}`} replace />;
+  }
+
   if (!competitor) {
     return <Navigate to="/transparencia-hosting-chile" replace />;
   }
 
+  const canonicalUrl = `https://eligetuhosting.cl/vs/${competitor.slug}`;
   const pageTitle = `EligeTuHosting vs ${competitor.name} – ¿Cuál es realmente independiente?`;
   const pageDescription = `Comparativa detallada entre EligeTuHosting.cl y ${competitor.name}. Evidencia técnica (ASN, IP, WHOIS) que demuestra por qué ${competitor.name} no es un comparador independiente.`;
 
@@ -137,13 +145,25 @@ const VsComparison = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={`https://eligetuhosting.cl/vs/${competitor.slug}`} />
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="es-CL" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="es" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="EligeTuHosting.cl" />
+        <meta property="og:locale" content="es_CL" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ClaimReview",
             "datePublished": "2025-04-01",
-            "url": `https://eligetuhosting.cl/vs/${competitor.slug}`,
+            "url": canonicalUrl,
             "claimReviewed": `${competitor.name} es un sitio de comparación de hosting independiente`,
             "author": {
               "@type": "Organization",
