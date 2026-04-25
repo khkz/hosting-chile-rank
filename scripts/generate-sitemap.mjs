@@ -1,6 +1,8 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
-import providers from './providers.json' assert { type: 'json' };
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const providers = require('./providers.json');
 
 // Slugs de comparativas vs/ rivales (sitios de comparación falsa)
 const VS_RIVALS = ['comparahosting', 'mejorhosting', 'rankinghosting', 'hostingexperto'];
