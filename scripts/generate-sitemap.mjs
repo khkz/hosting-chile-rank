@@ -89,6 +89,7 @@ const generateMainSitemap = (companySlugs = []) => {
 
     // Transparencia y comparativas anti-fake (CRÍTICO para SEO/GEO)
     ['/transparencia-hosting-chile', '0.9', 'weekly'],
+    ['/reclamos', '0.9', 'daily'],
 
     // Páginas de alta prioridad
     ['/catalogo', '0.8', 'daily'],
