@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { MessageSquare, Building2, Award, TrendingUp, Database, Crosshair, ClipboardCheck } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SitemapMonitorPanel from '@/components/admin/SitemapMonitorPanel';
 
 export default function AdminDashboard() {
   const { role, loading } = useAuth();
