@@ -16,7 +16,7 @@ interface ApiResponse {
 // In-memory cache
 let cachedData: ApiResponse | null = null;
 let cacheTime: number = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 2 * 60 * 1000; // 2 minutes (GitHub Action escribe cada hora)
 
 /**
  * Load domains from local JSON file with caching
@@ -32,20 +32,23 @@ export const loadDomains = async (): Promise<ApiResponse> => {
   try {
     console.log('🔄 Loading domain data...');
     
-    // Try GitHub raw URL first (always up-to-date from GitHub Actions)
-    const githubUrl = 'https://raw.githubusercontent.com/khkzulox/hosting-chile-rank/main/public/data/latest.json';
+    // Try GitHub raw URL first (always up-to-date from GitHub Actions, escrito cada hora)
+    // Cache-buster por si el CDN de raw.githubusercontent.com sirve copia vieja
+    const githubUrl = `https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json?t=${Date.now()}`;
     let response: Response;
-    
+    let source: 'github' | 'local' = 'github';
+
     try {
       response = await fetch(githubUrl, {
         headers: { 'Cache-Control': 'no-cache' },
       });
-      if (!response.ok) throw new Error('GitHub fetch failed');
-      console.log('✅ Loaded from GitHub');
-    } catch {
-      // Fallback to local file
-      console.log('⚠️ GitHub unavailable, using local file');
-      response = await fetch('/data/latest.json', {
+      if (!response.ok) throw new Error(`GitHub fetch failed: ${response.status}`);
+      console.log('✅ Loaded from GitHub raw');
+    } catch (err) {
+      // Fallback to local file (sólo se actualiza en build)
+      console.warn('⚠️ GitHub unavailable, using local /data/latest.json:', err);
+      source = 'local';
+      response = await fetch(`/data/latest.json?t=${Date.now()}`, {
         headers: { 'Cache-Control': 'no-cache' },
       });
     }
@@ -64,7 +67,7 @@ export const loadDomains = async (): Promise<ApiResponse> => {
     cachedData = data;
     cacheTime = now;
 
-    console.log(`✅ Loaded ${data.domains.length} domains from local file`);
+    console.log(`✅ Loaded ${data.domains.length} domains from ${source} (updated: ${data.updated})`);
     return data;
   } catch (error) {
     console.error('❌ Error loading domains:', error);

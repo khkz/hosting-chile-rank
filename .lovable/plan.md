@@ -1,66 +1,43 @@
+# Fix: Últimos Dominios congelados — typo en URL del repo
 
+## Diagnóstico (confirmado)
 
-## Sprint 1: Unificar Fuente de Verdad — Plan de Implementacion
+`src/services/domainsService.ts` línea 38 hace `fetch` a:
 
-### Problema
-`HostingRanking.tsx` y `TLDRVerdict.tsx` leen de `rankingProviders.ts` (datos estaticos). La DB tiene las empresas pero le faltan campos especificos del ranking (posicion, features del ranking, colores de UI, CTA, precio promocional).
+```
+https://raw.githubusercontent.com/khkzulox/hosting-chile-rank/main/public/data/latest.json
+```
 
-### Paso 1: Migracion de DB — Agregar campos de ranking a `hosting_companies`
+Ese repo **no existe (HTTP 404)**. El correcto es `khkz/hosting-chile-rank` y está perfectamente actualizado: probé recién y devuelve `updated: 2026-05-01T22:42:57Z` con 452 dominios frescos (ej. `tikinazo.cl` de hace minutos).
 
-Nuevas columnas en `hosting_companies`:
+Como el `try` falla, cae al `catch` que lee `/data/latest.json` local — ese archivo sólo se regenera cuando se hace deploy/build, por eso la página se ve "pegada" hace ~9 horas (último build) o más.
 
-| Columna | Tipo | Proposito |
-|---|---|---|
-| `ranking_position` | integer (nullable) | Posicion manual en homepage (NULL = no aparece en ranking) |
-| `is_recommended` | boolean default false | Badge "Mas Recomendado" |
-| `ranking_features` | text[] default '{}' | Features visibles en tarjeta ranking (distintas a `pros`) |
-| `ranking_badges` | text[] default '{}' | Badges tipo "Mas Popular", "Eco-Friendly" |
-| `cta_text` | text | Texto del boton CTA |
-| `cta_micro_copy` | text | Microcopy debajo del CTA |
-| `button_color` | text | Clase Tailwind del boton |
-| `border_color` | text | Clase Tailwind del borde |
-| `display_name_first` | text | Primera parte del nombre partido |
-| `display_name_second` | text | Segunda parte |
-| `display_name_first_color` | text | Clase de color Tailwind |
-| `display_name_second_color` | text | Clase de color Tailwind |
-| `promo_price` | integer | Precio promocional actual (CLP) |
-| `original_price` | integer | Precio tachado original (CLP, nullable) |
-| `price_period` | text default 'mensual' | Periodo del precio |
+El workflow `.github/workflows/nic-crawl.yml` está corriendo bien cada hora en el repo correcto. **No hay nada roto en el scraper ni en el cron** — sólo el typo en el cliente.
 
-La migracion tambien hace UPDATE para poblar los datos de los 3 proveedores actuales del ranking (HostingPlus, EcoHosting, HostGator) usando los valores que hoy estan hardcodeados.
+## Cambios
 
-### Paso 2: Refactorizar `HostingRanking.tsx`
+### 1. Corregir URL en `src/services/domainsService.ts` (línea 38)
 
-- Eliminar import de `rankingProviders` y `RankingProvider`
-- Definir interfaz `RankingCompany` mapeada a los campos de Supabase
-- Usar `useQuery` con `supabase.from('hosting_companies').select('*, hosting_plans(price_monthly)').eq('is_verified', true).eq('is_curated', true).not('ranking_position', 'is', null).order('ranking_position')`
-- Mapear los datos de DB al formato que espera `RankingCard`
-- Mostrar skeleton/loading state mientras carga
-- `IndependenceBadge` ya recibe `isIndependent`, `corporateGroup`, `legalName` — ahora vienen de la DB en vivo
+```diff
+- const githubUrl = 'https://raw.githubusercontent.com/khkzulox/hosting-chile-rank/main/public/data/latest.json';
++ const githubUrl = 'https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json';
+```
 
-### Paso 3: Refactorizar `TLDRVerdict.tsx`
+### 2. Mejoras menores (mientras estoy ahí)
 
-- Reemplazar import estatico por `useQuery` al mismo dataset
-- Derivar `best` y `cheapest` de los datos en vivo
+- Reducir cache de 5 min a **2 min** para frescura mayor (el cron escribe cada hora, pero a veces queremos ver cambios al instante).
+- Agregar `?t=${Date.now()}` al fetch para evitar cache agresivo del CDN de GitHub Raw.
+- Loguear claramente cuál fuente se usó (GitHub vs local) para debug futuro.
 
-### Paso 4: Eliminar `src/data/rankingProviders.ts`
+## Resultado
 
-El archivo se borra completamente. Ya no tiene consumidores.
+Apenas se desplegue el fix:
+- `/ultimos-dominios` mostrará dominios actualizados cada ~hora directamente desde el repo.
+- Sin necesidad de redeploy de la web para refrescar datos.
+- Sin migrar nada a Supabase (no es necesario, el flujo actual funciona, sólo tenía un typo).
 
-### Nota sobre `src/data/hostingCompanies.ts`
+## ¿Sigue en pie el plan grande?
 
-Este archivo **NO se borra todavia** porque tiene 3 consumidores activos:
-- `src/pages/admin/Setup.tsx` (migracion inicial)
-- `src/services/hostingASNService.ts` (mappings ASN)
-- `src/components/TCOCalculator.tsx` (datos de planes)
-- `src/utils/migrateHostingData.ts` (script de migracion)
+Lo que te presenté antes (mover scraping a Supabase + Indexing API + scrape de competencia + reclamos con schema) sigue siendo el roadmap correcto para volver la web la comparativa #1 de Chile. Pero **esto del typo es un fix de 1 línea**, lo arreglo ya y después seguimos con las fases mayores en el orden que prefieras.
 
-Eliminar estos requiere refactorizar cada uno para leer de Supabase, lo cual es un sprint separado. El impacto de Riesgo 3 se reduce significativamente con solo migrar el ranking de la homepage (la pieza mas visible).
-
-### Impacto
-
-- La homepage refleja datos en vivo de Supabase
-- Cambiar un rating, precio o badge en el admin se refleja instantaneamente
-- Los badges de transparencia (`is_independent`, `corporate_group`, `is_fake_comparison`) son 100% dinamicos
-- Zero datos hardcodeados en el ranking principal
-
+¿Apruebo y aplico el fix ahora?
