@@ -167,7 +167,7 @@ const faqItems = [
   },
   {
     question: "¿Por qué HostingPlus lidera el ranking?",
-    answer: "HostingPlus combina la mejor velocidad (LiteSpeed Enterprise), estabilidad superior (99.98% uptime), seguridad avanzada (BitNinja), y un soporte técnico excepcional con tiempos de respuesta promedio de 5 minutos."
+    answer: "HostingPlus combina LiteSpeed Enterprise, datacenter en Santiago, BitNinja y soporte 24/7 en español. Las métricas exactas de velocidad y uptime medidas mensualmente están publicadas en /benchmark."
   }
 ];
 
