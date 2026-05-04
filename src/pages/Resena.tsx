@@ -52,7 +52,7 @@ const hostingData = {
     description: '1Hosting ofrece planes accesibles con buen rendimiento, siendo una opción muy recomendable para proyectos pequeños y medianos.',
     pros: [
       'Precios muy competitivos',
-      'Buen uptime (99.9%)',
+      'Uptime monitoreado (ver /benchmark)',
       'Panel cPanel intuitivo',
       'Soporte técnico eficiente',
       'Buenos recursos en planes básicos'
@@ -74,7 +74,7 @@ const hostingData = {
       'Garantía de devolución de dinero de 45 días',
       'Panel de control cPanel fácil de usar',
       'Soporte técnico en español',
-      'Buen uptime (99.9%)'
+      'Uptime monitoreado (ver /benchmark)'
     ],
     cons: [
       'Datacenter principal fuera de Chile',
