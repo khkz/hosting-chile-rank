@@ -184,6 +184,10 @@ const CatalogoDetalle = () => {
         <HostingCompanyInfo company={companyData} />
         
         <section className="mt-12">
+          <ReputationCard companyId={company.id} companyName={company.name} />
+        </section>
+
+        <section className="mt-12">
           <h2 className="text-3xl font-bold mb-6">Opiniones de Clientes</h2>
           <PublicReviewsList companyId={company.id} companyName={company.name} />
         </section>
