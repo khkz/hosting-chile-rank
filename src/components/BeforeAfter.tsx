@@ -92,7 +92,7 @@ const BeforeAfter = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">Disponibilidad real</p>
-                  <p className="text-sm text-gray-600">99.98% uptime verificado</p>
+                  <p className="text-sm text-gray-600">Uptime monitoreado continuamente — ver <a href="/benchmark" className="text-primary hover:underline">/benchmark</a></p>
                 </div>
               </li>
 
