@@ -82,7 +82,7 @@ const BeforeAfter = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">Velocidad comprobada</p>
-                  <p className="text-sm text-gray-600">250ms latencia (44% más rápido)</p>
+                  <p className="text-sm text-gray-600">TTFB y Lighthouse medidos cada mes — ver <a href="/benchmark" className="text-primary hover:underline">/benchmark</a></p>
                 </div>
               </li>
 
@@ -92,7 +92,7 @@ const BeforeAfter = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">Disponibilidad real</p>
-                  <p className="text-sm text-gray-600">99.98% uptime verificado</p>
+                  <p className="text-sm text-gray-600">Uptime monitoreado continuamente — ver <a href="/benchmark" className="text-primary hover:underline">/benchmark</a></p>
                 </div>
               </li>
 
@@ -101,8 +101,8 @@ const BeforeAfter = () => {
                   <CheckCircle2 className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">Más conversiones</p>
-                  <p className="text-sm text-gray-600">+38% ventas con sitio rápido</p>
+                  <p className="font-semibold text-gray-800">Velocidad influye en conversión</p>
+                  <p className="text-sm text-gray-600">Google CWV y estudios de Akamai/Google relacionan velocidad con tasa de rebote</p>
                 </div>
               </li>
             </ul>

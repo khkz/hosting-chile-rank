@@ -28,6 +28,8 @@ import { es } from "date-fns/locale";
 import {
   useLatestBenchmark, useCompanyHistory, useCurrentMethodology, type BenchmarkRow,
 } from "@/hooks/useBenchmark";
+import SourcesCard from "@/components/benchmark/SourcesCard";
+import ReproduceButton from "@/components/benchmark/ReproduceButton";
 
 const fmtDate = (iso: string) =>
   format(new Date(iso), "d 'de' MMMM yyyy, HH:mm", { locale: es });
@@ -74,15 +76,27 @@ const Benchmark: React.FC = () => {
     "@context": "https://schema.org",
     "@type": "Dataset",
     "name": `Benchmark Hosting Chile — ${run.methodology_version}`,
-    "description": "Mediciones reales de TTFB, Lighthouse y uptime de proveedores de hosting en Chile.",
+    "description": "Mediciones reales de TTFB (mediana de 5 muestras), Lighthouse Mobile (PageSpeed Insights v5), uptime 30 días (pings horarios) y score compuesto de proveedores de hosting en Chile.",
     "url": "https://eligetuhosting.cl/benchmark",
     "dateModified": run.run_date,
+    "temporalCoverage": "30D",
     "license": "https://creativecommons.org/licenses/by/4.0/",
     "creator": {
       "@type": "Organization",
       "name": "EligeTuHosting.cl",
       "url": "https://eligetuhosting.cl",
     },
+    "variableMeasured": [
+      { "@type": "PropertyValue", "name": "TTFB mediana", "unitText": "ms" },
+      { "@type": "PropertyValue", "name": "TTFB p95", "unitText": "ms" },
+      { "@type": "PropertyValue", "name": "Lighthouse Performance", "unitText": "score 0-100" },
+      { "@type": "PropertyValue", "name": "Lighthouse SEO", "unitText": "score 0-100" },
+      { "@type": "PropertyValue", "name": "Lighthouse Accessibility", "unitText": "score 0-100" },
+      { "@type": "PropertyValue", "name": "Largest Contentful Paint", "unitText": "ms" },
+      { "@type": "PropertyValue", "name": "Cumulative Layout Shift", "unitText": "unitless" },
+      { "@type": "PropertyValue", "name": "Uptime 30 días", "unitText": "%" },
+      { "@type": "PropertyValue", "name": "Score compuesto", "unitText": "score 0-100" },
+    ],
   } : null;
 
   const downloadJson = () => {
@@ -146,6 +160,13 @@ const Benchmark: React.FC = () => {
                 )}
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Fuentes y herramientas — visible siempre */}
+        <section className="py-10">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <SourcesCard />
           </div>
         </section>
 
@@ -408,13 +429,16 @@ const BenchmarkRowItem: React.FC<{ row: BenchmarkRow }> = ({ row }) => {
         {row.has_brotli && <Badge variant="outline" className="ml-1 text-[10px]">br</Badge>}
       </TableCell>
       <TableCell className="text-xs text-muted-foreground">
-        <div className="flex items-center gap-1">
-          {measuredLabel}
-          {targetUrl && (
-            <a href={targetUrl} target="_blank" rel="nofollow noopener" className="text-muted-foreground hover:text-foreground">
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          )}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1">
+            {measuredLabel}
+            {targetUrl && (
+              <a href={targetUrl} target="_blank" rel="nofollow noopener" className="text-muted-foreground hover:text-foreground" title="Abrir URL medida">
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+          </div>
+          {targetUrl && <ReproduceButton url={targetUrl} label="PageSpeed →" />}
         </div>
       </TableCell>
     </TableRow>

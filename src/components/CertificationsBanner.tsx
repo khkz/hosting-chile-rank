@@ -43,7 +43,7 @@ export default function CertificationsBanner() {
               <Award className="h-10 w-10 text-blue-500 mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Mejor Rendimiento</h3>
               <p className="text-sm text-gray-600">
-                Uptime superior al 99.9% y velocidad optimizada
+                Proveedores con TTFB y uptime verificados según nuestro <a href="/benchmark" className="text-primary hover:underline">benchmark</a> mensual
               </p>
             </div>
           </div>

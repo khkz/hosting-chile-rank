@@ -167,7 +167,7 @@ const faqItems = [
   },
   {
     question: "¿Por qué HostingPlus lidera el ranking?",
-    answer: "HostingPlus combina la mejor velocidad (LiteSpeed Enterprise), estabilidad superior (99.98% uptime), seguridad avanzada (BitNinja), y un soporte técnico excepcional con tiempos de respuesta promedio de 5 minutos."
+    answer: "HostingPlus combina LiteSpeed Enterprise, datacenter en Santiago, BitNinja y soporte 24/7 en español. Las métricas exactas de velocidad y uptime medidas mensualmente están publicadas en /benchmark."
   }
 ];
 
@@ -347,21 +347,18 @@ const RankingPage = () => {
                     </span>
                     <img src={provider.logo} alt={provider.name} className="h-8" loading="lazy" />
                   </div>
-                  <div className={`text-xl font-bold ${index === 0 ? 'text-[#EF233C]' : 'text-[#2B2D42]'}`}>
-                    {provider.rating}/10
-                  </div>
+                  {index === 0 && (
+                    <Badge className="bg-[#EF233C] text-white">Top recomendado</Badge>
+                  )}
                 </div>
                 
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-2 mb-4 items-center">
                   <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
                     {provider.price}
                   </Badge>
-                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
-                    Velocidad: {provider.speed}
-                  </Badge>
-                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
-                    Uptime: {provider.uptime}
-                  </Badge>
+                  <Link to="/benchmark" className="text-xs text-primary hover:underline">
+                    Ver mediciones reales →
+                  </Link>
                 </div>
                 
                 <ul className="mb-6 text-sm space-y-2">

@@ -1,110 +1,103 @@
 
-# Plan: Reputación verificable con Reclamos.cl + reseñas reales
-
 ## Objetivo
 
-Conectar la analítica de reclamos (que ya existe vía edge function `complaints-checker` pero solo se usa ad-hoc en el OSINT Scanner) con la ficha pública de cada proveedor, persistir un historial de "snapshots de reputación" y mostrarlos junto a las reseñas verificadas (`hosting_reviews`) en una tarjeta unificada con criterios claros y enlaces a la fuente original.
+La página `/benchmark` ya existe con infraestructura real (`run-benchmark`, `uptime-monitor`, tablas `benchmark_runs`/`benchmark_results`/`uptime_pings`). Falta: (a) reforzar la transparencia con fuentes citadas y poner datos verificables visibles, y (b) **eliminar los uptimes/ratings inventados** que aún viven en componentes y páginas (`Ranking.tsx`, `TrustReport.tsx`, `Benefits.tsx`, `BeforeAfter.tsx`, `CertificationsBanner.tsx`, `HostingQuiz.tsx`, `Resena.tsx`, `GuiaElegirVPS.tsx`).
 
-## Lo que ya existe (reutilizar)
+## Parte 1 — Reforzar `/benchmark` con fuentes verificables
 
-- **Edge function `complaints-checker`**: busca en `reclamos.cl` vía Serper, extrae texto con Jina y resume con OpenAI. Devuelve `sentiment_score`, `main_complaints`, `severity`, `sources[]`. Hoy requiere `x-admin-api-key` y no persiste resultados.
-- **Tabla `public_complaints`**: reclamos enviados por usuarios verificados por email (status `verified`/`resolved`).
-- **Tabla `hosting_reviews`**: reseñas con sub-ratings (speed/support/price) y `is_verified_customer`.
-- **`PublicReviewsList`**: ya muestra reseñas con distribución de estrellas; solo se monta en `CatalogoDetalle`.
-- **`Resena.tsx`**: textos hardcoded sobre Reclamos.cl (a reemplazar por datos reales).
-- **`rankingWeights.ts`**: declara que la reputación pesa 30 % con fuente "Reclamos.cl + reseñas verificadas".
+### 1.1 Bloque "Fuentes y herramientas" (nuevo componente)
 
-## Cambios de base de datos
+En `src/pages/Benchmark.tsx`, agregar una sección visible "De dónde vienen estos datos" que cite:
 
-Nueva tabla **`reputation_snapshots`** para guardar el histórico del análisis de Reclamos.cl por proveedor:
+- **TTFB / Headers**: medición propia desde Supabase Edge (`run-benchmark`, código abierto en repo). Link al archivo en GitHub si existe `GH_PAT`, o al pie con SHA del último deploy.
+- **Lighthouse (Performance / SEO / A11y / LCP / CLS)**: Google PageSpeed Insights API v5, `strategy=mobile`. Link público a `https://pagespeed.web.dev/analysis?url=<target>` por proveedor para que el usuario reproduzca.
+- **Uptime 30d**: pings horarios HEAD/GET a `benchmark_target_url` (`uptime-monitor` cada hora vía cron, tabla `uptime_pings`). Mostrar `n` muestras tomadas en el período.
+- **Compuesto**: fórmula explícita visible (35% Lighthouse perf + 25% TTFB + 25% uptime + 15% SEO) con link a `/metodologia-benchmark`.
 
-- `company_id` (FK lógica a `hosting_companies`)
-- `measured_at`
-- `sentiment_score` (1–10)
-- `severity` (`Alta`/`Media`/`Baja`)
-- `main_complaints` (jsonb)
-- `sources` (jsonb — URLs de reclamos.cl)
-- `texts_extracted` (int)
-- `methodology_version` (default `v1.0`)
-- RLS: lectura pública, escritura solo admin / service role.
+### 1.2 Por proveedor, mostrar reproducibilidad
 
-Nueva vista pública **`company_reputation_summary`** (security_invoker) que consolida por `company_id`:
+En `BenchmarkRowItem`, ampliar tooltips/expand con:
 
-- último `sentiment_score` y `severity` desde `reputation_snapshots`
-- conteo de `public_complaints` con status `verified`/`resolved` últimos 12 meses, agrupado por `severity`
-- conteo y promedio de `hosting_reviews` con status `approved` y % `is_verified_customer`
-- `last_synced_at`
+- URL exacta medida (`benchmark_target_url`) ya está, añadir botón "Reproducir en PageSpeed →".
+- Cantidad de muestras de uptime (`COUNT(uptime_pings) WHERE company_id = ... AND measured_at > now()-30d`).
+- Fecha de inicio del monitoreo (primer ping).
+- Badge "Sin datos suficientes" cuando `n < 24` pings (menos de un día).
 
-(Si la vista no permite las agregaciones que necesito de forma simple, se implementa como función SQL `get_company_reputation(company_id uuid)` con `SECURITY INVOKER`.)
+### 1.3 Disparar primer run real
 
-## Edge functions
+Añadir al panel admin existente o ejecutar en deploy:
 
-1. **Ampliar `complaints-checker`**:
-   - Aceptar header `x-admin-api-key` *o* invocación interna desde otra edge function (service role) para mantener el guard.
-   - Después de calcular el resultado, insertar una fila en `reputation_snapshots` con `service_role`.
-   - Mantener compat con el OSINT Scanner.
+- Botón en `/admin` (o página nueva `/admin/benchmark`) que llame a `run-benchmark` con `x-admin-api-key` y muestre el run en curso.
+- Mostrar histórico de runs (`benchmark_runs`) con estado y notas.
 
-2. **Nueva `refresh-reputation`** (admin):
-   - Recibe `{ company_id }` o `{ all: true }` (rate limit 1/min por proveedor).
-   - Llama a `complaints-checker` por cada `hosting_companies` con `is_verified && is_curated && benchmark_enabled`.
-   - Devuelve resumen con OK/errores por proveedor.
+### 1.4 SEO/GEO
 
-3. **Cron mensual** (`pg_cron` en migración): dispara `refresh-reputation` el día 1 de cada mes a las 04:00.
+Mantener `Dataset` JSON-LD ya presente. Añadir `dateCreated` (fecha del primer run), `temporalCoverage`, `variableMeasured` con cada métrica + unidad.
 
-## Frontend
+## Parte 2 — Eliminar valores inventados
 
-### Nuevo componente `ReputationCard`
-Bloque visible en la ficha pública (`Resena.tsx` y `CatalogoDetalle.tsx`) que muestra:
+Política: **si no viene del benchmark real o de un campo poblado por admin con confianza explícita, no se muestra como número específico**. Reemplazar por:
 
-1. **Score reputacional** (0–10) con badge de color según `severity`.
-2. **Origen de los datos** (chips):
-   - "Reclamos verificados internos" → cuenta de `public_complaints` aprobados
-   - "Reclamos.cl" → cuenta + último snapshot + enlace directo
-   - "Reseñas verificadas" → cuenta de `hosting_reviews` con `is_verified_customer = true`
-3. **Quejas principales** (lista corta) provenientes de `main_complaints` del último snapshot.
-4. **Última actualización** + link a `/metodologia#reputacion`.
-5. **Enlaces a fuentes**: cada URL de `sources` se muestra como link externo `rel="nofollow noopener"`.
+- Datos reales del último `benchmark_results` cuando exista.
+- Texto cualitativo ("uptime alto verificado por nuestro monitoreo continuo") con link a `/benchmark`.
+- O eliminar del todo si el contexto no lo requiere.
 
-Si no hay datos aún, muestra estado "Pendiente de auditoría" con CTA a la metodología (sin inventar números — regla brand).
+### 2.1 `src/pages/Ranking.tsx`
+Quitar `uptime: "99.98%"` / `"99.96%"` / `"99.93%"` y `speed: "9.9/10"` etc. del array hardcodeado. Dejar features cualitativas y un link "Ver mediciones reales →" a `/benchmark#<slug>`.
 
-### Nuevo hook `useCompanyReputation(companyId)`
-Wrapper React Query sobre `company_reputation_summary`/función RPC, con cache 30 min.
+### 2.2 `src/components/TrustReport.tsx`
+Eliminar `defaultProviders` con `uptimeVerified: 99.98` etc. Si el componente se sigue usando, reemplazar por hook que lea `benchmark_results` join `hosting_companies` (top 3 por `composite_score`). Si no hay datos, mostrar estado vacío honesto: "Aún publicaremos métricas verificadas tras el primer run mensual".
 
-### Cambios en páginas
-- **`src/pages/Resena.tsx`**: eliminar los párrafos hardcoded sobre reclamos.cl y reemplazar por `<ReputationCard companyId={...} />`. Mantener pros/cons editoriales.
-- **`src/pages/CatalogoDetalle.tsx`**: insertar `<ReputationCard>` arriba de `<PublicReviewsList>` para que las reseñas y la reputación externa convivan.
-- **`src/pages/Reclamos.tsx`**: añadir un panel "Reputación agregada por proveedor" usando la nueva vista, con tabla ordenable (proveedor / score / # reclamos verificados / # reclamos.cl / fuente).
+### 2.3 `src/components/Benefits.tsx`
+Quitar el bloque "99.9% / <200ms / 24/7" con cifras inventadas. Reemplazar por enlaces: "Uptime real medido →" `/benchmark`, "Velocidad real medida →" `/benchmark`, dejando solo "Soporte 24/7" como atributo cualitativo (verificable). También quitar "Más de 22,000 sitios confían…" si no es comprobable.
 
-### Nuevo panel admin `ReputationSyncPanel`
-En `src/pages/admin/Dashboard.tsx` o un nuevo `/admin/reputation`:
-- Botón "Refrescar todo" (llama `refresh-reputation` con `all: true`).
-- Tabla por proveedor: último `sentiment_score`, `last_synced_at`, botón "Refrescar".
-- Bandera para excluir un proveedor (campo nuevo `reputation_sync_enabled` en `hosting_companies`, default true).
+### 2.4 `src/components/BeforeAfter.tsx`
+Cambiar "99.98% uptime verificado" por "Uptime monitoreado continuamente — ver `/benchmark`".
 
-## Criterios de verificación visibles al usuario
+### 2.5 `src/components/CertificationsBanner.tsx`
+Reformular "Uptime superior al 99.9%" como criterio de elegibilidad ("Proveedores con uptime ≥ 99.9% según nuestro monitoreo de 30 días") con link a `/benchmark`.
 
-En `ReputationCard` y en `/metodologia` se documentan los criterios:
+### 2.6 `src/components/HostingQuiz.tsx`
+Reemplazar `'Uptime 99.98%'` en features por algo cualitativo o eliminarlo.
 
-- **Reseña verificada**: usuario autenticado + email confirmado + `is_verified_customer = true` (factura, captura de panel o dominio activo).
-- **Reclamo verificado interno**: status = `verified` en `public_complaints` (email confirmado vía token de 48 h).
-- **Reclamo externo**: aparece en resultados Google `site:reclamos.cl` y se cita la URL exacta.
-- **Score**: derivado del último snapshot ponderado con la cuenta de reclamos verificados internos. Fórmula y pesos quedan en `rankingWeights.ts` y se renderizan en la metodología.
+### 2.7 `src/pages/Resena.tsx` y `src/pages/GuiaElegirVPS.tsx`
+Quitar números específicos inventados ("99.97% hace 14 meses", "Buen uptime (99.9%)"). Reemplazar por frases como "uptime alto según nuestro monitoreo (ver `/benchmark`)".
 
-## SEO y schema
+### 2.8 Glosario / Guías genéricas
+**Mantener** las menciones a "99.9%" en `TechnicalGlossary.tsx`, `GuiaCompletaElegirHosting.tsx`, `GuiaElegirHosting.tsx`, `GuiaElegirServidorDedicado.tsx` y `Setup.tsx` (criterios de admin) — son explicaciones genéricas o criterios de evaluación, no afirmaciones sobre proveedores específicos.
 
-- Inyectar `Review` y `AggregateRating` JSON-LD en `Resena` y `CatalogoDetalle` con datos reales del summary (ya existe `SEOReviewSchema` — solo conectar al hook).
-- Microcopy "Datos verificados" + enlaces a fuentes (mejora E-E-A-T y GEO).
+## Parte 3 — Componentes nuevos
 
-## Reglas y restricciones del proyecto
+- `src/components/benchmark/SourcesCard.tsx`: lista de fuentes con iconos y enlaces.
+- `src/components/benchmark/ReproduceButton.tsx`: link directo a `pagespeed.web.dev` por URL.
+- `src/hooks/useBenchmarkTopProviders.ts`: top N por `composite_score` para reemplazar mocks de `TrustReport`.
+- `src/pages/admin/BenchmarkRuns.tsx` (opcional): UI para disparar y ver runs.
 
-- Mostrar la `ReputationCard` solo para proveedores con `is_verified && is_curated`.
-- Sin afirmaciones falsas: si no hay snapshot, decirlo explícitamente.
-- Quitar el badge "Open Data" de la página de Reclamos (regla brand).
-- El campo `reporter_email`/`reporter_name` sigue oculto a no admins (fix de seguridad reciente).
-- WCAG AA: cards con contraste, badges con texto + ícono (no solo color), targets ≥44 px.
+## Archivos a editar/crear
 
-## Fuera de alcance
+**Crear:**
+- `src/components/benchmark/SourcesCard.tsx`
+- `src/components/benchmark/ReproduceButton.tsx`
+- `src/hooks/useBenchmarkTopProviders.ts`
+- `src/pages/admin/BenchmarkRuns.tsx`
+- Ruta en `App.tsx` para `/admin/benchmark`
 
-- No se conecta a APIs pagadas (Trustpilot, Google Reviews) — solo Reclamos.cl + datos internos.
-- No se cambia la fórmula del ranking ahora; sólo se asegura que el campo "reputación" tenga datos reales para alimentarla más adelante.
-- No se permite a proveedores responder reseñas en este alcance (ya existe parcialmente vía `review_responses`).
+**Editar:**
+- `src/pages/Benchmark.tsx` (añadir SourcesCard + ReproduceButton + variableMeasured en JSON-LD)
+- `src/pages/Ranking.tsx` (quitar uptime/speed inventados)
+- `src/components/TrustReport.tsx` (usar hook real o estado vacío)
+- `src/components/Benefits.tsx` (quitar bloque "99.9% / <200ms / 22.000 sitios")
+- `src/components/BeforeAfter.tsx` (reformular)
+- `src/components/CertificationsBanner.tsx` (reformular)
+- `src/components/HostingQuiz.tsx` (quitar "Uptime 99.98%")
+- `src/pages/Resena.tsx` (quitar uptimes específicos por proveedor)
+- `src/pages/GuiaElegirVPS.tsx` (quitar uptimes específicos)
+
+**Memoria:**
+- Actualizar `mem://business-rules/hosting-monopolies` o crear `mem://features/benchmark` con la regla: "Uptime/velocidad por proveedor solo provienen de `benchmark_results` / `uptime_pings`. Prohibido inventar cifras."
+
+## Out of scope
+
+- Cambiar la fórmula del score compuesto (ya está documentada).
+- Migrar la tabla `uptime_pings` (ya existe).
+- Añadir más fuentes externas (BuiltWith, Cloudflare Radar) — se puede iterar después.

@@ -156,8 +156,9 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-purple-100 p-3 rounded">
                     <p className="text-purple-800 text-sm">
-                      <strong>Caso real:</strong> Consultora Marketing Digital - 100% ingresos online. Una caída de 2 horas = $850.000 perdidos. 
-                      VPS premium de $67.990/mes = uptime 99.98% hace 14 meses.
+                      <strong>Caso real:</strong> Consultora Marketing Digital — 100% ingresos online. Una caída
+                      de 2 horas representa una pérdida material grande. La elección de VPS premium debe ir
+                      acompañada de un proveedor con uptime verificable (ver <a href="/benchmark" className="underline">/benchmark</a>).
                     </p>
                   </div>
                 </div>
@@ -197,7 +198,7 @@ const GuiaElegirVPS = () => {
                   </div>
                   <p className="text-gray-700 mb-4">
                     <strong>Por qué está #1:</strong> 87% de mis clientes que migraron aquí reportan 0 problemas después de 6 meses. 
-                    Datacenter en Santiago, soporte real en español y uptime consistente 99.97%.
+                    Datacenter en Santiago, soporte real en español y uptime verificable en nuestro <a href="/benchmark" className="text-primary hover:underline">benchmark mensual</a>.
                   </p>
                   <div className="grid md:grid-cols-2 gap-4 mb-4">
                     <div>
