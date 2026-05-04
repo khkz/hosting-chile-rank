@@ -82,7 +82,7 @@ const BeforeAfter = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">Velocidad comprobada</p>
-                  <p className="text-sm text-gray-600">250ms latencia (44% más rápido)</p>
+                  <p className="text-sm text-gray-600">TTFB y Lighthouse medidos cada mes — ver <a href="/benchmark" className="text-primary hover:underline">/benchmark</a></p>
                 </div>
               </li>
 
