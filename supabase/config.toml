@@ -53,3 +53,6 @@ verify_jwt = false
 
 [functions.run-benchmark]
 verify_jwt = false
+
+[functions.export-methodology-data]
+verify_jwt = false
