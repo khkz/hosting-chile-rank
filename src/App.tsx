@@ -37,6 +37,7 @@ import Catalogo from './pages/Catalogo';
 import CatalogoDetalle from './pages/CatalogoDetalle';
 import Benchmark from './pages/Benchmark';
 import MetodologiaBenchmark from './pages/MetodologiaBenchmark';
+import Metodologia from './pages/Metodologia';
 import MejorHostingChile2026 from './pages/MejorHostingChile2026';
 import Sitemap from './pages/Sitemap';
 import NotFound from './pages/NotFound';
@@ -133,6 +134,7 @@ function App() {
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/metodologia-benchmark" element={<MetodologiaBenchmark />} />
+        <Route path="/metodologia" element={<Metodologia />} />
         <Route path="/mejor-hosting-chile-2026" element={<MejorHostingChile2026 />} />
         <Route path="/mejor-hosting-chile-2025" element={<Navigate to="/mejor-hosting-chile-2026" replace />} />
         <Route path="/mejor-hosting-chile" element={<Navigate to="/mejor-hosting-chile-2026" replace />} />
