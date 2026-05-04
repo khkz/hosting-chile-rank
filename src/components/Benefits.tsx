@@ -42,23 +42,27 @@ const Benefits = () => {
           />
         </div>
 
-        {/* Additional Trust Section */}
+        {/* Trust Section — métricas reales o links honestos */}
         <div className="mt-20 text-center">
           <div className="bg-gradient-to-r from-[#2B2D42] to-gray-800 rounded-3xl p-12 text-white">
-            <h3 className="text-3xl font-bold mb-6">Más de 22,000 sitios confían en nuestras recomendaciones</h3>
-            <div className="grid md:grid-cols-3 gap-8 mt-8">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-[#EF233C] mb-2">99.9%</div>
-                <div className="text-gray-300">Uptime garantizado</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-[#EF233C] mb-2">&lt;200ms</div>
-                <div className="text-gray-300">Tiempo de respuesta</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-[#EF233C] mb-2">24/7</div>
-                <div className="text-gray-300">Soporte técnico</div>
-              </div>
+            <h3 className="text-3xl font-bold mb-4">Comparamos con datos, no con promesas</h3>
+            <p className="text-gray-300 max-w-2xl mx-auto mb-8">
+              Publicamos cada mes mediciones reales de TTFB, Lighthouse y uptime de los proveedores
+              chilenos. Sin cifras inventadas: cada número se puede reproducir.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 mt-8">
+              <a href="/benchmark" className="block p-6 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors">
+                <div className="text-2xl font-bold text-[#EF233C] mb-1">Uptime real</div>
+                <div className="text-gray-300 text-sm">Pings horarios automáticos</div>
+              </a>
+              <a href="/benchmark" className="block p-6 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors">
+                <div className="text-2xl font-bold text-[#EF233C] mb-1">TTFB y Lighthouse</div>
+                <div className="text-gray-300 text-sm">Mediciones reproducibles</div>
+              </a>
+              <a href="/metodologia" className="block p-6 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors">
+                <div className="text-2xl font-bold text-[#EF233C] mb-1">Metodología abierta</div>
+                <div className="text-gray-300 text-sm">Pesos y fórmulas públicas</div>
+              </a>
             </div>
           </div>
         </div>
