@@ -352,16 +352,13 @@ const RankingPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-2 mb-4 items-center">
                   <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
                     {provider.price}
                   </Badge>
-                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
-                    Velocidad: {provider.speed}
-                  </Badge>
-                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
-                    Uptime: {provider.uptime}
-                  </Badge>
+                  <Link to="/benchmark" className="text-xs text-primary hover:underline">
+                    Ver mediciones reales →
+                  </Link>
                 </div>
                 
                 <ul className="mb-6 text-sm space-y-2">
