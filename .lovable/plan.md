@@ -1,167 +1,98 @@
 
-# Mediciones automáticas de velocidad con historial y metodología pública
+# Plan: Página de Metodología, Autoría y Evidencias
 
-## Objetivo
-Reemplazar los datos hardcodeados de `/benchmark` con mediciones reales, recurrentes y reproducibles por proveedor, mostrando fecha, fuente y metodología visible.
+## Contexto
 
-## 1. Esquema de base de datos (3 tablas nuevas)
+Hoy existen tres páginas dispersas con información parcial:
+- `/nuestro-metodo` (NuestroMetodo.tsx): proceso de 5 pasos + tabla de pesos.
+- `/transparencia-hosting-chile` (TransparenciaHosting.tsx): info de transparencia.
+- `/metodologia-benchmark` (MetodologiaBenchmark.tsx): metodología técnica del benchmark de velocidad.
 
-```sql
--- Configuración de qué medir por empresa
-ALTER TABLE hosting_companies 
-  ADD COLUMN benchmark_target_url text,  -- URL pública a medir (sitio comercial o landing)
-  ADD COLUMN benchmark_enabled boolean DEFAULT true;
+Falta una página **canónica** que centralice metodología completa, autoría/responsables, evidencias verificables con enlaces directos, y un bloque "cómo se calculó el ranking" con la fórmula real y datos en vivo.
 
--- Pings frecuentes (cada hora) → uptime + TTFB rolling
-CREATE TABLE uptime_pings (
-  id bigserial PRIMARY KEY,
-  company_id uuid NOT NULL REFERENCES hosting_companies(id) ON DELETE CASCADE,
-  measured_at timestamptz NOT NULL DEFAULT now(),
-  status_code int,
-  ttfb_ms int,                  -- time to first byte
-  total_ms int,                 -- request completo
-  ok boolean NOT NULL,
-  error text,
-  region text DEFAULT 'edge'    -- región del worker (Deno Deploy ubicación)
-);
-CREATE INDEX idx_uptime_pings_company_time ON uptime_pings(company_id, measured_at DESC);
+## Entregables
 
--- Snapshot mensual reproducible (Lighthouse + agregados)
-CREATE TABLE benchmark_runs (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  run_date timestamptz NOT NULL DEFAULT now(),
-  methodology_version text NOT NULL DEFAULT 'v1.0',
-  status text NOT NULL DEFAULT 'running',  -- running|completed|failed
-  total_providers int DEFAULT 0
-);
+### 1. Nueva página `/metodologia` (`src/pages/Metodologia.tsx`)
 
-CREATE TABLE benchmark_results (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  run_id uuid NOT NULL REFERENCES benchmark_runs(id) ON DELETE CASCADE,
-  company_id uuid NOT NULL REFERENCES hosting_companies(id),
-  measured_at timestamptz NOT NULL DEFAULT now(),
-  -- TTFB agregado (5 muestras, mediana)
-  ttfb_median_ms int,
-  ttfb_p95_ms int,
-  ttfb_samples jsonb,          -- las 5 mediciones crudas
-  -- Lighthouse / PageSpeed (mobile)
-  lighthouse_perf int,         -- 0-100
-  lighthouse_seo int,
-  lighthouse_a11y int,
-  lcp_ms int,
-  cls numeric,
-  fcp_ms int,
-  -- Uptime calculado (últimos 30 días al momento del run)
-  uptime_30d_pct numeric,
-  -- Tecnología detectada
-  server_software text,        -- header Server
-  http_version text,           -- HTTP/1.1, HTTP/2, HTTP/3
-  has_brotli boolean,
-  -- Score compuesto (fórmula pública)
-  composite_score numeric,
-  raw_json jsonb               -- evidencia cruda de PageSpeed
-);
-CREATE INDEX idx_results_company ON benchmark_results(company_id, measured_at DESC);
+Página tipo "documento vivo" con índice lateral pegajoso (TOC) y secciones ancla:
 
--- Metodología versionada y pública
-CREATE TABLE benchmark_methodology (
-  version text PRIMARY KEY,
-  markdown text NOT NULL,
-  published_at timestamptz NOT NULL DEFAULT now(),
-  is_current boolean DEFAULT false
-);
-```
+1. **Resumen ejecutivo** — qué medimos, cuándo, cómo y quién.
+2. **Autoría y responsabilidad editorial**
+   - Editor responsable, contacto público, fecha última revisión.
+   - Declaración de independencia (no aceptamos pagos por posiciones).
+   - Política de afiliados (cuándo aplica, cuándo no).
+3. **Fuentes de datos y evidencias** — tabla con cada fuente:
+   - Reclamos.cl → enlace al perfil consultado por proveedor.
+   - Uptime pings (tabla `uptime_pings`) → link a endpoint público de exportación.
+   - Benchmarks Lighthouse + TTFB (`benchmark_results`, `benchmark_runs`) → link a `/metodologia-benchmark` y descarga JSON.
+   - Curaduría OSINT (panel admin interno, resumen público).
+   - NIC Chile / WHOIS (para señales de antigüedad y dominio).
+4. **Cómo se calcula el ranking (fórmula)**
+   - Bloque visual con la fórmula:
+     ```text
+     score_final = 0.30·reputación + 0.25·uptime + 0.20·velocidad
+                 + 0.15·soporte   + 0.10·precio
+     ```
+   - Por cada factor: cómo se normaliza (0–10), de qué tabla sale, frecuencia de actualización.
+   - Reglas de exclusión: `is_verified=false`, `is_curated=false`, score < 7.0, monopolio detectado.
+   - Ejemplo trabajado: tomar el #1 actual de la BD vía React Query y mostrar sus 5 sub-scores y el cálculo paso a paso.
+5. **Frecuencia y versionado**
+   - Uptime: cada hora (cron).
+   - Benchmark profundo: mensual (día 1) + manual.
+   - Curaduría: revisión trimestral.
+   - Mostrar versión actual desde `benchmark_methodology` (campo `version`, `updated_at`).
+6. **Cambios y changelog** — lista las últimas N filas de `benchmark_methodology` ordenadas por versión.
+7. **Documentos descargables / enlaces**
+   - Markdown de metodología vigente (render desde `benchmark_methodology.content_md`).
+   - Botón "Exportar últimos resultados (JSON)" → llama edge function de solo lectura.
+   - Enlace a `/metodologia-benchmark`, `/transparencia-hosting-chile`, `/nuestro-metodo` (mantenidos como sub-vistas).
+8. **Limitaciones y conflictos de interés** — sección honesta sobre lo que no medimos.
+9. **Contacto para correcciones** — link a `/contacto` con asunto pre-rellenado.
 
-RLS: lectura pública en las 4 tablas; escritura solo service role.
+### 2. Hook de datos `src/hooks/useMethodology.ts`
 
-## 2. Edge functions
+- `useLatestMethodology()` → fila más reciente de `benchmark_methodology`.
+- `useMethodologyChangelog()` → historial de versiones.
+- `useTopProviderBreakdown()` → top 1 con sus sub-scores para el ejemplo trabajado (join `hosting_companies` + `benchmark_results` + último `uptime_pings` agregado).
 
-### `uptime-monitor` (cron horario)
-- Lee `hosting_companies` con `benchmark_enabled=true` y `benchmark_target_url` no nulo.
-- Para cada una: `fetch(HEAD)` con timing, mide TTFB y total, status, timeout 10s.
-- Inserta una fila por empresa en `uptime_pings`.
-- Sin secretos externos.
+### 3. Componente reutilizable `src/components/RankingFormulaBlock.tsx`
 
-### `run-benchmark` (cron mensual día 1, 03:00 CLT — disparable manual desde admin)
-Por cada empresa habilitada:
-1. **TTFB**: 5 fetch GET secuenciales con 2s de espera entre cada uno → mediana + p95 + array crudo.
-2. **PageSpeed Insights API** (`GOOGLE_PAGESPEED_API_KEY` ya existe):  
-   `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=...&strategy=mobile&category=performance&category=seo&category=accessibility`
-3. **Headers**: extraer `Server`, detectar `br` en `Content-Encoding`, ALPN/HTTP version del response.
-4. **Uptime 30d**: query a `uptime_pings` (% ok últimos 30 días).
-5. **Composite score** (fórmula pública):  
-   `0.35*lighthouse_perf + 0.25*ttfb_score + 0.25*uptime_score + 0.15*seo_score`  
-   (donde `ttfb_score = max(0, 100 - ttfb_median_ms/10)` etc.)
-6. Insertar en `benchmark_results`, marcar run `completed`.
+Bloque "cómo se calculó el ranking" que se embebe en:
+- `/metodologia` (versión completa).
+- `/ranking` arriba o como acordeón (versión compacta con link "ver metodología completa").
+- `/` (homepage) como sección de confianza.
 
-### `trigger-benchmark` (POST manual, requiere `x-admin-api-key`)
-- Crea nuevo `benchmark_runs` y dispara `run-benchmark` en background.
+Props: `variant: 'full' | 'compact'`.
 
-## 3. Cron jobs (pg_cron + pg_net)
-```sql
--- Hourly uptime
-select cron.schedule('uptime-monitor-hourly', '0 * * * *', $$
-  select net.http_post(
-    url:='https://oegvwjxrlmtwortyhsrv.supabase.co/functions/v1/uptime-monitor',
-    headers:='{"Content-Type":"application/json","apikey":"<ANON_KEY>"}'::jsonb,
-    body:='{}'::jsonb
-  );
-$$);
+### 4. Edge function `export-methodology-data` (read-only, pública)
 
--- Monthly full benchmark (día 1, 06:00 UTC = 03:00 CLT)
-select cron.schedule('benchmark-monthly', '0 6 1 * *', $$
-  select net.http_post(
-    url:='https://oegvwjxrlmtwortyhsrv.supabase.co/functions/v1/run-benchmark',
-    headers:='{"Content-Type":"application/json","apikey":"<ANON_KEY>"}'::jsonb,
-    body:='{}'::jsonb
-  );
-$$);
-```
+`supabase/functions/export-methodology-data/index.ts`
+- GET → devuelve JSON con: últimos `benchmark_results` por proveedor curado, último `uptime_pings` agregado (uptime % 30d), versión de metodología.
+- Sin auth, rate-limited por IP (reusar patrón existente).
+- Configurar `verify_jwt = false` en `supabase/config.toml`.
 
-## 4. Frontend — reescribir `/benchmark`
+### 5. Rutas y navegación
 
-Reemplazo total de `src/pages/Benchmark.tsx` (eliminar `benchmarkData` hardcodeado).
+- Añadir `<Route path="/metodologia" element={<Metodologia />} />` en `src/App.tsx`.
+- Redirección suave: mantener `/nuestro-metodo` y `/transparencia-hosting-chile` con banner "Esta página forma parte de nuestra Metodología completa →".
+- Footer y Navbar: enlace principal "Metodología" apuntando a `/metodologia`.
+- Sitemap: incluir nueva URL.
 
-Estructura:
-1. **Hero** con fecha del último run + versión metodología + botón "Descargar JSON crudo".
-2. **Bloque metodología** (colapsable) leído de `benchmark_methodology` actual, render markdown.
-3. **Tabla principal ordenable** (shadcn Table) con columnas: Proveedor · Score · TTFB · Lighthouse · Uptime 30d · Server · Última medición.
-4. **4 charts** (recharts) con datos reales del último run: TTFB mediana, Lighthouse perf, Uptime 30d, distribución de scores.
-5. **Histórico por proveedor**: dropdown + line chart de TTFB últimos 6 meses (`benchmark_results` filtrado).
-6. **Tooltip por celda**: "Medido el {date} desde Supabase Edge ({region}). 5 muestras, mediana." + link al raw_json.
-7. **Schema.org** `Dataset` + `Table` con datos reales y `dateModified`.
+### 6. SEO / Schema
 
-Hooks nuevos: `useLatestBenchmark()`, `useCompanyHistory(slug)` con React Query.
+- `DynamicMetaTags` con title/description específicos.
+- JSON-LD `TechArticle` + `Dataset` (apuntando al export JSON) + `Person` (autor).
+- Breadcrumbs.
 
-## 5. Panel admin
-Nueva página `src/pages/admin/Benchmark.tsx`:
-- Lista de empresas con `benchmark_target_url` editable inline + toggle `benchmark_enabled`.
-- Botón "Ejecutar benchmark ahora" → llama `trigger-benchmark`.
-- Tabla de runs históricos con status y conteo.
-- Editor markdown de metodología (crear nueva versión).
+## Detalles técnicos
 
-## 6. Página `/metodologia-benchmark`
-Nueva ruta pública que lee `benchmark_methodology` actual + lista versiones anteriores. Linkeada desde `/benchmark` y desde el footer.
+- **Pesos**: hoy hardcodeados en `NuestroMetodo.tsx`. Mantener mismos pesos (30/25/20/15/10) y centralizarlos en `src/lib/rankingWeights.ts` para que el bloque, el cálculo del ranking y la página los lean del mismo sitio.
+- **Ejemplo trabajado**: si no hay datos de un sub-score para el top 1, mostrar "—" con tooltip "pendiente próximo benchmark" en vez de error.
+- **Render Markdown**: usar `react-markdown` (ya presente si se usa en blog; verificar y agregar si falta).
+- **Accesibilidad**: TOC con `aria-current`, anclas con `scroll-margin-top`, contraste AA, targets 44px.
+- **Mobile**: TOC colapsa a `<details>` arriba del contenido.
 
-## 7. Datos iniciales (seed)
-- Insertar metodología v1.0 con la fórmula del score y las fuentes.
-- UPDATE `hosting_companies` curadas: copiar `website` a `benchmark_target_url` para las 17 verificadas.
-- Trigger manual del primer run desde admin para tener datos visibles inmediatamente.
+## Fuera de alcance
 
-## 8. Detalles técnicos clave
-- **Rate limit PageSpeed**: 25k req/día gratis. Con 17-30 empresas mensuales, sobrado.
-- **Concurrencia en `run-benchmark`**: serial con 3s entre llamadas para no saturar.
-- **Timezone**: todos los timestamps `timestamptz`, render en frontend con `date-fns` en `es-CL`.
-- **Composite score**: documentado en metodología, fórmula visible al usuario, sin pesos ocultos.
-- **No tocar**: tablas/funciones existentes, layout general del sitio, navbar/footer.
-
-## 9. Validación de éxito
-- Tras desplegar y trigger manual: `/benchmark` muestra datos reales con fecha actual.
-- Tras 24h: `uptime_pings` tiene 24 filas por empresa habilitada.
-- Tooltip de cada métrica enlaza a `raw_json` descargable.
-- Cero números hardcodeados en `Benchmark.tsx`.
-
-## Confirmaciones antes de ejecutar
-1. ¿Apruebas crear las 4 tablas + ALTER en `hosting_companies`?
-2. ¿Empezamos midiendo solo las **17 empresas curadas** o las 33?
-3. ¿Lanzamos el primer benchmark manual al terminar la implementación (sí recomendado)?
+- No se modifica el algoritmo real del ranking (solo se documenta el existente).
+- No se crea editor admin de metodología (ya existe vía tabla `benchmark_methodology`; se puede añadir en otro ticket).
