@@ -11,6 +11,7 @@ import CertificationBadges from '@/components/CertificationBadges';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { PublicReviewsList } from '@/components/reviews/PublicReviewsList';
 import { ReviewForm } from '@/components/reviews/ReviewForm';
+import { ReputationCard } from '@/components/reputation/ReputationCard';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
