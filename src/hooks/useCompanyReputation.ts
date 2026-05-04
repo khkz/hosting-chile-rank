@@ -25,7 +25,7 @@ export function useCompanyReputation(companyId: string | undefined) {
         _company_id: companyId,
       } as never);
       if (error) throw error;
-      const row = Array.isArray(data) ? (data[0] as Record<string, unknown> | undefined) : null;
+      const row = data && Array.isArray(data) ? (data[0] as Record<string, unknown> | undefined) : null;
       if (!row) return null;
       return {
         company_id: companyId,
