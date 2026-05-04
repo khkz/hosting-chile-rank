@@ -48,7 +48,8 @@ const Footer = () => {
               <li><Link to="/calculadora-tco" className="text-gray-300 hover:text-gray-400 transition-colors">Calculadora de TCO</Link></li>
               <li><Link to="/comparativa" className="text-gray-300 hover:text-gray-400 transition-colors">Comparativas</Link></li>
               <li><Link to="/guia-elegir-hosting" className="text-gray-300 hover:text-gray-400 transition-colors">Guías de Compra</Link></li>
-              <li><Link to="/benchmark" className="text-gray-300 hover:text-gray-400 transition-colors">Benchmarks</Link></li>
+             <li><Link to="/benchmark" className="text-gray-300 hover:text-gray-400 transition-colors">Benchmarks</Link></li>
+             <li><Link to="/metodologia" className="text-gray-300 hover:text-gray-400 transition-colors">Metodología</Link></li>
               <li><Link to="/catalogo" className="text-gray-300 hover:text-gray-400 transition-colors">Catálogo Completo</Link></li>
             </ul>
           </div>
