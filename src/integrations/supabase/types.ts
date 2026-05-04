@@ -939,6 +939,7 @@ export type Database = {
           ranking_badges: string[]
           ranking_features: string[]
           ranking_position: number | null
+          reputation_sync_enabled: boolean
           site_type: string | null
           slug: string
           social_media: Json | null
@@ -1004,6 +1005,7 @@ export type Database = {
           ranking_badges?: string[]
           ranking_features?: string[]
           ranking_position?: number | null
+          reputation_sync_enabled?: boolean
           site_type?: string | null
           slug: string
           social_media?: Json | null
@@ -1069,6 +1071,7 @@ export type Database = {
           ranking_badges?: string[]
           ranking_features?: string[]
           ranking_position?: number | null
+          reputation_sync_enabled?: boolean
           site_type?: string | null
           slug?: string
           social_media?: Json | null
@@ -1534,6 +1537,48 @@ export type Database = {
           },
         ]
       }
+      reputation_snapshots: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          main_complaints: Json | null
+          measured_at: string
+          methodology_version: string
+          note: string | null
+          sentiment_score: number | null
+          severity: string | null
+          sources: Json | null
+          texts_extracted: number | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          main_complaints?: Json | null
+          measured_at?: string
+          methodology_version?: string
+          note?: string | null
+          sentiment_score?: number | null
+          severity?: string | null
+          sources?: Json | null
+          texts_extracted?: number | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          main_complaints?: Json | null
+          measured_at?: string
+          methodology_version?: string
+          note?: string | null
+          sentiment_score?: number | null
+          severity?: string | null
+          sources?: Json | null
+          texts_extracted?: number | null
+        }
+        Relationships: []
+      }
       reverse_ip_cache: {
         Row: {
           cached_at: string | null
@@ -1938,6 +1983,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_company_reputation: {
+        Args: { _company_id: string }
+        Returns: {
+          company_id: string
+          internal_complaints_12m: number
+          internal_complaints_high: number
+          last_synced_at: string
+          main_complaints: Json
+          sentiment_score: number
+          severity: string
+          sources: Json
+          verified_reviews_avg: number
+          verified_reviews_count: number
+        }[]
+      }
       get_public_domains: {
         Args: never
         Returns: {

@@ -1,98 +1,110 @@
 
-# Plan: Página de Metodología, Autoría y Evidencias
+# Plan: Reputación verificable con Reclamos.cl + reseñas reales
 
-## Contexto
+## Objetivo
 
-Hoy existen tres páginas dispersas con información parcial:
-- `/nuestro-metodo` (NuestroMetodo.tsx): proceso de 5 pasos + tabla de pesos.
-- `/transparencia-hosting-chile` (TransparenciaHosting.tsx): info de transparencia.
-- `/metodologia-benchmark` (MetodologiaBenchmark.tsx): metodología técnica del benchmark de velocidad.
+Conectar la analítica de reclamos (que ya existe vía edge function `complaints-checker` pero solo se usa ad-hoc en el OSINT Scanner) con la ficha pública de cada proveedor, persistir un historial de "snapshots de reputación" y mostrarlos junto a las reseñas verificadas (`hosting_reviews`) en una tarjeta unificada con criterios claros y enlaces a la fuente original.
 
-Falta una página **canónica** que centralice metodología completa, autoría/responsables, evidencias verificables con enlaces directos, y un bloque "cómo se calculó el ranking" con la fórmula real y datos en vivo.
+## Lo que ya existe (reutilizar)
 
-## Entregables
+- **Edge function `complaints-checker`**: busca en `reclamos.cl` vía Serper, extrae texto con Jina y resume con OpenAI. Devuelve `sentiment_score`, `main_complaints`, `severity`, `sources[]`. Hoy requiere `x-admin-api-key` y no persiste resultados.
+- **Tabla `public_complaints`**: reclamos enviados por usuarios verificados por email (status `verified`/`resolved`).
+- **Tabla `hosting_reviews`**: reseñas con sub-ratings (speed/support/price) y `is_verified_customer`.
+- **`PublicReviewsList`**: ya muestra reseñas con distribución de estrellas; solo se monta en `CatalogoDetalle`.
+- **`Resena.tsx`**: textos hardcoded sobre Reclamos.cl (a reemplazar por datos reales).
+- **`rankingWeights.ts`**: declara que la reputación pesa 30 % con fuente "Reclamos.cl + reseñas verificadas".
 
-### 1. Nueva página `/metodologia` (`src/pages/Metodologia.tsx`)
+## Cambios de base de datos
 
-Página tipo "documento vivo" con índice lateral pegajoso (TOC) y secciones ancla:
+Nueva tabla **`reputation_snapshots`** para guardar el histórico del análisis de Reclamos.cl por proveedor:
 
-1. **Resumen ejecutivo** — qué medimos, cuándo, cómo y quién.
-2. **Autoría y responsabilidad editorial**
-   - Editor responsable, contacto público, fecha última revisión.
-   - Declaración de independencia (no aceptamos pagos por posiciones).
-   - Política de afiliados (cuándo aplica, cuándo no).
-3. **Fuentes de datos y evidencias** — tabla con cada fuente:
-   - Reclamos.cl → enlace al perfil consultado por proveedor.
-   - Uptime pings (tabla `uptime_pings`) → link a endpoint público de exportación.
-   - Benchmarks Lighthouse + TTFB (`benchmark_results`, `benchmark_runs`) → link a `/metodologia-benchmark` y descarga JSON.
-   - Curaduría OSINT (panel admin interno, resumen público).
-   - NIC Chile / WHOIS (para señales de antigüedad y dominio).
-4. **Cómo se calcula el ranking (fórmula)**
-   - Bloque visual con la fórmula:
-     ```text
-     score_final = 0.30·reputación + 0.25·uptime + 0.20·velocidad
-                 + 0.15·soporte   + 0.10·precio
-     ```
-   - Por cada factor: cómo se normaliza (0–10), de qué tabla sale, frecuencia de actualización.
-   - Reglas de exclusión: `is_verified=false`, `is_curated=false`, score < 7.0, monopolio detectado.
-   - Ejemplo trabajado: tomar el #1 actual de la BD vía React Query y mostrar sus 5 sub-scores y el cálculo paso a paso.
-5. **Frecuencia y versionado**
-   - Uptime: cada hora (cron).
-   - Benchmark profundo: mensual (día 1) + manual.
-   - Curaduría: revisión trimestral.
-   - Mostrar versión actual desde `benchmark_methodology` (campo `version`, `updated_at`).
-6. **Cambios y changelog** — lista las últimas N filas de `benchmark_methodology` ordenadas por versión.
-7. **Documentos descargables / enlaces**
-   - Markdown de metodología vigente (render desde `benchmark_methodology.content_md`).
-   - Botón "Exportar últimos resultados (JSON)" → llama edge function de solo lectura.
-   - Enlace a `/metodologia-benchmark`, `/transparencia-hosting-chile`, `/nuestro-metodo` (mantenidos como sub-vistas).
-8. **Limitaciones y conflictos de interés** — sección honesta sobre lo que no medimos.
-9. **Contacto para correcciones** — link a `/contacto` con asunto pre-rellenado.
+- `company_id` (FK lógica a `hosting_companies`)
+- `measured_at`
+- `sentiment_score` (1–10)
+- `severity` (`Alta`/`Media`/`Baja`)
+- `main_complaints` (jsonb)
+- `sources` (jsonb — URLs de reclamos.cl)
+- `texts_extracted` (int)
+- `methodology_version` (default `v1.0`)
+- RLS: lectura pública, escritura solo admin / service role.
 
-### 2. Hook de datos `src/hooks/useMethodology.ts`
+Nueva vista pública **`company_reputation_summary`** (security_invoker) que consolida por `company_id`:
 
-- `useLatestMethodology()` → fila más reciente de `benchmark_methodology`.
-- `useMethodologyChangelog()` → historial de versiones.
-- `useTopProviderBreakdown()` → top 1 con sus sub-scores para el ejemplo trabajado (join `hosting_companies` + `benchmark_results` + último `uptime_pings` agregado).
+- último `sentiment_score` y `severity` desde `reputation_snapshots`
+- conteo de `public_complaints` con status `verified`/`resolved` últimos 12 meses, agrupado por `severity`
+- conteo y promedio de `hosting_reviews` con status `approved` y % `is_verified_customer`
+- `last_synced_at`
 
-### 3. Componente reutilizable `src/components/RankingFormulaBlock.tsx`
+(Si la vista no permite las agregaciones que necesito de forma simple, se implementa como función SQL `get_company_reputation(company_id uuid)` con `SECURITY INVOKER`.)
 
-Bloque "cómo se calculó el ranking" que se embebe en:
-- `/metodologia` (versión completa).
-- `/ranking` arriba o como acordeón (versión compacta con link "ver metodología completa").
-- `/` (homepage) como sección de confianza.
+## Edge functions
 
-Props: `variant: 'full' | 'compact'`.
+1. **Ampliar `complaints-checker`**:
+   - Aceptar header `x-admin-api-key` *o* invocación interna desde otra edge function (service role) para mantener el guard.
+   - Después de calcular el resultado, insertar una fila en `reputation_snapshots` con `service_role`.
+   - Mantener compat con el OSINT Scanner.
 
-### 4. Edge function `export-methodology-data` (read-only, pública)
+2. **Nueva `refresh-reputation`** (admin):
+   - Recibe `{ company_id }` o `{ all: true }` (rate limit 1/min por proveedor).
+   - Llama a `complaints-checker` por cada `hosting_companies` con `is_verified && is_curated && benchmark_enabled`.
+   - Devuelve resumen con OK/errores por proveedor.
 
-`supabase/functions/export-methodology-data/index.ts`
-- GET → devuelve JSON con: últimos `benchmark_results` por proveedor curado, último `uptime_pings` agregado (uptime % 30d), versión de metodología.
-- Sin auth, rate-limited por IP (reusar patrón existente).
-- Configurar `verify_jwt = false` en `supabase/config.toml`.
+3. **Cron mensual** (`pg_cron` en migración): dispara `refresh-reputation` el día 1 de cada mes a las 04:00.
 
-### 5. Rutas y navegación
+## Frontend
 
-- Añadir `<Route path="/metodologia" element={<Metodologia />} />` en `src/App.tsx`.
-- Redirección suave: mantener `/nuestro-metodo` y `/transparencia-hosting-chile` con banner "Esta página forma parte de nuestra Metodología completa →".
-- Footer y Navbar: enlace principal "Metodología" apuntando a `/metodologia`.
-- Sitemap: incluir nueva URL.
+### Nuevo componente `ReputationCard`
+Bloque visible en la ficha pública (`Resena.tsx` y `CatalogoDetalle.tsx`) que muestra:
 
-### 6. SEO / Schema
+1. **Score reputacional** (0–10) con badge de color según `severity`.
+2. **Origen de los datos** (chips):
+   - "Reclamos verificados internos" → cuenta de `public_complaints` aprobados
+   - "Reclamos.cl" → cuenta + último snapshot + enlace directo
+   - "Reseñas verificadas" → cuenta de `hosting_reviews` con `is_verified_customer = true`
+3. **Quejas principales** (lista corta) provenientes de `main_complaints` del último snapshot.
+4. **Última actualización** + link a `/metodologia#reputacion`.
+5. **Enlaces a fuentes**: cada URL de `sources` se muestra como link externo `rel="nofollow noopener"`.
 
-- `DynamicMetaTags` con title/description específicos.
-- JSON-LD `TechArticle` + `Dataset` (apuntando al export JSON) + `Person` (autor).
-- Breadcrumbs.
+Si no hay datos aún, muestra estado "Pendiente de auditoría" con CTA a la metodología (sin inventar números — regla brand).
 
-## Detalles técnicos
+### Nuevo hook `useCompanyReputation(companyId)`
+Wrapper React Query sobre `company_reputation_summary`/función RPC, con cache 30 min.
 
-- **Pesos**: hoy hardcodeados en `NuestroMetodo.tsx`. Mantener mismos pesos (30/25/20/15/10) y centralizarlos en `src/lib/rankingWeights.ts` para que el bloque, el cálculo del ranking y la página los lean del mismo sitio.
-- **Ejemplo trabajado**: si no hay datos de un sub-score para el top 1, mostrar "—" con tooltip "pendiente próximo benchmark" en vez de error.
-- **Render Markdown**: usar `react-markdown` (ya presente si se usa en blog; verificar y agregar si falta).
-- **Accesibilidad**: TOC con `aria-current`, anclas con `scroll-margin-top`, contraste AA, targets 44px.
-- **Mobile**: TOC colapsa a `<details>` arriba del contenido.
+### Cambios en páginas
+- **`src/pages/Resena.tsx`**: eliminar los párrafos hardcoded sobre reclamos.cl y reemplazar por `<ReputationCard companyId={...} />`. Mantener pros/cons editoriales.
+- **`src/pages/CatalogoDetalle.tsx`**: insertar `<ReputationCard>` arriba de `<PublicReviewsList>` para que las reseñas y la reputación externa convivan.
+- **`src/pages/Reclamos.tsx`**: añadir un panel "Reputación agregada por proveedor" usando la nueva vista, con tabla ordenable (proveedor / score / # reclamos verificados / # reclamos.cl / fuente).
+
+### Nuevo panel admin `ReputationSyncPanel`
+En `src/pages/admin/Dashboard.tsx` o un nuevo `/admin/reputation`:
+- Botón "Refrescar todo" (llama `refresh-reputation` con `all: true`).
+- Tabla por proveedor: último `sentiment_score`, `last_synced_at`, botón "Refrescar".
+- Bandera para excluir un proveedor (campo nuevo `reputation_sync_enabled` en `hosting_companies`, default true).
+
+## Criterios de verificación visibles al usuario
+
+En `ReputationCard` y en `/metodologia` se documentan los criterios:
+
+- **Reseña verificada**: usuario autenticado + email confirmado + `is_verified_customer = true` (factura, captura de panel o dominio activo).
+- **Reclamo verificado interno**: status = `verified` en `public_complaints` (email confirmado vía token de 48 h).
+- **Reclamo externo**: aparece en resultados Google `site:reclamos.cl` y se cita la URL exacta.
+- **Score**: derivado del último snapshot ponderado con la cuenta de reclamos verificados internos. Fórmula y pesos quedan en `rankingWeights.ts` y se renderizan en la metodología.
+
+## SEO y schema
+
+- Inyectar `Review` y `AggregateRating` JSON-LD en `Resena` y `CatalogoDetalle` con datos reales del summary (ya existe `SEOReviewSchema` — solo conectar al hook).
+- Microcopy "Datos verificados" + enlaces a fuentes (mejora E-E-A-T y GEO).
+
+## Reglas y restricciones del proyecto
+
+- Mostrar la `ReputationCard` solo para proveedores con `is_verified && is_curated`.
+- Sin afirmaciones falsas: si no hay snapshot, decirlo explícitamente.
+- Quitar el badge "Open Data" de la página de Reclamos (regla brand).
+- El campo `reporter_email`/`reporter_name` sigue oculto a no admins (fix de seguridad reciente).
+- WCAG AA: cards con contraste, badges con texto + ícono (no solo color), targets ≥44 px.
 
 ## Fuera de alcance
 
-- No se modifica el algoritmo real del ranking (solo se documenta el existente).
-- No se crea editor admin de metodología (ya existe vía tabla `benchmark_methodology`; se puede añadir en otro ticket).
+- No se conecta a APIs pagadas (Trustpilot, Google Reviews) — solo Reclamos.cl + datos internos.
+- No se cambia la fórmula del ranking ahora; sólo se asegura que el campo "reputación" tenga datos reales para alimentarla más adelante.
+- No se permite a proveedores responder reseñas en este alcance (ya existe parcialmente vía `review_responses`).
