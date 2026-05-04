@@ -201,6 +201,11 @@ function App() {
                 <CompanyCuration />
               </ProtectedRoute>
             } />
+            <Route path="/admin/reputation" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReputation />
+              </ProtectedRoute>
+            } />
             <Route path="/provider/dashboard" element={
               <ProtectedRoute allowedRoles={['hosting_provider']}>
                 <ProviderDashboard />
