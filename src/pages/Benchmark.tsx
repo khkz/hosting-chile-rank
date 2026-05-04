@@ -429,13 +429,16 @@ const BenchmarkRowItem: React.FC<{ row: BenchmarkRow }> = ({ row }) => {
         {row.has_brotli && <Badge variant="outline" className="ml-1 text-[10px]">br</Badge>}
       </TableCell>
       <TableCell className="text-xs text-muted-foreground">
-        <div className="flex items-center gap-1">
-          {measuredLabel}
-          {targetUrl && (
-            <a href={targetUrl} target="_blank" rel="nofollow noopener" className="text-muted-foreground hover:text-foreground">
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          )}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1">
+            {measuredLabel}
+            {targetUrl && (
+              <a href={targetUrl} target="_blank" rel="nofollow noopener" className="text-muted-foreground hover:text-foreground" title="Abrir URL medida">
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+          </div>
+          {targetUrl && <ReproduceButton url={targetUrl} label="PageSpeed →" />}
         </div>
       </TableCell>
     </TableRow>
