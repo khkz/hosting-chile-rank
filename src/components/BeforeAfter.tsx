@@ -101,8 +101,8 @@ const BeforeAfter = () => {
                   <CheckCircle2 className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">Más conversiones</p>
-                  <p className="text-sm text-gray-600">+38% ventas con sitio rápido</p>
+                  <p className="font-semibold text-gray-800">Velocidad influye en conversión</p>
+                  <p className="text-sm text-gray-600">Google CWV y estudios de Akamai/Google relacionan velocidad con tasa de rebote</p>
                 </div>
               </li>
             </ul>
