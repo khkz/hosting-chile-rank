@@ -163,6 +163,13 @@ const Benchmark: React.FC = () => {
           </div>
         </section>
 
+        {/* Fuentes y herramientas — visible siempre */}
+        <section className="py-10">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <SourcesCard />
+          </div>
+        </section>
+
         {/* Estado vacío */}
         {!isLoading && !run && (
           <section className="py-20">
