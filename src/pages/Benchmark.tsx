@@ -28,6 +28,8 @@ import { es } from "date-fns/locale";
 import {
   useLatestBenchmark, useCompanyHistory, useCurrentMethodology, type BenchmarkRow,
 } from "@/hooks/useBenchmark";
+import SourcesCard from "@/components/benchmark/SourcesCard";
+import ReproduceButton from "@/components/benchmark/ReproduceButton";
 
 const fmtDate = (iso: string) =>
   format(new Date(iso), "d 'de' MMMM yyyy, HH:mm", { locale: es });
