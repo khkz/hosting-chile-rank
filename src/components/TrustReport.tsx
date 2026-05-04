@@ -1,168 +1,121 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Shield, CheckCircle2, TrendingUp, Award, ExternalLink } from 'lucide-react';
+import { Shield, CheckCircle2, TrendingUp, Award, ExternalLink, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-
-interface ReputationData {
-  provider: string;
-  reclamosCount: number;
-  yearsMonitored: number;
-  uptimeVerified: number;
-  speedGrade: string;
-  totalReviews?: number;
-  averageRating?: number;
-}
+import { useBenchmarkTopProviders } from '@/hooks/useBenchmarkTopProviders';
 
 interface TrustReportProps {
-  topProviders?: ReputationData[];
   showMethodology?: boolean;
 }
 
-const defaultProviders: ReputationData[] = [
-  {
-    provider: "HostingPlus",
-    reclamosCount: 0,
-    yearsMonitored: 5,
-    uptimeVerified: 99.98,
-    speedGrade: "A+",
-    totalReviews: 247,
-    averageRating: 9.8
-  },
-  {
-    provider: "EcoHosting",
-    reclamosCount: 2,
-    yearsMonitored: 4,
-    uptimeVerified: 99.95,
-    speedGrade: "A",
-    totalReviews: 189,
-    averageRating: 9.5
-  },
-  {
-    provider: "Hostname",
-    reclamosCount: 1,
-    yearsMonitored: 6,
-    uptimeVerified: 99.92,
-    speedGrade: "A",
-    totalReviews: 156,
-    averageRating: 9.2
-  }
-];
+const TrustReport: React.FC<TrustReportProps> = ({ showMethodology = true }) => {
+  const { data: providers = [], isLoading } = useBenchmarkTopProviders(3);
 
-const TrustReport: React.FC<TrustReportProps> = ({ 
-  topProviders = defaultProviders,
-  showMethodology = true 
-}) => {
   return (
     <section className="py-12 bg-gradient-to-br from-primary/5 to-primary/10">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
             <Shield className="h-4 w-4" />
-            <span className="text-sm font-semibold">Verificación Independiente</span>
+            <span className="text-sm font-semibold">Datos verificables</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Reputación Verificada con Datos Reales
+            Top proveedores según mediciones reales
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Nuestro ranking se basa en datos verificables de{' '}
-            <a 
-              href="https://www.reclamos.cl" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary font-semibold hover:underline inline-flex items-center gap-1"
-            >
-              Reclamos.cl <ExternalLink className="h-3 w-3" />
-            </a>
-            {' '}y monitoreo continuo de uptime y velocidad
+            Ranking calculado con TTFB, Lighthouse y uptime medidos automáticamente.
+            Cada cifra puede reproducirse desde{' '}
+            <Link to="/benchmark" className="text-primary font-semibold hover:underline">
+              /benchmark
+            </Link>
+            {' '}y la metodología está publicada.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {topProviders.map((provider, index) => (
-            <Card key={index} className="relative overflow-hidden">
-              {index === 0 && (
-                <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-bold rounded-bl-lg">
-                  #1 Verificado
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle className="text-xl">{provider.provider}</CardTitle>
-                <CardDescription>
-                  Monitoreado durante {provider.yearsMonitored} años
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Reclamos.cl Badge */}
-                <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
-                    <div>
-                      <p className="text-sm font-semibold text-green-900">Reclamos.cl</p>
-                      <p className="text-xs text-green-700">Fuente verificada</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-green-600">{provider.reclamosCount}</p>
-                    <p className="text-xs text-green-700">reclamos</p>
-                  </div>
-                </div>
-
-                {/* Uptime Metric */}
-                <div className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="text-sm font-semibold text-blue-900">Uptime</p>
-                      <p className="text-xs text-blue-700">Último año</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-blue-600">{provider.uptimeVerified}%</p>
-                    <p className="text-xs text-blue-700">verificado</p>
-                  </div>
-                </div>
-
-                {/* Speed Grade */}
-                <div className="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Award className="h-5 w-5 text-yellow-600" />
-                    <div>
-                      <p className="text-sm font-semibold text-yellow-900">Velocidad</p>
-                      <p className="text-xs text-yellow-700">PageSpeed Score</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-yellow-600">{provider.speedGrade}</p>
-                    <p className="text-xs text-yellow-700">calificación</p>
-                  </div>
-                </div>
-
-                {/* User Reviews */}
-                {provider.totalReviews && (
-                  <div className="text-center pt-3 border-t">
-                    <p className="text-sm text-muted-foreground">
-                      <span className="font-bold text-primary">★ {provider.averageRating}/10</span>
-                      {' '}({provider.totalReviews} opiniones reales)
-                    </p>
+        {isLoading ? (
+          <p className="text-center text-muted-foreground">Cargando datos del último benchmark…</p>
+        ) : providers.length === 0 ? (
+          <Card className="max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle>Aún no hay un run publicado</CardTitle>
+              <CardDescription>
+                El sistema de medición está activo. La primera ejecución completa se publicará en{' '}
+                <Link to="/benchmark" className="text-primary hover:underline">/benchmark</Link>.
+                No mostramos cifras inventadas.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {providers.map((p, index) => (
+              <Card key={p.company_id} className="relative overflow-hidden">
+                {index === 0 && (
+                  <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-bold rounded-bl-lg">
+                    #1 medido
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                <CardHeader>
+                  <CardTitle className="text-xl">{p.name}</CardTitle>
+                  <CardDescription>
+                    Score compuesto:{' '}
+                    <span className="font-bold text-foreground">
+                      {p.composite_score?.toFixed(1) ?? '—'}/100
+                    </span>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-muted/40 border rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Activity className="h-5 w-5 text-primary" />
+                      <p className="text-sm font-semibold">TTFB mediana</p>
+                    </div>
+                    <p className="text-lg font-bold">
+                      {p.ttfb_median_ms != null ? `${p.ttfb_median_ms} ms` : '—'}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-muted/40 border rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-5 w-5 text-primary" />
+                      <p className="text-sm font-semibold">Uptime 30 días</p>
+                    </div>
+                    <p className="text-lg font-bold">
+                      {p.uptime_30d_pct != null ? `${p.uptime_30d_pct.toFixed(2)}%` : 'sin datos aún'}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-muted/40 border rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Award className="h-5 w-5 text-primary" />
+                      <p className="text-sm font-semibold">Lighthouse</p>
+                    </div>
+                    <p className="text-lg font-bold">
+                      {p.lighthouse_perf != null ? `${p.lighthouse_perf}/100` : '—'}
+                    </p>
+                  </div>
+                  <div className="text-center pt-2 border-t">
+                    <Link
+                      to={`/benchmark`}
+                      className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+                    >
+                      Ver detalle y reproducibilidad <ExternalLink className="h-3 w-3" />
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
-        {/* Methodology CTA */}
         {showMethodology && (
           <div className="text-center">
             <Button asChild size="lg" variant="outline" className="gap-2">
-              <Link to="/nuestro-metodo">
-                <Shield className="h-4 w-4" />
-                Ver Metodología Completa
+              <Link to="/metodologia-benchmark">
+                <CheckCircle2 className="h-4 w-4" />
+                Ver metodología completa
               </Link>
             </Button>
             <p className="text-sm text-muted-foreground mt-3">
-              100% transparente • Datos públicos • Actualización mensual
+              Pesos públicos · Datos descargables · Mediciones mensuales
             </p>
           </div>
         )}
