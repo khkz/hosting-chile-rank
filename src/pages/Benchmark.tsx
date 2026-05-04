@@ -1,310 +1,423 @@
+import React, { useMemo, useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import StickyCTA from "@/components/StickyCTA";
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import {
+  Card, CardContent, CardHeader, CardTitle, CardDescription,
+} from "@/components/ui/card";
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+import {
+  Bar, BarChart, CartesianGrid, Legend, Line, LineChart,
+  ResponsiveContainer, Tooltip, XAxis, YAxis,
+} from "recharts";
+import {
+  Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Download, Info, ExternalLink } from "lucide-react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import {
+  useLatestBenchmark, useCompanyHistory, useCurrentMethodology, type BenchmarkRow,
+} from "@/hooks/useBenchmark";
 
-import React, { useEffect } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import StickyCTA from '@/components/StickyCTA';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Helmet } from 'react-helmet-async';
-import { 
-  Bar, 
-  BarChart, 
-  CartesianGrid, 
-  Legend, 
-  ResponsiveContainer, 
-  Tooltip, 
-  TooltipProps, 
-  XAxis, 
-  YAxis 
-} from 'recharts';
+const fmtDate = (iso: string) =>
+  format(new Date(iso), "d 'de' MMMM yyyy, HH:mm", { locale: es });
 
-// Datos para los benchmarks
-const benchmarkData = {
-  velocidad: [
-    { name: 'HostingPlus', valor: 98, color: '#EF233C' },
-    { name: 'EcoHosting', valor: 95, color: '#329933' },
-    { name: 'HostGator', valor: 92, color: '#FF9933' },
-    { name: 'BlueHost', valor: 90, color: '#3366CC' },
-    { name: 'DonWeb', valor: 87, color: '#663399' },
-    { name: 'GoDaddy', valor: 83, color: '#FF6600' },
-  ],
-  tiempoCarga: [
-    { name: 'HostingPlus', valor: 0.42, color: '#EF233C' },
-    { name: 'EcoHosting', valor: 0.55, color: '#329933' },
-    { name: 'HostGator', valor: 0.58, color: '#FF9933' },
-    { name: 'BlueHost', valor: 0.62, color: '#3366CC' },
-    { name: 'DonWeb', valor: 0.68, color: '#663399' },
-    { name: 'GoDaddy', valor: 0.73, color: '#FF6600' },
-  ],
-  tiempoRespuestaServidor: [
-    { name: 'HostingPlus', valor: 187, color: '#EF233C' },
-    { name: 'EcoHosting', valor: 212, color: '#329933' },
-    { name: 'HostGator', valor: 224, color: '#FF9933' },
-    { name: 'BlueHost', valor: 231, color: '#3366CC' },
-    { name: 'DonWeb', valor: 253, color: '#663399' },
-    { name: 'GoDaddy', valor: 278, color: '#FF6600' },
-  ],
-  uptime: [
-    { name: 'HostingPlus', valor: 99.98, color: '#EF233C' },
-    { name: 'EcoHosting', valor: 99.95, color: '#329933' },
-    { name: 'HostGator', valor: 99.93, color: '#FF9933' },
-    { name: 'BlueHost', valor: 99.91, color: '#3366CC' },
-    { name: 'DonWeb', valor: 99.89, color: '#663399' },
-    { name: 'GoDaddy', valor: 99.85, color: '#FF6600' },
-  ]
-};
+const Benchmark: React.FC = () => {
+  const { data, isLoading } = useLatestBenchmark();
+  const { data: methodology } = useCurrentMethodology();
+  const [selectedCompany, setSelectedCompany] = useState<string | undefined>(undefined);
+  const { data: history } = useCompanyHistory(selectedCompany);
 
-// Custom tooltip para los gráficos
-interface CustomTooltipProps {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
-  unit: string;
-}
+  const run = data?.run;
+  const results = data?.results ?? [];
 
-const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label, unit }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-white p-3 border border-gray-200 shadow-md rounded">
-        <p className="font-medium">{label}</p>
-        <p className="text-[#EF233C]">
-          {`${payload[0].value} ${unit}`}
-        </p>
-      </div>
-    );
-  }
-  return null;
-};
+  // Selected first item
+  React.useEffect(() => {
+    if (!selectedCompany && results.length) {
+      setSelectedCompany(results[0].company_id);
+    }
+  }, [results, selectedCompany]);
 
-const Benchmark = () => {
-  useEffect(() => {
-    document.title = "Benchmark de Hosting Chile 2026 | eligetuhosting.cl";
-  }, []);
+  const chartData = useMemo(
+    () =>
+      results.map((r) => ({
+        name: r.hosting_companies?.name ?? "—",
+        ttfb: r.ttfb_median_ms ?? 0,
+        perf: r.lighthouse_perf ?? 0,
+        uptime: r.uptime_30d_pct ?? 0,
+        score: r.composite_score ?? 0,
+      })),
+    [results],
+  );
+
+  const historyData = useMemo(
+    () =>
+      (history ?? []).map((r) => ({
+        date: format(new Date(r.measured_at), "MMM yy", { locale: es }),
+        ttfb: r.ttfb_median_ms,
+        score: r.composite_score,
+      })),
+    [history],
+  );
+
+  const datasetSchema = run ? {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": `Benchmark Hosting Chile — ${run.methodology_version}`,
+    "description": "Mediciones reales de TTFB, Lighthouse y uptime de proveedores de hosting en Chile.",
+    "url": "https://eligetuhosting.cl/benchmark",
+    "dateModified": run.run_date,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "creator": {
+      "@type": "Organization",
+      "name": "EligeTuHosting.cl",
+      "url": "https://eligetuhosting.cl",
+    },
+  } : null;
+
+  const downloadJson = () => {
+    const blob = new Blob([JSON.stringify({ run, results }, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `benchmark-${run?.run_date.slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
   return (
     <>
       <Helmet>
-        <title>Benchmark Hosting Chile 2026 | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content="Comparativa técnica y benchmark de los principales proveedores de hosting en Chile. Analizamos velocidad, uptime, seguridad y más." 
+        <title>Benchmark Hosting Chile {new Date().getFullYear()} | Datos reales medidos | EligeTuHosting.cl</title>
+        <meta
+          name="description"
+          content="Benchmark independiente de hosting Chile. TTFB, Lighthouse y uptime medidos cada hora. Metodología pública y datos descargables."
         />
+        <link rel="canonical" href="https://eligetuhosting.cl/benchmark" />
+        {datasetSchema && (
+          <script type="application/ld+json">{JSON.stringify(datasetSchema)}</script>
+        )}
       </Helmet>
-      
+
       <Navbar />
-      
-      <main className="bg-[#F7F9FC]">
-        {/* Hero section */}
-        <section className="py-16 text-center">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-4">
-              Benchmark de Hosting Chile 2026
-            </h1>
-            <p className="text-lg text-[#555] max-w-2xl mx-auto">
-              Análisis técnico detallado de los principales proveedores de hosting en Chile. 
-              Mediciones reales de velocidad, rendimiento y disponibilidad.
-            </p>
-          </div>
-        </section>
-        
-        {/* Metodología */}
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold mb-6 text-center">Metodología de pruebas</h2>
-            <div className="max-w-3xl mx-auto">
-              <p className="mb-4">
-                Nuestro benchmark se basa en mediciones reales realizadas durante un período de 3 meses 
-                (Enero - Marzo 2026) utilizando sitios web idénticos alojados en cada proveedor.
-              </p>
-              <div className="grid md:grid-cols-2 gap-6 mt-8">
-                <div className="bg-gray-50 p-5 rounded-lg">
-                  <h3 className="font-bold mb-2">Herramientas utilizadas:</h3>
-                  <ul className="space-y-1 list-disc list-inside">
-                    <li>Google PageSpeed Insights</li>
-                    <li>Pingdom Tools</li>
-                    <li>GTmetrix</li>
-                    <li>WebPageTest</li>
-                    <li>UptimeRobot</li>
-                  </ul>
-                </div>
-                <div className="bg-gray-50 p-5 rounded-lg">
-                  <h3 className="font-bold mb-2">Sitio de prueba:</h3>
-                  <ul className="space-y-1 list-disc list-inside">
-                    <li>WordPress 6.4</li>
-                    <li>Tema liviano optimizado</li>
-                    <li>WooCommerce con 50 productos</li>
-                    <li>Base de datos con 500 publicaciones</li>
-                    <li>Imágenes optimizadas (3MB en total)</li>
-                  </ul>
-                </div>
+
+      <main className="bg-[#F7F9FC] min-h-screen">
+        {/* Hero */}
+        <section className="py-12 md:py-16 bg-white border-b">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-3">
+                  Benchmark de Hosting Chile
+                </h1>
+                <p className="text-base md:text-lg text-[#555] max-w-3xl">
+                  Mediciones reales y reproducibles de los principales proveedores de hosting en Chile.
+                  Sin datos inventados: cada número proviene de una medición fechada y citable.
+                </p>
+                {run && (
+                  <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+                    <Badge variant="secondary">Última ejecución: {fmtDate(run.run_date)}</Badge>
+                    <Badge variant="outline">Metodología {run.methodology_version}</Badge>
+                    <Badge variant="outline">{run.total_providers} proveedores</Badge>
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button variant="outline" asChild className="min-h-11">
+                  <Link to="/metodologia-benchmark">
+                    <Info className="w-4 h-4 mr-2" />
+                    Ver metodología
+                  </Link>
+                </Button>
+                {run && (
+                  <Button onClick={downloadJson} className="min-h-11">
+                    <Download className="w-4 h-4 mr-2" />
+                    Descargar JSON crudo
+                  </Button>
+                )}
               </div>
             </div>
           </div>
         </section>
-        
-        {/* Gráficos de benchmark */}
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold mb-8 text-center">Resultados del benchmark</h2>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Gráfico de velocidad */}
+
+        {/* Estado vacío */}
+        {!isLoading && !run && (
+          <section className="py-20">
+            <div className="container mx-auto px-4 max-w-2xl text-center">
               <Card>
                 <CardHeader>
-                  <CardTitle>Índice de Velocidad (mayor es mejor)</CardTitle>
+                  <CardTitle>Aún no hay ejecuciones del benchmark</CardTitle>
+                  <CardDescription>
+                    El sistema de medición ya está instalado. La primera ejecución completa se realizará
+                    el día 1 del próximo mes a las 03:00 CLT, o puede ser disparada manualmente desde el
+                    panel administrativo.
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={benchmarkData.velocidad}
-                      layout="vertical"
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" domain={[0, 100]} />
-                      <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="/100" />} />
-                      <Legend />
-                      <Bar dataKey="valor" fill="#EF233C" name="Velocidad" radius={[0, 4, 4, 0]}>
-                        {benchmarkData.velocidad.map((entry, index) => (
-                          <rect key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
               </Card>
-              
-              {/* Gráfico de tiempo de carga */}
+            </div>
+          </section>
+        )}
+
+        {/* Tabla principal */}
+        {run && results.length > 0 && (
+          <section className="py-10">
+            <div className="container mx-auto px-4 max-w-6xl">
               <Card>
                 <CardHeader>
-                  <CardTitle>Tiempo de carga promedio (menor es mejor)</CardTitle>
+                  <CardTitle>Resultados del último benchmark</CardTitle>
+                  <CardDescription>
+                    Ordenado por score compuesto. Pasa el cursor sobre cada métrica para ver detalle.
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={benchmarkData.tiempoCarga}
-                      layout="vertical"
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" domain={[0, 1]} />
-                      <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="segundos" />} />
-                      <Legend />
-                      <Bar dataKey="valor" fill="#3366CC" name="Tiempo" radius={[0, 4, 4, 0]}>
-                        {benchmarkData.tiempoCarga.map((entry, index) => (
-                          <rect key={`cell-${index}`} fill={entry.color} />
+                <CardContent className="overflow-x-auto">
+                  <TooltipProvider>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Proveedor</TableHead>
+                          <TableHead className="text-right">Score</TableHead>
+                          <TableHead className="text-right">TTFB (ms)</TableHead>
+                          <TableHead className="text-right">Lighthouse</TableHead>
+                          <TableHead className="text-right">Uptime 30d</TableHead>
+                          <TableHead>Server</TableHead>
+                          <TableHead>Medido</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {results.map((r) => (
+                          <BenchmarkRowItem key={r.id} row={r} />
                         ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-              
-              {/* Gráfico de tiempo de respuesta del servidor */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Tiempo de respuesta del servidor (menor es mejor)</CardTitle>
-                </CardHeader>
-                <CardContent className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={benchmarkData.tiempoRespuestaServidor}
-                      layout="vertical"
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" domain={[0, 350]} />
-                      <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="ms" />} />
-                      <Legend />
-                      <Bar dataKey="valor" fill="#329933" name="TTFB" radius={[0, 4, 4, 0]}>
-                        {benchmarkData.tiempoRespuestaServidor.map((entry, index) => (
-                          <rect key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-              
-              {/* Gráfico de uptime */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Uptime en 90 días (mayor es mejor)</CardTitle>
-                </CardHeader>
-                <CardContent className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={benchmarkData.uptime}
-                      layout="vertical"
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" domain={[99.8, 100]} />
-                      <YAxis type="category" dataKey="name" width={100} />
-                      <Tooltip content={(props) => <CustomTooltip {...props as any} unit="%" />} />
-                      <Legend />
-                      <Bar dataKey="valor" fill="#FF9933" name="Uptime" radius={[0, 4, 4, 0]}>
-                        {benchmarkData.uptime.map((entry, index) => (
-                          <rect key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                      </TableBody>
+                    </Table>
+                  </TooltipProvider>
                 </CardContent>
               </Card>
             </div>
-          </div>
-        </section>
-        
-        {/* Conclusiones */}
-        <section className="py-12 bg-[#F7F9FC]">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <h2 className="text-2xl font-bold mb-6 text-center">Conclusiones del Benchmark</h2>
-            
-            <div className="prose max-w-none">
-              <p>
-                Después de tres meses de pruebas exhaustivas, los resultados de nuestro benchmark muestran 
-                diferencias significativas entre los proveedores de hosting analizados:
-              </p>
-              
-              <ul>
-                <li>
-                  <strong>HostingPlus</strong> obtiene los mejores resultados en velocidad y tiempo de carga, 
-                  destacando especialmente en el tiempo de respuesta del servidor con una media de 187ms.
-                </li>
-                <li>
-                  <strong>EcoHosting</strong> muestra un rendimiento muy sólido en todas las pruebas, especialmente 
-                  en uptime, donde alcanza un 99.95% de disponibilidad.
-                </li>
-                <li>
-                  <strong>HostGator</strong> ofrece un buen equilibrio en todas las métricas, destacando en la relación 
-                  rendimiento/precio como una de las opciones más económicas.
-                </li>
-                <li>
-                  Los servidores con <strong>LiteSpeed</strong> (HostingPlus y EcoHosting) muestran una clara 
-                  ventaja en tiempo de carga frente a los que utilizan Apache tradicional.
-                </li>
-                <li>
-                  La presencia de <strong>Datacenter en Chile</strong> (como en el caso de HostingPlus) reduce 
-                  significativamente la latencia para usuarios locales.
-                </li>
-              </ul>
-              
-              <p>
-                Basándonos en estos resultados técnicos, nuestra recomendación se inclina hacia HostingPlus 
-                para proyectos que requieran máximo rendimiento, mientras que HostGator representa una excelente 
-                alternativa para proyectos con presupuesto limitado.
-              </p>
+          </section>
+        )}
+
+        {/* Charts */}
+        {run && chartData.length > 0 && (
+          <section className="py-10 bg-white">
+            <div className="container mx-auto px-4 max-w-6xl">
+              <h2 className="text-2xl font-bold mb-6">Visualizaciones</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader><CardTitle className="text-base">Score compuesto</CardTitle></CardHeader>
+                  <CardContent className="h-72">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} layout="vertical" margin={{ left: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" domain={[0, 100]} />
+                        <YAxis type="category" dataKey="name" width={120} />
+                        <Tooltip />
+                        <Bar dataKey="score" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader><CardTitle className="text-base">TTFB mediana (menor es mejor)</CardTitle></CardHeader>
+                  <CardContent className="h-72">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} layout="vertical" margin={{ left: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" />
+                        <YAxis type="category" dataKey="name" width={120} />
+                        <Tooltip />
+                        <Bar dataKey="ttfb" fill="#3366CC" radius={[0, 4, 4, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader><CardTitle className="text-base">Lighthouse Performance</CardTitle></CardHeader>
+                  <CardContent className="h-72">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} layout="vertical" margin={{ left: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" domain={[0, 100]} />
+                        <YAxis type="category" dataKey="name" width={120} />
+                        <Tooltip />
+                        <Bar dataKey="perf" fill="#329933" radius={[0, 4, 4, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader><CardTitle className="text-base">Uptime 30 días (%)</CardTitle></CardHeader>
+                  <CardContent className="h-72">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} layout="vertical" margin={{ left: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" domain={[95, 100]} />
+                        <YAxis type="category" dataKey="name" width={120} />
+                        <Tooltip />
+                        <Bar dataKey="uptime" fill="#FF9933" radius={[0, 4, 4, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
+
+        {/* Histórico */}
+        {run && results.length > 0 && (
+          <section className="py-10">
+            <div className="container mx-auto px-4 max-w-6xl">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Histórico por proveedor</CardTitle>
+                  <CardDescription>
+                    Evolución del TTFB y score compuesto a lo largo del tiempo.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-4 max-w-xs">
+                    <Select value={selectedCompany} onValueChange={setSelectedCompany}>
+                      <SelectTrigger><SelectValue placeholder="Selecciona un proveedor" /></SelectTrigger>
+                      <SelectContent>
+                        {results.map((r) => (
+                          <SelectItem key={r.company_id} value={r.company_id}>
+                            {r.hosting_companies?.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="h-72">
+                    {historyData.length === 0 ? (
+                      <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+                        Solo hay 1 medición disponible. El histórico aparecerá tras varios runs mensuales.
+                      </div>
+                    ) : (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={historyData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="date" />
+                          <YAxis yAxisId="left" />
+                          <YAxis yAxisId="right" orientation="right" domain={[0, 100]} />
+                          <Tooltip />
+                          <Legend />
+                          <Line yAxisId="left" type="monotone" dataKey="ttfb" stroke="#3366CC" name="TTFB ms" />
+                          <Line yAxisId="right" type="monotone" dataKey="score" stroke="hsl(var(--primary))" name="Score" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        )}
+
+        {/* Resumen metodología */}
+        {methodology && (
+          <section className="py-10 bg-white">
+            <div className="container mx-auto px-4 max-w-3xl">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Cómo medimos esto</CardTitle>
+                  <CardDescription>Versión {methodology.version}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="prose prose-sm max-w-none whitespace-pre-wrap">
+                    {methodology.markdown.slice(0, 600)}…
+                  </div>
+                  <Button variant="link" asChild className="px-0 mt-2">
+                    <Link to="/metodologia-benchmark">Leer metodología completa →</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        )}
       </main>
-      
+
       <StickyCTA />
       <Footer />
     </>
+  );
+};
+
+const BenchmarkRowItem: React.FC<{ row: BenchmarkRow }> = ({ row }) => {
+  const c = row.hosting_companies;
+  const measuredLabel = row.measured_at
+    ? format(new Date(row.measured_at), "d MMM yyyy", { locale: es })
+    : "—";
+  const targetUrl = c?.benchmark_target_url ?? "";
+
+  return (
+    <TableRow>
+      <TableCell className="font-medium">
+        {c?.slug ? (
+          <Link to={`/catalogo/${c.slug}`} className="hover:text-primary">
+            {c.name}
+          </Link>
+        ) : "—"}
+      </TableCell>
+      <TableCell className="text-right font-semibold">
+        {row.composite_score?.toFixed(1) ?? "—"}
+      </TableCell>
+      <TableCell className="text-right">
+        <UITooltip>
+          <TooltipTrigger className="underline decoration-dotted underline-offset-2">
+            {row.ttfb_median_ms ?? "—"}
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs">
+            <p className="text-xs">
+              Mediana de 5 muestras GET desde Supabase Edge.
+              {row.ttfb_p95_ms != null && <> p95: {row.ttfb_p95_ms}ms.</>}
+            </p>
+            {targetUrl && (
+              <p className="text-xs mt-1 break-all">URL: {targetUrl}</p>
+            )}
+          </TooltipContent>
+        </UITooltip>
+      </TableCell>
+      <TableCell className="text-right">
+        {row.lighthouse_perf != null ? (
+          <UITooltip>
+            <TooltipTrigger className="underline decoration-dotted underline-offset-2">
+              {row.lighthouse_perf}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">Lighthouse Mobile (PageSpeed Insights API).</p>
+              <p className="text-xs">SEO: {row.lighthouse_seo ?? "—"} · A11y: {row.lighthouse_a11y ?? "—"}</p>
+              <p className="text-xs">LCP: {row.lcp_ms ?? "—"}ms · CLS: {row.cls?.toFixed(3) ?? "—"}</p>
+            </TooltipContent>
+          </UITooltip>
+        ) : "—"}
+      </TableCell>
+      <TableCell className="text-right">
+        {row.uptime_30d_pct != null ? `${row.uptime_30d_pct.toFixed(2)}%` : "—"}
+      </TableCell>
+      <TableCell className="text-xs">
+        {row.server_software ?? "—"}
+        {row.has_brotli && <Badge variant="outline" className="ml-1 text-[10px]">br</Badge>}
+      </TableCell>
+      <TableCell className="text-xs text-muted-foreground">
+        <div className="flex items-center gap-1">
+          {measuredLabel}
+          {targetUrl && (
+            <a href={targetUrl} target="_blank" rel="nofollow noopener" className="text-muted-foreground hover:text-foreground">
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
+        </div>
+      </TableCell>
+    </TableRow>
   );
 };
 
