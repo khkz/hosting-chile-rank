@@ -1,5 +1,34 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+
+async function persistSnapshot(payload: {
+  company_id: string;
+  sentiment_score: number;
+  severity: string;
+  main_complaints: unknown;
+  sources: unknown;
+  texts_extracted: number;
+  note?: string;
+}) {
+  const url = Deno.env.get('SUPABASE_URL');
+  const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  if (!url || !key) {
+    console.warn('Skipping snapshot persistence: missing service role env');
+    return;
+  }
+  const supabase = createClient(url, key);
+  const { error } = await supabase.from('reputation_snapshots').insert({
+    company_id: payload.company_id,
+    sentiment_score: payload.sentiment_score,
+    severity: payload.severity,
+    main_complaints: payload.main_complaints ?? [],
+    sources: payload.sources ?? [],
+    texts_extracted: payload.texts_extracted,
+    note: payload.note ?? null,
+  });
+  if (error) console.error('Snapshot insert error:', error);
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
