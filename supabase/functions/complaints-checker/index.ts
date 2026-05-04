@@ -1,5 +1,34 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+
+async function persistSnapshot(payload: {
+  company_id: string;
+  sentiment_score: number;
+  severity: string;
+  main_complaints: unknown;
+  sources: unknown;
+  texts_extracted: number;
+  note?: string;
+}) {
+  const url = Deno.env.get('SUPABASE_URL');
+  const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  if (!url || !key) {
+    console.warn('Skipping snapshot persistence: missing service role env');
+    return;
+  }
+  const supabase = createClient(url, key);
+  const { error } = await supabase.from('reputation_snapshots').insert({
+    company_id: payload.company_id,
+    sentiment_score: payload.sentiment_score,
+    severity: payload.severity,
+    main_complaints: payload.main_complaints ?? [],
+    sources: payload.sources ?? [],
+    texts_extracted: payload.texts_extracted,
+    note: payload.note ?? null,
+  });
+  if (error) console.error('Snapshot insert error:', error);
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -53,7 +82,8 @@ serve(async (req) => {
   if (authError) return authError;
 
   try {
-    const { company_name } = await req.json();
+    const body = await req.json();
+    const { company_name, company_id } = body as { company_name?: string; company_id?: string };
     if (!company_name || typeof company_name !== 'string' || company_name.trim().length === 0) {
       return new Response(JSON.stringify({ error: 'company_name is required' }), {
         status: 400,
@@ -103,6 +133,17 @@ serve(async (req) => {
 
     if (topLinks.length === 0) {
       console.log('✅ No complaints found on reclamos.cl');
+      if (company_id) {
+        await persistSnapshot({
+          company_id,
+          sentiment_score: 8,
+          severity: 'Baja',
+          main_complaints: [],
+          sources: [],
+          texts_extracted: 0,
+          note: 'No se encontraron reclamos en reclamos.cl',
+        });
+      }
       return new Response(JSON.stringify({
         success: true,
         company_name: searchTerm,
@@ -207,6 +248,17 @@ serve(async (req) => {
 
     const result = JSON.parse(jsonMatch[0]);
     console.log('✅ Complaint analysis complete:', result);
+
+    if (company_id) {
+      await persistSnapshot({
+        company_id,
+        sentiment_score: Number(result.sentiment_score) || 0,
+        severity: result.severity ?? 'Baja',
+        main_complaints: result.main_complaints ?? [],
+        sources: topLinks,
+        texts_extracted: extractedTexts.length,
+      });
+    }
 
     return new Response(JSON.stringify({
       success: true,

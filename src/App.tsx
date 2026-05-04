@@ -53,6 +53,7 @@ import WikiCategory from './pages/WikiCategory';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import AdminDashboard from './pages/admin/Dashboard';
+import AdminReputation from './pages/admin/Reputation';
 import ReviewModeration from './pages/admin/ReviewModeration';
 import Setup from './pages/admin/Setup';
 import Companies from './pages/admin/Companies';
@@ -198,6 +199,11 @@ function App() {
             <Route path="/admin/company-curation" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <CompanyCuration />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reputation" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReputation />
               </ProtectedRoute>
             } />
             <Route path="/provider/dashboard" element={

@@ -11,6 +11,7 @@ import CertificationBadges from '@/components/CertificationBadges';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { PublicReviewsList } from '@/components/reviews/PublicReviewsList';
 import { ReviewForm } from '@/components/reviews/ReviewForm';
+import { ReputationCard } from '@/components/reputation/ReputationCard';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
@@ -183,6 +184,10 @@ const CatalogoDetalle = () => {
         
         <HostingCompanyInfo company={companyData} />
         
+        <section className="mt-12">
+          <ReputationCard companyId={company.id} companyName={company.name} />
+        </section>
+
         <section className="mt-12">
           <h2 className="text-3xl font-bold mb-6">Opiniones de Clientes</h2>
           <PublicReviewsList companyId={company.id} companyName={company.name} />

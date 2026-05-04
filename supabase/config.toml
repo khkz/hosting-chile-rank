@@ -56,3 +56,6 @@ verify_jwt = false
 
 [functions.export-methodology-data]
 verify_jwt = false
+
+[functions.refresh-reputation]
+verify_jwt = false

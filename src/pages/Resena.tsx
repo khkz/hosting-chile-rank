@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet-async';
+import { ReputationBySlug } from '@/components/reputation/ReputationBySlug';
 
 // Datos completos para reseñas de hosting
 const hostingData = {
@@ -311,18 +312,15 @@ const Resena = () => {
               características incluidas y el rendimiento ofrecido.
             </p>
             
-            <h3>Opiniones de usuarios en reclamos.cl</h3>
+            <h3>Reputación verificada</h3>
             <p>
-              {
-                hosting.name === 'HostingPlus' ? 
-                "Revisando reclamos.cl, encontramos que HostingPlus cuenta con muy pocos reclamos registrados en los últimos años, lo que demuestra un alto nivel de satisfacción de sus clientes." :
-                hosting.name === 'GoDaddy' ?
-                "En reclamos.cl encontramos varios usuarios que han tenido problemas con renovaciones automáticas no deseadas y cargos inesperados. También existen quejas sobre la dificultad para cancelar servicios." :
-                hosting.name === 'DonWeb' ?
-                "En reclamos.cl hay algunas menciones sobre caídas ocasionales de servicio y dificultades con el soporte técnico en momentos de alta demanda, aunque la mayoría de usuarios reportan una experiencia positiva." :
-                "Analizando las opiniones en reclamos.cl y otros sitios de reseñas, encontramos que la mayoría de usuarios están satisfechos con el servicio, con algunas quejas menores relacionadas principalmente con tiempos de respuesta del soporte técnico."
-              }
+              Mostramos a continuación los datos reales de reputación: análisis automatizado de Reclamos.cl,
+              reclamos enviados por usuarios y verificados por email, y reseñas de clientes confirmados.
+              Los criterios completos están en nuestra <a href="/metodologia#reputacion">metodología</a>.
             </p>
+            <div className="not-prose my-6">
+              <ReputationBySlug slug={slug ?? ''} fallbackName={hosting.name} />
+            </div>
             
             <h3>Conclusión</h3>
             <p>
