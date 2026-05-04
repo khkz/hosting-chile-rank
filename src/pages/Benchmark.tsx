@@ -76,15 +76,27 @@ const Benchmark: React.FC = () => {
     "@context": "https://schema.org",
     "@type": "Dataset",
     "name": `Benchmark Hosting Chile — ${run.methodology_version}`,
-    "description": "Mediciones reales de TTFB, Lighthouse y uptime de proveedores de hosting en Chile.",
+    "description": "Mediciones reales de TTFB (mediana de 5 muestras), Lighthouse Mobile (PageSpeed Insights v5), uptime 30 días (pings horarios) y score compuesto de proveedores de hosting en Chile.",
     "url": "https://eligetuhosting.cl/benchmark",
     "dateModified": run.run_date,
+    "temporalCoverage": "30D",
     "license": "https://creativecommons.org/licenses/by/4.0/",
     "creator": {
       "@type": "Organization",
       "name": "EligeTuHosting.cl",
       "url": "https://eligetuhosting.cl",
     },
+    "variableMeasured": [
+      { "@type": "PropertyValue", "name": "TTFB mediana", "unitText": "ms" },
+      { "@type": "PropertyValue", "name": "TTFB p95", "unitText": "ms" },
+      { "@type": "PropertyValue", "name": "Lighthouse Performance", "unitText": "score 0-100" },
+      { "@type": "PropertyValue", "name": "Lighthouse SEO", "unitText": "score 0-100" },
+      { "@type": "PropertyValue", "name": "Lighthouse Accessibility", "unitText": "score 0-100" },
+      { "@type": "PropertyValue", "name": "Largest Contentful Paint", "unitText": "ms" },
+      { "@type": "PropertyValue", "name": "Cumulative Layout Shift", "unitText": "unitless" },
+      { "@type": "PropertyValue", "name": "Uptime 30 días", "unitText": "%" },
+      { "@type": "PropertyValue", "name": "Score compuesto", "unitText": "score 0-100" },
+    ],
   } : null;
 
   const downloadJson = () => {
