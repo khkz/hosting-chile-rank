@@ -347,9 +347,9 @@ const RankingPage = () => {
                     </span>
                     <img src={provider.logo} alt={provider.name} className="h-8" loading="lazy" />
                   </div>
-                  <div className={`text-xl font-bold ${index === 0 ? 'text-[#EF233C]' : 'text-[#2B2D42]'}`}>
-                    {provider.rating}/10
-                  </div>
+                  {index === 0 && (
+                    <Badge className="bg-[#EF233C] text-white">Top recomendado</Badge>
+                  )}
                 </div>
                 
                 <div className="flex flex-wrap gap-2 mb-4 items-center">
