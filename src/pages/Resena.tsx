@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet-async';
+import { ReputationBySlug } from '@/components/reputation/ReputationBySlug';
 
 // Datos completos para reseñas de hosting
 const hostingData = {
