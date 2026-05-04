@@ -269,6 +269,29 @@ const Metodologia: React.FC = () => {
               </div>
             </section>
 
+            {/* 3.b Criterios de reputación */}
+            <section id="reputacion" className="scroll-mt-24">
+              <h2 className="text-2xl font-bold mb-3">3.b Criterios de reputación verificada</h2>
+              <ul className="list-disc list-inside text-sm space-y-2 text-muted-foreground">
+                <li>
+                  <strong className="text-foreground">Reseña verificada:</strong> usuario autenticado + email confirmado +
+                  marcado <code>is_verified_customer</code> con prueba (factura, captura del panel o dominio activo).
+                </li>
+                <li>
+                  <strong className="text-foreground">Reclamo interno verificado:</strong> envío con email confirmado vía token de 48 h
+                  y aprobación editorial (estado <code>verified</code> o <code>resolved</code>).
+                </li>
+                <li>
+                  <strong className="text-foreground">Reclamo externo:</strong> resultados de Google
+                  <code className="mx-1">site:reclamos.cl &quot;proveedor&quot;</code>; las URLs exactas se citan en cada ficha.
+                </li>
+                <li>
+                  <strong className="text-foreground">Score reputacional:</strong> análisis automatizado mensual del texto de
+                  Reclamos.cl ponderado con la cuenta de reclamos internos verificados (1 = pésimo, 10 = excelente).
+                </li>
+              </ul>
+            </section>
+
             {/* 4. Cálculo */}
             <section id="calculo">
               <h2 className="text-2xl font-bold mb-3">
