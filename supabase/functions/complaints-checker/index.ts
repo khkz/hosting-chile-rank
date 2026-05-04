@@ -133,6 +133,17 @@ serve(async (req) => {
 
     if (topLinks.length === 0) {
       console.log('✅ No complaints found on reclamos.cl');
+      if (company_id) {
+        await persistSnapshot({
+          company_id,
+          sentiment_score: 8,
+          severity: 'Baja',
+          main_complaints: [],
+          sources: [],
+          texts_extracted: 0,
+          note: 'No se encontraron reclamos en reclamos.cl',
+        });
+      }
       return new Response(JSON.stringify({
         success: true,
         company_name: searchTerm,
