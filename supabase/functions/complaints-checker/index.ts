@@ -249,6 +249,17 @@ serve(async (req) => {
     const result = JSON.parse(jsonMatch[0]);
     console.log('✅ Complaint analysis complete:', result);
 
+    if (company_id) {
+      await persistSnapshot({
+        company_id,
+        sentiment_score: Number(result.sentiment_score) || 0,
+        severity: result.severity ?? 'Baja',
+        main_complaints: result.main_complaints ?? [],
+        sources: topLinks,
+        texts_extracted: extractedTexts.length,
+      });
+    }
+
     return new Response(JSON.stringify({
       success: true,
       company_name: searchTerm,
