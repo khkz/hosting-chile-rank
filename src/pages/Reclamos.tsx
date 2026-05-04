@@ -118,7 +118,7 @@ const Reclamos = () => {
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge variant="outline" className="gap-1"><ShieldCheck className="w-3 h-3" /> Verificación por email</Badge>
             <Badge variant="outline" className="gap-1"><MessageSquare className="w-3 h-3" /> Respuesta del proveedor</Badge>
-            <Badge variant="outline">Open Data</Badge>
+            <Badge variant="outline">Verificación por email</Badge>
           </div>
         </header>
 
