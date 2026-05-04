@@ -82,7 +82,8 @@ serve(async (req) => {
   if (authError) return authError;
 
   try {
-    const { company_name } = await req.json();
+    const body = await req.json();
+    const { company_name, company_id } = body as { company_name?: string; company_id?: string };
     if (!company_name || typeof company_name !== 'string' || company_name.trim().length === 0) {
       return new Response(JSON.stringify({ error: 'company_name is required' }), {
         status: 400,
