@@ -92,6 +92,138 @@ export type Database = {
         }
         Relationships: []
       }
+      benchmark_methodology: {
+        Row: {
+          is_current: boolean
+          markdown: string
+          published_at: string
+          version: string
+        }
+        Insert: {
+          is_current?: boolean
+          markdown: string
+          published_at?: string
+          version: string
+        }
+        Update: {
+          is_current?: boolean
+          markdown?: string
+          published_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      benchmark_results: {
+        Row: {
+          cls: number | null
+          company_id: string
+          composite_score: number | null
+          error: string | null
+          fcp_ms: number | null
+          has_brotli: boolean | null
+          http_version: string | null
+          id: string
+          lcp_ms: number | null
+          lighthouse_a11y: number | null
+          lighthouse_perf: number | null
+          lighthouse_seo: number | null
+          measured_at: string
+          raw_json: Json | null
+          run_id: string
+          server_software: string | null
+          ttfb_median_ms: number | null
+          ttfb_p95_ms: number | null
+          ttfb_samples: Json | null
+          uptime_30d_pct: number | null
+        }
+        Insert: {
+          cls?: number | null
+          company_id: string
+          composite_score?: number | null
+          error?: string | null
+          fcp_ms?: number | null
+          has_brotli?: boolean | null
+          http_version?: string | null
+          id?: string
+          lcp_ms?: number | null
+          lighthouse_a11y?: number | null
+          lighthouse_perf?: number | null
+          lighthouse_seo?: number | null
+          measured_at?: string
+          raw_json?: Json | null
+          run_id: string
+          server_software?: string | null
+          ttfb_median_ms?: number | null
+          ttfb_p95_ms?: number | null
+          ttfb_samples?: Json | null
+          uptime_30d_pct?: number | null
+        }
+        Update: {
+          cls?: number | null
+          company_id?: string
+          composite_score?: number | null
+          error?: string | null
+          fcp_ms?: number | null
+          has_brotli?: boolean | null
+          http_version?: string | null
+          id?: string
+          lcp_ms?: number | null
+          lighthouse_a11y?: number | null
+          lighthouse_perf?: number | null
+          lighthouse_seo?: number | null
+          measured_at?: string
+          raw_json?: Json | null
+          run_id?: string
+          server_software?: string | null
+          ttfb_median_ms?: number | null
+          ttfb_p95_ms?: number | null
+          ttfb_samples?: Json | null
+          uptime_30d_pct?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "benchmark_results_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "benchmark_results_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "benchmark_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      benchmark_runs: {
+        Row: {
+          id: string
+          methodology_version: string
+          notes: string | null
+          run_date: string
+          status: string
+          total_providers: number
+        }
+        Insert: {
+          id?: string
+          methodology_version?: string
+          notes?: string | null
+          run_date?: string
+          status?: string
+          total_providers?: number
+        }
+        Update: {
+          id?: string
+          methodology_version?: string
+          notes?: string | null
+          run_date?: string
+          status?: string
+          total_providers?: number
+        }
+        Relationships: []
+      }
       certification_categories: {
         Row: {
           badge_image_url: string | null
@@ -758,6 +890,8 @@ export type Database = {
       }
       hosting_companies: {
         Row: {
+          benchmark_enabled: boolean
+          benchmark_target_url: string | null
           border_color: string | null
           button_color: string | null
           claimed_at: string | null
@@ -821,6 +955,8 @@ export type Database = {
           year_founded: number | null
         }
         Insert: {
+          benchmark_enabled?: boolean
+          benchmark_target_url?: string | null
           border_color?: string | null
           button_color?: string | null
           claimed_at?: string | null
@@ -884,6 +1020,8 @@ export type Database = {
           year_founded?: number | null
         }
         Update: {
+          benchmark_enabled?: boolean
+          benchmark_target_url?: string | null
           border_color?: string | null
           button_color?: string | null
           claimed_at?: string | null
@@ -1655,6 +1793,50 @@ export type Database = {
             columns: ["domain_id"]
             isOneToOne: true
             referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      uptime_pings: {
+        Row: {
+          company_id: string
+          error: string | null
+          id: number
+          measured_at: string
+          ok: boolean
+          region: string | null
+          status_code: number | null
+          total_ms: number | null
+          ttfb_ms: number | null
+        }
+        Insert: {
+          company_id: string
+          error?: string | null
+          id?: number
+          measured_at?: string
+          ok?: boolean
+          region?: string | null
+          status_code?: number | null
+          total_ms?: number | null
+          ttfb_ms?: number | null
+        }
+        Update: {
+          company_id?: string
+          error?: string | null
+          id?: number
+          measured_at?: string
+          ok?: boolean
+          region?: string | null
+          status_code?: number | null
+          total_ms?: number | null
+          ttfb_ms?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uptime_pings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
             referencedColumns: ["id"]
           },
         ]
