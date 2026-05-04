@@ -42,7 +42,7 @@ const HostingQuiz = () => {
         provider: 'HostingPlus',
         reason: 'El #1 en velocidad y soporte para tiendas online',
         price: 'desde $3.469/mes',
-        features: ['Uptime 99.98%', 'Soporte 24/7 Chile', 'Migración gratis'],
+        features: ['Datacenter en Santiago', 'Soporte 24/7 en español', 'Migración gratis'],
         cta: 'Probar HostingPlus 30 días',
         link: '/catalogo/hostingplus'
       };
