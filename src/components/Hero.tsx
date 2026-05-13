@@ -84,7 +84,7 @@ const Hero = () => {
                 <Check className="w-4 h-4 text-brand-red" />
                 <span>20 proveedores verificados</span>
               </div>
-              <span className="text-gray-300">·</span>
+              <span className="text-gray-500" aria-hidden="true">·</span>
               <div className="flex items-center gap-1 text-sm text-gray-600">
                 <Check className="w-4 h-4 text-brand-red" />
                 <span>+5.700 dominios analizados</span>
