@@ -171,13 +171,13 @@ const HostingQuiz = () => {
                     <div className="font-semibold text-gray-800 group-hover:text-brand-red transition-colors">
                       {option.label}
                     </div>
-                    <div className="text-sm text-gray-500 mt-1">{option.subtitle}</div>
+                    <div className="text-sm text-gray-600 mt-1">{option.subtitle}</div>
                   </button>
                 ))}
               </div>
               <button
                 onClick={() => setStep(1)}
-                className="mt-6 text-sm text-gray-500 hover:text-brand-red transition-colors"
+                className="mt-6 text-sm text-gray-600 hover:text-brand-red transition-colors"
               >
                 ← Volver
               </button>
@@ -207,13 +207,13 @@ const HostingQuiz = () => {
                     <div className="font-semibold text-gray-800 group-hover:text-brand-red transition-colors">
                       {option.label}
                     </div>
-                    <div className="text-sm text-gray-500 mt-1">{option.subtitle}</div>
+                    <div className="text-sm text-gray-600 mt-1">{option.subtitle}</div>
                   </button>
                 ))}
               </div>
               <button
                 onClick={() => setStep(2)}
-                className="mt-6 text-sm text-gray-500 hover:text-brand-red transition-colors"
+                className="mt-6 text-sm text-gray-600 hover:text-brand-red transition-colors"
               >
                 ← Volver
               </button>

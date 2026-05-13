@@ -238,7 +238,7 @@ const Contacto = () => {
                     <div>
                       <h3 className="font-medium">Teléfono</h3>
                       <p className="text-gray-600">+56 9 1234 5678</p>
-                      <p className="text-xs text-gray-500 mt-1">Lunes a viernes: 9:00 - 18:00</p>
+                      <p className="text-xs text-gray-600 mt-1">Lunes a viernes: 9:00 - 18:00</p>
                     </div>
                   </div>
                   
@@ -252,7 +252,7 @@ const Contacto = () => {
                     <div>
                       <h3 className="font-medium">Email</h3>
                       <p className="text-gray-600">contacto@eligetuhosting.cl</p>
-                      <p className="text-xs text-gray-500 mt-1">Respuesta en menos de 24 horas</p>
+                      <p className="text-xs text-gray-600 mt-1">Respuesta en menos de 24 horas</p>
                     </div>
                   </div>
                   
