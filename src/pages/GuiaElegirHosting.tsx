@@ -30,6 +30,7 @@ const GuiaElegirHosting = () => {
           content="Aprende a elegir el mejor proveedor de hosting para tu sitio web según tus necesidades. Guía completa paso a paso." 
         />
       </Helmet>
+      <SEOFAQSchema faqs={guiaFaqs} />
       
       <Navbar />
       
