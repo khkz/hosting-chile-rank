@@ -25,7 +25,10 @@
     <meta name="twitter:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="/images/hero-person.png" fetchpriority="high">
+    <link rel="preload" as="image" href="/images/hero-people.png" fetchpriority="high" media="(max-width: 767px)">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700&display=swap"></noscript>
   </head>
   <body>
     <div id="root"></div>
