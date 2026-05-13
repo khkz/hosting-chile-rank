@@ -15,6 +15,7 @@ const Hero = () => {
           width={800}
           height={600}
           loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/85"></div>
       </div>
