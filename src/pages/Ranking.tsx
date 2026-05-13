@@ -32,6 +32,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/Footer';
+import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 
 // Host provider data
 const hostProviders = [

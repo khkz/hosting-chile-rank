@@ -61,7 +61,7 @@ const CatalogoPage = () => {
   return (
     <>
       <DynamicMetaTags
-        title="Catálogo Hosting Chile 2025 - Todos los Proveedores Verificados"
+        title="Catálogo Hosting Chile 2026 | Proveedores Verificados"
         description="Directorio completo de proveedores de hosting en Chile. Información detallada, planes actualizados, precios y datos de contacto de las mejores empresas de hosting."
         canonical="https://eligetuhosting.cl/catalogo"
         keywords="hosting chile, proveedores hosting, catálogo hosting, hosting verificado, mejor hosting chile"
