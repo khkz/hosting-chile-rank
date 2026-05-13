@@ -207,7 +207,7 @@ const HostingQuiz = () => {
                     <div className="font-semibold text-gray-800 group-hover:text-brand-red transition-colors">
                       {option.label}
                     </div>
-                    <div className="text-sm text-gray-500 mt-1">{option.subtitle}</div>
+                    <div className="text-sm text-gray-600 mt-1">{option.subtitle}</div>
                   </button>
                 ))}
               </div>
