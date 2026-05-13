@@ -6,6 +6,15 @@ import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { Helmet } from 'react-helmet-async';
+import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
+
+const guiaFaqs = [
+  { question: '¿Qué tipo de sitio web voy a crear?', answer: 'Un blog personal, una tienda online, un sitio corporativo o una aplicación web tienen requisitos diferentes. Por ejemplo, para una tienda online necesitarás certificado SSL, respaldos frecuentes y buen soporte técnico.' },
+  { question: '¿Cuánto tráfico espero recibir?', answer: 'El volumen de visitas determinará los recursos necesarios. Si esperas mucho tráfico desde el inicio o planeas crecer rápidamente, considera opciones más robustas como VPS o planes premium.' },
+  { question: '¿Qué habilidades técnicas tengo?', answer: 'Si no tienes experiencia técnica, busca hosting con panel de control intuitivo (cPanel, Plesk) y buena documentación. Los hostings administrados son ideales para quienes prefieren enfocarse en su negocio y no en mantener el servidor.' },
+  { question: '¿Qué importancia tiene la velocidad para mi proyecto?', answer: 'Para sitios de comercio electrónico o con audiencia principalmente chilena, la velocidad es crucial. Busca hosting con servidores en Chile, CDN incluido y tecnologías de caché para garantizar tiempos de carga óptimos.' },
+  { question: '¿Cuál es mi presupuesto a largo plazo?', answer: 'Considera no solo el costo inicial sino también las renovaciones. Algunos proveedores ofrecen grandes descuentos el primer año pero luego las renovaciones son costosas. Evalúa el TCO (Costo Total de Propiedad) a 3 años.' },
+];
 
 const GuiaElegirHosting = () => {
   useEffect(() => {
@@ -21,6 +30,7 @@ const GuiaElegirHosting = () => {
           content="Aprende a elegir el mejor proveedor de hosting para tu sitio web según tus necesidades. Guía completa paso a paso." 
         />
       </Helmet>
+      <SEOFAQSchema faqs={guiaFaqs} />
       
       <Navbar />
       

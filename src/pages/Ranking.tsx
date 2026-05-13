@@ -32,6 +32,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/Footer';
+import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 
 // Host provider data
 const hostProviders = [
@@ -491,6 +492,7 @@ const RankingPage = () => {
       <div className="h-0.5 bg-gray-200 w-full my-8" />
 
       {/* FAQ Section */}
+      <SEOFAQSchema faqs={faqItems} />
       <Section id="faq">
         <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
           Preguntas frecuentes
