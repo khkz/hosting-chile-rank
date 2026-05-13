@@ -87,19 +87,13 @@ const popularCategories = [
 ];
 
 const Blog = () => {
-  useEffect(() => {
-    document.title = "Blog sobre hosting | eligetuhosting.cl";
-  }, []);
-
   return (
     <>
-      <Helmet>
-        <title>Blog Hosting Chile | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content="Información actualizada sobre hosting, WordPress, seguridad web y tecnologías para tu sitio. Guías, tutoriales y consejos de expertos." 
-        />
-      </Helmet>
+      <DynamicMetaTags
+        title="Blog Hosting Chile"
+        description="Información actualizada sobre hosting, WordPress, seguridad web y tecnologías para tu sitio. Guías, tutoriales y consejos de expertos."
+        keywords="blog hosting, wordpress chile, seguridad web, tutoriales hosting, guías web"
+      />
       
       <Navbar />
       
