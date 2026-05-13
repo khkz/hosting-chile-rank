@@ -213,7 +213,7 @@ const HostingQuiz = () => {
               </div>
               <button
                 onClick={() => setStep(2)}
-                className="mt-6 text-sm text-gray-500 hover:text-brand-red transition-colors"
+                className="mt-6 text-sm text-gray-600 hover:text-brand-red transition-colors"
               >
                 ← Volver
               </button>
