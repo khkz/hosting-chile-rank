@@ -1,10 +1,9 @@
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Helmet } from 'react-helmet-async';
+import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 
 // Datos simulados de posts del blog
 const blogPosts = [
@@ -88,19 +87,13 @@ const popularCategories = [
 ];
 
 const Blog = () => {
-  useEffect(() => {
-    document.title = "Blog sobre hosting | eligetuhosting.cl";
-  }, []);
-
   return (
     <>
-      <Helmet>
-        <title>Blog Hosting Chile | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content="Información actualizada sobre hosting, WordPress, seguridad web y tecnologías para tu sitio. Guías, tutoriales y consejos de expertos." 
-        />
-      </Helmet>
+      <DynamicMetaTags
+        title="Blog Hosting Chile"
+        description="Información actualizada sobre hosting, WordPress, seguridad web y tecnologías para tu sitio. Guías, tutoriales y consejos de expertos."
+        keywords="blog hosting, wordpress chile, seguridad web, tutoriales hosting, guías web"
+      />
       
       <Navbar />
       

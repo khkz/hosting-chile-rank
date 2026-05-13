@@ -1,8 +1,8 @@
-
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -352,19 +352,17 @@ const BlogPost = () => {
   const post = posts[slug || ''] || posts.default;
   
   useEffect(() => {
-    document.title = `${post.title} | eligetuhosting.cl`;
-    // Hacer scroll al inicio de la página cuando cambia el post
     window.scrollTo(0, 0);
-  }, [post.title, slug]);
+  }, [slug]);
 
   return (
     <>
+      <DynamicMetaTags
+        title={post.title}
+        description={post.excerpt}
+        type="article"
+      />
       <Helmet>
-        <title>{post.title} | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content={post.excerpt} 
-        />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

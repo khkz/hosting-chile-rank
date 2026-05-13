@@ -56,7 +56,22 @@ const WikiIndex: React.FC = () => {
           content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026. Guías técnicas para elegir el mejor hosting en Chile." 
         />
         <meta name="keywords" content="wiki hosting, wordpress, moodle, joomla, elementor, woocommerce, litespeed, cache, seguridad, hosting chile" />
-        <link rel="canonical" href="https://hostingchile.net/wiki" />
+        <link rel="canonical" href="https://eligetuhosting.cl/wiki" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Wiki Hosting 2026 | EligeTuHosting.cl" />
+        <meta property="og:description" content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026. Guías técnicas para elegir el mejor hosting en Chile." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://eligetuhosting.cl/wiki" />
+        <meta property="og:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
+        <meta property="og:site_name" content="EligeTuHosting.cl" />
+        <meta property="og:locale" content="es_CL" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Wiki Hosting 2026 | EligeTuHosting.cl" />
+        <meta name="twitter:description" content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026." />
+        <meta name="twitter:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
         
         {/* Schema.org DefinedTermSet */}
         <script type="application/ld+json">
@@ -65,18 +80,18 @@ const WikiIndex: React.FC = () => {
             "@type": "DefinedTermSet",
             "name": "Wiki de Hosting Chile",
             "description": "Glosario completo de términos de hosting, WordPress, CMS y tecnologías web",
-            "url": "https://hostingchile.net/wiki",
+            "url": "https://eligetuhosting.cl/wiki",
             "publisher": {
               "@type": "Organization",
-              "name": "HostingChile",
-              "url": "https://hostingchile.net"
+              "name": "EligeTuHosting.cl",
+              "url": "https://eligetuhosting.cl"
             },
             "hasDefinedTerm": wikiTerms.map(term => ({
               "@type": "DefinedTerm",
               "name": term.title,
               "description": term.shortDefinition,
-              "url": `https://hostingchile.net/wiki/${term.slug}`,
-              "inDefinedTermSet": "https://hostingchile.net/wiki"
+              "url": `https://eligetuhosting.cl/wiki/${term.slug}`,
+              "inDefinedTermSet": "https://eligetuhosting.cl/wiki"
             }))
           })}
         </script>
