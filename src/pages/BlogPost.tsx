@@ -351,19 +351,17 @@ const BlogPost = () => {
   const post = posts[slug || ''] || posts.default;
   
   useEffect(() => {
-    document.title = `${post.title} | eligetuhosting.cl`;
-    // Hacer scroll al inicio de la página cuando cambia el post
     window.scrollTo(0, 0);
-  }, [post.title, slug]);
+  }, [slug]);
 
   return (
     <>
+      <DynamicMetaTags
+        title={post.title}
+        description={post.excerpt}
+        type="article"
+      />
       <Helmet>
-        <title>{post.title} | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content={post.excerpt} 
-        />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
