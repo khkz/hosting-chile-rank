@@ -42,10 +42,6 @@ const Contacto = () => {
     },
   });
 
-  useEffect(() => {
-    document.title = "Contacto | eligetuhosting.cl";
-  }, []);
-
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
