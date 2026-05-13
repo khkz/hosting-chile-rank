@@ -72,12 +72,11 @@ const Contacto = () => {
 
   return (
     <>
+      <DynamicMetaTags
+        title="Contacto"
+        description="Contáctanos para resolver tus dudas sobre hosting en Chile. Estamos aquí para ayudarte a encontrar el mejor servicio para tu sitio web."
+      />
       <Helmet>
-        <title>Contacto | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content="Contáctanos para resolver tus dudas sobre hosting en Chile. Estamos aquí para ayudarte a encontrar el mejor servicio para tu sitio web." 
-        />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
