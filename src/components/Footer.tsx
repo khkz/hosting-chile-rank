@@ -43,14 +43,14 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Servicios</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/ranking" className="text-gray-300 hover:text-gray-400 transition-colors">Ranking de Hosting</Link></li>
-              <li><Link to="/cotiza-hosting" className="text-gray-300 hover:text-gray-400 transition-colors">Cotización Gratuita</Link></li>
-              <li><Link to="/calculadora-tco" className="text-gray-300 hover:text-gray-400 transition-colors">Calculadora de TCO</Link></li>
-              <li><Link to="/comparativa" className="text-gray-300 hover:text-gray-400 transition-colors">Comparativas</Link></li>
-              <li><Link to="/guia-elegir-hosting" className="text-gray-300 hover:text-gray-400 transition-colors">Guías de Compra</Link></li>
-             <li><Link to="/benchmark" className="text-gray-300 hover:text-gray-400 transition-colors">Benchmarks</Link></li>
-             <li><Link to="/metodologia" className="text-gray-300 hover:text-gray-400 transition-colors">Metodología</Link></li>
-              <li><Link to="/catalogo" className="text-gray-300 hover:text-gray-400 transition-colors">Catálogo Completo</Link></li>
+              <li><Link to="/ranking" className="text-gray-300 hover:text-white transition-colors">Ranking de Hosting</Link></li>
+              <li><Link to="/cotiza-hosting" className="text-gray-300 hover:text-white transition-colors">Cotización Gratuita</Link></li>
+              <li><Link to="/calculadora-tco" className="text-gray-300 hover:text-white transition-colors">Calculadora de TCO</Link></li>
+              <li><Link to="/comparativa" className="text-gray-300 hover:text-white transition-colors">Comparativas</Link></li>
+              <li><Link to="/guia-elegir-hosting" className="text-gray-300 hover:text-white transition-colors">Guías de Compra</Link></li>
+             <li><Link to="/benchmark" className="text-gray-300 hover:text-white transition-colors">Benchmarks</Link></li>
+             <li><Link to="/metodologia" className="text-gray-300 hover:text-white transition-colors">Metodología</Link></li>
+              <li><Link to="/catalogo" className="text-gray-300 hover:text-white transition-colors">Catálogo Completo</Link></li>
             </ul>
           </div>
 
@@ -58,15 +58,15 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Recursos</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/blog" className="text-gray-300 hover:text-gray-400 transition-colors">Blog</Link></li>
-              <li><Link to="/wiki" className="text-gray-300 hover:text-gray-400 transition-colors">Wiki de Hosting</Link></li>
-              <li><Link to="/certificaciones" className="text-gray-300 hover:text-gray-400 transition-colors">Certificaciones</Link></li>
-              <li><Link to="/ultimos-dominios" className="text-gray-300 hover:text-gray-400 transition-colors">Últimos Dominios</Link></li>
-              <li><Link to="/asn" className="text-gray-300 hover:text-gray-400 transition-colors">Mapa ASN</Link></li>
-              <li><Link to="/guia-elegir-vps" className="text-gray-300 hover:text-gray-400 transition-colors">Guía VPS</Link></li>
-              <li><Link to="/guia-elegir-ssl" className="text-gray-300 hover:text-gray-400 transition-colors">Guía SSL</Link></li>
-              <li><Link to="/guia-migrar-hosting" className="text-gray-300 hover:text-gray-400 transition-colors">Guía Migración</Link></li>
-              <li><Link to="/guia-seguridad-web" className="text-gray-300 hover:text-gray-400 transition-colors">Seguridad Web</Link></li>
+              <li><Link to="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
+              <li><Link to="/wiki" className="text-gray-300 hover:text-white transition-colors">Wiki de Hosting</Link></li>
+              <li><Link to="/certificaciones" className="text-gray-300 hover:text-white transition-colors">Certificaciones</Link></li>
+              <li><Link to="/ultimos-dominios" className="text-gray-300 hover:text-white transition-colors">Últimos Dominios</Link></li>
+              <li><Link to="/asn" className="text-gray-300 hover:text-white transition-colors">Mapa ASN</Link></li>
+              <li><Link to="/guia-elegir-vps" className="text-gray-300 hover:text-white transition-colors">Guía VPS</Link></li>
+              <li><Link to="/guia-elegir-ssl" className="text-gray-300 hover:text-white transition-colors">Guía SSL</Link></li>
+              <li><Link to="/guia-migrar-hosting" className="text-gray-300 hover:text-white transition-colors">Guía Migración</Link></li>
+              <li><Link to="/guia-seguridad-web" className="text-gray-300 hover:text-white transition-colors">Seguridad Web</Link></li>
             </ul>
           </div>
 

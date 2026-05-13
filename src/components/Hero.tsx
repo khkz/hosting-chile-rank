@@ -15,6 +15,7 @@ const Hero = () => {
           width={800}
           height={600}
           loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/85"></div>
       </div>
@@ -28,6 +29,7 @@ const Hero = () => {
           width={1200}
           height={800}
           loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white from-35% via-white/95 via-55% to-transparent to-85%"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-warm-cream/20 via-transparent to-warm-peach/10"></div>
@@ -82,7 +84,7 @@ const Hero = () => {
                 <Check className="w-4 h-4 text-brand-red" />
                 <span>20 proveedores verificados</span>
               </div>
-              <span className="text-gray-300">·</span>
+              <span className="text-gray-500" aria-hidden="true">·</span>
               <div className="flex items-center gap-1 text-sm text-gray-600">
                 <Check className="w-4 h-4 text-brand-red" />
                 <span>+5.700 dominios analizados</span>
