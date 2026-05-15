@@ -65,6 +65,29 @@ const GuiaHostingMasSeguro = () => {
     },
   ];
 
+  const faqs = [
+    {
+      question: '¿Qué es un WAF y por qué debería exigirlo del hosting?',
+      answer:
+        'Un WAF (Web Application Firewall) filtra y monitorea el tráfico HTTP antes de que llegue a tu sitio. Bloquea inyecciones SQL, XSS, bots maliciosos y exploits contra plugins desactualizados. Un WAF a nivel de servidor protege todo el entorno de hosting, no solo una instalación de WordPress, y reduce drásticamente la ventana de ataque cuando Mitos u otros publican un CVE.',
+    },
+    {
+      question: '¿Son suficientes los backups del hosting o debo hacer los míos?',
+      answer:
+        'Los backups del hosting son la primera línea, pero nunca deben ser la única. Exige al menos 7 a 30 días de retención, almacenamiento fuera del servidor principal y restauración granular (archivo, base de datos o sitio completo). Para proyectos críticos, complementa con tu propio backup remoto (por ejemplo, con plugins de WordPress a S3) como política de redundancia.',
+    },
+    {
+      question: '¿Cómo funciona el parcheo virtual si mi plugin todavía no tiene actualización?',
+      answer:
+        'El parcheo virtual (también llamado virtual patching) crea una regla del WAF que bloquea la petición maliciosa conocida sin modificar el código del plugin. Es una medida temporal: te da tiempo para actualizar el plugin cuando el desarrollador publique el fix oficial, evitando que tu sitio sea hackeado en las primeras 24-48 horas después de la divulgación del CVE. Imunify360 y algunos WAF avanzados implementan esto automáticamente.',
+    },
+    {
+      question: 'Mi sitio usa WordPress y cPanel: ¿qué debo exigir al hosting?',
+      answer:
+        'Específicamente para WordPress: bloqueo de fuerza bruta en wp-login y xmlrpc, hardening automático de wp-config, escaneo de plugins con CVEs conocidas y alerta proactiva de actualizaciones críticas. Para cPanel: 2FA obligatorio, aislamiento por cuenta (CageFS), protección de fuerza bruta en el panel y monitoreo de archivos PHP subidos. Un hosting que combine ambas capas reduce el riesgo real de hackeo en más del 90%.',
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted/30">
       <DynamicMetaTags
