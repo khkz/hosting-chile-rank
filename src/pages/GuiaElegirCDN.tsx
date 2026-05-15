@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Separator } from '@/components/ui/separator';
@@ -24,6 +25,7 @@ const GuiaElegirCDN = () => {
               <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
                 CDN en Chile: La diferencia entre cargar en 1 segundo vs 8 segundos
               </h1>
+            <AuthorByline reviewedAt="2026-05-15" />
               <p className="text-xl text-muted-foreground mb-8">
                 Te voy a contar cómo un CDN transformó el sitio de mi cliente más exigente: de perder ventas por lentitud 
                 a ser el e-commerce más rápido de su rubro. Y lo mejor: sin gastar una fortuna.

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import HowToSchema from '@/components/SEO/HowToSchema';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
@@ -150,6 +151,7 @@ const GuiaCompletaElegirHosting = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
               Guía Completa para Elegir Hosting en Chile 2026
             </h1>
+            <AuthorByline reviewedAt="2026-05-15" />
             <p className="text-xl text-muted-foreground mb-4">
               Todo lo que necesitas saber para tomar la decisión correcta
             </p>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '../components/StickyCTA';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle, CheckCircle, Clock, Shield } from 'lucide-react';
@@ -24,6 +25,7 @@ const GuiaMigrarHosting = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
               Cómo Migrar tu Hosting Web Sin Perder Datos
             </h1>
+            <AuthorByline reviewedAt="2026-05-15" />
             <p className="text-xl text-muted-foreground mb-8">
               Después de migrar más de 200 sitios web en Chile, te comparto mi proceso probado paso a paso
             </p>
