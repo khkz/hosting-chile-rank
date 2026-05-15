@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, Lock, Zap, Server, AlertTriangle, CheckCircle2, Eye, FileWarning } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+
 
 const GuiaHostingMasSeguro = () => {
   const breadcrumbItems = [
