@@ -143,6 +143,16 @@ const GuiaHostingMasSeguro = () => {
           </div>
         </section>
 
+        {/* Quiz interactivo */}
+        <section id="quiz" className="mb-12">
+          <h2 className="text-2xl font-bold mb-2">Test: ¿qué tan en riesgo está tu sitio?</h2>
+          <p className="text-muted-foreground mb-6">
+            10 preguntas rápidas para calcular tu nivel de riesgo y ver qué funciones de seguridad
+            necesitas exigirle a tu hosting.
+          </p>
+          <SecurityRiskQuiz />
+        </section>
+
         {/* Capas */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-6">Las 4 capas de seguridad que debes exigir</h2>
