@@ -7,7 +7,7 @@ import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, Lock, Zap, Server, AlertTriangle, CheckCircle2, Eye, FileWarning } from 'lucide-react';
+import { Shield, Lock, Zap, Server, AlertTriangle, CheckCircle2, Eye, FileWarning, XCircle, Info, MinusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import SecurityRiskQuiz from '@/components/SecurityRiskQuiz';
@@ -239,6 +239,113 @@ const GuiaHostingMasSeguro = () => {
               </div>
             </CardContent>
           </Card>
+        </section>
+
+        {/* Tabla comparativa de seguridad */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-2">Comparativa de seguridad por proveedor</h2>
+          <p className="text-muted-foreground mb-6">
+            Datos verificados a partir de los planes publicados en nuestro catálogo. Lo que no consta
+            en los features del plan no significa que no exista: se indica con
+            <MinusCircle className="inline w-4 h-4 mx-1 align-text-bottom text-yellow-600" />.
+          </p>
+
+          <div className="overflow-x-auto rounded-lg border">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-muted/50 border-b">
+                  <th className="text-left px-4 py-3 font-semibold">Proveedor</th>
+                  <th className="text-center px-3 py-3 font-semibold">BitNinja</th>
+                  <th className="text-center px-3 py-3 font-semibold">Imunify360</th>
+                  <th className="text-center px-3 py-3 font-semibold">Firewall / WAF</th>
+                  <th className="text-center px-3 py-3 font-semibold">Backups</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {/* HostingPlus */}
+                <tr className="bg-card">
+                  <td className="px-4 py-4">
+                    <div className="font-medium">HostingPlus</div>
+                    <div className="text-xs text-muted-foreground mt-1">Desde $3.469/mes</div>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <Info className="w-5 h-5 mx-auto text-blue-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">Según sitio</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <Info className="w-5 h-5 mx-auto text-blue-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">Según sitio</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <CheckCircle2 className="w-5 h-5 mx-auto text-green-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">Todos los planes</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <CheckCircle2 className="w-5 h-5 mx-auto text-green-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">JetBackup diarios</span>
+                  </td>
+                </tr>
+
+                {/* EcoHosting */}
+                <tr className="bg-card">
+                  <td className="px-4 py-4">
+                    <div className="font-medium">EcoHosting</div>
+                    <div className="text-xs text-muted-foreground mt-1">Desde $4.990/mes</div>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <XCircle className="w-5 h-5 mx-auto text-gray-400" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">No consta</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <MinusCircle className="w-5 h-5 mx-auto text-yellow-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">Solo Corporativo</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <XCircle className="w-5 h-5 mx-auto text-gray-400" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">No consta</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <CheckCircle2 className="w-5 h-5 mx-auto text-green-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">JetBackup en todos</span>
+                  </td>
+                </tr>
+
+                {/* 1Hosting */}
+                <tr className="bg-card">
+                  <td className="px-4 py-4">
+                    <div className="font-medium">1Hosting</div>
+                    <div className="text-xs text-muted-foreground mt-1">Desde $2.990/mes</div>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <XCircle className="w-5 h-5 mx-auto text-gray-400" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">No consta</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <XCircle className="w-5 h-5 mx-auto text-gray-400" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">No consta</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <MinusCircle className="w-5 h-5 mx-auto text-yellow-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">Emprendedor+</span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <MinusCircle className="w-5 h-5 mx-auto text-yellow-600" />
+                    <span className="text-[10px] text-muted-foreground block mt-1">Semanales</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <Alert className="mt-4 bg-blue-50 border-blue-200">
+            <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+            <AlertDescription className="text-sm text-blue-800">
+              <strong>Evidencia:</strong> los datos de BitNinja e Imunify360 de HostingPlus provienen
+              de la documentación publicada por el proveedor y de su curaduría en el ranking.
+              Los demás datos se extraen directamente de los features listados en los planes
+              publicados de cada proveedor en nuestro catálogo.
+            </AlertDescription>
+          </Alert>
         </section>
 
         {/* Preguntas para hacerle al proveedor */}
