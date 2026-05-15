@@ -7,7 +7,7 @@ import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, Lock, Zap, Server, AlertTriangle, CheckCircle2, Eye, FileWarning } from 'lucide-react';
+import { Shield, Lock, Zap, Server, AlertTriangle, CheckCircle2, Eye, FileWarning, XCircle, Info, MinusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import SecurityRiskQuiz from '@/components/SecurityRiskQuiz';
