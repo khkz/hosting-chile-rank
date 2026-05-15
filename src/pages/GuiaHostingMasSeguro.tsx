@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
+import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, Lock, Zap, Server, AlertTriangle, CheckCircle2, Eye, FileWarning, XCircle, Info, MinusCircle } from 'lucide-react';
