@@ -26,6 +26,7 @@ import GuiaElegirCDN from './pages/GuiaElegirCDN';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
 import GuiaMigrarHosting from './pages/GuiaMigrarHosting';
 import GuiaSeguridadWeb from './pages/GuiaSeguridadWeb';
+import GuiaHostingMasSeguro from './pages/GuiaHostingMasSeguro';
 import GuiaHostingWordPress from './pages/GuiaHostingWordPress';
 import GuiaCompletaElegirHosting from './pages/GuiaCompletaElegirHosting';
 import ErroresComunesHosting from './pages/ErroresComunesHosting';
