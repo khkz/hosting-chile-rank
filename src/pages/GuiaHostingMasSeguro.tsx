@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
@@ -125,6 +126,7 @@ const GuiaHostingMasSeguro = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Cómo elegir el hosting más seguro para tu sitio
           </h1>
+            <AuthorByline reviewedAt="2026-05-15" />
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Guía técnica y honesta para elegir un proveedor que realmente te proteja: WAF, BitNinja,
             Imunify360, firewall enterprise y parcheo de vulnerabilidades de WordPress y cPanel.

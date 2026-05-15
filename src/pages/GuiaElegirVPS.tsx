@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -27,6 +28,7 @@ const GuiaElegirVPS = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-6">
               VPS Chile 2025: Guía Completa Basada en 180 Migraciones Reales
             </h1>
+            <AuthorByline reviewedAt="2026-05-15" />
             <p className="text-lg text-[#555] max-w-2xl mx-auto mb-8">
               Después de 4 años ayudando empresas chilenas a migrar a VPS, te comparto las 5 señales 
               que indican cuándo SÍ necesitas uno + ranking real de proveedores con precios 2025.

@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -41,6 +42,7 @@ const GuiaElegirHosting = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-6">
               ¿Hosting en Chile? Te enseño cómo elegir el mejor en 2025
             </h1>
+            <AuthorByline reviewedAt="2026-05-15" />
             <p className="text-lg text-[#555] max-w-2xl mx-auto mb-8">
               Después de 8 años ayudando a empresas chilenas a encontrar su hosting ideal, 
               te voy a contar todo lo que necesitas saber para no meter la pata (como me pasó con mi primer sitio).
