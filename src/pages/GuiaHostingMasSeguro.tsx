@@ -244,6 +244,48 @@ const GuiaHostingMasSeguro = () => {
           </ol>
         </section>
 
+        {/* FAQ */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">Preguntas frecuentes</h2>
+          <Accordion type="single" collapsible className="space-y-3">
+            <AccordionItem value="faq-waf" className="bg-card border rounded-lg px-4">
+              <AccordionTrigger className="text-left font-medium text-base">
+                ¿Qué es un WAF y por qué debería exigirlo del hosting?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Un WAF (Web Application Firewall) filtra y monitorea el tráfico HTTP antes de que llegue a tu sitio. Bloquea inyecciones SQL, XSS, bots maliciosos y exploits contra plugins desactualizados. Un WAF a nivel de servidor protege todo el entorno de hosting, no solo una instalación de WordPress, y reduce drásticamente la ventana de ataque cuando Mitos u otros publican un CVE.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-backups" className="bg-card border rounded-lg px-4">
+              <AccordionTrigger className="text-left font-medium text-base">
+                ¿Son suficientes los backups del hosting o debo hacer los míos?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Los backups del hosting son la primera línea, pero nunca deben ser la única. Exige al menos 7 a 30 días de retención, almacenamiento fuera del servidor principal y restauración granular (archivo, base de datos o sitio completo). Para proyectos críticos, complementa con tu propio backup remoto (por ejemplo, con plugins de WordPress a S3) como política de redundancia.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-parcheo" className="bg-card border rounded-lg px-4">
+              <AccordionTrigger className="text-left font-medium text-base">
+                ¿Cómo funciona el parcheo virtual si mi plugin todavía no tiene actualización?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                El parcheo virtual (también llamado virtual patching) crea una regla del WAF que bloquea la petición maliciosa conocida sin modificar el código del plugin. Es una medida temporal: te da tiempo para actualizar el plugin cuando el desarrollador publique el fix oficial, evitando que tu sitio sea hackeado en las primeras 24-48 horas después de la divulgación del CVE. Imunify360 y algunos WAF avanzados implementan esto automáticamente.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-wordpress" className="bg-card border rounded-lg px-4">
+              <AccordionTrigger className="text-left font-medium text-base">
+                Mi sitio usa WordPress y cPanel: ¿qué debo exigir al hosting?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Específicamente para WordPress: bloqueo de fuerza bruta en wp-login y xmlrpc, hardening automático de wp-config, escaneo de plugins con CVEs conocidas y alerta proactiva de actualizaciones críticas. Para cPanel: 2FA obligatorio, aislamiento por cuenta (CageFS), protección de fuerza bruta en el panel y monitoreo de archivos PHP subidos. Un hosting que combine ambas capas reduce el riesgo real de hackeo en más del 90%.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </section>
+
         {/* Relacionados */}
         <section className="mb-4">
           <h2 className="text-2xl font-bold mb-4">Sigue aprendiendo</h2>
