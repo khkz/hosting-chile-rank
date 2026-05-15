@@ -111,6 +111,7 @@ const GuiaHostingMasSeguro = () => {
           })}
         </script>
       </Helmet>
+      <SEOFAQSchema faqs={faqs} />
 
       <Navbar />
       <SEOBreadcrumbs items={breadcrumbItems} />
