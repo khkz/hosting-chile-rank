@@ -118,6 +118,7 @@ function App() {
         <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
         <Route path="/guia-migrar-hosting" element={<GuiaMigrarHosting />} />
         <Route path="/guia-seguridad-web" element={<GuiaSeguridadWeb />} />
+        <Route path="/guia-hosting-mas-seguro-chile" element={<GuiaHostingMasSeguro />} />
         <Route path="/guia-hosting-wordpress" element={<GuiaHostingWordPress />} />
         <Route path="/guia-completa-elegir-hosting-chile-2026" element={<GuiaCompletaElegirHosting />} />
         <Route path="/guia-completa-elegir-hosting-chile-2025" element={<Navigate to="/guia-completa-elegir-hosting-chile-2026" replace />} />
