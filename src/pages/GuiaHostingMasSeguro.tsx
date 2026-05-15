@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, Lock, Zap, Server, AlertTriangle, CheckCircle2, Eye, FileWarning } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import SecurityRiskQuiz from '@/components/SecurityRiskQuiz';
 
 
 const GuiaHostingMasSeguro = () => {
@@ -140,6 +141,16 @@ const GuiaHostingMasSeguro = () => {
               </Card>
             ))}
           </div>
+        </section>
+
+        {/* Quiz interactivo */}
+        <section id="quiz" className="mb-12">
+          <h2 className="text-2xl font-bold mb-2">Test: ¿qué tan en riesgo está tu sitio?</h2>
+          <p className="text-muted-foreground mb-6">
+            10 preguntas rápidas para calcular tu nivel de riesgo y ver qué funciones de seguridad
+            necesitas exigirle a tu hosting.
+          </p>
+          <SecurityRiskQuiz />
         </section>
 
         {/* Capas */}
