@@ -26,6 +26,7 @@ import GuiaElegirCDN from './pages/GuiaElegirCDN';
 import GuiaElegirSSL from './pages/GuiaElegirSSL';
 import GuiaMigrarHosting from './pages/GuiaMigrarHosting';
 import GuiaSeguridadWeb from './pages/GuiaSeguridadWeb';
+import GuiaHostingMasSeguro from './pages/GuiaHostingMasSeguro';
 import GuiaHostingWordPress from './pages/GuiaHostingWordPress';
 import GuiaCompletaElegirHosting from './pages/GuiaCompletaElegirHosting';
 import ErroresComunesHosting from './pages/ErroresComunesHosting';
@@ -117,6 +118,7 @@ function App() {
         <Route path="/guia-elegir-ssl" element={<GuiaElegirSSL />} />
         <Route path="/guia-migrar-hosting" element={<GuiaMigrarHosting />} />
         <Route path="/guia-seguridad-web" element={<GuiaSeguridadWeb />} />
+        <Route path="/guia-hosting-mas-seguro-chile" element={<GuiaHostingMasSeguro />} />
         <Route path="/guia-hosting-wordpress" element={<GuiaHostingWordPress />} />
         <Route path="/guia-completa-elegir-hosting-chile-2026" element={<GuiaCompletaElegirHosting />} />
         <Route path="/guia-completa-elegir-hosting-chile-2025" element={<Navigate to="/guia-completa-elegir-hosting-chile-2026" replace />} />
