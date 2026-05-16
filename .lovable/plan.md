@@ -1,103 +1,115 @@
+# SEO Audit Report — Sistema completo
 
-## Objetivo
+Vamos a montar el producto en **3 entregas** para que cada parte se pueda probar antes de pasar a la siguiente. Esta es la entrega completa propuesta.
 
-La página `/benchmark` ya existe con infraestructura real (`run-benchmark`, `uptime-monitor`, tablas `benchmark_runs`/`benchmark_results`/`uptime_pings`). Falta: (a) reforzar la transparencia con fuentes citadas y poner datos verificables visibles, y (b) **eliminar los uptimes/ratings inventados** que aún viven en componentes y páginas (`Ranking.tsx`, `TrustReport.tsx`, `Benefits.tsx`, `BeforeAfter.tsx`, `CertificationsBanner.tsx`, `HostingQuiz.tsx`, `Resena.tsx`, `GuiaElegirVPS.tsx`).
+---
 
-## Parte 1 — Reforzar `/benchmark` con fuentes verificables
+## Entrega 1 — Landing de venta + base de datos + mini-audit gratis
 
-### 1.1 Bloque "Fuentes y herramientas" (nuevo componente)
+Objetivo: tener una página que venda, capture interés y demuestre valor real con un análisis instantáneo gratis (gancho).
 
-En `src/pages/Benchmark.tsx`, agregar una sección visible "De dónde vienen estos datos" que cite:
+### Página `/seo-audit`
 
-- **TTFB / Headers**: medición propia desde Supabase Edge (`run-benchmark`, código abierto en repo). Link al archivo en GitHub si existe `GH_PAT`, o al pie con SHA del último deploy.
-- **Lighthouse (Performance / SEO / A11y / LCP / CLS)**: Google PageSpeed Insights API v5, `strategy=mobile`. Link público a `https://pagespeed.web.dev/analysis?url=<target>` por proveedor para que el usuario reproduzca.
-- **Uptime 30d**: pings horarios HEAD/GET a `benchmark_target_url` (`uptime-monitor` cada hora vía cron, tabla `uptime_pings`). Mostrar `n` muestras tomadas en el período.
-- **Compuesto**: fórmula explícita visible (35% Lighthouse perf + 25% TTFB + 25% uptime + 15% SEO) con link a `/metodologia-benchmark`.
+- **Hero**: "Auditoría SEO Profesional con datos reales de Google" + barra para ingresar un dominio (genera un mini-audit gratis al vuelo).
+- **Mini-audit en vivo** (gratis, sin login): velocidad PageSpeed real, SSL, meta tags, indexabilidad, 5 keywords top con datos de DataForSEO. Sirve como demo del producto.
+- **Sección "Qué incluye el informe completo"**: 40+ checks (técnico, on-page, backlinks, keywords, competidores, SERP, contenido, mobile, Core Web Vitals, schema, internacionalización).
+- **Ejemplo de informe** (preview con blur / 3 páginas de muestra descargables).
+- **Planes de suscripción**:
+  - **Starter** $19.990/mes — 1 dominio, audit mensual, 50 keywords trackeadas.
+  - **Pro** $49.990/mes — 5 dominios, audit semanal, 500 keywords, monitoreo competidores.
+  - **Agency** $149.990/mes — 25 dominios, audit diario, 5.000 keywords, white-label PDF, API.
+- **Garantía 14 días**, FAQ, testimonios, comparativa "Hazlo tú vs Contrátanos".
+- **Schema.org** Product + Offer + FAQPage + AggregateRating para Rich Results.
 
-### 1.2 Por proveedor, mostrar reproducibilidad
+### Base de datos (Supabase)
 
-En `BenchmarkRowItem`, ampliar tooltips/expand con:
+```text
+seo_audit_subscriptions  → plan, status, dominios contratados, paddle/stripe_id
+seo_audit_domains        → dominios bajo monitoreo por suscripción
+seo_audits               → cada informe generado (status, scores, JSON con todo)
+seo_audit_keywords       → ranking histórico por keyword/dominio
+seo_audit_backlinks      → snapshot de backlinks
+seo_audit_competitors    → competidores detectados y comparativa
+seo_audit_issues         → errores detectados, severidad, recomendación
+```
 
-- URL exacta medida (`benchmark_target_url`) ya está, añadir botón "Reproducir en PageSpeed →".
-- Cantidad de muestras de uptime (`COUNT(uptime_pings) WHERE company_id = ... AND measured_at > now()-30d`).
-- Fecha de inicio del monitoreo (primer ping).
-- Badge "Sin datos suficientes" cuando `n < 24` pings (menos de un día).
+Todas con RLS: usuario solo ve sus dominios; admin ve todo.
 
-### 1.3 Disparar primer run real
+---
 
-Añadir al panel admin existente o ejecutar en deploy:
+## Entrega 2 — Generación automática con DataForSEO
 
-- Botón en `/admin` (o página nueva `/admin/benchmark`) que llame a `run-benchmark` con `x-admin-api-key` y muestre el run en curso.
-- Mostrar histórico de runs (`benchmark_runs`) con estado y notas.
+### Cómo se sacan los datos de las SERPs
 
-### 1.4 SEO/GEO
+DataForSEO ofrece estos endpoints (todos los usaremos vía edge function):
 
-Mantener `Dataset` JSON-LD ya presente. Añadir `dateCreated` (fecha del primer run), `temporalCoverage`, `variableMeasured` con cada métrica + unidad.
+| Dato | Endpoint DataForSEO | Costo aprox |
+|---|---|---|
+| SERP de Google | `serp/google/organic/live/advanced` | $0.002 / query |
+| Volumen de keywords + dificultad | `keywords_data/google/search_volume/live` | $0.05 / 1000 kw |
+| Keywords por las que rankea un dominio | `dataforseo_labs/google/ranked_keywords/live` | $0.01 / consulta |
+| Backlinks | `backlinks/summary/live` + `backlinks/backlinks/live` | $0.02 / dominio |
+| Competidores | `dataforseo_labs/google/competitors_domain/live` | $0.02 |
+| On-page (crawl técnico) | `on_page/task_post` + `on_page/summary` | $0.0006 / página |
+| Core Web Vitals reales | `on_page/lighthouse/live` | $0.003 / página |
 
-## Parte 2 — Eliminar valores inventados
+**Costo por informe completo Pro estimado: ~$0.50 USD**. Vendido a ~$49.990/mes = margen >95%.
 
-Política: **si no viene del benchmark real o de un campo poblado por admin con confianza explícita, no se muestra como número específico**. Reemplazar por:
+### Edge functions a crear
 
-- Datos reales del último `benchmark_results` cuando exista.
-- Texto cualitativo ("uptime alto verificado por nuestro monitoreo continuo") con link a `/benchmark`.
-- O eliminar del todo si el contexto no lo requiere.
+1. **`seo-audit-mini`** (pública, rate-limited 10/IP/día) — corre PageSpeed + scraping HEAD + DataForSEO `ranked_keywords` con limit 5. Devuelve JSON para la landing.
+2. **`seo-audit-full`** (autenticada) — orquesta llamadas a DataForSEO en paralelo, guarda en `seo_audits`, calcula score 0-100, genera lista de issues priorizados.
+3. **`seo-audit-pdf`** — genera PDF con branding Elige Tu Hosting usando `@react-pdf/renderer` server-side.
+4. **`seo-audit-cron`** — cron diario/semanal/mensual que re-corre audits según plan del usuario.
+5. **`seo-audit-webhook-paddle`** — recibe eventos de suscripción y activa/desactiva acceso.
 
-### 2.1 `src/pages/Ranking.tsx`
-Quitar `uptime: "99.98%"` / `"99.96%"` / `"99.93%"` y `speed: "9.9/10"` etc. del array hardcodeado. Dejar features cualitativas y un link "Ver mediciones reales →" a `/benchmark#<slug>`.
+### Algoritmo de scoring (transparente, publicado)
 
-### 2.2 `src/components/TrustReport.tsx`
-Eliminar `defaultProviders` con `uptimeVerified: 99.98` etc. Si el componente se sigue usando, reemplazar por hook que lea `benchmark_results` join `hosting_companies` (top 3 por `composite_score`). Si no hay datos, mostrar estado vacío honesto: "Aún publicaremos métricas verificadas tras el primer run mensual".
+```text
+Score Total = 0.30·Técnico + 0.25·Contenido + 0.20·Backlinks + 0.15·UX + 0.10·SERP
+```
 
-### 2.3 `src/components/Benefits.tsx`
-Quitar el bloque "99.9% / <200ms / 24/7" con cifras inventadas. Reemplazar por enlaces: "Uptime real medido →" `/benchmark`, "Velocidad real medida →" `/benchmark`, dejando solo "Soporte 24/7" como atributo cualitativo (verificable). También quitar "Más de 22,000 sitios confían…" si no es comprobable.
+Cada subscore tiene su rúbrica documentada en `/seo-audit/metodologia` (E-E-A-T).
 
-### 2.4 `src/components/BeforeAfter.tsx`
-Cambiar "99.98% uptime verificado" por "Uptime monitoreado continuamente — ver `/benchmark`".
+---
 
-### 2.5 `src/components/CertificationsBanner.tsx`
-Reformular "Uptime superior al 99.9%" como criterio de elegibilidad ("Proveedores con uptime ≥ 99.9% según nuestro monitoreo de 30 días") con link a `/benchmark`.
+## Entrega 3 — Dashboard privado + Pagos
 
-### 2.6 `src/components/HostingQuiz.tsx`
-Reemplazar `'Uptime 99.98%'` en features por algo cualitativo o eliminarlo.
+### `/dashboard/seo` (requiere login)
 
-### 2.7 `src/pages/Resena.tsx` y `src/pages/GuiaElegirVPS.tsx`
-Quitar números específicos inventados ("99.97% hace 14 meses", "Buen uptime (99.9%)"). Reemplazar por frases como "uptime alto según nuestro monitoreo (ver `/benchmark`)".
+- Lista de dominios monitoreados con score actual y tendencia.
+- Detalle por dominio: tabs **Resumen / Issues / Keywords / Backlinks / Competidores / Histórico / PDF**.
+- Filtros, exportación CSV/PDF.
+- Alertas por email cuando baja un ranking importante o aparece un issue crítico.
 
-### 2.8 Glosario / Guías genéricas
-**Mantener** las menciones a "99.9%" en `TechnicalGlossary.tsx`, `GuiaCompletaElegirHosting.tsx`, `GuiaElegirHosting.tsx`, `GuiaElegirServidorDedicado.tsx` y `Setup.tsx` (criterios de admin) — son explicaciones genéricas o criterios de evaluación, no afirmaciones sobre proveedores específicos.
+### Admin `/admin/seo-audits`
 
-## Parte 3 — Componentes nuevos
+- Ver todas las suscripciones, forzar re-audit, ver costo DataForSEO consumido, white-label settings.
 
-- `src/components/benchmark/SourcesCard.tsx`: lista de fuentes con iconos y enlaces.
-- `src/components/benchmark/ReproduceButton.tsx`: link directo a `pagespeed.web.dev` por URL.
-- `src/hooks/useBenchmarkTopProviders.ts`: top N por `composite_score` para reemplazar mocks de `TrustReport`.
-- `src/pages/admin/BenchmarkRuns.tsx` (opcional): UI para disparar y ver runs.
+### Pagos
 
-## Archivos a editar/crear
+Suscripción mensual recurrente. Recomiendo **Paddle** (merchant of record, maneja IVA chileno y boletas automáticamente) — pero corremos `recommend_payment_provider` para confirmar.
 
-**Crear:**
-- `src/components/benchmark/SourcesCard.tsx`
-- `src/components/benchmark/ReproduceButton.tsx`
-- `src/hooks/useBenchmarkTopProviders.ts`
-- `src/pages/admin/BenchmarkRuns.tsx`
-- Ruta en `App.tsx` para `/admin/benchmark`
+---
 
-**Editar:**
-- `src/pages/Benchmark.tsx` (añadir SourcesCard + ReproduceButton + variableMeasured en JSON-LD)
-- `src/pages/Ranking.tsx` (quitar uptime/speed inventados)
-- `src/components/TrustReport.tsx` (usar hook real o estado vacío)
-- `src/components/Benefits.tsx` (quitar bloque "99.9% / <200ms / 22.000 sitios")
-- `src/components/BeforeAfter.tsx` (reformular)
-- `src/components/CertificationsBanner.tsx` (reformular)
-- `src/components/HostingQuiz.tsx` (quitar "Uptime 99.98%")
-- `src/pages/Resena.tsx` (quitar uptimes específicos por proveedor)
-- `src/pages/GuiaElegirVPS.tsx` (quitar uptimes específicos)
+## Detalles técnicos
 
-**Memoria:**
-- Actualizar `mem://business-rules/hosting-monopolies` o crear `mem://features/benchmark` con la regla: "Uptime/velocidad por proveedor solo provienen de `benchmark_results` / `uptime_pings`. Prohibido inventar cifras."
+- **DataForSEO**: requiere `DATAFORSEO_LOGIN` + `DATAFORSEO_PASSWORD` (Basic Auth). Endpoint base `https://api.dataforseo.com/v3/`. Hay que crear cuenta en dataforseo.com y cargar saldo (mínimo $50).
+- **PDF**: `npm:@react-pdf/renderer` corre en Deno con shim, o usamos servicio puppeteer headless. Definimos en entrega 2.
+- **Rate limiting** del mini-audit: tabla `seo_audit_rate_limit` por IP hash.
+- **Auth ya existe** en el proyecto (Supabase Auth + tabla `profiles`).
+- **Roles**: usamos la tabla `user_roles` ya existente; añadimos rol `seo_subscriber` y verificación vía `has_role()`.
+- **Seguridad**: claves de DataForSEO solo en edge functions, nunca en frontend. RLS estricta. Sin SQL dinámico.
 
-## Out of scope
+---
 
-- Cambiar la fórmula del score compuesto (ya está documentada).
-- Migrar la tabla `uptime_pings` (ya existe).
-- Añadir más fuentes externas (BuiltWith, Cloudflare Radar) — se puede iterar después.
+## ¿Por dónde arrancamos?
+
+Propongo empezar por **Entrega 1** completa (landing + DB + mini-audit funcionando con DataForSEO real). Eso ya te permite empezar a captar leads esta semana. Las entregas 2 y 3 las hacemos a continuación.
+
+Para arrancar necesito:
+1. Que confirmes el plan.
+2. Crear cuenta en **dataforseo.com**, cargar saldo, y darme `DATAFORSEO_LOGIN` + `DATAFORSEO_PASSWORD` cuando te los pida (los guardo como secretos, nunca van al frontend).
+3. Confirmar precios finales de los 3 planes (o usar los que propongo).
+
+¿Avanzamos con Entrega 1?

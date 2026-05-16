@@ -1686,6 +1686,358 @@ export type Database = {
           },
         ]
       }
+      seo_audit_domains: {
+        Row: {
+          country_code: string | null
+          created_at: string
+          current_score: number | null
+          domain: string
+          id: string
+          is_active: boolean
+          language_code: string | null
+          last_audited_at: string | null
+          subscription_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          country_code?: string | null
+          created_at?: string
+          current_score?: number | null
+          domain: string
+          id?: string
+          is_active?: boolean
+          language_code?: string | null
+          last_audited_at?: string | null
+          subscription_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          country_code?: string | null
+          created_at?: string
+          current_score?: number | null
+          domain?: string
+          id?: string
+          is_active?: boolean
+          language_code?: string | null
+          last_audited_at?: string | null
+          subscription_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_audit_domains_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "seo_audit_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seo_audit_issues: {
+        Row: {
+          affected_url: string | null
+          audit_id: string
+          category: Database["public"]["Enums"]["seo_issue_category"]
+          created_at: string
+          description: string | null
+          details: Json | null
+          id: string
+          impact_score: number | null
+          recommendation: string | null
+          severity: Database["public"]["Enums"]["seo_issue_severity"]
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          affected_url?: string | null
+          audit_id: string
+          category: Database["public"]["Enums"]["seo_issue_category"]
+          created_at?: string
+          description?: string | null
+          details?: Json | null
+          id?: string
+          impact_score?: number | null
+          recommendation?: string | null
+          severity: Database["public"]["Enums"]["seo_issue_severity"]
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          affected_url?: string | null
+          audit_id?: string
+          category?: Database["public"]["Enums"]["seo_issue_category"]
+          created_at?: string
+          description?: string | null
+          details?: Json | null
+          id?: string
+          impact_score?: number | null
+          recommendation?: string | null
+          severity?: Database["public"]["Enums"]["seo_issue_severity"]
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_audit_issues_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "seo_audits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seo_audit_keywords: {
+        Row: {
+          cpc: number | null
+          difficulty: number | null
+          domain_id: string
+          id: string
+          keyword: string
+          measured_at: string
+          position: number | null
+          previous_position: number | null
+          search_volume: number | null
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          cpc?: number | null
+          difficulty?: number | null
+          domain_id: string
+          id?: string
+          keyword: string
+          measured_at?: string
+          position?: number | null
+          previous_position?: number | null
+          search_volume?: number | null
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          cpc?: number | null
+          difficulty?: number | null
+          domain_id?: string
+          id?: string
+          keyword?: string
+          measured_at?: string
+          position?: number | null
+          previous_position?: number | null
+          search_volume?: number | null
+          url?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_audit_keywords_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "seo_audit_domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seo_audit_leads: {
+        Row: {
+          contacted: boolean | null
+          converted: boolean | null
+          created_at: string
+          domain: string
+          email: string | null
+          id: string
+          mini_audit_id: string | null
+          mini_score: number | null
+          name: string | null
+          phone: string | null
+          source: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          contacted?: boolean | null
+          converted?: boolean | null
+          created_at?: string
+          domain: string
+          email?: string | null
+          id?: string
+          mini_audit_id?: string | null
+          mini_score?: number | null
+          name?: string | null
+          phone?: string | null
+          source?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          contacted?: boolean | null
+          converted?: boolean | null
+          created_at?: string
+          domain?: string
+          email?: string | null
+          id?: string
+          mini_audit_id?: string | null
+          mini_score?: number | null
+          name?: string | null
+          phone?: string | null
+          source?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_audit_leads_mini_audit_id_fkey"
+            columns: ["mini_audit_id"]
+            isOneToOne: false
+            referencedRelation: "seo_audits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seo_audit_rate_limit: {
+        Row: {
+          bucket_date: string
+          count: number
+          ip_hash: string
+          last_request_at: string
+        }
+        Insert: {
+          bucket_date?: string
+          count?: number
+          ip_hash: string
+          last_request_at?: string
+        }
+        Update: {
+          bucket_date?: string
+          count?: number
+          ip_hash?: string
+          last_request_at?: string
+        }
+        Relationships: []
+      }
+      seo_audit_subscriptions: {
+        Row: {
+          audit_frequency: string
+          created_at: string
+          current_period_end: string | null
+          domains_quota: number
+          id: string
+          keywords_quota: number
+          payment_provider: string | null
+          payment_subscription_id: string | null
+          plan: Database["public"]["Enums"]["seo_audit_plan"]
+          status: Database["public"]["Enums"]["seo_audit_sub_status"]
+          trial_ends_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audit_frequency?: string
+          created_at?: string
+          current_period_end?: string | null
+          domains_quota?: number
+          id?: string
+          keywords_quota?: number
+          payment_provider?: string | null
+          payment_subscription_id?: string | null
+          plan?: Database["public"]["Enums"]["seo_audit_plan"]
+          status?: Database["public"]["Enums"]["seo_audit_sub_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audit_frequency?: string
+          created_at?: string
+          current_period_end?: string | null
+          domains_quota?: number
+          id?: string
+          keywords_quota?: number
+          payment_provider?: string | null
+          payment_subscription_id?: string | null
+          plan?: Database["public"]["Enums"]["seo_audit_plan"]
+          status?: Database["public"]["Enums"]["seo_audit_sub_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      seo_audits: {
+        Row: {
+          completed_at: string | null
+          cost_usd: number | null
+          created_at: string
+          domain: string
+          domain_id: string | null
+          error_message: string | null
+          id: string
+          is_mini: boolean
+          report_data: Json
+          score_backlinks: number | null
+          score_content: number | null
+          score_serp: number | null
+          score_technical: number | null
+          score_total: number | null
+          score_ux: number | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["seo_audit_status"]
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          cost_usd?: number | null
+          created_at?: string
+          domain: string
+          domain_id?: string | null
+          error_message?: string | null
+          id?: string
+          is_mini?: boolean
+          report_data?: Json
+          score_backlinks?: number | null
+          score_content?: number | null
+          score_serp?: number | null
+          score_technical?: number | null
+          score_total?: number | null
+          score_ux?: number | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["seo_audit_status"]
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          cost_usd?: number | null
+          created_at?: string
+          domain?: string
+          domain_id?: string | null
+          error_message?: string | null
+          id?: string
+          is_mini?: boolean
+          report_data?: Json
+          score_backlinks?: number | null
+          score_content?: number | null
+          score_serp?: number | null
+          score_technical?: number | null
+          score_total?: number | null
+          score_ux?: number | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["seo_audit_status"]
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_audits_domain_id_fkey"
+            columns: ["domain_id"]
+            isOneToOne: false
+            referencedRelation: "seo_audit_domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sii_data: {
         Row: {
           business_activity: string | null
@@ -2054,6 +2406,25 @@ export type Database = {
         | "closed"
         | "rejected"
       review_status: "pending" | "approved" | "rejected" | "flagged"
+      seo_audit_plan: "starter" | "pro" | "agency"
+      seo_audit_status: "queued" | "running" | "completed" | "failed"
+      seo_audit_sub_status:
+        | "trialing"
+        | "active"
+        | "past_due"
+        | "canceled"
+        | "paused"
+      seo_issue_category:
+        | "technical"
+        | "on_page"
+        | "content"
+        | "backlinks"
+        | "ux"
+        | "mobile"
+        | "security"
+        | "schema"
+        | "international"
+      seo_issue_severity: "critical" | "high" | "medium" | "low" | "info"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2211,6 +2582,27 @@ export const Constants = {
       domain_sale_status: ["available", "negotiating", "sold", "not_for_sale"],
       inquiry_status: ["new", "contacted", "negotiating", "closed", "rejected"],
       review_status: ["pending", "approved", "rejected", "flagged"],
+      seo_audit_plan: ["starter", "pro", "agency"],
+      seo_audit_status: ["queued", "running", "completed", "failed"],
+      seo_audit_sub_status: [
+        "trialing",
+        "active",
+        "past_due",
+        "canceled",
+        "paused",
+      ],
+      seo_issue_category: [
+        "technical",
+        "on_page",
+        "content",
+        "backlinks",
+        "ux",
+        "mobile",
+        "security",
+        "schema",
+        "international",
+      ],
+      seo_issue_severity: ["critical", "high", "medium", "low", "info"],
     },
   },
 } as const
