@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AuthorByline from '@/components/AuthorByline';
+import GuideEEAT from '@/components/GuideEEAT';
+import heroImg from '@/assets/guia-elegir-hosting-hero.jpg';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import HowToSchema from '@/components/SEO/HowToSchema';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';

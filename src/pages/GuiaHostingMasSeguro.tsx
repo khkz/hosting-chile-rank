@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AuthorByline from '@/components/AuthorByline';
+import GuideEEAT from '@/components/GuideEEAT';
+import heroImg from '@/assets/guia-hosting-seguro-hero.jpg';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';

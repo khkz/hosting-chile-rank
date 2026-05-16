@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AuthorByline from '@/components/AuthorByline';
+import GuideEEAT from '@/components/GuideEEAT';
+import heroImg from '@/assets/guia-migrar-hosting-hero.jpg';
 import StickyCTA from '../components/StickyCTA';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle, CheckCircle, Clock, Shield } from 'lucide-react';
