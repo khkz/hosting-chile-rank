@@ -20,7 +20,7 @@ export default function DominiosPremium() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("my_domain_portfolio")
-        .select("*")
+        .select("id,domain_name,tld,listing_price,is_for_sale,sale_status,page_views,inquiries_count,created_at")
         .eq("is_for_sale", true)
         .order("listing_price", { ascending: true });
 
