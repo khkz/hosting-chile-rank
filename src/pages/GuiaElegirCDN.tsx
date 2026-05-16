@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AuthorByline from '@/components/AuthorByline';
+import GuideEEAT from '@/components/GuideEEAT';
+import heroImg from '@/assets/guia-cdn-hero.jpg';
 import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Separator } from '@/components/ui/separator';
