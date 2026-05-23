@@ -102,6 +102,8 @@ function App() {
         
         {/* Rutas normales de la aplicación */}
         <Route path="/" element={<Index />} />
+        <Route path="/seo-audit" element={<SeoAudit />} />
+        <Route path="/auditoria-seo" element={<SeoAudit />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/comparativa" element={<Comparativa />} />
         <Route path="/cotiza-hosting" element={<CotizaHosting />} />
