@@ -231,10 +231,6 @@ export default function SeoDashboard() {
                   </TabsList>
                   <TabsContent value="overview" className="space-y-4 mt-4">
                     <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-                      {[
-                        { label: "Total", val: lastAudit.score_total },
-                        { label: "Técnico", val: lastAudit.report_data?.scores?.technical ?? lastAudit.report_data?.onpage ? null : null },
-                      ]}
                       {["total", "technical", "content", "backlinks", "ux", "serp"].map((k) => {
                         const v = k === "total" ? lastAudit.score_total : lastAudit.report_data?.scores?.[k];
                         return (
