@@ -249,6 +249,13 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/certificaciones" element={<Certificaciones />} />
+            <Route path="/seo-audit" element={<SeoAudit />} />
+            <Route path="/auditoria-seo" element={<SeoAudit />} />
+            <Route path="/dashboard/seo" element={
+              <ProtectedRoute>
+                <SeoDashboard />
+              </ProtectedRoute>
+            } />
             {/* 301 Redirect: Consolidate directorio into catalogo */}
             <Route path="/directorio-hosting-chile" element={<Navigate to="/catalogo" replace />} />
             <Route path="*" element={<NotFound />} />
