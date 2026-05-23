@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles: ('admin' | 'hosting_provider' | 'user')[];
+  allowedRoles?: ('admin' | 'hosting_provider' | 'user')[];
 }
 
 export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
@@ -29,7 +29,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
   }
 
   // Redirect to home if user doesn't have the required role
-  if (role && !allowedRoles.includes(role)) {
+  if (allowedRoles && role && !allowedRoles.includes(role)) {
     toast.error(`Esta sección requiere permisos de ${allowedRoles.join(' o ')}`);
     return <Navigate to="/" replace />;
   }

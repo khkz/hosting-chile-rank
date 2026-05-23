@@ -124,6 +124,7 @@ const generateMainSitemap = (companySlugs = []) => {
     ['/vota-hosting', '0.6', 'weekly'],
     ['/calculadora-tco', '0.6', 'monthly'],
     ['/benchmark', '0.6', 'weekly'],
+    ['/seo-audit', '0.8', 'weekly'],
   ].map(([path, prio, freq]) => urlTag(`${ROOT}${path}`, prio, freq)).join('');
 
   // Páginas "VS" de proveedores (comparativas internas)
