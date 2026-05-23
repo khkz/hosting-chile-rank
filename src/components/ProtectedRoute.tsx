@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles: ('admin' | 'hosting_provider' | 'user')[];
+  allowedRoles?: ('admin' | 'hosting_provider' | 'user')[];
 }
 
 export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
