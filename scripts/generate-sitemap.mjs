@@ -101,6 +101,7 @@ const generateMainSitemap = (companySlugs = []) => {
     ['/recursos-hosting-chile', '0.7', 'weekly'],
     ['/dominios-premium', '0.7', 'weekly'],
     ['/certificaciones', '0.7', 'monthly'],
+    ['/seo-audit', '0.9', 'weekly'],
 
     // Guías (contenido de valor)
     ['/guia-elegir-hosting', '0.8', 'weekly'],
