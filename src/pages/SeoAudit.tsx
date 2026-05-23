@@ -1,145 +1,120 @@
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import {
-  Search, Zap, Shield, TrendingUp, Link as LinkIcon, FileSearch, Globe, Smartphone,
-  CheckCircle2, XCircle, Loader2, BarChart3, Eye, Target, Award, ArrowRight, Sparkles, Clock, Lock
+  Search, Loader2, CheckCircle2, XCircle, AlertTriangle, TrendingUp,
+  Shield, Zap, Smartphone, FileText, Link2, BarChart3, Crown, Sparkles,
+  ArrowRight, Lock, Globe, Target,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 interface MiniAuditResult {
   domain: string;
-  score: number;
-  head: {
-    reachable: boolean;
-    https?: boolean;
-    title?: string | null;
-    title_length?: number;
-    description?: string | null;
-    description_length?: number;
-    h1_count?: number;
-    has_viewport?: boolean;
-    has_canonical?: boolean;
-    has_open_graph?: boolean;
-    has_schema_org?: boolean;
-    is_noindex?: boolean;
-  };
-  pagespeed?: {
-    performance: number;
-    seo: number;
-    accessibility: number;
-    lcp_ms: number | null;
-    cls: number | null;
-  } | null;
-  keywords?: {
-    total_keywords: number;
-    top: Array<{ keyword: string; position: number; search_volume: number | null; cpc: number | null; url: string }>;
-  } | null;
+  scores: { total: number; technical: number; content: number; backlinks: number; ux: number; serp: number };
+  onpage: any;
+  performance: any;
+  keywords: any;
+  issues: Array<{ severity: string; category: string; title: string; recommendation: string }>;
+  data_sources: { pagespeed: boolean; dataforseo: boolean };
 }
+
+const SEVERITY_COLORS: Record<string, string> = {
+  critical: "bg-destructive text-destructive-foreground",
+  high: "bg-orange-500 text-white",
+  medium: "bg-yellow-500 text-black",
+  low: "bg-blue-500 text-white",
+  info: "bg-muted text-muted-foreground",
+};
 
 const PLANS = [
   {
     id: "starter",
     name: "Starter",
-    price: 19990,
-    tagline: "Para emprendedores y blogs",
-    domains: 1,
-    keywords: 50,
-    frequency: "Auditoría mensual",
+    price: "19.990",
+    description: "Para sitios pequeños y proyectos personales",
     features: [
       "1 dominio monitoreado",
+      "Auditoría mensual completa",
       "50 keywords trackeadas",
-      "Auditoría técnica mensual",
-      "Core Web Vitals + PageSpeed",
-      "On-page + meta tags",
-      "Reporte PDF mensual",
+      "PageSpeed + Core Web Vitals",
+      "Reporte PDF descargable",
       "Alertas por email",
-      "Soporte por email",
     ],
+    cta: "Comenzar",
     highlight: false,
   },
   {
     id: "pro",
     name: "Pro",
-    price: 49990,
-    tagline: "Para PYMEs y e-commerce",
-    domains: 5,
-    keywords: 500,
-    frequency: "Auditoría semanal",
+    price: "49.990",
+    description: "Para negocios y agencias en crecimiento",
     features: [
       "5 dominios monitoreados",
+      "Auditoría semanal",
       "500 keywords trackeadas",
-      "Auditoría semanal completa",
-      "Backlinks + autoridad",
-      "Monitoreo de 5 competidores",
-      "Análisis SERP de Google Chile",
-      "Reporte PDF white-label",
-      "Soporte prioritario WhatsApp",
+      "Análisis de competidores",
+      "Backlinks profile",
+      "Histórico 12 meses",
+      "PDF white-label",
+      "Soporte prioritario",
     ],
+    cta: "Comenzar prueba",
     highlight: true,
   },
   {
     id: "agency",
     name: "Agency",
-    price: 149990,
-    tagline: "Para agencias y consultores",
-    domains: 25,
-    keywords: 5000,
-    frequency: "Auditoría diaria",
+    price: "149.990",
+    description: "Para agencias SEO y equipos",
     features: [
       "25 dominios monitoreados",
+      "Auditoría diaria",
       "5.000 keywords trackeadas",
-      "Auditoría diaria automática",
-      "API completa de DataForSEO",
-      "Monitoreo ilimitado competidores",
-      "Reporte white-label personalizado",
-      "Dashboard multi-cliente",
-      "Account manager dedicado",
+      "API access",
+      "White-label completo",
+      "Múltiples usuarios",
+      "Onboarding 1-a-1",
+      "SLA 99.9%",
     ],
+    cta: "Hablar con ventas",
     highlight: false,
   },
 ];
 
 const CHECKS = [
-  { icon: Zap, title: "Core Web Vitals reales", desc: "LCP, CLS, FCP, TBT medidos con Lighthouse de Google" },
-  { icon: Shield, title: "Seguridad SSL/HTTPS", desc: "Certificados, redirecciones, headers de seguridad" },
-  { icon: FileSearch, title: "On-page completo", desc: "Title, meta, H1-H6, schema.org, Open Graph, canonical" },
-  { icon: TrendingUp, title: "Ranking en Google Chile", desc: "Posición real para cada keyword del SERP local" },
-  { icon: LinkIcon, title: "Perfil de backlinks", desc: "Dominios referentes, autoridad, anchor text, follow/nofollow" },
-  { icon: Globe, title: "Análisis técnico", desc: "Sitemap, robots.txt, hreflang, indexabilidad, crawl errors" },
-  { icon: Smartphone, title: "Mobile-first", desc: "Usabilidad móvil, viewport, tap targets, contenido legible" },
-  { icon: Target, title: "Keywords y oportunidades", desc: "Volumen real, CPC, dificultad, gaps vs competidores" },
-  { icon: BarChart3, title: "Comparativa competidores", desc: "Quién te gana en Google y por qué keywords" },
-  { icon: Eye, title: "Contenido y E-E-A-T", desc: "Profundidad, autoría, frescura, intenciones de búsqueda" },
-  { icon: Award, title: "Schema.org / Rich Results", desc: "Datos estructurados válidos para resultados enriquecidos" },
-  { icon: Lock, title: "Auditoría de seguridad", desc: "Vulnerabilidades comunes, exposición de datos, headers" },
+  { icon: Shield, title: "Auditoría Técnica", items: ["HTTPS / SSL", "Robots.txt y sitemap", "Canonical tags", "Hreflang", "Status codes", "Indexabilidad"] },
+  { icon: FileText, title: "On-Page SEO", items: ["Title tags", "Meta descriptions", "Estructura H1-H6", "Densidad keywords", "Alt en imágenes", "Schema.org JSON-LD"] },
+  { icon: Zap, title: "Core Web Vitals", items: ["LCP, FID, CLS", "Performance Score", "Tiempo de carga", "Tamaño de página", "Recursos bloqueantes", "Compresión Brotli/Gzip"] },
+  { icon: Link2, title: "Backlinks", items: ["Total backlinks", "Referring domains", "Anchor text", "Toxic links", "Lost links", "Competitor gap"] },
+  { icon: TrendingUp, title: "Keywords & SERP", items: ["Posiciones en Google CL", "Volumen y CPC", "Keyword difficulty", "Featured snippets", "People Also Ask", "Histórico ranking"] },
+  { icon: Smartphone, title: "Mobile & UX", items: ["Mobile-friendly", "Viewport correcto", "Tap targets", "Texto legible", "Accesibilidad WCAG", "Best practices"] },
 ];
 
 const FAQS = [
-  { q: "¿Qué tan completos son los informes?", a: "Cada informe incluye más de 40 checks técnicos, on-page, de contenido, backlinks y SERP. Los datos vienen de fuentes verificables: Google Lighthouse (PageSpeed), DataForSEO (rankings reales en Google), y crawls técnicos en vivo. Nada inventado." },
-  { q: "¿De dónde salen los datos de keywords y SERP?", a: "Usamos DataForSEO, el mismo proveedor que utilizan Semrush, Ahrefs y SE Ranking para datos crudos. Consultamos directamente la SERP de Google en Chile (location_code 2152) en español. Ningún dato es scrapeado de terceros sin licencia." },
-  { q: "¿Cuánto tardo en ver el primer informe?", a: "El mini-audit gratis es instantáneo (30-60s). Tu primer informe completo se genera dentro de las 2 horas siguientes a activar la suscripción y queda disponible en tu dashboard privado." },
-  { q: "¿Puedo cancelar cuando quiera?", a: "Sí. Suscripción mensual sin permanencia. Cancelas con un click desde tu dashboard y mantienes acceso hasta el fin del período pagado." },
-  { q: "¿Funciona para sitios fuera de Chile?", a: "Sí. Por defecto auditamos en Google Chile, pero puedes elegir cualquier país y idioma soportado por Google (más de 180 ubicaciones)." },
-  { q: "¿Incluye implementación de las mejoras?", a: "El informe entrega recomendaciones priorizadas y accionables, no implementación. Si necesitas que ejecutemos los cambios, ofrecemos servicio aparte de consultoría SEO." },
+  { q: "¿Qué datos usan para los reportes?", a: "Usamos DataForSEO (mismo proveedor que Semrush para sus datos), Google PageSpeed Insights, Google Search Console (opcional) y nuestro propio crawler. Todos los datos provienen de fuentes verificables, nunca inventamos cifras." },
+  { q: "¿En cuánto tiempo recibo mi primer informe?", a: "El mini-audit gratuito tarda menos de 30 segundos. La auditoría completa tras la suscripción se entrega en menos de 5 minutos en tu dashboard, y se reprograma automáticamente según tu plan (mensual/semanal/diario)." },
+  { q: "¿Puedo cambiar de plan?", a: "Sí, puedes hacer upgrade o downgrade en cualquier momento desde tu dashboard. Los cambios prorratean automáticamente." },
+  { q: "¿Cubren mercados fuera de Chile?", a: "Sí. Por defecto trabajamos con Google Chile (location_code 2152) en español, pero puedes configurar cualquier país e idioma soportados por DataForSEO (190+ países)." },
+  { q: "¿Hay permanencia?", a: "No. Mes a mes, cancelas cuando quieras con un click. Garantía de devolución 14 días si no estás conforme." },
+  { q: "¿Qué pasa si tengo dudas técnicas sobre el informe?", a: "Todos los issues incluyen una recomendación accionable. En planes Pro y Agency tienes soporte prioritario por email para consultar dudas específicas." },
 ];
 
 export default function SeoAudit() {
-  const { toast } = useToast();
-  const [domainInput, setDomainInput] = useState("");
+  const [domain, setDomain] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<MiniAuditResult | null>(null);
+  const { toast } = useToast();
 
-  const handleAudit = async () => {
-    if (!domainInput.trim()) {
+  const runAudit = async () => {
+    if (!domain.trim()) {
       toast({ title: "Ingresa un dominio", variant: "destructive" });
       return;
     }
@@ -147,17 +122,23 @@ export default function SeoAudit() {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("seo-audit-mini", {
-        body: { domain: domainInput },
+        body: { domain: domain.trim() },
       });
       if (error) throw error;
-      if (!data?.success) throw new Error(data?.error ?? "Error desconocido");
-      setResult(data as MiniAuditResult);
-      // Scroll to results
-      setTimeout(() => document.getElementById("mini-result")?.scrollIntoView({ behavior: "smooth" }), 100);
-    } catch (e) {
+      if (!data?.success) throw new Error(data?.error || data?.message || "Error en el análisis");
+      setResult(data);
+
+      // Save lead (silent)
+      supabase.from("seo_audit_leads").insert({
+        domain: data.domain,
+        mini_audit_id: data.audit_id,
+        mini_score: data.scores.total,
+        source: "landing",
+      }).then(() => null);
+    } catch (err: any) {
       toast({
-        title: "Error al auditar",
-        description: e instanceof Error ? e.message : "Intenta nuevamente",
+        title: "No se pudo completar el análisis",
+        description: err?.message || "Intenta de nuevo en unos segundos",
         variant: "destructive",
       });
     } finally {
@@ -165,22 +146,24 @@ export default function SeoAudit() {
     }
   };
 
+  const scoreColor = (s: number) =>
+    s >= 80 ? "text-green-600" : s >= 60 ? "text-yellow-600" : s >= 40 ? "text-orange-600" : "text-red-600";
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: "Auditoría SEO Profesional - Elige Tu Hosting",
-    description: "Auditoría SEO mensual con datos reales de Google. Más de 40 checks técnicos, ranking en Google Chile, backlinks y competidores.",
+    name: "Auditoría SEO Profesional — Elige Tu Hosting",
+    description: "Auditoría SEO completa con datos reales de Google: técnico, on-page, Core Web Vitals, keywords, backlinks y competidores.",
     brand: { "@type": "Brand", name: "Elige Tu Hosting" },
     offers: PLANS.map((p) => ({
       "@type": "Offer",
-      name: p.name,
-      price: p.price,
+      name: `Plan ${p.name}`,
+      price: p.price.replace(".", ""),
       priceCurrency: "CLP",
       availability: "https://schema.org/InStock",
-      url: `https://eligetuhosting.cl/seo-audit#plan-${p.id}`,
+      url: "https://eligetuhosting.cl/seo-audit",
     })),
   };
-
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -192,265 +175,281 @@ export default function SeoAudit() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Auditoría SEO Profesional Chile 2026 | Informes con datos reales de Google</title>
-        <meta name="description" content="Auditoría SEO mensual desde $19.990 CLP. Datos reales de Google Chile, +40 checks técnicos, backlinks, competidores y ranking. Prueba gratis ahora." />
+        <title>Auditoría SEO Profesional Chile | Elige Tu Hosting</title>
+        <meta name="description" content="Auditoría SEO completa con datos reales de Google: técnico, Core Web Vitals, keywords, backlinks y competidores. Suscripción desde $19.990/mes." />
         <link rel="canonical" href="https://eligetuhosting.cl/seo-audit" />
-        <meta property="og:title" content="Auditoría SEO Profesional Chile 2026" />
-        <meta property="og:description" content="Informes SEO mensuales con datos reales de Google. Desde $19.990 CLP. Mini-audit gratis." />
+        <meta property="og:title" content="Auditoría SEO Profesional Chile" />
+        <meta property="og:description" content="Auditoría SEO con datos reales de Google CL. Mini-audit gratis." />
         <meta property="og:url" content="https://eligetuhosting.cl/seo-audit" />
-        <meta property="og:type" content="product" />
         <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
       <Navbar />
 
-      {/* HERO + MINI AUDIT */}
-      <section className="relative pt-20 pb-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" />
-        <div className="max-w-5xl mx-auto relative">
-          <div className="text-center mb-10">
-            <Badge variant="secondary" className="mb-4">
-              <Sparkles className="w-3 h-3 mr-1" /> Datos reales de Google · Sin scraping turbio
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-              Auditoría SEO profesional<br />
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">con datos reales de Google</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Más de 40 checks técnicos, ranking real en Google Chile, backlinks y comparativa de competidores.
-              Empieza con un mini-audit gratis ahora.
+      {/* HERO */}
+      <section className="relative bg-gradient-to-b from-primary/5 via-background to-background pt-20 pb-12 lg:pt-28 lg:pb-20">
+        <div className="container max-w-5xl mx-auto px-4 text-center">
+          <Badge variant="secondary" className="mb-4 px-4 py-1.5">
+            <Sparkles className="w-3 h-3 mr-1" /> Datos reales de Google Chile · DataForSEO
+          </Badge>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+            Auditoría SEO Profesional
+            <span className="block text-primary mt-2">con datos verificables</span>
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+            Descubre por qué tu sitio no rankea. Reporte completo con 40+ checks técnicos,
+            keywords reales, backlinks y comparativa con competidores. Mini-audit gratis en 30 segundos.
+          </p>
+
+          <div className="max-w-2xl mx-auto">
+            <div className="flex flex-col sm:flex-row gap-2 p-2 bg-card border-2 border-border rounded-2xl shadow-xl">
+              <Input
+                placeholder="tudominio.cl"
+                value={domain}
+                onChange={(e) => setDomain(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && !loading && runAudit()}
+                disabled={loading}
+                className="h-14 text-lg border-0 focus-visible:ring-0 px-4"
+              />
+              <Button onClick={runAudit} disabled={loading} size="lg" className="h-14 px-8 text-base font-semibold">
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
+                <span className="ml-2">Auditar GRATIS</span>
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Sin registro · 10 análisis gratis por día · Tu dominio queda confidencial
             </p>
           </div>
-
-          {/* Mini audit input */}
-          <Card className="border-2 border-primary/20 shadow-2xl">
-            <CardContent className="pt-6">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1">
-                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="ejemplo.cl"
-                    value={domainInput}
-                    onChange={(e) => setDomainInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && !loading && handleAudit()}
-                    disabled={loading}
-                    className="pl-10 h-14 text-base"
-                  />
-                </div>
-                <Button onClick={handleAudit} disabled={loading} size="lg" className="h-14 px-8 text-base">
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
-                  <span className="ml-2">{loading ? "Analizando..." : "Auditar gratis"}</span>
-                </Button>
-              </div>
-              <p className="text-xs text-muted-foreground mt-3 text-center">
-                <Clock className="inline w-3 h-3 mr-1" />
-                30 segundos · Sin registro · 10 análisis gratis por día
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* MINI RESULT */}
-          {result && (
-            <div id="mini-result" className="mt-10 space-y-6">
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">{result.domain}</CardTitle>
-                      <CardDescription>Mini-auditoría SEO instantánea</CardDescription>
-                    </div>
-                    <div className="text-right">
-                      <div className={`text-5xl font-bold ${result.score >= 75 ? "text-green-600" : result.score >= 50 ? "text-amber-600" : "text-red-600"}`}>
-                        {Math.round(result.score)}
-                      </div>
-                      <div className="text-xs text-muted-foreground">SCORE / 100</div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* PageSpeed */}
-                  {result.pagespeed && (
-                    <div>
-                      <h3 className="font-semibold mb-3 flex items-center gap-2"><Zap className="w-4 h-4" />PageSpeed (móvil)</h3>
-                      <div className="grid grid-cols-3 gap-4">
-                        {[
-                          { label: "Performance", v: result.pagespeed.performance },
-                          { label: "SEO", v: result.pagespeed.seo },
-                          { label: "Accesibilidad", v: result.pagespeed.accessibility },
-                        ].map((m) => (
-                          <div key={m.label}>
-                            <div className="flex justify-between text-sm mb-1"><span>{m.label}</span><span className="font-mono">{m.v}</span></div>
-                            <Progress value={m.v} className="h-2" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* On-page checks */}
-                  <div>
-                    <h3 className="font-semibold mb-3 flex items-center gap-2"><FileSearch className="w-4 h-4" />Checks On-page</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                      {[
-                        ["HTTPS habilitado", result.head.https],
-                        [`Title (${result.head.title_length ?? 0} chars)`, (result.head.title_length ?? 0) >= 20 && (result.head.title_length ?? 0) <= 65],
-                        [`Meta description (${result.head.description_length ?? 0} chars)`, (result.head.description_length ?? 0) >= 80 && (result.head.description_length ?? 0) <= 165],
-                        [`Un único H1 (${result.head.h1_count ?? 0})`, result.head.h1_count === 1],
-                        ["Viewport responsive", result.head.has_viewport],
-                        ["Canonical URL", result.head.has_canonical],
-                        ["Open Graph", result.head.has_open_graph],
-                        ["Schema.org", result.head.has_schema_org],
-                        ["Indexable por Google", !result.head.is_noindex],
-                      ].map(([label, ok]) => (
-                        <div key={label as string} className="flex items-center gap-2">
-                          {ok ? <CheckCircle2 className="w-4 h-4 text-green-600" /> : <XCircle className="w-4 h-4 text-red-600" />}
-                          <span className={ok ? "" : "text-muted-foreground"}>{label as string}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Keywords */}
-                  {result.keywords && result.keywords.top.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold mb-3 flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4" />Top keywords en Google Chile
-                        <Badge variant="outline">{result.keywords.total_keywords} totales</Badge>
-                      </h3>
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead className="text-left text-muted-foreground border-b">
-                            <tr><th className="py-2">Keyword</th><th>Pos.</th><th>Volumen</th><th>CPC</th></tr>
-                          </thead>
-                          <tbody>
-                            {result.keywords.top.slice(0, 5).map((k, i) => (
-                              <tr key={i} className="border-b border-border/50">
-                                <td className="py-2 font-medium">{k.keyword}</td>
-                                <td>#{k.position}</td>
-                                <td>{k.search_volume ?? "—"}</td>
-                                <td>{k.cpc ? `$${Number(k.cpc).toFixed(2)}` : "—"}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                        {result.keywords.top.length > 5 && (
-                          <div className="mt-3 p-3 bg-muted rounded-md text-sm text-center">
-                            <Lock className="inline w-4 h-4 mr-1" />
-                            Hay <strong>{result.keywords.total_keywords - 5}</strong> keywords más con datos completos en el informe Pro.
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Upsell */}
-                  <div className="bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20 rounded-lg p-6 text-center">
-                    <h4 className="font-bold text-lg mb-2">¿Quieres el informe completo?</h4>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Backlinks, competidores, 40+ checks, monitoreo continuo y alertas automáticas.
-                    </p>
-                    <Button size="lg" asChild>
-                      <a href="#planes">Ver planes desde $19.990<ArrowRight className="ml-2 w-4 h-4" /></a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
         </div>
       </section>
 
-      {/* QUÉ INCLUYE */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-3">Cobertura del informe</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Más de 40 checks profesionales</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Mismas fuentes de datos que usan agencias top: Google Lighthouse, DataForSEO, crawlers propios.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {CHECKS.map((c) => (
-              <Card key={c.title} className="hover:border-primary/40 transition-colors">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-3">
-                    <div className="rounded-lg bg-primary/10 p-2"><c.icon className="w-5 h-5 text-primary" /></div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{c.title}</h3>
-                      <p className="text-sm text-muted-foreground">{c.desc}</p>
-                    </div>
+      {/* RESULTADO DEL MINI-AUDIT */}
+      {result && (
+        <section className="container max-w-6xl mx-auto px-4 -mt-6 mb-16 relative z-10">
+          <Card className="border-2 shadow-2xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">Mini-audit de</p>
+                  <CardTitle className="text-2xl">{result.domain}</CardTitle>
+                </div>
+                <div className="flex items-center gap-6">
+                  <div className="text-center">
+                    <div className={`text-5xl font-bold ${scoreColor(result.scores.total)}`}>{result.scores.total}</div>
+                    <div className="text-xs text-muted-foreground uppercase tracking-wide">Score SEO</div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6 space-y-6">
+              {/* Subscores */}
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {[
+                  { label: "Técnico", value: result.scores.technical },
+                  { label: "Contenido", value: result.scores.content },
+                  { label: "UX", value: result.scores.ux },
+                  { label: "SERP", value: result.scores.serp },
+                  { label: "Backlinks", value: result.scores.backlinks, locked: true },
+                ].map((s) => (
+                  <div key={s.label} className="space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">{s.label}</span>
+                      <span className={`font-bold ${s.locked ? "text-muted-foreground" : scoreColor(s.value)}`}>
+                        {s.locked ? <Lock className="w-3 h-3 inline" /> : s.value}
+                      </span>
+                    </div>
+                    <Progress value={s.locked ? 0 : s.value} className="h-2" />
+                  </div>
+                ))}
+              </div>
+
+              {/* Performance card */}
+              {result.performance && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-muted/40 rounded-xl">
+                  <div><div className="text-xs text-muted-foreground">Performance</div><div className={`text-2xl font-bold ${scoreColor(result.performance.performance)}`}>{result.performance.performance}</div></div>
+                  <div><div className="text-xs text-muted-foreground">LCP</div><div className="text-2xl font-bold">{(result.performance.lcp_ms / 1000).toFixed(1)}s</div></div>
+                  <div><div className="text-xs text-muted-foreground">CLS</div><div className="text-2xl font-bold">{result.performance.cls}</div></div>
+                  <div><div className="text-xs text-muted-foreground">SEO Lighthouse</div><div className={`text-2xl font-bold ${scoreColor(result.performance.seo)}`}>{result.performance.seo}</div></div>
+                </div>
+              )}
+
+              {/* Keywords */}
+              {result.keywords && result.keywords.top?.length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-3 flex items-center gap-2"><Target className="w-4 h-4 text-primary" /> Top keywords en Google Chile</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead className="text-left text-xs text-muted-foreground border-b">
+                        <tr><th className="py-2 pr-4">Keyword</th><th className="py-2 pr-4">Posición</th><th className="py-2 pr-4">Volumen</th><th className="py-2 pr-4">CPC</th><th className="py-2">Dificultad</th></tr>
+                      </thead>
+                      <tbody>
+                        {result.keywords.top.map((k: any, i: number) => (
+                          <tr key={i} className="border-b last:border-0">
+                            <td className="py-2 pr-4 font-medium">{k.keyword}</td>
+                            <td className="py-2 pr-4"><Badge variant={k.position <= 3 ? "default" : k.position <= 10 ? "secondary" : "outline"}>#{k.position}</Badge></td>
+                            <td className="py-2 pr-4">{k.search_volume?.toLocaleString() ?? "-"}</td>
+                            <td className="py-2 pr-4">${k.cpc?.toFixed(2) ?? "-"}</td>
+                            <td className="py-2">{k.difficulty ?? "-"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  {result.keywords.total_keywords > 5 && (
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Mostrando 5 de {result.keywords.total_keywords.toLocaleString()} keywords totales. Suscríbete para ver todas.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* Issues */}
+              <div>
+                <h3 className="font-semibold mb-3 flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-primary" /> Problemas detectados ({result.issues.length})</h3>
+                <div className="space-y-2">
+                  {result.issues.slice(0, 5).map((issue, i) => (
+                    <div key={i} className="flex items-start gap-3 p-3 border rounded-lg">
+                      <Badge className={SEVERITY_COLORS[issue.severity]}>{issue.severity}</Badge>
+                      <div className="flex-1">
+                        <div className="font-medium text-sm">{issue.title}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">{issue.recommendation}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {result.issues.length > 5 && (
+                    <div className="relative p-4 border-2 border-dashed rounded-lg bg-muted/30 text-center">
+                      <Lock className="w-5 h-5 mx-auto mb-2 text-muted-foreground" />
+                      <p className="text-sm font-medium">+{result.issues.length - 5} problemas adicionales</p>
+                      <p className="text-xs text-muted-foreground mb-3">Más backlinks, competidores y plan de acción priorizado</p>
+                      <Button asChild size="sm"><a href="#planes">Ver informe completo</a></Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {!result.data_sources.dataforseo && (
+                <div className="text-xs text-muted-foreground p-3 border rounded-lg bg-yellow-500/5">
+                  ⓘ Mini-audit corriendo sin datos SERP en vivo. El informe completo tras suscripción incluye keywords y backlinks reales de DataForSEO.
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </section>
+      )}
+
+      {/* QUÉ INCLUYE */}
+      <section className="container max-w-6xl mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">40+ checks en cada auditoría</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Todo lo que tu sitio necesita para rankear en Google, en un solo informe accionable.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CHECKS.map((c) => (
+            <Card key={c.title} className="border-2 hover:border-primary/50 transition-colors">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                  <c.icon className="w-6 h-6 text-primary" />
+                </div>
+                <CardTitle className="text-xl">{c.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {c.items.map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
       {/* PLANES */}
-      <section id="planes" className="py-20 px-4 bg-muted/30">
-        <div className="max-w-6xl mx-auto">
+      <section id="planes" className="bg-muted/30 py-16">
+        <div className="container max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-3">Planes mensuales</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Suscripción sin permanencia</h2>
-            <p className="text-muted-foreground">Cancela cuando quieras. Garantía de 14 días.</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Planes de suscripción</h2>
+            <p className="text-lg text-muted-foreground">Cancela cuando quieras · Garantía 14 días · Sin permanencia</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {PLANS.map((plan) => (
-              <Card key={plan.id} id={`plan-${plan.id}`} className={plan.highlight ? "border-2 border-primary shadow-xl scale-105 relative" : ""}>
+              <Card key={plan.id} className={`relative ${plan.highlight ? "border-2 border-primary shadow-2xl scale-105" : "border"}`}>
                 {plan.highlight && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">Más popular</Badge>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <Badge className="bg-primary text-primary-foreground px-3 py-1"><Crown className="w-3 h-3 mr-1" /> Más popular</Badge>
+                  </div>
                 )}
                 <CardHeader>
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                  <CardDescription>{plan.tagline}</CardDescription>
+                  <p className="text-sm text-muted-foreground">{plan.description}</p>
                   <div className="mt-4">
-                    <span className="text-4xl font-bold">${plan.price.toLocaleString("es-CL")}</span>
-                    <span className="text-muted-foreground"> /mes CLP</span>
+                    <span className="text-4xl font-bold">${plan.price}</span>
+                    <span className="text-muted-foreground"> CLP/mes</span>
                   </div>
-                  <p className="text-sm text-primary font-medium mt-1">{plan.frequency}</p>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-6">
+                <CardContent className="space-y-4">
+                  <ul className="space-y-2">
                     {plan.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                         <span>{f}</span>
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full" variant={plan.highlight ? "default" : "outline"} size="lg" asChild>
-                    <Link to="/auth">Empezar prueba 14 días</Link>
+                  <Button asChild className="w-full" variant={plan.highlight ? "default" : "outline"} size="lg">
+                    <Link to="/auth">{plan.cta} <ArrowRight className="w-4 h-4 ml-1" /></Link>
                   </Button>
                 </CardContent>
               </Card>
             ))}
           </div>
-          <p className="text-center text-sm text-muted-foreground mt-8">
-            Pagos seguros · Boleta electrónica automática · Cancela con un click
-          </p>
         </div>
       </section>
 
+      {/* METODOLOGÍA */}
+      <section className="container max-w-4xl mx-auto px-4 py-16">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Cómo calculamos tu score?</h2>
+          <p className="text-lg text-muted-foreground">
+            Metodología transparente y pública. Sin cajas negras.
+          </p>
+        </div>
+        <Card>
+          <CardContent className="p-6 md:p-8">
+            <div className="font-mono text-sm md:text-base bg-muted/50 p-4 rounded-lg mb-6 text-center">
+              Score Total = 0.30·Técnico + 0.25·Contenido + 0.20·Backlinks + 0.15·UX + 0.10·SERP
+            </div>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div className="flex gap-3"><Shield className="w-5 h-5 text-primary flex-shrink-0" /><div><b>Técnico (30%)</b><p className="text-muted-foreground">HTTPS, canonical, schema, viewport, indexabilidad</p></div></div>
+              <div className="flex gap-3"><FileText className="w-5 h-5 text-primary flex-shrink-0" /><div><b>Contenido (25%)</b><p className="text-muted-foreground">Titles, descriptions, H1-H6, alt text, longitud</p></div></div>
+              <div className="flex gap-3"><Link2 className="w-5 h-5 text-primary flex-shrink-0" /><div><b>Backlinks (20%)</b><p className="text-muted-foreground">Total links, referring domains, autoridad, spam score</p></div></div>
+              <div className="flex gap-3"><Zap className="w-5 h-5 text-primary flex-shrink-0" /><div><b>UX (15%)</b><p className="text-muted-foreground">Core Web Vitals, performance, accesibilidad</p></div></div>
+              <div className="flex gap-3 md:col-span-2"><BarChart3 className="w-5 h-5 text-primary flex-shrink-0" /><div><b>SERP (10%)</b><p className="text-muted-foreground">Keywords rankeando, posiciones, traffic share, featured snippets</p></div></div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       {/* FAQ */}
-      <section className="py-20 px-4">
-        <div className="max-w-3xl mx-auto">
+      <section className="bg-muted/30 py-16">
+        <div className="container max-w-3xl mx-auto px-4">
           <div className="text-center mb-10">
-            <Badge variant="outline" className="mb-3">Preguntas frecuentes</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold">Todo lo que necesitas saber</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Preguntas frecuentes</h2>
           </div>
           <div className="space-y-4">
             {FAQS.map((f) => (
               <Card key={f.q}>
-                <CardHeader>
-                  <CardTitle className="text-lg">{f.q}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{f.a}</p>
+                <CardContent className="p-5">
+                  <h3 className="font-semibold mb-2">{f.q}</h3>
+                  <p className="text-sm text-muted-foreground">{f.a}</p>
                 </CardContent>
               </Card>
             ))}
@@ -459,17 +458,13 @@ export default function SeoAudit() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-background to-accent/5">
-            <CardContent className="pt-10 pb-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Empieza con un mini-audit gratis</h2>
-              <p className="text-muted-foreground mb-6">Sin registro. Resultados en 30 segundos.</p>
-              <Button size="lg" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-                Analizar mi sitio ahora <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </CardContent>
-          </Card>
+      <section className="container max-w-4xl mx-auto px-4 py-16 text-center">
+        <Globe className="w-12 h-12 text-primary mx-auto mb-4" />
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Listo para subir en Google?</h2>
+        <p className="text-lg text-muted-foreground mb-6">Empieza con un mini-audit gratis o suscríbete y recibe tu primer informe completo en 5 minutos.</p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Button size="lg" asChild><a href="#planes">Ver planes <ArrowRight className="w-4 h-4 ml-1" /></a></Button>
+          <Button size="lg" variant="outline" asChild><Link to="/auth">Crear cuenta</Link></Button>
         </div>
       </section>
 
