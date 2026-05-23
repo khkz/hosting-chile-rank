@@ -81,6 +81,8 @@ import TransparenciaHosting from './pages/TransparenciaHosting';
 import VsComparison from './pages/VsComparison';
 import Reclamos from './pages/Reclamos';
 import VerificarReclamo from './pages/VerificarReclamo';
+import SeoAudit from './pages/SeoAudit';
+import SeoDashboard from './pages/SeoDashboard';
 
 function App() {
   return (
