@@ -45,6 +45,10 @@ interface Provider {
   type: 'cl-asn' | 'cl-no-asn' | 'intl';
   affiliateNote?: string;
   critical: string;
+  innovations?: {
+    title: string;
+    items: { label: string; desc: string; url: string }[];
+  };
 }
 
 const PROVIDERS: Provider[] = [
