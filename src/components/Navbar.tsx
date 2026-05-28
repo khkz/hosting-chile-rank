@@ -17,6 +17,7 @@ import {
   LogOut,
   LayoutDashboard,
   Award,
+  Search,
   type LucideIcon
 } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
