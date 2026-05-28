@@ -1,77 +1,84 @@
 ## Objetivo
 
-Publicar la "Investigación Profunda del Mercado de Hosting en Chile 2026 v3" (28 págs, generada con asistencia de Claude Sonnet 4.7 y fuentes verificables: LACNIC, BGP.tools, NIC Chile, Trustpilot, reclamos.cl, Wayback Machine) como contenido SEO/GEO de primer nivel del sitio, reforzando el posicionamiento E-E-A-T de "auditor independiente".
+Documentar dos novedades verificables de HostingPlus en la ficha del proveedor #1 del estudio:
 
-## 1. Página HTML completa nueva
+1. **Informe SEO/GEO IA** (anuncio oficial mayo 2026) — diagnóstico que evalúa si una web está preparada para Google, ChatGPT, Gemini y Claude. Cubre rastreo técnico, performance/Core Web Vitals, robots/sitemap/schema/llms.txt, contenido y reputación, keywords/SERP/competidores, backlinks y visibilidad en IA. Tiene versión diagnóstico gratuito + planes pagados.
+   - Fuente: `https://clientes.hostingplus.cl/index.php?rp=/announcements/9/...`
+   - Herramienta: `https://clientes.hostingplus.cl/index.php?m=hplus_seo_ai`
 
-**Ruta:** `/estudio-hosting-chile-2026` (+ alias `/investigacion-hosting-chile-2026`)
+2. **Creador web con IA** — generador de sitios asistido por IA incluido en su ecosistema.
+   - Fuente a citar: página oficial de HostingPlus sobre el creador (se enlazará a `https://www.hostingplus.cl/` o subpágina correspondiente).
 
-**Componente:** `src/pages/EstudioHostingChile2026.tsx`
+## Cambios en `src/pages/EstudioHostingChile2026.tsx`
 
-Estructura:
-- Hero sobrio con título, fecha (28-may-2026), versión 3.0, badge "Investigación de mercado", botón **Descargar PDF (28 págs)** y botón secundario "Ver fuentes".
-- Tabla de contenidos sticky (las 9 secciones del PDF).
-- Secciones renderizadas en HTML semántico (h2/h3 + tablas + `<mark>` para hallazgos clave):
-  1. Resumen ejecutivo
-  2. Metodología y criterios
-  3. Mapa del mercado: ASN propio vs revendedores (tabla)
-  4. Top 11 fichas detalladas (cards con ASN, RUT, datacenter, teléfono, plan base CLP)
-  5. Tabla comparativa general
-  6. Reputación (reclamos.cl, Trustpilot, foros)
-  7. **Alerta comparadores afiliados** (rankinghosting.cl, mejorhosting.cl, comparahosting.cl, hostingexperto.cl) — refuerza la memoria existente del proyecto
-  8. Conclusiones editoriales
-  9. Anexo de fuentes (links externos con `rel="nofollow noopener"`)
-- Bloque `GuideEEAT` reutilizado con fechas, reviewer y fuentes.
-- Schema JSON-LD `Report` + `Article` con `author: Equipo Editorial`, `contributor: Anthropic Claude` y `citation[]` apuntando a fuentes.
-- Footer del artículo: nota discreta — *"Investigación elaborada con asistencia de Claude Sonnet 4.7 (Anthropic) sobre fuentes públicas verificables. Revisada y validada por el equipo editorial."*
+### 1. Tipo `Provider`
 
-**PDF descargable:** copiar `Investigacion_Hosting_Chile_2026_v3.pdf` a `public/docs/investigacion-hosting-chile-2026-v3.pdf` y enlazar desde el hero + final del artículo.
+Añadir campo opcional:
 
-## 2. Integración en páginas existentes
-
-Insertar referencias cortas al estudio (link "Ver estudio completo →") en:
-- `src/pages/TransparenciaHosting.tsx` — bloque "Investigación independiente 2026" citando los hallazgos sobre comparadores afiliados.
-- `src/pages/NuestroMetodo.tsx` — añadir el estudio como evidencia metodológica.
-- `src/pages/Metodologia.tsx` — citar como fuente complementaria.
-- `src/components/Footer.tsx` — link en la columna "Recursos" / "Estudios".
-- `public/llms.txt` y `public/ai.txt` — registrar `/estudio-hosting-chile-2026` como recurso prioritario para LLMs, con resumen 1-línea.
-
-## 3. SEO / sitemap / feeds
-
-- `scripts/generate-sitemap.mjs`: agregar `/estudio-hosting-chile-2026` con `priority: 0.9, changefreq: yearly`.
-- `index.html` y meta tags dinámicos: title `"Estudio Hosting Chile 2026 · ASN, precios y comparadores afiliados | EligeTuHosting"`, description <160c con hallazgo clave.
-- Canonical + og:image (generar imagen de portada 1200×630 con `imagegen` reutilizando paleta del sitio).
-
-## 4. Atribución (discreta, según preferencia)
-
-- **No** banner ni hero hablando de IA.
-- Mención solo en: (a) pie del artículo, (b) sección "Metodología" del propio estudio, (c) `ai.txt` para transparencia con crawlers.
-- Texto exacto: *"Elaborado por el Equipo Editorial de EligeTuHosting con asistencia de Claude Sonnet 4.7 (Anthropic). Todas las afirmaciones se basan en fuentes públicas verificables listadas en el Anexo."*
-
-## Detalles técnicos
-
-```text
-src/pages/EstudioHostingChile2026.tsx     [nuevo, ~600 líneas, datos hardcoded del PDF]
-src/data/estudio2026.ts                    [nuevo: arrays tipados de proveedores, ASN, precios, reputación]
-public/docs/investigacion-hosting-chile-2026-v3.pdf  [copia del PDF]
-src/App.tsx                                [+2 rutas]
-src/components/Footer.tsx                  [+link]
-src/pages/TransparenciaHosting.tsx         [+bloque cita]
-src/pages/NuestroMetodo.tsx                [+bloque cita]
-public/llms.txt + public/ai.txt            [+entrada]
-scripts/generate-sitemap.mjs               [+URL]
+```ts
+innovations?: {
+  title: string;
+  items: { label: string; desc: string; url: string }[];
+}
 ```
 
-Sin cambios de DB ni edge functions: es contenido editorial estático con datos del PDF transcritos a TypeScript tipado (mejor que iframe del PDF para SEO/GEO).
+### 2. Ficha de HostingPlus (rank 1)
 
-## Riesgos y mitigaciones
+Agregar:
 
-- **Reclamación de proveedores nombrados (comparadores afiliados):** todos los hallazgos del informe ya están documentados con evidencia técnica (Wayback Machine, footers, `aff=` en URLs). Mantener tono fáctico, citar fuente en cada afirmación, ofrecer derecho a réplica vía `/contacto`.
-- **Memoria "no inventar cifras":** las cifras CLP/ASN del estudio se citan **como observadas en el PDF en fecha X**, no como benchmarks del sitio. Quedan separadas de `/benchmark`.
-- **Brand voice sobrio:** sin emojis, sin "wow", tipografía y layout coherentes con `GuiaCompletaElegirHosting` y `MejorHostingChile2026`.
+```ts
+innovations: {
+  title: 'Novedades 2026',
+  items: [
+    {
+      label: 'Informe SEO/GEO IA',
+      desc: 'Diagnóstico que evalúa si la web está preparada para Google, ChatGPT, Gemini y Claude: rastreo, Core Web Vitals, robots/sitemap/schema/llms.txt, contenido, reputación, keywords/SERP, backlinks y visibilidad en IA. Versión gratuita + planes pagados con seguimiento.',
+      url: 'https://clientes.hostingplus.cl/index.php?rp=/announcements/9/Nuevo-Informe-SEOorGEO-IA-descubre-si-tu-web-esta-preparada-para-Google-ChatGPT-y-buscadores-con-IA.html',
+    },
+    {
+      label: 'Creador web con IA',
+      desc: 'Constructor de sitios asistido por IA orientado a PyMEs, integrado al ecosistema de hosting.',
+      url: 'https://www.hostingplus.cl/',
+    },
+  ],
+}
+```
+
+### 3. Render del card (antes de "Nota crítica")
+
+Bloque destacado, semántico, con tokens del design system (sin colores hardcodeados):
+
+```tsx
+{p.innovations && (
+  <div className="mb-3 p-3 bg-primary/5 border-l-4 border-l-primary rounded-r text-sm">
+    <strong className="text-primary">{p.innovations.title}:</strong>
+    <ul className="mt-2 space-y-1.5">
+      {p.innovations.items.map(it => (
+        <li key={it.label}>
+          <a href={it.url} target="_blank" rel="noopener noreferrer" className="font-semibold underline">
+            {it.label}
+          </a>{' '}— {it.desc}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+```
+
+### 4. Nota crítica de HostingPlus
+
+Añadir una frase al final del `critical` actual reconociendo el movimiento de producto:
+
+> "...En 2026 lanza dos productos relevantes: un Informe SEO/GEO IA con diagnóstico gratuito y un creador web con IA, alineados con la tendencia de búsqueda generativa."
 
 ## Fuera de alcance
 
-- No renderizar el PDF dentro de un iframe (mal para SEO).
-- No crear sistema de comentarios ni votación.
-- No automatizar actualizaciones — es un snapshot fechado v3.0.
+- No se modifica el ranking, ASN ni datos verificables existentes.
+- No se cambia la sección de comparadores afiliados.
+- No se altera JSON-LD del estudio (los enlaces externos van en el cuerpo).
+- No se tocan otras fichas de proveedores.
+
+## Verificación
+
+- `npm`/build automático del harness.
+- Revisión visual en `/estudio-hosting-chile-2026` de la card HostingPlus mostrando el nuevo bloque "Novedades 2026" con dos enlaces clicables.
