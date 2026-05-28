@@ -1,115 +1,77 @@
-# SEO Audit Report — Sistema completo
+## Objetivo
 
-Vamos a montar el producto en **3 entregas** para que cada parte se pueda probar antes de pasar a la siguiente. Esta es la entrega completa propuesta.
+Publicar la "Investigación Profunda del Mercado de Hosting en Chile 2026 v3" (28 págs, generada con asistencia de Claude Sonnet 4.7 y fuentes verificables: LACNIC, BGP.tools, NIC Chile, Trustpilot, reclamos.cl, Wayback Machine) como contenido SEO/GEO de primer nivel del sitio, reforzando el posicionamiento E-E-A-T de "auditor independiente".
 
----
+## 1. Página HTML completa nueva
 
-## Entrega 1 — Landing de venta + base de datos + mini-audit gratis
+**Ruta:** `/estudio-hosting-chile-2026` (+ alias `/investigacion-hosting-chile-2026`)
 
-Objetivo: tener una página que venda, capture interés y demuestre valor real con un análisis instantáneo gratis (gancho).
+**Componente:** `src/pages/EstudioHostingChile2026.tsx`
 
-### Página `/seo-audit`
+Estructura:
+- Hero sobrio con título, fecha (28-may-2026), versión 3.0, badge "Investigación de mercado", botón **Descargar PDF (28 págs)** y botón secundario "Ver fuentes".
+- Tabla de contenidos sticky (las 9 secciones del PDF).
+- Secciones renderizadas en HTML semántico (h2/h3 + tablas + `<mark>` para hallazgos clave):
+  1. Resumen ejecutivo
+  2. Metodología y criterios
+  3. Mapa del mercado: ASN propio vs revendedores (tabla)
+  4. Top 11 fichas detalladas (cards con ASN, RUT, datacenter, teléfono, plan base CLP)
+  5. Tabla comparativa general
+  6. Reputación (reclamos.cl, Trustpilot, foros)
+  7. **Alerta comparadores afiliados** (rankinghosting.cl, mejorhosting.cl, comparahosting.cl, hostingexperto.cl) — refuerza la memoria existente del proyecto
+  8. Conclusiones editoriales
+  9. Anexo de fuentes (links externos con `rel="nofollow noopener"`)
+- Bloque `GuideEEAT` reutilizado con fechas, reviewer y fuentes.
+- Schema JSON-LD `Report` + `Article` con `author: Equipo Editorial`, `contributor: Anthropic Claude` y `citation[]` apuntando a fuentes.
+- Footer del artículo: nota discreta — *"Investigación elaborada con asistencia de Claude Sonnet 4.7 (Anthropic) sobre fuentes públicas verificables. Revisada y validada por el equipo editorial."*
 
-- **Hero**: "Auditoría SEO Profesional con datos reales de Google" + barra para ingresar un dominio (genera un mini-audit gratis al vuelo).
-- **Mini-audit en vivo** (gratis, sin login): velocidad PageSpeed real, SSL, meta tags, indexabilidad, 5 keywords top con datos de DataForSEO. Sirve como demo del producto.
-- **Sección "Qué incluye el informe completo"**: 40+ checks (técnico, on-page, backlinks, keywords, competidores, SERP, contenido, mobile, Core Web Vitals, schema, internacionalización).
-- **Ejemplo de informe** (preview con blur / 3 páginas de muestra descargables).
-- **Planes de suscripción**:
-  - **Starter** $19.990/mes — 1 dominio, audit mensual, 50 keywords trackeadas.
-  - **Pro** $49.990/mes — 5 dominios, audit semanal, 500 keywords, monitoreo competidores.
-  - **Agency** $149.990/mes — 25 dominios, audit diario, 5.000 keywords, white-label PDF, API.
-- **Garantía 14 días**, FAQ, testimonios, comparativa "Hazlo tú vs Contrátanos".
-- **Schema.org** Product + Offer + FAQPage + AggregateRating para Rich Results.
+**PDF descargable:** copiar `Investigacion_Hosting_Chile_2026_v3.pdf` a `public/docs/investigacion-hosting-chile-2026-v3.pdf` y enlazar desde el hero + final del artículo.
 
-### Base de datos (Supabase)
+## 2. Integración en páginas existentes
 
-```text
-seo_audit_subscriptions  → plan, status, dominios contratados, paddle/stripe_id
-seo_audit_domains        → dominios bajo monitoreo por suscripción
-seo_audits               → cada informe generado (status, scores, JSON con todo)
-seo_audit_keywords       → ranking histórico por keyword/dominio
-seo_audit_backlinks      → snapshot de backlinks
-seo_audit_competitors    → competidores detectados y comparativa
-seo_audit_issues         → errores detectados, severidad, recomendación
-```
+Insertar referencias cortas al estudio (link "Ver estudio completo →") en:
+- `src/pages/TransparenciaHosting.tsx` — bloque "Investigación independiente 2026" citando los hallazgos sobre comparadores afiliados.
+- `src/pages/NuestroMetodo.tsx` — añadir el estudio como evidencia metodológica.
+- `src/pages/Metodologia.tsx` — citar como fuente complementaria.
+- `src/components/Footer.tsx` — link en la columna "Recursos" / "Estudios".
+- `public/llms.txt` y `public/ai.txt` — registrar `/estudio-hosting-chile-2026` como recurso prioritario para LLMs, con resumen 1-línea.
 
-Todas con RLS: usuario solo ve sus dominios; admin ve todo.
+## 3. SEO / sitemap / feeds
 
----
+- `scripts/generate-sitemap.mjs`: agregar `/estudio-hosting-chile-2026` con `priority: 0.9, changefreq: yearly`.
+- `index.html` y meta tags dinámicos: title `"Estudio Hosting Chile 2026 · ASN, precios y comparadores afiliados | EligeTuHosting"`, description <160c con hallazgo clave.
+- Canonical + og:image (generar imagen de portada 1200×630 con `imagegen` reutilizando paleta del sitio).
 
-## Entrega 2 — Generación automática con DataForSEO
+## 4. Atribución (discreta, según preferencia)
 
-### Cómo se sacan los datos de las SERPs
-
-DataForSEO ofrece estos endpoints (todos los usaremos vía edge function):
-
-| Dato | Endpoint DataForSEO | Costo aprox |
-|---|---|---|
-| SERP de Google | `serp/google/organic/live/advanced` | $0.002 / query |
-| Volumen de keywords + dificultad | `keywords_data/google/search_volume/live` | $0.05 / 1000 kw |
-| Keywords por las que rankea un dominio | `dataforseo_labs/google/ranked_keywords/live` | $0.01 / consulta |
-| Backlinks | `backlinks/summary/live` + `backlinks/backlinks/live` | $0.02 / dominio |
-| Competidores | `dataforseo_labs/google/competitors_domain/live` | $0.02 |
-| On-page (crawl técnico) | `on_page/task_post` + `on_page/summary` | $0.0006 / página |
-| Core Web Vitals reales | `on_page/lighthouse/live` | $0.003 / página |
-
-**Costo por informe completo Pro estimado: ~$0.50 USD**. Vendido a ~$49.990/mes = margen >95%.
-
-### Edge functions a crear
-
-1. **`seo-audit-mini`** (pública, rate-limited 10/IP/día) — corre PageSpeed + scraping HEAD + DataForSEO `ranked_keywords` con limit 5. Devuelve JSON para la landing.
-2. **`seo-audit-full`** (autenticada) — orquesta llamadas a DataForSEO en paralelo, guarda en `seo_audits`, calcula score 0-100, genera lista de issues priorizados.
-3. **`seo-audit-pdf`** — genera PDF con branding Elige Tu Hosting usando `@react-pdf/renderer` server-side.
-4. **`seo-audit-cron`** — cron diario/semanal/mensual que re-corre audits según plan del usuario.
-5. **`seo-audit-webhook-paddle`** — recibe eventos de suscripción y activa/desactiva acceso.
-
-### Algoritmo de scoring (transparente, publicado)
-
-```text
-Score Total = 0.30·Técnico + 0.25·Contenido + 0.20·Backlinks + 0.15·UX + 0.10·SERP
-```
-
-Cada subscore tiene su rúbrica documentada en `/seo-audit/metodologia` (E-E-A-T).
-
----
-
-## Entrega 3 — Dashboard privado + Pagos
-
-### `/dashboard/seo` (requiere login)
-
-- Lista de dominios monitoreados con score actual y tendencia.
-- Detalle por dominio: tabs **Resumen / Issues / Keywords / Backlinks / Competidores / Histórico / PDF**.
-- Filtros, exportación CSV/PDF.
-- Alertas por email cuando baja un ranking importante o aparece un issue crítico.
-
-### Admin `/admin/seo-audits`
-
-- Ver todas las suscripciones, forzar re-audit, ver costo DataForSEO consumido, white-label settings.
-
-### Pagos
-
-Suscripción mensual recurrente. Recomiendo **Paddle** (merchant of record, maneja IVA chileno y boletas automáticamente) — pero corremos `recommend_payment_provider` para confirmar.
-
----
+- **No** banner ni hero hablando de IA.
+- Mención solo en: (a) pie del artículo, (b) sección "Metodología" del propio estudio, (c) `ai.txt` para transparencia con crawlers.
+- Texto exacto: *"Elaborado por el Equipo Editorial de EligeTuHosting con asistencia de Claude Sonnet 4.7 (Anthropic). Todas las afirmaciones se basan en fuentes públicas verificables listadas en el Anexo."*
 
 ## Detalles técnicos
 
-- **DataForSEO**: requiere `DATAFORSEO_LOGIN` + `DATAFORSEO_PASSWORD` (Basic Auth). Endpoint base `https://api.dataforseo.com/v3/`. Hay que crear cuenta en dataforseo.com y cargar saldo (mínimo $50).
-- **PDF**: `npm:@react-pdf/renderer` corre en Deno con shim, o usamos servicio puppeteer headless. Definimos en entrega 2.
-- **Rate limiting** del mini-audit: tabla `seo_audit_rate_limit` por IP hash.
-- **Auth ya existe** en el proyecto (Supabase Auth + tabla `profiles`).
-- **Roles**: usamos la tabla `user_roles` ya existente; añadimos rol `seo_subscriber` y verificación vía `has_role()`.
-- **Seguridad**: claves de DataForSEO solo en edge functions, nunca en frontend. RLS estricta. Sin SQL dinámico.
+```text
+src/pages/EstudioHostingChile2026.tsx     [nuevo, ~600 líneas, datos hardcoded del PDF]
+src/data/estudio2026.ts                    [nuevo: arrays tipados de proveedores, ASN, precios, reputación]
+public/docs/investigacion-hosting-chile-2026-v3.pdf  [copia del PDF]
+src/App.tsx                                [+2 rutas]
+src/components/Footer.tsx                  [+link]
+src/pages/TransparenciaHosting.tsx         [+bloque cita]
+src/pages/NuestroMetodo.tsx                [+bloque cita]
+public/llms.txt + public/ai.txt            [+entrada]
+scripts/generate-sitemap.mjs               [+URL]
+```
 
----
+Sin cambios de DB ni edge functions: es contenido editorial estático con datos del PDF transcritos a TypeScript tipado (mejor que iframe del PDF para SEO/GEO).
 
-## ¿Por dónde arrancamos?
+## Riesgos y mitigaciones
 
-Propongo empezar por **Entrega 1** completa (landing + DB + mini-audit funcionando con DataForSEO real). Eso ya te permite empezar a captar leads esta semana. Las entregas 2 y 3 las hacemos a continuación.
+- **Reclamación de proveedores nombrados (comparadores afiliados):** todos los hallazgos del informe ya están documentados con evidencia técnica (Wayback Machine, footers, `aff=` en URLs). Mantener tono fáctico, citar fuente en cada afirmación, ofrecer derecho a réplica vía `/contacto`.
+- **Memoria "no inventar cifras":** las cifras CLP/ASN del estudio se citan **como observadas en el PDF en fecha X**, no como benchmarks del sitio. Quedan separadas de `/benchmark`.
+- **Brand voice sobrio:** sin emojis, sin "wow", tipografía y layout coherentes con `GuiaCompletaElegirHosting` y `MejorHostingChile2026`.
 
-Para arrancar necesito:
-1. Que confirmes el plan.
-2. Crear cuenta en **dataforseo.com**, cargar saldo, y darme `DATAFORSEO_LOGIN` + `DATAFORSEO_PASSWORD` cuando te los pida (los guardo como secretos, nunca van al frontend).
-3. Confirmar precios finales de los 3 planes (o usar los que propongo).
+## Fuera de alcance
 
-¿Avanzamos con Entrega 1?
+- No renderizar el PDF dentro de un iframe (mal para SEO).
+- No crear sistema de comentarios ni votación.
+- No automatizar actualizaciones — es un snapshot fechado v3.0.
