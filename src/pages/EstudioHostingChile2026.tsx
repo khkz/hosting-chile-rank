@@ -324,7 +324,7 @@ const EstudioHostingChile2026: React.FC = () => {
     },
     contributor: {
       '@type': 'SoftwareApplication',
-      name: 'Claude Sonnet 4.7',
+      name: 'Claude Opus 4.7',
       applicationCategory: 'AI assistant',
       creator: { '@type': 'Organization', name: 'Anthropic' },
     },
@@ -724,7 +724,7 @@ const EstudioHostingChile2026: React.FC = () => {
             <div className="text-sm text-muted-foreground space-y-2">
               <p>
                 <strong className="text-foreground">Sobre este informe.</strong> Elaborado por el Equipo Editorial
-                de EligeTuHosting con asistencia de <em>Claude Sonnet 4.7</em> (Anthropic) sobre fuentes públicas
+                de EligeTuHosting con asistencia de <em>Claude Opus 4.7</em> (Anthropic) sobre fuentes públicas
                 verificables listadas en el Anexo. Las afirmaciones técnicas (ASN, RUT, prefijos BGP) provienen
                 de LACNIC, bgp.he.net, NIC Chile y registros corporativos chilenos. Las afirmaciones sobre
                 comparadores afiliados están respaldadas por inspección directa de CTAs, WHOIS y Wayback Machine.
