@@ -83,6 +83,7 @@ import Reclamos from './pages/Reclamos';
 import VerificarReclamo from './pages/VerificarReclamo';
 import SeoAudit from './pages/SeoAudit';
 import SeoDashboard from './pages/SeoDashboard';
+import EstudioHostingChile2026 from './pages/EstudioHostingChile2026';
 
 function App() {
   return (
@@ -162,6 +163,8 @@ function App() {
         <Route path="/hosting-wordpress-blog-personal-chile" element={<HostingWordPressBlogPersonal />} />
         <Route path="/dominios-premium" element={<DominiosPremium />} />
         <Route path="/transparencia-hosting-chile" element={<TransparenciaHosting />} />
+        <Route path="/estudio-hosting-chile-2026" element={<EstudioHostingChile2026 />} />
+        <Route path="/investigacion-hosting-chile-2026" element={<EstudioHostingChile2026 />} />
         <Route path="/vs/:rival" element={<VsComparison />} />
         {/* 301 a canonical /vs/:rival para evitar duplicados */}
         <Route path="/comparar/:rival" element={<VsAliasRedirect />} />

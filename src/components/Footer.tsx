@@ -58,6 +58,7 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Recursos</h4>
             <ul className="space-y-2 text-sm">
+              <li><Link to="/estudio-hosting-chile-2026" className="text-gray-300 hover:text-white transition-colors">Estudio Hosting Chile 2026</Link></li>
               <li><Link to="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
               <li><Link to="/wiki" className="text-gray-300 hover:text-white transition-colors">Wiki de Hosting</Link></li>
               <li><Link to="/certificaciones" className="text-gray-300 hover:text-white transition-colors">Certificaciones</Link></li>
