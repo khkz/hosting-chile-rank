@@ -20,7 +20,7 @@ import {
   Calendar,
 } from 'lucide-react';
 
-const PDF_URL = '/docs/investigacion-hosting-chile-2026-v3.pdf';
+const PDF_URL = '/docs/investigacion-hosting-chile-2026-final.pdf';
 const PUBLISHED = '2026-05-28';
 const VERSION = '3.0';
 
