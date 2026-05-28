@@ -65,6 +65,7 @@ const toolsItems: NavItem[] = [
   { to: '/cotiza-hosting', label: 'Cotiza hosting', icon: ShoppingCart },
   { to: '/ultimos-dominios', label: 'Últimos dominios', icon: Globe },
   { to: '/transparencia-hosting-chile', label: 'Transparencia Hosting', icon: FileText },
+  { to: '/estudio-hosting-chile-2026', label: 'Estudio Hosting Chile 2026', icon: Search },
   { to: '/vs/comparahosting', label: 'VS ComparaHosting', icon: GitCompare },
   { to: '/vs/mejorhosting', label: 'VS MejorHosting', icon: GitCompare },
   { to: '/vs/rankinghosting', label: 'VS RankingHosting', icon: GitCompare },
