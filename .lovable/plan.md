@@ -1,59 +1,40 @@
-## Objetivo
+## Problema
 
-La página `/comparativa` muestra hoy un Top inconsistente con el estudio publicado en `/estudio-hosting-chile-2026`. Hay que reflejar el ranking real del estudio, con **PowerHost / IxMetro en el puesto 3**, y evitar cifras inventadas de velocidad/seguridad (regla de memoria: solo `benchmark_results` puede dar números de uptime/speed).
+El ranking del home (`HostingRanking.tsx`) se llena desde `hosting_companies.ranking_position` y hoy muestra:
 
-## Cambios en `src/pages/Comparativa.tsx`
+1. HostingPlus.cl
+2. EcoHosting.cl
+3. **HostGator.cl** ← inconsistente con el Estudio Hosting Chile 2026
 
-### 1. Reemplazar el array `hostingProviders`
+El estudio (y la nueva `/comparativa`) marca **PowerHost / IxMetro** como 3°. Además, HostGator no aparece en el Top chileno del estudio.
 
-Nuevo Top, en el mismo orden del estudio:
+## Cambios (solo base de datos vía migración)
 
-1. HostingPlus
-2. EcoHosting
-3. **PowerHost / IxMetro** (nuevo)
-4. Hostname.cl
-5. Hosting.cl (nuevo)
-6. BlueHosting (nuevo)
+1. **Insertar PowerHost / IxMetro** en `hosting_companies` con los datos del estudio:
+   - `name`: "PowerHost / IxMetro"
+   - `slug`: "powerhost"
+   - `website`: `https://www.powerhost.cl/`
+   - `legal_name` / RUT si se conoce del estudio, `foundation_year` 2001
+   - `is_verified = true`, `is_curated = true` (cumple la regla de memoria para aparecer en ranking)
+   - `is_independent = true`, `corporate_group = null`
+   - `ranking_position = 3`, `is_recommended = false`
+   - `ranking_features`: ["ASN propio AS263237", "4 datacenters propios (SCL, NY, MOW, AMS)", "Tier III", "20+ años en Chile"]
+   - `ranking_badges`: ["ASN propio", "Tier III"]
+   - `cta_text`: "Visitar PowerHost", `button_color`: clase tailwind acorde
+   - `overall_rating` / `speed_rating` / `price_rating`: dejar `null` o el promedio editorial que ya usa el resto (no inventar uptime/ms — regla de memoria de benchmark)
+   - precios `promo_price` / `original_price`: `null` (el estudio dice "Consultar")
 
-Se eliminan HostGator, DonWeb y GoDaddy de esta vista (no están en el Top chileno del estudio; DonWeb queda como caso "internacional" en la ficha del estudio).
+2. **Quitar HostGator del ranking del home**: `update hosting_companies set ranking_position = null, is_recommended = false where slug = 'hostgator';` (no se elimina la ficha, solo deja de salir en el Top 3 del home).
 
-### 2. Reestructurar columnas para no inventar cifras
-
-Sustituir las columnas `Velocidad` y `Seguridad` (que hoy muestran "9.9/10" inventados) por:
-
-- **ASN** (ej. `AS266879`, `AS263237`, "—" si no tiene)
-- **Datacenter** (ej. "Propio Santiago", "4 DC propios", "Chile (Haulmer)")
-
-Se mantienen: Backups, Reclamos (texto del estudio), Precio (CLP/año cuando exista, "Consultar" si el estudio dice "no publicado"), Tecnologías (LiteSpeed/WAF según ficha real), Acción (link a reseña o al estudio).
-
-### 3. Datos por proveedor (transcritos del estudio)
-
-| # | Proveedor | ASN | DC | Backups | Reclamos | Precio | LiteSpeed | WAF |
-|---|---|---|---|---|---|---|---|---|
-| 1 | HostingPlus | AS266879 | Propio Santiago | Diarios | 0 visibles | $49.900/año | sí | sí |
-| 2 | EcoHosting | AS266855 | Propio Chile | RAID 10 SSD | 0 en reclamos.cl | $19.900/año | — | sí |
-| 3 | PowerHost / IxMetro | AS263237 | 4 DC propios (SCL, NY, MOW, AMS) | Tier III | 1 no-técnico | Consultar | — | sí |
-| 4 | Hostname.cl | AS262256 | HN DC Ñuñoa | sí | Perfil bajo | Consultar | — | sí |
-| 5 | Hosting.cl | AS265839 | Propio Santiago | sí | Varios 2012-2025 | Consultar | sí | sí |
-| 6 | BlueHosting | AS64111 | Haulmer Curicó | sí | Mixto | $43.900/año | — | sí |
-
-### 4. Encabezado y meta
-
-- `<TableCaption>`: "Datos del Estudio Hosting Chile 2026 (v3.0, 28-may-2026)".
-- `<title>` y meta description actualizados a 2026.
-- Banner arriba de la tabla: "Orden basado en el [Estudio Hosting Chile 2026](/estudio-hosting-chile-2026)".
-
-### 5. Sección final
-
-Reformular el bloque "¿Por qué HostingPlus es nuestra recomendación principal?" citando los criterios del estudio (ASN propio + RUT + 20+ años + 0 reclamos visibles) y linkeando al estudio completo, en lugar de afirmaciones sin fuente.
+3. Verificar que el orden final del home queda: 1 HostingPlus, 2 EcoHosting, 3 PowerHost/IxMetro.
 
 ## Fuera de alcance
 
-- No se toca `EstudioHostingChile2026.tsx`.
-- No se modifica la home, `HostingRanking`, edge functions ni base de datos.
-- No se crean páginas nuevas.
+- No se toca `HostingRanking.tsx`, `Comparativa.tsx`, `EstudioHostingChile2026.tsx` ni ningún componente. Solo migración SQL.
+- No se eliminan filas existentes.
+- No se inventan cifras de velocidad/uptime (regla `benchmark`).
 
 ## Verificación
 
-- Build automático.
-- Revisión visual en `/comparativa`: orden 1-6 correcto con PowerHost 3°, sin "9.9/10" inventados, link al estudio funcionando.
+- Consulta `select ranking_position, name from hosting_companies where ranking_position is not null order by ranking_position;` debe devolver HostingPlus, EcoHosting, PowerHost.
+- Recargar `/` y confirmar que el 3° es PowerHost / IxMetro.
