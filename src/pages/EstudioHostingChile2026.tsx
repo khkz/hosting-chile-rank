@@ -66,7 +66,22 @@ const PROVIDERS: Provider[] = [
     diff: 'SSD, uptime 99,9%, SSL gratis, Litespeed disponible, soporte WordPress',
     reputation: 'Trustpilot PE 4/5 · HostAdvice 5/5 · sin reclamos visibles en reclamos.cl',
     type: 'cl-asn',
-    critical: 'Solidez documental (RUT, ASN, 20+ años). Falta exponer precios mensuales de VPS y dedicado sin entrar al carrito. En bgp.he.net su prefijo v4 figura inactivo en el snapshot actual.',
+    critical: 'Solidez documental (RUT, ASN, 20+ años). Falta exponer precios mensuales de VPS y dedicado sin entrar al carrito. En bgp.he.net su prefijo v4 figura inactivo en el snapshot actual. En 2026 lanza dos productos relevantes: un Informe SEO/GEO IA con diagnóstico gratuito y un creador web con IA, alineados con la tendencia de búsqueda generativa.',
+    innovations: {
+      title: 'Novedades 2026',
+      items: [
+        {
+          label: 'Informe SEO/GEO IA',
+          desc: 'Diagnóstico que evalúa si la web está preparada para Google, ChatGPT, Gemini y Claude: rastreo, Core Web Vitals, robots/sitemap/schema/llms.txt, contenido, reputación, keywords/SERP, backlinks y visibilidad en IA. Versión gratuita + planes pagados con seguimiento.',
+          url: 'https://clientes.hostingplus.cl/index.php?rp=/announcements/9/Nuevo-Informe-SEOorGEO-IA-descubre-si-tu-web-esta-preparada-para-Google-ChatGPT-y-buscadores-con-IA.html',
+        },
+        {
+          label: 'Creador web con IA',
+          desc: 'Constructor de sitios asistido por IA orientado a PyMEs, integrado al ecosistema de hosting.',
+          url: 'https://www.hostingplus.cl/',
+        },
+      ],
+    },
   },
   {
     rank: 2,
