@@ -125,6 +125,7 @@ const generateMainSitemap = (companySlugs = []) => {
     ['/calculadora-tco', '0.6', 'monthly'],
     ['/benchmark', '0.6', 'weekly'],
     ['/seo-audit', '0.8', 'weekly'],
+    ['/estudio-hosting-chile-2026', '0.9', 'yearly'],
   ].map(([path, prio, freq]) => urlTag(`${ROOT}${path}`, prio, freq)).join('');
 
   // Páginas "VS" de proveedores (comparativas internas)
