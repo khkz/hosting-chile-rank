@@ -539,6 +539,21 @@ const EstudioHostingChile2026: React.FC = () => {
                   </div>
                 )}
 
+                {p.innovations && (
+                  <div className="mb-3 p-3 bg-primary/5 border-l-4 border-l-primary rounded-r text-sm">
+                    <strong className="text-primary">{p.innovations.title}:</strong>
+                    <ul className="mt-2 space-y-1.5">
+                      {p.innovations.items.map((it) => (
+                        <li key={it.label}>
+                          <a href={it.url} target="_blank" rel="noopener noreferrer" className="font-semibold underline">
+                            {it.label}
+                          </a>{' '}— {it.desc}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 <p className="text-sm italic text-muted-foreground border-t pt-3">
                   <strong className="not-italic text-foreground">Nota crítica:</strong> {p.critical}
                 </p>
