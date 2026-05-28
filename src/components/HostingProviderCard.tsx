@@ -10,14 +10,14 @@ interface HostingProviderCardProps {
     id: string;
     name: string;
     logo: string;
-    velocidad: string;
-    seguridad: string;
+    asn: string;
+    datacenter: string;
     backups: string;
     reclamos: string;
     hasLiteSpeed: boolean;
     hasWAF: boolean;
     hasBackups: boolean;
-    price: number;
+    priceLabel: string;
     reseñaUrl: string;
   };
   isHighlighted?: boolean;
@@ -49,12 +49,12 @@ const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isH
           
           <div className="grid grid-cols-2 gap-3 text-sm mb-4">
             <div>
-              <span className="text-gray-500">Velocidad:</span>
-              <div className="font-medium">{provider.velocidad}</div>
+              <span className="text-gray-500">ASN:</span>
+              <div className="font-medium">{provider.asn}</div>
             </div>
             <div>
-              <span className="text-gray-500">Seguridad:</span>
-              <div className="font-medium">{provider.seguridad}</div>
+              <span className="text-gray-500">Datacenter:</span>
+              <div className="font-medium">{provider.datacenter}</div>
             </div>
             <div>
               <span className="text-gray-500">Backups:</span>
@@ -64,9 +64,9 @@ const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isH
               <span className="text-gray-500">Reclamos:</span>
               <div className="font-medium">{provider.reclamos}</div>
             </div>
-            <div>
+            <div className="col-span-2">
               <span className="text-gray-500">Precio:</span>
-              <div className="font-medium">${provider.price.toLocaleString()}/mes</div>
+              <div className="font-medium">{provider.priceLabel}</div>
             </div>
           </div>
           
@@ -102,7 +102,7 @@ const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isH
             variant="outline" 
             className="w-full border-[#EF233C] text-[#EF233C] hover:bg-[#EF233C] hover:text-white"
           >
-            <a href={provider.reseñaUrl}>Ver reseña completa</a>
+            <a href={provider.reseñaUrl}>Ver ficha completa</a>
           </Button>
         </div>
       </CardContent>
