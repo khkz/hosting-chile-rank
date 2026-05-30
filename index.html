@@ -8,22 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mejor Hosting Chile 2026 | EligeTuHosting</title>
     <meta name="description" content="Ranking independiente de hosting en Chile 2026. Comparamos proveedores con datos reales de velocidad, uptime y soporte. Sin patrocinios ni sesgos." />
-    <!-- Canonical absoluto (no-www). Por ruta se sobreescribe vía Helmet en cliente, pero los crawlers sin JS al menos ven uno válido. -->
-    <link rel="canonical" href="https://eligetuhosting.cl/" />
-    <link rel="alternate" hreflang="es-CL" href="https://eligetuhosting.cl" />
-    <link rel="alternate" hreflang="x-default" href="https://eligetuhosting.cl" />
-    <!-- Open Graph / Social preview -->
-    <meta property="og:title" content="Mejor Hosting Chile 2026 | EligeTuHosting" />
-    <meta property="og:description" content="Ranking independiente de hosting en Chile 2026 con datos reales de velocidad, uptime y soporte. Sin patrocinios ni sesgos." />
-    <meta property="og:url" content="https://eligetuhosting.cl/" />
+    <!-- NO incluir canonical / og:url / og:title / og:description estáticos.
+         Cada ruta los inyecta via react-helmet-async (DynamicMetaTags) para
+         evitar que TODAS las páginas se vean como duplicado de la home. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="EligeTuHosting.cl" />
     <meta property="og:locale" content="es_CL" />
-    <meta property="og:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Mejor Hosting Chile 2026 | EligeTuHosting" />
-    <meta name="twitter:description" content="Ranking independiente de hosting en Chile 2026 con datos reales de velocidad, uptime y soporte." />
-    <meta name="twitter:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="image" href="/images/hero-person.webp" type="image/webp" fetchpriority="high" media="(min-width: 768px)">
