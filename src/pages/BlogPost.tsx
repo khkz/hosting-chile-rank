@@ -17,7 +17,7 @@ const posts = {
     authorPosition: 'Especialista en Infraestructura Web',
     authorImage: '/placeholder.svg',
     category: 'Tecnología',
-    image: '/placeholder.svg',
+    image: '/blog/mejores-servidores-web-2025.svg',
     readTime: '8 min',
     content: `
       <p>La elección del servidor web adecuado puede marcar una diferencia significativa en el rendimiento, la seguridad y la escalabilidad de tu sitio. En 2026, con el continuo crecimiento del tráfico web y las exigencias de los usuarios por experiencias rápidas y seguras, esta decisión es más importante que nunca.</p>
