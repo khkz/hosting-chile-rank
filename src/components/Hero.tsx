@@ -8,32 +8,43 @@ const Hero = () => {
     <section className="relative py-20 md:py-28 lg:py-32 bg-gradient-to-br from-warm-cream via-white to-warm-peach overflow-hidden">
       {/* Mobile background image */}
       <div className="absolute inset-0 md:hidden">
-        <img 
-          src="/images/hero-people.png"
-          alt="Personas eligiendo hosting"
-          className="w-full h-full object-cover"
-          width={800}
-          height={600}
-          loading="eager"
-          fetchPriority="high"
-        />
+        <picture>
+          <source srcSet="/images/hero-people.avif" type="image/avif" />
+          <source srcSet="/images/hero-people.webp" type="image/webp" />
+          <img
+            src="/images/hero-people.webp"
+            alt="Personas eligiendo hosting"
+            className="w-full h-full object-cover"
+            width={800}
+            height={600}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/85"></div>
       </div>
-      
+
       {/* Imagen de fondo grande con degradados - Solo desktop */}
       <div className="absolute inset-0 hidden md:block">
-        <img 
-          src="/images/hero-person.png"
-          alt="Persona eligiendo el mejor hosting para su proyecto"
-          className="absolute right-0 top-0 bottom-0 w-[70%] lg:w-[60%] h-full object-cover object-[70%_center]"
-          width={1200}
-          height={800}
-          loading="eager"
-          fetchPriority="high"
-        />
+        <picture>
+          <source srcSet="/images/hero-person.avif" type="image/avif" />
+          <source srcSet="/images/hero-person.webp" type="image/webp" />
+          <img
+            src="/images/hero-person.webp"
+            alt="Persona eligiendo el mejor hosting para su proyecto"
+            className="absolute right-0 top-0 bottom-0 w-[70%] lg:w-[60%] h-full object-cover object-[70%_center]"
+            width={1200}
+            height={800}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-r from-white from-35% via-white/95 via-55% to-transparent to-85%"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-warm-cream/20 via-transparent to-warm-peach/10"></div>
       </div>
+
       
       {/* Contenido - Encima de todo */}
       <div className="container mx-auto px-4 relative z-10">
