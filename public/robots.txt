@@ -83,21 +83,11 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-# Sitemaps jerárquicos (organizados por tipo de contenido)
+# Sitemap (índice — incluye main/wiki/asn/domains)
 Sitemap: https://eligetuhosting.cl/sitemap.xml
-Sitemap: https://eligetuhosting.cl/sitemap-main.xml
-Sitemap: https://eligetuhosting.cl/sitemap-wiki.xml
-Sitemap: https://eligetuhosting.cl/sitemap-asn.xml
-Sitemap: https://eligetuhosting.cl/sitemap-domains.xml
 
 # RSS feeds para contenido fresco
 Sitemap: https://eligetuhosting.cl/feed/latest-domains.xml
-
-# Directivas adicionales para optimización
-# Permitir acceso completo a páginas de dominios
-Allow: /whois/
-Allow: /ultimos-dominios/
-Allow: /domain/
 
 # Hints para crawlers sobre contenido que cambia frecuentemente
 # (comentarios informativos para administradores)
