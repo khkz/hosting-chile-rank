@@ -328,7 +328,7 @@ const relatedPosts = [
   {
     slug: 'mejores-servidores-web-2026',
     title: 'Los 5 mejores servidores web en 2026',
-    image: '/placeholder.svg',
+    image: '/blog/mejores-servidores-web-2025.svg',
     date: '7 de enero, 2026'
   },
   {
