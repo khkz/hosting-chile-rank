@@ -85,6 +85,7 @@ import SeoAudit from './pages/SeoAudit';
 import SeoDashboard from './pages/SeoDashboard';
 import EstudioHostingChile2026 from './pages/EstudioHostingChile2026';
 import Contacto from './pages/Contacto';
+import VotaHosting from './pages/VotaHosting';
 
 function App() {
   return (
@@ -173,6 +174,7 @@ function App() {
         <Route path="/reclamos" element={<Reclamos />} />
         <Route path="/verificar-reclamo" element={<VerificarReclamo />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/vota-hosting" element={<VotaHosting />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
