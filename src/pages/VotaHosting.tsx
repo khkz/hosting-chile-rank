@@ -125,40 +125,42 @@ const VotaHosting = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-    
+
     try {
-      // Aquí iría la lógica para enviar los datos a tu backend
-      console.log("Datos del formulario:", data);
-      
-      // Simulamos una demora en el procesamiento
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Crear una nueva reseña para mostrar inmediatamente (simulación)
-      const nuevaReseña = {
-        id: reseñasRecientes.length + 1,
-        proveedor: data.nombreProveedor === "Otro" ? data.otroProveedor! : data.nombreProveedor,
-        nombre: data.nombre,
-        calificacion: data.calificacionGeneral,
-        comentario: data.comentario,
-        fecha: "Hoy"
-      };
-      
-      // Actualizar la lista de reseñas recientes
-      setReseñasRecientes([nuevaReseña, ...reseñasRecientes.slice(0, 2)]);
-      
+      const proveedor = data.nombreProveedor === "Otro" ? (data.otroProveedor ?? "").trim() : data.nombreProveedor;
+      if (!proveedor || proveedor.length < 2) {
+        throw new Error("Por favor indica el nombre del proveedor");
+      }
+
+      const { data: result, error } = await supabase.functions.invoke('submit-review', {
+        body: {
+          proveedor,
+          nombre: data.nombre,
+          email: data.email,
+          comentario: data.comentario,
+          calificacionGeneral: data.calificacionGeneral,
+          calificacionSoporte: data.calificacionSoporte,
+          calificacionVelocidad: data.calificacionVelocidad,
+          calificacionPrecio: data.calificacionPrecio,
+        },
+      });
+
+      if (error) throw error;
+      if (result?.error) throw new Error(result.error);
+
       toast({
         title: "¡Gracias por tu reseña!",
-        description: "Tu experiencia ayudará a otros usuarios a elegir mejor su hosting.",
+        description: "Tu reseña fue enviada y será revisada antes de publicarse. Recibirás un email de confirmación.",
       });
-      
+
       form.reset();
     } catch (error) {
+      console.error("Error al enviar reseña:", error);
       toast({
-        title: "Error al enviar el formulario",
-        description: "Por favor intenta nuevamente más tarde.",
+        title: "Error al enviar la reseña",
+        description: error instanceof Error ? error.message : "Por favor intenta nuevamente más tarde.",
         variant: "destructive"
       });
-      console.error("Error al enviar reseña:", error);
     } finally {
       setIsSubmitting(false);
     }
