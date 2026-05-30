@@ -4,24 +4,17 @@
 # Configuración específica para Googlebot (optimizada para crawleo frecuente)
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0.5
-
-# Priorizar contenido de alto valor
 Allow: /ranking/
 Allow: /wiki/
 Allow: /guia-*
 Allow: /mejor-hosting-chile-2026
-
-# Páginas de herramientas (mantener para conversiones)
 Allow: /ultimos-dominios/
 Allow: /domain/
-Crawl-delay: 1
-
-# Bloquear páginas ASN individuales (bajo valor SEO)
-Disallow: /asn/AS*
-# Permitir solo páginas principales de ASN
+Allow: /whois/
 Allow: /asn/$
 Allow: /asn/chile
+Disallow: /asn/AS*
+Crawl-delay: 0.5
 
 # Otros buscadores principales
 User-agent: Bingbot
