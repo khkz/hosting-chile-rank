@@ -44,13 +44,7 @@ const calculateDomainAge = (createdDate: string) => {
 
 const WhoisDomain = () => {
   const { slug } = useParams<{ slug: string }>();
-
-  // Si el slug llega con puntos (formato intuitivo /domain/example.com), redirigimos
-  // al formato canónico con guiones para evitar 404.
-  if (slug && slug.includes('.')) {
-    const normalized = slug.replace(/\./g, '-').toLowerCase();
-    return <Navigate to={`/domain/${normalized}/`} replace />;
-  }
+  const needsSlugRedirect = !!slug && slug.includes('.');
   const [domainData, setDomainData] = useState<DomainAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,6 +52,13 @@ const WhoisDomain = () => {
   const [usingLiveData, setUsingLiveData] = useState(false);
   const [debugInfo, setDebugInfo] = useState<string>('');
   const { toast } = useToast();
+
+  // Si el slug llega con puntos (formato intuitivo /domain/example.com), redirigimos
+  // al formato canónico con guiones para evitar 404.
+  if (needsSlugRedirect) {
+    const normalized = slug!.replace(/\./g, '-').toLowerCase();
+    return <Navigate to={`/domain/${normalized}/`} replace />;
+  }
 
   // Format domain name from slug
   const domainName = slug ? slug.replace(/-/g, '.') : '';
