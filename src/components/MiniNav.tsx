@@ -46,14 +46,6 @@ const MiniNav = () => {
         />
       </nav>
       
-      <a 
-        href="https://www.hostingplus.cl/" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className={`hidden md:block fixed bottom-6 right-6 bg-primary text-primary-foreground px-6 py-3 rounded-full shadow-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:scale-105 z-40 ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-      >
-        Contratar HostingPlus
-      </a>
     </>;
 };
 export default MiniNav;
