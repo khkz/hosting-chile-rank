@@ -22,12 +22,10 @@ const Categories = React.lazy(() => import('@/components/Categories'));
 const FAQ = React.lazy(() => import('@/components/FAQ'));
 const UltimasBusquedas = React.lazy(() => import('@/components/UltimasBusquedas'));
 const TransparencyNotice = React.lazy(() => import('@/components/TransparencyNotice'));
-const FinalCTA = React.lazy(() => import('@/components/FinalCTA'));
 const CertificationsBanner = React.lazy(() => import('@/components/CertificationsBanner'));
 const Footer = React.lazy(() => import('@/components/Footer'));
 const StickyCTA = React.lazy(() => import('@/components/StickyCTA'));
 const MiniNav = React.lazy(() => import('@/components/MiniNav'));
-const ExitModal = React.lazy(() => import('@/components/ExitModal'));
 const TrustReport = React.lazy(() => import('@/components/TrustReport'));
 
 
