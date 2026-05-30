@@ -334,13 +334,13 @@ const relatedPosts = [
   {
     slug: 'optimizacion-wordpress-hosting',
     title: 'Cómo optimizar tu WordPress en cualquier hosting',
-    image: '/placeholder.svg',
+    image: '/blog/optimizacion-wordpress-hosting.svg',
     date: '7 de enero, 2026'
   },
   {
     slug: 'hosting-ecologico-tendencia',
     title: 'Hosting ecológico: La tendencia que está cambiando la industria',
-    image: '/placeholder.svg',
+    image: '/blog/hosting-ecologico-tendencia.svg',
     date: '5 de enero, 2026'
   }
 ];

@@ -15,7 +15,7 @@ const blogPosts = [
     date: '2 de mayo, 2025',
     author: 'Ana Martínez',
     category: 'Tecnología',
-    image: '/placeholder.svg',
+    image: '/blog/mejores-servidores-web-2025.svg',
     readTime: '8 min'
   },
   {
@@ -26,7 +26,7 @@ const blogPosts = [
     date: '28 de abril, 2025',
     author: 'Carlos Vega',
     category: 'WordPress',
-    image: '/placeholder.svg',
+    image: '/blog/optimizacion-wordpress-hosting.svg',
     readTime: '12 min'
   },
   {
@@ -37,7 +37,7 @@ const blogPosts = [
     date: '15 de abril, 2025',
     author: 'María González',
     category: 'Sostenibilidad',
-    image: '/placeholder.svg',
+    image: '/blog/hosting-ecologico-tendencia.svg',
     readTime: '6 min'
   },
   {
@@ -48,7 +48,7 @@ const blogPosts = [
     date: '5 de abril, 2025',
     author: 'Diego Rojas',
     category: 'Seguridad',
-    image: '/placeholder.svg',
+    image: '/blog/seguridad-sitio-web-hosting.svg',
     readTime: '9 min'
   },
   {
@@ -59,7 +59,7 @@ const blogPosts = [
     date: '22 de marzo, 2025',
     author: 'Laura Castro',
     category: 'SEO',
-    image: '/placeholder.svg',
+    image: '/blog/migracion-hosting-sin-problemas.svg',
     readTime: '10 min'
   },
   {
@@ -70,7 +70,7 @@ const blogPosts = [
     date: '10 de marzo, 2025',
     author: 'Roberto Sánchez',
     category: 'Mercado',
-    image: '/placeholder.svg',
+    image: '/blog/crecimiento-hosting-latinoamerica.svg',
     readTime: '7 min'
   }
 ];
