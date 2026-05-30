@@ -84,6 +84,7 @@ import VerificarReclamo from './pages/VerificarReclamo';
 import SeoAudit from './pages/SeoAudit';
 import SeoDashboard from './pages/SeoDashboard';
 import EstudioHostingChile2026 from './pages/EstudioHostingChile2026';
+import Contacto from './pages/Contacto';
 
 function App() {
   return (
