@@ -17,7 +17,7 @@ const posts = {
     authorPosition: 'Especialista en Infraestructura Web',
     authorImage: '/placeholder.svg',
     category: 'Tecnología',
-    image: '/placeholder.svg',
+    image: '/blog/mejores-servidores-web-2025.svg',
     readTime: '8 min',
     content: `
       <p>La elección del servidor web adecuado puede marcar una diferencia significativa en el rendimiento, la seguridad y la escalabilidad de tu sitio. En 2026, con el continuo crecimiento del tráfico web y las exigencias de los usuarios por experiencias rápidas y seguras, esta decisión es más importante que nunca.</p>
@@ -328,19 +328,19 @@ const relatedPosts = [
   {
     slug: 'mejores-servidores-web-2026',
     title: 'Los 5 mejores servidores web en 2026',
-    image: '/placeholder.svg',
+    image: '/blog/mejores-servidores-web-2025.svg',
     date: '7 de enero, 2026'
   },
   {
     slug: 'optimizacion-wordpress-hosting',
     title: 'Cómo optimizar tu WordPress en cualquier hosting',
-    image: '/placeholder.svg',
+    image: '/blog/optimizacion-wordpress-hosting.svg',
     date: '7 de enero, 2026'
   },
   {
     slug: 'hosting-ecologico-tendencia',
     title: 'Hosting ecológico: La tendencia que está cambiando la industria',
-    image: '/placeholder.svg',
+    image: '/blog/hosting-ecologico-tendencia.svg',
     date: '5 de enero, 2026'
   }
 ];
@@ -361,6 +361,7 @@ const BlogPost = () => {
         title={post.title}
         description={post.excerpt}
         type="article"
+        ogImage={post.image?.startsWith('http') ? post.image : `https://eligetuhosting.cl${post.image}`}
       />
       <Helmet>
         <script type="application/ld+json">

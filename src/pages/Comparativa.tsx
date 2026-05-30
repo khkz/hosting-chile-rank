@@ -16,6 +16,7 @@ import Footer from '../components/Footer';
 import StickyCTA from '../components/StickyCTA';
 import HostingSectionsNav from '../components/HostingSectionsNav';
 import { Helmet } from 'react-helmet-async';
+import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { useIsMobile } from '../hooks/use-mobile';
 import HostingProviderCard from '../components/HostingProviderCard';
 import { Check, X, Filter } from 'lucide-react';
@@ -162,12 +163,11 @@ const ComparativaPage = () => {
 
   return (
     <>
+      <DynamicMetaTags
+        title="Comparativa Hosting Chile 2026"
+        description="Comparativa de hosting en Chile basada en el Estudio Hosting Chile 2026: ASN, datacenter, backups, reclamos y tecnologías verificables."
+      />
       <Helmet>
-        <title>Comparativa Hosting Chile 2026 | EligeTuHosting.cl</title>
-        <meta
-          name="description"
-          content="Comparativa de hosting en Chile basada en el Estudio Hosting Chile 2026: ASN, datacenter, backups, reclamos y tecnologías verificables."
-        />
         <script type="application/ld+json">
           {`
             {
