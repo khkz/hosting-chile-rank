@@ -1,93 +1,84 @@
-# Plan de mejora — Auditoría EligeTuHosting.cl
+# Pasar formularios de simulación a producción
 
-Auditoría sobre 20+ URLs en producción. Hallazgos agrupados por severidad y ordenados por impacto SEO/UX.
+## Resumen del audit de simulaciones
 
----
+| Lugar | Estado actual | Acción |
+|---|---|---|
+| `/vota-hosting` (form reseñas) | `setTimeout(1500)` + arreglo local en memoria | ✅ Conectar a BD + email admin |
+| `/contacto` (form contacto) | `setTimeout(1500)` sin persistencia ni envío | ✅ Crear tabla + emails |
+| `Blog.tsx` / `BlogPost.tsx` | 6 posts hardcodeados (curados) | ⏭️ Mantener (decisión usuario) |
+| `MethodologySection.tsx` "Simulamos TCP…" | Texto explicativo de metodología | ⏭️ No cambiar (es copy real) |
+| `VsComparison.tsx` "whyFake" | Texto descriptivo de comparadores falsos | ⏭️ No cambiar (es contenido) |
+| `BatchAnalyzePanel` (admin) | Funcional real, solo el nombre confunde | ⏭️ Sin acción |
 
-## 🔴 Críticos (bloqueo SEO)
+## 1. Email: integración con Resend
 
-### 1. Canonical y `og:url` apuntan SIEMPRE a la home
-Cada página (`/comparativa`, `/catalogo/powerhost`, `/blog`, etc.) sirve en el HTML:
-```html
-<link rel="canonical" href="https://eligetuhosting.cl">
-<meta property="og:url" content="https://eligetuhosting.cl">
+Para enviar emails a **khkzulox@gmail.com** desde edge functions, usaremos el connector **Resend** (vía connector-gateway de Lovable). Necesitaremos que conectes tu cuenta Resend y verifiques un dominio remitente (o usaremos `onboarding@resend.dev` para empezar a probar).
+
+- Secret requerido: `RESEND_API_KEY` (lo pides en Resend → API Keys)
+- From inicial: `Elige Tu Hosting <onboarding@resend.dev>` (cambia a `noreply@eligetuhosting.cl` cuando verifiques el dominio en Resend)
+
+## 2. Vota Hosting → producción
+
+### Backend
+- **Tabla**: ya existe `hosting_reviews` con `status = 'pending'` por defecto y RLS correcta.
+- Migración menor: relajar el constraint `user_id NOT NULL` → permitir reseñas anónimas con email de verificación, o exigir login. **Decisión técnica**: mantener `user_id NOT NULL` y exigir sesión (redirigir a `/auth` si no hay sesión) — es la forma más segura y ya hay AuthProvider.
+- **Edge function** `submit-review`:
+  1. Valida payload con Zod
+  2. Inserta en `hosting_reviews` con `status='pending'`, `is_verified_customer=false`
+  3. Envía email a `khkzulox@gmail.com` vía Resend con link a `/admin/review-moderation`
+
+### Frontend (`VotaHosting.tsx`)
+- Reemplazar `setTimeout` por `supabase.functions.invoke('submit-review', ...)`
+- Si no hay sesión → mostrar CTA "Inicia sesión para dejar tu reseña" → `/auth`
+- Quitar la simulación de "agregar reseña a la lista local" (las aprobadas vendrán de BD vía `PublicReviewsList`)
+- Mostrar mensaje: "Tu reseña fue enviada y será revisada antes de publicarse"
+
+## 3. Contacto → producción
+
+### Backend
+- **Nueva tabla** `contact_submissions`:
+  - `id, name, email, subject, message, status (new|read|replied), ip_hash, created_at, updated_at`
+  - RLS: solo admins SELECT/UPDATE; INSERT público (con rate-limit en la edge function)
+  - GRANT: `INSERT` a anon, `ALL` a service_role, `SELECT/UPDATE` a authenticated (verificado por policy admin)
+- **Edge function** `submit-contact`:
+  1. Valida con Zod (name 1-100, email válido, message 10-2000)
+  2. Hash IP para rate-limit (3 envíos/hora)
+  3. Inserta en `contact_submissions`
+  4. Envía **2 emails** vía Resend:
+     - A `khkzulox@gmail.com`: "Nuevo mensaje de contacto" con datos
+     - Al usuario: auto-respuesta "Recibimos tu mensaje, te responderemos en 24-48h"
+
+### Frontend (`Contacto.tsx`)
+- Reemplazar `setTimeout` por `supabase.functions.invoke('submit-contact', ...)`
+- Mantener toast de éxito
+
+## 4. Panel admin para mensajes de contacto (opcional rápido)
+
+Pequeña página `/admin/contact-messages` para listar `contact_submissions` y marcar como leídos. Si prefieres revisar solo por email, lo dejamos para después.
+
+## Detalles técnicos
+
+```text
+Archivos nuevos:
+  supabase/functions/submit-review/index.ts
+  supabase/functions/submit-contact/index.ts
+  src/pages/admin/ContactMessages.tsx (opcional)
+
+Archivos editados:
+  src/pages/VotaHosting.tsx          (quitar setTimeout, invoke edge function, gating auth)
+  src/pages/Contacto.tsx             (quitar setTimeout, invoke edge function)
+  supabase/config.toml                (verify_jwt = false en ambas funciones)
+  src/App.tsx                         (ruta admin/contact-messages si lo incluimos)
+
+Migraciones:
+  - CREATE TABLE contact_submissions + RLS + GRANTs
 ```
-Google está tratando todo como duplicado de la home. **Causa probable**: `DynamicMetaTags` no se aplica en todas las rutas y/o el fallback en `index.html` sobreescribe vía Helmet con valor fijo.
 
-**Acción**:
-- Auditar `DynamicMetaTags` y forzarlo en TODAS las páginas (Index, Catalogo, CatalogoDetalle, Blog, BlogPost, Comparativa, Metodologia, Transparencia, Guías, Wiki, etc.).
-- Construir canonical/og:url desde `useLocation().pathname` con base `https://eligetuhosting.cl`.
-- Quitar el `<link rel=canonical>` estático de `index.html` (o dejarlo solo como fallback de home).
+## Lo que necesito de ti antes de implementar
 
-### 2. `/contacto` es soft-404
-Devuelve 200 pero renderiza el componente NotFound. Está enlazado desde `/metodologia` ("Contacto editorial").
-**Acción**: crear `Contacto.tsx` real (ya existe el archivo — verificar por qué no resuelve la ruta en `App.tsx`) o reemplazar el enlace por `/sobre-nosotros#contacto`.
+1. **Cuenta Resend**: ¿tienes una? Si no, créala gratis en resend.com (3000 emails/mes free). Luego me das el `RESEND_API_KEY` cuando te lo pida el formulario seguro.
+2. **¿Incluyo el panel `/admin/contact-messages`?** (sí/no — si no, los verás solo por email)
+3. **¿Gating de auth en /vota-hosting?** Mi recomendación: SÍ (evita spam y permite trazabilidad). Alternativa: dejar anónimo con verificación por email (más complejo, +1 edge function).
 
-### 3. Logos de Clearbit caídos
-`logo.clearbit.com/powerhost.cl` y `/hosting.cl` devuelven connection-refused. Se ven rotos en `/comparativa` y fichas.
-**Acción**: 
-- Script para descargar todos los logos hotlinked y guardarlos en `public/logos/<slug>.png`.
-- Helper `getProviderLogo(slug)` con fallback a iniciales SVG generadas.
-- Reemplazar todos los `logo.clearbit.com`, `gstatic.com`, `1hosting.cl` en el código.
-
----
-
-## 🟠 Altos
-
-### 4. Imágenes destacadas del blog = `placeholder.svg`
-Todos los posts comparten el mismo placeholder gris. Mata el CTR social.
-**Acción**: generar (o asignar) imagen real por post; mientras tanto, generar OG dinámica con el título sobre fondo de marca.
-
-### 5. `<title>` estático en HTML pre-render
-Todas las URLs sirven `Mejor Hosting Chile 2026 | EligeTuHosting.cl` en el HTML inicial. Helmet lo cambia client-side pero los crawlers ven el shell.
-**Acción**: ejecutar el `scripts/prerender.mjs` ya existente en build (ver `docs/SEO-INFRA.md`) o, si Lovable no soporta Chromium en build, generar HTML estático mínimo por ruta con title/description/canonical inyectados en CI externo.
-
-### 6. `/domain/<x>` y `/whois/<x>` con slug "intuitivo" → 404
-`/domain/example.com` falla (requiere `example-com`). robots.txt los expone como herramientas.
-**Acción**: en el componente, normalizar el slug recibido (replace `.` → `-`) y redirigir 301 al formato canónico.
-
----
-
-## 🟡 Medios
-
-### 7. Breadcrumb duplicado en `/sobre-nosotros`
-Renderiza `Inicio › Inicio › Sobre nosotros`. Bug en el componente Breadcrumb.
-
-### 8. `og:image` único para todas las páginas
-Siempre `/images/ranking-comparison.png`. Generar OG por sección (home, ficha proveedor, blog post, guía).
-
-### 9. `robots.txt` con `Crawl-delay` duplicado y `Sitemap:` repetidos
-Limpiar: 1 sola directiva `Crawl-delay`, listar solo `sitemap.xml` (índice) — los sub-sitemaps ya van dentro.
-
----
-
-## 🔵 Bajos
-
-### 10. `sitemap-main.xml` con `<lastmod>` estático
-Todos los URLs comparten `2026-04-25`. Ajustar el generador para usar `updated_at` real o fecha de build.
-
-### 11. Enlaces con `ñ` sin codificar en `/comparativa`
-`/reseñas/hostingplus` — usar percent-encoding consistente o slugs ASCII.
-
----
-
-## Orden de ejecución propuesto
-
-1. **Fix canonical/og:url por ruta** (afecta a TODO el SEO) — auditar `DynamicMetaTags` + migrar páginas restantes
-2. **Arreglar `/contacto`** (soft-404 visible)
-3. **Descargar logos Clearbit a local** + helper con fallback
-4. **Fix breadcrumb duplicado** en `/sobre-nosotros`
-5. **Normalizar slugs** en `/domain` y `/whois` (redirect 301 interno)
-6. **Limpiar robots.txt** (crawl-delay, sitemaps)
-7. **Sitemap lastmod dinámico**
-8. **OG images por sección** (post/proveedor/guía)
-9. **Imágenes reales para blog** (asignar o generar)
-
-## Notas técnicas
-
-- No tocar lógica de negocio (rankings, reputación, benchmark) — solo presentación/SEO.
-- No re-añadir CTAs externos a HostingPlus desde home (decisión previa).
-- El prerender en build (#5 alto) requiere CI externo si Lovable no levanta Chromium — documentar pero no romper el build actual.
-- Cambios de DB: ninguno. Sólo edits en `src/components/SEO/*`, páginas, `public/robots.txt`, `public/logos/*`, y scripts.
-
-¿Procedo con el bloque 1–4 (críticos + breadcrumb) en la primera tanda?
+Una vez confirmes estos 3 puntos, implemento todo de una sola pasada.
