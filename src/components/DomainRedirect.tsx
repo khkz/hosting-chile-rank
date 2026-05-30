@@ -16,10 +16,20 @@ const DomainRedirect = () => {
       const currentHost = window.location.host.toLowerCase();
       const targetDomain = 'eligetuhosting.cl';
 
-      // Only redirect if we are on a KNOWN non-target production domain.
-      // If the host is anything other than a recognizable production alias,
-      // do nothing (safe for Lovable editor, preview, localhost, etc.).
+      // 1) Redirect www.eligetuhosting.cl → eligetuhosting.cl (canonical no-www)
+      //    Mitigación client-side mientras se configura el 301 a nivel de DNS/edge.
+      if (currentHost === `www.${targetDomain}`) {
+        const currentPath = window.location.pathname;
+        const currentSearch = window.location.search;
+        window.location.replace(
+          `https://${targetDomain}${currentPath}${currentSearch}${window.location.hash || ''}`
+        );
+        return;
+      }
+
+      // 2) Si ya estamos en el dominio canonical, nada que hacer.
       if (currentHost.includes(targetDomain)) return;
+
 
       // Whitelist: only redirect from known production aliases
       const productionAliases = [
