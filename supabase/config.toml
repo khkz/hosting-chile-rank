@@ -59,3 +59,9 @@ verify_jwt = false
 
 [functions.refresh-reputation]
 verify_jwt = false
+
+[functions.submit-contact]
+verify_jwt = false
+
+[functions.submit-review]
+verify_jwt = false
