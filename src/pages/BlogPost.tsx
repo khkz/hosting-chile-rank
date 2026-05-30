@@ -361,6 +361,7 @@ const BlogPost = () => {
         title={post.title}
         description={post.excerpt}
         type="article"
+        ogImage={post.image?.startsWith('http') ? post.image : `https://eligetuhosting.cl${post.image}`}
       />
       <Helmet>
         <script type="application/ld+json">
