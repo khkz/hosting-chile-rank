@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 // Esquema para la validación del formulario
 const formSchema = z.object({
@@ -44,27 +45,28 @@ const Contacto = () => {
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
-    
+
     try {
-      // En un caso real, aquí enviarías los datos a tu backend
-      console.log("Datos del formulario:", data);
-      
-      // Simulamos una demora en el proceso
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      const { data: result, error } = await supabase.functions.invoke('submit-contact', {
+        body: data,
+      });
+
+      if (error) throw error;
+      if (result?.error) throw new Error(result.error);
+
       toast({
         title: "Mensaje enviado con éxito",
-        description: "Responderemos a tu consulta lo antes posible. ¡Gracias por contactarnos!",
+        description: "Responderemos a tu consulta en menos de 24-48 horas. Revisa tu email para la confirmación.",
       });
-      
+
       form.reset();
     } catch (error) {
+      console.error("Error al enviar formulario:", error);
       toast({
         title: "Error al enviar el formulario",
-        description: "Por favor intenta nuevamente más tarde.",
+        description: error instanceof Error ? error.message : "Por favor intenta nuevamente más tarde.",
         variant: "destructive"
       });
-      console.error("Error al enviar formulario:", error);
     } finally {
       setIsSubmitting(false);
     }

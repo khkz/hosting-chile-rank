@@ -508,6 +508,45 @@ export type Database = {
           },
         ]
       }
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          message: string
+          name: string
+          status: string
+          subject: string | null
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          message: string
+          name: string
+          status?: string
+          subject?: string | null
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          message?: string
+          name?: string
+          status?: string
+          subject?: string | null
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       dns_info: {
         Row: {
           aaaa_records: string[] | null
@@ -1141,6 +1180,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      hosting_review_submissions: {
+        Row: {
+          comment: string
+          created_at: string
+          id: string
+          ip_hash: string | null
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_notes: string | null
+          provider_name: string
+          rating_overall: number
+          rating_price: number | null
+          rating_speed: number | null
+          rating_support: number | null
+          reviewer_email: string
+          reviewer_name: string
+          status: string
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          provider_name: string
+          rating_overall: number
+          rating_price?: number | null
+          rating_speed?: number | null
+          rating_support?: number | null
+          reviewer_email: string
+          reviewer_name: string
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          id?: string
+          ip_hash?: string | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          provider_name?: string
+          rating_overall?: number
+          rating_price?: number | null
+          rating_speed?: number | null
+          rating_support?: number | null
+          reviewer_email?: string
+          reviewer_name?: string
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
       }
       hosting_reviews: {
         Row: {
