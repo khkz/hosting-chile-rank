@@ -105,10 +105,20 @@ const Index = () => {
           <FAQ />
           <MethodologySection />
           <CertificationsBanner />
-          <FinalCTA />
+          <section className="py-16 px-4 text-center">
+            <div className="max-w-2xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3">Explora todos los proveedores verificados</h2>
+              <p className="text-muted-foreground mb-6">Revisa el catálogo completo con fichas, reputación y precios de cada hosting analizado.</p>
+              <Link
+                to="/catalogo"
+                className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition"
+              >
+                Ver catálogo completo
+              </Link>
+            </div>
+          </section>
           <MiniNav />
           <StickyCTA />
-          <ExitModal />
         </Suspense>
       </main>
       <Suspense fallback={null}>
