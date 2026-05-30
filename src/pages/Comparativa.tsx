@@ -16,6 +16,7 @@ import Footer from '../components/Footer';
 import StickyCTA from '../components/StickyCTA';
 import HostingSectionsNav from '../components/HostingSectionsNav';
 import { Helmet } from 'react-helmet-async';
+import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { useIsMobile } from '../hooks/use-mobile';
 import HostingProviderCard from '../components/HostingProviderCard';
 import { Check, X, Filter } from 'lucide-react';
