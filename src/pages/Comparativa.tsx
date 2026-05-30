@@ -162,12 +162,11 @@ const ComparativaPage = () => {
 
   return (
     <>
+      <DynamicMetaTags
+        title="Comparativa Hosting Chile 2026"
+        description="Comparativa de hosting en Chile basada en el Estudio Hosting Chile 2026: ASN, datacenter, backups, reclamos y tecnologías verificables."
+      />
       <Helmet>
-        <title>Comparativa Hosting Chile 2026 | EligeTuHosting.cl</title>
-        <meta
-          name="description"
-          content="Comparativa de hosting en Chile basada en el Estudio Hosting Chile 2026: ASN, datacenter, backups, reclamos y tecnologías verificables."
-        />
         <script type="application/ld+json">
           {`
             {
