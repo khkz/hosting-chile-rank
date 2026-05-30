@@ -44,6 +44,13 @@ const calculateDomainAge = (createdDate: string) => {
 
 const WhoisDomain = () => {
   const { slug } = useParams<{ slug: string }>();
+
+  // Si el slug llega con puntos (formato intuitivo /domain/example.com), redirigimos
+  // al formato canónico con guiones para evitar 404.
+  if (slug && slug.includes('.')) {
+    const normalized = slug.replace(/\./g, '-').toLowerCase();
+    return <Navigate to={`/domain/${normalized}/`} replace />;
+  }
   const [domainData, setDomainData] = useState<DomainAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
