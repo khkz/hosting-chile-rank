@@ -174,6 +174,7 @@ function App() {
         <Route path="/reclamos" element={<Reclamos />} />
         <Route path="/verificar-reclamo" element={<VerificarReclamo />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/vota-hosting" element={<VotaHosting />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
