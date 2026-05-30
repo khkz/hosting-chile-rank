@@ -4,24 +4,17 @@
 # Configuración específica para Googlebot (optimizada para crawleo frecuente)
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0.5
-
-# Priorizar contenido de alto valor
 Allow: /ranking/
 Allow: /wiki/
 Allow: /guia-*
 Allow: /mejor-hosting-chile-2026
-
-# Páginas de herramientas (mantener para conversiones)
 Allow: /ultimos-dominios/
 Allow: /domain/
-Crawl-delay: 1
-
-# Bloquear páginas ASN individuales (bajo valor SEO)
-Disallow: /asn/AS*
-# Permitir solo páginas principales de ASN
+Allow: /whois/
 Allow: /asn/$
 Allow: /asn/chile
+Disallow: /asn/AS*
+Crawl-delay: 0.5
 
 # Otros buscadores principales
 User-agent: Bingbot
@@ -90,21 +83,11 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-# Sitemaps jerárquicos (organizados por tipo de contenido)
+# Sitemap (índice — incluye main/wiki/asn/domains)
 Sitemap: https://eligetuhosting.cl/sitemap.xml
-Sitemap: https://eligetuhosting.cl/sitemap-main.xml
-Sitemap: https://eligetuhosting.cl/sitemap-wiki.xml
-Sitemap: https://eligetuhosting.cl/sitemap-asn.xml
-Sitemap: https://eligetuhosting.cl/sitemap-domains.xml
 
 # RSS feeds para contenido fresco
 Sitemap: https://eligetuhosting.cl/feed/latest-domains.xml
-
-# Directivas adicionales para optimización
-# Permitir acceso completo a páginas de dominios
-Allow: /whois/
-Allow: /ultimos-dominios/
-Allow: /domain/
 
 # Hints para crawlers sobre contenido que cambia frecuentemente
 # (comentarios informativos para administradores)

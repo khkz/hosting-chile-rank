@@ -8,10 +8,10 @@ const WhoisRedirect = () => {
 
   useEffect(() => {
     if (slug) {
-      // Redirigir de /whois/:slug a /domain/:slug/
-      navigate(`/domain/${slug}/`, { replace: true });
+      // Normalizar: el formato canónico interno usa guiones, no puntos.
+      const normalized = slug.replace(/\./g, '-').toLowerCase();
+      navigate(`/domain/${normalized}/`, { replace: true });
     } else {
-      // Si no hay slug, redirigir a la página principal
       navigate('/', { replace: true });
     }
   }, [slug, navigate]);

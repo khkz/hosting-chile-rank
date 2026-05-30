@@ -309,6 +309,17 @@ const ComparativaPage = () => {
                                 alt={provider.name}
                                 className="max-h-full max-w-full object-contain"
                                 loading="lazy"
+                                onError={(e) => {
+                                  // Fallback cuando Clearbit u otro CDN externo falla.
+                                  const img = e.currentTarget;
+                                  if (img.dataset.fallback) return;
+                                  img.dataset.fallback = '1';
+                                  img.src =
+                                    'data:image/svg+xml;utf8,' +
+                                    encodeURIComponent(
+                                      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="6" fill="#e5e7eb"/><text x="50%" y="55%" font-family="sans-serif" font-size="14" font-weight="700" fill="#374151" text-anchor="middle">${(provider.name || '?').slice(0, 2).toUpperCase()}</text></svg>`
+                                    );
+                                }}
                               />
                             </div>
                             <span>

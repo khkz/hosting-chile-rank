@@ -23,11 +23,18 @@ interface SEOBreadcrumbsProps {
 
 const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
   const location = useLocation();
-  
+
+  // Drop a leading "Inicio" / "/" item if the caller included it — el
+  // componente ya renderiza Inicio por sí mismo y de lo contrario salía
+  // duplicado (ej. en /sobre-nosotros).
+  const normalizedItems = items.filter(
+    (item, idx) => !(idx === 0 && (item.href === '/' || item.name.toLowerCase() === 'inicio'))
+  );
+
   // Build breadcrumb chain starting with home
   const breadcrumbs = [
     { name: "Inicio", href: "/" },
-    ...items
+    ...normalizedItems
   ];
 
   // Add current page if provided
@@ -85,10 +92,10 @@ const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
             <ChevronRight className="h-4 w-4 text-muted-foreground" />
           </BreadcrumbSeparator>
           
-          {items.map((item, index) => (
+          {normalizedItems.map((item, index) => (
             <span key={index} className="contents">
               <BreadcrumbItem>
-                {index === items.length - 1 && !pageName ? (
+                {index === normalizedItems.length - 1 && !pageName ? (
                   <BreadcrumbPage className="flex items-center font-semibold text-primary">
                     {getIcon(item.href)}
                     {item.name}
@@ -110,7 +117,7 @@ const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
                 )}
               </BreadcrumbItem>
               
-              {(index < items.length - 1 || pageName) && (
+              {(index < normalizedItems.length - 1 || pageName) && (
                 <BreadcrumbSeparator>
                   <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 </BreadcrumbSeparator>

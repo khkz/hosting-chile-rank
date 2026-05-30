@@ -222,11 +222,21 @@ const Resena = () => {
         <div className="max-w-4xl mx-auto">
           {/* Header de la reseña */}
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
-            <img 
-              src={hosting.logo} 
-              alt={`Logo de ${hosting.name}`} 
+            <img
+              src={hosting.logo}
+              alt={`Logo de ${hosting.name}`}
               className="w-32 h-32 object-contain"
               loading="lazy"
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (img.dataset.fallback) return;
+                img.dataset.fallback = '1';
+                img.src =
+                  'data:image/svg+xml;utf8,' +
+                  encodeURIComponent(
+                    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="16" fill="#e5e7eb"/><text x="50%" y="55%" font-family="sans-serif" font-size="40" font-weight="700" fill="#374151" text-anchor="middle">${(hosting.name || '?').slice(0, 2).toUpperCase()}</text></svg>`
+                  );
+              }}
             />
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">{hosting.name}</h1>
