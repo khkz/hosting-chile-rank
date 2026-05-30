@@ -23,11 +23,18 @@ interface SEOBreadcrumbsProps {
 
 const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
   const location = useLocation();
-  
+
+  // Drop a leading "Inicio" / "/" item if the caller included it — el
+  // componente ya renderiza Inicio por sí mismo y de lo contrario salía
+  // duplicado (ej. en /sobre-nosotros).
+  const normalizedItems = items.filter(
+    (item, idx) => !(idx === 0 && (item.href === '/' || item.name.toLowerCase() === 'inicio'))
+  );
+
   // Build breadcrumb chain starting with home
   const breadcrumbs = [
     { name: "Inicio", href: "/" },
-    ...items
+    ...normalizedItems
   ];
 
   // Add current page if provided
