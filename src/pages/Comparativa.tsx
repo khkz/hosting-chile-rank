@@ -83,7 +83,7 @@ const hostingProviders: HostingProvider[] = [
     hasBackups: true,
     priceLabel: 'Consultar',
     priceCLP: null,
-    reseñaUrl: '/estudio-hosting-chile-2026#powerhost',
+    reseñaUrl: '/reseñas/powerhost',
   },
   {
     id: 'hostname',
@@ -113,7 +113,7 @@ const hostingProviders: HostingProvider[] = [
     hasBackups: true,
     priceLabel: 'Consultar',
     priceCLP: null,
-    reseñaUrl: '/estudio-hosting-chile-2026#hostingcl',
+    reseñaUrl: '/reseñas/hostingcl',
   },
   {
     id: 'bluehosting',
@@ -128,7 +128,7 @@ const hostingProviders: HostingProvider[] = [
     hasBackups: true,
     priceLabel: '$43.900/año',
     priceCLP: 43900,
-    reseñaUrl: '/estudio-hosting-chile-2026#bluehosting',
+    reseñaUrl: '/reseñas/bluehosting',
   },
 ];
 
