@@ -215,7 +215,8 @@ const hostingData = {
       'No utiliza servidores LiteSpeed (Apache/Nginx estándar)',
       'Perfil de reclamos mixto en redes y foros locales',
       'Soporte 24/7 sólo en planes superiores',
-      'Depende de infraestructura de terceros (Haulmer)'
+      'Depende de infraestructura de terceros (Haulmer)',
+      'Estrategia de marketing orientada a tráfico/SEO más que a especialización técnica en hosting'
     ],
     url: 'https://www.bluehosting.cl/'
   }
