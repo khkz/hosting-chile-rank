@@ -191,14 +191,21 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
 
           {/* CTA */}
           <div className="space-y-2">
-            <Button
-              asChild
-              className={`w-full ${provider.button_color || 'bg-primary'} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
-            >
-              <a href={provider.website || '#'} target="_blank" rel="noopener noreferrer">
-                {provider.cta_text || 'Ver Oferta'}
-              </a>
-            </Button>
+            {provider.slug && provider.website ? (
+              <Button
+                asChild
+                className={`w-full ${provider.button_color || 'bg-primary'} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
+              >
+                <a
+                  href={`/ir/${provider.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  referrerPolicy="no-referrer"
+                >
+                  {provider.cta_text || 'Ver Oferta'}
+                </a>
+              </Button>
+            ) : null}
             {provider.cta_micro_copy && (
               <p className="text-xs text-center text-muted-foreground">
                 {provider.cta_micro_copy}
