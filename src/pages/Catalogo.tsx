@@ -15,6 +15,9 @@ import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
 import TechnicalGlossary from '@/components/TechnicalGlossary';
 import RelatedContent from '@/components/RelatedContent';
+import LogoTile from '@/components/LogoTile';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 const CatalogoPage = () => {
   const [sortBy, setSortBy] = useState<'rating' | 'price' | 'name'>('rating');
@@ -61,7 +64,7 @@ const CatalogoPage = () => {
   return (
     <>
       <DynamicMetaTags
-        title="Catálogo Hosting Chile 2026 | Proveedores Verificados"
+        title={`Catálogo Hosting Chile ${CURRENT_YEAR} | Proveedores Verificados`}
         description="Directorio completo de proveedores de hosting en Chile. Información detallada, planes actualizados, precios y datos de contacto de las mejores empresas de hosting."
         canonical="https://eligetuhosting.cl/catalogo"
         keywords="hosting chile, proveedores hosting, catálogo hosting, hosting verificado, mejor hosting chile"
@@ -82,7 +85,7 @@ const CatalogoPage = () => {
       <section className="bg-gradient-to-br from-primary/5 to-primary/10 py-16 text-center">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Mejor Hosting Chile 2025
+            Mejor Hosting Chile {CURRENT_YEAR}
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Catálogo completo con {companies?.length || 0} proveedores verificados. 
@@ -133,14 +136,12 @@ const CatalogoPage = () => {
 
                 return (
                   <Card key={company.id} className="overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
-                    <div className="h-32 flex items-center justify-center p-4 bg-muted">
-                      <img 
-                        src={company.logo_url} 
-                        alt={`Logo de ${company.name}`} 
-                        className="max-h-20 w-auto object-contain"
-                        loading="lazy"
-                      />
-                    </div>
+                    <LogoTile
+                      name={company.name}
+                      logoUrl={company.logo_url}
+                      className="h-32 border-b"
+                      maxLogoHeight={56}
+                    />
                     <CardContent className="flex-grow pt-6">
                       <div className="flex items-start justify-between mb-2">
                         <h2 className="text-xl font-semibold">{company.name}</h2>
@@ -204,11 +205,18 @@ const CatalogoPage = () => {
                           Ver Detalles
                         </Link>
                       </Button>
-                      <Button asChild variant="outline" size="sm" className="w-full sm:w-auto gap-1">
-                        <a href={company.website} target="_blank" rel="noopener noreferrer">
-                          Sitio Web <ExternalLink size={14} />
-                        </a>
-                      </Button>
+                      {company.slug && company.website && (
+                        <Button asChild variant="outline" size="sm" className="w-full sm:w-auto gap-1">
+                          <a
+                            href={`/ir/${company.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            referrerPolicy="no-referrer"
+                          >
+                            Sitio Web <ExternalLink size={14} />
+                          </a>
+                        </Button>
+                      )}
                     </CardFooter>
                   </Card>
                 );
