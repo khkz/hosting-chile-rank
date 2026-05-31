@@ -113,24 +113,27 @@ const Testimonial = () => {
           <h3 className="text-2xl font-semibold text-[#2B2D42] mb-8">
             Proveedores verificados en Chile
           </h3>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6 items-center max-w-6xl mx-auto">
             {loadingCompanies ? (
-              Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-10 w-28 rounded" />
+              Array.from({ length: 8 }).map((_, i) => (
+                <Skeleton key={i} className="h-12 w-full rounded" />
               ))
             ) : (
               companies?.map((company) => (
                 <Link
                   key={company.slug}
                   to={`/catalogo/${company.slug}`}
-                  className="group"
+                  className="group flex items-center justify-center h-12 w-full"
                   title={`Ver ficha de ${company.name}`}
                 >
                   <img
                     src={company.logo_url || '/placeholder.svg'}
-                    className="h-7 grayscale group-hover:grayscale-0 transition-all duration-300"
+                    className="max-h-10 max-w-full object-contain grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
                     alt={`Logo de ${company.name} - Hosting verificado en Chile`}
                     loading="lazy"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = '/placeholder.svg';
+                    }}
                   />
                 </Link>
               ))
