@@ -12,6 +12,7 @@ import StaticRSSFeed from './components/StaticRSSFeed';
 import LlmsTxt from './components/LlmsTxt';
 import Index from './pages/Index';
 import Ranking from './pages/Ranking';
+import OutboundRedirect from './pages/OutboundRedirect';
 import Comparativa from './pages/Comparativa';
 import CotizaHosting from './pages/CotizaHosting';
 import WhoisDomain from './pages/WhoisDomain';
@@ -107,6 +108,7 @@ function App() {
         {/* Rutas normales de la aplicación */}
         <Route path="/" element={<Index />} />
         <Route path="/ranking" element={<Ranking />} />
+        <Route path="/ir/:slug" element={<OutboundRedirect />} />
         <Route path="/comparativa" element={<Comparativa />} />
         <Route path="/cotiza-hosting" element={<CotizaHosting />} />
         <Route path="/domain/:slug" element={<WhoisDomain />} />
