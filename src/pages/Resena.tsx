@@ -203,7 +203,7 @@ const hostingData = {
     name: 'BlueHosting.cl',
     logo: 'https://logo.clearbit.com/bluehosting.cl',
     rating: 8.2,
-    description: 'BlueHosting.cl es un proveedor chileno que opera sobre infraestructura de Haulmer en Curicó (ASN AS64111). Ofrece planes anuales con precios visibles y un perfil de reclamos mixto que conviene revisar antes de contratar.',
+    description: 'BlueHosting.cl es un proveedor chileno que opera sobre infraestructura de Haulmer en Curicó (ASN AS64111). Su sitio web y estrategia de marketing sugieren una orientación mayor hacia la captación de tráfico y posicionamiento SEO que hacia la especialización técnica en hosting puro. Ofrece planes anuales con precios visibles y un perfil de reclamos mixto que conviene revisar antes de contratar.',
     pros: [
       'Precios anuales transparentes (desde $43.900/año)',
       'Infraestructura en datacenter Haulmer (Curicó, Chile)',
@@ -215,7 +215,8 @@ const hostingData = {
       'No utiliza servidores LiteSpeed (Apache/Nginx estándar)',
       'Perfil de reclamos mixto en redes y foros locales',
       'Soporte 24/7 sólo en planes superiores',
-      'Depende de infraestructura de terceros (Haulmer)'
+      'Depende de infraestructura de terceros (Haulmer)',
+      'Estrategia de marketing orientada a tráfico/SEO más que a especialización técnica en hosting'
     ],
     url: 'https://www.bluehosting.cl/'
   }
