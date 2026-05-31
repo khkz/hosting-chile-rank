@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const TLDRVerdict: React.FC = () => {
   const { data: companies, isLoading } = useQuery({
-    queryKey: ['ranking-companies'],
+    queryKey: ['ranking-companies-tldr'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
