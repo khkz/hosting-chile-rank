@@ -163,23 +163,25 @@ const hostingData = {
   'powerhost': {
     name: 'PowerHost / IxMetro',
     logo: 'https://logo.clearbit.com/powerhost.cl',
-    rating: 9.3,
-    description: 'PowerHost (IxMetro) es un operador chileno con infraestructura propia y ASN AS263237. Opera 4 datacenters propios (Santiago, NY, Moscú, Ámsterdam) con certificación Tier III, lo que lo posiciona como una de las pocas alternativas locales con red multinacional.',
+    rating: 8.5,
+    description: 'PowerHost (IxMetro) opera como datacenter e infraestructura de red con ASN propio AS263237. Actualmente su oferta está enfocada en servicios de datacenter para empresas —VPS SSD, servidores dedicados (baremetal), housing/colocation, datacenter virtual, cross connect e IXP content vía AmericaIX— y no comercializa hosting compartido tradicional para usuarios finales. Es una alternativa para empresas que necesitan infraestructura, no para quien busca un plan de hosting clásico.',
     pros: [
       'ASN propio AS263237 con anuncios BGP verificables',
-      '4 datacenters propios certificados Tier III (SCL, NY, MOW, AMS)',
+      'Datacenters propios en Santiago y presencia internacional (NY, MOW, AMS) según el proveedor',
       'Infraestructura 100% independiente, sin reventa',
       'Más de 20 años operando en Chile',
-      'Firewall WAF y backups incluidos',
-      'Soporte técnico local en español'
+      'Servicios de housing, colocation y cross connect para empresas',
+      'Conexión directa a AmericaIX (IXP) para reducir latencia internacional'
     ],
     cons: [
-      'No utiliza servidores LiteSpeed por defecto',
-      'Planes orientados a empresas: precios bajo cotización',
-      'Panel de control menos visual que competidores masivos'
+      'No vende hosting compartido tradicional: enfoque actual es datacenter e infraestructura',
+      'Planes orientados a empresas: precios bajo cotización, poca transparencia inicial',
+      'Curva de entrada más técnica que un hosting compartido convencional',
+      'Certificación Tier III declarada por el proveedor, sin verificación independiente del Uptime Institute'
     ],
     url: 'https://www.powerhost.cl/'
   },
+
   'hostingcl': {
     name: 'Hosting.cl',
     logo: 'https://logo.clearbit.com/hosting.cl',
