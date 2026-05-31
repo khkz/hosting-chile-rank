@@ -159,6 +159,65 @@ const hostingData = {
       'Datacenter lejos de Chile (mayor latencia)'
     ],
     url: 'https://cl.godaddy.com/'
+  },
+  'powerhost': {
+    name: 'PowerHost / IxMetro',
+    logo: 'https://logo.clearbit.com/powerhost.cl',
+    rating: 9.3,
+    description: 'PowerHost (IxMetro) es un operador chileno con infraestructura propia y ASN AS263237. Opera 4 datacenters propios (Santiago, NY, Moscú, Ámsterdam) con certificación Tier III, lo que lo posiciona como una de las pocas alternativas locales con red multinacional.',
+    pros: [
+      'ASN propio AS263237 con anuncios BGP verificables',
+      '4 datacenters propios certificados Tier III (SCL, NY, MOW, AMS)',
+      'Infraestructura 100% independiente, sin reventa',
+      'Más de 20 años operando en Chile',
+      'Firewall WAF y backups incluidos',
+      'Soporte técnico local en español'
+    ],
+    cons: [
+      'No utiliza servidores LiteSpeed por defecto',
+      'Planes orientados a empresas: precios bajo cotización',
+      'Panel de control menos visual que competidores masivos'
+    ],
+    url: 'https://www.powerhost.cl/'
+  },
+  'hostingcl': {
+    name: 'Hosting.cl',
+    logo: 'https://logo.clearbit.com/hosting.cl',
+    rating: 8.4,
+    description: 'Hosting.cl es uno de los proveedores con más años en el mercado chileno, con datacenter propio en Santiago y ASN AS265839. Su trayectoria es extensa pero arrastra reclamos públicos repetidos entre 2012 y 2025 que se deben considerar.',
+    pros: [
+      'Datacenter propio en Santiago (baja latencia local)',
+      'ASN propio AS265839 verificable',
+      'Servidores con LiteSpeed y WAF incluidos',
+      'Backups diarios y dominio .CL en planes anuales',
+      'Más de 15 años operando en Chile'
+    ],
+    cons: [
+      'Reclamos públicos recurrentes entre 2012 y 2025 en Reclamos.cl',
+      'Precios bajo cotización: poca transparencia inicial',
+      'Tiempos de respuesta de soporte variables según horario'
+    ],
+    url: 'https://www.hosting.cl/'
+  },
+  'bluehosting': {
+    name: 'BlueHosting.cl',
+    logo: 'https://logo.clearbit.com/bluehosting.cl',
+    rating: 8.2,
+    description: 'BlueHosting.cl es un proveedor chileno que opera sobre infraestructura de Haulmer en Curicó (ASN AS64111). Ofrece planes anuales con precios visibles y un perfil de reclamos mixto que conviene revisar antes de contratar.',
+    pros: [
+      'Precios anuales transparentes (desde $43.900/año)',
+      'Infraestructura en datacenter Haulmer (Curicó, Chile)',
+      'Firewall WAF y backups diarios incluidos',
+      'Dominio .CL gratis el primer año',
+      'Panel cPanel familiar para usuarios técnicos'
+    ],
+    cons: [
+      'No utiliza servidores LiteSpeed (Apache/Nginx estándar)',
+      'Perfil de reclamos mixto en redes y foros locales',
+      'Soporte 24/7 sólo en planes superiores',
+      'Depende de infraestructura de terceros (Haulmer)'
+    ],
+    url: 'https://www.bluehosting.cl/'
   }
 };
 
