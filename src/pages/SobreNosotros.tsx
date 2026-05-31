@@ -77,7 +77,6 @@ const SobreNosotros: React.FC = () => {
               '@type': 'Organization',
               name: 'EligeTuHosting',
               url: 'https://eligetuhosting.cl',
-              foundingDate: '2020',
               areaServed: 'Chile',
               email: 'contacto@eligetuhosting.cl',
               knowsAbout: [
@@ -112,8 +111,8 @@ const SobreNosotros: React.FC = () => {
           </h1>
           <p className="text-lg text-muted-foreground">
             Somos un equipo editorial técnico, independiente, enfocado en evaluar proveedores de
-            hosting en Chile desde 2020. Nuestras guías combinan experiencia operativa real,
-            datos verificables de nuestros propios benchmarks y verificación OSINT de cada
+            hosting en Chile. Nuestras guías combinan benchmarks verificables,
+            datos públicos auditables y verificación OSINT de cada
             proveedor que listamos.
           </p>
         </header>
