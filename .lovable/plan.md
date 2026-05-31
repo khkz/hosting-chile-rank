@@ -1,12 +1,28 @@
-## Uniformar tamaño de logos de proveedores
+## Redirección anónima para botones "Ver Oferta"
 
-En `src/components/Testimonial.tsx`, sección "Proveedores verificados en Chile", los logos se ven dispares (algunos diminutos, otros enormes, y uno roto en una segunda fila).
+Hoy los CTAs abren directo `provider.website` con `rel="noopener noreferrer"`. El referrer ya viaja vacío en navegadores modernos, pero igual aparece el dominio visible (link inspeccionable) y, si el usuario lo pega o lo abre desde algunos clientes, el proveedor puede saber que llegó desde `eligetuhosting.cl`. Además, si `website` está vacío el botón rompe.
 
-### Cambios
+### Solución: ruta interna `/ir/:slug` como puente anónimo
 
-1. **Contenedor fijo por logo**: envolver cada `<img>` en un div con tamaño uniforme (ej. `h-12 w-32`), centrado con flex.
-2. **Imagen normalizada**: `max-h-10 max-w-full object-contain` para que todos los logos ocupen el mismo "porte" visual sin deformarse.
-3. **Grid en vez de flex-wrap**: usar `grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6 items-center` para alinear todos en una sola fila pareja en desktop y evitar el logo huérfano en segunda fila.
-4. **Fallback de logo roto**: agregar `onError` que reemplace por `/placeholder.svg` para que no aparezca el texto alt roto (caso PowerHost/IxMetro).
+1. **Nueva página `src/pages/OutboundRedirect.tsx`**
+   - Lee `:slug` de la URL.
+   - Consulta `hosting_companies` por `slug` → obtiene `website` y `name`.
+   - Muestra interstitial sobrio ("Te llevamos a {name}…", spinner, marca EligeTuHosting).
+   - Inyecta `<meta name="referrer" content="no-referrer">` vía Helmet y `<meta http-equiv="refresh" content="0;url=...">` como fallback.
+   - Tras 600 ms hace `window.location.replace(website)` con `rel=noreferrer` implícito (replace no agrega historial).
+   - Si no hay `website` válido → muestra mensaje y botón "Volver al ranking".
+   - `noindex, nofollow` para no indexar la ruta.
 
-Sin cambios de lógica ni de datos; solo presentación.
+2. **Registrar la ruta en `src/App.tsx`**: `<Route path="/ir/:slug" element={<OutboundRedirect />} />`.
+
+3. **`src/components/HostingRanking.tsx`**
+   - Cambiar el `<a href={provider.website}>` por `<a href={\`/ir/${provider.slug}\`} target="_blank" rel="noopener noreferrer nofollow" referrerPolicy="no-referrer">`.
+   - Si `!provider.website && !provider.slug` ocultar el botón (no más `href="#"`).
+
+4. **Mismo patrón para otras tarjetas que abran al proveedor** (acotado a esta vista por ahora): solo `HostingRanking`. Otros lugares se pueden migrar después si lo pides.
+
+### Por qué es anónimo
+- `rel="noreferrer"` + `<meta name="referrer" content="no-referrer">` + `window.location.replace` ⇒ el proveedor recibe la visita sin header `Referer` ni entrada de history que revele el origen.
+- El usuario solo ve `eligetuhosting.cl/ir/...` un instante; nunca el `href` del proveedor en el hover del botón.
+
+Sin cambios de BD ni de RLS.
