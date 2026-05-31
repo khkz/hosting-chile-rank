@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import RecentSearches from './RecentSearches';
 import Logo from './Logo';
-import { Shield, Award, MapPin, Mail, Clock } from 'lucide-react';
+import { Shield, ShieldCheck, MapPin, Mail, Clock } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -18,7 +18,7 @@ const Footer = () => {
             <div className="mb-6">
               <Logo variant="option-a" darkBackground={true} className="h-12 w-auto mb-4" />
               <p className="text-gray-300 leading-relaxed">
-                El análisis más completo y objetivo de hosting en Chile desde 2020.
+                El análisis más completo y objetivo de hosting en Chile. Metodología abierta y reproducible.
               </p>
             </div>
             
@@ -29,8 +29,8 @@ const Footer = () => {
                 <span>Análisis 100% independiente</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Award className="w-4 h-4 text-yellow-400" />
-                <span>5 años de experiencia</span>
+                <ShieldCheck className="w-4 h-4 text-yellow-400" />
+                <span>Metodología 100% verificable</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Clock className="w-4 h-4 text-blue-400" />

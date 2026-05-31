@@ -1,28 +1,29 @@
-## Redirección anónima para botones "Ver Oferta"
+## Reemplazar falsas credenciales de "años de experiencia" por valor real
 
-Hoy los CTAs abren directo `provider.website` con `rel="noopener noreferrer"`. El referrer ya viaja vacío en navegadores modernos, pero igual aparece el dominio visible (link inspeccionable) y, si el usuario lo pega o lo abre desde algunos clientes, el proveedor puede saber que llegó desde `eligetuhosting.cl`. Además, si `website` está vacío el botón rompe.
+El sitio tiene 1 año real, no 5. Eliminar todas las afirmaciones de antigüedad atribuibles a EligeTuHosting y sustituirlas por el bullet elegido por el usuario: **"Metodología 100% verificable"**.
 
-### Solución: ruta interna `/ir/:slug` como puente anónimo
+### Archivos a editar (solo créditos del sitio, NO tocar descripciones de proveedores)
 
-1. **Nueva página `src/pages/OutboundRedirect.tsx`**
-   - Lee `:slug` de la URL.
-   - Consulta `hosting_companies` por `slug` → obtiene `website` y `name`.
-   - Muestra interstitial sobrio ("Te llevamos a {name}…", spinner, marca EligeTuHosting).
-   - Inyecta `<meta name="referrer" content="no-referrer">` vía Helmet y `<meta http-equiv="refresh" content="0;url=...">` como fallback.
-   - Tras 600 ms hace `window.location.replace(website)` con `rel=noreferrer` implícito (replace no agrega historial).
-   - Si no hay `website` válido → muestra mensaje y botón "Volver al ranking".
-   - `noindex, nofollow` para no indexar la ruta.
+1. **`src/components/Footer.tsx`**
+   - Cambiar `<span>5 años de experiencia</span>` → `<span>Metodología 100% verificable</span>`.
+   - Cambiar icono `Award` → `ShieldCheck`.
+   - Cambiar texto descriptivo: "El análisis más completo y objetivo de hosting en Chile desde 2020." → algo sin "desde 2020" (ej: "El análisis más completo y objetivo de hosting en Chile. Metodología abierta y reproducible.").
 
-2. **Registrar la ruta en `src/App.tsx`**: `<Route path="/ir/:slug" element={<OutboundRedirect />} />`.
+2. **`src/pages/AcercaDe.tsx`**
+   - `foundingDate: "2020"` → eliminar o cambiar a año real si lo tiene (quitar claim falso).
+   - "…desde 2020 con pruebas técnicas…" → "…con pruebas técnicas y políticas de transparencia…".
+   - "…evalúa proveedores de hosting en Chile desde 2020." → quitar "desde 2020".
 
-3. **`src/components/HostingRanking.tsx`**
-   - Cambiar el `<a href={provider.website}>` por `<a href={\`/ir/${provider.slug}\`} target="_blank" rel="noopener noreferrer nofollow" referrerPolicy="no-referrer">`.
-   - Si `!provider.website && !provider.slug` ocultar el botón (no más `href="#"`).
+3. **`src/pages/SobreNosotros.tsx`**
+   - `foundingDate: '2020'` → eliminar claim falso.
+   - "…hosting en Chile desde 2020. Nuestras guías combinan experiencia operativa real," → "…hosting en Chile. Nuestras guías combinan benchmarks verificables,".
 
-4. **Mismo patrón para otras tarjetas que abran al proveedor** (acotado a esta vista por ahora): solo `HostingRanking`. Otros lugares se pueden migrar después si lo pides.
+4. **`src/pages/MejorHostingChile2026.tsx`**
+   - Eliminar "desde 2020" en respuesta FAQ que dice "0 reclamos registrados en Reclamos.cl desde 2020." → "0 reclamos registrados en Reclamos.cl."
+   - Eliminar "5 años" en "…0 reclamos en 5 años demuestra excelente servicio…" → "…0 reclamos demuestra excelente servicio al cliente…".
+   - Pie de tabla "(2020-{CURRENT_YEAR})" → "(últimos periodos disponibles)".
 
-### Por qué es anónimo
-- `rel="noreferrer"` + `<meta name="referrer" content="no-referrer">` + `window.location.replace` ⇒ el proveedor recibe la visita sin header `Referer` ni entrada de history que revele el origen.
-- El usuario solo ve `eligetuhosting.cl/ir/...` un instante; nunca el `href` del proveedor en el hover del botón.
+### Lo que NO toco
+- Descripciones de proveedores en `src/data/hostingCompanies.ts` (esos "años" son de las empresas reales, no del sitio).
 
-Sin cambios de BD ni de RLS.
+Sin cambios de BD ni de estructura; solo copy.

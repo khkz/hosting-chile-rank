@@ -151,7 +151,7 @@ const MejorHostingChile2026 = () => {
   const faqs = [
     {
       question: `¿Cuál es realmente el mejor hosting en Chile en ${CURRENT_YEAR}?`,
-      answer: "Según nuestro análisis exhaustivo, HostingPlus.cl lidera el ranking con 9.9/10, ofreciendo 99.98% de uptime, tecnología LiteSpeed Enterprise, servidores propios en Santiago y 0 reclamos registrados en Reclamos.cl desde 2020."
+      answer: "Según nuestro análisis exhaustivo, HostingPlus.cl lidera el ranking con 9.9/10, ofreciendo 99.98% de uptime, tecnología LiteSpeed Enterprise, servidores propios en Santiago y 0 reclamos registrados en Reclamos.cl."
     },
     {
       question: "¿Por qué es importante elegir un hosting con servidores en Chile?",
@@ -175,7 +175,7 @@ const MejorHostingChile2026 = () => {
     },
     {
       question: "¿Cómo verificar los reclamos de un proveedor de hosting?",
-      answer: "Consulta Reclamos.cl para ver quejas verificadas de usuarios chilenos. Un proveedor con 0 reclamos en 5 años demuestra excelente servicio al cliente y confiabilidad comprobada."
+      answer: "Consulta Reclamos.cl para ver quejas verificadas de usuarios chilenos. Un proveedor con 0 reclamos demuestra excelente servicio al cliente y confiabilidad comprobada."
     }
   ];
 
@@ -564,7 +564,7 @@ const MejorHostingChile2026 = () => {
               <p>* <strong>Precios promocionales iniciales:</strong> EcoHosting $1.658/mes (primer año), HostGator desde $1.390/mes (36m, luego sube 144%)</p>
               <p>* <strong>Precios estables sin sorpresas:</strong> HostingPlus $3.469/mes (plan 36m), mismo precio en renovación</p>
               <p>* <strong>Ahorro vs competencia:</strong> HostingPlus ahorra $4.526/mes vs Hosting.cl, $689/mes vs PlanetaHosting</p>
-              <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (2020-{CURRENT_YEAR})</p>
+              <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (últimos periodos disponibles)</p>
               <p>* Fuentes: Datos de velocidad verificados con <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">GTmetrix</a></p>
             </div>
           </section>
