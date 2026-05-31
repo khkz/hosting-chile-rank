@@ -60,7 +60,7 @@ const Hero = () => {
             <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-8">
               <div className="flex items-center gap-2 text-gray-700">
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                <span className="text-sm font-medium">5 años evaluando hosting</span>
+                <span className="text-sm font-medium">Metodología 100% verificable</span>
               </div>
               <div className="flex items-center gap-2 text-gray-700">
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
