@@ -1,6 +1,358 @@
 {
-  "updated": "2026-06-04T11:46:47.889Z",
+  "updated": "2026-06-04T14:45:41.920Z",
   "domains": [
+    {
+      "d": "ceduladigital.cl",
+      "date": "2026-06-04T10:45:19Z"
+    },
+    {
+      "d": "estudiosvisualeseneducacion.cl",
+      "date": "2026-06-04T10:44:58Z"
+    },
+    {
+      "d": "sicnschile.cl",
+      "date": "2026-06-04T10:44:45Z"
+    },
+    {
+      "d": "sic-ns.cl",
+      "date": "2026-06-04T10:44:43Z"
+    },
+    {
+      "d": "eloraculodelasmeninas.cl",
+      "date": "2026-06-04T10:43:27Z"
+    },
+    {
+      "d": "pescalacabana.cl",
+      "date": "2026-06-04T10:42:58Z"
+    },
+    {
+      "d": "netflow.cl",
+      "date": "2026-06-04T10:41:49Z"
+    },
+    {
+      "d": "chiles.cl",
+      "date": "2026-06-04T10:40:40Z"
+    },
+    {
+      "d": "mtgbox.cl",
+      "date": "2026-06-04T10:40:31Z"
+    },
+    {
+      "d": "clubpets.cl",
+      "date": "2026-06-04T10:40:23Z"
+    },
+    {
+      "d": "escudoc.cl",
+      "date": "2026-06-04T10:39:53Z"
+    },
+    {
+      "d": "pulso360.cl",
+      "date": "2026-06-04T10:38:21Z"
+    },
+    {
+      "d": "maila.cl",
+      "date": "2026-06-04T10:38:09Z"
+    },
+    {
+      "d": "mainded.cl",
+      "date": "2026-06-04T10:37:24Z"
+    },
+    {
+      "d": "nodda.cl",
+      "date": "2026-06-04T10:36:31Z"
+    },
+    {
+      "d": "pulsocontrol.cl",
+      "date": "2026-06-04T10:36:26Z"
+    },
+    {
+      "d": "nesher.cl",
+      "date": "2026-06-04T10:36:24Z"
+    },
+    {
+      "d": "murosdigitales.cl",
+      "date": "2026-06-04T10:32:58Z"
+    },
+    {
+      "d": "appservices.cl",
+      "date": "2026-06-04T10:32:43Z"
+    },
+    {
+      "d": "iterap.cl",
+      "date": "2026-06-04T10:32:38Z"
+    },
+    {
+      "d": "smartekno.cl",
+      "date": "2026-06-04T10:31:37Z"
+    },
+    {
+      "d": "abogadosasc.cl",
+      "date": "2026-06-04T10:27:35Z"
+    },
+    {
+      "d": "airush.cl",
+      "date": "2026-06-04T10:26:25Z"
+    },
+    {
+      "d": "tallercletero.cl",
+      "date": "2026-06-04T10:26:24Z"
+    },
+    {
+      "d": "dshosting.cl",
+      "date": "2026-06-04T10:25:21Z"
+    },
+    {
+      "d": "3tmaquinarias.cl",
+      "date": "2026-06-04T10:25:15Z"
+    },
+    {
+      "d": "3tmineria.cl",
+      "date": "2026-06-04T10:25:14Z"
+    },
+    {
+      "d": "3trental.cl",
+      "date": "2026-06-04T10:25:13Z"
+    },
+    {
+      "d": "agrodrive.cl",
+      "date": "2026-06-04T10:23:07Z"
+    },
+    {
+      "d": "yuhang.cl",
+      "date": "2026-06-04T10:20:45Z"
+    },
+    {
+      "d": "geocab.cl",
+      "date": "2026-06-04T10:20:36Z"
+    },
+    {
+      "d": "ngglobalspa.cl",
+      "date": "2026-06-04T10:20:18Z"
+    },
+    {
+      "d": "hseconsultores.cl",
+      "date": "2026-06-04T10:18:04Z"
+    },
+    {
+      "d": "elevaspa.cl",
+      "date": "2026-06-04T10:16:50Z"
+    },
+    {
+      "d": "gezto.cl",
+      "date": "2026-06-04T10:16:32Z"
+    },
+    {
+      "d": "hrtechnology.cl",
+      "date": "2026-06-04T10:15:10Z"
+    },
+    {
+      "d": "ferreteriatrazo.cl",
+      "date": "2026-06-04T10:13:34Z"
+    },
+    {
+      "d": "volkanstore.cl",
+      "date": "2026-06-04T10:12:48Z"
+    },
+    {
+      "d": "arenero.cl",
+      "date": "2026-06-04T10:08:34Z"
+    },
+    {
+      "d": "synergiasur.cl",
+      "date": "2026-06-04T10:08:17Z"
+    },
+    {
+      "d": "vasmokids.cl",
+      "date": "2026-06-04T10:03:53Z"
+    },
+    {
+      "d": "flexiaustral.cl",
+      "date": "2026-06-04T10:02:54Z"
+    },
+    {
+      "d": "mundosuplementos.cl",
+      "date": "2026-06-04T10:02:00Z"
+    },
+    {
+      "d": "extincontrol.cl",
+      "date": "2026-06-04T10:00:30Z"
+    },
+    {
+      "d": "pulsogestion.cl",
+      "date": "2026-06-04T09:59:24Z"
+    },
+    {
+      "d": "dumanfusion.cl",
+      "date": "2026-06-04T09:55:00Z"
+    },
+    {
+      "d": "holanodo.cl",
+      "date": "2026-06-04T09:52:45Z"
+    },
+    {
+      "d": "soyzeros.cl",
+      "date": "2026-06-04T09:51:05Z"
+    },
+    {
+      "d": "deltaeliteseguridad.cl",
+      "date": "2026-06-04T09:50:25Z"
+    },
+    {
+      "d": "huniversal.cl",
+      "date": "2026-06-04T09:49:35Z"
+    },
+    {
+      "d": "ingenieriagyfspa.cl",
+      "date": "2026-06-04T09:49:16Z"
+    },
+    {
+      "d": "flever.cl",
+      "date": "2026-06-04T09:46:16Z"
+    },
+    {
+      "d": "talleros.cl",
+      "date": "2026-06-04T09:46:05Z"
+    },
+    {
+      "d": "obsolix.cl",
+      "date": "2026-06-04T09:42:49Z"
+    },
+    {
+      "d": "copitoproducciones.cl",
+      "date": "2026-06-04T09:40:39Z"
+    },
+    {
+      "d": "constructoramag.cl",
+      "date": "2026-06-04T09:36:13Z"
+    },
+    {
+      "d": "peletdemadera.cl",
+      "date": "2026-06-04T09:32:52Z"
+    },
+    {
+      "d": "consiglia.cl",
+      "date": "2026-06-04T09:31:04Z"
+    },
+    {
+      "d": "destinonahuelbuta.cl",
+      "date": "2026-06-04T09:31:01Z"
+    },
+    {
+      "d": "melivora.cl",
+      "date": "2026-06-04T09:28:06Z"
+    },
+    {
+      "d": "mellivora.cl",
+      "date": "2026-06-04T09:28:05Z"
+    },
+    {
+      "d": "gruponv.cl",
+      "date": "2026-06-04T09:26:02Z"
+    },
+    {
+      "d": "vigiops.cl",
+      "date": "2026-06-04T09:24:05Z"
+    },
+    {
+      "d": "visibleai.cl",
+      "date": "2026-06-04T09:23:17Z"
+    },
+    {
+      "d": "decap.cl",
+      "date": "2026-06-04T09:20:58Z"
+    },
+    {
+      "d": "masconstrucciones.cl",
+      "date": "2026-06-04T09:18:20Z"
+    },
+    {
+      "d": "ergocon.cl",
+      "date": "2026-06-04T09:16:48Z"
+    },
+    {
+      "d": "salesmind.cl",
+      "date": "2026-06-04T09:09:35Z"
+    },
+    {
+      "d": "academiaartedocente.cl",
+      "date": "2026-06-04T09:09:24Z"
+    },
+    {
+      "d": "opticaslevi.cl",
+      "date": "2026-06-04T09:08:34Z"
+    },
+    {
+      "d": "mo1ynor.cl",
+      "date": "2026-06-04T09:01:21Z"
+    },
+    {
+      "d": "vaciocafe.cl",
+      "date": "2026-06-04T09:00:47Z"
+    },
+    {
+      "d": "opticasgenesis.cl",
+      "date": "2026-06-04T08:59:33Z"
+    },
+    {
+      "d": "lmtekno.cl",
+      "date": "2026-06-04T08:55:58Z"
+    },
+    {
+      "d": "valunasconstrucciones.cl",
+      "date": "2026-06-04T08:52:51Z"
+    },
+    {
+      "d": "prohmuebles.cl",
+      "date": "2026-06-04T08:52:50Z"
+    },
+    {
+      "d": "altocalzados.cl",
+      "date": "2026-06-04T08:49:16Z"
+    },
+    {
+      "d": "motagrowshop.cl",
+      "date": "2026-06-04T08:39:10Z"
+    },
+    {
+      "d": "bioprevencion.cl",
+      "date": "2026-06-04T08:39:09Z"
+    },
+    {
+      "d": "eksamedical.cl",
+      "date": "2026-06-04T08:34:26Z"
+    },
+    {
+      "d": "rojalab.cl",
+      "date": "2026-06-04T08:34:12Z"
+    },
+    {
+      "d": "eksa.cl",
+      "date": "2026-06-04T08:32:25Z"
+    },
+    {
+      "d": "transferfactory.cl",
+      "date": "2026-06-04T08:27:22Z"
+    },
+    {
+      "d": "unicofit.cl",
+      "date": "2026-06-04T08:27:20Z"
+    },
+    {
+      "d": "sindicatoturismoloschangos.cl",
+      "date": "2026-06-04T08:19:20Z"
+    },
+    {
+      "d": "appsaldes.cl",
+      "date": "2026-06-04T08:12:05Z"
+    },
+    {
+      "d": "miradorescolar.cl",
+      "date": "2026-06-04T08:09:47Z"
+    },
+    {
+      "d": "everlastgyms.cl",
+      "date": "2026-06-04T08:00:18Z"
+    },
     {
       "d": "cloudnorte.cl",
       "date": "2026-06-04T07:22:41Z"
@@ -2848,358 +3200,6 @@
     {
       "d": "todocueca.cl",
       "date": "2026-06-03T11:39:03Z"
-    },
-    {
-      "d": "grafenolabs.cl",
-      "date": "2026-06-03T11:38:15Z"
-    },
-    {
-      "d": "volviendoami.cl",
-      "date": "2026-06-03T11:38:12Z"
-    },
-    {
-      "d": "marez.cl",
-      "date": "2026-06-03T11:37:51Z"
-    },
-    {
-      "d": "vind.cl",
-      "date": "2026-06-03T11:36:23Z"
-    },
-    {
-      "d": "microbosque.cl",
-      "date": "2026-06-03T11:35:08Z"
-    },
-    {
-      "d": "mujeresintegrales.cl",
-      "date": "2026-06-03T11:32:09Z"
-    },
-    {
-      "d": "saludcolchane.cl",
-      "date": "2026-06-03T11:30:39Z"
-    },
-    {
-      "d": "comercializadorayb.cl",
-      "date": "2026-06-03T11:30:24Z"
-    },
-    {
-      "d": "1973ar.cl",
-      "date": "2026-06-03T11:29:51Z"
-    },
-    {
-      "d": "accesoriomaestro.cl",
-      "date": "2026-06-03T11:29:48Z"
-    },
-    {
-      "d": "aisistente.cl",
-      "date": "2026-06-03T11:29:16Z"
-    },
-    {
-      "d": "latamdigital.cl",
-      "date": "2026-06-03T11:28:43Z"
-    },
-    {
-      "d": "pulsonaranja.cl",
-      "date": "2026-06-03T11:27:15Z"
-    },
-    {
-      "d": "festivalabastible.cl",
-      "date": "2026-06-03T11:27:13Z"
-    },
-    {
-      "d": "jorilosa.cl",
-      "date": "2026-06-03T11:25:37Z"
-    },
-    {
-      "d": "kminasalud.cl",
-      "date": "2026-06-03T11:22:56Z"
-    },
-    {
-      "d": "pedropilates.cl",
-      "date": "2026-06-03T11:22:37Z"
-    },
-    {
-      "d": "altoke247.cl",
-      "date": "2026-06-03T11:22:02Z"
-    },
-    {
-      "d": "mrbetcasinochile.cl",
-      "date": "2026-06-03T11:19:36Z"
-    },
-    {
-      "d": "pinupbetcasino.cl",
-      "date": "2026-06-03T11:19:35Z"
-    },
-    {
-      "d": "clwincasinochile.cl",
-      "date": "2026-06-03T11:19:25Z"
-    },
-    {
-      "d": "clmds.cl",
-      "date": "2026-06-03T11:19:24Z"
-    },
-    {
-      "d": "casinoizzi.cl",
-      "date": "2026-06-03T11:19:22Z"
-    },
-    {
-      "d": "7slotscasinoofficial.cl",
-      "date": "2026-06-03T11:19:22Z"
-    },
-    {
-      "d": "cl1xbetapp.cl",
-      "date": "2026-06-03T11:19:21Z"
-    },
-    {
-      "d": "toponlinecasinos.cl",
-      "date": "2026-06-03T11:19:19Z"
-    },
-    {
-      "d": "vbetchile.cl",
-      "date": "2026-06-03T11:19:18Z"
-    },
-    {
-      "d": "clonlinecasinos.cl",
-      "date": "2026-06-03T11:19:18Z"
-    },
-    {
-      "d": "loginapuestasteletrak.cl",
-      "date": "2026-06-03T11:19:17Z"
-    },
-    {
-      "d": "clracebets.cl",
-      "date": "2026-06-03T11:19:15Z"
-    },
-    {
-      "d": "chilecasinonet.cl",
-      "date": "2026-06-03T11:19:15Z"
-    },
-    {
-      "d": "ruletaamericanaonline.cl",
-      "date": "2026-06-03T11:19:14Z"
-    },
-    {
-      "d": "cl1winbet.cl",
-      "date": "2026-06-03T11:19:04Z"
-    },
-    {
-      "d": "clplinkocasinochile.cl",
-      "date": "2026-06-03T11:19:03Z"
-    },
-    {
-      "d": "brazinocasino.cl",
-      "date": "2026-06-03T11:19:02Z"
-    },
-    {
-      "d": "noibet.cl",
-      "date": "2026-06-03T11:18:57Z"
-    },
-    {
-      "d": "clubenjoy.cl",
-      "date": "2026-06-03T11:18:54Z"
-    },
-    {
-      "d": "cljuegodelafrutilla.cl",
-      "date": "2026-06-03T11:18:53Z"
-    },
-    {
-      "d": "jugarruletaamericana.cl",
-      "date": "2026-06-03T11:18:50Z"
-    },
-    {
-      "d": "clmeridianobet.cl",
-      "date": "2026-06-03T11:18:49Z"
-    },
-    {
-      "d": "wazambacasino.cl",
-      "date": "2026-06-03T11:18:47Z"
-    },
-    {
-      "d": "betwarriorchile.cl",
-      "date": "2026-06-03T11:18:47Z"
-    },
-    {
-      "d": "app1xbet.cl",
-      "date": "2026-06-03T11:18:46Z"
-    },
-    {
-      "d": "clcoobet.cl",
-      "date": "2026-06-03T11:18:45Z"
-    },
-    {
-      "d": "cljuegosdeapuestas.cl",
-      "date": "2026-06-03T11:18:42Z"
-    },
-    {
-      "d": "cldorabet.cl",
-      "date": "2026-06-03T11:18:41Z"
-    },
-    {
-      "d": "juegosonlinecasino.cl",
-      "date": "2026-06-03T11:18:40Z"
-    },
-    {
-      "d": "clteletrakapuestas.cl",
-      "date": "2026-06-03T11:18:39Z"
-    },
-    {
-      "d": "casinornrbet.cl",
-      "date": "2026-06-03T11:18:38Z"
-    },
-    {
-      "d": "clfantasticbetchile.cl",
-      "date": "2026-06-03T11:18:37Z"
-    },
-    {
-      "d": "clcasinoschilenos.cl",
-      "date": "2026-06-03T11:18:35Z"
-    },
-    {
-      "d": "casinoschilenosonline.cl",
-      "date": "2026-06-03T11:18:34Z"
-    },
-    {
-      "d": "crazytimeastats.cl",
-      "date": "2026-06-03T11:18:33Z"
-    },
-    {
-      "d": "casinormelbet.cl",
-      "date": "2026-06-03T11:18:32Z"
-    },
-    {
-      "d": "clwildsultan.cl",
-      "date": "2026-06-03T11:18:31Z"
-    },
-    {
-      "d": "clizzicasino.cl",
-      "date": "2026-06-03T11:18:30Z"
-    },
-    {
-      "d": "cllarojabet.cl",
-      "date": "2026-06-03T11:18:27Z"
-    },
-    {
-      "d": "clapuestasenlinea.cl",
-      "date": "2026-06-03T11:18:27Z"
-    },
-    {
-      "d": "clvbet.cl",
-      "date": "2026-06-03T11:18:26Z"
-    },
-    {
-      "d": "betcasinoonline.cl",
-      "date": "2026-06-03T11:18:24Z"
-    },
-    {
-      "d": "ibetchile.cl",
-      "date": "2026-06-03T11:18:22Z"
-    },
-    {
-      "d": "clbetcasino.cl",
-      "date": "2026-06-03T11:18:22Z"
-    },
-    {
-      "d": "tarjetasenjoyclub.cl",
-      "date": "2026-06-03T11:18:21Z"
-    },
-    {
-      "d": "casinofruitcocktail.cl",
-      "date": "2026-06-03T11:18:17Z"
-    },
-    {
-      "d": "casinomdschillan.cl",
-      "date": "2026-06-03T11:18:09Z"
-    },
-    {
-      "d": "casinomds.cl",
-      "date": "2026-06-03T11:18:08Z"
-    },
-    {
-      "d": "clmelbetcasino.cl",
-      "date": "2026-06-03T11:18:06Z"
-    },
-    {
-      "d": "7slotscasinochile.cl",
-      "date": "2026-06-03T11:18:06Z"
-    },
-    {
-      "d": "clwazambacl.cl",
-      "date": "2026-06-03T11:18:05Z"
-    },
-    {
-      "d": "clcasinosvirtuales.cl",
-      "date": "2026-06-03T11:18:05Z"
-    },
-    {
-      "d": "enjoyclubingresar.cl",
-      "date": "2026-06-03T11:18:04Z"
-    },
-    {
-      "d": "cldoradobetapp.cl",
-      "date": "2026-06-03T11:18:01Z"
-    },
-    {
-      "d": "clbetsno.cl",
-      "date": "2026-06-03T11:18:00Z"
-    },
-    {
-      "d": "bonobetwaycasino.cl",
-      "date": "2026-06-03T11:17:59Z"
-    },
-    {
-      "d": "clruletaamericana.cl",
-      "date": "2026-06-03T11:17:59Z"
-    },
-    {
-      "d": "top10onlinecasinos.cl",
-      "date": "2026-06-03T11:17:57Z"
-    },
-    {
-      "d": "coolbetchilecasino.cl",
-      "date": "2026-06-03T11:17:57Z"
-    },
-    {
-      "d": "apuestasteletrak.cl",
-      "date": "2026-06-03T11:17:53Z"
-    },
-    {
-      "d": "clbetsupreme.cl",
-      "date": "2026-06-03T11:17:53Z"
-    },
-    {
-      "d": "melbetcasinoonline.cl",
-      "date": "2026-06-03T11:17:52Z"
-    },
-    {
-      "d": "clpinupcasinoapp.cl",
-      "date": "2026-06-03T11:17:52Z"
-    },
-    {
-      "d": "apuestasdejuegos.cl",
-      "date": "2026-06-03T11:17:50Z"
-    },
-    {
-      "d": "statscrazytime.cl",
-      "date": "2026-06-03T11:17:50Z"
-    },
-    {
-      "d": "clfruitcocktailjuegocl.cl",
-      "date": "2026-06-03T11:17:46Z"
-    },
-    {
-      "d": "clbetwarrior.cl",
-      "date": "2026-06-03T11:17:46Z"
-    },
-    {
-      "d": "clcrazytimestats.cl",
-      "date": "2026-06-03T11:17:45Z"
-    },
-    {
-      "d": "mystakeballoon.cl",
-      "date": "2026-06-03T11:17:45Z"
-    },
-    {
-      "d": "casinobetway.cl",
-      "date": "2026-06-03T11:17:43Z"
     }
   ]
 }
