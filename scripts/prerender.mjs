@@ -144,21 +144,25 @@ function die(msg) {
 }
 
 async function loadPuppeteer() {
-  // Prefer full `puppeteer` (bundles chromium via postinstall download).
+  // 1) Si hay un Chromium del sistema (PUPPETEER_EXECUTABLE_PATH o rutas conocidas),
+  //    usar puppeteer-core directamente — es lo que funciona en el sandbox de Lovable.
+  const sysChromium = await findSystemChromium();
+  if (sysChromium) {
+    try {
+      const mod = (await import('puppeteer-core')).default;
+      log(`Usando puppeteer-core + chromium del sistema (${sysChromium})`);
+      return { mod, kind: 'core' };
+    } catch (e) {
+      log('puppeteer-core no disponible:', e.message);
+    }
+  }
+  // 2) Fallback: paquete `puppeteer` completo (chromium bundled via postinstall).
   try {
     const mod = (await import('puppeteer')).default;
     log('Usando paquete `puppeteer` (chromium bundled)');
     return { mod, kind: 'full' };
   } catch (e) {
-    log('puppeteer (full) no disponible:', e.message);
-  }
-  // Fallback a puppeteer-core con chromium del sistema.
-  try {
-    const mod = (await import('puppeteer-core')).default;
-    log('Usando `puppeteer-core` + chromium del sistema');
-    return { mod, kind: 'core' };
-  } catch (e) {
-    die('Ni `puppeteer` ni `puppeteer-core` están instalados: ' + e.message);
+    die('Ni chromium del sistema ni `puppeteer` (full) disponibles: ' + e.message);
   }
 }
 
