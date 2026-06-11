@@ -31,6 +31,8 @@ const Index = () => {
         keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2026"
       />
 
+      <DatasetSchema />
+
       <SEOFAQSchema faqs={[
         {
           question: "¿Cuál es el mejor hosting en Chile 2026?",
