@@ -39,6 +39,8 @@ import HubPymes from './pages/hubs/HubPymes';
 import HubVPS from './pages/hubs/HubVPS';
 import ComparativaRouteDispatcher from './components/ComparativaRouteDispatcher';
 import DirectorioRedirect from './components/DirectorioRedirect';
+import AlternativasA from './pages/AlternativasA';
+import MigrarDe from './pages/MigrarDe';
 import RecursosHosting from './pages/RecursosHosting';
 import Resena from './pages/Resena';
 import Catalogo from './pages/Catalogo';
