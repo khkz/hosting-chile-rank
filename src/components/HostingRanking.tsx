@@ -328,6 +328,12 @@ const HostingRanking = () => {
           <p className="text-sm md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Ranking independiente basado en pruebas técnicas reales de velocidad, uptime y soporte
           </p>
+          {sortedHostingData.length > 0 && sortedHostingData[0].updated_at && (
+            <p className="text-xs text-muted-foreground mt-2">
+              ✓ Datos verificados al {new Date(Math.max(...sortedHostingData.map((c: any) => new Date(c.updated_at).getTime()))).toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </p>
+          )}
+
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-4 rounded-full" />
         </div>
 
