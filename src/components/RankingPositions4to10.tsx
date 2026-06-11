@@ -23,6 +23,16 @@ export const EXTRA_RANKING: Array<{
   { position: 10, slug: 'hn', displayName: 'HN.cl', rating: 7.8, keyFeature: 'SSD con datacenter en Chile' },
 ];
 
+const getMinPrice = (db: any): number | null => {
+  if (db?.promo_price && db.promo_price > 0) return db.promo_price;
+  const plans = db?.hosting_plans as Array<{ price_monthly: number }> | undefined;
+  if (plans && plans.length > 0) {
+    const prices = plans.map((p) => p.price_monthly).filter((p) => typeof p === 'number' && p > 0);
+    if (prices.length > 0) return Math.min(...prices);
+  }
+  return null;
+};
+
 const formatPrice = (price: number | null | undefined) => {
   if (!price || price <= 0) return 'Consultar';
   return `$${price.toLocaleString('es-CL')}/mes`;
