@@ -213,10 +213,14 @@ async function main() {
     }
     browser = await puppeteer.launch(launchOpts);
 
-    const catalogoRoutes = await fetchCatalogoSlugs();
-    const vsRoutes = await fetchVsPairRoutes();
-    const allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes];
-    log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} comparativas VS`);
+    const slugs = await fetchCatalogSlugs();
+    const catalogoRoutes = slugs.map(s => `/catalogo/${s}`);
+    const vsRoutes = await fetchVsPairRoutes(slugs);
+    const altRoutes = await fetchAlternativasRoutes(slugs);
+    const migrarRoutes = await fetchMigrarRoutes(slugs);
+    const allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes, ...altRoutes, ...migrarRoutes];
+    log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} VS + ${altRoutes.length} alternativas + ${migrarRoutes.length} migración`);
+
 
     let ok = 0, fail = 0;
     for (const route of allRoutes) {
