@@ -44,16 +44,15 @@ const ComparativaVs: React.FC = () => {
       const anc = data?.find(d => d.slug === parsed.anchor) || null;
       setA(comp);
       setB(anc);
-      // next provider in ranking (after anchor)
-      const { data: nxt } = await supabase
+      // next provider in ranking (excluding competitor + anchor)
+      const { data: rest } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,foundation_year,datacenter_location,corporate_group,total_reviews')
         .eq('is_verified', true)
         .eq('is_curated', true)
-        .not('slug', 'in', `(${parsed.competitor},${parsed.anchor})`)
         .order('overall_rating', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .limit(5);
+      const nxt = (rest || []).find(r => r.slug !== parsed.competitor && r.slug !== parsed.anchor) || null;
       setNext(nxt as Company | null);
       setLoading(false);
     })();
