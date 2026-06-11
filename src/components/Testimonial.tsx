@@ -145,6 +145,7 @@ const Testimonial = () => {
           </div>
         </div>
       </div>
+      <ReviewModal open={reviewOpen} onOpenChange={setReviewOpen} />
     </section>
   );
 };
