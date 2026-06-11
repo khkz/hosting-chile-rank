@@ -192,13 +192,13 @@ const CatalogoDetalle = () => {
 
         <section className="mt-12">
           <h2 className="text-3xl font-bold mb-6">Opiniones de Clientes</h2>
-          <PublicReviewsList companyId={company.id} companyName={company.name} />
+          <ReviewsSection slug={slug!} name={company.name} />
         </section>
 
         <section className="mt-12">
           <Card className="p-8">
-            <h2 className="text-2xl font-bold mb-6">Comparte tu Experiencia</h2>
-            <ReviewForm companyId={company.id} companyName={company.name} />
+            <h2 className="text-2xl font-bold mb-6">Comparte tu experiencia</h2>
+            <PublicReviewForm providerSlug={slug!} providerName={company.name} />
           </Card>
         </section>
       </main>
@@ -208,5 +208,21 @@ const CatalogoDetalle = () => {
     </>
   );
 };
+
+function ReviewsSection({ slug, name }: { slug: string; name: string }) {
+  const { data } = useReviewStatsForSlug(slug);
+  return (
+    <div>
+      {data && data.count > 0 && (
+        <div className="mb-4 flex items-center gap-2 text-sm">
+          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+          <span className="font-semibold">{data.avg.toFixed(1)}</span>
+          <span className="text-muted-foreground">· {data.count} reseña{data.count === 1 ? '' : 's'} de usuarios</span>
+        </div>
+      )}
+      <ApprovedReviewsList providerSlug={slug} />
+    </div>
+  );
+}
 
 export default CatalogoDetalle;
