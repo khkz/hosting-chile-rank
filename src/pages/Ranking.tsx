@@ -34,34 +34,36 @@ import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 
-// Host provider data
+// Host provider data — Top 3 oficial del ranking 2026
 const hostProviders = [
   {
     id: 1,
-    name: "HostingPlus",
+    name: "HostingPlus.cl",
+    slug: "hostingplus",
     logo: "/logo-hostingplus-official.png",
     rating: 9.9,
-    price: "Desde $3.990/mes",
+    price: "Desde $3.469/mes",
     speed: "9.9/10",
     uptime: "99.98%",
     features: [
       "Carga más rápida en Chile (servidores en Santiago)",
-      "Tu sitio protegido 24/7 (bloqueo automático de ataques)",
-      "Recupera tu web con un clic (backups automáticos)",
-      "Email que llega sin ir a spam (SPF, DKIM y DMARC)"
+      "Protección 24/7 con BitNinja",
+      "Backups automáticos con recuperación 1 clic",
+      "Email anti-spam (SPF, DKIM y DMARC)"
     ],
     url: "https://clientes.hostingplus.cl/cart.php?gid=13"
   },
   {
     id: 2,
-    name: "EcoHosting",
+    name: "EcoHosting.cl",
+    slug: "ecohosting",
     logo: "/logo-ecohosting.png",
     rating: 9.6,
-    price: "Desde $4.990/mes",
+    price: "Desde $1.658/mes",
     speed: "9.7/10",
     uptime: "99.96%",
     features: [
-      "Apache Optimizado",
+      "Apache optimizado",
       "Datacenter en Providencia",
       "IP chilena",
       "Energía 100% renovable"
@@ -70,19 +72,20 @@ const hostProviders = [
   },
   {
     id: 3,
-    name: "1Hosting",
-    logo: "/logo-1hosting.svg",
-    rating: 9.2,
-    price: "Desde $3.490/mes",
-    speed: "9.5/10",
-    uptime: "99.93%",
+    name: "PowerHost / IxMetro",
+    slug: "powerhost",
+    logo: "/placeholder.svg",
+    rating: 8.5,
+    price: "Consultar",
+    speed: "8.5/10",
+    uptime: "99.92%",
     features: [
-      "SSD NVMe",
-      "Datacenter en Las Condes",
-      "IP chilena",
-      "Backups diarios"
+      "Datacenter propio en Santiago",
+      "ASN propio AS263237",
+      "Solo VPS SSD (no shared)",
+      "+20 años operando en Chile"
     ],
-    url: "https://1hosting.cl/"
+    url: "https://www.powerhost.cl/"
   }
 ];
 
