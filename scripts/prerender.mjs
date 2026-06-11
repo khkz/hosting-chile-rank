@@ -226,26 +226,52 @@ async function main() {
     log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} VS + ${altRoutes.length} alternativas + ${migrarRoutes.length} migración`);
 
 
-    let ok = 0, fail = 0;
-    for (const route of allRoutes) {
+    // COPY_TO_PUBLIC=1: además de dist/, escribir el HTML en public/<ruta>/index.html
+    // para dejarlo COMMITEADO (la plataforma de Lovable NO ejecuta este script en el
+    // build de producción; Vite copia public/ tal cual a dist/, así el HTML por ruta
+    // llega a producción garantizado). La raíz '/' nunca se escribe en public/
+    // (conflicto con el index.html de Vite).
+    const COPY_TO_PUBLIC = process.env.COPY_TO_PUBLIC === '1';
+    const PUBLIC_DIR = join(ROOT, 'public');
+    const CONCURRENCY = Math.max(1, Number(process.env.PRERENDER_CONCURRENCY || 6));
+
+    let ok = 0, fail = 0, cursor = 0;
+    const renderOne = async (route) => {
       const url = `${ORIGIN}${route}`;
+      const page = await browser.newPage();
       try {
-        const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (compatible; LovablePrerender/1.0)');
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 25000 });
-        await new Promise(r => setTimeout(r, 800));
+        await new Promise(r => setTimeout(r, 400));
         const html = await page.content();
-        await page.close();
 
         const outDir = route === '/' ? DIST : join(DIST, route);
         await mkdir(outDir, { recursive: true });
         await writeFile(join(outDir, 'index.html'), html, 'utf8');
+        if (COPY_TO_PUBLIC && route !== '/') {
+          const pubDir = join(PUBLIC_DIR, route);
+          await mkdir(pubDir, { recursive: true });
+          await writeFile(join(pubDir, 'index.html'), html, 'utf8');
+        }
         ok++;
-      } catch (e) {
-        fail++;
-        warn(`✗ ${route}: ${e.message}`);
+      } finally {
+        await page.close().catch(() => {});
       }
-    }
+    };
+
+    const workers = Array.from({ length: CONCURRENCY }, async () => {
+      while (cursor < allRoutes.length) {
+        const route = allRoutes[cursor++];
+        try {
+          await renderOne(route);
+          if ((ok + fail) % 25 === 0) log(`Progreso: ${ok + fail}/${allRoutes.length}`);
+        } catch (e) {
+          fail++;
+          warn(`✗ ${route}: ${e.message}`);
+        }
+      }
+    });
+    await Promise.all(workers);
 
     await browser.close();
     log(`Resultado: ${ok} ok, ${fail} fallidas, ${allRoutes.length} totales.`);
