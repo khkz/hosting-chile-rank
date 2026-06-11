@@ -61,6 +61,8 @@ const CatalogoPage = () => {
         return sorted;
     }
   }, [companies, sortBy]);
+
+  const { data: reviewStats } = useReviewStats(sortedCompanies.map((c) => c.slug));
   
   return (
     <>
