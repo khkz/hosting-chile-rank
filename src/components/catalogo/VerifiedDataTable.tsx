@@ -10,13 +10,41 @@ interface VerifiedDataTableProps {
   uptimeGuarantee?: number | string | null;
   hasSslFree?: boolean | null;
   hasMigrationFree?: boolean | null;
+  officialWebsite?: string | null;
+}
+
+const formatOfficialUrl = (raw: string) => {
+  try {
+    const u = new URL(raw);
+    return { href: `${u.protocol}//${u.host}/`, label: u.host.replace(/^www\./, '') };
+  } catch {
+    const cleaned = raw.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    return { href: `https://${cleaned}/`, label: cleaned.replace(/^www\./, '') };
+  }
 }
 
 const fmtPrice = (p?: number | null) =>
   p && p > 0 ? `$${p.toLocaleString('es-CL')} CLP / mes` : 'Consultar con el proveedor';
 
 const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
+  const officialLink = props.officialWebsite
+    ? (() => {
+        const { href, label } = formatOfficialUrl(props.officialWebsite!);
+        return (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener"
+            className="text-primary underline underline-offset-2 hover:opacity-80 break-all"
+          >
+            www.{label}
+          </a>
+        );
+      })()
+    : '—';
+
   const rows: Array<[string, React.ReactNode]> = [
+    ['Sitio oficial', officialLink],
     ['Año de fundación', props.yearFounded ?? '—'],
     ['Grupo corporativo', props.corporateGroup ?? 'Independiente'],
     ['Ubicación datacenter', props.datacenter && props.datacenter.trim() ? props.datacenter : '—'],
