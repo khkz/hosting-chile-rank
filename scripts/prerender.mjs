@@ -251,6 +251,13 @@ async function main() {
       const page = await browser.newPage();
       try {
         await page.setUserAgent('Mozilla/5.0 (compatible; LovablePrerender/1.0)');
+        // En pestañas en background Chromium NO dispara requestAnimationFrame,
+        // y react-helmet-async lo usa para aplicar title/canonical/meta.
+        // Shim: rAF → setTimeout (los timers SÍ corren en background).
+        await page.evaluateOnNewDocument(() => {
+          window.requestAnimationFrame = (cb) => window.setTimeout(() => cb(performance.now()), 16);
+          window.cancelAnimationFrame = (id) => window.clearTimeout(id);
+        });
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 25000 });
         // Esperar a que react-helmet-async haya aplicado los tags del <head>
         // (marca los tags gestionados con data-rh). Tolerante: si una ruta no
