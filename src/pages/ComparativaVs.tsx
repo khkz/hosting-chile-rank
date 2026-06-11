@@ -66,7 +66,7 @@ const ComparativaVs: React.FC = () => {
   if (parsed.anchor !== ANCHOR_HOSTINGPLUS && parsed.anchor !== ANCHOR_ECOHOSTING) {
     return <Navigate to="/comparativa" replace />;
   }
-  if (!ALL_CATALOG_SLUGS.includes(parsed.competitor as typeof ALL_CATALOG_SLUGS[number])) {
+  if (!(ALL_CATALOG_SLUGS as readonly string[]).includes(parsed.competitor)) {
     return <Navigate to="/comparativa" replace />;
   }
 
