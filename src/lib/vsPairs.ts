@@ -55,6 +55,7 @@ export function getAllVsPairs(): VsPair[] {
       const a = parsed.a, b = parsed.b;
       const anchor = isAnchor(x) ? x : isAnchor(y) ? y : undefined;
       const competitor = anchor ? (anchor === x ? y : x) : undefined;
+      const involvesAnchor = isAnchor(x) || isAnchor(y);
       const obj: VsPair = { pair, a, b, involvesAnchor, anchor, competitor };
       if (anchor === ANCHOR_HOSTINGPLUS) groupA.push(obj);
       else if (anchor === ANCHOR_ECOHOSTING) groupB.push(obj);
