@@ -83,6 +83,12 @@ const RankingPositions4to10: React.FC = () => {
                     <span className="inline-block bg-primary/10 text-primary font-bold px-2 py-1 rounded">
                       {row.rating.toFixed(1)}
                     </span>
+                    {reviewStats?.[row.slug] && (
+                      <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        {reviewStats[row.slug].avg.toFixed(1)} · {reviewStats[row.slug].count}
+                      </span>
+                    )}
                   </td>
                   <td className="p-3 text-foreground">{formatPrice(db?.promo_price)}</td>
                   <td className="p-3 text-muted-foreground">{row.keyFeature}</td>
