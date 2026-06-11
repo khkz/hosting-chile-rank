@@ -1785,6 +1785,48 @@ export type Database = {
           },
         ]
       }
+      reviews: {
+        Row: {
+          author_email: string
+          author_name: string
+          comment: string
+          created_at: string
+          id: string
+          moderated_at: string | null
+          moderated_by: string | null
+          provider_slug: string
+          rating: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          author_email: string
+          author_name: string
+          comment: string
+          created_at?: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          provider_slug: string
+          rating: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          author_email?: string
+          author_name?: string
+          comment?: string
+          created_at?: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          provider_slug?: string
+          rating?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       seo_audit_domains: {
         Row: {
           country_code: string | null
