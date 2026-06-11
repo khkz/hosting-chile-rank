@@ -59,6 +59,7 @@ import AdminDashboard from './pages/admin/Dashboard';
 import AdminReputation from './pages/admin/Reputation';
 import AdminBenchmarkRuns from './pages/admin/BenchmarkRuns';
 import ReviewModeration from './pages/admin/ReviewModeration';
+import AdminPublicReviews from './pages/admin/PublicReviews';
 import Setup from './pages/admin/Setup';
 import Companies from './pages/admin/Companies';
 import AdminCertifications from './pages/admin/Certifications';
