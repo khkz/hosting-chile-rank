@@ -184,6 +184,8 @@ function App() {
         {/* 301 a canonical /vs/:rival para evitar duplicados */}
         <Route path="/comparar/:rival" element={<VsAliasRedirect />} />
         <Route path="/comparativa/:rival" element={<ComparativaRouteDispatcher />} />
+        <Route path="/alternativas-a/:slug" element={<AlternativasA />} />
+        <Route path="/migrar-de/:slug" element={<MigrarDe />} />
         <Route path="/reclamos" element={<Reclamos />} />
         <Route path="/verificar-reclamo" element={<VerificarReclamo />} />
         <Route path="/contacto" element={<Contacto />} />
