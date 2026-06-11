@@ -128,15 +128,36 @@ const generateMainSitemap = (companySlugs = []) => {
     ['/estudio-hosting-chile-2026', '0.9', 'yearly'],
   ].map(([path, prio, freq]) => urlTag(`${ROOT}${path}`, prio, freq)).join('');
 
-  // Páginas "VS" de proveedores (comparativas internas)
+  // Páginas "VS" de proveedores (comparativas internas anti-fake legacy)
   const providerUrls = providers
     .map(slug => urlTag(`${ROOT}/comparativa/${slug}`, '0.7', 'weekly'))
     .join('');
 
-  // Comparativas VS rivales falsos (CRÍTICO: indexar para captar búsquedas de los rankings truchos)
+  // Comparativas VS rivales falsos
   const vsRivalUrls = VS_RIVALS
     .map(slug => urlTag(`${ROOT}/vs/${slug}`, '0.9', 'weekly'))
     .join('');
+
+  // Hubs de intención (alta prioridad)
+  const intentHubs = [
+    '/mejor-hosting-wordpress-chile',
+    '/mejor-hosting-ecommerce-chile',
+    '/mejor-hosting-pymes-chile',
+    '/mejor-vps-chile',
+  ].map(p => urlTag(`${ROOT}${p}`, '0.9', 'weekly')).join('');
+
+  // Comparativas programáticas 1-a-1 desde slugs verificados
+  const verifiedSlugs = companySlugs.map(c => c.slug);
+  const vsEcoExtras = ['hostgator','bluehost','hostingcl','godaddy','cloudhosting'];
+  const programmaticVs = [];
+  for (const slug of verifiedSlugs) {
+    if (slug !== 'hostingplus') programmaticVs.push(`/comparativa/${slug}-vs-hostingplus`);
+  }
+  for (const slug of vsEcoExtras) {
+    if (verifiedSlugs.includes(slug)) programmaticVs.push(`/comparativa/${slug}-vs-ecohosting`);
+  }
+  const programmaticVsUrls = programmaticVs.map(p => urlTag(`${ROOT}${p}`, '0.7', 'weekly')).join('');
+
 
   // Páginas de reseñas de hosting
   const hostingReviews = [
