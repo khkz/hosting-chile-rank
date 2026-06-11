@@ -139,8 +139,14 @@ async function main() {
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     });
 
+    // Append dynamic catalogo slugs
+    const catalogoRoutes = await fetchCatalogoSlugs();
+    const allRoutes = [...ROUTES, ...catalogoRoutes];
+    log(`Prerenderizando ${allRoutes.length} rutas (${catalogoRoutes.length} fichas catálogo)…`);
+
     let ok = 0, fail = 0;
-    for (const route of ROUTES) {
+    for (const route of allRoutes) {
+
       const url = `${ORIGIN}${route}`;
       try {
         const page = await browser.newPage();
