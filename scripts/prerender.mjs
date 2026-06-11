@@ -170,8 +170,9 @@ async function main() {
 
     // Append dynamic catalogo slugs
     const catalogoRoutes = await fetchCatalogoSlugs();
-    const allRoutes = [...ROUTES, ...catalogoRoutes];
-    log(`Prerenderizando ${allRoutes.length} rutas (${catalogoRoutes.length} fichas catálogo)…`);
+    const vsRoutes = await fetchVsPairRoutes();
+    const allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes];
+    log(`Prerenderizando ${allRoutes.length} rutas (${catalogoRoutes.length} fichas catálogo + ${vsRoutes.length} comparativas VS)…`);
 
     let ok = 0, fail = 0;
     for (const route of allRoutes) {
