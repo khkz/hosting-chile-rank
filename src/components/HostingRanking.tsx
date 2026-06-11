@@ -318,17 +318,17 @@ const HostingRanking = () => {
     }));
 
   return (
-    <section id="ranking" className="py-10 md:py-20 bg-gradient-to-b from-background to-muted/30">
+    <section id="ranking" className="py-6 md:py-10 bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-8 md:mb-16">
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
+        <div className="text-center mb-6 md:mb-10">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
             Top 3 Mejores Hostings Chile
           </h2>
-          <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-sm md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Ranking independiente basado en pruebas técnicas reales de velocidad, uptime y soporte
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-5 rounded-full" />
+          <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-4 rounded-full" />
         </div>
 
         {!isLoading && sortedHostingData.length > 0 && (
