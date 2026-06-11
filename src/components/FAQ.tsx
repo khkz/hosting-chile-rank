@@ -1,8 +1,9 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
-const faqItems = [
+const faqItems: { question: string; answer: React.ReactNode }[] = [
   {
     question: "¿Cómo medimos la velocidad?",
     answer: "Usamos ping desde Santiago y GTmetrix con servidores locales. También realizamos pruebas de carga con herramientas como LoadImpact y Pingdom para medir el tiempo de respuesta bajo diferentes condiciones."
@@ -17,7 +18,14 @@ const faqItems = [
   },
   {
     question: "¿Por qué HostingPlus lidera el ranking?",
-    answer: "Combina datacenter local en Chile, tecnologías premium como LiteSpeed Enterprise y BitNinja, un historial de 0 reclamos en Reclamos.cl en los últimos años, y un soporte técnico disponible 24/7 con tiempos de respuesta excepcionales."
+    answer: (
+      <>
+        <Link to="/catalogo/hostingplus" className="text-primary font-semibold hover:underline">HostingPlus</Link>{' '}
+        combina datacenter local en Chile, tecnologías premium como LiteSpeed Enterprise y BitNinja,
+        un historial de 0 reclamos en Reclamos.cl en los últimos años, y un soporte técnico disponible
+        24/7 con tiempos de respuesta excepcionales.
+      </>
+    )
   }
 ];
 

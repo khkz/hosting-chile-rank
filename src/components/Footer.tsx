@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import RecentSearches from './RecentSearches';
 import Logo from './Logo';
 import { Shield, ShieldCheck, MapPin, Mail, Clock } from 'lucide-react';
 
@@ -106,10 +105,16 @@ const Footer = () => {
         {/* Separator */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent my-8 md:my-12"></div>
 
-
-        {/* Recent Searches */}
-        <div className="mb-12">
-          <RecentSearches />
+        {/* Más valorados 2026 */}
+        <div className="text-center text-sm text-gray-300">
+          <p>
+            <span className="font-semibold text-white">Más valorados 2026:</span>{' '}
+            <Link to="/catalogo/hostingplus" className="text-white hover:text-blue-300 underline underline-offset-2">HostingPlus.cl</Link>
+            <span className="text-gray-400"> 9.9</span>
+            {' · '}
+            <Link to="/catalogo/ecohosting" className="text-white hover:text-blue-300 underline underline-offset-2">EcoHosting.cl</Link>
+            <span className="text-gray-400"> 9.6</span>
+          </p>
         </div>
       </div>
 

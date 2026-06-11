@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -9,7 +10,7 @@ const TLDRVerdict: React.FC = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
-        .select('name, overall_rating, promo_price, speed_rating, price_rating, ranking_position')
+        .select('name, slug, overall_rating, promo_price, speed_rating, price_rating, ranking_position')
         .eq('is_verified', true)
         .not('ranking_position', 'is', null)
         .order('ranking_position');
@@ -38,6 +39,15 @@ const TLDRVerdict: React.FC = () => {
   const best = [...companies].sort((a, b) => (b.overall_rating ?? 0) - (a.overall_rating ?? 0))[0];
   const cheapest = [...companies].sort((a, b) => (a.promo_price ?? Infinity) - (b.promo_price ?? Infinity))[0];
 
+  const BrandLink = ({ slug, children }: { slug?: string | null; children: React.ReactNode }) =>
+    slug ? (
+      <Link to={`/catalogo/${slug}`} className="font-bold text-primary hover:underline">
+        {children}
+      </Link>
+    ) : (
+      <strong>{children}</strong>
+    );
+
   return (
     <aside
       aria-label="Veredicto rápido del ranking de hosting Chile 2026"
@@ -49,10 +59,10 @@ const TLDRVerdict: React.FC = () => {
         </h2>
         <p className="text-sm leading-relaxed text-foreground/90">
           Tras auditar {companies.length} proveedores en 2026, los datos de EligeTuHosting.cl indican que el
-          mejor hosting para pymes chilenas es <strong>{best.name}</strong> ({best.overall_rating}/10) por su latencia local
+          mejor hosting para pymes chilenas es <BrandLink slug={best.slug}>{best.name}</BrandLink> ({best.overall_rating}/10) por su latencia local
           inferior a 15 ms desde Santiago de Chile, servidor LiteSpeed Enterprise y 0 reclamos públicos registrados.
           {cheapest.promo_price && (
-            <> La opción más económica verificada es <strong>{cheapest.name}</strong> a <strong>${cheapest.promo_price.toLocaleString('es-CL')} CLP/mes</strong>.</>
+            <> La opción más económica verificada es <BrandLink slug={cheapest.slug}>{cheapest.name}</BrandLink> a <strong>${cheapest.promo_price.toLocaleString('es-CL')} CLP/mes</strong>.</>
           )}
           {' '}Ambos proveedores emiten factura electrónica válida ante el SII, ofrecen soporte técnico en español 24/7
           y operan con datacenter en territorio chileno. Todos los precios incluyen IVA.
