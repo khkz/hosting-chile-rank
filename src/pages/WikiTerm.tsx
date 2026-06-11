@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import RecommendedByData from '@/components/RecommendedByData';
 import RightRailOffer from '@/components/RightRailOffer';
 import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
@@ -478,6 +479,7 @@ const WikiTerm: React.FC = () => {
       {/* Sticky CTA móvil */}
       <StickyCTA />
 
+      <div className="container mx-auto px-4 py-8 max-w-4xl"><RecommendedByData /></div>
       <Footer />
     </div>
   );
