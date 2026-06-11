@@ -85,7 +85,7 @@ const generateMainSitemap = (companySlugs = []) => {
     ['/mejor-hosting-chile-2025', '0.9', 'monthly'],
     ['/', '0.9', 'daily'],
     ['/ranking', '0.9', 'daily'],
-    ['/directorio-hosting-chile', '0.9', 'daily'],
+    // /directorio-hosting-chile es noindex (canonical → /catalogo), no listar en sitemap
 
     // Transparencia y comparativas anti-fake (CRÍTICO para SEO/GEO)
     ['/transparencia-hosting-chile', '0.9', 'weekly'],
