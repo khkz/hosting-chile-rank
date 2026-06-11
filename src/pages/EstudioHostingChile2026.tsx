@@ -354,6 +354,8 @@ const EstudioHostingChile2026: React.FC = () => {
         <meta name="article:published_time" content={PUBLISHED} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
       </Helmet>
+      <DatasetSchema />
+
 
       <Navbar />
 
