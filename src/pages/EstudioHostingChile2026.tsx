@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import DatasetSchema from '@/components/SEO/DatasetSchema';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -354,6 +355,8 @@ const EstudioHostingChile2026: React.FC = () => {
         <meta name="article:published_time" content={PUBLISHED} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
       </Helmet>
+      <DatasetSchema />
+
 
       <Navbar />
 

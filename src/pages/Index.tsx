@@ -8,6 +8,7 @@ import StatsTicker from '@/components/StatsTicker';
 import ScrollProgress from '@/components/ScrollProgress';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
+import DatasetSchema from '@/components/SEO/DatasetSchema';
 
 const HostingQuiz = React.lazy(() => import('@/components/HostingQuiz'));
 const WhyTrustUs = React.lazy(() => import('@/components/WhyTrustUs'));
@@ -29,6 +30,8 @@ const Index = () => {
         canonical="https://eligetuhosting.cl"
         keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2026"
       />
+
+      <DatasetSchema />
 
       <SEOFAQSchema faqs={[
         {

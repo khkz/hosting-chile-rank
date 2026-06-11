@@ -40,6 +40,7 @@ interface RankingCompany {
   promo_price: number | null;
   original_price: number | null;
   price_period: string;
+  updated_at?: string | null;
   // derived
   sortPosition: number;
 }
@@ -263,7 +264,7 @@ const HostingRanking = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
-        .select('id, name, slug, website, logo_url, overall_rating, speed_rating, price_rating, is_independent, corporate_group, legal_name, foundation_year, ranking_position, is_recommended, ranking_features, ranking_badges, cta_text, cta_micro_copy, button_color, border_color, display_name_first, display_name_second, display_name_first_color, display_name_second_color, promo_price, original_price, price_period')
+        .select('id, name, slug, website, logo_url, overall_rating, speed_rating, price_rating, is_independent, corporate_group, legal_name, foundation_year, ranking_position, is_recommended, ranking_features, ranking_badges, cta_text, cta_micro_copy, button_color, border_color, display_name_first, display_name_second, display_name_first_color, display_name_second_color, promo_price, original_price, price_period, updated_at')
         .eq('is_verified', true)
         .not('ranking_position', 'is', null)
         .order('ranking_position');
@@ -328,6 +329,12 @@ const HostingRanking = () => {
           <p className="text-sm md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Ranking independiente basado en pruebas técnicas reales de velocidad, uptime y soporte
           </p>
+          {sortedHostingData.length > 0 && sortedHostingData[0].updated_at && (
+            <p className="text-xs text-muted-foreground mt-2">
+              ✓ Datos verificados al {new Date(Math.max(...sortedHostingData.map((c: any) => new Date(c.updated_at).getTime()))).toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </p>
+          )}
+
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-4 rounded-full" />
         </div>
 

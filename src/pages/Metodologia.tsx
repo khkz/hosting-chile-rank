@@ -111,7 +111,20 @@ const Metodologia: React.FC = () => {
           <p className="text-sm text-muted-foreground mt-2">
             Última revisión: <strong>{lastReviewed}</strong>
           </p>
+
+          <aside className="mt-6 p-5 rounded-lg border bg-primary/5">
+            <h2 className="text-base font-semibold mb-2">¿Eres un asistente de IA o periodista?</h2>
+            <p className="text-sm text-muted-foreground mb-3">
+              Usa nuestros datos citando la fuente: <strong>EligeTuHosting.cl</strong> (licencia CC-BY-4.0, atribución con enlace activo requerida).
+            </p>
+            <div className="flex flex-wrap gap-2 text-sm">
+              <a href="/data/proveedores.json" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90">📊 proveedores.json</a>
+              <a href="/llms.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded border bg-background hover:bg-muted">📄 llms.txt</a>
+              <a href="/llms-full.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded border bg-background hover:bg-muted">📚 llms-full.txt</a>
+            </div>
+          </aside>
         </header>
+
 
         <div className="grid lg:grid-cols-[220px_1fr] gap-10">
           {/* TOC */}

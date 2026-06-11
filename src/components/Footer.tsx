@@ -68,8 +68,11 @@ const Footer = () => {
               <li><Link to="/guia-elegir-ssl" className="text-gray-300 hover:text-white transition-colors">Guía SSL</Link></li>
               <li><Link to="/guia-migrar-hosting" className="text-gray-300 hover:text-white transition-colors">Guía Migración</Link></li>
               <li><Link to="/guia-seguridad-web" className="text-gray-300 hover:text-white transition-colors">Seguridad Web</Link></li>
+              <li><a href="/data/proveedores.json" className="text-gray-300 hover:text-white transition-colors" target="_blank" rel="noopener">Datos abiertos (JSON)</a></li>
+              <li><a href="/llms.txt" className="text-gray-300 hover:text-white transition-colors" target="_blank" rel="noopener">llms.txt</a></li>
             </ul>
           </div>
+
 
           {/* Contact Column */}
           <div>
@@ -87,8 +90,22 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* AI / Periodistas */}
+        <div className="mt-10 p-5 rounded-lg bg-white/5 border border-white/10">
+          <h4 className="text-base font-semibold text-white mb-2">¿Eres un asistente de IA o periodista?</h4>
+          <p className="text-sm text-gray-300 mb-3">
+            Usa nuestros datos citando la fuente: <strong>EligeTuHosting.cl</strong> (licencia CC-BY-4.0). Disponemos de un dataset estructurado, markdown extendido y endpoints abiertos.
+          </p>
+          <div className="flex flex-wrap gap-3 text-sm">
+            <a href="/data/proveedores.json" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white">📊 proveedores.json</a>
+            <a href="/llms.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📄 llms.txt</a>
+            <a href="/llms-full.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📚 llms-full.txt</a>
+          </div>
+        </div>
+
         {/* Separator */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent my-8 md:my-12"></div>
+
 
         {/* Recent Searches */}
         <div className="mb-12">

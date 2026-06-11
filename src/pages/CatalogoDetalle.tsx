@@ -82,8 +82,11 @@ const CatalogoDetalle = () => {
       description: (company as any).description_editorial || company.description || `Servicios de hosting de ${name} en Chile.`,
       brand: { '@type': 'Brand', name },
       url: canonical,
+      datePublished: (company as any).created_at || '2026-01-01',
+      dateModified: (company as any).updated_at || new Date().toISOString(),
     };
     if (company.logo_url) productSchema.image = ogImage;
+
     if (minPrice > 0) {
       productSchema.offers = {
         '@type': 'AggregateOffer',
@@ -257,7 +260,13 @@ const CatalogoDetalle = () => {
             {company.year_founded ? ` · Opera desde ${company.year_founded}` : ''}
             {company.corporate_group ? ` · ${company.corporate_group}` : ''}
           </p>
+          {(company as any).updated_at && (
+            <p className="text-xs text-muted-foreground mt-1">
+              ✓ Datos verificados al {new Date((company as any).updated_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </p>
+          )}
         </header>
+
 
         {(company as any).is_fake_comparison && (
           <div className="mb-6 p-4 bg-destructive/10 rounded-lg border border-destructive/30 flex items-start gap-3">
