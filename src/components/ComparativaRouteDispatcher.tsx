@@ -9,8 +9,8 @@ import ComparativaVs from '@/pages/ComparativaVs';
  * - Otherwise → legacy alias redirect to /vs/:rival (anti-fake comparison).
  */
 const ComparativaRouteDispatcher: React.FC = () => {
-  const { pair } = useParams<{ pair: string }>();
-  if (pair && pair.includes('-vs-')) return <ComparativaVs />;
+  const { rival } = useParams<{ rival: string }>();
+  if (rival && rival.includes('-vs-')) return <ComparativaVs />;
   return <VsAliasRedirect />;
 };
 
