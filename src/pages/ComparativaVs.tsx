@@ -26,8 +26,8 @@ interface Company {
 const formatPrice = (p: number | null) => (p ? `$${Number(p).toLocaleString('es-CL')}/mes` : 'Consultar');
 
 const ComparativaVs: React.FC = () => {
-  const { pair } = useParams<{ pair: string }>();
-  const parsed = pair ? parsePair(pair) : null;
+  const { rival } = useParams<{ rival: string }>();
+  const parsed = rival ? parsePair(rival) : null;
   const [a, setA] = useState<Company | null>(null);
   const [b, setB] = useState<Company | null>(null);
   const [next, setNext] = useState<Company | null>(null);
