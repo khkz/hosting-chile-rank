@@ -283,8 +283,8 @@ function App() {
                 <SeoDashboard />
               </ProtectedRoute>
             } />
-            {/* 301 Redirect: Consolidate directorio into catalogo */}
-            <Route path="/directorio-hosting-chile" element={<Navigate to="/catalogo" replace />} />
+            {/* Canonical → /catalogo + noindex,follow + redirect cliente */}
+            <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
