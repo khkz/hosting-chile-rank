@@ -82,8 +82,11 @@ const CatalogoDetalle = () => {
       description: (company as any).description_editorial || company.description || `Servicios de hosting de ${name} en Chile.`,
       brand: { '@type': 'Brand', name },
       url: canonical,
+      datePublished: (company as any).created_at || '2026-01-01',
+      dateModified: (company as any).updated_at || new Date().toISOString(),
     };
     if (company.logo_url) productSchema.image = ogImage;
+
     if (minPrice > 0) {
       productSchema.offers = {
         '@type': 'AggregateOffer',
