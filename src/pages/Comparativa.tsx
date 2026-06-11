@@ -412,13 +412,20 @@ const ComparativaPage = () => {
         </div>
       </section>
 
-      {/* Comparativas de marcas (programmatic VS) */}
+      {/* Comparativas de marcas (programmatic VS) — agrupadas */}
       <section className="py-12 bg-white border-t">
         <div className="container mx-auto px-4 max-w-5xl">
-          <h2 className="text-2xl font-bold text-[#2B2D42] mb-2">Comparativas de marcas</h2>
-          <p className="text-sm text-gray-600 mb-6">Comparativas 1-a-1 entre proveedores del catálogo, con datos verificables.</p>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {getAllVsPairs().map(({ pair }) => (
+          <h2 className="text-2xl font-bold text-[#2B2D42] mb-2">Comparativas 1-a-1</h2>
+          <p className="text-sm text-gray-600 mb-6">Todas las parejas del catálogo, con datos verificables.</p>
+
+          {(() => {
+            const all = getAllVsPairs();
+            const vsHp = all.filter(p => p.anchor === ANCHOR_HOSTINGPLUS);
+            const vsEh = all.filter(p => p.anchor === ANCHOR_ECOHOSTING);
+            const grouped = getCompetitorPairsGroupedByCompany();
+            const groupKeys = Object.keys(grouped).sort();
+
+            const PairLink = ({ pair }: { pair: string }) => (
               <Link
                 key={pair}
                 to={`/comparativa/${pair}`}
@@ -426,10 +433,43 @@ const ComparativaPage = () => {
               >
                 {pair.replace('-vs-', ' vs ')}
               </Link>
-            ))}
-          </div>
+            );
+
+            return (
+              <div className="space-y-8">
+                <div>
+                  <h3 className="font-semibold text-[#EF233C] mb-3">VS HostingPlus.cl (líder del ranking)</h3>
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
+                    {vsHp.map(p => <PairLink key={p.pair} pair={p.pair} />)}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[#EF233C] mb-3">VS EcoHosting.cl</h3>
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
+                    {vsEh.map(p => <PairLink key={p.pair} pair={p.pair} />)}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[#2B2D42] mb-3">Entre otros proveedores</h3>
+                  <div className="space-y-4">
+                    {groupKeys.map(key => (
+                      <details key={key} className="border rounded-lg bg-white p-3">
+                        <summary className="cursor-pointer font-medium text-[#2B2D42] capitalize">
+                          {key.replace(/-/g, ' ')} ({grouped[key].length})
+                        </summary>
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 mt-3">
+                          {grouped[key].map(p => <PairLink key={p.pair} pair={p.pair} />)}
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
+
 
       <StickyCTA />
       <Footer />
