@@ -100,7 +100,7 @@ const RankingPositions4to10: React.FC = () => {
                       </span>
                     )}
                   </td>
-                  <td className="p-3 text-foreground">{formatPrice(db?.promo_price)}</td>
+                  <td className="p-3 text-foreground">{formatPrice(getMinPrice(db))}</td>
                   <td className="p-3 text-muted-foreground">{row.keyFeature}</td>
                   <td className="p-3 text-right">
                     <div className="flex justify-end gap-2">
