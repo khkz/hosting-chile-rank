@@ -58,7 +58,7 @@ const mainNavItems: NavItem[] = [
   { to: '/comparativa', label: 'Comparativa', icon: GitCompare },
   { to: '/wiki', label: 'Wiki', icon: BookOpen },
   { to: '/certificaciones', label: 'Certificaciones', icon: Award },
-  { to: '/directorio-hosting-chile', label: 'Directorio', icon: Award },
+  { to: '/catalogo', label: 'Directorio', icon: Award },
 ];
 
 const toolsItems: NavItem[] = [
