@@ -225,6 +225,16 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                 {provider.cta_micro_copy}
               </p>
             )}
+            {provider.slug && (
+              <p className="text-center text-sm">
+                <Link
+                  to={`/catalogo/${provider.slug}`}
+                  className="text-primary hover:underline font-medium"
+                >
+                  Review completa de {provider.name} →
+                </Link>
+              </p>
+            )}
           </div>
         </div>
       </div>

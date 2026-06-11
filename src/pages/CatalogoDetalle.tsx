@@ -85,7 +85,22 @@ const CatalogoDetalle = () => {
       datePublished: (company as any).created_at || '2026-01-01',
       dateModified: (company as any).updated_at || new Date().toISOString(),
     };
+    if (company.website) productSchema.sameAs = [company.website];
     if (company.logo_url) productSchema.image = ogImage;
+
+    // Organization schema (extra) para fichas líderes — refuerza brand SEO
+    const orgSchema = (slug === 'hostingplus' || slug === 'ecohosting') && company.website
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name,
+          url: company.website,
+          logo: ogImage,
+          brand: { '@type': 'Brand', name },
+          areaServed: { '@type': 'Country', name: 'Chile' },
+          sameAs: [company.website],
+        }
+      : null;
 
     if (minPrice > 0) {
       productSchema.offers = {
@@ -156,7 +171,7 @@ const CatalogoDetalle = () => {
       })),
     };
 
-    return { title, description, canonical, ogImage, productSchema, editorialReview, breadcrumb, faqSchema, faqItems, name, rating };
+    return { title, description, canonical, ogImage, productSchema, orgSchema, editorialReview, breadcrumb, faqSchema, faqItems, name, rating };
   }, [company, slug, minPrice, userReviews]);
 
   if (isLoading) {
@@ -237,6 +252,9 @@ const CatalogoDetalle = () => {
         <script type="application/ld+json">{JSON.stringify(seoData.editorialReview)}</script>
         <script type="application/ld+json">{JSON.stringify(seoData.breadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(seoData.faqSchema)}</script>
+        {seoData.orgSchema && (
+          <script type="application/ld+json">{JSON.stringify(seoData.orgSchema)}</script>
+        )}
       </Helmet>
 
       <Navbar />
@@ -315,6 +333,7 @@ const CatalogoDetalle = () => {
           uptimeGuarantee={(company as any).uptime_guarantee}
           hasSslFree={(company as any).has_ssl_free}
           hasMigrationFree={(company as any).has_migration_free}
+          officialWebsite={company.website}
         />
 
         <Veredicto
