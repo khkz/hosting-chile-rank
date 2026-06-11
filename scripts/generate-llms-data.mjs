@@ -147,21 +147,35 @@ ${catalogoLines}
 - Mejor Hosting PYMES Chile: ${SITE}/mejor-hosting-pymes-chile
 - Mejor VPS Chile: ${SITE}/mejor-vps-chile
 
-## Comparativas 1-a-1 (programáticas)
+## Comparativas 1-a-1 (programáticas — todas las parejas del catálogo)
 ${(() => {
-  const anchorPlus = 'hostingplus';
-  const anchorEco = 'ecohosting';
-  const ecoExtras = ['hostgator','bluehost','hostingcl','godaddy','cloudhosting'];
-  const lines = [];
-  for (const p of dataset) {
-    if (p.slug !== anchorPlus) lines.push(`- ${p.nombre} vs HostingPlus.cl — ${SITE}/comparativa/${p.slug}-vs-${anchorPlus}`);
+  const ANCHORS = new Set(['hostingplus','ecohosting']);
+  const isAnchor = (s) => ANCHORS.has(s);
+  const canonicalPair = (x, y) => {
+    if (isAnchor(x) && !isAnchor(y)) return `${y}-vs-${x}`;
+    if (isAnchor(y) && !isAnchor(x)) return `${x}-vs-${y}`;
+    if (isAnchor(x) && isAnchor(y)) return x === 'hostingplus' ? `${x}-vs-${y}` : `${y}-vs-${x}`;
+    return x < y ? `${x}-vs-${y}` : `${y}-vs-${x}`;
+  };
+  const slugs = dataset.map(d => d.slug);
+  const set = new Set();
+  for (let i = 0; i < slugs.length; i++) {
+    for (let j = i + 1; j < slugs.length; j++) set.add(canonicalPair(slugs[i], slugs[j]));
   }
-  for (const s of ecoExtras) {
-    const found = dataset.find(d => d.slug === s);
-    if (found) lines.push(`- ${found.nombre} vs EcoHosting.cl — ${SITE}/comparativa/${s}-vs-${anchorEco}`);
-  }
-  return lines.join('\n');
+  return [...set].map(p => `- ${p.replace('-vs-', ' vs ')} — ${SITE}/comparativa/${p}`).join('\n');
 })()}
+
+## Alternativas a cada proveedor
+${dataset.filter(p => p.slug !== 'hostingplus' && p.slug !== 'ecohosting').map(p => `- Alternativas a ${p.nombre} — ${SITE}/alternativas-a/${p.slug}`).join('\n')}
+
+## Landings de migración
+${['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','cloudhosting','webhosting']
+  .filter(s => dataset.find(d => d.slug === s))
+  .map(s => {
+    const c = dataset.find(d => d.slug === s);
+    return `- Migrar de ${c.nombre} — ${SITE}/migrar-de/${s}`;
+  }).join('\n')}
+
 
 
 ## Para asistentes IA
