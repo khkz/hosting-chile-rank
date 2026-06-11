@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
+import RankingPositions4to10 from '@/components/RankingPositions4to10';
 import {
   Accordion,
   AccordionContent,
@@ -341,30 +342,32 @@ const RankingPage = () => {
             `}>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center">
-                    <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold mr-3 ${
-                      index === 0 
-                        ? 'bg-[#EF233C] text-white' 
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold flex-shrink-0 ${
+                      index === 0
+                        ? 'bg-[#EF233C] text-white'
                         : 'bg-gray-100 text-[#2B2D42]'
                     }`}>
                       {provider.id}
                     </span>
-                    <img src={provider.logo} alt={provider.name} className="h-8" loading="lazy" />
+                    <h3 className="text-lg md:text-xl font-bold text-[#2B2D42] truncate">
+                      {provider.name}
+                    </h3>
                   </div>
                   {index === 0 && (
-                    <Badge className="bg-[#EF233C] text-white">Top recomendado</Badge>
+                    <Badge className="bg-[#EF233C] text-white flex-shrink-0">Top</Badge>
                   )}
                 </div>
-                
-                <div className="flex flex-wrap gap-2 mb-4 items-center">
+
+                <div className="flex flex-wrap gap-2 mb-3 items-center">
+                  <span className="inline-flex items-center bg-primary/10 text-primary font-bold px-2 py-1 rounded text-sm">
+                    {provider.rating.toFixed(1)}/10
+                  </span>
                   <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
                     {provider.price}
                   </Badge>
-                  <Link to="/benchmark" className="text-xs text-primary hover:underline">
-                    Ver mediciones reales →
-                  </Link>
                 </div>
-                
+
                 <ul className="mb-6 text-sm space-y-2">
                   {provider.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
@@ -375,24 +378,36 @@ const RankingPage = () => {
                     </li>
                   ))}
                 </ul>
-                
-                <Button 
-                  asChild 
-                  className={`w-full font-semibold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${
-                    index === 0 
-                      ? 'bg-[#EF233C] hover:bg-[#d01d34] text-white' 
-                      : 'bg-[#2B2D42] hover:bg-[#1a1c2e] text-white'
-                  }`}
-                >
-                  <a href={provider.url} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex items-center justify-center">
-                    Visitar sitio
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </a>
-                </Button>
+
+                <div className="space-y-2">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full font-semibold py-3 rounded-lg min-h-[44px]"
+                  >
+                    <Link to={`/catalogo/${provider.slug}`}>Ver detalles</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    className={`w-full font-semibold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 min-h-[44px] ${
+                      index === 0
+                        ? 'bg-[#EF233C] hover:bg-[#d01d34] text-white'
+                        : 'bg-[#2B2D42] hover:bg-[#1a1c2e] text-white'
+                    }`}
+                  >
+                    <a href={provider.url} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex items-center justify-center">
+                      Visitar sitio
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Puestos 4-10 */}
+        <RankingPositions4to10 />
       </Section>
 
       <div className="h-0.5 bg-gray-200 w-full my-8" />
