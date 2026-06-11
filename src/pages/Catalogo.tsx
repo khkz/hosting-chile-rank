@@ -16,6 +16,7 @@ import HostingSectionsNav from '@/components/HostingSectionsNav';
 import TechnicalGlossary from '@/components/TechnicalGlossary';
 import RelatedContent from '@/components/RelatedContent';
 import LogoTile from '@/components/LogoTile';
+import { useReviewStats } from '@/hooks/useReviewStats';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
