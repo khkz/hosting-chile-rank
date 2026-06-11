@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ExternalLink, ArrowRight, Star } from 'lucide-react';
+import { useReviewStats } from '@/hooks/useReviewStats';
 
 // Orden y notas oficiales (4–10). Fuente única de verdad para el ranking extendido.
 export const EXTRA_RANKING: Array<{
