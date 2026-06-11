@@ -73,6 +73,18 @@ const Footer = () => {
           </div>
 
 
+          {/* Mejor hosting por uso */}
+          <div>
+            <h4 className="text-lg font-semibold text-white mb-4">Mejor hosting por uso</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link to="/mejor-hosting-wordpress-chile" className="text-gray-300 hover:text-white transition-colors">Mejor Hosting WordPress</Link></li>
+              <li><Link to="/mejor-hosting-ecommerce-chile" className="text-gray-300 hover:text-white transition-colors">Mejor Hosting Ecommerce</Link></li>
+              <li><Link to="/mejor-hosting-pymes-chile" className="text-gray-300 hover:text-white transition-colors">Mejor Hosting PYMES</Link></li>
+              <li><Link to="/mejor-vps-chile" className="text-gray-300 hover:text-white transition-colors">Mejor VPS Chile</Link></li>
+              <li><Link to="/mejor-hosting-chile-2026" className="text-gray-300 hover:text-white transition-colors">Ranking general 2026</Link></li>
+            </ul>
+          </div>
+
           {/* Contact Column */}
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Contacto</h4>
