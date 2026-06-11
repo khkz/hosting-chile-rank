@@ -62,50 +62,57 @@ const ROUTES = [
   '/cotiza-hosting',
 ];
 
-// Build comparativa VS pairs from DB
-async function fetchVsPairRoutes() {
+// Build comparativa VS pairs (canonical: alphabetical, anchors last) from DB
+async function fetchVsPairRoutes(slugs) {
+  if (!slugs?.length) return [];
+  const ANCHORS = new Set(['hostingplus', 'ecohosting']);
+  const isAnchor = (s) => ANCHORS.has(s);
+  const canonicalPair = (x, y) => {
+    if (isAnchor(x) && !isAnchor(y)) return `${y}-vs-${x}`;
+    if (isAnchor(y) && !isAnchor(x)) return `${x}-vs-${y}`;
+    if (isAnchor(x) && isAnchor(y)) return x === 'hostingplus' ? `${x}-vs-${y}` : `${y}-vs-${x}`;
+    return x < y ? `${x}-vs-${y}` : `${y}-vs-${x}`;
+  };
+  const set = new Set();
+  for (let i = 0; i < slugs.length; i++) {
+    for (let j = i + 1; j < slugs.length; j++) {
+      set.add(`/comparativa/${canonicalPair(slugs[i], slugs[j])}`);
+    }
+  }
+  return [...set];
+}
+
+async function fetchAlternativasRoutes(slugs) {
+  return slugs.filter(s => s !== 'hostingplus' && s !== 'ecohosting').map(s => `/alternativas-a/${s}`);
+}
+
+const MIGRATION_COMPETITORS = ['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','cloudhosting','webhosting'];
+async function fetchMigrarRoutes(slugs) {
+  return MIGRATION_COMPETITORS.filter(s => slugs.includes(s)).map(s => `/migrar-de/${s}`);
+}
+
+// Fetch verified+curated slugs from Supabase
+async function fetchCatalogSlugs() {
   const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
   const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  if (!KEY) return [];
+  if (!KEY) {
+    console.log('[prerender] sin SUPABASE_ANON_KEY: salto fichas/comparativas/alternativas');
+    return [];
+  }
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&is_curated=eq.true`, {
       headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
     });
     if (!res.ok) return [];
     const data = await res.json();
-    const slugs = data.map(r => r.slug);
-    const pairs = [];
-    for (const s of slugs) if (s !== 'hostingplus') pairs.push(`/comparativa/${s}-vs-hostingplus`);
-    for (const s of ['hostgator','bluehost','hostingcl','godaddy','cloudhosting']) {
-      if (slugs.includes(s)) pairs.push(`/comparativa/${s}-vs-ecohosting`);
-    }
-    return pairs;
+    return data.map(r => r.slug);
   } catch (e) {
-    console.log('[prerender] error fetching vs pairs:', e.message);
+    console.log('[prerender] error fetching slugs:', e.message);
     return [];
   }
 }
 
-// Fetch verified company slugs from Supabase to prerender /catalogo/<slug>
-async function fetchCatalogoSlugs() {
-  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
-  const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  if (!KEY) {
-    console.log('[prerender] sin SUPABASE_ANON_KEY: salto fichas /catalogo/');
-    return [];
-  }
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true`, {
-      headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.map(r => `/catalogo/${r.slug}`);
-  } catch (e) {
-    console.log('[prerender] error fetching catalogo slugs:', e.message);
-    return [];
-  }
-}
+
 
 
 const log = (...a) => console.log('[prerender]', ...a);
