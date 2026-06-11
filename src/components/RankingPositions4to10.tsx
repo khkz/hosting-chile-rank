@@ -45,6 +45,7 @@ const RankingPositions4to10: React.FC = () => {
   });
 
   const bySlug = new Map((data ?? []).map((d) => [d.slug, d]));
+  const { data: reviewStats } = useReviewStats(slugs);
 
   return (
     <section
