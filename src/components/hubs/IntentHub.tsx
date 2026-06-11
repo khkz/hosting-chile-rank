@@ -151,6 +151,24 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
           </ol>
         </section>
 
+        <section className="container mx-auto px-4 pb-10 max-w-5xl">
+          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Comparativas 1-a-1 del segmento</h2>
+          <p className="text-sm text-gray-600 mb-4">Compara cada proveedor de este top contra el líder del ranking.</p>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {config.providerSlugs
+              .filter(s => s !== 'hostingplus')
+              .map(s => (
+                <Link
+                  key={s}
+                  to={`/comparativa/${s}-vs-hostingplus`}
+                  className="text-sm px-3 py-2 rounded border border-gray-200 hover:border-[#EF233C] hover:text-[#EF233C] transition truncate"
+                >
+                  {s} vs hostingplus
+                </Link>
+              ))}
+          </div>
+        </section>
+
         <section className="container mx-auto px-4 pb-12 max-w-3xl">
           <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-5">Preguntas frecuentes — {config.keyword}</h2>
           <div className="space-y-4">
