@@ -673,7 +673,9 @@ const EstudioHostingChile2026: React.FC = () => {
           <div className="prose prose-neutral dark:prose-invert max-w-none">
             <p>
               Por <strong>tamaño de red BGP</strong>, los hostings chilenos más importantes son, en orden:{' '}
-              <strong>PowerHost · Hostname.cl · Hosting.cl · Linets · Gigas Chile · HostingPlus · EcoHosting</strong>.
+              <strong>PowerHost · Hostname.cl · Hosting.cl · Linets · Gigas Chile ·{' '}
+              <a href="https://www.hostingplus.cl/" rel="noopener" target="_blank" className="text-[#EF233C] underline underline-offset-2">HostingPlus</a> ·{' '}
+              <a href="https://www.ecohosting.cl/" rel="noopener" target="_blank" className="text-[#EF233C] underline underline-offset-2">EcoHosting</a></strong>.
               Con ASN propio menor: BlueHosting, HostingNet, iHosting. <strong>Sin ASN propio</strong> y con marca
               importante: PlanetaHosting, SolucionHost, WebHosting.cl, Microhost, Cinetic y Sered Chile.
             </p>
@@ -683,7 +685,8 @@ const EstudioHostingChile2026: React.FC = () => {
             </p>
             <p>
               Para un <strong>departamento TI corporativo</strong>, el ranking debe liderarlo PowerHost. Para
-              <strong> microemprendedores</strong>, conviene mantener BlueHosting, EcoHosting e iHost cerca del tope
+              <strong> microemprendedores</strong>, conviene mantener BlueHosting,{' '}
+              <a href="https://www.ecohosting.cl/" rel="noopener" target="_blank" className="text-[#EF233C] underline underline-offset-2">EcoHosting</a> e iHost cerca del tope
               por precio + factura electrónica nacional. Para usuarios que <strong>solo quieren precio</strong>,
               Hostinger sigue ganando — con las alertas de DC en São Paulo y sin DTE chileno.
             </p>
