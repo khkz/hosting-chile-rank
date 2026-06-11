@@ -24,6 +24,11 @@ const ROUTES = [
   '/mejor-hosting-chile-2026',
   '/mejor-hosting-wordpress-chile-2026',
   '/mejor-hosting-ecommerce-chile-2026',
+  // Hubs de intención (Authority Part 2)
+  '/mejor-hosting-wordpress-chile',
+  '/mejor-hosting-ecommerce-chile',
+  '/mejor-hosting-pymes-chile',
+  '/mejor-vps-chile',
   '/ranking',
   '/comparativa',
   '/catalogo',
@@ -56,6 +61,30 @@ const ROUTES = [
   '/estudio-hosting-chile-2026',
   '/cotiza-hosting',
 ];
+
+// Build comparativa VS pairs from DB
+async function fetchVsPairRoutes() {
+  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
+  const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!KEY) return [];
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&is_curated=eq.true`, {
+      headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    const slugs = data.map(r => r.slug);
+    const pairs = [];
+    for (const s of slugs) if (s !== 'hostingplus') pairs.push(`/comparativa/${s}-vs-hostingplus`);
+    for (const s of ['hostgator','bluehost','hostingcl','godaddy','cloudhosting']) {
+      if (slugs.includes(s)) pairs.push(`/comparativa/${s}-vs-ecohosting`);
+    }
+    return pairs;
+  } catch (e) {
+    console.log('[prerender] error fetching vs pairs:', e.message);
+    return [];
+  }
+}
 
 // Fetch verified company slugs from Supabase to prerender /catalogo/<slug>
 async function fetchCatalogoSlugs() {
