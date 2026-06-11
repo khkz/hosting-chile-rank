@@ -188,6 +188,16 @@ function App() {
                 <ReviewModeration />
               </ProtectedRoute>
             } />
+            <Route path="/admin/resenas" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminPublicReviews />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reseñas" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminPublicReviews />
+              </ProtectedRoute>
+            } />
             <Route path="/admin/setup" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Setup />
