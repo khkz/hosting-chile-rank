@@ -1,13 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Star, Quote, MessageSquarePlus } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ReviewModal } from '@/components/reviews/ReviewModal';
 
 const Testimonial = () => {
+  const [reviewOpen, setReviewOpen] = useState(false);
   const { data: companies, isLoading: loadingCompanies } = useQuery({
     queryKey: ['verified-companies-logos'],
     queryFn: async () => {
@@ -99,11 +101,13 @@ const Testimonial = () => {
             <p className="text-gray-600 max-w-md mx-auto mb-8">
               Comparte tu experiencia real y ayuda a otros a elegir mejor. Tu opinión será revisada y publicada aquí.
             </p>
-            <Button asChild className="cta-primary px-8 py-4 text-lg rounded-xl font-semibold">
-              <Link to="/vota-hosting">
-                Deja tu reseña
-                <span className="ml-2">→</span>
-              </Link>
+            <Button
+              type="button"
+              onClick={() => setReviewOpen(true)}
+              className="cta-primary px-8 py-4 text-lg rounded-xl font-semibold"
+            >
+              Deja tu reseña
+              <span className="ml-2">→</span>
             </Button>
           </div>
         )}
@@ -141,6 +145,7 @@ const Testimonial = () => {
           </div>
         </div>
       </div>
+      <ReviewModal open={reviewOpen} onOpenChange={setReviewOpen} />
     </section>
   );
 };

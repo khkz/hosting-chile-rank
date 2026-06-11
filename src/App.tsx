@@ -59,6 +59,7 @@ import AdminDashboard from './pages/admin/Dashboard';
 import AdminReputation from './pages/admin/Reputation';
 import AdminBenchmarkRuns from './pages/admin/BenchmarkRuns';
 import ReviewModeration from './pages/admin/ReviewModeration';
+import AdminPublicReviews from './pages/admin/PublicReviews';
 import Setup from './pages/admin/Setup';
 import Companies from './pages/admin/Companies';
 import AdminCertifications from './pages/admin/Certifications';
@@ -185,6 +186,16 @@ function App() {
             <Route path="/admin/reviews" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <ReviewModeration />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/resenas" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminPublicReviews />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reseñas" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminPublicReviews />
               </ProtectedRoute>
             } />
             <Route path="/admin/setup" element={

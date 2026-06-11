@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ExternalLink, ArrowRight, Star } from 'lucide-react';
+import { useReviewStats } from '@/hooks/useReviewStats';
 
 // Orden y notas oficiales (4–10). Fuente única de verdad para el ranking extendido.
 export const EXTRA_RANKING: Array<{
@@ -44,6 +45,7 @@ const RankingPositions4to10: React.FC = () => {
   });
 
   const bySlug = new Map((data ?? []).map((d) => [d.slug, d]));
+  const { data: reviewStats } = useReviewStats(slugs);
 
   return (
     <section
@@ -81,6 +83,12 @@ const RankingPositions4to10: React.FC = () => {
                     <span className="inline-block bg-primary/10 text-primary font-bold px-2 py-1 rounded">
                       {row.rating.toFixed(1)}
                     </span>
+                    {reviewStats?.[row.slug] && (
+                      <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        {reviewStats[row.slug].avg.toFixed(1)} · {reviewStats[row.slug].count}
+                      </span>
+                    )}
                   </td>
                   <td className="p-3 text-foreground">{formatPrice(db?.promo_price)}</td>
                   <td className="p-3 text-muted-foreground">{row.keyFeature}</td>
@@ -130,6 +138,13 @@ const RankingPositions4to10: React.FC = () => {
                   {row.rating.toFixed(1)}
                 </span>
               </div>
+              {reviewStats?.[row.slug] && (
+                <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  <span className="font-semibold text-foreground">{reviewStats[row.slug].avg.toFixed(1)}</span>
+                  · {reviewStats[row.slug].count} reseña{reviewStats[row.slug].count === 1 ? '' : 's'}
+                </p>
+              )}
               <p className="text-sm text-muted-foreground mb-1">{row.keyFeature}</p>
               <p className="text-sm text-foreground mb-3">
                 Desde <strong>{formatPrice(db?.promo_price)}</strong>

@@ -16,6 +16,7 @@ import HostingSectionsNav from '@/components/HostingSectionsNav';
 import TechnicalGlossary from '@/components/TechnicalGlossary';
 import RelatedContent from '@/components/RelatedContent';
 import LogoTile from '@/components/LogoTile';
+import { useReviewStats } from '@/hooks/useReviewStats';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -60,6 +61,8 @@ const CatalogoPage = () => {
         return sorted;
     }
   }, [companies, sortBy]);
+
+  const { data: reviewStats } = useReviewStats(sortedCompanies.map((c) => c.slug));
   
   return (
     <>
@@ -160,11 +163,20 @@ const CatalogoPage = () => {
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center gap-3 mb-3 flex-wrap">
                         <div className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded-md text-sm font-medium">
                           <Star className="h-3 w-3 fill-current" />
                           {company.overall_rating?.toFixed(1) || 'N/A'}/10
                         </div>
+                        {reviewStats?.[company.slug] && (
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span className="font-medium text-foreground">
+                              {reviewStats[company.slug].avg.toFixed(1)}
+                            </span>
+                            · {reviewStats[company.slug].count} reseña{reviewStats[company.slug].count === 1 ? '' : 's'}
+                          </div>
+                        )}
                         {company.year_founded && (
                           <div className="text-xs text-muted-foreground">
                             Desde {company.year_founded}
