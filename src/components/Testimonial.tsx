@@ -101,11 +101,13 @@ const Testimonial = () => {
             <p className="text-gray-600 max-w-md mx-auto mb-8">
               Comparte tu experiencia real y ayuda a otros a elegir mejor. Tu opinión será revisada y publicada aquí.
             </p>
-            <Button asChild className="cta-primary px-8 py-4 text-lg rounded-xl font-semibold">
-              <Link to="/vota-hosting">
-                Deja tu reseña
-                <span className="ml-2">→</span>
-              </Link>
+            <Button
+              type="button"
+              onClick={() => setReviewOpen(true)}
+              className="cta-primary px-8 py-4 text-lg rounded-xl font-semibold"
+            >
+              Deja tu reseña
+              <span className="ml-2">→</span>
             </Button>
           </div>
         )}
