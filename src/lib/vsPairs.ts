@@ -51,8 +51,8 @@ export function getAllVsPairs(): VsPair[] {
     for (let j = i + 1; j < slugs.length; j++) {
       const x = slugs[i], y = slugs[j];
       const pair = canonicalPair(x, y);
-      const [a, b] = pair.split(/-vs-(?=[^-]*$)/); // last "-vs-"
-      const involvesAnchor = isAnchor(x) || isAnchor(y);
+      const parsed = parsePair(pair)!;
+      const a = parsed.a, b = parsed.b;
       const anchor = isAnchor(x) ? x : isAnchor(y) ? y : undefined;
       const competitor = anchor ? (anchor === x ? y : x) : undefined;
       const obj: VsPair = { pair, a, b, involvesAnchor, anchor, competitor };
