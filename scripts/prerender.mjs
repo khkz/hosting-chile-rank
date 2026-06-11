@@ -232,7 +232,13 @@ async function main() {
     const vsRoutes = await fetchVsPairRoutes(slugs);
     const altRoutes = await fetchAlternativasRoutes(slugs);
     const migrarRoutes = await fetchMigrarRoutes(slugs);
-    const allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes, ...altRoutes, ...migrarRoutes];
+    let allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes, ...altRoutes, ...migrarRoutes];
+    // PRERENDER_ONLY="/ruta1,/ruta2" → re-renderizar solo esas rutas.
+    if (process.env.PRERENDER_ONLY) {
+      const only = new Set(process.env.PRERENDER_ONLY.split(',').map(s => s.trim()).filter(Boolean));
+      allRoutes = allRoutes.filter(r => only.has(r));
+      log(`PRERENDER_ONLY activo: ${allRoutes.length} rutas`);
+    }
     log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} VS + ${altRoutes.length} alternativas + ${migrarRoutes.length} migración`);
 
 
