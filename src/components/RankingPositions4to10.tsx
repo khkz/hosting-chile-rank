@@ -23,6 +23,16 @@ export const EXTRA_RANKING: Array<{
   { position: 10, slug: 'hn', displayName: 'HN.cl', rating: 7.8, keyFeature: 'SSD con datacenter en Chile' },
 ];
 
+const getMinPrice = (db: any): number | null => {
+  if (db?.promo_price && db.promo_price > 0) return db.promo_price;
+  const plans = db?.hosting_plans as Array<{ price_monthly: number }> | undefined;
+  if (plans && plans.length > 0) {
+    const prices = plans.map((p) => p.price_monthly).filter((p) => typeof p === 'number' && p > 0);
+    if (prices.length > 0) return Math.min(...prices);
+  }
+  return null;
+};
+
 const formatPrice = (price: number | null | undefined) => {
   if (!price || price <= 0) return 'Consultar';
   return `$${price.toLocaleString('es-CL')}/mes`;
@@ -36,7 +46,7 @@ const RankingPositions4to10: React.FC = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
-        .select('slug, name, website, promo_price')
+        .select('slug, name, website, promo_price, hosting_plans(price_monthly)')
         .in('slug', slugs);
       if (error) throw error;
       return data ?? [];
@@ -90,7 +100,7 @@ const RankingPositions4to10: React.FC = () => {
                       </span>
                     )}
                   </td>
-                  <td className="p-3 text-foreground">{formatPrice(db?.promo_price)}</td>
+                  <td className="p-3 text-foreground">{formatPrice(getMinPrice(db))}</td>
                   <td className="p-3 text-muted-foreground">{row.keyFeature}</td>
                   <td className="p-3 text-right">
                     <div className="flex justify-end gap-2">
@@ -147,7 +157,7 @@ const RankingPositions4to10: React.FC = () => {
               )}
               <p className="text-sm text-muted-foreground mb-1">{row.keyFeature}</p>
               <p className="text-sm text-foreground mb-3">
-                Desde <strong>{formatPrice(db?.promo_price)}</strong>
+                Desde <strong>{formatPrice(getMinPrice(db))}</strong>
               </p>
               <div className="flex gap-2">
                 <Button asChild variant="outline" size="sm" className="flex-1 min-h-[44px]">
