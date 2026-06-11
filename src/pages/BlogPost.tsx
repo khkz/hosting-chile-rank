@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import RecommendedByData from '@/components/RecommendedByData';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -587,6 +588,7 @@ const BlogPost = () => {
         </div>
       </main>
       
+      <div className="container mx-auto px-4 py-8 max-w-4xl"><RecommendedByData /></div>
       <Footer />
     </>
   );

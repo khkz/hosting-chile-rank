@@ -10,7 +10,7 @@ const Footer = () => {
     <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-8 md:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
           
           {/* Brand Column */}
           <div className="md:col-span-1">
@@ -72,6 +72,18 @@ const Footer = () => {
             </ul>
           </div>
 
+
+          {/* Mejor hosting por uso */}
+          <div>
+            <h4 className="text-lg font-semibold text-white mb-4">Mejor hosting por uso</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link to="/mejor-hosting-wordpress-chile" className="text-gray-300 hover:text-white transition-colors">Mejor Hosting WordPress</Link></li>
+              <li><Link to="/mejor-hosting-ecommerce-chile" className="text-gray-300 hover:text-white transition-colors">Mejor Hosting Ecommerce</Link></li>
+              <li><Link to="/mejor-hosting-pymes-chile" className="text-gray-300 hover:text-white transition-colors">Mejor Hosting PYMES</Link></li>
+              <li><Link to="/mejor-vps-chile" className="text-gray-300 hover:text-white transition-colors">Mejor VPS Chile</Link></li>
+              <li><Link to="/mejor-hosting-chile-2026" className="text-gray-300 hover:text-white transition-colors">Ranking general 2026</Link></li>
+            </ul>
+          </div>
 
           {/* Contact Column */}
           <div>

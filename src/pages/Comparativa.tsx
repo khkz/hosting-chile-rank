@@ -21,6 +21,8 @@ import { useIsMobile } from '../hooks/use-mobile';
 import HostingProviderCard from '../components/HostingProviderCard';
 import { Check, X, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { getAllVsPairs } from '@/lib/vsPairs';
 
 interface HostingProvider {
   id: string;
@@ -406,6 +408,25 @@ const ComparativaPage = () => {
             >
               Visitar HostingPlus
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Comparativas de marcas (programmatic VS) */}
+      <section className="py-12 bg-white border-t">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <h2 className="text-2xl font-bold text-[#2B2D42] mb-2">Comparativas de marcas</h2>
+          <p className="text-sm text-gray-600 mb-6">Comparativas 1-a-1 entre proveedores del catálogo, con datos verificables.</p>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {getAllVsPairs().map(({ pair }) => (
+              <Link
+                key={pair}
+                to={`/comparativa/${pair}`}
+                className="text-sm px-3 py-2 rounded border border-gray-200 hover:border-[#EF233C] hover:text-[#EF233C] transition truncate"
+              >
+                {pair.replace('-vs-', ' vs ')}
+              </Link>
+            ))}
           </div>
         </div>
       </section>

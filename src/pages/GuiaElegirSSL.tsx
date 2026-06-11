@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import RecommendedByData from '@/components/RecommendedByData';
 import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -267,6 +268,7 @@ const GuiaElegirSSL = () => {
       </main>
       
       <StickyCTA />
+      <div className="container mx-auto px-4 py-8 max-w-4xl"><RecommendedByData /></div>
       <Footer />
     </>
   );

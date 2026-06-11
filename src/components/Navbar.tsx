@@ -74,6 +74,10 @@ const toolsItems: NavItem[] = [
 
 const guidesItems: NavItem[] = [
   { to: '/mejor-hosting-chile-2026', label: 'Mejor Hosting Chile 2026', icon: Star },
+  { to: '/mejor-hosting-wordpress-chile', label: 'Mejor Hosting WordPress', icon: Star },
+  { to: '/mejor-hosting-ecommerce-chile', label: 'Mejor Hosting Ecommerce', icon: Star },
+  { to: '/mejor-hosting-pymes-chile', label: 'Mejor Hosting PYMES', icon: Star },
+  { to: '/mejor-vps-chile', label: 'Mejor VPS Chile', icon: Star },
   { to: '/guia-elegir-hosting', label: 'Cómo elegir Hosting', icon: FileText },
   { to: '/guia-elegir-vps', label: 'Cómo elegir VPS', icon: FileText },
   { to: '/guia-elegir-servidor-dedicado', label: 'Cómo elegir Servidor Dedicado', icon: FileText },

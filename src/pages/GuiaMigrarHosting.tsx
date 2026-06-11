@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import RecommendedByData from '@/components/RecommendedByData';
 import AuthorByline from '@/components/AuthorByline';
 import GuideEEAT from '@/components/GuideEEAT';
 import heroImg from '@/assets/guia-migrar-hosting-hero.jpg';
@@ -357,6 +358,7 @@ const GuiaMigrarHosting = () => {
       </div>
       
       <StickyCTA />
+      <div className="container mx-auto px-4 py-8 max-w-4xl"><RecommendedByData /></div>
       <Footer />
     </>
   );

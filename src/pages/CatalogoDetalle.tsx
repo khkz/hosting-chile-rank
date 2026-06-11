@@ -346,6 +346,22 @@ const CatalogoDetalle = () => {
 
         <BrandFAQ companyName={company.name} items={seoData.faqItems} />
 
+        {slug && slug !== 'hostingplus' && (
+          <section className="mt-12">
+            <a
+              href={`/comparativa/${slug}-vs-hostingplus`}
+              className="block p-5 rounded-xl border-2 border-[#EF233C] bg-gradient-to-r from-[#EF233C]/5 to-white hover:from-[#EF233C]/10 transition"
+            >
+              <span className="text-sm uppercase tracking-wide text-[#EF233C] font-semibold">Comparativa</span>
+              <p className="text-lg md:text-xl font-bold text-[#2B2D42] mt-1">
+                Compáralo con el #1: {company.name} vs HostingPlus.cl →
+              </p>
+              <p className="text-sm text-gray-600 mt-1">Tabla lado a lado con nota, precio, datacenter y reseñas verificadas.</p>
+            </a>
+          </section>
+        )}
+
+
         <section className="mt-12">
           <ReputationCard companyId={company.id} companyName={company.name} />
         </section>
