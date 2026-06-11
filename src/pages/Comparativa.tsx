@@ -22,7 +22,7 @@ import HostingProviderCard from '../components/HostingProviderCard';
 import { Check, X, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { getAllVsPairs } from '@/lib/vsPairs';
+import { getAllVsPairs, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING, getCompetitorPairsGroupedByCompany } from '@/lib/vsPairs';
 
 interface HostingProvider {
   id: string;
