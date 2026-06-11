@@ -144,21 +144,25 @@ function die(msg) {
 }
 
 async function loadPuppeteer() {
-  // Prefer full `puppeteer` (bundles chromium via postinstall download).
+  // 1) Si hay un Chromium del sistema (PUPPETEER_EXECUTABLE_PATH o rutas conocidas),
+  //    usar puppeteer-core directamente — es lo que funciona en el sandbox de Lovable.
+  const sysChromium = await findSystemChromium();
+  if (sysChromium) {
+    try {
+      const mod = (await import('puppeteer-core')).default;
+      log(`Usando puppeteer-core + chromium del sistema (${sysChromium})`);
+      return { mod, kind: 'core' };
+    } catch (e) {
+      log('puppeteer-core no disponible:', e.message);
+    }
+  }
+  // 2) Fallback: paquete `puppeteer` completo (chromium bundled via postinstall).
   try {
     const mod = (await import('puppeteer')).default;
     log('Usando paquete `puppeteer` (chromium bundled)');
     return { mod, kind: 'full' };
   } catch (e) {
-    log('puppeteer (full) no disponible:', e.message);
-  }
-  // Fallback a puppeteer-core con chromium del sistema.
-  try {
-    const mod = (await import('puppeteer-core')).default;
-    log('Usando `puppeteer-core` + chromium del sistema');
-    return { mod, kind: 'core' };
-  } catch (e) {
-    die('Ni `puppeteer` ni `puppeteer-core` están instalados: ' + e.message);
+    die('Ni chromium del sistema ni `puppeteer` (full) disponibles: ' + e.message);
   }
 }
 
@@ -203,7 +207,17 @@ async function main() {
 
     const launchOpts = {
       headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        // CRÍTICO con concurrencia: sin estos flags, las pestañas en background
+        // throttlean requestAnimationFrame y react-helmet-async NUNCA aplica
+        // title/canonical/meta (quedaría el <head> genérico del index.html).
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+      ],
     };
     if (kind === 'core') {
       const chromiumPath = await findSystemChromium();
@@ -218,30 +232,76 @@ async function main() {
     const vsRoutes = await fetchVsPairRoutes(slugs);
     const altRoutes = await fetchAlternativasRoutes(slugs);
     const migrarRoutes = await fetchMigrarRoutes(slugs);
-    const allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes, ...altRoutes, ...migrarRoutes];
+    let allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes, ...altRoutes, ...migrarRoutes];
+    // PRERENDER_ONLY="/ruta1,/ruta2" → re-renderizar solo esas rutas.
+    if (process.env.PRERENDER_ONLY) {
+      const only = new Set(process.env.PRERENDER_ONLY.split(',').map(s => s.trim()).filter(Boolean));
+      allRoutes = allRoutes.filter(r => only.has(r));
+      log(`PRERENDER_ONLY activo: ${allRoutes.length} rutas`);
+    }
     log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} VS + ${altRoutes.length} alternativas + ${migrarRoutes.length} migración`);
 
 
-    let ok = 0, fail = 0;
-    for (const route of allRoutes) {
+    // COPY_TO_PUBLIC=1: además de dist/, escribir el HTML en public/<ruta>/index.html
+    // para dejarlo COMMITEADO (la plataforma de Lovable NO ejecuta este script en el
+    // build de producción; Vite copia public/ tal cual a dist/, así el HTML por ruta
+    // llega a producción garantizado). La raíz '/' nunca se escribe en public/
+    // (conflicto con el index.html de Vite).
+    const COPY_TO_PUBLIC = process.env.COPY_TO_PUBLIC === '1';
+    const PUBLIC_DIR = join(ROOT, 'public');
+    const CONCURRENCY = Math.max(1, Number(process.env.PRERENDER_CONCURRENCY || 6));
+
+    let ok = 0, fail = 0, cursor = 0;
+    const renderOne = async (route) => {
       const url = `${ORIGIN}${route}`;
+      const page = await browser.newPage();
       try {
-        const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (compatible; LovablePrerender/1.0)');
+        // En pestañas en background Chromium NO dispara requestAnimationFrame,
+        // y react-helmet-async lo usa para aplicar title/canonical/meta.
+        // Shim: rAF → setTimeout (los timers SÍ corren en background).
+        await page.evaluateOnNewDocument(() => {
+          window.requestAnimationFrame = (cb) => window.setTimeout(() => cb(performance.now()), 16);
+          window.cancelAnimationFrame = (id) => window.clearTimeout(id);
+        });
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 25000 });
-        await new Promise(r => setTimeout(r, 800));
+        // Esperar a que react-helmet-async haya aplicado los tags del <head>
+        // (marca los tags gestionados con data-rh). Tolerante: si una ruta no
+        // usa Helmet, seguimos tras el timeout.
+        await page.waitForFunction(
+          () => !!document.head.querySelector('[data-rh]'),
+          { timeout: 8000 }
+        ).catch(() => {});
+        await new Promise(r => setTimeout(r, 400));
         const html = await page.content();
-        await page.close();
 
         const outDir = route === '/' ? DIST : join(DIST, route);
         await mkdir(outDir, { recursive: true });
         await writeFile(join(outDir, 'index.html'), html, 'utf8');
+        if (COPY_TO_PUBLIC && route !== '/') {
+          const pubDir = join(PUBLIC_DIR, route);
+          await mkdir(pubDir, { recursive: true });
+          await writeFile(join(pubDir, 'index.html'), html, 'utf8');
+        }
         ok++;
-      } catch (e) {
-        fail++;
-        warn(`✗ ${route}: ${e.message}`);
+      } finally {
+        await page.close().catch(() => {});
       }
-    }
+    };
+
+    const workers = Array.from({ length: CONCURRENCY }, async () => {
+      while (cursor < allRoutes.length) {
+        const route = allRoutes[cursor++];
+        try {
+          await renderOne(route);
+          if ((ok + fail) % 25 === 0) log(`Progreso: ${ok + fail}/${allRoutes.length}`);
+        } catch (e) {
+          fail++;
+          warn(`✗ ${route}: ${e.message}`);
+        }
+      }
+    });
+    await Promise.all(workers);
 
     await browser.close();
     log(`Resultado: ${ok} ok, ${fail} fallidas, ${allRoutes.length} totales.`);

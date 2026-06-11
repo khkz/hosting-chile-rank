@@ -24,12 +24,18 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
+        // IMPORTANTE: nombres SIN hash. El HTML prerenderizado commiteado en public/
+        // referencia /assets/index.js y /assets/index.css; con hashes, cada rebuild
+        // de la plataforma rompería esas referencias. El cache-busting se pierde,
+        // pero garantiza que los HTML estáticos sigan hidratando tras cada publish.
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
         assetFileNames: (assetInfo) => {
           // Preserve XML and TXT files in their original location at root
           if (assetInfo.name && (assetInfo.name.endsWith('.xml') || assetInfo.name.endsWith('.txt'))) {
             return '[name][extname]';
           }
-          return 'assets/[name]-[hash][extname]';
+          return 'assets/[name][extname]';
         },
       },
     },
