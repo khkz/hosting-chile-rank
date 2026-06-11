@@ -157,7 +157,7 @@ const RankingPositions4to10: React.FC = () => {
               )}
               <p className="text-sm text-muted-foreground mb-1">{row.keyFeature}</p>
               <p className="text-sm text-foreground mb-3">
-                Desde <strong>{formatPrice(db?.promo_price)}</strong>
+                Desde <strong>{formatPrice(getMinPrice(db))}</strong>
               </p>
               <div className="flex gap-2">
                 <Button asChild variant="outline" size="sm" className="flex-1 min-h-[44px]">
