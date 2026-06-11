@@ -36,7 +36,7 @@ const RankingPositions4to10: React.FC = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
-        .select('slug, name, website, promo_price')
+        .select('slug, name, website, promo_price, hosting_plans(price_monthly)')
         .in('slug', slugs);
       if (error) throw error;
       return data ?? [];
