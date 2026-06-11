@@ -40,6 +40,7 @@ interface RankingCompany {
   promo_price: number | null;
   original_price: number | null;
   price_period: string;
+  updated_at?: string | null;
   // derived
   sortPosition: number;
 }
