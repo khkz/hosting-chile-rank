@@ -33,6 +33,11 @@ import GuiaCompletaElegirHosting from './pages/GuiaCompletaElegirHosting';
 import ErroresComunesHosting from './pages/ErroresComunesHosting';
 import MejorHostingWordPressChile from './pages/MejorHostingWordPressChile';
 import MejorHostingEcommerceChile from './pages/MejorHostingEcommerceChile';
+import HubWordPress from './pages/hubs/HubWordPress';
+import HubEcommerce from './pages/hubs/HubEcommerce';
+import HubPymes from './pages/hubs/HubPymes';
+import HubVPS from './pages/hubs/HubVPS';
+import ComparativaRouteDispatcher from './components/ComparativaRouteDispatcher';
 import RecursosHosting from './pages/RecursosHosting';
 import Resena from './pages/Resena';
 import Catalogo from './pages/Catalogo';
@@ -135,11 +140,13 @@ function App() {
         <Route path="/errores-comunes-elegir-hosting" element={<ErroresComunesHosting />} />
         <Route path="/errores-comunes-hosting-chile" element={<ErroresComunesHosting />} />
         <Route path="/mejor-hosting-wordpress-chile-2026" element={<MejorHostingWordPressChile />} />
-        <Route path="/mejor-hosting-wordpress-chile-2025" element={<Navigate to="/mejor-hosting-wordpress-chile-2026" replace />} />
-        <Route path="/mejor-hosting-wordpress-chile" element={<MejorHostingWordPressChile />} />
+        <Route path="/mejor-hosting-wordpress-chile-2025" element={<Navigate to="/mejor-hosting-wordpress-chile" replace />} />
+        <Route path="/mejor-hosting-wordpress-chile" element={<HubWordPress />} />
         <Route path="/mejor-hosting-ecommerce-chile-2026" element={<MejorHostingEcommerceChile />} />
-        <Route path="/mejor-hosting-ecommerce-chile-2025" element={<Navigate to="/mejor-hosting-ecommerce-chile-2026" replace />} />
-        <Route path="/mejor-hosting-ecommerce-chile" element={<MejorHostingEcommerceChile />} />
+        <Route path="/mejor-hosting-ecommerce-chile-2025" element={<Navigate to="/mejor-hosting-ecommerce-chile" replace />} />
+        <Route path="/mejor-hosting-ecommerce-chile" element={<HubEcommerce />} />
+        <Route path="/mejor-hosting-pymes-chile" element={<HubPymes />} />
+        <Route path="/mejor-vps-chile" element={<HubVPS />} />
         <Route path="/recursos-hosting-chile" element={<RecursosHosting />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/resenas/:slug" element={<Resena />} />
@@ -173,7 +180,7 @@ function App() {
         <Route path="/vs/:rival" element={<VsComparison />} />
         {/* 301 a canonical /vs/:rival para evitar duplicados */}
         <Route path="/comparar/:rival" element={<VsAliasRedirect />} />
-        <Route path="/comparativa/:rival" element={<VsAliasRedirect />} />
+        <Route path="/comparativa/:rival" element={<ComparativaRouteDispatcher />} />
         <Route path="/reclamos" element={<Reclamos />} />
         <Route path="/verificar-reclamo" element={<VerificarReclamo />} />
         <Route path="/contacto" element={<Contacto />} />
