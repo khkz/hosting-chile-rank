@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import AvailabilityBadge from './AvailabilityBadge';
 import IndependenceBadge from './IndependenceBadge';
+import RankingPositions4to10 from './RankingPositions4to10';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
@@ -385,14 +386,17 @@ const HostingRanking = () => {
           </ol>
         )}
 
+        {/* Puestos 4 a 10 */}
+        <RankingPositions4to10 />
+
         {/* More Providers Link */}
-        <div className="text-center">
+        <div className="text-center mt-10">
           <div className="inline-block bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border">
             <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3">
               ¿Necesitas más opciones?
             </h3>
             <p className="text-muted-foreground mb-4 text-sm md:text-base">
-              Revisa nuestro ranking completo con 9 proveedores analizados
+              Revisa nuestro ranking completo con 10 proveedores analizados
             </p>
             <Link
               to="/ranking"
