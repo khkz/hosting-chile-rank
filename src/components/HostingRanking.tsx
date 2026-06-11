@@ -51,7 +51,10 @@ interface RankingCardProps {
   isWinner: boolean;
 }
 
+import { useReviewStatsForSlug } from '@/hooks/useReviewStats';
+
 const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinner }) => {
+  const { data: userStats } = useReviewStatsForSlug(provider.slug);
   const borderClass = isWinner ? `border-4 ${provider.border_color || 'border-primary'}` : 'border-2 border-border';
   const numberSize = isWinner ? 'w-16 h-16 text-2xl md:w-20 md:h-20 md:text-3xl' : 'w-14 h-14 text-xl md:w-16 md:h-16 md:text-2xl';
   const numberBg = isWinner
