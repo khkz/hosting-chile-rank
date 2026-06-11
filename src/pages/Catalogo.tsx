@@ -139,12 +139,15 @@ const CatalogoPage = () => {
 
                 return (
                   <Card key={company.id} className="overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
-                    <LogoTile
-                      name={company.name}
-                      logoUrl={company.logo_url}
-                      className="h-32 border-b"
-                      maxLogoHeight={56}
-                    />
+                    {company.logo_url && (
+                      <LogoTile
+                        name={company.name}
+                        logoUrl={company.logo_url}
+                        className="h-32 border-b"
+                        maxLogoHeight={56}
+                      />
+                    )}
+
                     <CardContent className="flex-grow pt-6">
                       <div className="flex items-start justify-between mb-2">
                         <h2 className="text-xl font-semibold">{company.name}</h2>
