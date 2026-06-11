@@ -165,7 +165,6 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
           </div>
 
 
-          </div>
 
           {/* Features */}
           <ul className="space-y-2 mb-4 text-sm">
