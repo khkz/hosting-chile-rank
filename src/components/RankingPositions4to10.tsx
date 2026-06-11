@@ -138,6 +138,13 @@ const RankingPositions4to10: React.FC = () => {
                   {row.rating.toFixed(1)}
                 </span>
               </div>
+              {reviewStats?.[row.slug] && (
+                <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  <span className="font-semibold text-foreground">{reviewStats[row.slug].avg.toFixed(1)}</span>
+                  · {reviewStats[row.slug].count} reseña{reviewStats[row.slug].count === 1 ? '' : 's'}
+                </p>
+              )}
               <p className="text-sm text-muted-foreground mb-1">{row.keyFeature}</p>
               <p className="text-sm text-foreground mb-3">
                 Desde <strong>{formatPrice(db?.promo_price)}</strong>
