@@ -38,6 +38,7 @@ import HubEcommerce from './pages/hubs/HubEcommerce';
 import HubPymes from './pages/hubs/HubPymes';
 import HubVPS from './pages/hubs/HubVPS';
 import ComparativaRouteDispatcher from './components/ComparativaRouteDispatcher';
+import DirectorioRedirect from './components/DirectorioRedirect';
 import RecursosHosting from './pages/RecursosHosting';
 import Resena from './pages/Resena';
 import Catalogo from './pages/Catalogo';
@@ -283,8 +284,8 @@ function App() {
                 <SeoDashboard />
               </ProtectedRoute>
             } />
-            {/* 301 Redirect: Consolidate directorio into catalogo */}
-            <Route path="/directorio-hosting-chile" element={<Navigate to="/catalogo" replace />} />
+            {/* Canonical → /catalogo + noindex,follow + redirect cliente */}
+            <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

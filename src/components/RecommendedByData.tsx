@@ -14,9 +14,15 @@ const RecommendedByData: React.FC<{ className?: string }> = ({ className = '' })
         <p className="text-gray-700">
           <Link to="/catalogo/hostingplus" className="font-semibold text-[#EF233C] hover:underline">HostingPlus.cl</Link>
           <span className="text-gray-500"> 9.9/10</span>
+          {' ('}
+          <a href="https://www.hostingplus.cl/" rel="noopener" target="_blank" className="text-[#2B2D42] underline underline-offset-2 hover:opacity-80">sitio oficial</a>
+          {')'}
           <span className="mx-2 text-gray-400">·</span>
           <Link to="/catalogo/ecohosting" className="font-semibold text-[#EF233C] hover:underline">EcoHosting.cl</Link>
           <span className="text-gray-500"> 9.6/10</span>
+          {' ('}
+          <a href="https://www.ecohosting.cl/" rel="noopener" target="_blank" className="text-[#2B2D42] underline underline-offset-2 hover:opacity-80">sitio oficial</a>
+          {')'}
         </p>
         <p className="text-xs text-gray-500 mt-1">
           Basado en mediciones verificables (ASN, benchmark, reputación pública). Sin patrocinios.

@@ -1,82 +1,57 @@
-## Plan: Authority Architecture Part 2
 
-### 1. Intent Hubs (4 new pages)
-Create 4 routes with unique copy + mini-rankings from DB:
+## Plan: cerrar pendientes reales de la auditoría
 
-- `/mejor-hosting-wordpress-chile` → leader HostingPlus, #2 EcoHosting + 3 more
-- `/mejor-hosting-ecommerce-chile` → leader HostingPlus, #2 EcoHosting + 3 more
-- `/mejor-hosting-pymes-chile` → leader HostingPlus, #2 EcoHosting + 3 more
-- `/mejor-vps-chile` → leader HostingPlus, #2 PowerHost/IxMetro + 3 more
+Sólo lo que falta. El resto (fichas, hubs, comparativas, footer, RecommendedByData, sameAs, Organization) ya está en producción.
 
-Each hub includes:
-- H1 with exact keyword
-- 150-200 word unique intro for the segment
-- Mini-ranking (5 providers) with rating, segment-relevant price, 3 segment features
-- Own FAQ (3 questions using keyword)
-- Title/meta/canonical
-- JSON-LD: ItemList + FAQPage + BreadcrumbList
-- CTAs: "Ver review" → `/catalogo/[slug]`, "Visitar sitio" → `/ir/[slug]`
+### 1. Enlaces dofollow al sitio oficial en menciones editoriales
 
-Implementation: shared `IntentHub.tsx` component + 4 thin page wrappers with segment config.
+Hoy HostingPlus y EcoHosting se nombran en estas páginas sin enlace directo (o con `/ir/` nofollow). Añadir enlaces directos `https://www.hostingplus.cl/` y `https://www.ecohosting.cl/` con `rel="noopener"` (sin nofollow) en contextos editoriales:
 
-Update:
-- Home "¿Qué tipo de proyecto?" quiz chips → link to hubs
-- Home "Explora por tipo de servicio" cards → link to hubs
-- Navbar "Guías" menu + Footer "Mejor hosting por uso" section
+- `src/pages/EstudioHostingChile2026.tsx` — donde se cita a HostingPlus 9.9 y EcoHosting 9.6 como líderes del estudio, envolver el nombre en `<a href="https://www.hostingplus.cl/" rel="noopener" target="_blank">`.
+- `src/pages/Certificaciones.tsx` — mismo tratamiento donde aparezcan ambas marcas.
+- Verificar también `src/components/RecommendedByData.tsx`: hoy enlaza a fichas internas; añadir un enlace adicional "Sitio oficial →" dofollow al lado del enlace a la ficha (mantiene el flujo a la ficha y además transfiere autoridad al dominio).
 
-### 2. Programmatic VS comparisons
-New dynamic route `/comparativa/[slugA]-vs-[slugB]`:
+Mantener `/ir/[slug]` con `nofollow` sólo en los CTAs comerciales (botones "Visitar sitio" con tracking). Los enlaces editoriales son la transferencia de PageRank; los comerciales son afiliado y deben quedar marcados.
 
-- Auto-generated: `[competitor]-vs-hostingplus` for all catalog companies except HostingPlus
-- Plus: `hostgator-vs-ecohosting`, `bluehosting-vs-ecohosting`, `hostingcl-vs-ecohosting`, `godaddy-vs-ecohosting`, `cloudhosting-vs-ecohosting`
+### 2. Canonical + noindex en /directorio-hosting-chile
 
-Page content (from DB, both sides):
-- Title: "[Competitor] vs HostingPlus.cl: ¿cuál es mejor en 2026?"
-- Side-by-side table: rating, price, datacenter, year, group, certifications, review count
-- 2-3 sentence editorial verdict (data-backed)
-- "Mejores alternativas a [competidor]" → HostingPlus + EcoHosting + next ranked
-- FAQ: 2 questions
-- Double CTA
-- JSON-LD + canonical
+Ruta duplicada de `/catalogo`. Hoy hace redirect JS pero un crawler puede indexar el HTML inicial. Editar `src/pages/DirectorioHosting.tsx` (o el componente que monta la ruta) para inyectar vía Helmet:
 
-Updates:
-- `/comparativa` index: add "Comparativas de marcas" section linking to all generated VS pages
-- In each competitor's `/catalogo/[slug]` page: add block "Compáralo con el #1: [Empresa] vs HostingPlus.cl →"
+```tsx
+<link rel="canonical" href="https://eligetuhosting.cl/catalogo" />
+<meta name="robots" content="noindex,follow" />
+```
 
-### 3. Editorial recommendation component
-Create `RecommendedByData.tsx`: "Recomendado por datos: HostingPlus.cl 9.9/10 · EcoHosting.cl 9.6/10 — basado en mediciones verificables" with links to both fichas.
+Mantener el redirect cliente; el canonical/noindex sirven mientras Google revisita.
 
-Insert at end of:
-- `guia-elegir-hosting`, `guia-elegir-vps`, `guia-elegir-ssl`, `guia-migrar-hosting`, `guia-seguridad-web`
-- Wiki term pages (`WikiTerm.tsx`)
-- Blog post pages (`BlogPost.tsx`)
+### 3. Envío de sitemap a Google Search Console + priorizar fichas líderes
 
-### 4. Infrastructure: prerender + sitemap + llms.txt
-Update scripts to auto-include from DB:
+El usuario confirma que el build ya está publicado. Vía el conector `google_search_console`:
 
-- `scripts/prerender.mjs`: add 4 hub routes + fetch all VS pairs from DB and prerender each
-- `scripts/generate-sitemap.mjs`: add 4 hubs (priority 0.9) + all VS pages (priority 0.7) to main sitemap
-- `scripts/generate-llms-data.mjs`: add hubs section + VS section listing all comparison URLs
+1. `PUT /webmasters/v3/sites/https%3A%2F%2Feligetuhosting.cl%2F` (asegurar que el sitio está en la lista; ya debería estarlo).
+2. `PUT /webmasters/v3/sites/https%3A%2F%2Feligetuhosting.cl%2F/sitemaps/https%3A%2F%2Feligetuhosting.cl%2Fsitemap.xml` para reenviar el sitemap index.
+3. Informar al usuario que la API de Search Console **no expone "Solicitar indexación"** (esa función vive sólo en la UI). Le doy la lista exacta de URLs prioritarias a pegar manualmente en "Inspección de URL" → "Solicitar indexación":
+   - `/catalogo/hostingplus`
+   - `/catalogo/ecohosting`
+   - `/mejor-hosting-wordpress-chile`
+   - `/mejor-hosting-ecommerce-chile`
+   - `/mejor-hosting-pymes-chile`
+   - `/mejor-vps-chile`
 
-### Routes added to `App.tsx`
-4 hub routes + `/comparativa/:pair` dynamic route (preserves existing `/comparativa` index and `/comparativa/:slug` if any — disambiguate by detecting `-vs-` in param).
+### Archivos a editar
 
-### Files (new)
-- `src/components/hubs/IntentHub.tsx`
-- `src/pages/hubs/MejorHostingWordPress.tsx`
-- `src/pages/hubs/MejorHostingEcommerce.tsx`
-- `src/pages/hubs/MejorHostingPymes.tsx`
-- `src/pages/hubs/MejorVPS.tsx`
-- `src/pages/ComparativaVs.tsx` (dynamic [slugA]-vs-[slugB])
+- `src/pages/EstudioHostingChile2026.tsx`
+- `src/pages/Certificaciones.tsx`
 - `src/components/RecommendedByData.tsx`
-- `src/lib/vsPairs.ts` (helper to enumerate all VS pairs)
+- `src/pages/DirectorioHosting.tsx`
 
-### Files (edited)
-- `src/App.tsx`, `src/components/Navbar.tsx`, `src/components/Footer.tsx`
-- `src/pages/Index.tsx` (quiz chips + service cards linking)
-- `src/pages/Comparativa.tsx` (brand comparison index)
-- `src/pages/CatalogoDetalle.tsx` (vs-#1 block)
-- 5 guías + `WikiTerm.tsx` + `BlogPost.tsx` (RecommendedByData)
-- `scripts/prerender.mjs`, `scripts/generate-sitemap.mjs`, `scripts/generate-llms-data.mjs`
+### Verificación
 
-¿Procedo?
+- `rg "hostingplus.cl|ecohosting.cl" src/pages/EstudioHostingChile2026.tsx src/pages/Certificaciones.tsx` confirma que los enlaces directos quedaron.
+- Curl al gateway de Search Console para confirmar 200 al reenviar el sitemap.
+- Visitar `/directorio-hosting-chile` en preview y verificar el `<link rel="canonical">` y `meta robots` en el `<head>`.
+
+### Fuera de alcance (lo dejo claro)
+
+- Reseñas reales, outreach del Estudio 2026 y monitoreo SEO continuo (Nivel 4): trabajo operativo, no de código.
+- Publicar el build: el usuario indica que ya está publicado.
