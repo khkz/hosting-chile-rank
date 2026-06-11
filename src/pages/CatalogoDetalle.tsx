@@ -257,7 +257,13 @@ const CatalogoDetalle = () => {
             {company.year_founded ? ` · Opera desde ${company.year_founded}` : ''}
             {company.corporate_group ? ` · ${company.corporate_group}` : ''}
           </p>
+          {(company as any).updated_at && (
+            <p className="text-xs text-muted-foreground mt-1">
+              ✓ Datos verificados al {new Date((company as any).updated_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </p>
+          )}
         </header>
+
 
         {(company as any).is_fake_comparison && (
           <div className="mb-6 p-4 bg-destructive/10 rounded-lg border border-destructive/30 flex items-start gap-3">
