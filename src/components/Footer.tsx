@@ -68,8 +68,11 @@ const Footer = () => {
               <li><Link to="/guia-elegir-ssl" className="text-gray-300 hover:text-white transition-colors">Guía SSL</Link></li>
               <li><Link to="/guia-migrar-hosting" className="text-gray-300 hover:text-white transition-colors">Guía Migración</Link></li>
               <li><Link to="/guia-seguridad-web" className="text-gray-300 hover:text-white transition-colors">Seguridad Web</Link></li>
+              <li><a href="/data/proveedores.json" className="text-gray-300 hover:text-white transition-colors" target="_blank" rel="noopener">Datos abiertos (JSON)</a></li>
+              <li><a href="/llms.txt" className="text-gray-300 hover:text-white transition-colors" target="_blank" rel="noopener">llms.txt</a></li>
             </ul>
           </div>
+
 
           {/* Contact Column */}
           <div>
