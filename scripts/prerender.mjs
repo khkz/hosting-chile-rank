@@ -207,7 +207,17 @@ async function main() {
 
     const launchOpts = {
       headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        // CRÍTICO con concurrencia: sin estos flags, las pestañas en background
+        // throttlean requestAnimationFrame y react-helmet-async NUNCA aplica
+        // title/canonical/meta (quedaría el <head> genérico del index.html).
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+      ],
     };
     if (kind === 'core') {
       const chromiumPath = await findSystemChromium();
@@ -242,6 +252,13 @@ async function main() {
       try {
         await page.setUserAgent('Mozilla/5.0 (compatible; LovablePrerender/1.0)');
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 25000 });
+        // Esperar a que react-helmet-async haya aplicado los tags del <head>
+        // (marca los tags gestionados con data-rh). Tolerante: si una ruta no
+        // usa Helmet, seguimos tras el timeout.
+        await page.waitForFunction(
+          () => !!document.head.querySelector('[data-rh]'),
+          { timeout: 8000 }
+        ).catch(() => {});
         await new Promise(r => setTimeout(r, 400));
         const html = await page.content();
 
