@@ -57,6 +57,28 @@ const ROUTES = [
   '/cotiza-hosting',
 ];
 
+// Fetch verified company slugs from Supabase to prerender /catalogo/<slug>
+async function fetchCatalogoSlugs() {
+  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
+  const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!KEY) {
+    console.log('[prerender] sin SUPABASE_ANON_KEY: salto fichas /catalogo/');
+    return [];
+  }
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true`, {
+      headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.map(r => `/catalogo/${r.slug}`);
+  } catch (e) {
+    console.log('[prerender] error fetching catalogo slugs:', e.message);
+    return [];
+  }
+}
+
+
 const log = (...a) => console.log('[prerender]', ...a);
 const warn = (...a) => console.warn('[prerender]', ...a);
 
