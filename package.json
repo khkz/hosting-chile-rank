@@ -6,13 +6,12 @@
   "scripts": {
     "dev": "vite",
     "prebuild": "node scripts/optimize-images.mjs && node scripts/generate-sitemap.mjs && node scripts/generate-llms-data.mjs",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "node scripts/generate-sitemap.mjs && node scripts/generate-llms-data.mjs && vite build && node scripts/prerender.mjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
     "prerender": "node scripts/prerender.mjs",
     "optimize-images": "node scripts/optimize-images.mjs"
-
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -88,6 +87,7 @@
     "globals": "^15.9.0",
     "lovable-tagger": "^1.1.7",
     "postcss": "^8.4.47",
+    "puppeteer": "^25.1.0",
     "puppeteer-core": "^25.1.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.11",

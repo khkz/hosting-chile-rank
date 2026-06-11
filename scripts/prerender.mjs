@@ -127,19 +127,54 @@ async function waitForServer(url, timeoutMs = 30000) {
   return false;
 }
 
+// Allow disabling prerender entirely via env var, but never silently skip on prod build.
+const SOFT_FAIL = process.env.PRERENDER_SOFT_FAIL === '1';
+
+function die(msg) {
+  console.error('[prerender] ERROR FATAL:', msg);
+  if (SOFT_FAIL) { console.error('[prerender] PRERENDER_SOFT_FAIL=1, saliendo 0'); process.exit(0); }
+  process.exit(1);
+}
+
+async function loadPuppeteer() {
+  // Prefer full `puppeteer` (bundles chromium via postinstall download).
+  try {
+    const mod = (await import('puppeteer')).default;
+    log('Usando paquete `puppeteer` (chromium bundled)');
+    return { mod, kind: 'full' };
+  } catch (e) {
+    log('puppeteer (full) no disponible:', e.message);
+  }
+  // Fallback a puppeteer-core con chromium del sistema.
+  try {
+    const mod = (await import('puppeteer-core')).default;
+    log('Usando `puppeteer-core` + chromium del sistema');
+    return { mod, kind: 'core' };
+  } catch (e) {
+    die('Ni `puppeteer` ni `puppeteer-core` están instalados: ' + e.message);
+  }
+}
+
+async function findSystemChromium() {
+  const candidates = [
+    process.env.PUPPETEER_EXECUTABLE_PATH,
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/google-chrome',
+    '/usr/bin/google-chrome-stable',
+  ].filter(Boolean);
+  for (const p of candidates) {
+    if (await exists(p)) return p;
+  }
+  return null;
+}
+
 async function main() {
   if (!(await exists(DIST))) {
-    warn('dist/ no existe, saltando prerender.');
-    return;
+    die('dist/ no existe — el build de Vite debe correr ANTES de prerender.');
   }
 
-  let puppeteer;
-  try {
-    puppeteer = (await import('puppeteer-core')).default;
-  } catch (e) {
-    warn('puppeteer-core no disponible, saltando prerender.', e.message);
-    return;
-  }
+  const { mod: puppeteer, kind } = await loadPuppeteer();
 
   // Lanzar vite preview en background
   log(`Iniciando vite preview en puerto ${PORT}…`);
@@ -154,47 +189,43 @@ async function main() {
   const cleanup = () => { try { preview.kill('SIGTERM'); } catch {} };
   process.on('exit', cleanup);
 
+  let browser;
   try {
     const up = await waitForServer(ORIGIN, 30000);
-    if (!up) { warn('vite preview no respondió, abortando.'); cleanup(); return; }
+    if (!up) { cleanup(); die('vite preview no respondió en 30s.'); }
 
-    const chromiumPath = process.env.PUPPETEER_EXECUTABLE_PATH
-      || '/usr/bin/chromium' ;
-    log(`Usando chromium en ${chromiumPath}`);
-
-    const browser = await puppeteer.launch({
-      executablePath: chromiumPath,
+    const launchOpts = {
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-    });
+    };
+    if (kind === 'core') {
+      const chromiumPath = await findSystemChromium();
+      if (!chromiumPath) { cleanup(); die('Chromium no encontrado en el sistema y `puppeteer` (full) no instalado.'); }
+      log(`Chromium: ${chromiumPath}`);
+      launchOpts.executablePath = chromiumPath;
+    }
+    browser = await puppeteer.launch(launchOpts);
 
-    // Append dynamic catalogo slugs
     const catalogoRoutes = await fetchCatalogoSlugs();
     const vsRoutes = await fetchVsPairRoutes();
     const allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes];
-    log(`Prerenderizando ${allRoutes.length} rutas (${catalogoRoutes.length} fichas catálogo + ${vsRoutes.length} comparativas VS)…`);
+    log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} comparativas VS`);
 
     let ok = 0, fail = 0;
     for (const route of allRoutes) {
-
       const url = `${ORIGIN}${route}`;
       try {
         const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (compatible; LovablePrerender/1.0)');
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 25000 });
-        // Pequeña espera adicional para hydration y data fetching
         await new Promise(r => setTimeout(r, 800));
         const html = await page.content();
         await page.close();
 
-        // Guardar como <route>/index.html
         const outDir = route === '/' ? DIST : join(DIST, route);
         await mkdir(outDir, { recursive: true });
-        // Para '/' sobrescribimos dist/index.html con la versión prerenderizada
-        const outFile = join(outDir, 'index.html');
-        await writeFile(outFile, html, 'utf8');
+        await writeFile(join(outDir, 'index.html'), html, 'utf8');
         ok++;
-        log(`✓ ${route}`);
       } catch (e) {
         fail++;
         warn(`✗ ${route}: ${e.message}`);
@@ -202,12 +233,17 @@ async function main() {
     }
 
     await browser.close();
-    log(`Listo. ${ok} ok, ${fail} fallidas.`);
+    log(`Resultado: ${ok} ok, ${fail} fallidas, ${allRoutes.length} totales.`);
+
+    if (ok === 0) { cleanup(); die('0 rutas prerenderizadas — abortando build para evitar publicar SPA shell.'); }
+    if (fail > ok / 2) { cleanup(); die(`Demasiadas fallas (${fail}/${allRoutes.length}).`); }
   } catch (e) {
-    warn('Error en prerender:', e.message);
+    try { await browser?.close(); } catch {}
+    cleanup();
+    die('Excepción: ' + e.message);
   } finally {
     cleanup();
   }
 }
 
-main().catch(e => { warn('Fallo crítico:', e.message); process.exit(0); });
+main().catch(e => die('Fallo crítico: ' + e.message));
