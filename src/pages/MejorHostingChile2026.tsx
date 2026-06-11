@@ -193,7 +193,7 @@ const MejorHostingChile2026 = () => {
   return (
     <>
       <Helmet>
-        <title>Mejor Hosting Chile {CURRENT_YEAR} | Guía Completa | EligeTuHosting.cl</title>
+        <title>{`Mejor Hosting Chile ${CURRENT_YEAR} | Guía Completa | EligeTuHosting.cl`}</title>
         <meta 
           name="description" 
           content={`Descubre cuál es el mejor hosting en Chile ${CURRENT_YEAR}. Comparativa completa de velocidad, uptime y precios. Guía definitiva para elegir hosting SSD rápido.`}

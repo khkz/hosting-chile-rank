@@ -252,7 +252,7 @@ const Resena = () => {
   return (
     <>
       <Helmet>
-        <title>Reseña {hosting.name} | EligeTuHosting.cl</title>
+        <title>{`Reseña ${hosting.name} | EligeTuHosting.cl`}</title>
         <meta 
           name="description" 
           content={`Análisis detallado y reseña de ${hosting.name}. Descubre sus ventajas, desventajas y si es la mejor opción para tu sitio web.`} 

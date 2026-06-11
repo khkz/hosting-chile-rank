@@ -111,7 +111,7 @@ const Benchmark: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Benchmark Hosting Chile {new Date().getFullYear()} | Datos reales medidos | EligeTuHosting.cl</title>
+        <title>{`Benchmark Hosting Chile ${new Date().getFullYear()} | Datos reales medidos | EligeTuHosting.cl`}</title>
         <meta
           name="description"
           content="Benchmark independiente de hosting Chile. TTFB, Lighthouse y uptime medidos cada hora. Metodología pública y datos descargables."
