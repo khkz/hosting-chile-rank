@@ -56,23 +56,6 @@ jobs:
             echo "ℹ️  Sin cambios en feeds."
           fi
 
-      - name: Generar sitemap
-        run: node scripts/generate-sitemap.mjs
-        continue-on-error: true
-
-      - name: Commit sitemap
-        run: |
-          git config user.name  "NIC Bot"
-          git config user.email "bot@eligetuhosting.cl"
-          if [ -f public/sitemap.xml ]; then
-            git add public/sitemap.xml
-            if ! git diff --cached --quiet; then
-              git commit -m "chore(sitemap): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-              git push
-              echo "✅ Sitemap actualizado y subido."
-            else
-              echo "ℹ️  Sin cambios en sitemap."
-            fi
-          else
-            echo "⚠️  Sitemap no generado, saltando commit."
-          fi
+      # Sitemap deshabilitado en este workflow: se genera en el build de Lovable,
+      # donde existen SUPABASE_URL/ANON_KEY. Aquí faltaban y producía un sitemap
+      # incompleto (sin /catalogo/* ni comparativas) que pisaba al bueno.
