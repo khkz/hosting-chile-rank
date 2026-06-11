@@ -198,10 +198,13 @@ ${intentHubs}
 ${providerUrls}
 ${vsRivalUrls}
 ${programmaticVsUrls}
+${alternativasUrls}
+${migrarUrls}
 ${hostingReviews}
 ${catalogoUrls}
 </urlset>`.trimStart();
 };
+
 
 /* ---------- SITEMAP 2: WIKI -------------------------------------------- */
 const generateWikiSitemap = () => {
