@@ -146,17 +146,37 @@ const generateMainSitemap = (companySlugs = []) => {
     '/mejor-vps-chile',
   ].map(p => urlTag(`${ROOT}${p}`, '0.9', 'weekly')).join('');
 
-  // Comparativas programáticas 1-a-1 desde slugs verificados
+  // Comparativas programáticas: TODAS las parejas del catálogo (canonical)
   const verifiedSlugs = companySlugs.map(c => c.slug);
-  const vsEcoExtras = ['hostgator','bluehost','hostingcl','godaddy','cloudhosting'];
-  const programmaticVs = [];
-  for (const slug of verifiedSlugs) {
-    if (slug !== 'hostingplus') programmaticVs.push(`/comparativa/${slug}-vs-hostingplus`);
+  const ANCHORS = new Set(['hostingplus', 'ecohosting']);
+  const isAnchor = (s) => ANCHORS.has(s);
+  const canonicalPair = (x, y) => {
+    if (isAnchor(x) && !isAnchor(y)) return `${y}-vs-${x}`;
+    if (isAnchor(y) && !isAnchor(x)) return `${x}-vs-${y}`;
+    if (isAnchor(x) && isAnchor(y)) return x === 'hostingplus' ? `${x}-vs-${y}` : `${y}-vs-${x}`;
+    return x < y ? `${x}-vs-${y}` : `${y}-vs-${x}`;
+  };
+  const pairSet = new Set();
+  for (let i = 0; i < verifiedSlugs.length; i++) {
+    for (let j = i + 1; j < verifiedSlugs.length; j++) {
+      pairSet.add(`/comparativa/${canonicalPair(verifiedSlugs[i], verifiedSlugs[j])}`);
+    }
   }
-  for (const slug of vsEcoExtras) {
-    if (verifiedSlugs.includes(slug)) programmaticVs.push(`/comparativa/${slug}-vs-ecohosting`);
-  }
-  const programmaticVsUrls = programmaticVs.map(p => urlTag(`${ROOT}${p}`, '0.7', 'weekly')).join('');
+  const programmaticVsUrls = [...pairSet].map(p => urlTag(`${ROOT}${p}`, '0.7', 'weekly')).join('');
+
+  // Alternativas a X (todos los competidores excepto anchors)
+  const alternativasUrls = verifiedSlugs
+    .filter(s => !isAnchor(s))
+    .map(s => urlTag(`${ROOT}/alternativas-a/${s}`, '0.7', 'weekly'))
+    .join('');
+
+  // Landings de migración (8 competidores objetivo)
+  const migrationSlugs = ['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','cloudhosting','webhosting'];
+  const migrarUrls = migrationSlugs
+    .filter(s => verifiedSlugs.includes(s))
+    .map(s => urlTag(`${ROOT}/migrar-de/${s}`, '0.8', 'weekly'))
+    .join('');
+
 
 
   // Páginas de reseñas de hosting
@@ -178,10 +198,13 @@ ${intentHubs}
 ${providerUrls}
 ${vsRivalUrls}
 ${programmaticVsUrls}
+${alternativasUrls}
+${migrarUrls}
 ${hostingReviews}
 ${catalogoUrls}
 </urlset>`.trimStart();
 };
+
 
 /* ---------- SITEMAP 2: WIKI -------------------------------------------- */
 const generateWikiSitemap = () => {

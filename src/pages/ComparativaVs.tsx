@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
@@ -6,7 +6,10 @@ import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
 import { ExternalLink, Star, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { parsePair, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING, ALL_CATALOG_SLUGS } from '@/lib/vsPairs';
+import {
+  parsePair, canonicalPair, isValidSlug, isAnchorSlug,
+  ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING,
+} from '@/lib/vsPairs';
 
 const ORIGIN = 'https://eligetuhosting.cl';
 
@@ -16,7 +19,6 @@ interface Company {
   logo_url: string | null;
   overall_rating: number | null;
   promo_price: number | null;
-  year_founded?: number | null;
   foundation_year: number | null;
   datacenter_location: string | null;
   corporate_group: string | null;
@@ -28,10 +30,13 @@ const formatPrice = (p: number | null) => (p ? `$${Number(p).toLocaleString('es-
 const ComparativaVs: React.FC = () => {
   const { rival } = useParams<{ rival: string }>();
   const parsed = rival ? parsePair(rival) : null;
+
   const [a, setA] = useState<Company | null>(null);
   const [b, setB] = useState<Company | null>(null);
-  const [next, setNext] = useState<Company | null>(null);
+  const [leaders, setLeaders] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const involvesAnchor = parsed ? (isAnchorSlug(parsed.a) || isAnchorSlug(parsed.b)) : false;
 
   useEffect(() => {
     if (!parsed) { setLoading(false); return; }
@@ -39,50 +44,49 @@ const ComparativaVs: React.FC = () => {
       const { data } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,foundation_year,datacenter_location,corporate_group,total_reviews')
-        .in('slug', [parsed.competitor, parsed.anchor]);
-      const comp = data?.find(d => d.slug === parsed.competitor) || null;
-      const anc = data?.find(d => d.slug === parsed.anchor) || null;
-      setA(comp);
-      setB(anc);
-      // next provider in ranking (excluding competitor + anchor)
-      const { data: rest } = await supabase
+        .in('slug', [parsed.a, parsed.b]);
+      setA(data?.find(d => d.slug === parsed.a) || null);
+      setB(data?.find(d => d.slug === parsed.b) || null);
+
+      // Leaders (HostingPlus + EcoHosting) for the recommendation block
+      const { data: ldr } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,foundation_year,datacenter_location,corporate_group,total_reviews')
-        .eq('is_verified', true)
-        .eq('is_curated', true)
-        .order('overall_rating', { ascending: false })
-        .limit(5);
-      const nxt = (rest || []).find(r => r.slug !== parsed.competitor && r.slug !== parsed.anchor) || null;
-      setNext(nxt as Company | null);
+        .in('slug', [ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING]);
+      setLeaders((ldr || []) as Company[]);
       setLoading(false);
     })();
-  }, [parsed?.competitor, parsed?.anchor]);
+  }, [parsed?.a, parsed?.b]);
 
   if (!parsed) return <Navigate to="/comparativa" replace />;
+  if (!isValidSlug(parsed.a) || !isValidSlug(parsed.b) || parsed.a === parsed.b) {
+    return <Navigate to="/comparativa" replace />;
+  }
+
+  // Canonical URL — if user landed on a non-canonical ordering, render the canonical url tag.
+  const canonicalPairStr = canonicalPair(parsed.a, parsed.b);
+  const canonical = `${ORIGIN}/comparativa/${canonicalPairStr}`;
+
   if (loading) return <div className="p-10 text-center text-gray-500">Cargando comparativa…</div>;
   if (!a || !b) return <Navigate to="/comparativa" replace />;
 
-  // Validate anchor must be hostingplus or ecohosting
-  if (parsed.anchor !== ANCHOR_HOSTINGPLUS && parsed.anchor !== ANCHOR_ECOHOSTING) {
-    return <Navigate to="/comparativa" replace />;
-  }
-  if (!(ALL_CATALOG_SLUGS as readonly string[]).includes(parsed.competitor)) {
-    return <Navigate to="/comparativa" replace />;
-  }
+  const hostingplus = leaders.find(l => l.slug === ANCHOR_HOSTINGPLUS);
+  const ecohosting = leaders.find(l => l.slug === ANCHOR_ECOHOSTING);
 
   const title = `${a.name} vs ${b.name}: ¿cuál es mejor en 2026?`;
   const description = `Comparativa ${a.name} vs ${b.name} 2026 con datos verificables: nota, precio, datacenter, año de fundación, grupo corporativo y reseñas.`;
-  const canonical = `${ORIGIN}/comparativa/${parsed.competitor}-vs-${parsed.anchor}`;
 
-  const winner = (a.overall_rating ?? 0) > (b.overall_rating ?? 0) ? a : b;
+  const winner = (a.overall_rating ?? 0) >= (b.overall_rating ?? 0) ? a : b;
   const cheaper = a.promo_price && b.promo_price ? (a.promo_price < b.promo_price ? a : b) : null;
 
-  const verdict = `Según mediciones verificables, ${winner.name} obtiene la mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10) frente a su rival. ${cheaper ? `En precio, ${cheaper.name} es la opción más económica (${formatPrice(cheaper.promo_price)}).` : ''} Si buscas equilibrio entre rendimiento, soporte y datacenter local, ${b.name} sigue siendo nuestra recomendación editorial.`;
+  const verdict = involvesAnchor
+    ? `Según mediciones verificables, ${winner.name} obtiene la mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10) frente a su rival. ${cheaper ? `En precio, ${cheaper.name} es la opción más económica (${formatPrice(cheaper.promo_price)}).` : ''}`
+    : `Comparando ${a.name} y ${b.name} con datos verificables, ${winner.name} obtiene mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10). ${cheaper ? `${cheaper.name} es el más barato (${formatPrice(cheaper.promo_price)}). ` : ''}Sin embargo, ninguno alcanza al líder del ranking: HostingPlus.cl (9.9/10).`;
 
   const faqs = [
     {
       q: `¿Cuál es mejor, ${a.name} o ${b.name}?`,
-      a: `${winner.name} obtiene mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10) según nuestras mediciones de ASN, benchmark y reputación pública. ${b.name} es nuestra recomendación editorial por su soporte 24/7 y datacenter en Chile.`,
+      a: `${winner.name} obtiene mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10) según nuestras mediciones de ASN, benchmark y reputación pública. ${involvesAnchor ? '' : 'Aun así, HostingPlus.cl (9.9/10) lidera el ranking general y suele ser una mejor alternativa para la mayoría de proyectos en Chile.'}`,
     },
     {
       q: `¿Cuál es más barato, ${a.name} o ${b.name}?`,
@@ -90,6 +94,10 @@ const ComparativaVs: React.FC = () => {
         ? `${cheaper.name} ofrece el plan más económico (${formatPrice(cheaper.promo_price)}). Recuerda que el precio más bajo no siempre implica mejor relación calidad-precio.`
         : `Ambos proveedores manejan precios bajo consulta. Solicita una cotización en cada uno para comparar planes equivalentes.`,
     },
+    ...(involvesAnchor ? [] : [{
+      q: `¿Hay opciones mejores que ${a.name} y ${b.name}?`,
+      a: `Sí. Según nuestro ranking verificable, HostingPlus.cl (9.9/10) lidera el mercado chileno por velocidad, soporte y datacenter local. EcoHosting.cl (9.6/10) es una alternativa con mejor relación precio-rendimiento. Ambos superan a ${a.name} y ${b.name} en métricas medibles.`,
+    }]),
   ];
 
   const schemas = [
@@ -151,11 +159,13 @@ const ComparativaVs: React.FC = () => {
                 <tr className="bg-[#F7F9FC]">
                   <th className="text-left py-3 px-3 text-xs uppercase text-gray-500">Característica</th>
                   <th className="text-left py-3 px-3">
-                    <div className="font-bold text-[#2B2D42]">{a.name}</div>
+                    <div className={`font-bold ${winner.slug === a.slug ? 'text-[#EF233C] flex items-center gap-1' : 'text-[#2B2D42]'}`}>
+                      {winner.slug === a.slug && <Trophy className="h-4 w-4" />} {a.name}
+                    </div>
                   </th>
-                  <th className="text-left py-3 px-3 bg-[#EF233C]/5">
-                    <div className="font-bold text-[#EF233C] flex items-center gap-1">
-                      <Trophy className="h-4 w-4" /> {b.name}
+                  <th className="text-left py-3 px-3">
+                    <div className={`font-bold ${winner.slug === b.slug ? 'text-[#EF233C] flex items-center gap-1' : 'text-[#2B2D42]'}`}>
+                      {winner.slug === b.slug && <Trophy className="h-4 w-4" />} {b.name}
                     </div>
                   </th>
                 </tr>
@@ -181,27 +191,63 @@ const ComparativaVs: React.FC = () => {
           <p className="text-gray-700 leading-relaxed">{verdict}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to={`/catalogo/${a.slug}`} className="px-4 py-2 rounded border border-gray-300 text-sm hover:bg-gray-50">Ver ficha {a.name}</Link>
-            <Link to={`/catalogo/${b.slug}`} className="px-4 py-2 rounded border border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white">Ver ficha {b.name}</Link>
-            <a href={`/ir/${b.slug}`} className="px-4 py-2 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700 flex items-center gap-1">Visitar {b.name} <ExternalLink className="h-3 w-3" /></a>
+            <Link to={`/catalogo/${b.slug}`} className="px-4 py-2 rounded border border-gray-300 text-sm hover:bg-gray-50">Ver ficha {b.name}</Link>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Mejores alternativas a {a.name}</h2>
-          <ul className="space-y-2">
-            <li>
-              🥇 <Link to="/catalogo/hostingplus" className="text-[#EF233C] hover:underline font-semibold">HostingPlus.cl</Link> — 9.9/10, líder verificado
-            </li>
-            <li>
-              🥈 <Link to="/catalogo/ecohosting" className="text-[#EF233C] hover:underline font-semibold">EcoHosting.cl</Link> — 9.6/10, mejor relación precio-rendimiento
-            </li>
-            {next && (
-              <li>
-                🥉 <Link to={`/catalogo/${next.slug}`} className="text-[#EF233C] hover:underline font-semibold">{next.name}</Link> — {Number(next.overall_rating ?? 0).toFixed(1)}/10
-              </li>
-            )}
-          </ul>
-        </section>
+        {/* Recomendación editorial */}
+        {involvesAnchor ? (
+          <section className="container mx-auto px-4 pb-8 max-w-3xl">
+            <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Nuestra recomendación</h2>
+            <p className="text-gray-700">
+              Si buscas equilibrio entre rendimiento, soporte y datacenter local, recomendamos{' '}
+              <Link to="/catalogo/hostingplus" className="text-[#EF233C] font-semibold hover:underline">HostingPlus.cl</Link>{' '}
+              (9.9/10), líder verificado del ranking 2026.{' '}
+              <Link to="/catalogo/ecohosting" className="text-[#EF233C] font-semibold hover:underline">EcoHosting.cl</Link>{' '}
+              (9.6/10) es la alternativa recomendada por relación precio-rendimiento.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <a href="/ir/hostingplus" className="px-4 py-2 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700 flex items-center gap-1">
+                Visitar HostingPlus.cl <ExternalLink className="h-3 w-3" />
+              </a>
+              <a href="/ir/ecohosting" className="px-4 py-2 rounded border border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white flex items-center gap-1">
+                Visitar EcoHosting.cl <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+          </section>
+        ) : (
+          <section className="container mx-auto px-4 pb-8 max-w-3xl">
+            <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Nuestra recomendación</h2>
+            <p className="text-gray-700">
+              Ni {a.name} ni {b.name} alcanzan al líder del ranking en métricas medibles. Recomendamos{' '}
+              <Link to="/catalogo/hostingplus" className="text-[#EF233C] font-semibold hover:underline">HostingPlus.cl</Link>{' '}
+              <strong>(9.9/10)</strong>: datacenter en Santiago, LiteSpeed Enterprise, soporte 24/7 y cero reclamos visibles.
+              Para presupuestos ajustados,{' '}
+              <Link to="/catalogo/ecohosting" className="text-[#EF233C] font-semibold hover:underline">EcoHosting.cl</Link>{' '}
+              <strong>(9.6/10)</strong> mantiene la mejor relación precio-rendimiento.
+            </p>
+            <div className="mt-4 grid sm:grid-cols-2 gap-3">
+              {hostingplus && (
+                <a href="/ir/hostingplus" className="rounded-xl border-2 border-[#EF233C] p-4 bg-white hover:bg-[#EF233C]/5 transition">
+                  <div className="font-bold text-[#EF233C]">🥇 HostingPlus.cl <span className="text-xs">9.9/10</span></div>
+                  <div className="text-xs text-gray-600 mt-1">Líder verificado · {hostingplus.datacenter_location || 'Datacenter Chile'}</div>
+                  <div className="text-sm text-[#2B2D42] mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
+                </a>
+              )}
+              {ecohosting && (
+                <a href="/ir/ecohosting" className="rounded-xl border border-gray-300 p-4 bg-white hover:border-[#EF233C] transition">
+                  <div className="font-bold text-[#2B2D42]">🥈 EcoHosting.cl <span className="text-xs">9.6/10</span></div>
+                  <div className="text-xs text-gray-600 mt-1">Mejor precio-rendimiento</div>
+                  <div className="text-sm text-[#2B2D42] mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
+                </a>
+              )}
+            </div>
+            <div className="mt-3 flex flex-wrap gap-3 text-sm">
+              <Link to={`/alternativas-a/${a.slug}`} className="text-[#EF233C] hover:underline">Alternativas a {a.name} →</Link>
+              <Link to={`/alternativas-a/${b.slug}`} className="text-[#EF233C] hover:underline">Alternativas a {b.name} →</Link>
+            </div>
+          </section>
+        )}
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
           <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Preguntas frecuentes</h2>
