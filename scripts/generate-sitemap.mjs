@@ -9,8 +9,8 @@ const VS_RIVALS = ['comparahosting', 'mejorhosting', 'rankinghosting', 'hostinge
 
 // Fetch slugs verificados desde Supabase REST (sin SDK para evitar deps)
 async function fetchVerifiedCompanySlugs() {
-  const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hpqhylsvojzazmmaviek.supabase.co';
-  const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
+  const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (!ANON) {
     console.log('⚠️  Sin SUPABASE_ANON_KEY: omitiendo slugs de /catalogo/');
     return [];
