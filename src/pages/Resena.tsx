@@ -253,10 +253,14 @@ const Resena = () => {
     <>
       <Helmet>
         <title>{`Reseña ${hosting.name} | EligeTuHosting.cl`}</title>
-        <meta 
-          name="description" 
-          content={`Análisis detallado y reseña de ${hosting.name}. Descubre sus ventajas, desventajas y si es la mejor opción para tu sitio web.`} 
+        <meta
+          name="description"
+          content={`Análisis detallado y reseña de ${hosting.name}. Descubre sus ventajas, desventajas y si es la mejor opción para tu sitio web.`}
         />
+        <link rel="canonical" href={`https://eligetuhosting.cl/resenas/${slug}`} />
+        <meta property="og:url" content={`https://eligetuhosting.cl/resenas/${slug}`} />
+        <meta property="og:title" content={`Reseña ${hosting.name} | EligeTuHosting.cl`} />
+
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
