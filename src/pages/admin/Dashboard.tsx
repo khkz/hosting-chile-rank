@@ -167,6 +167,12 @@ export default function AdminDashboard() {
                 Curación de Empresas
               </Button>
             </Link>
+            <Link to="/admin/precios">
+              <Button variant="outline" className="w-full justify-start">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Monitoreo de Precios
+              </Button>
+            </Link>
           </div>
         </Card>
 
