@@ -330,9 +330,10 @@ const RankingPage = () => {
 
       {/* Top 3 Ranking */}
       <Section id="ranking">
-        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-4">
           Top 3 proveedores de hosting
         </h2>
+        <RankingAuthorityBlock className="mb-8" />
         <div className="grid md:grid-cols-3 gap-6">
           {hostProviders.map((provider, index) => (
             <div key={provider.id} className={`
