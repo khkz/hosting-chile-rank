@@ -197,6 +197,7 @@ const hostingData = {
     ],
     cons: [
       'Publicita "100% uptime", garantía técnicamente imposible de cumplir (SLA realista del sector: 99,9%)',
+      'Reclamos públicos recurrentes entre 2012 y 2025 en Reclamos.cl',
       'Precios bajo cotización: poca transparencia inicial',
       'Tiempos de respuesta de soporte variables según horario'
     ],
