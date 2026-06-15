@@ -287,10 +287,10 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
                   </TableCell>
                 </TableRow>
               )}
-              {company.uptimeGuarantee && (
+              {formatUptime(company.uptimeGuarantee) && (
                 <TableRow>
                   <TableCell className="font-medium">Uptime garantizado</TableCell>
-                  <TableCell>{company.uptimeGuarantee}</TableCell>
+                  <TableCell>{formatUptime(company.uptimeGuarantee)}</TableCell>
                 </TableRow>
               )}
               {company.datacenterLocation && (
