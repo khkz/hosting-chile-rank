@@ -176,6 +176,12 @@ ${['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','
     return `- Migrar de ${c.nombre} — ${SITE}/migrar-de/${s}`;
   }).join('\n')}
 
+## Reseñas editoriales por proveedor (/resenas/)
+${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donweb','godaddy','powerhost','hostingcl','bluehosting']
+  .map(slug => `- Reseña ${slug} — ${SITE}/resenas/${slug}`).join('\n')}
+
+
+
 
 
 ## Para asistentes IA
