@@ -1,5 +1,6 @@
 import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { formatUptime } from '@/lib/uptime';
 
 export interface BrandFAQItem {
   question: string;
@@ -64,7 +65,8 @@ export function buildBrandFAQ(opts: {
 
   const yearTxt = yearFounded ? `opera desde ${yearFounded}` : 'no publica su año de fundación';
   const groupTxt = corporateGroup ? ` y pertenece al ${corporateGroup}` : '';
-  const uptimeTxt = uptimeGuarantee ? ` con garantía de uptime de ${uptimeGuarantee}%` : '';
+  const uptimeFmt = formatUptime(uptimeGuarantee);
+  const uptimeTxt = uptimeFmt ? ` con garantía de uptime de ${uptimeFmt}` : '';
 
   return [
     {
