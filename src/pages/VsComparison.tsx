@@ -186,6 +186,12 @@ const VsComparison = () => {
           })}
         </script>
       </Helmet>
+      <BreadcrumbSchema
+        items={[
+          { name: 'Transparencia', url: '/transparencia-hosting-chile' },
+          { name: `vs ${competitor.name}`, url: `/vs/${competitor.slug}` },
+        ]}
+      />
       
       <Navbar />
       
