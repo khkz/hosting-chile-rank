@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import RecommendedByData from '@/components/RecommendedByData';
 import AuthorByline from '@/components/AuthorByline';
 import GuideEEAT from '@/components/GuideEEAT';
@@ -18,6 +19,7 @@ const GuiaMigrarHosting = () => {
         <meta name="description" content="Aprende a migrar tu hosting web de forma segura en Chile. Guía paso a paso con experiencias reales, checklist completo y consejos para evitar errores costosos." />
         <meta name="keywords" content="migrar hosting chile, cambiar hosting web, migración web segura, backup hosting chile" />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: migrar hosting", url: "/guia-migrar-hosting" }]} />
       
       <Navbar />
       

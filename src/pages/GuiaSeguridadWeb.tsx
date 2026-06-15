@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import RecommendedByData from '@/components/RecommendedByData';
 import AuthorByline from '@/components/AuthorByline';
 import GuideEEAT from '@/components/GuideEEAT';
@@ -18,6 +19,7 @@ const GuiaSeguridadWeb = () => {
         <meta name="description" content="Guía completa de seguridad web en Chile. Aprende a proteger tu sitio de hackers, malware y ataques. Medidas específicas para el mercado chileno con casos reales." />
         <meta name="keywords" content="seguridad web chile, proteger sitio web, firewall chile, SSL chile, malware wordpress" />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: seguridad web", url: "/guia-seguridad-web" }]} />
       
       <Navbar />
       

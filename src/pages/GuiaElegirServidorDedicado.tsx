@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -18,6 +19,7 @@ const GuiaElegirServidorDedicado = () => {
           content="Aprende a elegir el mejor servidor dedicado para proyectos de alto rendimiento. Comparativa de los mejores proveedores en Chile." 
         />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: elegir servidor dedicado", url: "/guia-elegir-servidor-dedicado" }]} />
       
       <Navbar />
       

@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import AuthorByline from '@/components/AuthorByline';
 import GuideEEAT from '@/components/GuideEEAT';
 import heroImg from '@/assets/guia-hosting-seguro-hero.jpg';
@@ -114,6 +115,7 @@ const GuiaHostingMasSeguro = () => {
           })}
         </script>
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: hosting más seguro", url: "/guia-hosting-mas-seguro-chile" }]} />
       <SEOFAQSchema faqs={faqs} />
 
       <Navbar />

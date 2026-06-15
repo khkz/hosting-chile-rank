@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import RecommendedByData from '@/components/RecommendedByData';
 import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
@@ -32,6 +33,7 @@ const GuiaElegirHosting = () => {
           content="Aprende a elegir el mejor proveedor de hosting para tu sitio web según tus necesidades. Guía completa paso a paso." 
         />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: elegir hosting", url: "/guia-elegir-hosting" }]} />
       <SEOFAQSchema faqs={guiaFaqs} />
       
       <Navbar />

@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import AuthorByline from '@/components/AuthorByline';
 import GuideEEAT from '@/components/GuideEEAT';
 import heroImg from '@/assets/guia-wordpress-hero.jpg';
@@ -18,6 +19,7 @@ const GuiaHostingWordPress = () => {
         <meta name="description" content="Guía específica para elegir hosting WordPress en Chile. Comparativa real de proveedores, optimizaciones específicas y casos de éxito con WordPress chileno." />
         <meta name="keywords" content="hosting wordpress chile, mejor hosting wordpress, wordpress optimizado chile, hosting wordpress rapido" />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: hosting WordPress", url: "/guia-hosting-wordpress" }]} />
       
       <Navbar />
       
