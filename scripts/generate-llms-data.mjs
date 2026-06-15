@@ -221,7 +221,7 @@ ${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donw
 - Sitio oficial: ${p.url_sitio || 'N/D'}
 - Ficha en EligeTuHosting.cl: ${p.url_ficha}
 - Tecnologías: ${(company.technologies || []).join(', ') || 'N/D'}
-- Uptime garantizado: ${company.uptime_guarantee ? company.uptime_guarantee + '%' : 'N/D'}
+- Uptime garantizado: ${formatUptimeSrv(company.uptime_guarantee) || 'N/D'}
 - SSL gratis: ${company.has_ssl_free ? 'Sí' : 'No declarado'}
 - Migración gratis: ${company.has_migration_free ? 'Sí' : 'No declarado'}
 - Contacto: ${contact}
