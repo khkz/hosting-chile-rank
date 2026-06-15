@@ -188,6 +188,7 @@ const ComparativaPage = () => {
           `}
         </script>
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Comparativa', url: '/comparativa' }]} />
 
       <Navbar />
       <HostingSectionsNav />
