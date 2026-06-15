@@ -339,6 +339,40 @@ const EstudioHostingChile2026: React.FC = () => {
     ],
   };
 
+  const articleSchemaSeo = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Estudio Hosting Chile 2026: ASN, precios y comparadores afiliados',
+    mainEntityOfPage: 'https://eligetuhosting.cl/estudio-hosting-chile-2026',
+    datePublished: PUBLISHED,
+    dateModified: new Date().toISOString().slice(0, 10),
+    inLanguage: 'es-CL',
+    author: {
+      '@type': 'Organization',
+      name: 'EligeTuHosting',
+      url: 'https://eligetuhosting.cl/sobre-nosotros',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'EligeTuHosting.cl',
+      url: 'https://eligetuhosting.cl',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://eligetuhosting.cl/favicon-logo.svg',
+      },
+    },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://eligetuhosting.cl' },
+      { '@type': 'ListItem', position: 2, name: 'Recursos', item: 'https://eligetuhosting.cl/recursos-hosting-chile' },
+      { '@type': 'ListItem', position: 3, name: 'Estudio Hosting Chile 2026', item: 'https://eligetuhosting.cl/estudio-hosting-chile-2026' },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -354,7 +388,10 @@ const EstudioHostingChile2026: React.FC = () => {
         <meta property="og:type" content="article" />
         <meta name="article:published_time" content={PUBLISHED} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(articleSchemaSeo)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
+
       <DatasetSchema />
 
 
