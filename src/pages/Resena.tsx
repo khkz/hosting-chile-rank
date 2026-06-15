@@ -187,7 +187,7 @@ const hostingData = {
     name: 'Hosting.cl',
     logo: 'https://logo.clearbit.com/hosting.cl',
     rating: 8.4,
-    description: 'Hosting.cl es uno de los proveedores con más años en el mercado chileno, con datacenter propio en Santiago y ASN AS265839. Su trayectoria es extensa pero arrastra reclamos públicos repetidos entre 2012 y 2025 que se deben considerar.',
+    description: 'Hosting.cl es uno de los proveedores con más años en el mercado chileno, con datacenter propio en Santiago y ASN AS265839. Su trayectoria es extensa pero arrastra reclamos públicos repetidos entre 2012 y 2025 que se deben considerar. Nota editorial: Hosting.cl publicita "100% uptime", una garantía técnicamente imposible de cumplir; los SLA serios del sector rondan el 99,9%.',
     pros: [
       'Datacenter propio en Santiago (baja latencia local)',
       'ASN propio AS265839 verificable',
@@ -196,7 +196,7 @@ const hostingData = {
       'Más de 15 años operando en Chile'
     ],
     cons: [
-      'Reclamos públicos recurrentes entre 2012 y 2025 en Reclamos.cl',
+      'Publicita "100% uptime", garantía técnicamente imposible de cumplir (SLA realista del sector: 99,9%)',
       'Precios bajo cotización: poca transparencia inicial',
       'Tiempos de respuesta de soporte variables según horario'
     ],
