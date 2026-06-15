@@ -1,57 +1,93 @@
+# Plan: Price Monitor (accuracy-first, revisión humana)
 
-## Plan: cerrar pendientes reales de la auditoría
+Misma arquitectura que `uptime-monitor`: edge function Deno + cron semanal + tabla de registros + panel admin. **Nunca** publica precios automáticamente.
 
-Sólo lo que falta. El resto (fichas, hubs, comparativas, footer, RecommendedByData, sameAs, Organization) ya está en producción.
+## 1. Migración SQL (un solo `supabase--migration`)
 
-### 1. Enlaces dofollow al sitio oficial en menciones editoriales
+**ALTER `hosting_companies`** — añadir columnas (todas nullable):
+- `precio_url text`
+- `precio_regular_clp integer`
+- `precio_promo_clp integer`
+- `precio_periodo text` — check in ('mensual','anual')
+- `precio_regex text`
+- `precio_verificado_at timestamptz`
+- `precio_fuente text`
 
-Hoy HostingPlus y EcoHosting se nombran en estas páginas sin enlace directo (o con `/ir/` nofollow). Añadir enlaces directos `https://www.hostingplus.cl/` y `https://www.ecohosting.cl/` con `rel="noopener"` (sin nofollow) en contextos editoriales:
+**CREATE TABLE `public.price_checks`**:
+- `id uuid pk default gen_random_uuid()`
+- `provider_id uuid not null references hosting_companies(id) on delete cascade`
+- `fetched_at timestamptz not null default now()`
+- `source_url text not null`
+- `raw_snippet text` (máx ~500 chars del contexto del match)
+- `precio_detectado_clp integer` (nullable)
+- `status text not null` — check in ('ok','sin_cambios','cambio_detectado','extraccion_fallida')
+- `delta_pct numeric` (nullable)
+- `needs_review boolean not null default false`
 
-- `src/pages/EstudioHostingChile2026.tsx` — donde se cita a HostingPlus 9.9 y EcoHosting 9.6 como líderes del estudio, envolver el nombre en `<a href="https://www.hostingplus.cl/" rel="noopener" target="_blank">`.
-- `src/pages/Certificaciones.tsx` — mismo tratamiento donde aparezcan ambas marcas.
-- Verificar también `src/components/RecommendedByData.tsx`: hoy enlaza a fichas internas; añadir un enlace adicional "Sitio oficial →" dofollow al lado del enlace a la ficha (mantiene el flujo a la ficha y además transfiere autoridad al dominio).
+GRANTs estándar: `authenticated` SELECT/INSERT/UPDATE/DELETE, `service_role` ALL. Sin `anon`.
+RLS: lectura/escritura solo para `has_role(auth.uid(),'admin')`; edge function escribe con service_role (bypass).
+Índice: `(provider_id, fetched_at desc)` y `(needs_review) where needs_review`.
 
-Mantener `/ir/[slug]` con `nofollow` sólo en los CTAs comerciales (botones "Visitar sitio" con tracking). Los enlaces editoriales son la transferencia de PageRank; los comerciales son afiliado y deben quedar marcados.
+## 2. Edge function `supabase/functions/price-monitor/index.ts`
 
-### 2. Canonical + noindex en /directorio-hosting-chile
+Calcado de `uptime-monitor`:
+- Lee proveedores con `precio_url is not null` y (opcional) `is_curated=true`.
+- Por cada uno: `fetch(precio_url, { headers: { 'User-Agent': 'EligeTuHosting-PriceMonitor/1.0' }})` con timeout 15s.
+- Extrae precio: si `precio_regex` está definido lo usa; si no, regex genérico CLP: `/\$\s?(\d{1,3}(?:[.\s]\d{3})+|\d{4,6})(?!\d)/`. Toma el **primer** match; normaliza quitando puntos/espacios → integer CLP.
+- Guarda `raw_snippet` = ±80 chars alrededor del match (o primeros 300 chars del body si no hay match).
+- Lógica de status:
+  - sin match → `extraccion_fallida`, `needs_review=true`.
+  - match + sin `precio_regular_clp` previo → `ok`, `needs_review=true` (primera vez).
+  - match + delta ≤5% → `sin_cambios`.
+  - match + delta >5% → `cambio_detectado`, `needs_review=true`.
+- Inserta fila en `price_checks`. **No** toca `hosting_companies`.
+- Errores de red/timeout → `extraccion_fallida` con snippet vacío y mensaje en `raw_snippet`.
 
-Ruta duplicada de `/catalogo`. Hoy hace redirect JS pero un crawler puede indexar el HTML inicial. Editar `src/pages/DirectorioHosting.tsx` (o el componente que monta la ruta) para inyectar vía Helmet:
+`supabase/config.toml`: añadir `[functions.price-monitor] verify_jwt = false` (igual que uptime-monitor).
 
-```tsx
-<link rel="canonical" href="https://eligetuhosting.cl/catalogo" />
-<meta name="robots" content="noindex,follow" />
+## 3. Cron semanal
+
+Migración separada (datos, vía `supabase--insert` con `cron.schedule`) — mismo patrón que uptime:
 ```
+select cron.schedule('price-monitor-weekly', '0 9 * * 1', $$
+  select net.http_post(
+    url:='https://oegvwjxrlmtwortyhsrv.supabase.co/functions/v1/price-monitor',
+    headers:='{"Content-Type":"application/json","apikey":"<ANON>"}'::jsonb,
+    body:='{}'::jsonb
+  );
+$$);
+```
+Lunes 09:00 UTC. (La crearé tras aprobar el plan; requiere `pg_cron`+`pg_net` ya activos — los confirmo).
 
-Mantener el redirect cliente; el canonical/noindex sirven mientras Google revisita.
+## 4. Panel admin `/admin/precios`
 
-### 3. Envío de sitemap a Google Search Console + priorizar fichas líderes
+- Nueva ruta protegida `<ProtectedRoute allowedRoles={['admin']}>` en `App.tsx`.
+- Nueva página `src/pages/admin/Precios.tsx`:
+  - Query: último `price_checks` por proveedor (`distinct on (provider_id) ... order by provider_id, fetched_at desc`) + join a `hosting_companies` (name, precio_regular_clp, precio_verificado_at, precio_url).
+  - Tabla columnas: Proveedor · Precio actual (CLP) · Último detectado · Δ% · Status (badge) · Fecha · Acción.
+  - Filas con `needs_review` resaltadas (borde/bg accent).
+  - Botón **Aprobar y actualizar** → `update hosting_companies set precio_regular_clp = detectado, precio_verificado_at = now(), precio_fuente = source_url where id = ...` + marca el check como revisado (`needs_review=false`).
+  - Botón **Descartar** → solo limpia `needs_review`.
+  - Link al snippet en un dialog para auditoría manual.
 
-El usuario confirma que el build ya está publicado. Vía el conector `google_search_console`:
+Sin cambios de diseño global; usa componentes shadcn ya presentes (Table, Badge, Button, Dialog).
 
-1. `PUT /webmasters/v3/sites/https%3A%2F%2Feligetuhosting.cl%2F` (asegurar que el sitio está en la lista; ya debería estarlo).
-2. `PUT /webmasters/v3/sites/https%3A%2F%2Feligetuhosting.cl%2F/sitemaps/https%3A%2F%2Feligetuhosting.cl%2Fsitemap.xml` para reenviar el sitemap index.
-3. Informar al usuario que la API de Search Console **no expone "Solicitar indexación"** (esa función vive sólo en la UI). Le doy la lista exacta de URLs prioritarias a pegar manualmente en "Inspección de URL" → "Solicitar indexación":
-   - `/catalogo/hostingplus`
-   - `/catalogo/ecohosting`
-   - `/mejor-hosting-wordpress-chile`
-   - `/mejor-hosting-ecommerce-chile`
-   - `/mejor-hosting-pymes-chile`
-   - `/mejor-vps-chile`
+## 5. Archivos a crear/editar
 
-### Archivos a editar
+Crear:
+- `supabase/functions/price-monitor/index.ts`
+- `src/pages/admin/Precios.tsx`
 
-- `src/pages/EstudioHostingChile2026.tsx`
-- `src/pages/Certificaciones.tsx`
-- `src/components/RecommendedByData.tsx`
-- `src/pages/DirectorioHosting.tsx`
+Editar:
+- `supabase/config.toml` (entrada función)
+- `src/App.tsx` (ruta `/admin/precios`)
+- `src/pages/admin/Dashboard.tsx` (link al panel, si existe nav admin — verificaré)
 
-### Verificación
+Migraciones:
+- 1× schema (columnas + tabla + RLS + GRANTs + índices)
+- 1× cron (`supabase--insert`, tras aprobar)
 
-- `rg "hostingplus.cl|ecohosting.cl" src/pages/EstudioHostingChile2026.tsx src/pages/Certificaciones.tsx` confirma que los enlaces directos quedaron.
-- Curl al gateway de Search Console para confirmar 200 al reenviar el sitemap.
-- Visitar `/directorio-hosting-chile` en preview y verificar el `<link rel="canonical">` y `meta robots` en el `<head>`.
-
-### Fuera de alcance (lo dejo claro)
-
-- Reseñas reales, outreach del Estudio 2026 y monitoreo SEO continuo (Nivel 4): trabajo operativo, no de código.
-- Publicar el build: el usuario indica que ya está publicado.
+## Confirmaciones que necesito antes de codear
+1. ¿OK lunes 09:00 UTC semanal, o prefieres otro día/hora?
+2. ¿Aplicar a **todos** los proveedores con `precio_url` o solo `is_curated=true`?
+3. ¿Umbral 5% está bien o prefieres otro (ej. 3%)?

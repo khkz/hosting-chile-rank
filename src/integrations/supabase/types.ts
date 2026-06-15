@@ -971,6 +971,13 @@ export type Database = {
           original_price: number | null
           overall_rating: number | null
           payment_methods: string[] | null
+          precio_fuente: string | null
+          precio_periodo: string | null
+          precio_promo_clp: number | null
+          precio_regex: string | null
+          precio_regular_clp: number | null
+          precio_url: string | null
+          precio_verificado_at: string | null
           price_period: string
           price_rating: number | null
           promo_price: number | null
@@ -1037,6 +1044,13 @@ export type Database = {
           original_price?: number | null
           overall_rating?: number | null
           payment_methods?: string[] | null
+          precio_fuente?: string | null
+          precio_periodo?: string | null
+          precio_promo_clp?: number | null
+          precio_regex?: string | null
+          precio_regular_clp?: number | null
+          precio_url?: string | null
+          precio_verificado_at?: string | null
           price_period?: string
           price_rating?: number | null
           promo_price?: number | null
@@ -1103,6 +1117,13 @@ export type Database = {
           original_price?: number | null
           overall_rating?: number | null
           payment_methods?: string[] | null
+          precio_fuente?: string | null
+          precio_periodo?: string | null
+          precio_promo_clp?: number | null
+          precio_regex?: string | null
+          precio_regular_clp?: number | null
+          precio_url?: string | null
+          precio_verificado_at?: string | null
           price_period?: string
           price_rating?: number | null
           promo_price?: number | null
@@ -1528,6 +1549,50 @@ export type Database = {
             columns: ["domain_id"]
             isOneToOne: true
             referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      price_checks: {
+        Row: {
+          delta_pct: number | null
+          fetched_at: string
+          id: string
+          needs_review: boolean
+          precio_detectado_clp: number | null
+          provider_id: string
+          raw_snippet: string | null
+          source_url: string
+          status: string
+        }
+        Insert: {
+          delta_pct?: number | null
+          fetched_at?: string
+          id?: string
+          needs_review?: boolean
+          precio_detectado_clp?: number | null
+          provider_id: string
+          raw_snippet?: string | null
+          source_url: string
+          status: string
+        }
+        Update: {
+          delta_pct?: number | null
+          fetched_at?: string
+          id?: string
+          needs_review?: boolean
+          precio_detectado_clp?: number | null
+          provider_id?: string
+          raw_snippet?: string | null
+          source_url?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "price_checks_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
             referencedColumns: ["id"]
           },
         ]
