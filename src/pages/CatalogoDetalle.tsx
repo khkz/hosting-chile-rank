@@ -336,6 +336,10 @@ const CatalogoDetalle = () => {
           officialWebsite={company.website}
         />
 
+        <p className="text-xs text-muted-foreground mt-3">
+          Precios referenciales verificados a junio 2026; pueden variar — confirma en el sitio del proveedor.
+        </p>
+
         <Veredicto
           name={company.name}
           rating={seoData.rating}
