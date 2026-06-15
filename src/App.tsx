@@ -153,6 +153,8 @@ function App() {
         <Route path="/recursos-hosting-chile" element={<RecursosHosting />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/resenas/:slug" element={<Resena />} />
+        {/* Redirect legacy singular /resena/:slug → canonical plural /resenas/:slug */}
+        <Route path="/resena/:slug" element={<ResenaSingularRedirect />} />
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
         <Route path="/benchmark" element={<Benchmark />} />

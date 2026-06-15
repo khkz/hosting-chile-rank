@@ -21,31 +21,30 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
 }) => {
   const location = useLocation();
   const fullTitle = `${title} | EligeTuHosting.cl`;
-  const url = canonical || `https://eligetuhosting.cl${location.pathname}`;
+  // Always self-referential canonical based on current route unless explicitly overridden.
+  const normalizedPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '');
+  const url = canonical || `https://eligetuhosting.cl${normalizedPath}`;
 
   return (
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
-      
+
       {/* Canonical & hreflang */}
       <link rel="canonical" href={url} />
       <link rel="alternate" hrefLang="es-CL" href={url} />
       <link rel="alternate" hrefLang="es" href={url} />
       <link rel="alternate" hrefLang="x-default" href={url} />
-      
-      {/* Open Graph */}
+
+      {/* Open Graph — og:type/site_name/locale viven en index.html (sitewide).
+          Aquí solo emitimos los que varían por ruta para evitar duplicados. */}
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:type" content={type} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={ogImage} />
-      <meta property="og:site_name" content="EligeTuHosting.cl" />
-      <meta property="og:locale" content="es_CL" />
-      
+
       {/* Twitter Card */}
-      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />

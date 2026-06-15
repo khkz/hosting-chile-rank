@@ -183,7 +183,7 @@ const generateMainSitemap = (companySlugs = []) => {
   const hostingReviews = [
     'hostingplus', 'ecohosting', '1hosting', 'hostgator',
     'bluehost', 'donweb', 'godaddy', 'siteground'
-  ].map(slug => urlTag(`${ROOT}/resena/${slug}`, '0.8', 'weekly'))
+  ].map(slug => urlTag(`${ROOT}/resenas/${slug}`, '0.8', 'weekly'))
    .join('');
 
   // Detalle de empresas verificadas (/catalogo/:slug) desde Supabase
