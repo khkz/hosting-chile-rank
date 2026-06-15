@@ -6,6 +6,7 @@ import StickyCTA from '@/components/StickyCTA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet-async';
 import { ReputationBySlug } from '@/components/reputation/ReputationBySlug';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 
 // Datos completos para reseñas de hosting
 const hostingData = {
@@ -249,6 +250,42 @@ const Resena = () => {
     );
   }
 
+  const PUBLISHED = '2026-01-01';
+  const MODIFIED = new Date().toISOString().slice(0, 10);
+  const canonical = `https://eligetuhosting.cl/resenas/${slug}`;
+
+  const reviewSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    name: `Reseña editorial de ${hosting.name}`,
+    url: canonical,
+    datePublished: PUBLISHED,
+    dateModified: MODIFIED,
+    reviewBody: hosting.description,
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: hosting.rating,
+      bestRating: 10,
+      worstRating: 0,
+    },
+    author: {
+      '@type': 'Organization',
+      name: 'EligeTuHosting',
+      url: 'https://eligetuhosting.cl/sobre-nosotros',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'EligeTuHosting.cl',
+      url: 'https://eligetuhosting.cl',
+    },
+    itemReviewed: {
+      '@type': 'Organization',
+      name: hosting.name,
+      url: hosting.url,
+      image: hosting.logo.startsWith('http') ? hosting.logo : `https://eligetuhosting.cl${hosting.logo}`,
+    },
+  };
+
   return (
     <>
       <Helmet>
@@ -257,30 +294,18 @@ const Resena = () => {
           name="description"
           content={`Análisis detallado y reseña de ${hosting.name}. Descubre sus ventajas, desventajas y si es la mejor opción para tu sitio web.`}
         />
-        <link rel="canonical" href={`https://eligetuhosting.cl/resenas/${slug}`} />
-        <meta property="og:url" content={`https://eligetuhosting.cl/resenas/${slug}`} />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:url" content={canonical} />
         <meta property="og:title" content={`Reseña ${hosting.name} | EligeTuHosting.cl`} />
-
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: hosting.name,
-            image: hosting.logo,
-            brand: hosting.name,
-            sku: slug,
-            review: {
-              "@type": "Review",
-              reviewBody: hosting.description,
-              reviewRating: { "@type": "Rating", ratingValue: hosting.rating, bestRating: 10 },
-              author: { "@type": "Organization", name: "eligetuhosting.cl" },
-              datePublished: "2026-01-01"
-            },
-            aggregateRating: { "@type": "AggregateRating", ratingValue: hosting.rating, bestRating: 10, ratingCount: 1 },
-            dateModified: new Date().toISOString().slice(0,10)
-          })}
-        </script>
+        <script type="application/ld+json">{JSON.stringify(reviewSchema)}</script>
       </Helmet>
+      <BreadcrumbSchema
+        items={[
+          { name: 'Reseñas', url: '/catalogo' },
+          { name: hosting.name, url: `/resenas/${slug}` },
+        ]}
+      />
+
       
       <Navbar />
       

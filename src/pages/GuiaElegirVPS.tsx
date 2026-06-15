@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import RecommendedByData from '@/components/RecommendedByData';
 import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
@@ -19,6 +20,7 @@ const GuiaElegirVPS = () => {
           content="Guía VPS Chile 2025: 180 migraciones exitosas. Ranking real de 5 mejores proveedores, precios actualizados y cuándo SÍ necesitas VPS. Experiencia de 4 años." 
         />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: elegir VPS", url: "/guia-elegir-vps" }]} />
       
       <Navbar />
       

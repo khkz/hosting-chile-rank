@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import AuthorByline from '@/components/AuthorByline';
 import GuideEEAT from '@/components/GuideEEAT';
 import heroImg from '@/assets/guia-cdn-hero.jpg';
@@ -16,6 +17,7 @@ const GuiaElegirCDN = () => {
         <title>Guía CDN Chile 2026 | EligeTuHosting.cl</title>
         <meta name="description" content="Guía completa para elegir el mejor CDN (Content Delivery Network) en Chile. Mejora la velocidad de carga y optimiza el rendimiento de tu sitio web." />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: elegir CDN", url: "/guia-elegir-cdn" }]} />
       
       <Navbar />
       

@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import RecommendedByData from '@/components/RecommendedByData';
 import AuthorByline from '@/components/AuthorByline';
 import StickyCTA from '@/components/StickyCTA';
@@ -19,6 +20,7 @@ const GuiaElegirSSL = () => {
           content="Todo lo que necesitas saber para elegir el certificado SSL adecuado para tu sitio web y mantenerlo seguro." 
         />
       </Helmet>
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: "Guía: elegir SSL", url: "/guia-elegir-ssl" }]} />
       
       <Navbar />
       

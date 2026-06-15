@@ -2,6 +2,7 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Check, X, AlertTriangle, Shield, Eye, Server, ExternalLink } from 'lucide-react';
@@ -185,6 +186,12 @@ const VsComparison = () => {
           })}
         </script>
       </Helmet>
+      <BreadcrumbSchema
+        items={[
+          { name: 'Transparencia', url: '/transparencia-hosting-chile' },
+          { name: `vs ${competitor.name}`, url: `/vs/${competitor.slug}` },
+        ]}
+      />
       
       <Navbar />
       

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import AuthorByline from '@/components/AuthorByline';
 import GuideEEAT from '@/components/GuideEEAT';
 import heroImg from '@/assets/guia-elegir-hosting-hero.jpg';
@@ -145,6 +146,7 @@ const GuiaCompletaElegirHosting = () => {
 
       <div className="min-h-screen bg-background">
       <Navbar />
+      <BreadcrumbSchema items={[{ name: 'Guías', url: '/recursos-hosting-chile' }, { name: 'Guía completa para elegir hosting', url: '/guia-completa-elegir-hosting-chile-2026' }]} />
       <SEOBreadcrumbs items={breadcrumbItems} />
         
         <main className="container mx-auto px-4 py-12">
