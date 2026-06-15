@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
+import { formatUptime } from '@/lib/uptime';
 
 interface VerifiedDataTableProps {
   yearFounded?: number | null;
@@ -53,7 +54,7 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
       'Tecnologías declaradas',
       props.technologies && props.technologies.length > 0 ? props.technologies.join(', ') : '—',
     ],
-    ['Garantía de uptime', props.uptimeGuarantee ? `${props.uptimeGuarantee}%` : '—'],
+    ['Garantía de uptime', formatUptime(props.uptimeGuarantee) ?? '—'],
     ['SSL gratis', props.hasSslFree ? 'Sí' : 'No declarado'],
     ['Migración gratis', props.hasMigrationFree ? 'Sí' : 'No declarado'],
   ];

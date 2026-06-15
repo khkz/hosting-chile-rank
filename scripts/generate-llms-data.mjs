@@ -32,6 +32,17 @@ function fmtCLP(n) {
   return `$${Number(n).toLocaleString('es-CL')} CLP/mes`;
 }
 
+// Normaliza uptime al formato "99,9%". Capa cualquier >=100 al SLA realista 99,9%.
+function formatUptimeSrv(input) {
+  if (input === null || input === undefined || input === '') return null;
+  const raw = String(input).trim().replace('%', '').replace(',', '.').trim();
+  if (!raw) return null;
+  const num = Number(raw);
+  if (!Number.isFinite(num) || num <= 0) return null;
+  const capped = num >= 100 ? 99.9 : num;
+  return `${capped.toFixed(2).replace(/\.?0+$/, '').replace('.', ',')}%`;
+}
+
 async function main() {
   if (!KEY) {
     console.log('[llms-data] sin SUPABASE_ANON_KEY: salto generación');
@@ -221,7 +232,7 @@ ${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donw
 - Sitio oficial: ${p.url_sitio || 'N/D'}
 - Ficha en EligeTuHosting.cl: ${p.url_ficha}
 - Tecnologías: ${(company.technologies || []).join(', ') || 'N/D'}
-- Uptime garantizado: ${company.uptime_guarantee ? company.uptime_guarantee + '%' : 'N/D'}
+- Uptime garantizado: ${formatUptimeSrv(company.uptime_guarantee) || 'N/D'}
 - SSL gratis: ${company.has_ssl_free ? 'Sí' : 'No declarado'}
 - Migración gratis: ${company.has_migration_free ? 'Sí' : 'No declarado'}
 - Contacto: ${contact}

@@ -426,6 +426,10 @@ const HostingRanking = () => {
           </ol>
         )}
 
+        <p className="text-xs text-muted-foreground text-center max-w-3xl mx-auto mt-4 mb-6">
+          Precios referenciales verificados a junio 2026; pueden variar — confirma en el sitio del proveedor.
+        </p>
+
         {/* Puestos 4 a 10 */}
         <RankingPositions4to10 />
 

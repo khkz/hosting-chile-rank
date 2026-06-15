@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, CheckCircle, XCircle, Shield, CreditCard, Clock } from 'lucide-react';
+import { formatUptime } from '@/lib/uptime';
 
 interface ContactInfo {
   phone: string;
@@ -287,10 +288,10 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
                   </TableCell>
                 </TableRow>
               )}
-              {company.uptimeGuarantee && (
+              {formatUptime(company.uptimeGuarantee) && (
                 <TableRow>
                   <TableCell className="font-medium">Uptime garantizado</TableCell>
-                  <TableCell>{company.uptimeGuarantee}</TableCell>
+                  <TableCell>{formatUptime(company.uptimeGuarantee)}</TableCell>
                 </TableRow>
               )}
               {company.datacenterLocation && (
