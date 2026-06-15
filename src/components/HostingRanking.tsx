@@ -10,6 +10,7 @@ import ItemListSchema from '@/components/SEO/ItemListSchema';
 import AvailabilityBadge from './AvailabilityBadge';
 import IndependenceBadge from './IndependenceBadge';
 import RankingPositions4to10 from './RankingPositions4to10';
+import RankingAuthorityBlock from './RankingAuthorityBlock';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
