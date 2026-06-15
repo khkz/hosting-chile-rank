@@ -1,6 +1,12 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from 'react-router-dom';
+
+// Legacy singular → canonical plural reseñas redirect (replace-true ≈ 301 for client navs)
+const ResenaSingularRedirect: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={`/resenas/${slug ?? ''}`} replace />;
+};
 import ScrollToTop from './components/ScrollToTop';
 import WhoisRedirect from './components/WhoisRedirect';
 import DomainRedirect from './components/DomainRedirect';
