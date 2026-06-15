@@ -80,6 +80,7 @@ import AdminCertifications from './pages/admin/Certifications';
 import DataMigration from './pages/admin/DataMigration';
 import DomainSniper from './pages/admin/DomainSniper';
 import CompanyCuration from './pages/admin/CompanyCuration';
+import AdminPrecios from './pages/admin/Precios';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import CompanyProfile from './pages/provider/CompanyProfile';
 import PlanManagement from './pages/provider/PlanManagement';
@@ -256,6 +257,11 @@ function App() {
             <Route path="/admin/benchmark" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminBenchmarkRuns />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/precios" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminPrecios />
               </ProtectedRoute>
             } />
             <Route path="/provider/dashboard" element={
