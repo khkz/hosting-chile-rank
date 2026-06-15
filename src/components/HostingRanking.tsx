@@ -10,6 +10,7 @@ import ItemListSchema from '@/components/SEO/ItemListSchema';
 import AvailabilityBadge from './AvailabilityBadge';
 import IndependenceBadge from './IndependenceBadge';
 import RankingPositions4to10 from './RankingPositions4to10';
+import RankingAuthorityBlock from './RankingAuthorityBlock';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
@@ -347,6 +348,16 @@ const HostingRanking = () => {
 
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-4 rounded-full" />
         </div>
+
+        {/* Authority signals + affiliate disclosure + "Why HostingPlus #1?" accordion */}
+        <RankingAuthorityBlock
+          lastUpdated={
+            sortedHostingData.length > 0 && sortedHostingData[0].updated_at
+              ? new Date(Math.max(...sortedHostingData.map((c: any) => new Date(c.updated_at).getTime()))).toISOString()
+              : null
+          }
+          className="mb-6 md:mb-8"
+        />
 
         {!isLoading && sortedHostingData.length > 0 && (
           <ItemListSchema
