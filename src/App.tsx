@@ -51,6 +51,7 @@ import RecursosHosting from './pages/RecursosHosting';
 import Resena from './pages/Resena';
 import Catalogo from './pages/Catalogo';
 import CatalogoDetalle from './pages/CatalogoDetalle';
+import Directorio from './pages/Directorio';
 import Benchmark from './pages/Benchmark';
 import MetodologiaBenchmark from './pages/MetodologiaBenchmark';
 import Metodologia from './pages/Metodologia';
@@ -164,6 +165,7 @@ function App() {
         <Route path="/resena/:slug" element={<ResenaSingularRedirect />} />
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
+        <Route path="/directorio" element={<Directorio />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/metodologia-benchmark" element={<MetodologiaBenchmark />} />
         <Route path="/metodologia" element={<Metodologia />} />
