@@ -11,6 +11,7 @@ import AvailabilityBadge from './AvailabilityBadge';
 import IndependenceBadge from './IndependenceBadge';
 import RankingPositions4to10 from './RankingPositions4to10';
 import RankingAuthorityBlock from './RankingAuthorityBlock';
+import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
@@ -206,21 +207,24 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
 
           {/* CTA */}
           <div className="space-y-2">
-            {provider.slug && provider.website ? (
-              <Button
-                asChild
-                className={`w-full ${provider.button_color || 'bg-primary'} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
-              >
-                <a
-                  href={`/ir/${provider.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  referrerPolicy="no-referrer"
+            {provider.slug && provider.website ? (() => {
+              const link = getProviderLink(provider.slug, provider.website);
+              return (
+                <Button
+                  asChild
+                  className={`w-full ${provider.button_color || 'bg-primary'} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
                 >
-                  {provider.cta_text || 'Ver Oferta'}
-                </a>
-              </Button>
-            ) : null}
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel={link.rel}
+                    referrerPolicy="no-referrer"
+                  >
+                    {provider.cta_text || 'Ver Oferta'}
+                  </a>
+                </Button>
+              );
+            })() : null}
             {provider.cta_micro_copy && (
               <p className="text-xs text-center text-muted-foreground">
                 {provider.cta_micro_copy}
@@ -288,7 +292,7 @@ const HostingRanking = () => {
 
   const sortedHostingData = useMemo(() => {
     if (!companies) return [];
-    const sorted = [...companies];
+    const sorted = filterVisibleProviders([...companies]);
 
     switch (sortCriteria) {
       case 'speed':
