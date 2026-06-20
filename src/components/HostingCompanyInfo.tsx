@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, CheckCircle, XCircle, Shield, CreditCard, Clock } from 'lucide-react';
 import { formatUptime } from '@/lib/uptime';
+import { getProviderLink } from '@/lib/providerLinks';
 
 interface ContactInfo {
   phone: string;
@@ -107,11 +108,13 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
           )}
           
           <div className="mt-4 flex flex-wrap gap-2">
-            <Button asChild variant="outline" className="gap-2">
-              <a href={company.website} target="_blank" rel="noopener noreferrer">
-                Visitar Sitio Web <ExternalLink size={16} />
-              </a>
-            </Button>
+            {(() => { const link = getProviderLink(company.id, company.website); return (
+              <Button asChild variant="outline" className="gap-2">
+                <a href={link.href} target="_blank" rel={link.rel}>
+                  Visitar Sitio Web <ExternalLink size={16} />
+                </a>
+              </Button>
+            ); })()}
             {company.hasSslFree && (
               <Badge className="bg-green-100 text-green-800"><Shield className="w-3 h-3 mr-1" />SSL Gratis</Badge>
             )}

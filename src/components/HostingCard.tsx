@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { ChevronDown, ChevronUp, Check } from 'lucide-react';
 import ContextualLinks from './ContextualLinks';
+import { getProviderLink } from '@/lib/providerLinks';
 
 interface HostingCardProps {
   position: number;
@@ -167,14 +168,19 @@ const HostingCard: React.FC<HostingCardProps> = ({
       
       {/* CTA Section */}
       <div className="space-y-2">
-        <Button 
-          asChild
-          className={`inline-block ${isTopRated ? 'cta-primary' : 'cta-secondary'} w-full justify-center min-h-[44px] touch-manipulation text-base`}
-        >
-          <a href={url} target="_blank" rel="nofollow sponsored noopener noreferrer">
-            {ctaText}
-          </a>
-        </Button>
+        {(() => {
+          const link = getProviderLink(companySlug, url);
+          return (
+            <Button
+              asChild
+              className={`inline-block ${isTopRated ? 'cta-primary' : 'cta-secondary'} w-full justify-center min-h-[44px] touch-manipulation text-base`}
+            >
+              <a href={link.href} target="_blank" rel={link.rel}>
+                {ctaText}
+              </a>
+            </Button>
+          );
+        })()}
         {ctaMicroCopy && (
           <p className="text-xs text-center text-muted-foreground">
             {ctaMicroCopy}

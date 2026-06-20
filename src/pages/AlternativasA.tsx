@@ -10,6 +10,7 @@ import {
   isValidSlug, isAnchorSlug,
   ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING, MIGRATION_COMPETITORS,
 } from '@/lib/vsPairs';
+import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 
 const ORIGIN = 'https://eligetuhosting.cl';
 
@@ -23,6 +24,7 @@ interface Company {
   corporate_group: string | null;
   foundation_year: number | null;
   total_reviews: number | null;
+  website: string | null;
 }
 
 const fmtPrice = (p: number | null) => (p ? `$${Number(p).toLocaleString('es-CL')}/mes` : 'Consultar');
@@ -38,19 +40,19 @@ const AlternativasA: React.FC = () => {
     (async () => {
       const { data: t } = await supabase
         .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews')
+        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews,website')
         .eq('slug', slug)
         .maybeSingle();
       setTarget((t as Company) || null);
 
       const { data: leaders } = await supabase
         .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews')
+        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews,website')
         .eq('is_verified', true)
         .eq('is_curated', true)
         .order('overall_rating', { ascending: false })
         .limit(6);
-      const ranked = (leaders || []) as Company[];
+      const ranked = filterVisibleProviders((leaders || []) as Company[]);
       const hp = ranked.find(c => c.slug === ANCHOR_HOSTINGPLUS);
       const eh = ranked.find(c => c.slug === ANCHOR_ECOHOSTING);
       const third = ranked.find(c => c.slug !== ANCHOR_HOSTINGPLUS && c.slug !== ANCHOR_ECOHOSTING && c.slug !== slug);
@@ -169,7 +171,9 @@ const AlternativasA: React.FC = () => {
                   </div>
                   <div className="flex gap-2">
                     <Link to={`/catalogo/${p.slug}`} className="text-sm px-3 py-2 rounded border border-[#EF233C] text-[#EF233C] hover:bg-[#EF233C] hover:text-white">Ver ficha</Link>
-                    <a href={`/ir/${p.slug}`} className="text-sm px-3 py-2 rounded bg-[#EF233C] text-white hover:bg-red-700 flex items-center gap-1">Visitar <ExternalLink className="h-3 w-3" /></a>
+                    {(() => { const link = getProviderLink(p.slug, p.website); return (
+                      <a href={link.href} target="_blank" rel={link.rel} className="text-sm px-3 py-2 rounded bg-[#EF233C] text-white hover:bg-red-700 flex items-center gap-1">Visitar <ExternalLink className="h-3 w-3" /></a>
+                    ); })()}
                   </div>
                 </div>
               </li>

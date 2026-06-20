@@ -7,6 +7,7 @@ import RecommendedByData from '@/components/RecommendedByData';
 import { Star, ExternalLink, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { HubConfig } from '@/lib/segmentHubs';
+import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 
 interface Provider {
   slug: string;
@@ -16,6 +17,7 @@ interface Provider {
   promo_price: number | null;
   datacenter_location: string | null;
   total_reviews: number | null;
+  website: string | null;
 }
 
 const ORIGIN = 'https://eligetuhosting.cl';
@@ -28,13 +30,14 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
     (async () => {
       const { data } = await supabase
         .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,total_reviews')
+        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,total_reviews,website')
         .in('slug', config.providerSlugs);
       if (!mounted || !data) return;
       // preserve config order
       const ordered = config.providerSlugs
         .map(s => data.find(d => d.slug === s))
-        .filter(Boolean) as Provider[];
+        .filter(Boolean)
+        .filter((p: any) => !isHiddenProvider(p.slug, null)) as Provider[];
       setProviders(ordered);
     })();
     return () => { mounted = false; };
@@ -138,12 +141,19 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
                     >
                       Ver review
                     </Link>
-                    <a
-                      href={`/ir/${p.slug}`}
-                      className="text-center text-sm px-3 py-2 rounded bg-[#EF233C] text-white hover:bg-red-700 transition min-h-[44px] flex items-center justify-center gap-1"
-                    >
-                      Visitar sitio <ExternalLink className="h-3 w-3" />
-                    </a>
+                    {(() => {
+                      const link = getProviderLink(p.slug, p.website);
+                      return (
+                        <a
+                          href={link.href}
+                          rel={link.rel}
+                          target="_blank"
+                          className="text-center text-sm px-3 py-2 rounded bg-[#EF233C] text-white hover:bg-red-700 transition min-h-[44px] flex items-center justify-center gap-1"
+                        >
+                          Visitar sitio <ExternalLink className="h-3 w-3" />
+                        </a>
+                      );
+                    })()}
                   </div>
                 </div>
               </li>
