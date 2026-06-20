@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Helmet } from 'react-helmet-async';
 import { ReputationBySlug } from '@/components/reputation/ReputationBySlug';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
+import { getProviderLink } from '@/lib/providerLinks';
 
 // Datos completos para reseñas de hosting
 const hostingData = {
@@ -437,14 +438,16 @@ const Resena = () => {
           <div className="mt-10 p-6 bg-gray-100 rounded-lg text-center">
             <h3 className="text-2xl font-bold mb-4">¿Listo para probar {hosting.name}?</h3>
             <p className="mb-6">Obtén los mejores precios y un servicio de calidad para tu sitio web.</p>
-            <a 
-              href={hosting.url} 
-              target="_blank" 
-              rel="nofollow sponsored noopener noreferrer"
-              className="bg-[#EF233C] text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
-            >
-              Visitar {hosting.name}
-            </a>
+            {(() => { const link = getProviderLink(slug, hosting.url); return (
+              <a
+                href={link.href}
+                target="_blank"
+                rel={link.rel}
+                className="bg-[#EF233C] text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
+              >
+                Visitar {hosting.name}
+              </a>
+            ); })()}
           </div>
         </div>
       </main>
