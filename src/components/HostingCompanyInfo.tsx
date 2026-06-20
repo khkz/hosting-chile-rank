@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { formatCorporateGroup } from '@/lib/formatGroup';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
@@ -90,7 +91,7 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
               {company.rating}/10 puntos
             </div>
             {company.corporateGroup && (
-              <Badge variant="outline" className="text-xs">Grupo {company.corporateGroup}</Badge>
+              <Badge variant="outline" className="text-xs">{formatCorporateGroup(company.corporateGroup)}</Badge>
             )}
           </div>
           

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatCorporateGroup } from '@/lib/formatGroup';
 import { ShieldCheck, MapPin, Building2, Calendar, CheckCircle2, ArrowRight, MessageSquarePlus } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -44,7 +45,7 @@ const buildSignals = (c: CompanyRow): { icon: React.ReactNode; label: string }[]
   if (c.is_independent === true) {
     signals.push({ icon: <Building2 className="w-3.5 h-3.5" />, label: 'Empresa independiente' });
   } else if (c.is_independent === false && c.corporate_group) {
-    signals.push({ icon: <Building2 className="w-3.5 h-3.5" />, label: `Grupo ${c.corporate_group}` });
+    signals.push({ icon: <Building2 className="w-3.5 h-3.5" />, label: formatCorporateGroup(c.corporate_group) });
   }
 
   if (c.has_migration_free) {

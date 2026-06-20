@@ -32,6 +32,7 @@ const ROUTES = [
   '/ranking',
   '/comparativa',
   '/catalogo',
+  '/directorio',
   '/benchmark',
   '/metodologia',
   '/metodologia-benchmark',
