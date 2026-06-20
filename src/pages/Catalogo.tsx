@@ -42,25 +42,35 @@ const CatalogoPage = () => {
     },
   });
 
-  // Sort companies based on selected option
+  // Sort companies based on selected option — providers without rating always last
   const sortedCompanies = React.useMemo(() => {
     if (!companies) return [];
 
-    const sorted = filterVisibleProviders([...companies]);
-    switch (sortBy) {
-      case 'rating':
-        return sorted.sort((a, b) => (b.overall_rating || 0) - (a.overall_rating || 0));
-      case 'price':
-        return sorted.sort((a, b) => {
-          const minPriceA = Math.min(...(a.hosting_plans?.map((p: any) => p.price_monthly) || [Infinity]));
-          const minPriceB = Math.min(...(b.hosting_plans?.map((p: any) => p.price_monthly) || [Infinity]));
-          return minPriceA - minPriceB;
-        });
-      case 'name':
-        return sorted.sort((a, b) => a.name.localeCompare(b.name));
-      default:
-        return sorted;
-    }
+    const visible = filterVisibleProviders([...companies]);
+    const hasRating = (c: any) => (c.overall_rating ?? 0) > 0;
+    const withRating = visible.filter(hasRating);
+    const withoutRating = visible.filter((c: any) => !hasRating(c));
+
+    const sortFn = (a: any, b: any) => {
+      switch (sortBy) {
+        case 'rating':
+          return (b.overall_rating || 0) - (a.overall_rating || 0);
+        case 'price': {
+          const minA = Math.min(...(a.hosting_plans?.map((p: any) => p.price_monthly) || [Infinity]));
+          const minB = Math.min(...(b.hosting_plans?.map((p: any) => p.price_monthly) || [Infinity]));
+          return minA - minB;
+        }
+        case 'name':
+          return a.name.localeCompare(b.name, 'es');
+        default:
+          return 0;
+      }
+    };
+
+    return [
+      ...withRating.sort(sortFn),
+      ...withoutRating.sort((a: any, b: any) => a.name.localeCompare(b.name, 'es')),
+    ];
   }, [companies, sortBy]);
 
   const { data: reviewStats } = useReviewStats(sortedCompanies.map((c) => c.slug));
