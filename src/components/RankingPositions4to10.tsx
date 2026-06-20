@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, ArrowRight, Star } from 'lucide-react';
 import { useReviewStats } from '@/hooks/useReviewStats';
+import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 
 // Orden y notas oficiales (4–10). Fuente única de verdad para el ranking extendido.
 export const EXTRA_RANKING: Array<{
@@ -107,18 +108,21 @@ const RankingPositions4to10: React.FC = () => {
                       <Button asChild variant="outline" size="sm" className="min-h-[44px]">
                         <Link to={`/catalogo/${row.slug}`}>Ver detalles</Link>
                       </Button>
-                      {db?.website && (
-                        <Button asChild size="sm" className="min-h-[44px]">
-                          <a
-                            href={`/ir/${row.slug}`}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                          >
-                            Visitar sitio
-                            <ExternalLink className="ml-1 h-3 w-3" />
-                          </a>
-                        </Button>
-                      )}
+                      {db?.website && (() => {
+                        const link = getProviderLink(row.slug, db.website);
+                        return (
+                          <Button asChild size="sm" className="min-h-[44px]">
+                            <a
+                              href={link.href}
+                              target="_blank"
+                              rel={link.rel}
+                            >
+                              Visitar sitio
+                              <ExternalLink className="ml-1 h-3 w-3" />
+                            </a>
+                          </Button>
+                        );
+                      })()}
                     </div>
                   </td>
                 </tr>
@@ -163,18 +167,21 @@ const RankingPositions4to10: React.FC = () => {
                 <Button asChild variant="outline" size="sm" className="flex-1 min-h-[44px]">
                   <Link to={`/catalogo/${row.slug}`}>Ver detalles</Link>
                 </Button>
-                {db?.website && (
-                  <Button asChild size="sm" className="flex-1 min-h-[44px]">
-                    <a
-                      href={`/ir/${row.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer nofollow"
-                    >
-                      Visitar
-                      <ArrowRight className="ml-1 h-3 w-3" />
-                    </a>
-                  </Button>
-                )}
+                {db?.website && (() => {
+                  const link = getProviderLink(row.slug, db.website);
+                  return (
+                    <Button asChild size="sm" className="flex-1 min-h-[44px]">
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel={link.rel}
+                      >
+                        Visitar
+                        <ArrowRight className="ml-1 h-3 w-3" />
+                      </a>
+                    </Button>
+                  );
+                })()}
               </div>
             </div>
           );
