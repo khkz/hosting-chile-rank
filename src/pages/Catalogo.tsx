@@ -17,6 +17,7 @@ import TechnicalGlossary from '@/components/TechnicalGlossary';
 import RelatedContent from '@/components/RelatedContent';
 import LogoTile from '@/components/LogoTile';
 import { useReviewStats } from '@/hooks/useReviewStats';
+import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -44,8 +45,8 @@ const CatalogoPage = () => {
   // Sort companies based on selected option
   const sortedCompanies = React.useMemo(() => {
     if (!companies) return [];
-    
-    const sorted = [...companies];
+
+    const sorted = filterVisibleProviders([...companies]);
     switch (sortBy) {
       case 'rating':
         return sorted.sort((a, b) => (b.overall_rating || 0) - (a.overall_rating || 0));
@@ -220,18 +221,21 @@ const CatalogoPage = () => {
                           Ver Detalles
                         </Link>
                       </Button>
-                      {company.slug && company.website && (
-                        <Button asChild variant="outline" size="sm" className="w-full sm:w-auto gap-1">
-                          <a
-                            href={`/ir/${company.slug}`}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            referrerPolicy="no-referrer"
-                          >
-                            Sitio Web <ExternalLink size={14} />
-                          </a>
-                        </Button>
-                      )}
+                      {company.slug && company.website && (() => {
+                        const link = getProviderLink(company.slug, company.website);
+                        return (
+                          <Button asChild variant="outline" size="sm" className="w-full sm:w-auto gap-1">
+                            <a
+                              href={link.href}
+                              target="_blank"
+                              rel={link.rel}
+                              referrerPolicy="no-referrer"
+                            >
+                              Sitio Web <ExternalLink size={14} />
+                            </a>
+                          </Button>
+                        );
+                      })()}
                     </CardFooter>
                   </Card>
                 );
