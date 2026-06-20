@@ -17,6 +17,7 @@ interface Provider {
   promo_price: number | null;
   datacenter_location: string | null;
   total_reviews: number | null;
+  website: string | null;
 }
 
 const ORIGIN = 'https://eligetuhosting.cl';
@@ -29,7 +30,7 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
     (async () => {
       const { data } = await supabase
         .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,total_reviews')
+        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,total_reviews,website')
         .in('slug', config.providerSlugs);
       if (!mounted || !data) return;
       // preserve config order
@@ -141,7 +142,7 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
                       Ver review
                     </Link>
                     {(() => {
-                      const link = getProviderLink(p.slug, null);
+                      const link = getProviderLink(p.slug, p.website);
                       return (
                         <a
                           href={link.href}
