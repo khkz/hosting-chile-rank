@@ -59,6 +59,7 @@ const mainNavItems: NavItem[] = [
   { to: '/wiki', label: 'Wiki', icon: BookOpen },
   { to: '/certificaciones', label: 'Certificaciones', icon: Award },
   { to: '/catalogo', label: 'Directorio', icon: Award },
+  { to: '/directorio', label: 'Directorio completo', icon: BookOpen },
 ];
 
 const toolsItems: NavItem[] = [
