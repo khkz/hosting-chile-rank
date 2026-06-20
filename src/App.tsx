@@ -165,6 +165,7 @@ function App() {
         <Route path="/resena/:slug" element={<ResenaSingularRedirect />} />
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
+        <Route path="/directorio" element={<Directorio />} />
         <Route path="/benchmark" element={<Benchmark />} />
         <Route path="/metodologia-benchmark" element={<MetodologiaBenchmark />} />
         <Route path="/metodologia" element={<Metodologia />} />
