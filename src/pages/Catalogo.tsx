@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { formatCorporateGroup } from '@/lib/formatGroup';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatCorporateGroup } from '@/lib/formatGroup';
 import { ShieldCheck, MapPin, Building2, Calendar, CheckCircle2, ArrowRight, MessageSquarePlus } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
