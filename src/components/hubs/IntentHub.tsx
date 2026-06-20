@@ -35,7 +35,8 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
       // preserve config order
       const ordered = config.providerSlugs
         .map(s => data.find(d => d.slug === s))
-        .filter(Boolean) as Provider[];
+        .filter(Boolean)
+        .filter((p: any) => !isHiddenProvider(p.slug, null)) as Provider[];
       setProviders(ordered);
     })();
     return () => { mounted = false; };
@@ -139,12 +140,19 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
                     >
                       Ver review
                     </Link>
-                    <a
-                      href={`/ir/${p.slug}`}
-                      className="text-center text-sm px-3 py-2 rounded bg-[#EF233C] text-white hover:bg-red-700 transition min-h-[44px] flex items-center justify-center gap-1"
-                    >
-                      Visitar sitio <ExternalLink className="h-3 w-3" />
-                    </a>
+                    {(() => {
+                      const link = getProviderLink(p.slug, null);
+                      return (
+                        <a
+                          href={link.href}
+                          rel={link.rel}
+                          target="_blank"
+                          className="text-center text-sm px-3 py-2 rounded bg-[#EF233C] text-white hover:bg-red-700 transition min-h-[44px] flex items-center justify-center gap-1"
+                        >
+                          Visitar sitio <ExternalLink className="h-3 w-3" />
+                        </a>
+                      );
+                    })()}
                   </div>
                 </div>
               </li>
