@@ -35,6 +35,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
+import { getProviderLink } from '@/lib/providerLinks';
 
 // Host provider data — Top 3 oficial del ranking 2026
 const hostProviders = [
@@ -397,10 +398,12 @@ const RankingPage = () => {
                         : 'bg-[#2B2D42] hover:bg-[#1a1c2e] text-white'
                     }`}
                   >
-                    <a href={provider.url} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex items-center justify-center">
-                      Visitar sitio
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
+                    {(() => { const link = getProviderLink(provider.slug, provider.url); return (
+                      <a href={link.href} target="_blank" rel={link.rel} className="flex items-center justify-center">
+                        Visitar sitio
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    ); })()}
                   </Button>
                 </div>
               </div>
