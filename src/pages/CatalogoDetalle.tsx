@@ -21,6 +21,7 @@ import { AlertTriangle } from 'lucide-react';
 import BrandFAQ, { buildBrandFAQ } from '@/components/catalogo/BrandFAQ';
 import VerifiedDataTable from '@/components/catalogo/VerifiedDataTable';
 import Veredicto from '@/components/catalogo/Veredicto';
+import { isHiddenProvider } from '@/lib/providerLinks';
 
 const SITE = 'https://eligetuhosting.cl';
 
@@ -47,6 +48,7 @@ const CatalogoDetalle = () => {
   const { data: userReviews } = useReviewStatsForSlug(slug || '');
 
   useEffect(() => {
+    if (slug && isHiddenProvider(slug, null)) { navigate('/catalogo', { replace: true }); return; }
     if (!isLoading && !company && slug) navigate('/catalogo', { replace: true });
   }, [company, navigate, slug, isLoading]);
 
