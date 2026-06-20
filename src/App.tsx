@@ -51,6 +51,7 @@ import RecursosHosting from './pages/RecursosHosting';
 import Resena from './pages/Resena';
 import Catalogo from './pages/Catalogo';
 import CatalogoDetalle from './pages/CatalogoDetalle';
+import Directorio from './pages/Directorio';
 import Benchmark from './pages/Benchmark';
 import MetodologiaBenchmark from './pages/MetodologiaBenchmark';
 import Metodologia from './pages/Metodologia';
