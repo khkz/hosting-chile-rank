@@ -179,8 +179,14 @@ const CatalogoPage = () => {
                       
                       <div className="flex items-center gap-3 mb-3 flex-wrap">
                         <div className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded-md text-sm font-medium">
-                          <Star className="h-3 w-3 fill-current" />
-                          {company.overall_rating?.toFixed(1) || 'N/A'}/10
+                          {(company.overall_rating ?? 0) > 0 ? (
+                            <>
+                              <Star className="h-3 w-3 fill-current" />
+                              {company.overall_rating.toFixed(1)}/10
+                            </>
+                          ) : (
+                            <span className="text-xs">Datos verificables</span>
+                          )}
                         </div>
                         {reviewStats?.[company.slug] && (
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
