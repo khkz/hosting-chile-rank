@@ -7,6 +7,7 @@ import RecommendedByData from '@/components/RecommendedByData';
 import { Star, ExternalLink, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { HubConfig } from '@/lib/segmentHubs';
+import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 
 interface Provider {
   slug: string;
