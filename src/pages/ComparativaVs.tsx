@@ -207,10 +207,10 @@ const ComparativaVs: React.FC = () => {
               (9.6/10) es la alternativa recomendada por relación precio-rendimiento.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <a href="/ir/hostingplus" className="px-4 py-2 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700 flex items-center gap-1">
+              <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700 flex items-center gap-1">
                 Visitar HostingPlus.cl <ExternalLink className="h-3 w-3" />
               </a>
-              <a href="/ir/ecohosting" className="px-4 py-2 rounded border border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white flex items-center gap-1">
+              <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded border border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white flex items-center gap-1">
                 Visitar EcoHosting.cl <ExternalLink className="h-3 w-3" />
               </a>
             </div>
@@ -228,14 +228,14 @@ const ComparativaVs: React.FC = () => {
             </p>
             <div className="mt-4 grid sm:grid-cols-2 gap-3">
               {hostingplus && (
-                <a href="/ir/hostingplus" className="rounded-xl border-2 border-[#EF233C] p-4 bg-white hover:bg-[#EF233C]/5 transition">
+                <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="rounded-xl border-2 border-[#EF233C] p-4 bg-white hover:bg-[#EF233C]/5 transition">
                   <div className="font-bold text-[#EF233C]">🥇 HostingPlus.cl <span className="text-xs">9.9/10</span></div>
                   <div className="text-xs text-gray-600 mt-1">Líder verificado · {hostingplus.datacenter_location || 'Datacenter Chile'}</div>
                   <div className="text-sm text-[#2B2D42] mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
                 </a>
               )}
               {ecohosting && (
-                <a href="/ir/ecohosting" className="rounded-xl border border-gray-300 p-4 bg-white hover:border-[#EF233C] transition">
+                <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="rounded-xl border border-gray-300 p-4 bg-white hover:border-[#EF233C] transition">
                   <div className="font-bold text-[#2B2D42]">🥈 EcoHosting.cl <span className="text-xs">9.6/10</span></div>
                   <div className="text-xs text-gray-600 mt-1">Mejor precio-rendimiento</div>
                   <div className="text-sm text-[#2B2D42] mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
