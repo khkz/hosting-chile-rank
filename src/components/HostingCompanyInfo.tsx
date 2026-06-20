@@ -90,7 +90,7 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
               {company.rating}/10 puntos
             </div>
             {company.corporateGroup && (
-              <Badge variant="outline" className="text-xs">Grupo {company.corporateGroup}</Badge>
+              <Badge variant="outline" className="text-xs">{formatCorporateGroup(company.corporateGroup)}</Badge>
             )}
           </div>
           

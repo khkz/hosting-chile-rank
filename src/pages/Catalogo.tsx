@@ -171,7 +171,7 @@ const CatalogoPage = () => {
                           )}
                           {company.corporate_group && (
                             <Badge variant="outline" className="text-[10px]">
-                              Grupo {company.corporate_group}
+                              {formatCorporateGroup(company.corporate_group)}
                             </Badge>
                           )}
                         </div>

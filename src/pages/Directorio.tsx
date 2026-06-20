@@ -104,7 +104,7 @@ const Directorio: React.FC = () => {
                         {c.corporate_group && (
                           <li className="flex items-start gap-2">
                             <Building2 className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>Grupo {c.corporate_group}</span>
+                            <span>{formatCorporateGroup(c.corporate_group)}</span>
                           </li>
                         )}
                         {c.datacenter_location && (
