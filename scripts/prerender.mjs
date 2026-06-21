@@ -92,7 +92,9 @@ async function fetchMigrarRoutes(slugs) {
   return MIGRATION_COMPETITORS.filter(s => slugs.includes(s)).map(s => `/migrar-de/${s}`);
 }
 
-// Fetch verified+curated slugs from Supabase
+// Fetch ALL verified slugs from Supabase (curados + no curados con datos verificables).
+// El detalle de /catalogo/:slug requiere is_verified=true en el componente, así que
+// alineamos el prerender con esa misma condición — sin exigir is_curated.
 async function fetchCatalogSlugs() {
   const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
   const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -101,11 +103,12 @@ async function fetchCatalogSlugs() {
     return [];
   }
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&is_curated=eq.true`, {
-      headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&order=slug.asc`, {
+      headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, Prefer: 'count=exact' },
     });
     if (!res.ok) return [];
     const data = await res.json();
+    console.log(`[prerender] ${data.length} slugs verificados desde Supabase`);
     return data.map(r => r.slug);
   } catch (e) {
     console.log('[prerender] error fetching slugs:', e.message);
