@@ -90,19 +90,35 @@ const CatalogoDetalle = () => {
     if (company.website) productSchema.sameAs = [company.website];
     if (company.logo_url) productSchema.image = ogImage;
 
-    // Organization schema (extra) para fichas líderes — refuerza brand SEO
-    const orgSchema = (slug === 'hostingplus' || slug === 'ecohosting') && company.website
-      ? {
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name,
-          url: company.website,
-          logo: ogImage,
-          brand: { '@type': 'Brand', name },
-          areaServed: { '@type': 'Country', name: 'Chile' },
-          sameAs: [company.website],
-        }
-      : null;
+    // Organization / LocalBusiness schema para TODAS las fichas — refuerza brand SEO
+    // y permite a buscadores y LLMs vincular nombre + sitio + contacto + dirección.
+    const hasLocalSignals = !!(company.contact_address || company.contact_phone || dc);
+    const orgSchema: any = {
+      '@context': 'https://schema.org',
+      '@type': hasLocalSignals ? 'LocalBusiness' : 'Organization',
+      name,
+      url: company.website || canonical,
+      areaServed: { '@type': 'Country', name: 'Chile' },
+    };
+    if (company.logo_url) orgSchema.logo = ogImage;
+    if (company.website) orgSchema.sameAs = [company.website];
+    if (company.contact_phone) orgSchema.telephone = company.contact_phone;
+    if (company.contact_email) orgSchema.email = company.contact_email;
+    if (company.contact_address) {
+      orgSchema.address = {
+        '@type': 'PostalAddress',
+        streetAddress: company.contact_address,
+        addressCountry: 'CL',
+      };
+    }
+    if (year) orgSchema.foundingDate = String(year);
+    if (group) {
+      const g = String(group).trim();
+      orgSchema.parentOrganization = {
+        '@type': 'Organization',
+        name: /^grupo\s/i.test(g) ? g : `Grupo ${g}`,
+      };
+    }
 
     if (minPrice > 0) {
       productSchema.offers = {
