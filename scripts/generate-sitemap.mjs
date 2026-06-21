@@ -93,6 +93,7 @@ const generateMainSitemap = (companySlugs = []) => {
 
     // Páginas de alta prioridad
     ['/catalogo', '0.8', 'daily'],
+    ['/directorio', '0.8', 'daily'],
     ['/mejor-hosting-chile', '0.8', 'daily'],
     ['/mejor-hosting-wordpress-chile', '0.8', 'weekly'],
     ['/mejor-hosting-ecommerce-chile', '0.8', 'weekly'],
