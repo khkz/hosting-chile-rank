@@ -302,7 +302,13 @@ const HostingRanking = () => {
         sorted.sort((a, b) => (b.price_rating ?? 0) - (a.price_rating ?? 0));
         break;
       default:
-        sorted.sort((a, b) => (b.overall_rating ?? 0) - (a.overall_rating ?? 0));
+        // Orden editorial: ranking_position (DB) primero; empate → overall_rating desc
+        sorted.sort((a, b) => {
+          const ap = a.ranking_position ?? 9999;
+          const bp = b.ranking_position ?? 9999;
+          if (ap !== bp) return ap - bp;
+          return (b.overall_rating ?? 0) - (a.overall_rating ?? 0);
+        });
         break;
     }
 
