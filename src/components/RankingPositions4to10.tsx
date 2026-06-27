@@ -15,13 +15,13 @@ export const EXTRA_RANKING: Array<{
   rating: number;
   keyFeature: string;
 }> = [
-  { position: 4, slug: 'hostgator', displayName: 'HostGator.cl', rating: 8.4, keyFeature: 'Datacenter local + soporte 24/7' },
-  { position: 5, slug: 'bluehost', displayName: 'BlueHosting.cl', rating: 8.3, keyFeature: 'Planes con cPanel y migración' },
-  { position: 6, slug: 'cloudhosting', displayName: 'CloudHosting.cl', rating: 8.2, keyFeature: 'Hosting cloud escalable' },
-  { position: 7, slug: '1hosting-cl', displayName: '1Hosting.cl', rating: 8.1, keyFeature: 'SSD NVMe, datacenter Las Condes' },
-  { position: 8, slug: 'fullhosting', displayName: 'FullHosting.cl', rating: 8.0, keyFeature: 'Planes completos + migración gratis' },
-  { position: 9, slug: 'prohosting', displayName: 'ProHosting.cl', rating: 7.9, keyFeature: 'Hosting económico para pymes' },
-  { position: 10, slug: 'hn', displayName: 'HN.cl', rating: 7.8, keyFeature: 'SSD con datacenter en Chile' },
+  { position: 4, slug: 'powerhost', displayName: 'PowerHost / IxMetro', rating: 8.5, keyFeature: 'VPS SSD con ASN propio y datacenter en Santiago' },
+  { position: 5, slug: 'hostgator', displayName: 'HostGator.cl', rating: 8.4, keyFeature: 'Datacenter local + soporte 24/7' },
+  { position: 6, slug: 'bluehost', displayName: 'BlueHosting.cl', rating: 8.3, keyFeature: 'Planes con cPanel y migración' },
+  { position: 7, slug: 'cloudhosting', displayName: 'CloudHosting.cl', rating: 8.2, keyFeature: 'Hosting cloud escalable' },
+  { position: 8, slug: '1hosting-cl', displayName: '1Hosting.cl', rating: 8.1, keyFeature: 'SSD NVMe, datacenter Las Condes' },
+  { position: 9, slug: 'fullhosting', displayName: 'FullHosting.cl', rating: 8.0, keyFeature: 'Planes completos + migración gratis' },
+  { position: 10, slug: 'prohosting', displayName: 'ProHosting.cl', rating: 7.9, keyFeature: 'Hosting económico para pymes' },
 ];
 
 const getMinPrice = (db: any): number | null => {
