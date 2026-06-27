@@ -75,20 +75,20 @@ const hostProviders = [
   },
   {
     id: 3,
-    name: "PowerHost / IxMetro",
-    slug: "powerhost",
+    name: "HN.cl",
+    slug: "hn",
     logo: "/placeholder.svg",
-    rating: 8.5,
+    rating: 9.2,
     price: "Consultar",
-    speed: "8.5/10",
-    uptime: "99.92%",
+    speed: "9.2/10",
+    uptime: "99.95%",
     features: [
-      "Datacenter propio en Santiago",
-      "ASN propio AS263237",
-      "Solo VPS SSD (no shared)",
-      "+20 años operando en Chile"
+      "Infraestructura SSD con datacenter en Chile",
+      "Soporte técnico en español de excelencia",
+      "0 reclamos verificados en los últimos 12 meses",
+      "Más de 15 años operando en el mercado chileno"
     ],
-    url: "https://www.powerhost.cl/"
+    url: "https://www.hn.cl"
   }
 ];
 

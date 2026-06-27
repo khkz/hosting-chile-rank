@@ -36,7 +36,7 @@ const Index = () => {
       <SEOFAQSchema faqs={[
         {
           question: "¿Cuál es el mejor hosting en Chile 2026?",
-          answer: "Según nuestras pruebas independientes, los mejores hostings de Chile incluyen HostingPlus (9.9/10), EcoHosting (9.6/10) y PowerHost/IxMetro (8.5/10), destacando en velocidad LiteSpeed, soporte 24/7 y precios competitivos desde $3.469/mes."
+          answer: "Según nuestras pruebas independientes, los mejores hostings de Chile incluyen HostingPlus (9.9/10), EcoHosting (9.6/10) y HN.cl (9.2/10), destacando en velocidad LiteSpeed, datacenter en Chile, soporte 24/7 y 0 reclamos verificados en los últimos 12 meses."
         },
         {
           question: "¿Cuánto cuesta un hosting en Chile?",
