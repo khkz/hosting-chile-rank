@@ -424,7 +424,7 @@ const HostingRanking = () => {
           <RankingSkeleton />
         ) : (
           <ol className="flex flex-col md:flex-row md:items-end md:justify-center gap-6 md:gap-8 max-w-6xl mx-auto mb-12 list-none p-0 m-0" aria-label="Ranking de los mejores hostings en Chile 2026">
-            {sortedHostingData.map((provider) => (
+            {sortedHostingData.slice(0, 3).map((provider) => (
               <li key={provider.id} className={`w-full md:w-1/3 ${provider.sortPosition === 1 ? 'md:order-2 md:z-10' : provider.sortPosition === 2 ? 'md:order-1' : 'md:order-3'}`}>
                 <RankingCard
                   provider={provider}
