@@ -105,6 +105,7 @@ import EstudioHostingChile2026 from './pages/EstudioHostingChile2026';
 import Contacto from './pages/Contacto';
 import VotaHosting from './pages/VotaHosting';
 import CountryLanding from './pages/CountryLanding';
+import HomeDispatcher from './components/HomeDispatcher';
 
 
 
