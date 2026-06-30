@@ -105,6 +105,7 @@ import EstudioHostingChile2026 from './pages/EstudioHostingChile2026';
 import Contacto from './pages/Contacto';
 import VotaHosting from './pages/VotaHosting';
 import CountryLanding from './pages/CountryLanding';
+import HomeDispatcher from './components/HomeDispatcher';
 
 
 
@@ -126,7 +127,7 @@ function App() {
         <Route path="/llms.txt" element={<LlmsTxt />} />
         
         {/* Rutas normales de la aplicación */}
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<HomeDispatcher />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/ir/:slug" element={<OutboundRedirect />} />
         <Route path="/comparativa" element={<Comparativa />} />
