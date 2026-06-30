@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Globe } from 'lucide-react';
-import { COUNTRIES, CountryCode, getCountryFromPath } from '@/lib/country';
+import { COUNTRIES, getCountryFromPath } from '@/lib/country';
 
 /**
  * Shell de país en el dominio .com. Reutiliza Navbar/Footer y muestra
