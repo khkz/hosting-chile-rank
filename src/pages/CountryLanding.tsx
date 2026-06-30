@@ -1,10 +1,10 @@
-import { useParams, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Globe } from 'lucide-react';
-import { COUNTRIES, CountryCode } from '@/lib/country';
+import { COUNTRIES, CountryCode, getCountryFromPath } from '@/lib/country';
 
 /**
  * Shell de país en el dominio .com. Reutiliza Navbar/Footer y muestra
@@ -12,9 +12,8 @@ import { COUNTRIES, CountryCode } from '@/lib/country';
  * para ese país. NO modifica el comportamiento del .cl.
  */
 const CountryLanding = () => {
-  const { country = '' } = useParams();
-  const code = country.toUpperCase() as CountryCode;
-  const info = COUNTRIES[code] ?? COUNTRIES.PE;
+  const location = useLocation();
+  const info = getCountryFromPath(location.pathname) ?? COUNTRIES.PE;
 
   const canonical = `https://eligetuhosting.com/${info.slug}`;
   const title = `Mejor hosting en ${info.name} 2026 — Elige Tu Hosting`;
