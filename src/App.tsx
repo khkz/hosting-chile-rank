@@ -104,6 +104,9 @@ import SeoDashboard from './pages/SeoDashboard';
 import EstudioHostingChile2026 from './pages/EstudioHostingChile2026';
 import Contacto from './pages/Contacto';
 import VotaHosting from './pages/VotaHosting';
+import CountryLanding from './pages/CountryLanding';
+
+
 
 function App() {
   return (
@@ -306,6 +309,15 @@ function App() {
             } />
             {/* Canonical → /catalogo + noindex,follow + redirect cliente */}
             <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
+            {/* Country shells on .com (additive — .cl no navega aquí) */}
+            <Route path="/pe" element={<CountryLanding />} />
+            <Route path="/pe/*" element={<CountryLanding />} />
+            <Route path="/mx" element={<CountryLanding />} />
+            <Route path="/mx/*" element={<CountryLanding />} />
+            <Route path="/co" element={<CountryLanding />} />
+            <Route path="/co/*" element={<CountryLanding />} />
+            <Route path="/ar" element={<CountryLanding />} />
+            <Route path="/ar/*" element={<CountryLanding />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
