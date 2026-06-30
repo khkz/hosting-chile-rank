@@ -127,7 +127,7 @@ function App() {
         <Route path="/llms.txt" element={<LlmsTxt />} />
         
         {/* Rutas normales de la aplicación */}
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<HomeDispatcher />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/ir/:slug" element={<OutboundRedirect />} />
         <Route path="/comparativa" element={<Comparativa />} />
