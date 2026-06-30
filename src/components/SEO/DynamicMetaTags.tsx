@@ -23,7 +23,21 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
   const fullTitle = `${title} | EligeTuHosting.cl`;
   // Always self-referential canonical based on current route unless explicitly overridden.
   const normalizedPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '');
+  const clPath = normalizedPath === '/' ? '' : normalizedPath;
   const url = canonical || `https://eligetuhosting.cl${normalizedPath}`;
+
+  // Programmatic hreflang cluster:
+  // - Chile vive en .cl (no /cl en .com)
+  // - Países LATAM viven en .com/<país>
+  // - x-default apunta al .com raíz
+  const hreflangs: Array<{ lang: string; href: string }> = [
+    { lang: 'es-CL', href: `https://eligetuhosting.cl${normalizedPath}` },
+    { lang: 'es-PE', href: `https://eligetuhosting.com/pe${clPath}` },
+    { lang: 'es-MX', href: `https://eligetuhosting.com/mx${clPath}` },
+    { lang: 'es-CO', href: `https://eligetuhosting.com/co${clPath}` },
+    { lang: 'es-AR', href: `https://eligetuhosting.com/ar${clPath}` },
+    { lang: 'x-default', href: `https://eligetuhosting.com/` },
+  ];
 
   return (
     <Helmet>
@@ -31,11 +45,13 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
 
-      {/* Canonical & hreflang */}
+      {/* Canonical self-referencial */}
       <link rel="canonical" href={url} />
-      <link rel="alternate" hrefLang="es-CL" href={url} />
-      <link rel="alternate" hrefLang="es" href={url} />
-      <link rel="alternate" hrefLang="x-default" href={url} />
+
+      {/* hreflang cluster bidireccional y autorreferencial */}
+      {hreflangs.map(h => (
+        <link key={h.lang} rel="alternate" hrefLang={h.lang} href={h.href} />
+      ))}
 
       {/* Open Graph — og:type/site_name/locale viven en index.html (sitewide).
           Aquí solo emitimos los que varían por ruta para evitar duplicados. */}
