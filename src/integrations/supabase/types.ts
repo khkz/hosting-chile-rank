@@ -941,6 +941,7 @@ export type Database = {
           contact_hours: string | null
           contact_phone: string | null
           corporate_group: string | null
+          country: string
           created_at: string | null
           cta_micro_copy: string | null
           cta_text: string | null
@@ -1014,6 +1015,7 @@ export type Database = {
           contact_hours?: string | null
           contact_phone?: string | null
           corporate_group?: string | null
+          country?: string
           created_at?: string | null
           cta_micro_copy?: string | null
           cta_text?: string | null
@@ -1087,6 +1089,7 @@ export type Database = {
           contact_hours?: string | null
           contact_phone?: string | null
           corporate_group?: string | null
+          country?: string
           created_at?: string | null
           cta_micro_copy?: string | null
           cta_text?: string | null
