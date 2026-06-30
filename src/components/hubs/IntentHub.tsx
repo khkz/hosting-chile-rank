@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
 import { Star, ExternalLink, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import type { HubConfig } from '@/lib/segmentHubs';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 
@@ -31,6 +32,7 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
       const { data } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,total_reviews,website')
+        .eq('country', getActiveCountryCode())
         .in('slug', config.providerSlugs);
       if (!mounted || !data) return;
       // preserve config order

@@ -3,6 +3,7 @@ import { formatCorporateGroup } from '@/lib/formatGroup';
 import { ShieldCheck, MapPin, Building2, Calendar, CheckCircle2, ArrowRight, MessageSquarePlus } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -71,6 +72,7 @@ const Testimonial = () => {
       const { data } = await supabase
         .from('hosting_companies')
         .select('name, slug, logo_url, ranking_position, datacenter_location, foundation_year, year_founded, is_independent, corporate_group, has_migration_free, has_ssl_free, uptime_guarantee, ranking_features, ranking_badges, technologies')
+        .eq('country', getActiveCountryCode())
         .eq('is_verified', true)
         .eq('is_curated', true)
         .not('ranking_position', 'is', null)
@@ -87,6 +89,7 @@ const Testimonial = () => {
       const { data } = await supabase
         .from('hosting_companies')
         .select('name, slug, logo_url')
+        .eq('country', getActiveCountryCode())
         .eq('is_verified', true)
         .order('overall_rating', { ascending: false })
         .limit(8);

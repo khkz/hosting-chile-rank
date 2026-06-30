@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, ArrowRight, Star } from 'lucide-react';
 import { useReviewStats } from '@/hooks/useReviewStats';
@@ -48,6 +49,7 @@ const RankingPositions4to10: React.FC = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select('slug, name, website, promo_price, hosting_plans(price_monthly)')
+        .eq('country', getActiveCountryCode())
         .in('slug', slugs);
       if (error) throw error;
       return data ?? [];

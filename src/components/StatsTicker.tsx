@@ -2,6 +2,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 
 const StatsTicker = () => {
   const { data: domainCount } = useQuery({
@@ -21,6 +22,7 @@ const StatsTicker = () => {
       const { count } = await supabase
         .from('hosting_companies')
         .select('*', { count: 'exact', head: true })
+        .eq('country', getActiveCountryCode())
         .eq('is_verified', true);
       return count ?? 0;
     },
