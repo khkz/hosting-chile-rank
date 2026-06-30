@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import Logo from './Logo';
+import CountrySwitcher from './CountrySwitcher';
 import {
   Sheet,
   SheetContent,
@@ -205,6 +206,7 @@ const Navbar = () => {
         
         {/* CTA Button and User Menu */}
         <div className="hidden md:flex items-center gap-3">
+          <CountrySwitcher />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -273,7 +275,9 @@ const Navbar = () => {
                     </NavLink>
                   );
                 })}
-                
+
+                <CountrySwitcher mobile />
+
                 {/* User Menu / Login Button */}
                 {user ? (
                   <div className="border-t pt-4 mt-4">
