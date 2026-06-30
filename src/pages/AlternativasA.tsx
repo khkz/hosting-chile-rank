@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
 import { ExternalLink, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import {
   isValidSlug, isAnchorSlug,
   ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING, MIGRATION_COMPETITORS,
@@ -41,6 +42,7 @@ const AlternativasA: React.FC = () => {
       const { data: t } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews,website')
+        .eq('country', getActiveCountryCode())
         .eq('slug', slug)
         .maybeSingle();
       setTarget((t as Company) || null);
@@ -48,6 +50,7 @@ const AlternativasA: React.FC = () => {
       const { data: leaders } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews,website')
+        .eq('country', getActiveCountryCode())
         .eq('is_verified', true)
         .eq('is_curated', true)
         .order('overall_rating', { ascending: false })

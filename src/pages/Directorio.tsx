@@ -3,6 +3,7 @@ import { formatCorporateGroup } from '@/lib/formatGroup';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -22,6 +23,7 @@ const Directorio: React.FC = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select('id, slug, name, website, overall_rating, is_curated, is_verified, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies')
+        .eq('country', getActiveCountryCode())
         .range(0, 999);
       if (error) throw error;
       return data || [];

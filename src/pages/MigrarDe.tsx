@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
 import { ExternalLink, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import { MIGRATION_COMPETITORS, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING } from '@/lib/vsPairs';
 
 const ORIGIN = 'https://eligetuhosting.cl';
@@ -36,6 +37,7 @@ const MigrarDe: React.FC = () => {
       const { data } = await supabase
         .from('hosting_companies')
         .select('slug,name,overall_rating,promo_price,datacenter_location,has_migration_free')
+        .eq('country', getActiveCountryCode())
         .in('slug', [slug!, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING]);
       setTarget((data?.find(d => d.slug === slug) as Company) || null);
       setHp((data?.find(d => d.slug === ANCHOR_HOSTINGPLUS) as Company) || null);

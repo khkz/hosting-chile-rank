@@ -3,6 +3,7 @@ import { Trophy, Check, Star, Shield, Zap, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -280,6 +281,7 @@ const HostingRanking = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select('id, name, slug, website, logo_url, overall_rating, speed_rating, price_rating, is_independent, corporate_group, legal_name, foundation_year, ranking_position, is_recommended, ranking_features, ranking_badges, cta_text, cta_micro_copy, button_color, border_color, display_name_first, display_name_second, display_name_first_color, display_name_second_color, promo_price, original_price, price_period, updated_at')
+        .eq('country', getActiveCountryCode())
         .eq('is_verified', true)
         .not('ranking_position', 'is', null)
         .order('ranking_position');

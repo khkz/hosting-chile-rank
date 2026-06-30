@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getActiveCountryCode } from '@/lib/country';
 
 export function useLatestMethodology() {
   return useQuery({
@@ -39,6 +40,7 @@ export function useTopProviderBreakdown() {
         .select(
           "id,name,slug,overall_rating,speed_rating,support_rating,price_rating,logo_url"
         )
+        .eq('country', getActiveCountryCode())
         .eq("is_verified", true)
         .eq("is_curated", true)
         .order("overall_rating", { ascending: false })

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const TLDRVerdict: React.FC = () => {
@@ -11,6 +12,7 @@ const TLDRVerdict: React.FC = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select('name, slug, overall_rating, promo_price, speed_rating, price_rating, ranking_position')
+        .eq('country', getActiveCountryCode())
         .eq('is_verified', true)
         .not('ranking_position', 'is', null)
         .order('ranking_position');

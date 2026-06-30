@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
 import { ExternalLink, Star, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getActiveCountryCode } from '@/lib/country';
 import {
   parsePair, canonicalPair, isValidSlug, isAnchorSlug,
   ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING,
@@ -44,6 +45,7 @@ const ComparativaVs: React.FC = () => {
       const { data } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,foundation_year,datacenter_location,corporate_group,total_reviews')
+        .eq('country', getActiveCountryCode())
         .in('slug', [parsed.a, parsed.b]);
       setA(data?.find(d => d.slug === parsed.a) || null);
       setB(data?.find(d => d.slug === parsed.b) || null);
@@ -52,6 +54,7 @@ const ComparativaVs: React.FC = () => {
       const { data: ldr } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,foundation_year,datacenter_location,corporate_group,total_reviews')
+        .eq('country', getActiveCountryCode())
         .in('slug', [ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING]);
       setLeaders((ldr || []) as Company[]);
       setLoading(false);
