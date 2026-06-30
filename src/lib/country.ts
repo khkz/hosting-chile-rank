@@ -53,3 +53,20 @@ export function stripCountryPrefix(pathname: string): string {
   const rest = pathname.replace(new RegExp(`^/${country.slug}`), '');
   return rest || '/';
 }
+
+/**
+ * Determines the active country to filter Supabase queries by.
+ * - On `.cl` (or SSR/build) → always 'CL'.
+ * - On `.com` → reads from the URL path (/pe, /mx, /co, /ar);
+ *   defaults to 'CL' when no country prefix is present.
+ *
+ * IMPORTANT: keep this side-effect-free and synchronous so it can be
+ * called inside Supabase query chains.
+ */
+export function getActiveCountryCode(pathname?: string): CountryCode {
+  if (typeof window === 'undefined') return 'CL';
+  if (!isDotCom()) return 'CL';
+  const path = pathname ?? window.location.pathname;
+  const fromPath = getCountryFromPath(path);
+  return fromPath?.code ?? 'CL';
+}
