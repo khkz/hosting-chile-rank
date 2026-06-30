@@ -309,9 +309,15 @@ function App() {
             } />
             {/* Canonical → /catalogo + noindex,follow + redirect cliente */}
             <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
-            {/* Country shells on .com (additive — .cl ignora estas rutas porque nunca se navega a ellas) */}
-            <Route path="/:country(pe|mx|co|ar)" element={<CountryLanding />} />
-            <Route path="/:country(pe|mx|co|ar)/*" element={<CountryLanding />} />
+            {/* Country shells on .com (additive — .cl no navega aquí) */}
+            <Route path="/pe" element={<CountryLanding />} />
+            <Route path="/pe/*" element={<CountryLanding />} />
+            <Route path="/mx" element={<CountryLanding />} />
+            <Route path="/mx/*" element={<CountryLanding />} />
+            <Route path="/co" element={<CountryLanding />} />
+            <Route path="/co/*" element={<CountryLanding />} />
+            <Route path="/ar" element={<CountryLanding />} />
+            <Route path="/ar/*" element={<CountryLanding />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
