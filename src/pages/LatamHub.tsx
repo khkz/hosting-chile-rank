@@ -64,24 +64,27 @@ const LatamHub = () => {
               </div>
             </a>
 
-            {DOT_COM_COUNTRIES.map((c) => (
-              <Link
-                key={c.code}
-                to={`/${c.slug}`}
-                className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-left hover:border-[#EF233C] hover:shadow-md transition-all"
-              >
-                <div className="text-3xl mb-2">{c.flag}</div>
-                <div className="font-semibold text-[#2B2D42] text-lg">
-                  {c.name}
-                </div>
-                <div className="text-xs text-[#2B2D42]/60 mt-1">
-                  Próximamente · verificando proveedores
-                </div>
-                <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
-                  Ver estado <ArrowRight className="h-3.5 w-3.5" />
-                </div>
-              </Link>
-            ))}
+            {DOT_COM_COUNTRIES.map((c) => {
+              const isPE = c.code === 'PE';
+              return (
+                <Link
+                  key={c.code}
+                  to={`/${c.slug}`}
+                  className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-left hover:border-[#EF233C] hover:shadow-md transition-all"
+                >
+                  <div className="text-3xl mb-2">{c.flag}</div>
+                  <div className="font-semibold text-[#2B2D42] text-lg">
+                    {c.name}
+                  </div>
+                  <div className="text-xs text-[#2B2D42]/60 mt-1">
+                    {isPE ? 'Directorio publicado' : 'Próximamente · verificando proveedores'}
+                  </div>
+                  <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
+                    {isPE ? 'Ver directorio' : 'Ver estado'} <ArrowRight className="h-3.5 w-3.5" />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
 
           <div className="mt-12 text-xs text-[#2B2D42]/50">
