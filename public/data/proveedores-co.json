@@ -1,0 +1,113 @@
+{
+  "nombre": "Directorio verificable de hosting en Colombia",
+  "fuente": "EligeTuHosting",
+  "url": "https://eligetuhosting.com/co",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
+  "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/co)",
+  "fecha_generacion": "2026-07-01T23:11:29.415Z",
+  "pais": "CO",
+  "total_proveedores": 5,
+  "proveedores": [
+    {
+      "nombre": "HostingPlus Colombia",
+      "slug": "hostingplus-co",
+      "pais": "CO",
+      "razon_social": "HostingPlus LLC (Florida, EE.UU.); sin entidad legal colombiana",
+      "sitio_oficial": "https://www.hostingplus.com.co/",
+      "datacenter": "EE.UU. (Florida) — según su FAQ; sin datacenter propio en Colombia",
+      "tecnologias": [
+        "cPanel",
+        "LiteSpeed + LSCache",
+        "SSD NVMe",
+        "SSL"
+      ],
+      "telefono": "+57 601 3819361",
+      "direccion": null,
+      "recomendado_editorial": true,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "ColombiaHosting",
+      "slug": "colombiahosting-co",
+      "pais": "CO",
+      "razon_social": "ColombiaHosting S.A.S.",
+      "sitio_oficial": "https://www.colombiahosting.com.co/",
+      "datacenter": "EE.UU. (2 datacenters, hardware propio en colocation)",
+      "tecnologias": [
+        "cPanel",
+        "LiteSpeed + LSCache",
+        "SSD",
+        "ISO 9001"
+      ],
+      "telefono": "+57 01 8000 120 190",
+      "direccion": "Calle 64 Norte 5B-146, Of. 40, Cali, Valle del Cauca",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "Dongee",
+      "slug": "dongee-co",
+      "pais": "CO",
+      "razon_social": "Industrialmedia S.A.",
+      "sitio_oficial": "https://www.dongee.com/",
+      "datacenter": "Miami y Atlanta (EE.UU.)",
+      "tecnologias": [
+        "cPanel",
+        "LiteSpeed + LSCache",
+        "SSD NVMe"
+      ],
+      "telefono": "+57 01 8005 184322",
+      "direccion": "Calle 59 8-21, Ed. Tundana, Bogotá D.C.",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "Hosting Red",
+      "slug": "hostingred-co",
+      "pais": "CO",
+      "razon_social": "Hosting Red S.A.S.",
+      "sitio_oficial": "https://www.hostingred.com.co/",
+      "datacenter": "Bogotá (Colombia), EE.UU. (Miami/Dallas/NY/Santa Clara) y Montreal (Canadá) — terceros",
+      "tecnologias": [
+        "cPanel",
+        "Plesk",
+        "VMware",
+        "VPS/Cloud"
+      ],
+      "telefono": "+57 601 4896808",
+      "direccion": "Carrera 47A #95-56, Of. 306, Bogotá D.C.",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "Latinoamérica Hosting",
+      "slug": "latinoamericahosting-co",
+      "pais": "CO",
+      "razon_social": "Latinoamérica Hosting S.A.S.",
+      "sitio_oficial": "https://www.latinoamericahosting.com.co/",
+      "datacenter": "EE.UU. (Michigan/Texas/Florida) y Ámsterdam; sin datacenter en Colombia",
+      "tecnologias": [
+        "cPanel",
+        "LiteSpeed Enterprise + LSCache",
+        "SSD NVMe",
+        "CloudLinux",
+        "Imunify360"
+      ],
+      "telefono": "+57 601 5800305",
+      "direccion": "Circular 4 #70-93, Of. 302, Medellín, Antioquia",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    }
+  ]
+}

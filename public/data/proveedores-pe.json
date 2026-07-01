@@ -1,0 +1,211 @@
+{
+  "nombre": "Directorio verificable de hosting en Perú",
+  "fuente": "EligeTuHosting",
+  "url": "https://eligetuhosting.com/pe",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
+  "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/pe)",
+  "fecha_generacion": "2026-07-01T23:11:29.415Z",
+  "pais": "PE",
+  "total_proveedores": 10,
+  "proveedores": [
+    {
+      "nombre": "HostingPlus Perú",
+      "slug": "hostingplus-pe",
+      "pais": "PE",
+      "razon_social": "Hostingplus Datacenter S.A.C.",
+      "sitio_oficial": "https://www.hostingplus.pe/",
+      "datacenter": "Orlando, Florida (EE.UU.) — datacenter declarado en su ficha técnica",
+      "tecnologias": [
+        "cPanel",
+        "SSD RAID 10",
+        "VPS",
+        "Servidores Dedicados"
+      ],
+      "telefono": "+51 1 640 9409",
+      "direccion": "San Isidro, Lima, Perú",
+      "recomendado_editorial": true,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Apache Perú",
+      "slug": "apacheperu-pe",
+      "pais": "PE",
+      "razon_social": "Apache Perú S.A.C.",
+      "sitio_oficial": "https://apacheperu.pe/",
+      "datacenter": null,
+      "tecnologias": [
+        "MailChannels",
+        "discos RAID-1",
+        "SSL"
+      ],
+      "telefono": "+51 1 737 3516",
+      "direccion": "Jr. Mama Ocllo 2037, Lince, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "BlueHosting Perú",
+      "slug": "bluehosting-pe",
+      "pais": "PE",
+      "razon_social": "Marca de Haulmer, Inc. (Chile); facturación en Perú vía PagoMaster S.A.C.",
+      "sitio_oficial": "https://www.bluehosting.pe/",
+      "datacenter": null,
+      "tecnologias": [
+        "Web Hosting",
+        "VPS SSD",
+        "SSL",
+        "PCI DSS (Haulmer)"
+      ],
+      "telefono": "+51 1 705 1921",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Dongee",
+      "slug": "dongee-pe",
+      "pais": "PE",
+      "razon_social": "Industrialmedia S.A. (Colombia)",
+      "sitio_oficial": "https://www.dongee.com/",
+      "datacenter": "EE.UU. (Miami/Virginia); opera de forma remota",
+      "tecnologias": [
+        "cPanel",
+        "Plesk",
+        "SSD NVMe",
+        "CDN"
+      ],
+      "telefono": "+51 1 640 9354",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Hosting.com.pe (Orange)",
+      "slug": "hosting-com-pe",
+      "pais": "PE",
+      "razon_social": "Orange Global Group S.A.C.",
+      "sitio_oficial": "https://www.hosting.com.pe/",
+      "datacenter": "EE.UU., Canadá y UE (revende infraestructura)",
+      "tecnologias": [
+        "cPanel",
+        "Webuzo",
+        "LiteSpeed",
+        "SSD/NVMe"
+      ],
+      "telefono": "+51 1 433 3745",
+      "direccion": "Jr. General Vidal 209, Breña, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Hosting.pe",
+      "slug": "hosting-pe",
+      "pais": "PE",
+      "razon_social": null,
+      "sitio_oficial": "https://www.hosting.pe/",
+      "datacenter": "Lima, Perú (datacenter propio declarado por el proveedor)",
+      "tecnologias": [
+        "cPanel",
+        "VMware",
+        "VPS SSD"
+      ],
+      "telefono": "+51 1 748 3222",
+      "direccion": "Av. Alberto del Campo 411, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Hosting Perú",
+      "slug": "hostingperu-pe",
+      "pais": "PE",
+      "razon_social": "IntermediaHost S.A.C.",
+      "sitio_oficial": "https://www.hostingperu.com.pe/",
+      "datacenter": "Houston, Dallas y Londres (revende infraestructura SoftLayer/IBM)",
+      "tecnologias": [
+        "cPanel",
+        "SSD/NVMe",
+        "WordPress",
+        "SSL"
+      ],
+      "telefono": "+51 1 202 0022",
+      "direccion": "Av. Faustino Sánchez Carrión 790, Of. 1408, Magdalena del Mar, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "MGD (MGDHost)",
+      "slug": "mgd-pe",
+      "pais": "PE",
+      "razon_social": "M.G. Digital S.A.C.",
+      "sitio_oficial": "https://mgd.pe/",
+      "datacenter": "Lima, Perú (datacenter propio declarado por el proveedor)",
+      "tecnologias": [
+        "LiteSpeed",
+        "Imunify360",
+        "VPS SSD",
+        "nube dCloud"
+      ],
+      "telefono": "+51 1 617 5749",
+      "direccion": "Av. César Vallejo 578, Lince, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "NetSolution",
+      "slug": "netsolution-pe",
+      "pais": "PE",
+      "razon_social": "Corporación Net Solution Perú S.A.C.",
+      "sitio_oficial": "https://www.netsolution.pe/",
+      "datacenter": null,
+      "tecnologias": [
+        "cPanel",
+        "Plesk",
+        "Linux/Windows",
+        "SSL"
+      ],
+      "telefono": "+51 1 739 0054",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "PlanetaHosting Perú",
+      "slug": "planetahosting-pe",
+      "pais": "PE",
+      "razon_social": "Planeta Hosting S.A.C.",
+      "sitio_oficial": "https://www.planetahosting.pe/",
+      "datacenter": null,
+      "tecnologias": [
+        "cPanel",
+        "SSD",
+        "Softaculous",
+        "SSL"
+      ],
+      "telefono": "+51 1 748 3220",
+      "direccion": "Av. El Polo 706 C405, Surco, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    }
+  ]
+}

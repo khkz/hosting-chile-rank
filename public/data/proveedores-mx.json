@@ -1,0 +1,137 @@
+{
+  "nombre": "Directorio verificable de hosting en México",
+  "fuente": "EligeTuHosting",
+  "url": "https://eligetuhosting.com/mx",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
+  "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/mx)",
+  "fecha_generacion": "2026-07-01T23:11:29.415Z",
+  "pais": "MX",
+  "total_proveedores": 6,
+  "proveedores": [
+    {
+      "nombre": "HostingPlus México",
+      "slug": "hostingplus-mx",
+      "pais": "MX",
+      "razon_social": "Grupo HostingPlus (opera desde Chile: PlusChile Internet Ltda.); sin entidad legal mexicana",
+      "sitio_oficial": "https://www.hostingplus.mx/",
+      "datacenter": "EE.UU. (Florida) — según su FAQ; sin datacenter propio en México",
+      "tecnologias": [
+        "cPanel",
+        "LiteSpeed + LSCache",
+        "SSD/NVMe",
+        "SSL"
+      ],
+      "telefono": "+52 55 4161 6883",
+      "direccion": null,
+      "recomendado_editorial": true,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "Akky",
+      "slug": "akky-mx",
+      "pais": "MX",
+      "razon_social": "Akky Online Solutions, S.A. de C.V.",
+      "sitio_oficial": "https://www.akky.mx/",
+      "datacenter": null,
+      "tecnologias": [
+        "cPanel",
+        "Dominios .MX",
+        "SSL",
+        "Creador de sitios"
+      ],
+      "telefono": "+52 81 8864 2626",
+      "direccion": "Av. Revolución 2703-1, Nuevo Sur, Piso 3, Monterrey, Nuevo León, C.P. 64830",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "DigitalServer (SuEmpresa)",
+      "slug": "digitalserver-mx",
+      "pais": "MX",
+      "razon_social": "Wingu Networks, S.A. de C.V.",
+      "sitio_oficial": "https://www.digitalserver.com.mx/",
+      "datacenter": "Sídney, Australia (planes cPanel de SuEmpresa)",
+      "tecnologias": [
+        "cPanel",
+        "LiteSpeed",
+        "NVMe",
+        "CloudLinux",
+        "VPS"
+      ],
+      "telefono": null,
+      "direccion": "Eugenia 831-604A, Col. Del Valle Centro, Benito Juárez, CDMX, C.P. 03100",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "Hospedando",
+      "slug": "hospedando-mx",
+      "pais": "MX",
+      "razon_social": "Neubox Internet, S.A. de C.V.",
+      "sitio_oficial": "https://www.hospedando.com.mx/",
+      "datacenter": null,
+      "tecnologias": [
+        "cPanel",
+        "WordPress",
+        "Softaculous",
+        "Correo"
+      ],
+      "telefono": "+52 55 7100 3152",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "Hosting-Mexico",
+      "slug": "hosting-mexico-mx",
+      "pais": "MX",
+      "razon_social": "Innovation Group Hosting-Mexico, S. de R.L. de C.V.",
+      "sitio_oficial": "https://hosting-mexico.net/",
+      "datacenter": "Chicago, EE.UU. (declarado por el proveedor)",
+      "tecnologias": [
+        "Hosting compartido",
+        "Reseller",
+        "Cloud",
+        "VPS",
+        "SiteLock",
+        "SSL"
+      ],
+      "telefono": "+52 55 6112 9208",
+      "direccion": "Paseo de la Reforma 250, Piso 8, Col. Juárez, CDMX, C.P. 06600",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "Neubox",
+      "slug": "neubox-mx",
+      "pais": "MX",
+      "razon_social": "NEUBOX Internet, S.A. de C.V.",
+      "sitio_oficial": "https://neubox.com/",
+      "datacenter": null,
+      "tecnologias": [
+        "cPanel",
+        "DirectAdmin",
+        "Hosting Windows",
+        "VPS",
+        "PCI DSS"
+      ],
+      "telefono": "+52 55 8526 2224",
+      "direccion": "Av. Adolfo López Mateos Norte 391, Piso 29, Guadalajara, Jalisco, C.P. 44680",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    }
+  ]
+}
