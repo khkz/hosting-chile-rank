@@ -32,6 +32,8 @@ const Index = () => {
         keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2026"
       />
 
+      <HreflangCluster />
+
       <DatasetSchema />
 
       <SEOFAQSchema faqs={[
