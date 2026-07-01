@@ -3,8 +3,8 @@
  * Solo presentación: NO modifica datos ni pipeline.
  */
 
-export const DOFOLLOW_SLUGS = new Set(['hostingplus', 'ecohosting', 'hostingplus-pe', 'hostingplus-mx']);
-export const DOFOLLOW_DOMAINS = ['hostingplus.cl', 'ecohosting.cl', 'hostingplus.pe', 'hostingplus.mx'];
+export const DOFOLLOW_SLUGS = new Set(['hostingplus', 'ecohosting', 'hostingplus-pe', 'hostingplus-mx', 'hostingplus-co', 'hostingplus-ar']);
+export const DOFOLLOW_DOMAINS = ['hostingplus.cl', 'ecohosting.cl', 'hostingplus.pe', 'hostingplus.mx', 'hostingplus.com.co', 'hostingplus.com.ar'];
 
 export const HIDDEN_SLUGS = new Set([
   'hosting24',

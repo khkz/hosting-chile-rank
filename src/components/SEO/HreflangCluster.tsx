@@ -25,6 +25,8 @@ export const hreflangLinks = () => (
     <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
     <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
     <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
+    <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
+    <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
     <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
   </Fragment>
 );
