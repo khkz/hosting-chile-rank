@@ -26,6 +26,7 @@ const LatamHub = () => {
         <meta name="robots" content="index,follow" />
         <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
         <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
+        <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
         <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
       </Helmet>
 
