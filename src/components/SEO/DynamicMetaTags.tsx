@@ -12,46 +12,59 @@ interface DynamicMetaTagsProps {
   includeHreflang?: boolean;
 }
 
+/**
+ * react-helmet-async requiere que los hijos del <Helmet> sean ELEMENTOS
+ * DIRECTOS (no arrays, no Fragments, no false/undefined). Cualquier hijo
+ * inválido puede hacer que Helmet descarte silenciosamente TODO el bloque
+ * (bug detectado: sin canonical, sin hreflang, title sin sufijo).
+ * Por eso aquí construimos dos ramas completas con elementos directos.
+ */
 const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
   title,
   description,
   canonical,
   ogImage = 'https://eligetuhosting.cl/images/ranking-comparison.png',
   keywords,
-  type = 'website',
+  type: _type = 'website',
   includeHreflang = false,
 }) => {
   const location = useLocation();
   const fullTitle = `${title} | EligeTuHosting.cl`;
-  // Always self-referential canonical based on current route unless explicitly overridden.
   const normalizedPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '');
   const url = canonical || `https://eligetuhosting.cl${normalizedPath}`;
+  const kw = keywords || '';
+
+  if (includeHreflang) {
+    return (
+      <Helmet>
+        <title>{fullTitle}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={kw} />
+        <link rel="canonical" href={url} />
+        <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
+        <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
+        <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={url} />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:title" content={fullTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+      </Helmet>
+    );
+  }
 
   return (
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      {keywords && <meta name="keywords" content={keywords} />}
-
-      {/* Canonical self-referencial */}
+      <meta name="keywords" content={kw} />
       <link rel="canonical" href={url} />
-
-      {/* Hreflang cluster — inline dentro del ÚNICO Helmet de la página.
-          En prerender, tener un <Helmet> separado para hreflang provocaba
-          que title/canonical quedaran con los defaults del index.html
-          (bug detectado en /pe tras Fase 2). */}
-      {includeHreflang && <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />}
-      {includeHreflang && <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />}
-      {includeHreflang && <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />}
-
-      {/* Open Graph — og:type/site_name/locale viven en index.html (sitewide).
-          Aquí solo emitimos los que varían por ruta para evitar duplicados. */}
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={ogImage} />
-
-      {/* Twitter Card */}
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
