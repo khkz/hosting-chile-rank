@@ -68,7 +68,7 @@ const LatamHub = () => {
             </a>
 
             {DOT_COM_COUNTRIES.map((c) => {
-              const isPE = c.code === 'PE';
+              const isPublished = c.code === 'PE' || c.code === 'MX';
               return (
                 <Link
                   key={c.code}
@@ -80,10 +80,10 @@ const LatamHub = () => {
                     {c.name}
                   </div>
                   <div className="text-xs text-[#2B2D42]/60 mt-1">
-                    {isPE ? 'Directorio publicado' : 'Próximamente · verificando proveedores'}
+                    {isPublished ? 'Directorio publicado' : 'Próximamente · verificando proveedores'}
                   </div>
                   <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
-                    {isPE ? 'Ver directorio' : 'Ver estado'} <ArrowRight className="h-3.5 w-3.5" />
+                    {isPublished ? 'Ver directorio' : 'Ver estado'} <ArrowRight className="h-3.5 w-3.5" />
                   </div>
                 </Link>
               );
