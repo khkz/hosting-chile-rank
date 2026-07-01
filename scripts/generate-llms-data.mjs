@@ -311,7 +311,10 @@ ${reviewLines}
 
 Última actualización: ${NOW_HUMAN} (${NOW_ISO})
 Fuente: EligeTuHosting.cl (${SITE}) · Licencia CC-BY-4.0
-Dataset JSON: ${SITE}/data/proveedores.json
+Dataset JSON Chile: ${SITE}/data/proveedores.json
+
+## LATAM (eligetuhosting.com)
+${latamSummary.map(c => `- ${c.name} (${c.code}): ${c.site} — https://eligetuhosting.com/data/proveedores-${c.slug}.json`).join('\n')}
 
 ${fullSections}
 `;
