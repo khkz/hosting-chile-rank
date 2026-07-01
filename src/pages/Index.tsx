@@ -30,9 +30,8 @@ const Index = () => {
         description="Compara los hostings más rápidos y seguros de Chile. Ranking independiente 2026 con +5.700 dominios analizados y 20 proveedores verificados."
         canonical="https://eligetuhosting.cl/"
         keywords="hosting chile, mejor hosting chile, hosting barato chile, hosting chile 2026"
+        includeHreflang
       />
-
-      <HreflangCluster />
 
       <DatasetSchema />
 
