@@ -42,7 +42,7 @@ const CountryLanding = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select(
-          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, is_verified'
+          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, is_verified, is_curated'
         )
         .eq('country', info.code)
         .eq('is_verified', true)
