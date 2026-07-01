@@ -77,9 +77,17 @@ const CountryLanding = () => {
         <meta property="og:title" content={title} />
         <meta property="og:url" content={canonical} />
         <meta name="robots" content="index,follow" />
+        {info.code === 'PE' && (
+          <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
+        )}
+        {info.code === 'PE' && (
+          <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
+        )}
+        {info.code === 'PE' && (
+          <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
+        )}
       </Helmet>
 
-      {info.code === 'PE' && <HreflangCluster />}
 
       <Navbar />
 
