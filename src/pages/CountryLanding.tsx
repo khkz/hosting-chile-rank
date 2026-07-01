@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   ArrowRight,
   Globe,
@@ -25,13 +26,6 @@ import { COUNTRIES, getCountryFromPath } from '@/lib/country';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 
-/**
- * Shell de país en eligetuhosting.com.
- * - Directorio de proveedores con country=<code> e is_verified=true.
- * - "Próximamente" si todavía no hay proveedores verificados.
- * - Bloque "Recomendado por EligeTuHosting" (HostingPlus regional) con disclosure.
- * - NO toca el .cl. Filtro por país vía Supabase.
- */
 const CountryLanding = () => {
   const location = useLocation();
   const info = getCountryFromPath(location.pathname) ?? COUNTRIES.PE;
@@ -54,9 +48,8 @@ const CountryLanding = () => {
 
   const canonical = `https://eligetuhosting.com/${info.slug}`;
   const title = `Hosting en ${info.name} — Directorio verificado · Elige Tu Hosting`;
-  const description = `Directorio de proveedores de hosting en ${info.name} con datos comprobables: contacto, datacenter, razón social y tecnología. Sin puntajes inventados.`;
+  const description = `Directorio verificable de hosting en ${info.name}: proveedores con datos comprobables (razón social, ID fiscal, datacenter, tecnología) y metodología transparente.`;
 
-  // Proveedor editorial recomendado: is_curated=true del país activo.
   const curatedCompany = (companies || []).find((c: any) => c.is_curated === true) || null;
   const recommended = curatedCompany
     ? {
@@ -67,38 +60,95 @@ const CountryLanding = () => {
       }
     : null;
 
-  const hasHreflang = info.code === 'PE' || info.code === 'MX' || info.code === 'CO' || info.code === 'AR';
+  const lastUpdated = new Date().toISOString().slice(0, 10);
+
+  // JSON-LD: BreadcrumbList
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://eligetuhosting.com/' },
+      { '@type': 'ListItem', position: 2, name: `Hosting en ${info.name}`, item: canonical },
+    ],
+  };
+
+  // JSON-LD: CollectionPage with ItemList of Organizations
+  const orgItems = (companies || []).map((c: any, i: number) => {
+    const org: any = {
+      '@type': 'Organization',
+      name: c.name,
+      url: c.website || canonical,
+    };
+    if (c.contact_address) org.address = c.contact_address;
+    if (c.contact_phone) org.telephone = c.contact_phone;
+    return { '@type': 'ListItem', position: i + 1, item: org };
+  });
+  const collectionLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description,
+    url: canonical,
+    inLanguage: info.locale,
+    isAccessibleForFree: true,
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    dateModified: lastUpdated,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: orgItems.length,
+      itemListElement: orgItems,
+    },
+  };
+
+  const faqs = [
+    {
+      q: `¿Qué es este directorio de hosting en ${info.name}?`,
+      a: `Es un listado independiente de proveedores de hosting con presencia en ${info.name}, publicado por Elige Tu Hosting. Mostramos únicamente datos comprobables (razón social, contacto, datacenter, tecnología) sin puntajes inventados.`,
+    },
+    {
+      q: '¿Cómo se verifican los datos?',
+      a: 'Contrastamos WHOIS, ASN, registros mercantiles, sitios oficiales y respuestas de soporte. No publicamos ranking hasta tener reclamos, benchmarks y trayectoria confirmados con la misma metodología usada en Chile.',
+    },
+    {
+      q: `¿Por qué HostingPlus aparece como recomendado en ${info.name}?`,
+      a: 'HostingPlus opera regionalmente con infraestructura propia y soporte 24/7 en español. Divulgación: podemos recibir una comisión si contratas por ese enlace; la recomendación se basa en trayectoria verificable y no altera el resto del directorio.',
+    },
+    {
+      q: '¿Cómo sugerir un proveedor o corregir datos?',
+      a: 'Escríbenos desde /contacto indicando el sitio, razón social e ID fiscal. Revisamos cada solicitud y publicamos solo cuando los datos son verificables.',
+    },
+  ];
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
 
   return (
     <>
-      {hasHreflang ? (
-        <Helmet>
-          <html lang={info.locale} />
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <link rel="canonical" href={canonical} />
-          <meta property="og:title" content={title} />
-          <meta property="og:url" content={canonical} />
-          <meta name="robots" content="index,follow" />
-          <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
-          <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
-          <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
-          <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
-          <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
-          <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
-        </Helmet>
-      ) : (
-        <Helmet>
-          <html lang={info.locale} />
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <link rel="canonical" href={canonical} />
-          <meta property="og:title" content={title} />
-          <meta property="og:url" content={canonical} />
-          <meta name="robots" content="index,follow" />
-        </Helmet>
-      )}
-
+      <Helmet>
+        <html lang={info.locale} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta name="robots" content="index,follow" />
+        <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
+        <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
+        <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
+        <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
+        <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
+        <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
+        <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(collectionLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
+      </Helmet>
 
       <Navbar />
 
@@ -119,7 +169,6 @@ const CountryLanding = () => {
             </p>
           </div>
 
-          {/* Recomendado por EligeTuHosting */}
           {recommended && (
             <Card className="mb-10 border-[#EF233C]/40 bg-[#EF233C]/5">
               <CardContent className="pt-6">
@@ -159,7 +208,6 @@ const CountryLanding = () => {
             </Card>
           )}
 
-          {/* Directorio */}
           {isLoading ? (
             <p className="text-center text-muted-foreground py-10">
               Cargando proveedores…
@@ -267,6 +315,48 @@ const CountryLanding = () => {
               </div>
             </div>
           )}
+
+          {/* Metodología y transparencia */}
+          <section className="mt-14 bg-white border border-[#2B2D42]/10 rounded-xl p-6 md:p-8">
+            <h2 className="text-2xl font-bold text-[#2B2D42] mb-3">
+              Metodología y transparencia
+            </h2>
+            <p className="text-sm text-[#2B2D42]/75 leading-relaxed mb-3">
+              Este directorio de {info.name} se construye únicamente con datos
+              públicos comprobables: razón social, identificador fiscal, sitio
+              oficial, datacenter declarado, tecnología del stack y canales de
+              contacto. No publicamos puntajes ni "notas" hasta contar con
+              benchmarks propios, reclamos verificados y trayectoria auditable,
+              con la misma metodología aplicada en Chile.
+            </p>
+            <p className="text-xs text-[#2B2D42]/60">
+              Última actualización de datos: <strong>{lastUpdated}</strong>. Los
+              datos se publican bajo licencia CC-BY-4.0 y son de acceso libre.
+            </p>
+          </section>
+
+          {/* FAQ */}
+          <section className="mt-10">
+            <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">
+              Preguntas frecuentes
+            </h2>
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqs.map((f, i) => (
+                <AccordionItem
+                  key={i}
+                  value={`faq-${i}`}
+                  className="bg-white border border-[#2B2D42]/10 rounded-lg px-4"
+                >
+                  <AccordionTrigger className="text-left font-medium">
+                    {f.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-[#2B2D42]/75">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </section>
         </div>
       </main>
 
