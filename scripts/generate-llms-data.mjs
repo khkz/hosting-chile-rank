@@ -49,7 +49,7 @@ async function main() {
     return;
   }
 
-  const companies = await rest('hosting_companies?select=id,slug,name,overall_rating,datacenter_location,year_founded,corporate_group,website,description,description_editorial,technologies,uptime_guarantee,has_ssl_free,has_migration_free,contact_phone,contact_email,contact_address,updated_at,is_verified,is_curated&is_verified=eq.true&order=overall_rating.desc.nullslast');
+  const companies = await rest('hosting_companies?select=id,slug,name,overall_rating,datacenter_location,year_founded,corporate_group,website,description,description_editorial,technologies,uptime_guarantee,has_ssl_free,has_migration_free,contact_phone,contact_email,contact_address,updated_at,is_verified,is_curated,country&is_verified=eq.true&country=eq.CL&order=overall_rating.desc.nullslast');
   const plans = await rest('hosting_plans?select=company_id,name,price_monthly,storage_gb,bandwidth,domains_allowed,features');
   let reviews = [];
   try {
