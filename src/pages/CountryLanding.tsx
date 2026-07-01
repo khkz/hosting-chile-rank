@@ -79,6 +79,8 @@ const CountryLanding = () => {
         <meta name="robots" content="index,follow" />
       </Helmet>
 
+      {info.code === 'PE' && <HreflangCluster />}
+
       <Navbar />
 
       <main className="min-h-[60vh] container mx-auto px-4 py-12">
