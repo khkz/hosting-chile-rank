@@ -192,8 +192,34 @@ const generateMainSitemap = (companySlugs = []) => {
     .map(c => urlTag(`${ROOT}/catalogo/${c.slug}`, '0.7', 'weekly', c.updated_at || NOW))
     .join('');
 
+  // Multi-country .com URLs con alternates hreflang bidireccionales
+  const HREFLANG_CLUSTER = [
+    { hreflang: 'es-CL', href: 'https://eligetuhosting.cl/' },
+    { hreflang: 'es-PE', href: 'https://eligetuhosting.com/pe' },
+    { hreflang: 'es-MX', href: 'https://eligetuhosting.com/mx' },
+    { hreflang: 'es-CO', href: 'https://eligetuhosting.com/co' },
+    { hreflang: 'es-AR', href: 'https://eligetuhosting.com/ar' },
+    { hreflang: 'x-default', href: 'https://eligetuhosting.com/' },
+  ];
+  const alternatesXml = HREFLANG_CLUSTER
+    .map(a => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${a.href}"/>`)
+    .join('\n');
+  const dotComUrls = [
+    'https://eligetuhosting.com/',
+    'https://eligetuhosting.com/pe',
+    'https://eligetuhosting.com/mx',
+    'https://eligetuhosting.com/co',
+    'https://eligetuhosting.com/ar',
+  ].map(loc => `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${NOW}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+${alternatesXml}
+  </url>`).join('\n');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
 ${intentHubs}
 ${providerUrls}
@@ -203,6 +229,7 @@ ${alternativasUrls}
 ${migrarUrls}
 ${hostingReviews}
 ${catalogoUrls}
+${dotComUrls}
 </urlset>`.trimStart();
 };
 
