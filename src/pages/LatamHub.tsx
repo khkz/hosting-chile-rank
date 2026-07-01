@@ -26,6 +26,8 @@ const LatamHub = () => {
         <meta name="robots" content="index,follow" />
       </Helmet>
 
+      <HreflangCluster />
+
       <Navbar />
 
       <main className="min-h-[70vh] container mx-auto px-4 py-16">
