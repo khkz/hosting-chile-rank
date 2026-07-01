@@ -42,7 +42,7 @@ const CountryLanding = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select(
-          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, is_verified'
+          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, is_verified, is_curated'
         )
         .eq('country', info.code)
         .eq('is_verified', true)
@@ -56,20 +56,22 @@ const CountryLanding = () => {
   const title = `Hosting en ${info.name} — Directorio verificado · Elige Tu Hosting`;
   const description = `Directorio de proveedores de hosting en ${info.name} con datos comprobables: contacto, datacenter, razón social y tecnología. Sin puntajes inventados.`;
 
-  // HostingPlus regional (solo PE en esta fase).
-  const recommended =
-    info.code === 'PE'
-      ? {
-          name: 'HostingPlus Perú',
-          url: 'https://www.hostingplus.pe/',
-          rel: 'noopener',
-          claim: 'Operador regional con infraestructura propia y soporte hispano 24/7.',
-        }
-      : null;
+  // Proveedor editorial recomendado: is_curated=true del país activo.
+  const curatedCompany = (companies || []).find((c: any) => c.is_curated === true) || null;
+  const recommended = curatedCompany
+    ? {
+        name: curatedCompany.name,
+        url: curatedCompany.website || '#',
+        rel: 'noopener',
+        claim: `Operador regional con infraestructura propia y soporte hispano 24/7 en ${info.name}.`,
+      }
+    : null;
+
+  const hasHreflang = info.code === 'PE' || info.code === 'MX';
 
   return (
     <>
-      {info.code === 'PE' ? (
+      {hasHreflang ? (
         <Helmet>
           <html lang={info.locale} />
           <title>{title}</title>
@@ -80,6 +82,7 @@ const CountryLanding = () => {
           <meta name="robots" content="index,follow" />
           <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
           <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
+          <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
           <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
         </Helmet>
       ) : (
