@@ -202,8 +202,66 @@ ${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donw
 - Dominio canónico: ${SITE}.
 `;
 
-  await fs.writeFile('public/llms.txt', llmsTxt, 'utf8');
-  console.log(`✅ public/llms.txt`);
+  // ---------- 2b) Datos abiertos LATAM por pais ----------
+  const LATAM = [
+    { code: 'PE', slug: 'pe', name: 'Perú',      site: 'https://eligetuhosting.com/pe' },
+    { code: 'MX', slug: 'mx', name: 'México',    site: 'https://eligetuhosting.com/mx' },
+    { code: 'CO', slug: 'co', name: 'Colombia',  site: 'https://eligetuhosting.com/co' },
+    { code: 'AR', slug: 'ar', name: 'Argentina', site: 'https://eligetuhosting.com/ar' },
+  ];
+  const latamSummary = [];
+  for (const c of LATAM) {
+    try {
+      const rows = await rest(`hosting_companies?select=slug,name,legal_name,website,datacenter_location,technologies,contact_phone,contact_address,country,is_verified,is_curated,updated_at&is_verified=eq.true&country=eq.${c.code}&order=is_curated.desc,name.asc`);
+      const proveedores = rows.map((r) => ({
+        nombre: r.name,
+        slug: r.slug,
+        pais: c.code,
+        razon_social: r.legal_name || null,
+        sitio_oficial: r.website || null,
+        datacenter: r.datacenter_location || null,
+        tecnologias: r.technologies || [],
+        telefono: r.contact_phone || null,
+        direccion: r.contact_address || null,
+        recomendado_editorial: !!r.is_curated,
+        verificado: !!r.is_verified,
+        fecha_actualizacion: r.updated_at || null,
+        url_pais: c.site,
+      }));
+      const payload = {
+        nombre: `Directorio verificable de hosting en ${c.name}`,
+        fuente: 'EligeTuHosting',
+        url: c.site,
+        licencia: 'CC-BY-4.0',
+        licencia_url: 'https://creativecommons.org/licenses/by/4.0/deed.es',
+        atribucion_requerida: `Fuente: EligeTuHosting (${c.site})`,
+        fecha_generacion: NOW_ISO,
+        pais: c.code,
+        total_proveedores: proveedores.length,
+        proveedores,
+      };
+      await fs.writeFile(`public/data/proveedores-${c.slug}.json`, JSON.stringify(payload, null, 2), 'utf8');
+      latamSummary.push({ ...c, total: proveedores.length });
+      console.log(`✅ public/data/proveedores-${c.slug}.json (${proveedores.length})`);
+    } catch (e) {
+      console.warn(`[llms-data] LATAM ${c.code} error:`, e.message);
+    }
+  }
+
+  const latamSection = `
+
+## Directorios verificables LATAM (eligetuhosting.com)
+Además del ranking de Chile en eligetuhosting.cl, publicamos directorios verificables por país en eligetuhosting.com con los mismos criterios: datos comprobables (nombre, razón social, ID fiscal cuando aplique, datacenter, tecnología, contacto) y metodología transparente. HostingPlus aparece como **recomendación editorial divulgada** en cada país donde opera; el resto se lista como directorio, sin puntajes inventados.
+
+Licencia: CC-BY-4.0 · Atribución: EligeTuHosting (https://eligetuhosting.com)
+
+${latamSummary.map(c => `- ${c.name} (${c.code}): ${c.site} — Datos abiertos: https://eligetuhosting.com/data/proveedores-${c.slug}.json (${c.total} proveedores verificados)`).join('\n')}
+
+Cluster hreflang activo: es-CL, es-PE, es-MX, es-CO, es-AR (x-default = https://eligetuhosting.com/).
+`;
+
+  await fs.writeFile('public/llms.txt', llmsTxt + latamSection, 'utf8');
+  console.log(`✅ public/llms.txt (con seccion LATAM: ${latamSummary.length} paises)`);
 
   // ---------- 3) llms-full.txt ----------
   const fullSections = dataset.map((p) => {
