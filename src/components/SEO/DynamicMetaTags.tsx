@@ -9,6 +9,7 @@ interface DynamicMetaTagsProps {
   ogImage?: string;
   keywords?: string;
   type?: 'website' | 'article';
+  includeHreflang?: boolean;
 }
 
 const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
