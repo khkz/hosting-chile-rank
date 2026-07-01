@@ -39,10 +39,6 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       {/* Canonical self-referencial */}
       <link rel="canonical" href={url} />
 
-      {/* hreflang cluster bidireccional y autorreferencial */}
-      {hreflangs.map(h => (
-        <link key={h.lang} rel="alternate" hrefLang={h.lang} href={h.href} />
-      ))}
 
       {/* Open Graph — og:type/site_name/locale viven en index.html (sitewide).
           Aquí solo emitimos los que varían por ruta para evitar duplicados. */}
