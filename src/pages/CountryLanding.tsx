@@ -69,24 +69,30 @@ const CountryLanding = () => {
 
   return (
     <>
-      <Helmet>
-        <html lang={info.locale} />
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <link rel="canonical" href={canonical} />
-        <meta property="og:title" content={title} />
-        <meta property="og:url" content={canonical} />
-        <meta name="robots" content="index,follow" />
-        {info.code === 'PE' && (
+      {info.code === 'PE' ? (
+        <Helmet>
+          <html lang={info.locale} />
+          <title>{title}</title>
+          <meta name="description" content={description} />
+          <link rel="canonical" href={canonical} />
+          <meta property="og:title" content={title} />
+          <meta property="og:url" content={canonical} />
+          <meta name="robots" content="index,follow" />
           <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
-        )}
-        {info.code === 'PE' && (
           <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
-        )}
-        {info.code === 'PE' && (
           <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
-        )}
-      </Helmet>
+        </Helmet>
+      ) : (
+        <Helmet>
+          <html lang={info.locale} />
+          <title>{title}</title>
+          <meta name="description" content={description} />
+          <link rel="canonical" href={canonical} />
+          <meta property="og:title" content={title} />
+          <meta property="og:url" content={canonical} />
+          <meta name="robots" content="index,follow" />
+        </Helmet>
+      )}
 
 
       <Navbar />
