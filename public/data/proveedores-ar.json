@@ -1,0 +1,133 @@
+{
+  "nombre": "Directorio verificable de hosting en Argentina",
+  "fuente": "EligeTuHosting",
+  "url": "https://eligetuhosting.com/ar",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
+  "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/ar)",
+  "fecha_generacion": "2026-07-01T23:11:04.642Z",
+  "pais": "AR",
+  "total_proveedores": 6,
+  "proveedores": [
+    {
+      "nombre": "HostingPlus Argentina",
+      "slug": "hostingplus-ar",
+      "pais": "AR",
+      "razon_social": "Pluschile Internet Ltda. (Chile, RUT 76.636.640-6); sin entidad legal argentina",
+      "sitio_oficial": "https://hostingplus.ar/",
+      "datacenter": "Orlando (EE.UU.) y Santiago (Chile) — según su ficha; sin datacenter propio en Argentina",
+      "tecnologias": [
+        "cPanel",
+        "LiteSpeed",
+        "SSD RAID 10"
+      ],
+      "telefono": "+54 11 5168 5786",
+      "direccion": null,
+      "recomendado_editorial": true,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "BAEHOST",
+      "slug": "baehost-ar",
+      "pais": "AR",
+      "razon_social": "INTERBS S.R.L.",
+      "sitio_oficial": "https://baehost.com/",
+      "datacenter": "Buenos Aires, Argentina (TIER III+, ISO 27001)",
+      "tecnologias": [
+        "cPanel",
+        "Web Hosting SSD",
+        "VPS",
+        "Cloud",
+        "Dedicados",
+        "Colocation"
+      ],
+      "telefono": null,
+      "direccion": "Av. Cabildo 2230, 5° B, CABA, C1428AAR",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "DonWeb",
+      "slug": "donweb-ar",
+      "pais": "AR",
+      "razon_social": "DATTATEC.COM S.R.L.",
+      "sitio_oficial": "https://donweb.com/",
+      "datacenter": "Rosario, Argentina (datacenter propio; ISO 27001/9001; AS27823)",
+      "tecnologias": [
+        "Panel Ferozo",
+        "cPanel",
+        "Cloud/VPS",
+        "Dedicados",
+        "ISO 27001"
+      ],
+      "telefono": "+54 11 5238 8127",
+      "direccion": "Córdoba 3753, Rosario, Santa Fe (S2000)",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "Ferozo",
+      "slug": "ferozo-ar",
+      "pais": "AR",
+      "razon_social": "DATTATEC.COM S.R.L.",
+      "sitio_oficial": "https://ferozo.com/",
+      "datacenter": "Rosario, Argentina (infraestructura de DonWeb)",
+      "tecnologias": [
+        "Panel Ferozo",
+        "WordPress",
+        "Correo"
+      ],
+      "telefono": "+54 11 5238 8127",
+      "direccion": "Córdoba 3753, Rosario, Santa Fe",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "G2K Hosting",
+      "slug": "g2khosting-ar",
+      "pais": "AR",
+      "razon_social": "G2K Argentina S.A.",
+      "sitio_oficial": "https://www.g2khosting.com/",
+      "datacenter": "Buenos Aires, Argentina (datacenter propio)",
+      "tecnologias": [
+        "Cloud Servers",
+        "Servidores Dedicados",
+        "Colocation"
+      ],
+      "telefono": null,
+      "direccion": "Buenos Aires, Argentina",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "Neolo",
+      "slug": "neolo-ar",
+      "pais": "AR",
+      "razon_social": "Sigmund LLC (Wyoming, EE.UU.); sin entidad legal argentina",
+      "sitio_oficial": "https://www.neolo.com/argentina/",
+      "datacenter": "Distribuido (EE.UU./Europa/Asia/LatAm); sin datacenter propio en Argentina",
+      "tecnologias": [
+        "cPanel",
+        "WordPress",
+        "VPS",
+        "SSL"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    }
+  ]
+}
