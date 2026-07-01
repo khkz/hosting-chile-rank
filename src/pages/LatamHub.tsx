@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { COUNTRIES, DOT_COM_COUNTRIES } from '@/lib/country';
-import HreflangCluster from '@/components/SEO/HreflangCluster';
+
 
 /**
  * Hub LATAM en la raíz de eligetuhosting.com.
@@ -24,9 +24,11 @@ const LatamHub = () => {
         />
         <link rel="canonical" href="https://eligetuhosting.com/" />
         <meta name="robots" content="index,follow" />
+        <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
+        <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
+        <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
       </Helmet>
 
-      <HreflangCluster />
 
       <Navbar />
 

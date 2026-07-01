@@ -9,6 +9,7 @@ interface DynamicMetaTagsProps {
   ogImage?: string;
   keywords?: string;
   type?: 'website' | 'article';
+  includeHreflang?: boolean;
 }
 
 const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
@@ -17,18 +18,14 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
   canonical,
   ogImage = 'https://eligetuhosting.cl/images/ranking-comparison.png',
   keywords,
-  type = 'website'
+  type = 'website',
+  includeHreflang = false,
 }) => {
   const location = useLocation();
   const fullTitle = `${title} | EligeTuHosting.cl`;
   // Always self-referential canonical based on current route unless explicitly overridden.
   const normalizedPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '');
   const url = canonical || `https://eligetuhosting.cl${normalizedPath}`;
-
-  // NOTE: hreflang cluster is intentionally NOT emitted here.
-  // Fase 2 SEO: solo el home de Chile (Index), el hub LATAM (LatamHub)
-  // y la página /pe (CountryLanding) llevan el bloque hreflang, y cada
-  // una lo declara localmente para evitar contaminar el resto del .cl.
 
   return (
     <Helmet>
@@ -39,6 +36,13 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
       {/* Canonical self-referencial */}
       <link rel="canonical" href={url} />
 
+      {/* Hreflang cluster — inline dentro del ÚNICO Helmet de la página.
+          En prerender, tener un <Helmet> separado para hreflang provocaba
+          que title/canonical quedaran con los defaults del index.html
+          (bug detectado en /pe tras Fase 2). */}
+      {includeHreflang && <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />}
+      {includeHreflang && <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />}
+      {includeHreflang && <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />}
 
       {/* Open Graph — og:type/site_name/locale viven en index.html (sitewide).
           Aquí solo emitimos los que varían por ruta para evitar duplicados. */}

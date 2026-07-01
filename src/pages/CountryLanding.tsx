@@ -21,7 +21,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
-import HreflangCluster from '@/components/SEO/HreflangCluster';
+
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 
@@ -77,9 +77,17 @@ const CountryLanding = () => {
         <meta property="og:title" content={title} />
         <meta property="og:url" content={canonical} />
         <meta name="robots" content="index,follow" />
+        {info.code === 'PE' && (
+          <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
+        )}
+        {info.code === 'PE' && (
+          <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
+        )}
+        {info.code === 'PE' && (
+          <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
+        )}
       </Helmet>
 
-      {info.code === 'PE' && <HreflangCluster />}
 
       <Navbar />
 

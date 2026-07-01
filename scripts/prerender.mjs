@@ -21,6 +21,10 @@ const ORIGIN = `http://127.0.0.1:${PORT}`;
 // Rutas estáticas prioritarias para prerender (sin :slug, sin admin/auth).
 const ROUTES = [
   '/',
+  '/pe',
+  '/mx',
+  '/co',
+  '/ar',
   '/mejor-hosting-chile-2026',
   '/mejor-hosting-wordpress-chile-2026',
   '/mejor-hosting-ecommerce-chile-2026',
