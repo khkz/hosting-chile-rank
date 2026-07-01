@@ -21,6 +21,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
+import HreflangCluster from '@/components/SEO/HreflangCluster';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 
