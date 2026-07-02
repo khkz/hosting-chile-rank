@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
@@ -19,9 +19,11 @@ import { formatCorporateGroup } from '@/lib/formatGroup';
 const COUNTRY_MAP: Record<string, CountryCode> = { pe: 'PE', mx: 'MX', co: 'CO', ar: 'AR' };
 
 const CountryProviderDetail = () => {
-  const { country, slug } = useParams<{ country: string; slug: string }>();
+  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const navigate = useNavigate();
-  const code = country ? COUNTRY_MAP[country.toLowerCase()] : undefined;
+  const country = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
+  const code = country ? COUNTRY_MAP[country] : undefined;
   const info = code ? COUNTRIES[code] : null;
 
   const { data: company, isLoading } = useQuery({
