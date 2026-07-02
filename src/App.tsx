@@ -105,6 +105,7 @@ import EstudioHostingChile2026 from './pages/EstudioHostingChile2026';
 import Contacto from './pages/Contacto';
 import VotaHosting from './pages/VotaHosting';
 import CountryLanding from './pages/CountryLanding';
+import CountryProviderDetail from './pages/CountryProviderDetail';
 import HomeDispatcher from './components/HomeDispatcher';
 
 
@@ -312,12 +313,16 @@ function App() {
             <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
             {/* Country shells on .com (additive — .cl no navega aquí) */}
             <Route path="/pe" element={<CountryLanding />} />
+            <Route path="/pe/:slug" element={<CountryProviderDetail />} />
             <Route path="/pe/*" element={<CountryLanding />} />
             <Route path="/mx" element={<CountryLanding />} />
+            <Route path="/mx/:slug" element={<CountryProviderDetail />} />
             <Route path="/mx/*" element={<CountryLanding />} />
             <Route path="/co" element={<CountryLanding />} />
+            <Route path="/co/:slug" element={<CountryProviderDetail />} />
             <Route path="/co/*" element={<CountryLanding />} />
             <Route path="/ar" element={<CountryLanding />} />
+            <Route path="/ar/:slug" element={<CountryProviderDetail />} />
             <Route path="/ar/*" element={<CountryLanding />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
