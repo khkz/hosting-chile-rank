@@ -5,9 +5,9 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/co)",
-  "fecha_generacion": "2026-07-01T23:11:29.415Z",
+  "fecha_generacion": "2026-07-02T00:27:21.096Z",
   "pais": "CO",
-  "total_proveedores": 5,
+  "total_proveedores": 11,
   "proveedores": [
     {
       "nombre": "HostingPlus Colombia",
@@ -50,6 +50,28 @@
       "url_pais": "https://eligetuhosting.com/co"
     },
     {
+      "nombre": "Conexcol Cloud Colombia",
+      "slug": "conexcol-co",
+      "pais": "CO",
+      "razon_social": "Conexcol Cloud Colombia S.A.S.",
+      "sitio_oficial": "https://conexcol.net.co/",
+      "datacenter": "Medellín, Colombia (datacenter Tier III) y Londres (Reino Unido)",
+      "tecnologias": [
+        "cPanel clusterizado",
+        "CloudLinux",
+        "Cloud",
+        "VPS",
+        "Plesk",
+        "Windows"
+      ],
+      "telefono": "+57 601 3819262",
+      "direccion": "Carrera 79 45 E 80 Apto 302, La América, Medellín, Antioquia",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
       "nombre": "Dongee",
       "slug": "dongee-co",
       "pais": "CO",
@@ -66,6 +88,67 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "GoDaddy Colombia",
+      "slug": "godaddy-co",
+      "pais": "CO",
+      "razon_social": "GoDaddy Operating Company, LLC (EE.UU.); sin entidad colombiana",
+      "sitio_oficial": "https://co.godaddy.com/",
+      "datacenter": "EE.UU. (Arizona) y regiones globales; sin datacenter en Colombia",
+      "tecnologias": [
+        "cPanel",
+        "Plesk",
+        "WordPress",
+        "VPS"
+      ],
+      "telefono": "+1 480 463 8300",
+      "direccion": "Tempe, Arizona, EE.UU. (sede)",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "HostDime Colombia",
+      "slug": "hostdime-co",
+      "pais": "CO",
+      "razon_social": "HostDime.com.co S.A.S.",
+      "sitio_oficial": "https://www.hostdime.com.co/",
+      "datacenter": "Tocancipá, Cundinamarca, Colombia (datacenter propio Tier IV, Uptime Institute)",
+      "tecnologias": [
+        "cPanel/WHM",
+        "Plesk",
+        "VPS Cloud SSD",
+        "Colocation",
+        "Dedicados"
+      ],
+      "telefono": "+57 300 910 8585",
+      "direccion": "Zona Franca de Tocancipá, Km 1.5 vía Briceño-Zipaquirá, Tocancipá, Cundinamarca",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "HostGator Colombia",
+      "slug": "hostgator-co",
+      "pais": "CO",
+      "razon_social": "HostGator (Newfold Digital); sin entidad colombiana confirmada",
+      "sitio_oficial": "https://www.hostgator.co/",
+      "datacenter": "EE.UU. (Houston/Provo/Atlanta); sin datacenter en Colombia",
+      "tecnologias": [
+        "cPanel",
+        "WordPress",
+        "VPS",
+        "Dedicados"
+      ],
+      "telefono": null,
+      "direccion": "Sede LatAm en Brasil; casa matriz Newfold (EE.UU.)",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/co"
     },
     {
@@ -89,6 +172,26 @@
       "url_pais": "https://eligetuhosting.com/co"
     },
     {
+      "nombre": "IPXON Networks Colombia",
+      "slug": "ipxon-co",
+      "pais": "CO",
+      "razon_social": "IPXON Networks (operador regional LatAm)",
+      "sitio_oficial": "https://www.ipxon.com/",
+      "datacenter": "Bogotá, Colombia (datacenter propio/operado; carriers CenturyLink/Movistar/Claro/ETB)",
+      "tecnologias": [
+        "Colocation",
+        "Datacenter",
+        "Cloud/IaaS",
+        "Hosting gestionado"
+      ],
+      "telefono": null,
+      "direccion": "Cra. 68 #169a-73, Bogotá",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
       "nombre": "Latinoamérica Hosting",
       "slug": "latinoamericahosting-co",
       "pais": "CO",
@@ -107,6 +210,25 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/co"
+    },
+    {
+      "nombre": "PlanetaHosting Colombia",
+      "slug": "planetahosting-co",
+      "pais": "CO",
+      "razon_social": "Planeta Hosting S.A.S.",
+      "sitio_oficial": "https://www.planetahosting.com.co/",
+      "datacenter": "Colombia (servidores propios declarados; ubicación exacta no verificada)",
+      "tecnologias": [
+        "cPanel",
+        "SSD",
+        "eCommerce"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/co"
     }
   ]

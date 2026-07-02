@@ -112,12 +112,35 @@ async function fetchCatalogSlugs() {
     });
     if (!res.ok) return [];
     const data = await res.json();
-    console.log(`[prerender] ${data.length} slugs verificados desde Supabase`);
+    console.log(`[prerender] ${data.length} slugs verificados (CL) desde Supabase`);
     return data.map(r => r.slug);
   } catch (e) {
     console.log('[prerender] error fetching slugs:', e.message);
     return [];
   }
+}
+
+// Fetch verified provider slugs por país LATAM (PE/MX/CO/AR) → rutas /<country>/<slug>
+async function fetchCountryProviderRoutes() {
+  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
+  const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!KEY) return [];
+  const COUNTRIES = [['PE','pe'],['MX','mx'],['CO','co'],['AR','ar']];
+  const routes = [];
+  for (const [code, slug] of COUNTRIES) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&country=eq.${code}&order=slug.asc`, {
+        headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const r of data) routes.push(`/${slug}/${r.slug}`);
+      console.log(`[prerender] ${data.length} fichas ${code}`);
+    } catch (e) {
+      console.log(`[prerender] error fetching ${code}:`, e.message);
+    }
+  }
+  return routes;
 }
 
 
@@ -240,14 +263,15 @@ async function main() {
     const vsRoutes = await fetchVsPairRoutes(slugs);
     const altRoutes = await fetchAlternativasRoutes(slugs);
     const migrarRoutes = await fetchMigrarRoutes(slugs);
-    let allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes, ...altRoutes, ...migrarRoutes];
+    const countryProviderRoutes = await fetchCountryProviderRoutes();
+    let allRoutes = [...ROUTES, ...catalogoRoutes, ...vsRoutes, ...altRoutes, ...migrarRoutes, ...countryProviderRoutes];
     // PRERENDER_ONLY="/ruta1,/ruta2" → re-renderizar solo esas rutas.
     if (process.env.PRERENDER_ONLY) {
       const only = new Set(process.env.PRERENDER_ONLY.split(',').map(s => s.trim()).filter(Boolean));
       allRoutes = allRoutes.filter(r => only.has(r));
       log(`PRERENDER_ONLY activo: ${allRoutes.length} rutas`);
     }
-    log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} VS + ${altRoutes.length} alternativas + ${migrarRoutes.length} migración`);
+    log(`Plan: ${allRoutes.length} rutas = ${ROUTES.length} estáticas + ${catalogoRoutes.length} fichas + ${vsRoutes.length} VS + ${altRoutes.length} alternativas + ${migrarRoutes.length} migración + ${countryProviderRoutes.length} fichas país`);
 
 
     // COPY_TO_PUBLIC=1: además de dist/, escribir el HTML en public/<ruta>/index.html

@@ -5,9 +5,9 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/ar)",
-  "fecha_generacion": "2026-07-01T23:11:29.415Z",
+  "fecha_generacion": "2026-07-02T00:27:21.096Z",
   "pais": "AR",
-  "total_proveedores": 6,
+  "total_proveedores": 11,
   "proveedores": [
     {
       "nombre": "HostingPlus Argentina",
@@ -110,6 +110,66 @@
       "url_pais": "https://eligetuhosting.com/ar"
     },
     {
+      "nombre": "GoDaddy Argentina",
+      "slug": "godaddy-ar",
+      "pais": "AR",
+      "razon_social": "GoDaddy Operating Company, LLC (EE.UU.); sin entidad argentina",
+      "sitio_oficial": "https://ar.godaddy.com/",
+      "datacenter": "EE.UU. (Arizona) y regiones globales; sin datacenter en Argentina",
+      "tecnologias": [
+        "cPanel",
+        "Plesk",
+        "WordPress",
+        "VPS"
+      ],
+      "telefono": "+1 480 463 8300",
+      "direccion": "Tempe, Arizona, EE.UU. (sede)",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "Hostinger Argentina",
+      "slug": "hostinger-ar",
+      "pais": "AR",
+      "razon_social": "Hostinger International Ltd. (Lituania); sin entidad argentina",
+      "sitio_oficial": "https://www.hostinger.com/ar/",
+      "datacenter": "EE.UU. y Brasil (São Paulo); sin datacenter en Argentina",
+      "tecnologias": [
+        "LiteSpeed",
+        "hPanel",
+        "WordPress",
+        "CDN"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "IPXON Networks Argentina",
+      "slug": "ipxon-ar",
+      "pais": "AR",
+      "razon_social": "IPXON Networks (operador regional LatAm)",
+      "sitio_oficial": "https://www.ipxon.com/",
+      "datacenter": "Buenos Aires, Argentina (POPs/datacenter) + red PRESENCE LatAm",
+      "tecnologias": [
+        "Colocation",
+        "Datacenter",
+        "Cloud/IaaS",
+        "Hosting gestionado"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
       "nombre": "Neolo",
       "slug": "neolo-ar",
       "pais": "AR",
@@ -127,6 +187,49 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "Towebs",
+      "slug": "towebs-ar",
+      "pais": "AR",
+      "razon_social": "Virtucom Networks S.A.",
+      "sitio_oficial": "https://www.towebs.com/",
+      "datacenter": "3 datacenters distribuidos (ubicación exacta en Argentina no detallada)",
+      "tecnologias": [
+        "cPanel",
+        "Linux/Windows",
+        "PHP",
+        "ASP.NET",
+        "MSSQL",
+        "Cloud"
+      ],
+      "telefono": "+54 11 5031 1111",
+      "direccion": "Av. Belgrano 1586 Piso 10, C.A.B.A., C1093AAQ",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/ar"
+    },
+    {
+      "nombre": "WNPower",
+      "slug": "wnpower-ar",
+      "pais": "AR",
+      "razon_social": "Webhosting S.R.L.",
+      "sitio_oficial": "https://www.wnpower.com/",
+      "datacenter": "Buenos Aires, Argentina (Olivos, Vicente López) + EE.UU./Europa; Cloud sobre AWS",
+      "tecnologias": [
+        "cPanel",
+        "CloudLinux",
+        "Imunify360",
+        "Cloud VPS SSD",
+        "AWS"
+      ],
+      "telefono": null,
+      "direccion": "Av. del Libertador 1002, Vicente López, Buenos Aires (DC en Olivos)",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/ar"
     }
   ]

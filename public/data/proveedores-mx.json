@@ -5,9 +5,9 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/mx)",
-  "fecha_generacion": "2026-07-01T23:11:29.415Z",
+  "fecha_generacion": "2026-07-02T00:27:21.096Z",
   "pais": "MX",
-  "total_proveedores": 6,
+  "total_proveedores": 15,
   "proveedores": [
     {
       "nombre": "HostingPlus México",
@@ -50,6 +50,27 @@
       "url_pais": "https://eligetuhosting.com/mx"
     },
     {
+      "nombre": "Artehosting",
+      "slug": "artehosting-mx",
+      "pais": "MX",
+      "razon_social": "Artehosting S.A. de C.V.",
+      "sitio_oficial": "https://www.artehosting.com.mx/",
+      "datacenter": "CDMX, México (datacenter propio desde 2021) + bloques en EE.UU./Europa",
+      "tecnologias": [
+        "cPanel",
+        "CloudLinux",
+        "CentOS",
+        "Windows",
+        "VPS/Cloud"
+      ],
+      "telefono": "+52 55 8526 2735",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
       "nombre": "DigitalServer (SuEmpresa)",
       "slug": "digitalserver-mx",
       "pais": "MX",
@@ -71,6 +92,26 @@
       "url_pais": "https://eligetuhosting.com/mx"
     },
     {
+      "nombre": "GoDaddy México",
+      "slug": "godaddy-mx",
+      "pais": "MX",
+      "razon_social": "Go Daddy México S. de R.L. de C.V.",
+      "sitio_oficial": "https://mx.godaddy.com/",
+      "datacenter": "EE.UU. (Phoenix) + colocation NL/Singapur; sin datacenter en México",
+      "tecnologias": [
+        "cPanel",
+        "WordPress",
+        "VPS",
+        "Plesk"
+      ],
+      "telefono": "+52 55 8877 3680",
+      "direccion": "Paseo de la Reforma 505 Piso 32, Cuauhtémoc, CDMX, C.P. 06500",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
       "nombre": "Hospedando",
       "slug": "hospedando-mx",
       "pais": "MX",
@@ -88,6 +129,66 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "HostDime México",
+      "slug": "hostdime-mx",
+      "pais": "MX",
+      "razon_social": "HostDime S.A. de C.V.",
+      "sitio_oficial": "https://www.hostdime.com.mx/",
+      "datacenter": "Zapopan/Guadalajara, Jalisco, México (datacenter propio; sede del peering GDL-IX)",
+      "tecnologias": [
+        "Colocation",
+        "Cloud/VPS",
+        "Dedicados",
+        "Contenedores LXC"
+      ],
+      "telefono": "+52 33 4624 2938",
+      "direccion": "Av. López Mateos Sur 2077 Int. Z-11, Zapopan, Jalisco, C.P. 44510",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "HostGator México",
+      "slug": "hostgator-mx",
+      "pais": "MX",
+      "razon_social": "HostGator.com LLC (Texas, EE.UU.); grupo Newfold; sin entidad mexicana",
+      "sitio_oficial": "https://www.hostgator.mx/",
+      "datacenter": "Atlanta, EE.UU.; sin datacenter en México",
+      "tecnologias": [
+        "cPanel",
+        "WordPress",
+        "VPS",
+        "Dedicados"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "Hostinger México",
+      "slug": "hostinger-mx",
+      "pais": "MX",
+      "razon_social": "Hostinger International Ltd. (Lituania); sin entidad mexicana",
+      "sitio_oficial": "https://www.hostinger.com/mx/",
+      "datacenter": "EE.UU. y Brasil (São Paulo); sin datacenter en México",
+      "tecnologias": [
+        "LiteSpeed",
+        "hPanel",
+        "WordPress",
+        "CDN"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/mx"
     },
     {
@@ -113,6 +214,49 @@
       "url_pais": "https://eligetuhosting.com/mx"
     },
     {
+      "nombre": "IONOS",
+      "slug": "ionos-mx",
+      "pais": "MX",
+      "razon_social": "IONOS Inc. / IONOS SE (Alemania); sin entidad mexicana con RFC",
+      "sitio_oficial": "https://www.ionos.mx/",
+      "datacenter": "EE.UU. (Las Vegas/Newark/Lenexa) y Europa; sin datacenter en México",
+      "tecnologias": [
+        "Hosting",
+        "WordPress",
+        "VPS",
+        "Cloud",
+        "Dedicados",
+        "M365"
+      ],
+      "telefono": "+52 55 4440 9171",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "NetmarketingWeb",
+      "slug": "netmarketingweb-mx",
+      "pais": "MX",
+      "razon_social": null,
+      "sitio_oficial": "https://netmarketingweb.com.mx/",
+      "datacenter": "Dallas y Houston, Texas (EE.UU.); sin datacenter en México",
+      "tecnologias": [
+        "cPanel",
+        "PHP",
+        "MySQL",
+        "WordPress",
+        "constructor Juppi"
+      ],
+      "telefono": "+52 33 3826 5976",
+      "direccion": "Jesús García 1648, Col. Villaseñor, Guadalajara, Jalisco",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
       "nombre": "Neubox",
       "slug": "neubox-mx",
       "pais": "MX",
@@ -131,6 +275,47 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "Servnet",
+      "slug": "servnet-mx",
+      "pais": "MX",
+      "razon_social": "Servnet México, S.A. de C.V.",
+      "sitio_oficial": "https://www.servnet.mx/",
+      "datacenter": "CDMX, México (datacenter propio; red propia AS28546 bajo concesión IFT)",
+      "tecnologias": [
+        "Servidores dedicados",
+        "Colocation",
+        "Cloud",
+        "VoIP/PBX",
+        "Firewall UTM"
+      ],
+      "telefono": "+52 800 520 1111",
+      "direccion": "Presa Falcón 166, Col. Irrigación, Miguel Hidalgo, CDMX, C.P. 11500",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/mx"
+    },
+    {
+      "nombre": "WebHosting MX",
+      "slug": "webhosting-mx",
+      "pais": "MX",
+      "razon_social": "Web Hosting y Dominios S. de R.L. de C.V.",
+      "sitio_oficial": "https://webhosting.mx/",
+      "datacenter": "EE.UU./Europa (revende OVHcloud); sin datacenter propio en México",
+      "tecnologias": [
+        "cPanel/WHM",
+        "LiteSpeed",
+        "SSD NVMe",
+        "Imunify360"
+      ],
+      "telefono": "+52 55 9990 7822",
+      "direccion": "Av. Ejército Nacional 425 Int. 404A, Miguel Hidalgo, CDMX, C.P. 11520",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/mx"
     }
   ]

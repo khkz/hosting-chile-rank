@@ -29,6 +29,29 @@ async function fetchVerifiedCompanySlugs() {
   }
 }
 
+// Fetch fichas por país LATAM (PE/MX/CO/AR)
+async function fetchCountryProviders() {
+  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
+  const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!ANON) return [];
+  const COUNTRIES = [['PE','pe'],['MX','mx'],['CO','co'],['AR','ar']];
+  const out = [];
+  for (const [code, cslug] of COUNTRIES) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug,updated_at&is_verified=eq.true&country=eq.${code}`, {
+        headers: { apikey: ANON, Authorization: `Bearer ${ANON}` },
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const r of data) out.push({ country: cslug, slug: r.slug, updated_at: r.updated_at });
+      console.log(`🌎 ${data.length} fichas ${code}`);
+    } catch (e) {
+      console.log(`⚠️  Error fetching ${code}:`, e.message);
+    }
+  }
+  return out;
+}
+
 // Read wiki terms from TypeScript file as text and extract slugs
 function extractWikiSlugs() {
   try {
@@ -78,7 +101,7 @@ const urlTag = (loc, prio = '0.7', changefreq = 'weekly', lastmod = NOW) => `
   </url>`;
 
 /* ---------- SITEMAP 1: MAIN (páginas principales) ---------------------- */
-const generateMainSitemap = (companySlugs = []) => {
+const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
   const staticUrls = [
     // Páginas de máxima prioridad
     ['/mejor-hosting-chile-2026', '1.0', 'daily'],
@@ -218,6 +241,15 @@ const generateMainSitemap = (companySlugs = []) => {
 ${alternatesXml}
   </url>`).join('\n');
 
+  // Fichas por país LATAM (/pe/:slug, /mx/:slug, /co/:slug, /ar/:slug) — sin alternates hreflang
+  const countryProviderUrls = countryProviders
+    .map(c => `  <url>
+    <loc>https://eligetuhosting.com/${c.country}/${c.slug}</loc>
+    <lastmod>${c.updated_at || NOW}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
@@ -230,6 +262,7 @@ ${migrarUrls}
 ${hostingReviews}
 ${catalogoUrls}
 ${dotComUrls}
+${countryProviderUrls}
 </urlset>`.trimStart();
 };
 
@@ -342,9 +375,10 @@ console.log('✅  sitemap.xml (index) generado');
 
 // Generar sitemap-main.xml (con slugs de catálogo desde Supabase)
 const companySlugs = await fetchVerifiedCompanySlugs();
-const mainSitemap = generateMainSitemap(companySlugs);
+const countryProviders = await fetchCountryProviders();
+const mainSitemap = generateMainSitemap(companySlugs, countryProviders);
 await fs.writeFile('public/sitemap-main.xml', mainSitemap, 'utf8');
-console.log(`✅  sitemap-main.xml generado (incluye ${VS_RIVALS.length} VS-rivals + ${companySlugs.length} catálogo)`);
+console.log(`✅  sitemap-main.xml generado (incluye ${VS_RIVALS.length} VS-rivals + ${companySlugs.length} catálogo + ${countryProviders.length} fichas LATAM)`);
 
 // Generar sitemap-wiki.xml
 const wikiSitemap = generateWikiSitemap();
