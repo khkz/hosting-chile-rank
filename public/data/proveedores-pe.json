@@ -5,9 +5,9 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/pe)",
-  "fecha_generacion": "2026-07-01T23:11:29.415Z",
+  "fecha_generacion": "2026-07-02T00:27:21.096Z",
   "pais": "PE",
-  "total_proveedores": 10,
+  "total_proveedores": 18,
   "proveedores": [
     {
       "nombre": "HostingPlus Perú",
@@ -89,6 +89,67 @@
       "url_pais": "https://eligetuhosting.com/pe"
     },
     {
+      "nombre": "GoDaddy Perú",
+      "slug": "godaddy-pe",
+      "pais": "PE",
+      "razon_social": "GoDaddy Operating Company, LLC (EE.UU.); sin entidad peruana",
+      "sitio_oficial": "https://pe.godaddy.com/",
+      "datacenter": "EE.UU. (Phoenix) + colocation NL/Singapur; sin datacenter en Perú",
+      "tecnologias": [
+        "cPanel",
+        "WordPress",
+        "VPS",
+        "Plesk"
+      ],
+      "telefono": "+51 1 7097939",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "HostDime Perú",
+      "slug": "hostdime-pe",
+      "pais": "PE",
+      "razon_social": "HostDime.com.pe S.A.C.",
+      "sitio_oficial": "https://www.hostdime.com.pe/",
+      "datacenter": "Lima, Perú (datacenter propio Tier IV, ~75.000 sq ft, red AS33182)",
+      "tecnologias": [
+        "Servidores dedicados",
+        "VPS KVM",
+        "Cloud",
+        "Colocation",
+        "cPanel/Plesk"
+      ],
+      "telefono": "+51 1 6411261",
+      "direccion": "Calle Sevilla 147 Int. 302, San Miguel, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "HostGator Perú",
+      "slug": "hostgator-pe",
+      "pais": "PE",
+      "razon_social": "HostGator.com LLC (Texas, EE.UU.); grupo Newfold Digital; sin entidad peruana",
+      "sitio_oficial": "https://www.hostgator.pe/",
+      "datacenter": "Atlanta, EE.UU.; sin datacenter en Perú",
+      "tecnologias": [
+        "cPanel",
+        "WordPress",
+        "VPS",
+        "Dedicados"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
       "nombre": "Hosting.com.pe (Orange)",
       "slug": "hosting-com-pe",
       "pais": "PE",
@@ -106,6 +167,46 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Hostinger Perú",
+      "slug": "hostinger-pe",
+      "pais": "PE",
+      "razon_social": "Hostinger International Ltd. (Lituania); sin entidad peruana",
+      "sitio_oficial": "https://www.hostinger.com/",
+      "datacenter": "EE.UU. y Brasil (São Paulo); sin datacenter en Perú",
+      "tecnologias": [
+        "LiteSpeed",
+        "hPanel",
+        "WordPress",
+        "CDN"
+      ],
+      "telefono": null,
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "HostingNice",
+      "slug": "hostingnice-pe",
+      "pais": "PE",
+      "razon_social": "Net Hosting Solutions S.A.C.",
+      "sitio_oficial": "https://www.hostingnice.com/",
+      "datacenter": "EE.UU. y Suiza (offshore); sin datacenter en Perú",
+      "tecnologias": [
+        "LiteSpeed",
+        "SSD NVMe",
+        "cPanel/WHM",
+        "CloudLinux"
+      ],
+      "telefono": "+51 1 7015606",
+      "direccion": null,
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/pe"
     },
     {
@@ -145,6 +246,46 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Hosting-Peru.pe",
+      "slug": "hosting-peru-pe",
+      "pais": "PE",
+      "razon_social": "Cosas Peruanas S.C.R.L.",
+      "sitio_oficial": "https://hosting-peru.pe/",
+      "datacenter": "Lima, Perú (declarado para shared; dedicados en EE.UU./Alemania)",
+      "tecnologias": [
+        "cPanel",
+        "CloudLinux",
+        "SSD/NVMe",
+        "Cloudflare"
+      ],
+      "telefono": "+51 980531450",
+      "direccion": "Av. Reducto 816 Dpto. 1402, Miraflores, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "Inka Web Design",
+      "slug": "inkawebdesign-pe",
+      "pais": "PE",
+      "razon_social": "Doctor PC Peru E.I.R.L.",
+      "sitio_oficial": "https://www.inkawebdesign.com/",
+      "datacenter": null,
+      "tecnologias": [
+        "Linux CentOS",
+        "cPanel/WHM",
+        "Windows",
+        "streaming"
+      ],
+      "telefono": "+51 1 5786934",
+      "direccion": "Av. La Paz 1972 Int. 207, San Miguel, Lima",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/pe"
     },
     {
@@ -205,6 +346,26 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
+      "url_pais": "https://eligetuhosting.com/pe"
+    },
+    {
+      "nombre": "WEB PERU",
+      "slug": "wperu-pe",
+      "pais": "PE",
+      "razon_social": "Web Peru E.I.R.L.",
+      "sitio_oficial": "https://www.wperu.com/",
+      "datacenter": "EE.UU. (revende infraestructura; sin datacenter en Perú)",
+      "tecnologias": [
+        "Linux/Windows",
+        "cPanel/Plesk",
+        "PHP",
+        "MySQL"
+      ],
+      "telefono": "+51 1 7075700",
+      "direccion": "Av. Pedro Ruiz Gallo 1033 Int. 201, Chiclayo, Lambayeque",
+      "recomendado_editorial": false,
+      "verificado": true,
+      "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
       "url_pais": "https://eligetuhosting.com/pe"
     }
   ]
