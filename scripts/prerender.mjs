@@ -96,19 +96,17 @@ async function fetchMigrarRoutes(slugs) {
   return MIGRATION_COMPETITORS.filter(s => slugs.includes(s)).map(s => `/migrar-de/${s}`);
 }
 
-// Fetch ALL verified slugs from Supabase (curados + no curados con datos verificables).
-// El detalle de /catalogo/:slug requiere is_verified=true en el componente, así que
-// alineamos el prerender con esa misma condición — sin exigir is_curated.
+// Anon key hardcoded fallback (mismo valor público de src/integrations/supabase/client.ts).
+// En el deploy real de Lovable las envs SUPABASE_* no están seteadas; sin este fallback
+// fetchCatalogSlugs y fetchCountryProviderRoutes devolvían [] y las fichas nunca se
+// prerenderizaban en producción.
+const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
+const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
+
 async function fetchCatalogSlugs() {
-  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
-  const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  if (!KEY) {
-    console.log('[prerender] sin SUPABASE_ANON_KEY: salto fichas/comparativas/alternativas');
-    return [];
-  }
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&order=slug.asc`, {
-      headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, Prefer: 'count=exact' },
+    const res = await fetch(`${SB_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&order=slug.asc`, {
+      headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, Prefer: 'count=exact' },
     });
     if (!res.ok) return [];
     const data = await res.json();
@@ -122,15 +120,12 @@ async function fetchCatalogSlugs() {
 
 // Fetch verified provider slugs por país LATAM (PE/MX/CO/AR) → rutas /<country>/<slug>
 async function fetchCountryProviderRoutes() {
-  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
-  const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  if (!KEY) return [];
   const COUNTRIES = [['PE','pe'],['MX','mx'],['CO','co'],['AR','ar']];
   const routes = [];
   for (const [code, slug] of COUNTRIES) {
     try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&country=eq.${code}&order=slug.asc`, {
-        headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+      const res = await fetch(`${SB_URL}/rest/v1/hosting_companies?select=slug&is_verified=eq.true&country=eq.${code}&order=slug.asc`, {
+        headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
       });
       if (!res.ok) continue;
       const data = await res.json();
@@ -142,6 +137,7 @@ async function fetchCountryProviderRoutes() {
   }
   return routes;
 }
+
 
 
 
