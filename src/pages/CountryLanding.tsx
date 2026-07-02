@@ -275,9 +275,16 @@ const CountryLanding = () => {
                         )}
                       </ul>
                     </CardContent>
-                    {link && (
-                      <div className="border-t bg-muted/40 p-3">
-                        <Button asChild size="sm" variant="outline" className="w-full gap-1">
+                    <div className="border-t bg-muted/40 p-3 flex flex-col sm:flex-row gap-2">
+                      {c.slug && (
+                        <Button asChild size="sm" variant="default" className="flex-1 gap-1">
+                          <Link to={`/${info.slug}/${c.slug}`}>
+                            Ver ficha <ArrowRight size={14} />
+                          </Link>
+                        </Button>
+                      )}
+                      {link && (
+                        <Button asChild size="sm" variant="outline" className="flex-1 gap-1">
                           <a
                             href={link.href}
                             target="_blank"
@@ -287,8 +294,8 @@ const CountryLanding = () => {
                             Visitar sitio <ExternalLink size={14} />
                           </a>
                         </Button>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </Card>
                 );
               })}
