@@ -7,14 +7,15 @@ const providers = require('./providers.json');
 // Slugs de comparativas vs/ rivales (sitios de comparación falsa)
 const VS_RIVALS = ['comparahosting', 'mejorhosting', 'rankinghosting', 'hostingexperto'];
 
-// Fetch slugs verificados desde Supabase REST (sin SDK para evitar deps)
+// Anon key hardcoded fallback (mismo valor público de src/integrations/supabase/client.ts).
+// CRÍTICO: en el deploy real de Lovable NO están seteadas las envs SUPABASE_*, así que
+// sin este fallback fetchCountryProviders devolvía [] y el sitemap salía sin fichas /pais/slug.
+const SUPABASE_URL_FALLBACK = 'https://oegvwjxrlmtwortyhsrv.supabase.co';
+const SUPABASE_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || SUPABASE_URL_FALLBACK;
+const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || SUPABASE_ANON_FALLBACK;
+
 async function fetchVerifiedCompanySlugs() {
-  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
-  const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  if (!ANON) {
-    console.log('⚠️  Sin SUPABASE_ANON_KEY: omitiendo slugs de /catalogo/');
-    return [];
-  }
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug,updated_at&is_verified=eq.true`, {
       headers: { apikey: ANON, Authorization: `Bearer ${ANON}` },
@@ -29,11 +30,7 @@ async function fetchVerifiedCompanySlugs() {
   }
 }
 
-// Fetch fichas por país LATAM (PE/MX/CO/AR)
 async function fetchCountryProviders() {
-  const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
-  const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  if (!ANON) return [];
   const COUNTRIES = [['PE','pe'],['MX','mx'],['CO','co'],['AR','ar']];
   const out = [];
   for (const [code, cslug] of COUNTRIES) {
