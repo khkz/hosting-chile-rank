@@ -248,6 +248,7 @@ const CountryProviderDetail = () => {
         <meta property="og:description" content={descParts} />
         <meta property="og:url" content={canonical} />
         <meta name="robots" content="index,follow" />
+        <link rel="alternate" type="text/markdown" href={`/${info.slug}/${company.slug}.md`} title={`${company.name} — datos en Markdown (CC-BY-4.0)`} />
         <script type="application/ld+json">{JSON.stringify(orgLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
