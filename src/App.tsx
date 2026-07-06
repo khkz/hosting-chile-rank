@@ -109,6 +109,8 @@ import CountryProviderDetail from './pages/CountryProviderDetail';
 import CountryBestHosting from './pages/CountryBestHosting';
 import CountryDatacenterLocal from './pages/CountryDatacenterLocal';
 import CountryComparativa from './pages/CountryComparativa';
+import CountryBenchmark from './pages/CountryBenchmark';
+import DatosAbiertos from './pages/DatosAbiertos';
 import Latam from './pages/Latam';
 import HomeDispatcher from './components/HomeDispatcher';
 
