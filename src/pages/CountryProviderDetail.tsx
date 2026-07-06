@@ -115,8 +115,16 @@ const CountryProviderDetail = () => {
     ],
   };
 
+  const rawUpdated = (company as any).updated_at || (company as any).created_at || null;
+  const dateModified = rawUpdated ? new Date(rawUpdated).toISOString() : new Date().toISOString();
+  const dateModifiedDisplay = dateModified.slice(0, 10);
+  orgLd.dateModified = dateModified;
+  (breadcrumbLd as any).dateModified = dateModified;
+
   const techs: string[] = Array.isArray((company as any).technologies)
     ? (company as any).technologies.filter((t: any) => typeof t === 'string') : [];
+
+  const ogLocale = info.locale.replace('-', '_');
 
   return (
     <>
@@ -126,6 +134,8 @@ const CountryProviderDetail = () => {
         <meta name="description" content={descParts} />
         <link rel="canonical" href={canonical} />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="EligeTuHosting" />
+        <meta property="og:locale" content={ogLocale} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={descParts} />
         <meta property="og:url" content={canonical} />
@@ -161,6 +171,12 @@ const CountryProviderDetail = () => {
           </div>
           <p className="text-muted-foreground">
             Hosting en {info.name} {info.flag} — datos verificables.
+          </p>
+          <p className="mt-2 text-xs text-[#2B2D42]/60">
+            <span className="inline-flex items-center gap-1">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+              Datos verificados: <time dateTime={dateModified}>{dateModifiedDisplay}</time>
+            </span>
           </p>
         </header>
 

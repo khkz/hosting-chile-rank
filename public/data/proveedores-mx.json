@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/mx)",
-  "fecha_generacion": "2026-07-02T02:09:07.137Z",
+  "fecha_generacion": "2026-07-06T04:07:35.799641+00:00",
   "pais": "MX",
   "total_proveedores": 15,
   "proveedores": [
@@ -27,7 +27,13 @@
       "recomendado_editorial": true,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/hostingplus-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Akky",
@@ -47,7 +53,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/akky-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Artehosting",
@@ -68,7 +80,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/artehosting-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "DigitalServer (SuEmpresa)",
@@ -89,7 +107,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/digitalserver-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "GoDaddy México",
@@ -109,7 +133,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/godaddy-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Hospedando",
@@ -129,7 +159,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/hospedando-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "HostDime México",
@@ -149,7 +185,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/hostdime-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "HostGator México",
@@ -169,7 +211,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/hostgator-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Hostinger México",
@@ -189,7 +237,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/hostinger-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Hosting-Mexico",
@@ -211,7 +265,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/hosting-mexico-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "IONOS",
@@ -233,7 +293,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/ionos-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "NetmarketingWeb",
@@ -254,7 +320,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/netmarketingweb-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Neubox",
@@ -275,7 +347,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T19:52:32.733059+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/neubox-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Servnet",
@@ -296,7 +374,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/servnet-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "WebHosting MX",
@@ -316,7 +400,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/mx"
+      "url_pais": "https://eligetuhosting.com/mx",
+      "url_ficha": "https://eligetuhosting.com/mx/webhosting-mx",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     }
   ]
 }

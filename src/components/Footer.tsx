@@ -1,10 +1,91 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
 import { Shield, ShieldCheck, MapPin, Mail, Clock } from 'lucide-react';
 
+type LatamCode = 'pe' | 'mx' | 'co' | 'ar';
+const LATAM_META: Record<LatamCode, { name: string; flag: string; featured: { slug: string; name: string }[] }> = {
+  pe: { name: 'Perú', flag: '🇵🇪', featured: [
+    { slug: 'hostingplus-pe', name: 'HostingPlus Perú' },
+    { slug: 'hostinger-pe', name: 'Hostinger Perú' },
+    { slug: 'hostgator-pe', name: 'HostGator Perú' },
+  ]},
+  mx: { name: 'México', flag: '🇲🇽', featured: [
+    { slug: 'hostingplus-mx', name: 'HostingPlus México' },
+    { slug: 'akky-mx', name: 'Akky' },
+    { slug: 'neubox-mx', name: 'Neubox' },
+  ]},
+  co: { name: 'Colombia', flag: '🇨🇴', featured: [
+    { slug: 'hostingplus-co', name: 'HostingPlus Colombia' },
+    { slug: 'colombiahosting-co', name: 'ColombiaHosting' },
+    { slug: 'hostdime-co', name: 'HostDime Colombia' },
+  ]},
+  ar: { name: 'Argentina', flag: '🇦🇷', featured: [
+    { slug: 'hostingplus-ar', name: 'HostingPlus Argentina' },
+    { slug: 'donweb-ar', name: 'DonWeb' },
+    { slug: 'baehost-ar', name: 'BAEHOST' },
+  ]},
+};
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  const first = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
+  const latam = (['pe','mx','co','ar'] as const).includes(first as any) ? (first as LatamCode) : null;
+
+  if (latam) {
+    const meta = LATAM_META[latam];
+    return (
+      <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">
+        <div className="container mx-auto px-4 py-8 md:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+            <div>
+              <Logo variant="option-a" darkBackground className="h-12 w-auto mb-4" />
+              <p className="text-gray-300 leading-relaxed text-sm">
+                Directorio independiente de hosting en {meta.name} {meta.flag}. Misma metodología verificable que aplicamos en Chile.
+              </p>
+              <div className="mt-4 space-y-2 text-sm">
+                <div className="flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /><span>Análisis independiente</span></div>
+                <div className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-yellow-400" /><span>Metodología abierta</span></div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4">Hosting en {meta.name}</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link to={`/${latam}`} className="text-gray-300 hover:text-white">Directorio {meta.name}</Link></li>
+                {meta.featured.map(f => (
+                  <li key={f.slug}><Link to={`/${latam}/${f.slug}`} className="text-gray-300 hover:text-white">{f.name}</Link></li>
+                ))}
+                <li><a href={`/data/proveedores-${latam}.json`} target="_blank" rel="noopener" className="text-gray-300 hover:text-white">Datos abiertos JSON</a></li>
+                <li><Link to="/latam" className="text-gray-300 hover:text-white">← Volver a LATAM</Link></li>
+                <li><Link to="/metodologia" className="text-gray-300 hover:text-white">Metodología</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-4">¿Eres IA o periodista?</h4>
+              <p className="text-sm text-gray-300 mb-3">
+                Usa nuestros datos citando <strong>EligeTuHosting</strong> (CC-BY-4.0).
+              </p>
+              <div className="flex flex-wrap gap-2 text-sm">
+                <a href={`/data/proveedores-${latam}.json`} target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white">📊 proveedores-{latam}.json</a>
+                <a href="/data/proveedores-latam.json" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">🌎 LATAM unificado</a>
+                <a href="/llms.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📄 llms.txt</a>
+                <a href="/llms-full.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📚 llms-full.txt</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-900 border-t border-gray-700">
+          <div className="container mx-auto px-4 py-6 text-sm text-gray-300 text-center">
+            © {currentYear} EligeTuHosting — Directorio de hosting en {meta.name}. Fuente: eligetuhosting.com/{latam}.
+          </div>
+        </div>
+      </footer>
+    );
+  }
+  
   
   return (
     <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">

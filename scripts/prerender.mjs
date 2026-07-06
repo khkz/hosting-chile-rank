@@ -21,6 +21,7 @@ const ORIGIN = `http://127.0.0.1:${PORT}`;
 // Rutas estáticas prioritarias para prerender (sin :slug, sin admin/auth).
 const ROUTES = [
   '/',
+  '/latam',
   '/pe',
   '/mx',
   '/co',

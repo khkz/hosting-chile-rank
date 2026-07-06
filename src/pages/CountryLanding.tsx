@@ -135,6 +135,9 @@ const CountryLanding = () => {
         <title>{title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={canonical} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="EligeTuHosting" />
+        <meta property="og:locale" content={info.locale.replace('-', '_')} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
@@ -144,7 +147,7 @@ const CountryLanding = () => {
         <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
         <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
         <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
-        <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/" />
+        <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/latam" />
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
         <script type="application/ld+json">{JSON.stringify(collectionLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>

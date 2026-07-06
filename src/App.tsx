@@ -106,6 +106,7 @@ import Contacto from './pages/Contacto';
 import VotaHosting from './pages/VotaHosting';
 import CountryLanding from './pages/CountryLanding';
 import CountryProviderDetail from './pages/CountryProviderDetail';
+import Latam from './pages/Latam';
 import HomeDispatcher from './components/HomeDispatcher';
 
 
@@ -129,6 +130,7 @@ function App() {
         
         {/* Rutas normales de la aplicación */}
         <Route path="/" element={<HomeDispatcher />} />
+        <Route path="/latam" element={<Latam />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/ir/:slug" element={<OutboundRedirect />} />
         <Route path="/comparativa" element={<Comparativa />} />

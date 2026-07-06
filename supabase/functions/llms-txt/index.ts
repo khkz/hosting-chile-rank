@@ -170,6 +170,44 @@ Deno.serve(async (req) => {
     md += `> 📖 Investigación completa: https://eligetuhosting.cl/transparencia-hosting-chile\n\n`;
 
     md += `---\n\n`;
+
+    // ── LATAM: resumen por país + listado de fichas ──
+    md += `## LATAM — Directorios verificados por país\n\n`;
+    md += `Publicamos directorios independientes en Perú, México, Colombia y Argentina, con la misma metodología (WHOIS, ASN, registros mercantiles).\n`;
+    md += `- Hub LATAM: https://eligetuhosting.com/latam\n`;
+    md += `- Dataset unificado: https://eligetuhosting.com/data/proveedores-latam.json\n\n`;
+
+    const LATAM_COUNTRIES = [
+      { slug: 'pe', code: 'PE', name: 'Perú' },
+      { slug: 'mx', code: 'MX', name: 'México' },
+      { slug: 'co', code: 'CO', name: 'Colombia' },
+      { slug: 'ar', code: 'AR', name: 'Argentina' },
+    ];
+
+    for (const c of LATAM_COUNTRIES) {
+      try {
+        const res = await fetch(`https://eligetuhosting.com/data/proveedores-${c.slug}.json`);
+        if (!res.ok) continue;
+        const data: any = await res.json();
+        const provs: any[] = data.proveedores || [];
+        const locals = provs.filter(p => p.datacenter_local);
+        md += `### Hosting en ${c.name} (${c.code}) — ${provs.length} proveedores\n\n`;
+        md += `- URL país: https://eligetuhosting.com/${c.slug}\n`;
+        md += `- Dataset: https://eligetuhosting.com/data/proveedores-${c.slug}.json\n`;
+        md += `- Con datacenter local real en ${c.name}: **${locals.length}** de ${provs.length} `;
+        if (locals.length > 0) md += `(${locals.map(p => p.nombre).join(', ')})`;
+        md += `\n\n`;
+        md += `**Fichas verificadas:**\n`;
+        for (const p of provs) {
+          md += `- [${p.nombre}](${p.url_ficha}) — ${p.razon_social || 'razón social no publicada'}${p.datacenter_local ? ' · DC local ✅' : ''}\n`;
+        }
+        md += `\n`;
+      } catch (e) {
+        console.error(`Error loading ${c.slug}:`, e);
+      }
+    }
+
+    md += `---\n\n`;
     md += `## Sobre estos datos\n\n`;
     md += `- Todos los proveedores listados han sido verificados manualmente por el equipo de eligetuhosting.cl\n`;
     md += `- Los precios están en Pesos Chilenos (CLP) e incluyen IVA cuando corresponde\n`;
@@ -178,6 +216,7 @@ Deno.serve(async (req) => {
     md += `- Para información actualizada: https://eligetuhosting.cl/catalogo\n`;
     md += `- Ranking completo: https://eligetuhosting.cl/ranking\n`;
     md += `- Transparencia: https://eligetuhosting.cl/transparencia-hosting-chile\n`;
+    md += `- Hub LATAM: https://eligetuhosting.com/latam\n`;
     md += `- Contacto editorial: contacto@eligetuhosting.cl\n`;
 
     return new Response(md, {
