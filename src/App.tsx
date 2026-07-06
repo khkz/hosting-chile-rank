@@ -314,6 +314,19 @@ function App() {
             {/* Canonical → /catalogo + noindex,follow + redirect cliente */}
             <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
             {/* Country shells on .com (additive — .cl no navega aquí) */}
+            {/* Rutas específicas por país (deben ir ANTES de /:slug para ganar el match) */}
+            <Route path="/pe/mejor-hosting-peru-2026" element={<CountryBestHosting />} />
+            <Route path="/mx/mejor-hosting-mexico-2026" element={<CountryBestHosting />} />
+            <Route path="/co/mejor-hosting-colombia-2026" element={<CountryBestHosting />} />
+            <Route path="/ar/mejor-hosting-argentina-2026" element={<CountryBestHosting />} />
+            <Route path="/pe/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
+            <Route path="/mx/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
+            <Route path="/co/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
+            <Route path="/ar/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
+            <Route path="/pe/comparativa/:pair" element={<CountryComparativa />} />
+            <Route path="/mx/comparativa/:pair" element={<CountryComparativa />} />
+            <Route path="/co/comparativa/:pair" element={<CountryComparativa />} />
+            <Route path="/ar/comparativa/:pair" element={<CountryComparativa />} />
             <Route path="/pe" element={<CountryLanding />} />
             <Route path="/pe/:slug" element={<CountryProviderDetail />} />
             <Route path="/pe/*" element={<CountryLanding />} />
