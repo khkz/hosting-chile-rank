@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "prerender": "node scripts/prerender.mjs",
     "optimize-images": "node scripts/optimize-images.mjs",
-    "prerender:commit": "node scripts/generate-sitemap.mjs && node scripts/generate-llms-data.mjs && vite build && COPY_TO_PUBLIC=1 node scripts/prerender.mjs"
+    "prerender:commit": "node scripts/generate-sitemap.mjs && node scripts/generate-llms-data.mjs && node scripts/generate-country-static.mjs && node scripts/generate-latam-phase34.mjs && vite build && COPY_TO_PUBLIC=1 node scripts/prerender.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
