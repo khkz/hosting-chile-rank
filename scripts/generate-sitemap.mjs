@@ -347,6 +347,7 @@ const generateCountrySitemap = (cslug, providers) => {
   urls.push(urlTag(`${ROOT_COM}/${cslug}`, '0.9', 'weekly'));
   urls.push(urlTag(`${ROOT_COM}/${cslug}/mejor-hosting-${COUNTRY_LONG[cslug]}-2026`, '0.9', 'weekly'));
   urls.push(urlTag(`${ROOT_COM}/${cslug}/hosting-con-datacenter-local`, '0.8', 'weekly'));
+  urls.push(urlTag(`${ROOT_COM}/${cslug}/benchmark`, '0.8', 'daily'));
   // Fichas
   for (const p of providers) {
     urls.push(urlTag(`${ROOT_COM}/${cslug}/${p.slug}`, '0.7', 'weekly', p.updated_at || NOW));
