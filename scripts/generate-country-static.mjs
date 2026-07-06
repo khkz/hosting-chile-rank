@@ -13,6 +13,7 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { buildHtml, esc } from './lib/shell.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -23,39 +24,6 @@ const COUNTRIES = {
   co: { code: 'CO', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO', regex: /colombia/i },
   ar: { code: 'AR', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR', regex: /argentina/i },
 };
-
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-// Lee el shell de Vite (`index.html`) y le inyecta <head> + <body> específicos
-// para SEO. Mantiene el bundle JS del SPA para hidratación posterior.
-const SHELL = await fs.readFile('index.html', 'utf8');
-
-function buildHtml({ title, description, canonical, locale, headExtra, bodyContent }) {
-  // Reemplaza <title>, meta description, canonical y og:* del shell, e inserta
-  // el contenido crawleable dentro de <div id="root">.
-  let html = SHELL;
-  html = html.replace(/<title>[^<]*<\/title>/i, `<title>${esc(title)}</title>`);
-  html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${esc(description)}" />`);
-  // remove existing canonical (any), then add ours
-  html = html.replace(/<link rel="canonical"[^>]*>/gi, '');
-  const inject = [
-    `<link rel="canonical" href="${esc(canonical)}" />`,
-    `<meta property="og:type" content="website" />`,
-    `<meta property="og:site_name" content="EligeTuHosting" />`,
-    `<meta property="og:locale" content="${esc(locale.replace('-', '_'))}" />`,
-    `<meta property="og:title" content="${esc(title)}" />`,
-    `<meta property="og:description" content="${esc(description)}" />`,
-    `<meta property="og:url" content="${esc(canonical)}" />`,
-    `<meta name="robots" content="index,follow" />`,
-    headExtra || '',
-  ].join('\n    ');
-  html = html.replace(/<\/head>/i, `    ${inject}\n  </head>`);
-  html = html.replace(
-    /<div id="root">\s*<\/div>/i,
-    `<div id="root"><div id="prerender-content" style="max-width:960px;margin:0 auto;padding:24px;font-family:system-ui,sans-serif;color:#2B2D42">${bodyContent}</div></div>`,
-  );
-  return html;
-}
 
 async function fetchProviders(code) {
   const res = await fetch(`${SB_URL}/rest/v1/hosting_companies?select=id,slug,name,website,legal_name,datacenter_location,year_founded,corporate_group,contact_phone,contact_address,technologies,is_curated,updated_at&country=eq.${code}&is_verified=eq.true`, {
