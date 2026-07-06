@@ -62,6 +62,7 @@ import TCOCalculatorPage from './pages/TCOCalculatorPage';
 import SEOOrganization from './components/SEOOrganization';
 import AcercaDe from './pages/AcercaDe';
 import SobreNosotros from './pages/SobreNosotros';
+import QuienesSomos from './pages/QuienesSomos';
 import ASNDirectory from './pages/ASNDirectory';
 import ASNDetail from './pages/ASNDetail';
 import ASNChile from './pages/ASNChile';
