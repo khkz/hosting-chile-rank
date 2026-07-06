@@ -192,6 +192,7 @@ function App() {
         <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
         <Route path="/acerca-de" element={<AcercaDe />} />
         <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+        <Route path="/quienes-somos" element={<QuienesSomos />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="/asn" element={<ASNDirectory />} />
