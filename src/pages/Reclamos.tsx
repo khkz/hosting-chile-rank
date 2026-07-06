@@ -232,8 +232,13 @@ const Reclamos = () => {
 
         <div className="space-y-4">
           {complaints?.length === 0 && (
-            <Card className="p-8 text-center text-muted-foreground">
-              Aún no hay reclamos verificados. Sé el primero en compartir tu experiencia.
+            <Card className="p-8 text-center">
+              <p className="text-lg font-medium mb-2">Todavía nadie ha compartido un reclamo verificado 🕊️</p>
+              <p className="text-sm text-muted-foreground">
+                Buenas noticias: no hay reportes públicos por ahora. Si tuviste una mala experiencia con un
+                proveedor y podés adjuntar evidencia (correo, ticket, captura), tu reclamo ayuda a otras
+                personas a decidir mejor.
+              </p>
             </Card>
           )}
           {complaints?.map((c: any) => (
