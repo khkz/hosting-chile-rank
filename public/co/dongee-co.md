@@ -15,16 +15,16 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Email: soporte@dongee.com
 
 ## Verificación técnica
-- IP resuelta: 172.66.43.14
+- IP resuelta: 172.66.40.242
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 209 ms
-- Última verificación: 2026-07-06T04:50:47.54+00:00
+- TTFB muestra: 193 ms
+- Última verificación: 2026-07-06T05:02:26.091+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 58 ms
-- Muestras: 2
+- TTFB mediano: 46 ms
+- Muestras: 8
 - Uptime observado: 100%
 
 ## Contexto editorial

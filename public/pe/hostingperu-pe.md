@@ -15,17 +15,17 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Email: —
 
 ## Verificación técnica
-- IP resuelta: 104.21.17.19
+- IP resuelta: 172.67.219.145
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 425 ms
-- Última verificación: 2026-07-06T04:50:58.279+00:00
+- TTFB muestra: 602 ms
+- Última verificación: 2026-07-06T05:02:37.006+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 622 ms
-- Muestras: 2
-- Uptime observado: 100%
+- TTFB mediano: 65 ms
+- Muestras: 8
+- Uptime observado: 25%
 
 ## Contexto editorial
 Hosting Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es IntermediaHost S.A.C.. Registra actividad desde 2014.

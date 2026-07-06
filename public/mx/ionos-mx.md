@@ -15,16 +15,16 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Email: soporte@ionos.mx
 
 ## Verificación técnica
-- IP resuelta: 74.208.4.76
+- IP resuelta: 74.208.4.77
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 815 ms
-- Última verificación: 2026-07-06T04:50:49.514+00:00
+- TTFB muestra: 809 ms
+- Última verificación: 2026-07-06T05:02:28.064+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 777 ms
-- Muestras: 2
+- TTFB mediano: 1841 ms
+- Muestras: 8
 - Uptime observado: 100%
 
 ## Contexto editorial

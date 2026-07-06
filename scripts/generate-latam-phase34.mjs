@@ -8,6 +8,7 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { buildHtml, esc } from './lib/shell.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -20,31 +21,7 @@ const COUNTRIES = {
 };
 const ROOT = 'https://eligetuhosting.com';
 const NOW = new Date().toISOString();
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-const SHELL = await fs.readFile('index.html', 'utf8');
-
-function buildHtml({ title, description, canonical, locale, headExtra = '', bodyContent = '' }) {
-  let html = SHELL;
-  html = html.replace(/<title>[^<]*<\/title>/i, `<title>${esc(title)}</title>`);
-  html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${esc(description)}" />`);
-  html = html.replace(/<link rel="canonical"[^>]*>/gi, '');
-  html = html.replace(/<meta property="og:url"[^>]*>/gi, '');
-  html = html.replace(/<meta property="og:title"[^>]*>/gi, '');
-  html = html.replace(/<meta property="og:description"[^>]*>/gi, '');
-  html = html.replace(/<html lang="[^"]*"/i, `<html lang="${locale}"`);
-  const injected = `
-  <link rel="canonical" href="${canonical}" />
-  <meta property="og:url" content="${canonical}" />
-  <meta property="og:title" content="${esc(title)}" />
-  <meta property="og:description" content="${esc(description)}" />
-  <meta property="og:locale" content="es_419" />
-  ${headExtra}
-</head>`;
-  html = html.replace(/<\/head>/i, injected);
-  html = html.replace(/<div id="root">\s*<\/div>/i, `<div id="root"><div id="ssr-content">${bodyContent}</div></div>`);
-  return html;
-}
 
 async function sbFetch(path) {
   const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
@@ -301,11 +278,46 @@ async function generateDatosPage() {
   console.log('✅ /datos generado');
 }
 
+async function generateLatamHub() {
+  const canonical = `${ROOT}/latam`;
+  const title = 'Hosting en Latinoamérica — Directorios verificados por país | EligeTuHosting';
+  const description = 'Directorios verificados de hosting en Chile, Perú, México, Colombia y Argentina. Datos abiertos CC-BY-4.0: razón social, datacenter, ASN, SSL, TTFB, reputación.';
+  const totals = {};
+  for (const cslug of Object.keys(COUNTRIES)) {
+    const rows = await sbFetch(`hosting_companies?select=id&country=eq.${COUNTRIES[cslug].code}&is_verified=eq.true&limit=999`);
+    totals[cslug] = rows.length;
+  }
+  const items = Object.entries(COUNTRIES).map(([cslug, m]) => ({ cslug, m, total: totals[cslug] }));
+  items.push({ cslug: '', m: { name: 'Chile', long: 'chile', flag: '🇨🇱', locale: 'es-CL' }, total: null, chile: true });
+  const itemListLd = {
+    '@context': 'https://schema.org', '@type': 'ItemList', name: title,
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem', position: i + 1,
+      url: it.chile ? 'https://eligetuhosting.cl/' : `${ROOT}/${it.cslug}`,
+      name: `Hosting en ${it.m.name}`,
+    })),
+  };
+  const body = `<header><h1>Hosting en Latinoamérica ${items.map(i => i.m.flag).join(' ')}</h1>
+    <p>${esc(description)}</p>
+    <p style="font-size:13px;color:#6B7280"><strong>Última actualización:</strong> ${NOW.slice(0, 10)}</p></header>
+    <section><h2>Directorios verificados</h2><ul>
+      ${items.map(it => `<li>${it.m.flag} <a href="${it.chile ? 'https://eligetuhosting.cl/' : `/${it.cslug}`}"><strong>${esc(it.m.name)}</strong></a>${it.total != null ? ` — ${it.total} proveedores verificados` : ''}${it.chile ? '' : ` · <a href="/${it.cslug}/mejor-hosting-${it.m.long}-2026">mejor hosting ${it.m.long}</a> · <a href="/${it.cslug}/hosting-con-datacenter-local">datacenter local</a> · <a href="/${it.cslug}/benchmark">benchmark</a>`}</li>`).join('')}
+    </ul></section>
+    <section><h2>Metodología</h2><p>Verificamos: (1) razón social local en el registro mercantil, (2) datacenter declarado y contrastado con ASN + BGP, (3) tecnología pública, (4) TTFB medido cada hora, (5) reclamos verificados por email. No publicamos puntajes numéricos por país hasta acumular 60–90 días de benchmarks continuos. Chile mantiene su metodología completa vigente en <a href="https://eligetuhosting.cl/">eligetuhosting.cl</a>.</p></section>
+    <section><h2>Datos abiertos</h2><p>Todo el dataset se publica bajo <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a>. Ver <a href="/datos">endpoints JSON</a>.</p></section>`;
+  const headExtra = `<script type="application/ld+json">${JSON.stringify(itemListLd)}</script>`;
+  await fs.mkdir('public/latam', { recursive: true });
+  await fs.writeFile('public/latam/index.html',
+    buildHtml({ title, description, canonical, locale: 'es-419', headExtra, bodyContent: body }), 'utf8');
+  console.log('✅ /latam generado');
+}
+
 // Main
 const results = [];
 for (const cslug of Object.keys(COUNTRIES)) {
   results.push(await generateForCountry(cslug));
 }
 await generateDatosPage();
+await generateLatamHub();
 console.log('\n📊 Resumen LATAM Fase 3-4:');
 console.log(results);

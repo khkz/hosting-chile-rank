@@ -19,12 +19,12 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 1823 ms
-- Última verificación: 2026-07-06T04:55:10.583+00:00
+- TTFB muestra: 1740 ms
+- Última verificación: 2026-07-06T05:00:07.95+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 2052 ms
-- Muestras: 2
+- TTFB mediano: 510 ms
+- Muestras: 8
 - Uptime observado: 100%
 
 ## Contexto editorial
