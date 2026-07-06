@@ -14,15 +14,16 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { buildHtml, esc } from './lib/shell.mjs';
+import { hasLocalDatacenter } from './lib/dc-local.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
 
 const COUNTRIES = {
-  pe: { code: 'PE', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE', regex: /per[uú]/i },
-  mx: { code: 'MX', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX', regex: /m[eé]xico/i },
-  co: { code: 'CO', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO', regex: /colombia/i },
-  ar: { code: 'AR', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR', regex: /argentina/i },
+  pe: { code: 'PE', slug: 'pe', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE' },
+  mx: { code: 'MX', slug: 'mx', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX' },
+  co: { code: 'CO', slug: 'co', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO' },
+  ar: { code: 'AR', slug: 'ar', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR' },
 };
 
 async function fetchProviders(code) {
@@ -33,11 +34,11 @@ async function fetchProviders(code) {
   return await res.json();
 }
 
-const hasLocalDc = (regex, s) => !!s && regex.test(s);
+const hasLocalDc = (cslug, s) => hasLocalDatacenter(cslug, s);
 
-const rank = (list, regex) => list.slice().sort((a, b) => {
-  const la = hasLocalDc(regex, a.datacenter_location) ? 0 : 1;
-  const lb = hasLocalDc(regex, b.datacenter_location) ? 0 : 1;
+const rank = (list, cslug) => list.slice().sort((a, b) => {
+  const la = hasLocalDc(cslug, a.datacenter_location) ? 0 : 1;
+  const lb = hasLocalDc(cslug, b.datacenter_location) ? 0 : 1;
   if (la !== lb) return la - lb;
   const ea = a.legal_name ? 0 : 1;
   const eb = b.legal_name ? 0 : 1;
