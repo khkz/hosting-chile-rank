@@ -10,13 +10,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   ExternalLink, Phone, Mail, MapPin, Clock, Server, Building2,
-  FileText, Cpu, Globe, ShieldCheck, Calendar, Hash,
+  FileText, Cpu, Globe, ShieldCheck, Calendar, Hash, Activity, HelpCircle, AlertTriangle,
 } from 'lucide-react';
 import { COUNTRIES, type CountryCode } from '@/lib/country';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 
 const COUNTRY_MAP: Record<string, CountryCode> = { pe: 'PE', mx: 'MX', co: 'CO', ar: 'AR' };
+const COUNTRY_FULLNAME: Record<CountryCode, string> = { PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina', CL: 'Chile' };
 
 const CountryProviderDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -38,6 +39,52 @@ const CountryProviderDetail = () => {
         .maybeSingle();
       if (error) throw error;
       return data;
+    },
+  });
+
+  // Última verificación técnica (latam_site_checks)
+  const { data: siteCheck } = useQuery({
+    queryKey: ['latam-site-check', company?.id],
+    enabled: !!company?.id,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('latam_site_checks' as any)
+        .select('*')
+        .eq('company_id', company!.id)
+        .order('checked_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data as any;
+    },
+  });
+
+  // Alternativas del mismo país (excluyendo esta ficha)
+  const { data: alternatives } = useQuery({
+    queryKey: ['country-alternatives', code, company?.slug],
+    enabled: !!code && !!company?.slug,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('hosting_companies')
+        .select('slug, name, datacenter_location, corporate_group')
+        .eq('country', code!)
+        .eq('is_verified', true)
+        .neq('slug', company!.slug)
+        .limit(20);
+      return data ?? [];
+    },
+  });
+
+  // Reclamos verificados sobre el proveedor
+  const { data: complaintsStats } = useQuery({
+    queryKey: ['company-complaints-count', company?.id],
+    enabled: !!company?.id,
+    queryFn: async () => {
+      const { count } = await supabase
+        .from('public_complaints_public' as any)
+        .select('*', { count: 'exact', head: true })
+        .eq('company_id', company!.id)
+        .in('status', ['verified', 'resolved']);
+      return { count: count ?? 0 };
     },
   });
 
@@ -81,7 +128,6 @@ const CountryProviderDetail = () => {
     idFiscal ? `ID fiscal: ${idFiscal}.` : null,
   ].filter(Boolean).join(' ').slice(0, 158);
 
-  // JSON-LD Organization
   const orgLd: any = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -125,6 +171,68 @@ const CountryProviderDetail = () => {
     ? (company as any).technologies.filter((t: any) => typeof t === 'string') : [];
 
   const ogLocale = info.locale.replace('-', '_');
+  const countryName = COUNTRY_FULLNAME[code!];
+  const editorialSummary: string | null = (company as any).editorial_summary || null;
+
+  // FAQ dinámico desde datos verificables
+  const hasLocalDc = (company as any).datacenter_location && (
+    (code === 'PE' && /per[uú]/i.test((company as any).datacenter_location)) ||
+    (code === 'MX' && /m[eé]xico/i.test((company as any).datacenter_location)) ||
+    (code === 'CO' && /colombia/i.test((company as any).datacenter_location)) ||
+    (code === 'AR' && /argentina/i.test((company as any).datacenter_location))
+  );
+  const faq: Array<{ q: string; a: string }> = [
+    {
+      q: `¿${company.name} tiene datacenter en ${countryName}?`,
+      a: hasLocalDc
+        ? `Sí, declara datacenter en ${countryName} (${(company as any).datacenter_location}), lo que reduce latencia para audiencias locales.`
+        : (company as any).datacenter_location
+          ? `No. Su datacenter declarado está en ${(company as any).datacenter_location}, es decir opera como revendedor internacional para clientes locales.`
+          : `${company.name} no publica ubicación de datacenter en su sitio oficial. La latencia y jurisdicción de los datos deben verificarse antes de contratar.`,
+    },
+    {
+      q: `¿Cuál es la razón social e ID fiscal de ${company.name}?`,
+      a: [
+        (company as any).legal_name ? `Razón social registrada: ${(company as any).legal_name}.` : `${company.name} no publica razón social en su sitio oficial.`,
+        idFiscal ? `Identificador fiscal declarado: ${idFiscal}.` : null,
+      ].filter(Boolean).join(' '),
+    },
+    {
+      q: `¿Qué tecnologías declara ${company.name}?`,
+      a: techs.length > 0
+        ? `Tecnologías declaradas por el proveedor: ${techs.join(', ')}.`
+        : `${company.name} no publica un stack técnico detallado en su sitio oficial.`,
+    },
+    {
+      q: `¿${company.name} es una marca global o regional?`,
+      a: isGlobal
+        ? `Es una marca global con presencia comercial en ${countryName}.`
+        : (company as any).corporate_group
+          ? `Forma parte del grupo ${formatCorporateGroup((company as any).corporate_group)}, con operación regional.`
+          : `Opera principalmente en ${countryName} según los datos declarados.`,
+    },
+  ];
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    dateModified,
+    mainEntity: faq.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
+  // Ordenar alternativas: datacenter local primero
+  const isLocalDc = (loc?: string | null) => !!loc && new RegExp(countryName, 'i').test(loc);
+  const altsSorted = (alternatives ?? [])
+    .slice()
+    .sort((a: any, b: any) => (isLocalDc(b.datacenter_location) ? 1 : 0) - (isLocalDc(a.datacenter_location) ? 1 : 0))
+    .slice(0, 4);
+
+  const complaintsCount = complaintsStats?.count ?? 0;
+  const startDateDisplay = '2025-01-01'; // fecha de inicio de registro público
 
   return (
     <>
@@ -142,6 +250,7 @@ const CountryProviderDetail = () => {
         <meta name="robots" content="index,follow" />
         <script type="application/ld+json">{JSON.stringify(orgLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
       </Helmet>
 
       <Navbar />
@@ -284,6 +393,72 @@ const CountryProviderDetail = () => {
           </CardContent>
         </Card>
 
+        {/* Contexto editorial */}
+        {editorialSummary && (
+          <section className="mb-6">
+            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#2B2D42]">
+              <FileText className="h-5 w-5" /> Contexto
+            </h2>
+            <Card>
+              <CardContent className="pt-6 text-sm text-[#2B2D42]/90 whitespace-pre-line leading-relaxed">
+                {editorialSummary}
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* Verificación técnica */}
+        {siteCheck && (
+          <section className="mb-6">
+            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#2B2D42]">
+              <Activity className="h-5 w-5" /> Verificación técnica
+            </h2>
+            <Card>
+              <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                {siteCheck.resolved_ip && (
+                  <div><span className="font-medium">IP del sitio:</span> <code className="text-xs">{siteCheck.resolved_ip}</code></div>
+                )}
+                {siteCheck.asn && (
+                  <div><span className="font-medium">ASN:</span> {siteCheck.asn}{siteCheck.asn_org ? ` — ${siteCheck.asn_org}` : ''}</div>
+                )}
+                {siteCheck.ssl_issuer && (
+                  <div><span className="font-medium">Certificado SSL:</span> emitido por {siteCheck.ssl_issuer}</div>
+                )}
+                {siteCheck.ssl_valid_to && (
+                  <div><span className="font-medium">SSL vigente hasta:</span> {new Date(siteCheck.ssl_valid_to).toISOString().slice(0, 10)}</div>
+                )}
+                {typeof siteCheck.ttfb_ms === 'number' && (
+                  <div><span className="font-medium">TTFB medido:</span> {siteCheck.ttfb_ms} ms</div>
+                )}
+                {typeof siteCheck.http_status === 'number' && (
+                  <div><span className="font-medium">Estado HTTP:</span> {siteCheck.http_status}</div>
+                )}
+                <div className="md:col-span-2 text-xs text-muted-foreground pt-2 border-t">
+                  Medición automática realizada el <time dateTime={siteCheck.checked_at}>{new Date(siteCheck.checked_at).toISOString().slice(0, 10)}</time>. Datos técnicos verificables desde el sitio oficial del proveedor.
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* Reputación */}
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#2B2D42]">
+            <AlertTriangle className="h-5 w-5" /> Reputación
+          </h2>
+          <Card>
+            <CardContent className="pt-6 text-sm">
+              <p>
+                <strong>{complaintsCount}</strong>{' '}
+                {complaintsCount === 1 ? 'reclamo verificado' : 'reclamos verificados'} sobre {company.name} desde el <time dateTime={startDateDisplay}>{startDateDisplay}</time>.
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Los reclamos se verifican por email antes de publicarse. <Link to="/reclamos" className="text-primary hover:underline">Reportar un problema</Link>.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
         {company.website && (
           <div className="mb-8">
             <Button asChild className="cta-primary gap-2">
@@ -292,6 +467,55 @@ const CountryProviderDetail = () => {
               </a>
             </Button>
           </div>
+        )}
+
+        {/* FAQ */}
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-3 flex items-center gap-2 text-[#2B2D42]">
+            <HelpCircle className="h-5 w-5" /> Preguntas frecuentes
+          </h2>
+          <div className="space-y-3">
+            {faq.map((f, i) => (
+              <Card key={i}>
+                <CardContent className="pt-5 pb-5">
+                  <h3 className="font-semibold text-sm mb-1">{f.q}</h3>
+                  <p className="text-sm text-[#2B2D42]/80">{f.a}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Alternativas en {pais} */}
+        {altsSorted.length > 0 && (
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-3 text-[#2B2D42]">
+              Alternativas en {info.name}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {altsSorted.map((a: any) => (
+                <Link
+                  key={a.slug}
+                  to={`/${info.slug}/${a.slug}`}
+                  className="block p-4 border rounded-md hover:bg-muted/50 transition"
+                >
+                  <div className="font-medium">{a.name}</div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {isLocalDc(a.datacenter_location) ? `Datacenter local (${a.datacenter_location})` : (a.datacenter_location || 'Datacenter no publicado')}
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-4 text-sm">
+              <Link to={`/${info.slug}`} className="text-primary hover:underline">
+                Ver todo el directorio de {info.name}
+              </Link>
+              <span className="mx-2 text-muted-foreground">·</span>
+              <Link to="/latam" className="text-primary hover:underline">
+                Hosting en Latinoamérica
+              </Link>
+            </div>
+          </section>
         )}
 
         <div className="text-sm">
