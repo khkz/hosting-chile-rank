@@ -1,0 +1,164 @@
+{
+  "nombre": "Benchmarks de hosting en México",
+  "fecha_generacion": "2026-07-06T04:55:17.422Z",
+  "ventana": "7d",
+  "metodologia": "Ping HTTP horario (HEAD, fallback GET) desde infraestructura de EligeTuHosting con timeout 10s. TTFB en ms; uptime = pings OK / pings totales; mediana calculada sobre muestras exitosas.",
+  "nota_puntajes": "Los puntajes numéricos por país (1–10) se publicarán cuando existan 60–90 días de datos continuos.",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/",
+  "atribucion": "EligeTuHosting — https://eligetuhosting.com/",
+  "como_citar": "EligeTuHosting (2026). Benchmarks de hosting LATAM [Dataset]. https://eligetuhosting.com/datos — CC-BY-4.0.",
+  "total_proveedores": 15,
+  "proveedores": [
+    {
+      "slug": "hosting-mexico-mx",
+      "nombre": "Hosting-Mexico",
+      "sitio_oficial": "https://hosting-mexico.net/",
+      "ttfb_mediano_ms": 26,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 0,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/hosting-mexico-mx"
+    },
+    {
+      "slug": "godaddy-mx",
+      "nombre": "GoDaddy México",
+      "sitio_oficial": "https://mx.godaddy.com/",
+      "ttfb_mediano_ms": 32,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 0,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/godaddy-mx"
+    },
+    {
+      "slug": "hostinger-mx",
+      "nombre": "Hostinger México",
+      "sitio_oficial": "https://www.hostinger.com/mx/",
+      "ttfb_mediano_ms": 36,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/hostinger-mx"
+    },
+    {
+      "slug": "webhosting-mx",
+      "nombre": "WebHosting MX",
+      "sitio_oficial": "https://webhosting.mx/",
+      "ttfb_mediano_ms": 220,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/webhosting-mx"
+    },
+    {
+      "slug": "hostgator-mx",
+      "nombre": "HostGator México",
+      "sitio_oficial": "https://www.hostgator.mx/",
+      "ttfb_mediano_ms": 225,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/hostgator-mx"
+    },
+    {
+      "slug": "digitalserver-mx",
+      "nombre": "DigitalServer (SuEmpresa)",
+      "sitio_oficial": "https://www.digitalserver.com.mx/",
+      "ttfb_mediano_ms": 325,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/digitalserver-mx"
+    },
+    {
+      "slug": "servnet-mx",
+      "nombre": "Servnet",
+      "sitio_oficial": "https://www.servnet.mx/",
+      "ttfb_mediano_ms": 450,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/servnet-mx"
+    },
+    {
+      "slug": "hospedando-mx",
+      "nombre": "Hospedando",
+      "sitio_oficial": "https://www.hospedando.com.mx/",
+      "ttfb_mediano_ms": 729,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/hospedando-mx"
+    },
+    {
+      "slug": "neubox-mx",
+      "nombre": "Neubox",
+      "sitio_oficial": "https://neubox.com/",
+      "ttfb_mediano_ms": 736,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/neubox-mx"
+    },
+    {
+      "slug": "ionos-mx",
+      "nombre": "IONOS",
+      "sitio_oficial": "https://www.ionos.mx/",
+      "ttfb_mediano_ms": 777,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/ionos-mx"
+    },
+    {
+      "slug": "akky-mx",
+      "nombre": "Akky",
+      "sitio_oficial": "https://www.akky.mx/",
+      "ttfb_mediano_ms": 850,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/akky-mx"
+    },
+    {
+      "slug": "netmarketingweb-mx",
+      "nombre": "NetmarketingWeb",
+      "sitio_oficial": "https://netmarketingweb.com.mx/",
+      "ttfb_mediano_ms": 1002,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/netmarketingweb-mx"
+    },
+    {
+      "slug": "artehosting-mx",
+      "nombre": "Artehosting",
+      "sitio_oficial": "https://www.artehosting.com.mx/",
+      "ttfb_mediano_ms": 1050,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/artehosting-mx"
+    },
+    {
+      "slug": "hostingplus-mx",
+      "nombre": "HostingPlus México",
+      "sitio_oficial": "https://www.hostingplus.mx/",
+      "ttfb_mediano_ms": 1058,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/hostingplus-mx"
+    },
+    {
+      "slug": "hostdime-mx",
+      "nombre": "HostDime México",
+      "sitio_oficial": "https://www.hostdime.com.mx/",
+      "ttfb_mediano_ms": null,
+      "ttfb_muestras": 0,
+      "uptime_7d_pct": 0,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/mx/hostdime-mx"
+    }
+  ]
+}

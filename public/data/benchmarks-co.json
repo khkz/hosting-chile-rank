@@ -1,0 +1,124 @@
+{
+  "nombre": "Benchmarks de hosting en Colombia",
+  "fecha_generacion": "2026-07-06T04:55:17.422Z",
+  "ventana": "7d",
+  "metodologia": "Ping HTTP horario (HEAD, fallback GET) desde infraestructura de EligeTuHosting con timeout 10s. TTFB en ms; uptime = pings OK / pings totales; mediana calculada sobre muestras exitosas.",
+  "nota_puntajes": "Los puntajes numéricos por país (1–10) se publicarán cuando existan 60–90 días de datos continuos.",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/",
+  "atribucion": "EligeTuHosting — https://eligetuhosting.com/",
+  "como_citar": "EligeTuHosting (2026). Benchmarks de hosting LATAM [Dataset]. https://eligetuhosting.com/datos — CC-BY-4.0.",
+  "total_proveedores": 11,
+  "proveedores": [
+    {
+      "slug": "godaddy-co",
+      "nombre": "GoDaddy Colombia",
+      "sitio_oficial": "https://co.godaddy.com/",
+      "ttfb_mediano_ms": 34,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 0,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/godaddy-co"
+    },
+    {
+      "slug": "dongee-co",
+      "nombre": "Dongee",
+      "sitio_oficial": "https://www.dongee.com/",
+      "ttfb_mediano_ms": 58,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/dongee-co"
+    },
+    {
+      "slug": "latinoamericahosting-co",
+      "nombre": "Latinoamérica Hosting",
+      "sitio_oficial": "https://www.latinoamericahosting.com.co/",
+      "ttfb_mediano_ms": 69,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/latinoamericahosting-co"
+    },
+    {
+      "slug": "hostgator-co",
+      "nombre": "HostGator Colombia",
+      "sitio_oficial": "https://www.hostgator.co/",
+      "ttfb_mediano_ms": 99,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/hostgator-co"
+    },
+    {
+      "slug": "colombiahosting-co",
+      "nombre": "ColombiaHosting",
+      "sitio_oficial": "https://www.colombiahosting.com.co/",
+      "ttfb_mediano_ms": 103,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/colombiahosting-co"
+    },
+    {
+      "slug": "planetahosting-co",
+      "nombre": "PlanetaHosting Colombia",
+      "sitio_oficial": "https://www.planetahosting.com.co/",
+      "ttfb_mediano_ms": 330,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/planetahosting-co"
+    },
+    {
+      "slug": "hostdime-co",
+      "nombre": "HostDime Colombia",
+      "sitio_oficial": "https://www.hostdime.com.co/",
+      "ttfb_mediano_ms": 533,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/hostdime-co"
+    },
+    {
+      "slug": "ipxon-co",
+      "nombre": "IPXON Networks Colombia",
+      "sitio_oficial": "https://www.ipxon.com/",
+      "ttfb_mediano_ms": 743,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/ipxon-co"
+    },
+    {
+      "slug": "conexcol-co",
+      "nombre": "Conexcol Cloud Colombia",
+      "sitio_oficial": "https://conexcol.net.co/",
+      "ttfb_mediano_ms": 909,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/conexcol-co"
+    },
+    {
+      "slug": "hostingplus-co",
+      "nombre": "HostingPlus Colombia",
+      "sitio_oficial": "https://www.hostingplus.com.co/",
+      "ttfb_mediano_ms": 925,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/hostingplus-co"
+    },
+    {
+      "slug": "hostingred-co",
+      "nombre": "Hosting Red",
+      "sitio_oficial": "https://www.hostingred.com.co/",
+      "ttfb_mediano_ms": 1586,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/co/hostingred-co"
+    }
+  ]
+}

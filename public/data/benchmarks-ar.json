@@ -1,0 +1,124 @@
+{
+  "nombre": "Benchmarks de hosting en Argentina",
+  "fecha_generacion": "2026-07-06T04:55:17.422Z",
+  "ventana": "7d",
+  "metodologia": "Ping HTTP horario (HEAD, fallback GET) desde infraestructura de EligeTuHosting con timeout 10s. TTFB en ms; uptime = pings OK / pings totales; mediana calculada sobre muestras exitosas.",
+  "nota_puntajes": "Los puntajes numéricos por país (1–10) se publicarán cuando existan 60–90 días de datos continuos.",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/",
+  "atribucion": "EligeTuHosting — https://eligetuhosting.com/",
+  "como_citar": "EligeTuHosting (2026). Benchmarks de hosting LATAM [Dataset]. https://eligetuhosting.com/datos — CC-BY-4.0.",
+  "total_proveedores": 11,
+  "proveedores": [
+    {
+      "slug": "godaddy-ar",
+      "nombre": "GoDaddy Argentina",
+      "sitio_oficial": "https://ar.godaddy.com/",
+      "ttfb_mediano_ms": 22,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 0,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/godaddy-ar"
+    },
+    {
+      "slug": "hostinger-ar",
+      "nombre": "Hostinger Argentina",
+      "sitio_oficial": "https://www.hostinger.com/ar/",
+      "ttfb_mediano_ms": 37,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/hostinger-ar"
+    },
+    {
+      "slug": "ipxon-ar",
+      "nombre": "IPXON Networks Argentina",
+      "sitio_oficial": "https://www.ipxon.com/",
+      "ttfb_mediano_ms": 231,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/ipxon-ar"
+    },
+    {
+      "slug": "wnpower-ar",
+      "nombre": "WNPower",
+      "sitio_oficial": "https://www.wnpower.com/",
+      "ttfb_mediano_ms": 557,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/wnpower-ar"
+    },
+    {
+      "slug": "neolo-ar",
+      "nombre": "Neolo",
+      "sitio_oficial": "https://www.neolo.com/argentina/",
+      "ttfb_mediano_ms": 651,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/neolo-ar"
+    },
+    {
+      "slug": "hostingplus-ar",
+      "nombre": "HostingPlus Argentina",
+      "sitio_oficial": "https://hostingplus.ar/",
+      "ttfb_mediano_ms": 784,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/hostingplus-ar"
+    },
+    {
+      "slug": "donweb-ar",
+      "nombre": "DonWeb",
+      "sitio_oficial": "https://donweb.com/",
+      "ttfb_mediano_ms": 1049,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/donweb-ar"
+    },
+    {
+      "slug": "ferozo-ar",
+      "nombre": "Ferozo",
+      "sitio_oficial": "https://ferozo.com/",
+      "ttfb_mediano_ms": 1403,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/ferozo-ar"
+    },
+    {
+      "slug": "g2khosting-ar",
+      "nombre": "G2K Hosting",
+      "sitio_oficial": "https://www.g2khosting.com/",
+      "ttfb_mediano_ms": 1736,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/g2khosting-ar"
+    },
+    {
+      "slug": "towebs-ar",
+      "nombre": "Towebs",
+      "sitio_oficial": "https://www.towebs.com/",
+      "ttfb_mediano_ms": 2052,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/towebs-ar"
+    },
+    {
+      "slug": "baehost-ar",
+      "nombre": "BAEHOST",
+      "sitio_oficial": "https://baehost.com/",
+      "ttfb_mediano_ms": 3078,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/ar/baehost-ar"
+    }
+  ]
+}

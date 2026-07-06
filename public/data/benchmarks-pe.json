@@ -1,0 +1,194 @@
+{
+  "nombre": "Benchmarks de hosting en Perú",
+  "fecha_generacion": "2026-07-06T04:55:17.422Z",
+  "ventana": "7d",
+  "metodologia": "Ping HTTP horario (HEAD, fallback GET) desde infraestructura de EligeTuHosting con timeout 10s. TTFB en ms; uptime = pings OK / pings totales; mediana calculada sobre muestras exitosas.",
+  "nota_puntajes": "Los puntajes numéricos por país (1–10) se publicarán cuando existan 60–90 días de datos continuos.",
+  "licencia": "CC-BY-4.0",
+  "licencia_url": "https://creativecommons.org/licenses/by/4.0/",
+  "atribucion": "EligeTuHosting — https://eligetuhosting.com/",
+  "como_citar": "EligeTuHosting (2026). Benchmarks de hosting LATAM [Dataset]. https://eligetuhosting.com/datos — CC-BY-4.0.",
+  "total_proveedores": 18,
+  "proveedores": [
+    {
+      "slug": "godaddy-pe",
+      "nombre": "GoDaddy Perú",
+      "sitio_oficial": "https://pe.godaddy.com/",
+      "ttfb_mediano_ms": 53,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 0,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/godaddy-pe"
+    },
+    {
+      "slug": "hostinger-pe",
+      "nombre": "Hostinger Perú",
+      "sitio_oficial": "https://www.hostinger.com/",
+      "ttfb_mediano_ms": 75,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hostinger-pe"
+    },
+    {
+      "slug": "hostgator-pe",
+      "nombre": "HostGator Perú",
+      "sitio_oficial": "https://www.hostgator.pe/",
+      "ttfb_mediano_ms": 190,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hostgator-pe"
+    },
+    {
+      "slug": "dongee-pe",
+      "nombre": "Dongee",
+      "sitio_oficial": "https://www.dongee.com/",
+      "ttfb_mediano_ms": 191,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/dongee-pe"
+    },
+    {
+      "slug": "bluehosting-pe",
+      "nombre": "BlueHosting Perú",
+      "sitio_oficial": "https://www.bluehosting.pe/",
+      "ttfb_mediano_ms": 312,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/bluehosting-pe"
+    },
+    {
+      "slug": "hostingnice-pe",
+      "nombre": "HostingNice",
+      "sitio_oficial": "https://www.hostingnice.com/",
+      "ttfb_mediano_ms": 554,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hostingnice-pe"
+    },
+    {
+      "slug": "hostingperu-pe",
+      "nombre": "Hosting Perú",
+      "sitio_oficial": "https://www.hostingperu.com.pe/",
+      "ttfb_mediano_ms": 622,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hostingperu-pe"
+    },
+    {
+      "slug": "wperu-pe",
+      "nombre": "WEB PERU",
+      "sitio_oficial": "https://www.wperu.com/",
+      "ttfb_mediano_ms": 642,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/wperu-pe"
+    },
+    {
+      "slug": "hostdime-pe",
+      "nombre": "HostDime Perú",
+      "sitio_oficial": "https://www.hostdime.com.pe/",
+      "ttfb_mediano_ms": 708,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hostdime-pe"
+    },
+    {
+      "slug": "hosting-peru-pe",
+      "nombre": "Hosting-Peru.pe",
+      "sitio_oficial": "https://hosting-peru.pe/",
+      "ttfb_mediano_ms": 862,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hosting-peru-pe"
+    },
+    {
+      "slug": "hosting-pe",
+      "nombre": "Hosting.pe",
+      "sitio_oficial": "https://www.hosting.pe/",
+      "ttfb_mediano_ms": 923,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hosting-pe"
+    },
+    {
+      "slug": "netsolution-pe",
+      "nombre": "NetSolution",
+      "sitio_oficial": "https://www.netsolution.pe/",
+      "ttfb_mediano_ms": 1022,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/netsolution-pe"
+    },
+    {
+      "slug": "hosting-com-pe",
+      "nombre": "Hosting.com.pe (Orange)",
+      "sitio_oficial": "https://www.hosting.com.pe/",
+      "ttfb_mediano_ms": 1026,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hosting-com-pe"
+    },
+    {
+      "slug": "hostingplus-pe",
+      "nombre": "HostingPlus Perú",
+      "sitio_oficial": "https://www.hostingplus.pe/",
+      "ttfb_mediano_ms": 1095,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/hostingplus-pe"
+    },
+    {
+      "slug": "planetahosting-pe",
+      "nombre": "PlanetaHosting Perú",
+      "sitio_oficial": "https://www.planetahosting.pe/",
+      "ttfb_mediano_ms": 1102,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/planetahosting-pe"
+    },
+    {
+      "slug": "inkawebdesign-pe",
+      "nombre": "Inka Web Design",
+      "sitio_oficial": "https://www.inkawebdesign.com/",
+      "ttfb_mediano_ms": 1360,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/inkawebdesign-pe"
+    },
+    {
+      "slug": "apacheperu-pe",
+      "nombre": "Apache Perú",
+      "sitio_oficial": "https://apacheperu.pe/",
+      "ttfb_mediano_ms": 1630,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/apacheperu-pe"
+    },
+    {
+      "slug": "mgd-pe",
+      "nombre": "MGD (MGDHost)",
+      "sitio_oficial": "https://mgd.pe/",
+      "ttfb_mediano_ms": 4109,
+      "ttfb_muestras": 2,
+      "uptime_7d_pct": 100,
+      "ultima_medicion": "2026-07-06T04:49:20.538852+00:00",
+      "ficha": "https://eligetuhosting.com/pe/mgd-pe"
+    }
+  ]
+}

@@ -82,7 +82,7 @@ async function fetchPings(ids) {
 async function fetchSiteChecks(ids) {
   if (!ids.length) return {};
   const idList = ids.map(id => `"${id}"`).join(',');
-  const rows = await sbFetch(`latam_site_checks?select=company_id,resolved_ip,asn,asn_org,ssl_issuer,ssl_valid_until,ttfb_ms,checked_at&company_id=in.(${idList})&order=checked_at.desc&limit=1000`);
+  const rows = await sbFetch(`latam_site_checks?select=company_id,resolved_ip,asn,asn_org,ssl_issuer,ssl_valid_to,ttfb_ms,checked_at&company_id=in.(${idList})&order=checked_at.desc&limit=1000`);
   const map = {};
   for (const r of rows) if (!map[r.company_id]) map[r.company_id] = r;
   return map;
@@ -198,7 +198,7 @@ ${companies.map(c => {
 - Datacenter declarado: ${c.datacenter_location ?? '—'}
 - Fundación: ${c.year_founded ?? '—'}
 - Tecnologías: ${(c.technologies || []).join(', ') || '—'}
-${chk ? `- IP resuelta: ${chk.resolved_ip ?? '—'}\n- ASN: ${chk.asn ? 'AS' + chk.asn : '—'} (${chk.asn_org ?? '—'})\n- SSL: ${chk.ssl_issuer ?? '—'}${chk.ssl_valid_until ? ' — vence ' + chk.ssl_valid_until.slice(0,10) : ''}` : ''}
+${chk ? `- IP resuelta: ${chk.resolved_ip ?? '—'}\n- ASN: ${chk.asn ? 'AS' + chk.asn : '—'} (${chk.asn_org ?? '—'})\n- SSL: ${chk.ssl_issuer ?? '—'}${chk.ssl_valid_to ? ' — vence ' + chk.ssl_valid_to.slice(0,10) : ''}` : ''}
 - TTFB mediano 7d: ${median(b.ttfb) ?? '—'} ms (muestras: ${b.ttfb.length})
 - Uptime 7d: ${b.total ? Math.round((b.ok / b.total) * 1000) / 10 + '%' : '—'}
 - Resumen editorial: ${(c.editorial_summary || '').replace(/\n+/g, ' ') || '—'}
@@ -238,7 +238,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 ${chk ? `- IP resuelta: ${chk.resolved_ip ?? '—'}
 - ASN: ${chk.asn ? 'AS' + chk.asn : '—'} (${chk.asn_org ?? '—'})
 - SSL emisor: ${chk.ssl_issuer ?? '—'}
-- SSL vigencia hasta: ${chk.ssl_valid_until ? chk.ssl_valid_until.slice(0,10) : '—'}
+- SSL vigencia hasta: ${chk.ssl_valid_to ? chk.ssl_valid_to.slice(0,10) : '—'}
 - TTFB muestra: ${chk.ttfb_ms ?? '—'} ms
 - Última verificación: ${chk.checked_at ?? '—'}` : '- Sin datos aún; se completará en el próximo ciclo del edge function `latam-site-check`.'}
 
