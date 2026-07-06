@@ -93,6 +93,10 @@ const LatamHub = () => {
             })}
           </div>
 
+          <div className="max-w-3xl mx-auto text-left">
+            <AdvisorEmbed />
+          </div>
+
           <div className="mt-12 text-xs text-[#2B2D42]/50">
             No publicamos rankings sin datos verificables. Misma metodología en
             cada país: ASN, datacenter, reclamos, trayectoria.
