@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { COUNTRIES, DOT_COM_COUNTRIES } from '@/lib/country';
+import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
 
 
 /**
