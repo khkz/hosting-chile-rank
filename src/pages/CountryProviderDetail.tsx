@@ -172,6 +172,12 @@ const CountryProviderDetail = () => {
           <p className="text-muted-foreground">
             Hosting en {info.name} {info.flag} — datos verificables.
           </p>
+          <p className="mt-2 text-xs text-[#2B2D42]/60">
+            <span className="inline-flex items-center gap-1">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+              Datos verificados: <time dateTime={dateModified}>{dateModifiedDisplay}</time>
+            </span>
+          </p>
         </header>
 
         {isCurated && (
