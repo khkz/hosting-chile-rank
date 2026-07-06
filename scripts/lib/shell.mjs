@@ -29,7 +29,8 @@ function stripStaleMeta(html) {
     .replace(/<meta property="og:url"[^>]*>/gi, '')
     .replace(/<meta property="og:title"[^>]*>/gi, '')
     .replace(/<meta property="og:description"[^>]*>/gi, '')
-    .replace(/<meta name="description"[^>]*>/gi, '');
+    .replace(/<meta name="description"[^>]*>/gi, '')
+    .replace(/<meta name="keywords"[^>]*>/gi, '');
 }
 
 export const CLEAN_SHELL = stripStaleMeta(stripPrerenderedBody(RAW));
