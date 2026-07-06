@@ -333,6 +333,10 @@ function App() {
             <Route path="/mx/comparativa/:pair" element={<CountryComparativa />} />
             <Route path="/co/comparativa/:pair" element={<CountryComparativa />} />
             <Route path="/ar/comparativa/:pair" element={<CountryComparativa />} />
+            <Route path="/pe/benchmark" element={<CountryBenchmark />} />
+            <Route path="/mx/benchmark" element={<CountryBenchmark />} />
+            <Route path="/co/benchmark" element={<CountryBenchmark />} />
+            <Route path="/ar/benchmark" element={<CountryBenchmark />} />
             <Route path="/pe" element={<CountryLanding />} />
             <Route path="/pe/:slug" element={<CountryProviderDetail />} />
             <Route path="/pe/*" element={<CountryLanding />} />
