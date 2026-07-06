@@ -493,18 +493,25 @@ const CountryProviderDetail = () => {
               Alternativas en {info.name}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {altsSorted.map((a: any) => (
-                <Link
-                  key={a.slug}
-                  to={`/${info.slug}/${a.slug}`}
-                  className="block p-4 border rounded-md hover:bg-muted/50 transition"
-                >
-                  <div className="font-medium">{a.name}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {isLocalDc(a.datacenter_location) ? `Datacenter local (${a.datacenter_location})` : (a.datacenter_location || 'Datacenter no publicado')}
+              {altsSorted.map((a: any) => {
+                const pair = company.slug < a.slug ? `${company.slug}-vs-${a.slug}` : `${a.slug}-vs-${company.slug}`;
+                return (
+                  <div key={a.slug} className="p-4 border rounded-md hover:bg-muted/50 transition">
+                    <Link to={`/${info.slug}/${a.slug}`} className="block">
+                      <div className="font-medium">{a.name}</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {isLocalDc(a.datacenter_location) ? `Datacenter local (${a.datacenter_location})` : (a.datacenter_location || 'Datacenter no publicado')}
+                      </div>
+                    </Link>
+                    <Link
+                      to={`/${info.slug}/comparativa/${pair}`}
+                      className="text-xs text-primary hover:underline inline-block mt-2"
+                    >
+                      Comparar {company.name} vs {a.name} →
+                    </Link>
                   </div>
-                </Link>
-              ))}
+                );
+              })}
             </div>
             <div className="mt-4 text-sm">
               <Link to={`/${info.slug}`} className="text-primary hover:underline">

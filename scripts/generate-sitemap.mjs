@@ -339,6 +339,31 @@ ${domainUrls}
 </urlset>`.trimStart();
 };
 
+/* ---------- SITEMAP PAÍS (LATAM: PE/MX/CO/AR) --------------------------- */
+const COUNTRY_LONG = { pe: 'peru', mx: 'mexico', co: 'colombia', ar: 'argentina' };
+const generateCountrySitemap = (cslug, providers) => {
+  const ROOT_COM = 'https://eligetuhosting.com';
+  const urls = [];
+  urls.push(urlTag(`${ROOT_COM}/${cslug}`, '0.9', 'weekly'));
+  urls.push(urlTag(`${ROOT_COM}/${cslug}/mejor-hosting-${COUNTRY_LONG[cslug]}-2026`, '0.9', 'weekly'));
+  urls.push(urlTag(`${ROOT_COM}/${cslug}/hosting-con-datacenter-local`, '0.8', 'weekly'));
+  // Fichas
+  for (const p of providers) {
+    urls.push(urlTag(`${ROOT_COM}/${cslug}/${p.slug}`, '0.7', 'weekly', p.updated_at || NOW));
+  }
+  // Comparativas: TODAS las parejas canónicas dentro del país
+  const slugs = providers.map(p => p.slug).sort();
+  for (let i = 0; i < slugs.length; i++) {
+    for (let j = i + 1; j < slugs.length; j++) {
+      urls.push(urlTag(`${ROOT_COM}/${cslug}/comparativa/${slugs[i]}-vs-${slugs[j]}`, '0.6', 'monthly'));
+    }
+  }
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('')}
+</urlset>`.trimStart();
+};
+
 /* ---------- SITEMAP INDEX (archivo principal) -------------------------- */
 const generateSitemapIndex = () => {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -357,6 +382,22 @@ const generateSitemapIndex = () => {
   </sitemap>
   <sitemap>
     <loc>${ROOT}/sitemap-domains.xml</loc>
+    <lastmod>${NOW}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://eligetuhosting.com/sitemap-pe.xml</loc>
+    <lastmod>${NOW}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://eligetuhosting.com/sitemap-mx.xml</loc>
+    <lastmod>${NOW}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://eligetuhosting.com/sitemap-co.xml</loc>
+    <lastmod>${NOW}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://eligetuhosting.com/sitemap-ar.xml</loc>
     <lastmod>${NOW}</lastmod>
   </sitemap>
 </sitemapindex>`.trimStart();
@@ -391,6 +432,15 @@ console.log('✅  sitemap-asn.xml generado (páginas ASN)');
 const domainsSitemap = generateDomainsSitemap();
 await fs.writeFile('public/sitemap-domains.xml', domainsSitemap, 'utf8');
 console.log('✅  sitemap-domains.xml generado (limitado a 500 dominios)');
+
+// Generar sitemaps por país LATAM
+for (const cslug of ['pe','mx','co','ar']) {
+  const providersOfCountry = countryProviders.filter(p => p.country === cslug);
+  const xml = generateCountrySitemap(cslug, providersOfCountry);
+  await fs.writeFile(`public/sitemap-${cslug}.xml`, xml, 'utf8');
+  const pairs = providersOfCountry.length * (providersOfCountry.length - 1) / 2;
+  console.log(`✅  sitemap-${cslug}.xml generado (${providersOfCountry.length} fichas + ${pairs} comparativas)`);
+}
 
 console.log('✨  Sistema de sitemaps jerárquico completado');
 
