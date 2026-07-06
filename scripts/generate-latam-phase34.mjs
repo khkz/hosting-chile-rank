@@ -278,11 +278,46 @@ async function generateDatosPage() {
   console.log('✅ /datos generado');
 }
 
+async function generateLatamHub() {
+  const canonical = `${ROOT}/latam`;
+  const title = 'Hosting en Latinoamérica — Directorios verificados por país | EligeTuHosting';
+  const description = 'Directorios verificados de hosting en Chile, Perú, México, Colombia y Argentina. Datos abiertos CC-BY-4.0: razón social, datacenter, ASN, SSL, TTFB, reputación.';
+  const totals = {};
+  for (const cslug of Object.keys(COUNTRIES)) {
+    const rows = await sbFetch(`hosting_companies?select=id&country=eq.${COUNTRIES[cslug].code}&is_verified=eq.true&limit=999`);
+    totals[cslug] = rows.length;
+  }
+  const items = Object.entries(COUNTRIES).map(([cslug, m]) => ({ cslug, m, total: totals[cslug] }));
+  items.push({ cslug: '', m: { name: 'Chile', long: 'chile', flag: '🇨🇱', locale: 'es-CL' }, total: null, chile: true });
+  const itemListLd = {
+    '@context': 'https://schema.org', '@type': 'ItemList', name: title,
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem', position: i + 1,
+      url: it.chile ? 'https://eligetuhosting.cl/' : `${ROOT}/${it.cslug}`,
+      name: `Hosting en ${it.m.name}`,
+    })),
+  };
+  const body = `<header><h1>Hosting en Latinoamérica ${items.map(i => i.m.flag).join(' ')}</h1>
+    <p>${esc(description)}</p>
+    <p style="font-size:13px;color:#6B7280"><strong>Última actualización:</strong> ${NOW.slice(0, 10)}</p></header>
+    <section><h2>Directorios verificados</h2><ul>
+      ${items.map(it => `<li>${it.m.flag} <a href="${it.chile ? 'https://eligetuhosting.cl/' : `/${it.cslug}`}"><strong>${esc(it.m.name)}</strong></a>${it.total != null ? ` — ${it.total} proveedores verificados` : ''}${it.chile ? '' : ` · <a href="/${it.cslug}/mejor-hosting-${it.m.long}-2026">mejor hosting ${it.m.long}</a> · <a href="/${it.cslug}/hosting-con-datacenter-local">datacenter local</a> · <a href="/${it.cslug}/benchmark">benchmark</a>`}</li>`).join('')}
+    </ul></section>
+    <section><h2>Metodología</h2><p>Verificamos: (1) razón social local en el registro mercantil, (2) datacenter declarado y contrastado con ASN + BGP, (3) tecnología pública, (4) TTFB medido cada hora, (5) reclamos verificados por email. No publicamos puntajes numéricos por país hasta acumular 60–90 días de benchmarks continuos. Chile mantiene su metodología completa vigente en <a href="https://eligetuhosting.cl/">eligetuhosting.cl</a>.</p></section>
+    <section><h2>Datos abiertos</h2><p>Todo el dataset se publica bajo <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a>. Ver <a href="/datos">endpoints JSON</a>.</p></section>`;
+  const headExtra = `<script type="application/ld+json">${JSON.stringify(itemListLd)}</script>`;
+  await fs.mkdir('public/latam', { recursive: true });
+  await fs.writeFile('public/latam/index.html',
+    buildHtml({ title, description, canonical, locale: 'es-419', headExtra, bodyContent: body }), 'utf8');
+  console.log('✅ /latam generado');
+}
+
 // Main
 const results = [];
 for (const cslug of Object.keys(COUNTRIES)) {
   results.push(await generateForCountry(cslug));
 }
 await generateDatosPage();
+await generateLatamHub();
 console.log('\n📊 Resumen LATAM Fase 3-4:');
 console.log(results);
