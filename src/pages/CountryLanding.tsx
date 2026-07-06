@@ -228,6 +228,10 @@ const CountryLanding = () => {
             </Card>
           )}
 
+          <AdvisorEmbed />
+
+
+
           {isLoading ? (
             <p className="text-center text-muted-foreground py-10">
               Cargando proveedores…
