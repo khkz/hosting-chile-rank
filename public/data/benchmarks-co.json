@@ -1,6 +1,6 @@
 {
   "nombre": "Benchmarks de hosting en Colombia",
-  "fecha_generacion": "2026-07-06T10:40:21.557Z",
+  "fecha_generacion": "2026-07-06T10:51:07.817Z",
   "ventana": "7d",
   "metodologia": "Ping HTTP horario (HEAD, fallback GET) desde infraestructura de EligeTuHosting con timeout 10s. TTFB en ms; uptime = pings OK / pings totales; mediana calculada sobre muestras exitosas.",
   "nota_puntajes": "Los puntajes numéricos por país (1–10) se publicarán cuando existan 60–90 días de datos continuos.",
