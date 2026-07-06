@@ -33,7 +33,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "ColombiaHosting",
@@ -138,7 +138,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "HostDime Colombia",
@@ -191,7 +191,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Hosting Red",
@@ -270,7 +270,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "PlanetaHosting Colombia",

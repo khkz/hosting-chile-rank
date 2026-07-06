@@ -136,7 +136,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "HostDime Perú",
@@ -189,7 +189,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Hosting.com.pe (Orange)",
@@ -241,7 +241,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "HostingNice",
@@ -267,7 +267,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Hosting.pe",
@@ -474,7 +474,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     }
   ]
 }

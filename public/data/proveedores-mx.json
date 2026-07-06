@@ -33,7 +33,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Akky",
@@ -139,7 +139,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Hospedando",
@@ -217,7 +217,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Hostinger México",
@@ -243,7 +243,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Hosting-Mexico",
@@ -299,7 +299,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "NetmarketingWeb",
@@ -326,7 +326,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Neubox",
@@ -406,7 +406,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     }
   ]
 }

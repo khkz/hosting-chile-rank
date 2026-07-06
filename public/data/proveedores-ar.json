@@ -32,7 +32,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "BAEHOST",
@@ -163,7 +163,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Hostinger Argentina",
@@ -189,7 +189,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "IPXON Networks Argentina",
@@ -241,7 +241,7 @@
       "email": null,
       "fundacion": null,
       "grupo_corporativo": null,
-      "datacenter_local": true
+      "datacenter_local": false
     },
     {
       "nombre": "Towebs",
