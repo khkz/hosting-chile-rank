@@ -143,6 +143,9 @@ const CountryLanding = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={`https://eligetuhosting.com/og/${info.slug}.png`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={`https://eligetuhosting.com/og/${info.slug}.png`} />
         <meta name="robots" content="index,follow" />
         <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
         <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
