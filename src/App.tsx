@@ -136,6 +136,7 @@ function App() {
         {/* Rutas normales de la aplicación */}
         <Route path="/" element={<HomeDispatcher />} />
         <Route path="/latam" element={<Latam />} />
+        <Route path="/datos" element={<DatosAbiertos />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/ir/:slug" element={<OutboundRedirect />} />
         <Route path="/comparativa" element={<Comparativa />} />
