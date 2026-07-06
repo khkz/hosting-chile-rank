@@ -148,6 +148,7 @@ const CountryLanding = () => {
         <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
         <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
         <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/latam" />
+        <link rel="alternate" type="text/markdown" href={`/${info.slug}.md`} title={`${info.name} — datos en Markdown (CC-BY-4.0)`} />
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
         <script type="application/ld+json">{JSON.stringify(collectionLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
