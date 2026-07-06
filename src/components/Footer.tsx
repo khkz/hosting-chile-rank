@@ -74,6 +74,9 @@ const Footer = () => {
               </p>
               <div className="flex flex-wrap gap-2 text-sm">
                 <a href={`/data/proveedores-${latam}.json`} target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white">📊 proveedores-{latam}.json</a>
+                <a href={`/data/benchmarks-${latam}.json`} target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">⚡ benchmarks-{latam}.json</a>
+                <a href={`/${latam}.md`} target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📝 {latam}.md</a>
+                <a href="/datos" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📚 /datos</a>
                 <a href="/data/proveedores-latam.json" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">🌎 LATAM unificado</a>
                 <a href="/llms.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📄 llms.txt</a>
                 <a href="/llms-full.txt" target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">📚 llms-full.txt</a>
