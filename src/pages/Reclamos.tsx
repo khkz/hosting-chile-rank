@@ -40,18 +40,31 @@ const Reclamos = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  const activeCountry = getActiveCountryCode();
+  // En Chile mostramos solo Chile (comportamiento actual, no cambia lo visible).
+  // Desde cualquier otro dominio LATAM incluimos los 55 proveedores LATAM
+  // agrupados por país en el selector — necesario para reclamos regionales.
+  const includeLatam = activeCountry !== 'CL';
   const { data: companies } = useQuery({
-    queryKey: ['companies-for-complaints'],
+    queryKey: ['companies-for-complaints', activeCountry, includeLatam],
     queryFn: async () => {
-      const { data } = await supabase
+      let q = supabase
         .from('hosting_companies')
-        .select('id, name, slug')
-        .eq('country', getActiveCountryCode())
+        .select('id, name, slug, country')
         .eq('is_verified', true)
+        .order('country')
         .order('name');
-      return data ?? [];
+      if (!includeLatam) q = q.eq('country', activeCountry);
+      else q = q.in('country', ['CL', 'PE', 'MX', 'CO', 'AR']);
+      const { data } = await q;
+      return (data ?? []) as Array<{ id: string; name: string; slug: string; country: string }>;
     },
   });
+  const groupedCompanies = (companies ?? []).reduce<Record<string, typeof companies>>((acc, c: any) => {
+    (acc[c.country] ??= [] as any).push(c);
+    return acc;
+  }, {} as any);
+  const COUNTRY_LABELS: Record<string, string> = { CL: 'Chile', PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina' };
 
   const { data: complaints, refetch } = useQuery({
     queryKey: ['public-complaints'],
