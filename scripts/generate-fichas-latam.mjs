@@ -10,15 +10,16 @@
 // Escribe public/{pais}/{slug}/index.html. La SPA hidrata encima.
 import fs from 'node:fs/promises';
 import { buildHtml, esc } from './lib/shell.mjs';
+import { hasLocalDatacenter } from './lib/dc-local.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
 
 const COUNTRIES = {
-  pe: { code: 'PE', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE', regex: /per[uú]/i },
-  mx: { code: 'MX', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX', regex: /m[eé]xico/i },
-  co: { code: 'CO', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO', regex: /colombia/i },
-  ar: { code: 'AR', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR', regex: /argentina/i },
+  pe: { code: 'PE', slug: 'pe', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE' },
+  mx: { code: 'MX', slug: 'mx', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX' },
+  co: { code: 'CO', slug: 'co', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO' },
+  ar: { code: 'AR', slug: 'ar', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR' },
 };
 const ROOT = 'https://eligetuhosting.com';
 const NOW = new Date().toISOString();
@@ -30,7 +31,7 @@ async function sb(path) {
 }
 
 function fmtDate(d) { return d ? String(d).slice(0, 10) : '—'; }
-function hasLocalDc(regex, s) { return !!s && regex.test(s); }
+function hasLocalDc(cslug, s) { return hasLocalDatacenter(cslug, s); }
 
 function faqs(c, meta, checksDate) {
   return [
