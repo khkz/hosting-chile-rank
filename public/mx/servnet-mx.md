@@ -15,16 +15,16 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Email: datospersonales@servnet.mx
 
 ## Verificación técnica
-- IP resuelta: 199.60.103.254
+- IP resuelta: 199.60.103.2
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 153 ms
-- Última verificación: 2026-07-06T04:50:48.769+00:00
+- TTFB muestra: 441 ms
+- Última verificación: 2026-07-06T05:02:27.518+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 450 ms
-- Muestras: 2
+- TTFB mediano: 566 ms
+- Muestras: 8
 - Uptime observado: 100%
 
 ## Contexto editorial

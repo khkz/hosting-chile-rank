@@ -15,16 +15,16 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Email: —
 
 ## Verificación técnica
-- IP resuelta: 150.171.109.100
+- IP resuelta: 150.171.109.101
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 18 ms
-- Última verificación: 2026-07-06T04:50:57.822+00:00
+- TTFB muestra: 286 ms
+- Última verificación: 2026-07-06T05:02:36.585+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 312 ms
-- Muestras: 2
+- TTFB mediano: 124 ms
+- Muestras: 8
 - Uptime observado: 100%
 
 ## Contexto editorial

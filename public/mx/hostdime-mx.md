@@ -20,7 +20,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - SSL emisor: —
 - SSL vigencia hasta: —
 - TTFB muestra: — ms
-- Última verificación: 2026-07-06T04:50:49.213+00:00
+- Última verificación: 2026-07-06T05:02:27.77+00:00
 
 ## Benchmark (últimos 7 días)
 - TTFB mediano: — ms

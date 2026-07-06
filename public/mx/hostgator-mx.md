@@ -15,16 +15,16 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Email: ventas@hostgator.mx
 
 ## Verificación técnica
-- IP resuelta: 172.66.43.244
+- IP resuelta: 172.66.40.12
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 94 ms
-- Última verificación: 2026-07-06T04:50:57.852+00:00
+- TTFB muestra: 246 ms
+- Última verificación: 2026-07-06T05:02:36.557+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 225 ms
-- Muestras: 2
+- TTFB mediano: 141 ms
+- Muestras: 8
 - Uptime observado: 100%
 
 ## Contexto editorial

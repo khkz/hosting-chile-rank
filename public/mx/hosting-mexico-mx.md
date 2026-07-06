@@ -15,16 +15,16 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Email: ventas@hosting-mexico.net
 
 ## Verificación técnica
-- IP resuelta: 172.66.43.199
+- IP resuelta: 172.66.40.57
 - ASN: — (—)
 - SSL emisor: —
 - SSL vigencia hasta: —
-- TTFB muestra: 61 ms
-- Última verificación: 2026-07-06T04:50:48.577+00:00
+- TTFB muestra: 22 ms
+- Última verificación: 2026-07-06T05:02:36.091+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 26 ms
-- Muestras: 2
+- TTFB mediano: 122 ms
+- Muestras: 8
 - Uptime observado: 0%
 
 ## Contexto editorial
