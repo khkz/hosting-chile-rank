@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/mx)",
-  "fecha_generacion": "2026-07-06T04:55:29.556Z",
+  "fecha_generacion": "2026-07-06T10:31:20.943Z",
   "pais": "MX",
   "total_proveedores": 15,
   "proveedores": [
@@ -16,6 +16,7 @@
       "razon_social": "Grupo HostingPlus (opera desde Chile: PlusChile Internet Ltda.); sin entidad legal mexicana",
       "sitio_oficial": "https://www.hostingplus.mx/",
       "datacenter": "EE.UU. (Florida) — según su FAQ; sin datacenter propio en México",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "LiteSpeed + LSCache",
@@ -36,6 +37,7 @@
       "razon_social": "Akky Online Solutions, S.A. de C.V.",
       "sitio_oficial": "https://www.akky.mx/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "cPanel",
         "Dominios .MX",
@@ -56,6 +58,7 @@
       "razon_social": "Artehosting S.A. de C.V.",
       "sitio_oficial": "https://www.artehosting.com.mx/",
       "datacenter": "CDMX, México (datacenter propio desde 2021) + bloques en EE.UU./Europa",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "CloudLinux",
@@ -77,6 +80,7 @@
       "razon_social": "Wingu Networks, S.A. de C.V.",
       "sitio_oficial": "https://www.digitalserver.com.mx/",
       "datacenter": "Sídney, Australia (planes cPanel de SuEmpresa)",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "LiteSpeed",
@@ -98,6 +102,7 @@
       "razon_social": "Go Daddy México S. de R.L. de C.V.",
       "sitio_oficial": "https://mx.godaddy.com/",
       "datacenter": "EE.UU. (Phoenix) + colocation NL/Singapur; sin datacenter en México",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "WordPress",
@@ -118,6 +123,7 @@
       "razon_social": "Neubox Internet, S.A. de C.V.",
       "sitio_oficial": "https://www.hospedando.com.mx/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "cPanel",
         "WordPress",
@@ -138,6 +144,7 @@
       "razon_social": "HostDime S.A. de C.V.",
       "sitio_oficial": "https://www.hostdime.com.mx/",
       "datacenter": "Zapopan/Guadalajara, Jalisco, México (datacenter propio; sede del peering GDL-IX)",
+      "datacenter_local": true,
       "tecnologias": [
         "Colocation",
         "Cloud/VPS",
@@ -158,6 +165,7 @@
       "razon_social": "HostGator.com LLC (Texas, EE.UU.); grupo Newfold; sin entidad mexicana",
       "sitio_oficial": "https://www.hostgator.mx/",
       "datacenter": "Atlanta, EE.UU.; sin datacenter en México",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "WordPress",
@@ -178,6 +186,7 @@
       "razon_social": "Hostinger International Ltd. (Lituania); sin entidad mexicana",
       "sitio_oficial": "https://www.hostinger.com/mx/",
       "datacenter": "EE.UU. y Brasil (São Paulo); sin datacenter en México",
+      "datacenter_local": false,
       "tecnologias": [
         "LiteSpeed",
         "hPanel",
@@ -198,6 +207,7 @@
       "razon_social": "Innovation Group Hosting-Mexico, S. de R.L. de C.V.",
       "sitio_oficial": "https://hosting-mexico.net/",
       "datacenter": "Chicago, EE.UU. (declarado por el proveedor)",
+      "datacenter_local": false,
       "tecnologias": [
         "Hosting compartido",
         "Reseller",
@@ -220,6 +230,7 @@
       "razon_social": "IONOS Inc. / IONOS SE (Alemania); sin entidad mexicana con RFC",
       "sitio_oficial": "https://www.ionos.mx/",
       "datacenter": "EE.UU. (Las Vegas/Newark/Lenexa) y Europa; sin datacenter en México",
+      "datacenter_local": false,
       "tecnologias": [
         "Hosting",
         "WordPress",
@@ -242,6 +253,7 @@
       "razon_social": null,
       "sitio_oficial": "https://netmarketingweb.com.mx/",
       "datacenter": "Dallas y Houston, Texas (EE.UU.); sin datacenter en México",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "PHP",
@@ -263,6 +275,7 @@
       "razon_social": "NEUBOX Internet, S.A. de C.V.",
       "sitio_oficial": "https://neubox.com/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "cPanel",
         "DirectAdmin",
@@ -284,6 +297,7 @@
       "razon_social": "Servnet México, S.A. de C.V.",
       "sitio_oficial": "https://www.servnet.mx/",
       "datacenter": "CDMX, México (datacenter propio; red propia AS28546 bajo concesión IFT)",
+      "datacenter_local": true,
       "tecnologias": [
         "Servidores dedicados",
         "Colocation",
@@ -305,6 +319,7 @@
       "razon_social": "Web Hosting y Dominios S. de R.L. de C.V.",
       "sitio_oficial": "https://webhosting.mx/",
       "datacenter": "EE.UU./Europa (revende OVHcloud); sin datacenter propio en México",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel/WHM",
         "LiteSpeed",

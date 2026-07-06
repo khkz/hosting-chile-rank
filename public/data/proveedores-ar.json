@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/ar)",
-  "fecha_generacion": "2026-07-06T04:55:29.556Z",
+  "fecha_generacion": "2026-07-06T10:31:20.946Z",
   "pais": "AR",
   "total_proveedores": 11,
   "proveedores": [
@@ -16,6 +16,7 @@
       "razon_social": "Pluschile Internet Ltda. (Chile, RUT 76.636.640-6); sin entidad legal argentina",
       "sitio_oficial": "https://hostingplus.ar/",
       "datacenter": "Orlando (EE.UU.) y Santiago (Chile) — según su ficha; sin datacenter propio en Argentina",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "LiteSpeed",
@@ -35,6 +36,7 @@
       "razon_social": "INTERBS S.R.L.",
       "sitio_oficial": "https://baehost.com/",
       "datacenter": "Buenos Aires, Argentina (TIER III+, ISO 27001)",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "Web Hosting SSD",
@@ -57,6 +59,7 @@
       "razon_social": "DATTATEC.COM S.R.L.",
       "sitio_oficial": "https://donweb.com/",
       "datacenter": "Rosario, Argentina (datacenter propio; ISO 27001/9001; AS27823)",
+      "datacenter_local": true,
       "tecnologias": [
         "Panel Ferozo",
         "cPanel",
@@ -78,6 +81,7 @@
       "razon_social": "DATTATEC.COM S.R.L.",
       "sitio_oficial": "https://ferozo.com/",
       "datacenter": "Rosario, Argentina (infraestructura de DonWeb)",
+      "datacenter_local": true,
       "tecnologias": [
         "Panel Ferozo",
         "WordPress",
@@ -97,6 +101,7 @@
       "razon_social": "G2K Argentina S.A.",
       "sitio_oficial": "https://www.g2khosting.com/",
       "datacenter": "Buenos Aires, Argentina (datacenter propio)",
+      "datacenter_local": true,
       "tecnologias": [
         "Cloud Servers",
         "Servidores Dedicados",
@@ -116,6 +121,7 @@
       "razon_social": "GoDaddy Operating Company, LLC (EE.UU.); sin entidad argentina",
       "sitio_oficial": "https://ar.godaddy.com/",
       "datacenter": "EE.UU. (Arizona) y regiones globales; sin datacenter en Argentina",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "Plesk",
@@ -136,6 +142,7 @@
       "razon_social": "Hostinger International Ltd. (Lituania); sin entidad argentina",
       "sitio_oficial": "https://www.hostinger.com/ar/",
       "datacenter": "EE.UU. y Brasil (São Paulo); sin datacenter en Argentina",
+      "datacenter_local": false,
       "tecnologias": [
         "LiteSpeed",
         "hPanel",
@@ -156,6 +163,7 @@
       "razon_social": "IPXON Networks (operador regional LatAm)",
       "sitio_oficial": "https://www.ipxon.com/",
       "datacenter": "Buenos Aires, Argentina (POPs/datacenter) + red PRESENCE LatAm",
+      "datacenter_local": true,
       "tecnologias": [
         "Colocation",
         "Datacenter",
@@ -176,6 +184,7 @@
       "razon_social": "Sigmund LLC (Wyoming, EE.UU.); sin entidad legal argentina",
       "sitio_oficial": "https://www.neolo.com/argentina/",
       "datacenter": "Distribuido (EE.UU./Europa/Asia/LatAm); sin datacenter propio en Argentina",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "WordPress",
@@ -196,6 +205,7 @@
       "razon_social": "Virtucom Networks S.A.",
       "sitio_oficial": "https://www.towebs.com/",
       "datacenter": "3 datacenters distribuidos (ubicación exacta en Argentina no detallada)",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "Linux/Windows",
@@ -218,6 +228,7 @@
       "razon_social": "Webhosting S.R.L.",
       "sitio_oficial": "https://www.wnpower.com/",
       "datacenter": "Buenos Aires, Argentina (Olivos, Vicente López) + EE.UU./Europa; Cloud sobre AWS",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "CloudLinux",

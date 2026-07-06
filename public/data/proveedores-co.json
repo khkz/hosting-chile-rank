@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/co)",
-  "fecha_generacion": "2026-07-06T04:55:29.556Z",
+  "fecha_generacion": "2026-07-06T10:31:20.944Z",
   "pais": "CO",
   "total_proveedores": 11,
   "proveedores": [
@@ -16,6 +16,7 @@
       "razon_social": "HostingPlus LLC (Florida, EE.UU.); sin entidad legal colombiana",
       "sitio_oficial": "https://www.hostingplus.com.co/",
       "datacenter": "EE.UU. (Florida) — según su FAQ; sin datacenter propio en Colombia",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "LiteSpeed + LSCache",
@@ -36,6 +37,7 @@
       "razon_social": "ColombiaHosting S.A.S.",
       "sitio_oficial": "https://www.colombiahosting.com.co/",
       "datacenter": "EE.UU. (2 datacenters, hardware propio en colocation)",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "LiteSpeed + LSCache",
@@ -56,6 +58,7 @@
       "razon_social": "Conexcol Cloud Colombia S.A.S.",
       "sitio_oficial": "https://conexcol.net.co/",
       "datacenter": "Medellín, Colombia (datacenter Tier III) y Londres (Reino Unido)",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel clusterizado",
         "CloudLinux",
@@ -78,6 +81,7 @@
       "razon_social": "Industrialmedia S.A.",
       "sitio_oficial": "https://www.dongee.com/",
       "datacenter": "Miami y Atlanta (EE.UU.)",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "LiteSpeed + LSCache",
@@ -97,6 +101,7 @@
       "razon_social": "GoDaddy Operating Company, LLC (EE.UU.); sin entidad colombiana",
       "sitio_oficial": "https://co.godaddy.com/",
       "datacenter": "EE.UU. (Arizona) y regiones globales; sin datacenter en Colombia",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "Plesk",
@@ -117,6 +122,7 @@
       "razon_social": "HostDime.com.co S.A.S.",
       "sitio_oficial": "https://www.hostdime.com.co/",
       "datacenter": "Tocancipá, Cundinamarca, Colombia (datacenter propio Tier IV, Uptime Institute)",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel/WHM",
         "Plesk",
@@ -138,6 +144,7 @@
       "razon_social": "HostGator (Newfold Digital); sin entidad colombiana confirmada",
       "sitio_oficial": "https://www.hostgator.co/",
       "datacenter": "EE.UU. (Houston/Provo/Atlanta); sin datacenter en Colombia",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "WordPress",
@@ -158,6 +165,7 @@
       "razon_social": "Hosting Red S.A.S.",
       "sitio_oficial": "https://www.hostingred.com.co/",
       "datacenter": "Bogotá (Colombia), EE.UU. (Miami/Dallas/NY/Santa Clara) y Montreal (Canadá) — terceros",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "Plesk",
@@ -178,6 +186,7 @@
       "razon_social": "IPXON Networks (operador regional LatAm)",
       "sitio_oficial": "https://www.ipxon.com/",
       "datacenter": "Bogotá, Colombia (datacenter propio/operado; carriers CenturyLink/Movistar/Claro/ETB)",
+      "datacenter_local": true,
       "tecnologias": [
         "Colocation",
         "Datacenter",
@@ -198,6 +207,7 @@
       "razon_social": "Latinoamérica Hosting S.A.S.",
       "sitio_oficial": "https://www.latinoamericahosting.com.co/",
       "datacenter": "EE.UU. (Michigan/Texas/Florida) y Ámsterdam; sin datacenter en Colombia",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "LiteSpeed Enterprise + LSCache",
@@ -219,6 +229,7 @@
       "razon_social": "Planeta Hosting S.A.S.",
       "sitio_oficial": "https://www.planetahosting.com.co/",
       "datacenter": "Colombia (servidores propios declarados; ubicación exacta no verificada)",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "SSD",

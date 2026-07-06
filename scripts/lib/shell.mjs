@@ -29,7 +29,8 @@ function stripStaleMeta(html) {
     .replace(/<meta property="og:url"[^>]*>/gi, '')
     .replace(/<meta property="og:title"[^>]*>/gi, '')
     .replace(/<meta property="og:description"[^>]*>/gi, '')
-    .replace(/<meta name="description"[^>]*>/gi, '');
+    .replace(/<meta name="description"[^>]*>/gi, '')
+    .replace(/<meta name="keywords"[^>]*>/gi, '');
 }
 
 export const CLEAN_SHELL = stripStaleMeta(stripPrerenderedBody(RAW));
@@ -42,12 +43,13 @@ export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp
  * - Injects per-page JSON-LD via `headExtra`
  * - Replaces empty <div id="root"></div> with the crawleable bodyContent
  */
-export function buildHtml({ title, description, canonical, locale = 'es', headExtra = '', bodyContent = '' }) {
+export function buildHtml({ title, description, canonical, locale = 'es', headExtra = '', bodyContent = '', keywords = '' }) {
   let html = CLEAN_SHELL;
   html = html.replace(/<html lang="[^"]*"/i, `<html lang="${esc(locale)}"`);
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${esc(title)}</title>`);
   const injected = [
     `<meta name="description" content="${esc(description)}" />`,
+    keywords ? `<meta name="keywords" content="${esc(keywords)}" />` : '',
     `<link rel="canonical" href="${esc(canonical)}" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="EligeTuHosting" />`,
@@ -60,7 +62,7 @@ export function buildHtml({ title, description, canonical, locale = 'es', headEx
     `<meta name="twitter:description" content="${esc(description)}" />`,
     `<meta name="robots" content="index,follow" />`,
     headExtra || '',
-  ].join('\n    ');
+  ].filter(Boolean).join('\n    ');
   html = html.replace(/<\/head>/i, `    ${injected}\n  </head>`);
   const wrapped = `<div id="prerender-content" style="max-width:960px;margin:0 auto;padding:24px;font-family:system-ui,sans-serif;color:#2B2D42;line-height:1.55">${bodyContent}</div>`;
   html = html.replace(/<div id="root"><\/div>/i, `<div id="root">${wrapped}</div>`);

@@ -14,15 +14,16 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { buildHtml, esc } from './lib/shell.mjs';
+import { hasLocalDatacenter } from './lib/dc-local.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
 
 const COUNTRIES = {
-  pe: { code: 'PE', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE', regex: /per[uú]/i },
-  mx: { code: 'MX', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX', regex: /m[eé]xico/i },
-  co: { code: 'CO', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO', regex: /colombia/i },
-  ar: { code: 'AR', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR', regex: /argentina/i },
+  pe: { code: 'PE', slug: 'pe', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE' },
+  mx: { code: 'MX', slug: 'mx', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX' },
+  co: { code: 'CO', slug: 'co', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO' },
+  ar: { code: 'AR', slug: 'ar', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR' },
 };
 
 async function fetchProviders(code) {
@@ -33,11 +34,11 @@ async function fetchProviders(code) {
   return await res.json();
 }
 
-const hasLocalDc = (regex, s) => !!s && regex.test(s);
+const hasLocalDc = (cslug, s) => hasLocalDatacenter(cslug, s);
 
-const rank = (list, regex) => list.slice().sort((a, b) => {
-  const la = hasLocalDc(regex, a.datacenter_location) ? 0 : 1;
-  const lb = hasLocalDc(regex, b.datacenter_location) ? 0 : 1;
+const rank = (list, cslug) => list.slice().sort((a, b) => {
+  const la = hasLocalDc(cslug, a.datacenter_location) ? 0 : 1;
+  const lb = hasLocalDc(cslug, b.datacenter_location) ? 0 : 1;
   if (la !== lb) return la - lb;
   const ea = a.legal_name ? 0 : 1;
   const eb = b.legal_name ? 0 : 1;
@@ -56,7 +57,7 @@ async function writeFile(relPath, html) {
 
 /* ---------- 1) Mejor hosting {pais} 2026 -------------------------------- */
 function renderBestHosting(cslug, meta, providers) {
-  const list = rank(providers, meta.regex);
+  const list = rank(providers, cslug);
   const canonical = `https://eligetuhosting.com/${cslug}/mejor-hosting-${meta.long}-2026`;
   const title = `Mejor hosting en ${meta.name} 2026 · Directorio verificado | EligeTuHosting`;
   const description = `Ranking pre-benchmark de proveedores de hosting en ${meta.name}, ordenados por datos objetivos: datacenter local real, razón social local y antigüedad. Sin puntajes inventados.`;
@@ -85,7 +86,7 @@ function renderBestHosting(cslug, meta, providers) {
     <tr>
       <td>${i + 1}</td>
       <td><a href="/${cslug}/${esc(p.slug)}">${esc(p.name)}</a></td>
-      <td>${hasLocalDc(meta.regex, p.datacenter_location) ? 'Sí' : (p.datacenter_location ? `Fuera: ${esc(p.datacenter_location)}` : 'No declara')}</td>
+      <td>${hasLocalDc(cslug, p.datacenter_location) ? 'Sí' : (p.datacenter_location ? `Fuera: ${esc(p.datacenter_location)}` : 'No declara')}</td>
       <td>${esc(p.legal_name || '—')}</td>
       <td>${p.year_founded || '—'}</td>
     </tr>`).join('');
@@ -107,12 +108,12 @@ function renderBestHosting(cslug, meta, providers) {
     ${faqs.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
   `;
   const headExtra = [itemList, breadcrumb, faqLd].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}` });
 }
 
 /* ---------- 2) Datacenter local ---------------------------------------- */
 function renderDatacenterLocal(cslug, meta, providers) {
-  const list = providers.filter(p => hasLocalDc(meta.regex, p.datacenter_location));
+  const list = providers.filter(p => hasLocalDc(cslug, p.datacenter_location));
   const canonical = `https://eligetuhosting.com/${cslug}/hosting-con-datacenter-local`;
   const title = `Hosting con datacenter local en ${meta.name} · Verificado por ASN | EligeTuHosting`;
   const description = `Proveedores de hosting con datacenter físicamente en ${meta.name}, verificado por ASN, BGP y declaraciones del proveedor.`;
@@ -152,7 +153,7 @@ function renderDatacenterLocal(cslug, meta, providers) {
     <p><a href="/${cslug}">← Volver al directorio de ${esc(meta.name)}</a></p>
   `;
   const headExtra = [itemList, breadcrumb].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}` });
 }
 
 /* ---------- 3) Comparativa a-vs-b -------------------------------------- */
@@ -173,7 +174,7 @@ function renderComparativa(cslug, meta, p1, p2) {
   const rows = [
     ['Razón social', p1.legal_name || '—', p2.legal_name || '—'],
     ['Datacenter declarado', p1.datacenter_location || '—', p2.datacenter_location || '—'],
-    [`Datacenter en ${meta.name}`, hasLocalDc(meta.regex, p1.datacenter_location) ? 'Sí' : 'No', hasLocalDc(meta.regex, p2.datacenter_location) ? 'Sí' : 'No'],
+    [`Datacenter en ${meta.name}`, hasLocalDc(cslug, p1.datacenter_location) ? 'Sí' : 'No', hasLocalDc(cslug, p2.datacenter_location) ? 'Sí' : 'No'],
     ['Año fundación', p1.year_founded ?? '—', p2.year_founded ?? '—'],
     ['Grupo corporativo', p1.corporate_group || '—', p2.corporate_group || '—'],
     ['Teléfono', p1.contact_phone || '—', p2.contact_phone || '—'],
@@ -190,7 +191,7 @@ function renderComparativa(cslug, meta, p1, p2) {
     <p><a href="/${cslug}">← Directorio ${esc(meta.name)}</a> · <a href="/${cslug}/mejor-hosting-${meta.long}-2026">Mejor hosting ${esc(meta.name)} 2026</a></p>
   `;
   const headExtra = `<script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>`;
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}` });
 }
 
 /* ---------- Main -------------------------------------------------------- */

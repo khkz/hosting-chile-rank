@@ -21,9 +21,21 @@ export type LatamSlug = keyof typeof LATAM_META;
 export const isLatamSlug = (s: string | undefined): s is LatamSlug =>
   !!s && ['pe', 'mx', 'co', 'ar'].includes(s.toLowerCase());
 
+// Phrases that flip a country mention into a "NO local DC" statement.
+// We strip them from the string before testing for the country name so
+// that "sin datacenter en Perú" no longer produces a false positive.
+const NEGATION_RE = /sin\s+datacenter[^,.;]*|sin\s+dc[^,.;]*|fuera\s+de[^,.;]*|revende(?:\s+infraestructura)?[^,.;]*|opera\s+de\s+forma\s+remota[^,.;]*/gi;
+
 export const hasLocalDatacenter = (slug: LatamSlug, datacenter_location?: string | null): boolean => {
   if (!datacenter_location) return false;
-  return LATAM_META[slug].regex.test(datacenter_location);
+  const cleaned = datacenter_location.replace(NEGATION_RE, ' ');
+  return LATAM_META[slug].regex.test(cleaned);
+};
+
+// Tri-state (true/false/null) for JSON payloads: null = "no declara".
+export const datacenterLocalStatus = (slug: LatamSlug, datacenter_location?: string | null): boolean | null => {
+  if (!datacenter_location) return null;
+  return hasLocalDatacenter(slug, datacenter_location);
 };
 
 // Orden objetivo declarado (Fase 2, pre-benchmark):

@@ -213,6 +213,7 @@ ${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donw
   for (const c of LATAM) {
     try {
       const rows = await rest(`hosting_companies?select=slug,name,legal_name,website,datacenter_location,technologies,contact_phone,contact_address,country,is_verified,is_curated,updated_at&is_verified=eq.true&country=eq.${c.code}&order=is_curated.desc,name.asc`);
+      const { datacenterLocalStatus } = await import('./lib/dc-local.mjs');
       const proveedores = rows.map((r) => ({
         nombre: r.name,
         slug: r.slug,
@@ -220,6 +221,7 @@ ${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donw
         razon_social: r.legal_name || null,
         sitio_oficial: r.website || null,
         datacenter: r.datacenter_location || null,
+        datacenter_local: datacenterLocalStatus(c.slug, r.datacenter_location),
         tecnologias: r.technologies || [],
         telefono: r.contact_phone || null,
         direccion: r.contact_address || null,

@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/pe)",
-  "fecha_generacion": "2026-07-06T04:55:29.556Z",
+  "fecha_generacion": "2026-07-06T10:31:20.941Z",
   "pais": "PE",
   "total_proveedores": 18,
   "proveedores": [
@@ -16,6 +16,7 @@
       "razon_social": "Hostingplus Datacenter S.A.C.",
       "sitio_oficial": "https://www.hostingplus.pe/",
       "datacenter": "Orlando, Florida (EE.UU.) — datacenter declarado en su ficha técnica",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "SSD RAID 10",
@@ -36,6 +37,7 @@
       "razon_social": "Apache Perú S.A.C.",
       "sitio_oficial": "https://apacheperu.pe/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "MailChannels",
         "discos RAID-1",
@@ -55,6 +57,7 @@
       "razon_social": "Marca de Haulmer, Inc. (Chile); facturación en Perú vía PagoMaster S.A.C.",
       "sitio_oficial": "https://www.bluehosting.pe/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "Web Hosting",
         "VPS SSD",
@@ -75,6 +78,7 @@
       "razon_social": "Industrialmedia S.A. (Colombia)",
       "sitio_oficial": "https://www.dongee.com/",
       "datacenter": "EE.UU. (Miami/Virginia); opera de forma remota",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "Plesk",
@@ -95,6 +99,7 @@
       "razon_social": "GoDaddy Operating Company, LLC (EE.UU.); sin entidad peruana",
       "sitio_oficial": "https://pe.godaddy.com/",
       "datacenter": "EE.UU. (Phoenix) + colocation NL/Singapur; sin datacenter en Perú",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "WordPress",
@@ -115,6 +120,7 @@
       "razon_social": "HostDime.com.pe S.A.C.",
       "sitio_oficial": "https://www.hostdime.com.pe/",
       "datacenter": "Lima, Perú (datacenter propio Tier IV, ~75.000 sq ft, red AS33182)",
+      "datacenter_local": true,
       "tecnologias": [
         "Servidores dedicados",
         "VPS KVM",
@@ -136,6 +142,7 @@
       "razon_social": "HostGator.com LLC (Texas, EE.UU.); grupo Newfold Digital; sin entidad peruana",
       "sitio_oficial": "https://www.hostgator.pe/",
       "datacenter": "Atlanta, EE.UU.; sin datacenter en Perú",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "WordPress",
@@ -156,6 +163,7 @@
       "razon_social": "Orange Global Group S.A.C.",
       "sitio_oficial": "https://www.hosting.com.pe/",
       "datacenter": "EE.UU., Canadá y UE (revende infraestructura)",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "Webuzo",
@@ -176,6 +184,7 @@
       "razon_social": "Hostinger International Ltd. (Lituania); sin entidad peruana",
       "sitio_oficial": "https://www.hostinger.com/",
       "datacenter": "EE.UU. y Brasil (São Paulo); sin datacenter en Perú",
+      "datacenter_local": false,
       "tecnologias": [
         "LiteSpeed",
         "hPanel",
@@ -196,6 +205,7 @@
       "razon_social": "Net Hosting Solutions S.A.C.",
       "sitio_oficial": "https://www.hostingnice.com/",
       "datacenter": "EE.UU. y Suiza (offshore); sin datacenter en Perú",
+      "datacenter_local": false,
       "tecnologias": [
         "LiteSpeed",
         "SSD NVMe",
@@ -216,6 +226,7 @@
       "razon_social": null,
       "sitio_oficial": "https://www.hosting.pe/",
       "datacenter": "Lima, Perú (datacenter propio declarado por el proveedor)",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "VMware",
@@ -235,6 +246,7 @@
       "razon_social": "IntermediaHost S.A.C.",
       "sitio_oficial": "https://www.hostingperu.com.pe/",
       "datacenter": "Houston, Dallas y Londres (revende infraestructura SoftLayer/IBM)",
+      "datacenter_local": false,
       "tecnologias": [
         "cPanel",
         "SSD/NVMe",
@@ -255,6 +267,7 @@
       "razon_social": "Cosas Peruanas S.C.R.L.",
       "sitio_oficial": "https://hosting-peru.pe/",
       "datacenter": "Lima, Perú (declarado para shared; dedicados en EE.UU./Alemania)",
+      "datacenter_local": true,
       "tecnologias": [
         "cPanel",
         "CloudLinux",
@@ -275,6 +288,7 @@
       "razon_social": "Doctor PC Peru E.I.R.L.",
       "sitio_oficial": "https://www.inkawebdesign.com/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "Linux CentOS",
         "cPanel/WHM",
@@ -295,6 +309,7 @@
       "razon_social": "M.G. Digital S.A.C.",
       "sitio_oficial": "https://mgd.pe/",
       "datacenter": "Lima, Perú (datacenter propio declarado por el proveedor)",
+      "datacenter_local": true,
       "tecnologias": [
         "LiteSpeed",
         "Imunify360",
@@ -315,6 +330,7 @@
       "razon_social": "Corporación Net Solution Perú S.A.C.",
       "sitio_oficial": "https://www.netsolution.pe/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "cPanel",
         "Plesk",
@@ -335,6 +351,7 @@
       "razon_social": "Planeta Hosting S.A.C.",
       "sitio_oficial": "https://www.planetahosting.pe/",
       "datacenter": null,
+      "datacenter_local": null,
       "tecnologias": [
         "cPanel",
         "SSD",
@@ -355,6 +372,7 @@
       "razon_social": "Web Peru E.I.R.L.",
       "sitio_oficial": "https://www.wperu.com/",
       "datacenter": "EE.UU. (revende infraestructura; sin datacenter en Perú)",
+      "datacenter_local": false,
       "tecnologias": [
         "Linux/Windows",
         "cPanel/Plesk",

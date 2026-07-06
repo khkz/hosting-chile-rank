@@ -147,7 +147,7 @@ async function generateForCountry(cslug) {
     <script type="application/ld+json">${JSON.stringify(datasetLd)}</script>`;
   await fs.mkdir(`public/${cslug}/benchmark`, { recursive: true });
   await fs.writeFile(`public/${cslug}/benchmark/index.html`,
-    buildHtml({ title: titleBench, description: descBench, canonical: canonicalBench, locale: meta.locale, headExtra: headExtraBench, bodyContent: bodyBench }), 'utf8');
+    buildHtml({ title: titleBench, description: descBench, canonical: canonicalBench, locale: meta.locale, headExtra: headExtraBench, bodyContent: bodyBench, keywords: `benchmark hosting ${meta.long}, ttfb ${meta.long}, uptime ${meta.long}, hosting ${meta.name.toLowerCase()}` }), 'utf8');
 
   // 3) Markdown por país
   const mdCountry = `# Hosting en ${meta.name} ${meta.flag} — Directorio verificado
@@ -274,7 +274,7 @@ async function generateDatosPage() {
   const headExtra = `<script type="application/ld+json">${JSON.stringify(datasetLd)}</script>`;
   await fs.mkdir('public/datos', { recursive: true });
   await fs.writeFile('public/datos/index.html',
-    buildHtml({ title, description, canonical, locale: 'es', headExtra, bodyContent: body }), 'utf8');
+    buildHtml({ title, description, canonical, locale: 'es', headExtra, bodyContent: body, keywords: 'datos abiertos hosting, benchmarks hosting latam, cc-by-4.0, api hosting' }), 'utf8');
   console.log('✅ /datos generado');
 }
 
@@ -308,7 +308,7 @@ async function generateLatamHub() {
   const headExtra = `<script type="application/ld+json">${JSON.stringify(itemListLd)}</script>`;
   await fs.mkdir('public/latam', { recursive: true });
   await fs.writeFile('public/latam/index.html',
-    buildHtml({ title, description, canonical, locale: 'es-419', headExtra, bodyContent: body }), 'utf8');
+    buildHtml({ title, description, canonical, locale: 'es-419', headExtra, bodyContent: body, keywords: 'hosting latam, hosting latinoamerica, hosting peru, hosting mexico, hosting colombia, hosting argentina' }), 'utf8');
   console.log('✅ /latam generado');
 }
 

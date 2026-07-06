@@ -10,15 +10,16 @@
 // Escribe public/{pais}/{slug}/index.html. La SPA hidrata encima.
 import fs from 'node:fs/promises';
 import { buildHtml, esc } from './lib/shell.mjs';
+import { hasLocalDatacenter } from './lib/dc-local.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
 
 const COUNTRIES = {
-  pe: { code: 'PE', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE', regex: /per[uú]/i },
-  mx: { code: 'MX', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX', regex: /m[eé]xico/i },
-  co: { code: 'CO', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO', regex: /colombia/i },
-  ar: { code: 'AR', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR', regex: /argentina/i },
+  pe: { code: 'PE', slug: 'pe', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE' },
+  mx: { code: 'MX', slug: 'mx', name: 'México', long: 'mexico', flag: '🇲🇽', locale: 'es-MX' },
+  co: { code: 'CO', slug: 'co', name: 'Colombia', long: 'colombia', flag: '🇨🇴', locale: 'es-CO' },
+  ar: { code: 'AR', slug: 'ar', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR' },
 };
 const ROOT = 'https://eligetuhosting.com';
 const NOW = new Date().toISOString();
@@ -30,13 +31,13 @@ async function sb(path) {
 }
 
 function fmtDate(d) { return d ? String(d).slice(0, 10) : '—'; }
-function hasLocalDc(regex, s) { return !!s && regex.test(s); }
+function hasLocalDc(cslug, s) { return hasLocalDatacenter(cslug, s); }
 
-function faqs(c, meta, checksDate) {
+function faqs(c, cslug, meta, checksDate) {
   return [
     { q: `¿Tiene ${c.name} datacenter en ${meta.name}?`,
       a: c.datacenter_location
-          ? (hasLocalDc(meta.regex, c.datacenter_location)
+          ? (hasLocalDc(cslug, c.datacenter_location)
              ? `Sí. Según su información pública, ${c.name} declara datacenter en ${meta.name} (${c.datacenter_location}). Verificamos coherencia con ASN cuando fue posible.`
              : `No con presencia declarada en ${meta.name}. Datacenter declarado: ${c.datacenter_location}.`)
           : `${c.name} no publica en su sitio la ubicación exacta del datacenter, por lo que la latencia local y la jurisdicción de los datos deben confirmarse antes de contratar.`,
@@ -57,7 +58,7 @@ function techList(c, chk, cslug, meta) {
     ['Sitio oficial', c.website ? `<a href="${esc(c.website)}" rel="nofollow noopener">${esc(c.website)}</a>` : '—'],
     ['Razón social', esc(c.legal_name || '—')],
     ['Grupo corporativo', esc(c.corporate_group || '—')],
-    ['Datacenter declarado', c.datacenter_location ? `${esc(c.datacenter_location)}${hasLocalDc(meta.regex, c.datacenter_location) ? ` <strong>(en ${meta.name})</strong>` : ''}` : '—'],
+    ['Datacenter declarado', c.datacenter_location ? `${esc(c.datacenter_location)}${hasLocalDc(cslug, c.datacenter_location) ? ` <strong>(en ${meta.name})</strong>` : ''}` : '—'],
     ['Año de fundación', c.year_founded ?? '—'],
     ['Tecnologías', esc((c.technologies || []).slice(0, 8).join(', ') || '—')],
     ['Teléfono', esc(c.contact_phone || '—')],
@@ -84,13 +85,13 @@ function alternatives(c, others, cslug, meta) {
   const list = others
     .filter(o => o.slug !== c.slug)
     .sort((a, b) => {
-      const la = hasLocalDc(meta.regex, a.datacenter_location) ? 0 : 1;
-      const lb = hasLocalDc(meta.regex, b.datacenter_location) ? 0 : 1;
+      const la = hasLocalDc(cslug, a.datacenter_location) ? 0 : 1;
+      const lb = hasLocalDc(cslug, b.datacenter_location) ? 0 : 1;
       if (la !== lb) return la - lb;
       return a.name.localeCompare(b.name);
     }).slice(0, 6);
   if (!list.length) return '';
-  return `<ul>${list.map(o => `<li><a href="/${cslug}/${esc(o.slug)}">${esc(o.name)}</a>${hasLocalDc(meta.regex, o.datacenter_location) ? ` — datacenter en ${meta.name}` : ''} · <a href="/${cslug}/comparativa/${[c.slug, o.slug].sort().join('-vs-')}">comparar</a></li>`).join('')}</ul>`;
+  return `<ul>${list.map(o => `<li><a href="/${cslug}/${esc(o.slug)}">${esc(o.name)}</a>${hasLocalDc(cslug, o.datacenter_location) ? ` — datacenter en ${meta.name}` : ''} · <a href="/${cslug}/comparativa/${[c.slug, o.slug].sort().join('-vs-')}">comparar</a></li>`).join('')}</ul>`;
 }
 
 async function run() {
@@ -115,7 +116,7 @@ async function run() {
       const title = `${c.name} — Hosting en ${meta.name} · Ficha verificada | EligeTuHosting`;
       const description = `Datos verificables de ${c.name} para hosting en ${meta.name}: razón social, datacenter, ASN, SSL, TTFB medido, tecnologías y reputación. Sin puntajes inventados.`;
       const editorial = c.editorial_summary || `${c.name} es un proveedor con actividad comercial en ${meta.name}. Verificamos su información pública sin publicar puntajes hasta acumular benchmarks propios.`;
-      const faq = faqs(c, meta, chk?.checked_at);
+      const faq = faqs(c, cslug, meta, chk?.checked_at);
       const jsonLd = [
         { '@context': 'https://schema.org', '@type': 'Organization', name: c.name, url: c.website, address: { '@type': 'PostalAddress', addressCountry: meta.code } },
         { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -155,7 +156,7 @@ async function run() {
 
         <p style="margin-top:24px"><a href="/${cslug}">← Directorio ${esc(meta.name)}</a> · <a href="/${cslug}/mejor-hosting-${meta.long}-2026">Mejor hosting ${esc(meta.name)} 2026</a> · <a href="/${cslug}/${esc(c.slug)}.md">Versión Markdown</a></p>
       `;
-      const html = buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent: body });
+      const html = buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent: body, keywords: `${c.name.toLowerCase()}, hosting ${meta.long}, ${c.name.toLowerCase()} opiniones, hosting ${meta.name.toLowerCase()}` });
       await fs.mkdir(`public/${cslug}/${c.slug}`, { recursive: true });
       await fs.writeFile(`public/${cslug}/${c.slug}/index.html`, html, 'utf8');
       total++;
