@@ -185,9 +185,15 @@ const Footer = () => {
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gray-400" />
                 <span>contacto@eligetuhosting.cl</span>
-              </div>
             </div>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li><Link to="/quienes-somos" className="text-gray-300 hover:text-white transition-colors">Quiénes somos</Link></li>
+              <li><Link to="/sobre-nosotros" className="text-gray-300 hover:text-white transition-colors">Equipo editorial</Link></li>
+              <li><Link to="/metodologia" className="text-gray-300 hover:text-white transition-colors">Metodología</Link></li>
+              <li><Link to="/contacto" className="text-gray-300 hover:text-white transition-colors">Contacto</Link></li>
+            </ul>
           </div>
+        </div>
         </div>
 
         {/* AI / Periodistas */}
