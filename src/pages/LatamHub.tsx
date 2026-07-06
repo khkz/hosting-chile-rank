@@ -52,12 +52,12 @@ const LatamHub = () => {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-4">
-            Elige tu país
+            ¿Dónde vas a hospedar tu proyecto?
           </h1>
           <p className="text-lg text-[#2B2D42]/70 mb-10 max-w-2xl mx-auto">
-            Publicamos rankings auditados de hosting por país: ASN, datacenter,
-            reclamos verificados y trayectoria. Selecciona tu mercado para ver
-            los proveedores verificados.
+            Elegí tu país y te mostramos qué proveedores son reales, qué datacenter
+            usan y quién tiene mejor reputación. Nada inventado: solo datos que
+            podés auditar.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
