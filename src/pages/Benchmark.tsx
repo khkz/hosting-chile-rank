@@ -176,11 +176,13 @@ const Benchmark: React.FC = () => {
             <div className="container mx-auto px-4 max-w-2xl text-center">
               <Card>
                 <CardHeader>
-                  <CardTitle>Aún no hay ejecuciones del benchmark</CardTitle>
+                  <CardTitle>Todavía estamos midiendo</CardTitle>
                   <CardDescription>
-                    El sistema de medición ya está instalado. La primera ejecución completa se realizará
-                    el día 1 del próximo mes a las 03:00 CLT, o puede ser disparada manualmente desde el
-                    panel administrativo.
+                    Los benchmarks se corren automáticamente el día 1 de cada mes a las 03:00 CLT.
+                    Mientras tanto, podés revisar la{' '}
+                    <a href="/metodologia-benchmark" className="text-primary underline">metodología</a>{' '}
+                    para saber exactamente qué medimos y cómo. Si algo no cuadra, escribinos a{' '}
+                    <a href="mailto:contacto@eligetuhosting.cl" className="text-primary underline">contacto@eligetuhosting.cl</a>.
                   </CardDescription>
                 </CardHeader>
               </Card>
