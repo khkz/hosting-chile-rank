@@ -64,6 +64,7 @@ const Footer = () => {
                 <li><Link to="/datos" className="text-gray-300 hover:text-white">Documentación de datos abiertos</Link></li>
                 <li><Link to="/latam" className="text-gray-300 hover:text-white">← Volver a LATAM</Link></li>
                 <li><Link to="/metodologia" className="text-gray-300 hover:text-white">Metodología</Link></li>
+                <li><Link to="/quienes-somos" className="text-gray-300 hover:text-white">Quiénes somos</Link></li>
               </ul>
             </div>
 
