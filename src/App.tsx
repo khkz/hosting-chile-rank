@@ -106,6 +106,7 @@ import Contacto from './pages/Contacto';
 import VotaHosting from './pages/VotaHosting';
 import CountryLanding from './pages/CountryLanding';
 import CountryProviderDetail from './pages/CountryProviderDetail';
+import Latam from './pages/Latam';
 import HomeDispatcher from './components/HomeDispatcher';
 
 
