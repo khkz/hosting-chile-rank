@@ -226,6 +226,8 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     .join('\n');
   const dotComUrls = [
     'https://eligetuhosting.com/',
+    'https://eligetuhosting.com/latam',
+    'https://eligetuhosting.com/datos',
     'https://eligetuhosting.com/pe',
     'https://eligetuhosting.com/mx',
     'https://eligetuhosting.com/co',
