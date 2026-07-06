@@ -27,7 +27,7 @@ export function PublicReviewsList({ companyId, companyName }: PublicReviewsListP
     queryKey: ['public-reviews', companyId, filter, page],
     queryFn: async () => {
       let query = supabase
-        .from('hosting_reviews')
+        .from('hosting_reviews_public' as any)
         .select('*')
         .eq('company_id', companyId)
         .eq('status', 'approved')
@@ -39,7 +39,7 @@ export function PublicReviewsList({ companyId, companyName }: PublicReviewsListP
 
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data as any[];
     }
   });
 
