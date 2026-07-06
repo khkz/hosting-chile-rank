@@ -57,7 +57,7 @@ async function writeFile(relPath, html) {
 
 /* ---------- 1) Mejor hosting {pais} 2026 -------------------------------- */
 function renderBestHosting(cslug, meta, providers) {
-  const list = rank(providers, meta.regex);
+  const list = rank(providers, cslug);
   const canonical = `https://eligetuhosting.com/${cslug}/mejor-hosting-${meta.long}-2026`;
   const title = `Mejor hosting en ${meta.name} 2026 · Directorio verificado | EligeTuHosting`;
   const description = `Ranking pre-benchmark de proveedores de hosting en ${meta.name}, ordenados por datos objetivos: datacenter local real, razón social local y antigüedad. Sin puntajes inventados.`;
@@ -86,7 +86,7 @@ function renderBestHosting(cslug, meta, providers) {
     <tr>
       <td>${i + 1}</td>
       <td><a href="/${cslug}/${esc(p.slug)}">${esc(p.name)}</a></td>
-      <td>${hasLocalDc(meta.regex, p.datacenter_location) ? 'Sí' : (p.datacenter_location ? `Fuera: ${esc(p.datacenter_location)}` : 'No declara')}</td>
+      <td>${hasLocalDc(cslug, p.datacenter_location) ? 'Sí' : (p.datacenter_location ? `Fuera: ${esc(p.datacenter_location)}` : 'No declara')}</td>
       <td>${esc(p.legal_name || '—')}</td>
       <td>${p.year_founded || '—'}</td>
     </tr>`).join('');
@@ -113,7 +113,7 @@ function renderBestHosting(cslug, meta, providers) {
 
 /* ---------- 2) Datacenter local ---------------------------------------- */
 function renderDatacenterLocal(cslug, meta, providers) {
-  const list = providers.filter(p => hasLocalDc(meta.regex, p.datacenter_location));
+  const list = providers.filter(p => hasLocalDc(cslug, p.datacenter_location));
   const canonical = `https://eligetuhosting.com/${cslug}/hosting-con-datacenter-local`;
   const title = `Hosting con datacenter local en ${meta.name} · Verificado por ASN | EligeTuHosting`;
   const description = `Proveedores de hosting con datacenter físicamente en ${meta.name}, verificado por ASN, BGP y declaraciones del proveedor.`;
@@ -174,7 +174,7 @@ function renderComparativa(cslug, meta, p1, p2) {
   const rows = [
     ['Razón social', p1.legal_name || '—', p2.legal_name || '—'],
     ['Datacenter declarado', p1.datacenter_location || '—', p2.datacenter_location || '—'],
-    [`Datacenter en ${meta.name}`, hasLocalDc(meta.regex, p1.datacenter_location) ? 'Sí' : 'No', hasLocalDc(meta.regex, p2.datacenter_location) ? 'Sí' : 'No'],
+    [`Datacenter en ${meta.name}`, hasLocalDc(cslug, p1.datacenter_location) ? 'Sí' : 'No', hasLocalDc(cslug, p2.datacenter_location) ? 'Sí' : 'No'],
     ['Año fundación', p1.year_founded ?? '—', p2.year_founded ?? '—'],
     ['Grupo corporativo', p1.corporate_group || '—', p2.corporate_group || '—'],
     ['Teléfono', p1.contact_phone || '—', p2.contact_phone || '—'],
