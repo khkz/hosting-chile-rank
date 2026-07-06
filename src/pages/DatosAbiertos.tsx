@@ -62,6 +62,9 @@ const DatosAbiertos = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:locale" content="es_419" />
+        <meta property="og:image" content="https://eligetuhosting.com/og/datos.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://eligetuhosting.com/og/datos.png" />
         <script type="application/ld+json">{JSON.stringify(datasetLd)}</script>
       </Helmet>
       <Navbar />

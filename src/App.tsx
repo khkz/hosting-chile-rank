@@ -62,6 +62,7 @@ import TCOCalculatorPage from './pages/TCOCalculatorPage';
 import SEOOrganization from './components/SEOOrganization';
 import AcercaDe from './pages/AcercaDe';
 import SobreNosotros from './pages/SobreNosotros';
+import QuienesSomos from './pages/QuienesSomos';
 import ASNDirectory from './pages/ASNDirectory';
 import ASNDetail from './pages/ASNDetail';
 import ASNChile from './pages/ASNChile';
@@ -191,6 +192,7 @@ function App() {
         <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
         <Route path="/acerca-de" element={<AcercaDe />} />
         <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+        <Route path="/quienes-somos" element={<QuienesSomos />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="/asn" element={<ASNDirectory />} />
