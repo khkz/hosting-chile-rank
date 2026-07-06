@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { COUNTRIES, DOT_COM_COUNTRIES } from '@/lib/country';
+import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
 
 
 /**
@@ -90,6 +91,10 @@ const LatamHub = () => {
                 </Link>
               );
             })}
+          </div>
+
+          <div className="max-w-3xl mx-auto text-left">
+            <AdvisorEmbed />
           </div>
 
           <div className="mt-12 text-xs text-[#2B2D42]/50">

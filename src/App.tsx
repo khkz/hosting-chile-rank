@@ -114,7 +114,7 @@ import DatosAbiertos from './pages/DatosAbiertos';
 import Latam from './pages/Latam';
 import HomeDispatcher from './components/HomeDispatcher';
 
-
+const HostingAdvisorFab = React.lazy(() => import('./components/advisor/HostingAdvisorFab'));
 
 function App() {
   return (
@@ -126,6 +126,9 @@ function App() {
         <Toaster />
         <Sonner />
         <SEOOrganization />
+        <React.Suspense fallback={null}>
+          <HostingAdvisorFab />
+        </React.Suspense>
         <Routes>
         {/* Rutas para archivos estáticos */}
         <Route path="/sitemap.xml" element={<StaticSitemap />} />

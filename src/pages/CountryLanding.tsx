@@ -22,6 +22,8 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
+import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
+
 
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
@@ -225,6 +227,10 @@ const CountryLanding = () => {
               </CardContent>
             </Card>
           )}
+
+          <AdvisorEmbed />
+
+
 
           {isLoading ? (
             <p className="text-center text-muted-foreground py-10">
