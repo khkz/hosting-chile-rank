@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/pe)",
-  "fecha_generacion": "2026-07-02T02:09:07.137Z",
+  "fecha_generacion": "2026-07-06T04:07:35.799641+00:00",
   "pais": "PE",
   "total_proveedores": 18,
   "proveedores": [
@@ -27,7 +27,13 @@
       "recomendado_editorial": true,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hostingplus-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Apache Perú",
@@ -46,7 +52,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/apacheperu-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "BlueHosting Perú",
@@ -66,7 +78,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/bluehosting-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Dongee",
@@ -86,7 +104,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/dongee-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "GoDaddy Perú",
@@ -106,7 +130,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/godaddy-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "HostDime Perú",
@@ -127,7 +157,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hostdime-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "HostGator Perú",
@@ -147,7 +183,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hostgator-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Hosting.com.pe (Orange)",
@@ -167,7 +209,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hosting-com-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Hostinger Perú",
@@ -187,7 +235,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hostinger-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "HostingNice",
@@ -207,7 +261,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hostingnice-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Hosting.pe",
@@ -226,7 +286,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hosting-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Hosting Perú",
@@ -246,7 +312,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hostingperu-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Hosting-Peru.pe",
@@ -266,7 +338,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/hosting-peru-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Inka Web Design",
@@ -286,7 +364,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/inkawebdesign-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "MGD (MGDHost)",
@@ -306,7 +390,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/mgd-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "NetSolution",
@@ -326,7 +416,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/netsolution-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "PlanetaHosting Perú",
@@ -346,7 +442,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T00:44:10.328017+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/planetahosting-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "WEB PERU",
@@ -366,7 +468,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/pe"
+      "url_pais": "https://eligetuhosting.com/pe",
+      "url_ficha": "https://eligetuhosting.com/pe/wperu-pe",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     }
   ]
 }

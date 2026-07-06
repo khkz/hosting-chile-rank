@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/co)",
-  "fecha_generacion": "2026-07-02T02:09:07.137Z",
+  "fecha_generacion": "2026-07-06T04:07:35.799641+00:00",
   "pais": "CO",
   "total_proveedores": 11,
   "proveedores": [
@@ -27,7 +27,13 @@
       "recomendado_editorial": true,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/hostingplus-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "ColombiaHosting",
@@ -47,7 +53,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/colombiahosting-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "Conexcol Cloud Colombia",
@@ -69,7 +81,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/conexcol-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Dongee",
@@ -88,7 +106,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/dongee-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": false
     },
     {
       "nombre": "GoDaddy Colombia",
@@ -108,7 +132,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/godaddy-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "HostDime Colombia",
@@ -129,7 +159,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/hostdime-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "HostGator Colombia",
@@ -149,7 +185,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/hostgator-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Hosting Red",
@@ -169,7 +211,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/hostingred-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "IPXON Networks Colombia",
@@ -189,7 +237,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/ipxon-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Latinoamérica Hosting",
@@ -210,7 +264,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/latinoamericahosting-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "PlanetaHosting Colombia",
@@ -229,7 +289,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/co"
+      "url_pais": "https://eligetuhosting.com/co",
+      "url_ficha": "https://eligetuhosting.com/co/planetahosting-co",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     }
   ]
 }

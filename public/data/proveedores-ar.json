@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/ar)",
-  "fecha_generacion": "2026-07-02T02:09:07.137Z",
+  "fecha_generacion": "2026-07-06T04:07:35.799641+00:00",
   "pais": "AR",
   "total_proveedores": 11,
   "proveedores": [
@@ -26,7 +26,13 @@
       "recomendado_editorial": true,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/hostingplus-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "BAEHOST",
@@ -48,7 +54,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/baehost-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "DonWeb",
@@ -69,7 +81,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/donweb-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Ferozo",
@@ -88,7 +106,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/ferozo-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "G2K Hosting",
@@ -107,7 +131,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/g2khosting-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "GoDaddy Argentina",
@@ -127,7 +157,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/godaddy-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Hostinger Argentina",
@@ -147,7 +183,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/hostinger-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "IPXON Networks Argentina",
@@ -167,7 +209,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/ipxon-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Neolo",
@@ -187,7 +235,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-01T22:20:05.689949+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/neolo-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "Towebs",
@@ -209,7 +263,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/towebs-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     },
     {
       "nombre": "WNPower",
@@ -230,7 +290,13 @@
       "recomendado_editorial": false,
       "verificado": true,
       "fecha_actualizacion": "2026-07-02T00:14:05.532751+00:00",
-      "url_pais": "https://eligetuhosting.com/ar"
+      "url_pais": "https://eligetuhosting.com/ar",
+      "url_ficha": "https://eligetuhosting.com/ar/wnpower-ar",
+      "id_fiscal": null,
+      "email": null,
+      "fundacion": null,
+      "grupo_corporativo": null,
+      "datacenter_local": true
     }
   ]
 }
