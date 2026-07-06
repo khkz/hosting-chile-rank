@@ -142,6 +142,8 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     ['/ultimos-dominios', '0.7', 'daily'],
     ['/contacto', '0.6', 'monthly'],
     ['/acerca-de', '0.6', 'monthly'],
+    ['/sobre-nosotros', '0.6', 'monthly'],
+    ['/quienes-somos', '0.7', 'monthly'],
     ['/vota-hosting', '0.6', 'weekly'],
     ['/calculadora-tco', '0.6', 'monthly'],
     ['/benchmark', '0.6', 'weekly'],
