@@ -146,7 +146,14 @@ const Reclamos = () => {
                 <Select value={form.company_id} onValueChange={(v) => setForm({ ...form, company_id: v })}>
                   <SelectTrigger id="company"><SelectValue placeholder="Selecciona un proveedor" /></SelectTrigger>
                   <SelectContent>
-                    {companies?.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                    {Object.entries(groupedCompanies).map(([cc, list]: any) => (
+                      <div key={cc}>
+                        {Object.keys(groupedCompanies).length > 1 && (
+                          <div className="px-2 py-1 text-[10px] uppercase tracking-wide text-muted-foreground">{COUNTRY_LABELS[cc] || cc}</div>
+                        )}
+                        {list.map((c: any) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                      </div>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
