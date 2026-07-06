@@ -59,6 +59,7 @@ const ROUTES = [
   '/calculadora-tco',
   '/acerca-de',
   '/sobre-nosotros',
+  '/quienes-somos',
   '/asn',
   '/asn/chile',
   '/wiki',
