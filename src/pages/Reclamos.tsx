@@ -57,12 +57,12 @@ const Reclamos = () => {
     queryKey: ['public-complaints'],
     queryFn: async () => {
       const { data } = await supabase
-        .from('public_complaints')
+        .from('public_complaints_public' as any)
         .select('*, hosting_companies(name, slug)')
         .in('status', ['verified', 'resolved'])
         .order('created_at', { ascending: false })
         .limit(50);
-      return data ?? [];
+      return (data ?? []) as any[];
     },
   });
 
