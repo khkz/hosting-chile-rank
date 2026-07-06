@@ -274,7 +274,7 @@ async function generateDatosPage() {
   const headExtra = `<script type="application/ld+json">${JSON.stringify(datasetLd)}</script>`;
   await fs.mkdir('public/datos', { recursive: true });
   await fs.writeFile('public/datos/index.html',
-    buildHtml({ title, description, canonical, locale: 'es', headExtra, bodyContent: body }), 'utf8');
+    buildHtml({ title, description, canonical, locale: 'es', headExtra, bodyContent: body, keywords: 'datos abiertos hosting, benchmarks hosting latam, cc-by-4.0, api hosting' }), 'utf8');
   console.log('✅ /datos generado');
 }
 
