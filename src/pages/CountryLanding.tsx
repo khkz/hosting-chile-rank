@@ -170,6 +170,20 @@ const CountryLanding = () => {
               razón social, tecnología). No publicamos puntajes hasta verificar
               reclamos, ASN y trayectoria con la misma metodología que en Chile.
             </p>
+            <div className="flex flex-wrap justify-center gap-2 mt-5 text-sm">
+              <Link
+                to={`/${info.slug}/mejor-hosting-${info.name.toLowerCase().replace(/[éí]/g, m => m === 'é' ? 'e' : 'i')}-2026`}
+                className="px-4 py-2 rounded-md bg-[#2B2D42] text-white hover:bg-[#2B2D42]/90"
+              >
+                🏆 Mejor hosting {info.name} 2026
+              </Link>
+              <Link
+                to={`/${info.slug}/hosting-con-datacenter-local`}
+                className="px-4 py-2 rounded-md bg-white border border-[#2B2D42]/15 text-[#2B2D42] hover:bg-muted"
+              >
+                🖥️ Datacenter local en {info.name}
+              </Link>
+            </div>
           </div>
 
           {recommended && (
