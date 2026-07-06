@@ -2,7 +2,7 @@
 
 Fuente: https://eligetuhosting.com/pe
 Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
-Última actualización: 2026-07-06T10:31:11.816Z
+Última actualización: 2026-07-06T10:51:07.817Z
 
 ## Metodología resumida
 - Datacenter local verificado por ASN y declaraciones oficiales.
