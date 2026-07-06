@@ -8,6 +8,7 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { buildHtml, esc } from './lib/shell.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -20,31 +21,7 @@ const COUNTRIES = {
 };
 const ROOT = 'https://eligetuhosting.com';
 const NOW = new Date().toISOString();
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-const SHELL = await fs.readFile('index.html', 'utf8');
-
-function buildHtml({ title, description, canonical, locale, headExtra = '', bodyContent = '' }) {
-  let html = SHELL;
-  html = html.replace(/<title>[^<]*<\/title>/i, `<title>${esc(title)}</title>`);
-  html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${esc(description)}" />`);
-  html = html.replace(/<link rel="canonical"[^>]*>/gi, '');
-  html = html.replace(/<meta property="og:url"[^>]*>/gi, '');
-  html = html.replace(/<meta property="og:title"[^>]*>/gi, '');
-  html = html.replace(/<meta property="og:description"[^>]*>/gi, '');
-  html = html.replace(/<html lang="[^"]*"/i, `<html lang="${locale}"`);
-  const injected = `
-  <link rel="canonical" href="${canonical}" />
-  <meta property="og:url" content="${canonical}" />
-  <meta property="og:title" content="${esc(title)}" />
-  <meta property="og:description" content="${esc(description)}" />
-  <meta property="og:locale" content="es_419" />
-  ${headExtra}
-</head>`;
-  html = html.replace(/<\/head>/i, injected);
-  html = html.replace(/<div id="root">\s*<\/div>/i, `<div id="root"><div id="ssr-content">${bodyContent}</div></div>`);
-  return html;
-}
 
 async function sbFetch(path) {
   const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
