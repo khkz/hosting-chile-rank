@@ -433,6 +433,13 @@ export type Database = {
             referencedRelation: "public_complaints"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "complaint_verifications_complaint_id_fkey"
+            columns: ["complaint_id"]
+            isOneToOne: false
+            referencedRelation: "public_complaints_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       complaint_votes: {
@@ -463,6 +470,13 @@ export type Database = {
             columns: ["complaint_id"]
             isOneToOne: false
             referencedRelation: "public_complaints"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "complaint_votes_complaint_id_fkey"
+            columns: ["complaint_id"]
+            isOneToOne: false
+            referencedRelation: "public_complaints_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1806,6 +1820,13 @@ export type Database = {
             referencedRelation: "hosting_reviews"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "review_helpful_votes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_reviews_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       review_responses: {
@@ -1849,6 +1870,13 @@ export type Database = {
             columns: ["review_id"]
             isOneToOne: true
             referencedRelation: "hosting_reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "review_responses_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: true
+            referencedRelation: "hosting_reviews_public"
             referencedColumns: ["id"]
           },
         ]
@@ -2541,7 +2569,160 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      hosting_reviews_public: {
+        Row: {
+          comment: string | null
+          company_id: string | null
+          cons: string[] | null
+          created_at: string | null
+          customer_duration: string | null
+          helpful_count: number | null
+          id: string | null
+          is_verified_customer: boolean | null
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_notes: string | null
+          overall_rating: number | null
+          price_rating: number | null
+          pros: string[] | null
+          speed_rating: number | null
+          status: Database["public"]["Enums"]["review_status"] | null
+          support_rating: number | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+          verification_method: string | null
+          verification_proof_url: string | null
+          would_recommend: boolean | null
+        }
+        Insert: {
+          comment?: string | null
+          company_id?: string | null
+          cons?: string[] | null
+          created_at?: string | null
+          customer_duration?: string | null
+          helpful_count?: number | null
+          id?: string | null
+          is_verified_customer?: boolean | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          overall_rating?: number | null
+          price_rating?: number | null
+          pros?: string[] | null
+          speed_rating?: number | null
+          status?: Database["public"]["Enums"]["review_status"] | null
+          support_rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          verification_method?: string | null
+          verification_proof_url?: string | null
+          would_recommend?: boolean | null
+        }
+        Update: {
+          comment?: string | null
+          company_id?: string | null
+          cons?: string[] | null
+          created_at?: string | null
+          customer_duration?: string | null
+          helpful_count?: number | null
+          id?: string | null
+          is_verified_customer?: boolean | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_notes?: string | null
+          overall_rating?: number | null
+          price_rating?: number | null
+          pros?: string[] | null
+          speed_rating?: number | null
+          status?: Database["public"]["Enums"]["review_status"] | null
+          support_rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          verification_method?: string | null
+          verification_proof_url?: string | null
+          would_recommend?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hosting_reviews_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      public_complaints_public: {
+        Row: {
+          category: Database["public"]["Enums"]["complaint_category"] | null
+          company_id: string | null
+          created_at: string | null
+          description: string | null
+          email_verified: boolean | null
+          evidence_url: string | null
+          id: string | null
+          incident_date: string | null
+          provider_responded_at: string | null
+          provider_responded_by: string | null
+          provider_response: string | null
+          severity: number | null
+          status: Database["public"]["Enums"]["complaint_status"] | null
+          title: string | null
+          updated_at: string | null
+          verified_at: string | null
+          votes_count: number | null
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["complaint_category"] | null
+          company_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          email_verified?: boolean | null
+          evidence_url?: string | null
+          id?: string | null
+          incident_date?: string | null
+          provider_responded_at?: string | null
+          provider_responded_by?: string | null
+          provider_response?: string | null
+          severity?: number | null
+          status?: Database["public"]["Enums"]["complaint_status"] | null
+          title?: string | null
+          updated_at?: string | null
+          verified_at?: string | null
+          votes_count?: number | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["complaint_category"] | null
+          company_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          email_verified?: boolean | null
+          evidence_url?: string | null
+          id?: string | null
+          incident_date?: string | null
+          provider_responded_at?: string | null
+          provider_responded_by?: string | null
+          provider_response?: string | null
+          severity?: number | null
+          status?: Database["public"]["Enums"]["complaint_status"] | null
+          title?: string | null
+          updated_at?: string | null
+          verified_at?: string | null
+          votes_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_complaints_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       get_company_reputation: {
