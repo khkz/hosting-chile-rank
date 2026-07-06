@@ -36,11 +36,20 @@ async function resolveIP(hostname: string): Promise<string | null> {
 }
 
 async function getAsn(ip: string): Promise<{ asn: string | null; asn_org: string | null }> {
+  // Primary: ipapi.co (free tier, returns org+asn)
   const r: any = await withTimeout(
+    fetch(`https://ipapi.co/${ip}/json/`).then((x) => x.json()),
+    7000,
+  );
+  if (r?.asn) {
+    return { asn: r.asn, asn_org: r.org ?? null };
+  }
+  // Fallback: bgpview
+  const b: any = await withTimeout(
     fetch(`https://api.bgpview.io/ip/${ip}`).then((x) => x.json()),
     7000,
   );
-  const p = r?.data?.prefixes?.[0];
+  const p = b?.data?.prefixes?.[0];
   return {
     asn: p?.asn?.asn ? `AS${p.asn.asn}` : null,
     asn_org: p?.asn?.description ?? p?.asn?.name ?? null,
@@ -48,16 +57,36 @@ async function getAsn(ip: string): Promise<{ asn: string | null; asn_org: string
 }
 
 async function getSsl(hostname: string): Promise<{ issuer: string | null; from: string | null; to: string | null }> {
+  // Usa Deno.connectTls para obtener certificado directamente del sitio.
+  try {
+    const conn: any = await Deno.connectTls({ hostname, port: 443 });
+    // @ts-ignore - handshake() may return { peerCertificates? }
+    const info = typeof conn.handshake === 'function' ? await conn.handshake() : null;
+    let issuer: string | null = null, from: string | null = null, to: string | null = null;
+    const certs = info?.peerCertificates ?? [];
+    if (certs.length > 0) {
+      const c = certs[0];
+      issuer = c.issuer?.commonName ?? c.issuer?.organizationName ?? null;
+      from = c.notBefore ? new Date(c.notBefore).toISOString() : null;
+      to = c.notAfter ? new Date(c.notAfter).toISOString() : null;
+    }
+    try { conn.close(); } catch { /* ignore */ }
+    if (issuer || to) return { issuer, from, to };
+  } catch { /* fall through */ }
+  // Fallback: crt.sh
   const r: any = await withTimeout(
-    fetch(`https://ssl-checker.io/api/v1/check/${hostname}`).then((x) => x.json()),
+    fetch(`https://crt.sh/?q=${hostname}&output=json&exclude=expired`).then((x) => x.json()),
     9000,
   );
-  const res = r?.result ?? r;
-  return {
-    issuer: res?.issuer_o ?? res?.issuer_cn ?? null,
-    from: res?.valid_from ? new Date(res.valid_from).toISOString() : null,
-    to: res?.valid_till ? new Date(res.valid_till).toISOString() : null,
-  };
+  if (Array.isArray(r) && r.length > 0) {
+    const latest = r.sort((a: any, b: any) => new Date(b.not_before).getTime() - new Date(a.not_before).getTime())[0];
+    return {
+      issuer: latest.issuer_name?.split(',').find((s: string) => s.startsWith('O='))?.slice(2) ?? latest.issuer_name ?? null,
+      from: latest.not_before ? new Date(latest.not_before).toISOString() : null,
+      to: latest.not_after ? new Date(latest.not_after).toISOString() : null,
+    };
+  }
+  return { issuer: null, from: null, to: null };
 }
 
 async function measureTtfb(url: string): Promise<{ ttfb: number | null; status: number | null }> {
