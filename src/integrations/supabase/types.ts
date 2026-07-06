@@ -969,6 +969,7 @@ export type Database = {
           display_name_first_color: string | null
           display_name_second: string | null
           display_name_second_color: string | null
+          editorial_summary: string | null
           foundation_year: number | null
           has_migration_free: boolean | null
           has_ssl_free: boolean | null
@@ -1043,6 +1044,7 @@ export type Database = {
           display_name_first_color?: string | null
           display_name_second?: string | null
           display_name_second_color?: string | null
+          editorial_summary?: string | null
           foundation_year?: number | null
           has_migration_free?: boolean | null
           has_ssl_free?: boolean | null
@@ -1117,6 +1119,7 @@ export type Database = {
           display_name_first_color?: string | null
           display_name_second?: string | null
           display_name_second_color?: string | null
+          editorial_summary?: string | null
           foundation_year?: number | null
           has_migration_free?: boolean | null
           has_ssl_free?: boolean | null
@@ -1411,6 +1414,68 @@ export type Database = {
             columns: ["domain_id"]
             isOneToOne: true
             referencedRelation: "domains"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      latam_site_checks: {
+        Row: {
+          asn: string | null
+          asn_org: string | null
+          checked_at: string
+          checked_url: string
+          company_id: string
+          created_at: string
+          error: string | null
+          http_status: number | null
+          id: string
+          resolved_ip: string | null
+          ssl_issuer: string | null
+          ssl_valid_from: string | null
+          ssl_valid_to: string | null
+          ttfb_ms: number | null
+          updated_at: string
+        }
+        Insert: {
+          asn?: string | null
+          asn_org?: string | null
+          checked_at?: string
+          checked_url: string
+          company_id: string
+          created_at?: string
+          error?: string | null
+          http_status?: number | null
+          id?: string
+          resolved_ip?: string | null
+          ssl_issuer?: string | null
+          ssl_valid_from?: string | null
+          ssl_valid_to?: string | null
+          ttfb_ms?: number | null
+          updated_at?: string
+        }
+        Update: {
+          asn?: string | null
+          asn_org?: string | null
+          checked_at?: string
+          checked_url?: string
+          company_id?: string
+          created_at?: string
+          error?: string | null
+          http_status?: number | null
+          id?: string
+          resolved_ip?: string | null
+          ssl_issuer?: string | null
+          ssl_valid_from?: string | null
+          ssl_valid_to?: string | null
+          ttfb_ms?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "latam_site_checks_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "hosting_companies"
             referencedColumns: ["id"]
           },
         ]
