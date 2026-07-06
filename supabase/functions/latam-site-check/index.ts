@@ -160,13 +160,11 @@ serve(async (req) => {
     if (error) throw error;
 
     const results: any[] = [];
-    // process in small batches to avoid hammering external APIs
-    const BATCH = 4;
+    const BATCH = 12;
     for (let i = 0; i < (companies?.length ?? 0); i += BATCH) {
       const batch = companies!.slice(i, i + BATCH);
       const r = await Promise.all(batch.map((c: any) => checkOne(c).catch((e) => ({ error: String(e), slug: c.slug }))));
       results.push(...r);
-      await new Promise((res) => setTimeout(res, 500));
     }
 
     return new Response(
