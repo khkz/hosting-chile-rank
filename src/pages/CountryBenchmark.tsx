@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Activity, Clock, ShieldCheck, ArrowRight, Download } from 'lucide-react';
 import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { isHiddenProvider } from '@/lib/providerLinks';
+import Sparkline from '@/components/Sparkline';
 
 interface Row {
   id: string;
@@ -193,6 +194,7 @@ const CountryBenchmark = () => {
                     <th className="text-left p-3">#</th>
                     <th className="text-left p-3">Proveedor</th>
                     <th className="text-right p-3"><Clock className="w-4 h-4 inline" /> TTFB mediano</th>
+                    <th className="text-left p-3">TTFB 30d</th>
                     <th className="text-right p-3">Muestras 7d</th>
                     <th className="text-right p-3">Uptime 7d</th>
                     <th className="text-right p-3">Última medición</th>
@@ -200,7 +202,7 @@ const CountryBenchmark = () => {
                 </thead>
                 <tbody>
                   {isLoading && (
-                    <tr><td colSpan={6} className="p-6 text-center text-gray-500">Cargando…</td></tr>
+                    <tr><td colSpan={7} className="p-6 text-center text-gray-500">Cargando…</td></tr>
                   )}
                   {!isLoading && list.map((r, i) => (
                     <tr key={r.id} className="border-t">
@@ -211,6 +213,13 @@ const CountryBenchmark = () => {
                         </Link>
                       </td>
                       <td className="p-3 text-right font-mono">{r.ttfb_median != null ? `${r.ttfb_median} ms` : '—'}</td>
+                      <td className="p-3">
+                        <Sparkline
+                          values={r.spark}
+                          daysWithData={r.spark_days_with_data}
+                          ariaLabel={`TTFB 30 días de ${r.name}`}
+                        />
+                      </td>
                       <td className="p-3 text-right text-gray-600">{r.ttfb_samples}</td>
                       <td className="p-3 text-right">{r.uptime_pct != null ? `${r.uptime_pct}%` : '—'}</td>
                       <td className="p-3 text-right text-gray-500">
