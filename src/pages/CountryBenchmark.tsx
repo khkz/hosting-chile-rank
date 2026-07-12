@@ -203,7 +203,7 @@ const CountryBenchmark = () => {
               <h2 className="font-semibold mb-2">Por qué no publicamos aún puntajes 1–10</h2>
               <p>Publicar rankings numéricos con menos de 60–90 días de datos exagera la precisión y castiga a proveedores con incidentes puntuales. Preferimos mostrar el dato crudo verificable y sumar puntaje cuando tengamos ventana estadística.</p>
               <p className="mt-2">
-                <Link to={`/${slug}/mejor-hosting-${meta.name.toLowerCase().replace(/[éí]/g, m => m === 'é' ? 'e' : 'i')}-2026`} className="text-blue-700 hover:underline inline-flex items-center gap-1">
+                <Link to={`/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`} className="text-blue-700 hover:underline inline-flex items-center gap-1">
                   Ver ranking editorial pre-benchmark <ArrowRight className="w-4 h-4" />
                 </Link>
               </p>
