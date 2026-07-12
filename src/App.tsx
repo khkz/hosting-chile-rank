@@ -344,6 +344,7 @@ function App() {
             <Route path="/co/benchmark" element={<CountryBenchmark />} />
             <Route path="/ar/benchmark" element={<CountryBenchmark />} />
             <Route path="/pe" element={<CountryLanding />} />
+            <Route path="/pe/hostdime-pe" element={<HostDimePePilot />} />
             <Route path="/pe/:slug" element={<CountryProviderDetail />} />
             <Route path="/pe/*" element={<CountryLanding />} />
             <Route path="/mx" element={<CountryLanding />} />
