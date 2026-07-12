@@ -1,0 +1,2 @@
+UPDATE public.hosting_companies SET promo_price = 4219, original_price = 5408, price_period = 'mensual (equivalente plan trianual)' WHERE id = '686b3797-f991-4c6e-953b-cf916131612b';
+UPDATE public.hosting_companies SET promo_price = 3325, original_price = 4990, cta_text = 'Ver planes desde $3.325/mes', price_period = 'mensual (equivalente plan bianual)' WHERE id = 'e80631ea-8f21-4fca-b468-e0f1f010a54b';
