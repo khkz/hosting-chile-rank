@@ -268,8 +268,25 @@ const CountryLanding = () => {
               Cargando proveedores…
             </p>
           ) : (companies && companies.length > 0) ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {companies.map((c: any) => {
+            <>
+              <DirectoryFilterBar
+                onlyDcLocal={onlyDcLocal}
+                only247={only247}
+                sort={sort}
+                countryName={info.name}
+                onOnlyDcLocalChange={setOnlyDcLocal}
+                onOnly247Change={setOnly247}
+                onSortChange={setSort}
+                totalCount={companies.length}
+                visibleCount={filteredCompanies.length}
+              />
+              {filteredCompanies.length === 0 ? (
+                <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-center text-sm text-[#2B2D42]/70">
+                  Ningún proveedor cumple con esos filtros. Ajusta la selección arriba.
+                </div>
+              ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredCompanies.map((c: any) => {
                 const link = c.slug && c.website ? getProviderLink(c.slug, c.website) : null;
                 const techs: string[] = Array.isArray(c.technologies)
                   ? c.technologies.filter((t: any) => typeof t === 'string')
@@ -355,6 +372,8 @@ const CountryLanding = () => {
                 );
               })}
             </div>
+              )}
+            </>
           ) : (
             <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 md:p-8 text-center">
               <h2 className="text-xl font-semibold text-[#2B2D42] mb-2">
