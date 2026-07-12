@@ -54,7 +54,7 @@ const Footer = () => {
               <h4 className="text-lg font-semibold text-white mb-4">Hosting en {meta.name}</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to={`/${latam}`} className="text-gray-300 hover:text-white">Directorio {meta.name}</Link></li>
-                <li><Link to={`/${latam}/mejor-hosting-${meta.name.toLowerCase().replace(/[éí]/g, m => m === 'é' ? 'e' : 'i')}-2026`} className="text-gray-300 hover:text-white">Mejor hosting {meta.name} 2026</Link></li>
+                <li><Link to={`/${latam}/mejor-hosting-${({pe:'peru',mx:'mexico',co:'colombia',ar:'argentina'} as const)[latam]}-2026`} className="text-gray-300 hover:text-white">Mejor hosting {meta.name} 2026</Link></li>
                 <li><Link to={`/${latam}/hosting-con-datacenter-local`} className="text-gray-300 hover:text-white">Datacenter local en {meta.name}</Link></li>
                 <li><Link to={`/${latam}/benchmark`} className="text-gray-300 hover:text-white">Benchmark {meta.name}</Link></li>
                 {meta.featured.map(f => (
