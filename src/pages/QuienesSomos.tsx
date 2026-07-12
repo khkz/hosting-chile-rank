@@ -23,9 +23,9 @@ const QuienesSomos: React.FC = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
-        <meta property="og:image" content="https://eligetuhosting.cl/og/quienes-somos.png" />
+        <meta property="og:image" content={ogImage} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://eligetuhosting.cl/og/quienes-somos.png" />
+        <meta name="twitter:image" content={ogImage} />
       </Helmet>
       <Navbar />
       <main className="container mx-auto px-4 py-12 max-w-3xl">
