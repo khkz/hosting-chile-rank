@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Server, ShieldCheck, ArrowRight } from 'lucide-react';
-import { LATAM_META, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { LATAM_META, LATAM_OG_IMAGE, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { isHiddenProvider } from '@/lib/providerLinks';
 
 const CountryDatacenterLocal = () => {
