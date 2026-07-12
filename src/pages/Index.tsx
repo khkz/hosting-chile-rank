@@ -12,6 +12,9 @@ import DatasetSchema from '@/components/SEO/DatasetSchema';
 
 
 const HostingQuiz = React.lazy(() => import('@/components/HostingQuiz'));
+const StoryBrandGuide = React.lazy(() => import('@/components/home/StoryBrandGuide'));
+const BuyerJourneys = React.lazy(() => import('@/components/home/BuyerJourneys'));
+const Objections = React.lazy(() => import('@/components/home/Objections'));
 const WhyTrustUs = React.lazy(() => import('@/components/WhyTrustUs'));
 const Testimonial = React.lazy(() => import('@/components/Testimonial'));
 const Categories = React.lazy(() => import('@/components/Categories'));
