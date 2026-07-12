@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Skeleton } from '@/components/ui/skeleton';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
-import AvailabilityBadge from './AvailabilityBadge';
+import TrustSignalBadge from './TrustSignalBadge';
 import IndependenceBadge from './IndependenceBadge';
 import RankingPositions4to10 from './RankingPositions4to10';
 import RankingAuthorityBlock from './RankingAuthorityBlock';
@@ -135,9 +135,9 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
               />
             </div>
 
-            {/* Urgency badge */}
+            {/* Señales reales: verificación + reclamos verificados */}
             <div className="flex justify-center mb-3">
-              <AvailabilityBadge providerName={provider.name} offerType={isWinner ? 'trial' : provider.sortPosition === 3 ? 'migration' : 'trial'} />
+              <TrustSignalBadge companyId={provider.id} />
             </div>
 
             {/* Rating */}
