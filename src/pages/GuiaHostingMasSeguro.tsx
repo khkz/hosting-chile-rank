@@ -297,7 +297,7 @@ const GuiaHostingMasSeguro = () => {
                 <tr className="bg-card">
                   <td className="px-4 py-4">
                     <div className="font-medium">HostingPlus</div>
-                    <div className="text-xs text-muted-foreground mt-1">Desde $3.469/mes</div>
+                    <div className="text-xs text-muted-foreground mt-1">Desde $4.219/mes</div>
                   </td>
                   <td className="px-3 py-4 text-center">
                     <Info className="w-5 h-5 mx-auto text-blue-600" />
