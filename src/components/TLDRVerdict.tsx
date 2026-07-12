@@ -70,7 +70,7 @@ const TLDRVerdict: React.FC = () => {
           y operan con datacenter en territorio chileno. Todos los precios incluyen IVA.
         </p>
         <p className="text-xs text-muted-foreground mt-3">
-          Datos actualizados a enero 2026 · Fuente: eligetuhosting.cl/ranking · Metodología: eligetuhosting.cl/nuestro-metodo
+          Datos actualizados a julio 2026 · Fuente: eligetuhosting.cl/ranking · Metodología: eligetuhosting.cl/nuestro-metodo
         </p>
       </div>
     </aside>
