@@ -147,7 +147,7 @@ async function generateForCountry(cslug) {
     <script type="application/ld+json">${JSON.stringify(datasetLd)}</script>`;
   await fs.mkdir(`public/${cslug}/benchmark`, { recursive: true });
   await fs.writeFile(`public/${cslug}/benchmark/index.html`,
-    buildHtml({ title: titleBench, description: descBench, canonical: canonicalBench, locale: meta.locale, headExtra: headExtraBench, bodyContent: bodyBench, keywords: `benchmark hosting ${meta.long}, ttfb ${meta.long}, uptime ${meta.long}, hosting ${meta.name.toLowerCase()}` }), 'utf8');
+    buildHtml({ title: titleBench, description: descBench, canonical: canonicalBench, locale: meta.locale, headExtra: headExtraBench, bodyContent: bodyBench, keywords: `benchmark hosting ${meta.long}, ttfb ${meta.long}, uptime ${meta.long}, hosting ${meta.name.toLowerCase()}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png` }), 'utf8');
 
   // 3) Markdown por país
   const mdCountry = `# Hosting en ${meta.name} ${meta.flag} — Directorio verificado
