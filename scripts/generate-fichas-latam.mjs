@@ -156,7 +156,7 @@ async function run() {
 
         <p style="margin-top:24px"><a href="/${cslug}">← Directorio ${esc(meta.name)}</a> · <a href="/${cslug}/mejor-hosting-${meta.long}-2026">Mejor hosting ${esc(meta.name)} 2026</a> · <a href="/${cslug}/${esc(c.slug)}.md">Versión Markdown</a></p>
       `;
-      const html = buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent: body, keywords: `${c.name.toLowerCase()}, hosting ${meta.long}, ${c.name.toLowerCase()} opiniones, hosting ${meta.name.toLowerCase()}` });
+      const html = buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent: body, keywords: `${c.name.toLowerCase()}, hosting ${meta.long}, ${c.name.toLowerCase()} opiniones, hosting ${meta.name.toLowerCase()}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png` });
       await fs.mkdir(`public/${cslug}/${c.slug}`, { recursive: true });
       await fs.writeFile(`public/${cslug}/${c.slug}/index.html`, html, 'utf8');
       total++;
