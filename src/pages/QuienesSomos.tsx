@@ -7,7 +7,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Mail, HeartHandshake, ShieldCheck, Database, MessageSquare } from 'lucide-react';
 
 const QuienesSomos: React.FC = () => {
-  const canonical = 'https://eligetuhosting.cl/quienes-somos';
+  const canonical = 'https://eligetuhosting.com/quienes-somos';
+  const ogImage = 'https://eligetuhosting.com/og/quienes-somos.png';
   const title = 'Quiénes somos — EligeTuHosting';
   const description =
     'Somos un equipo pequeño que evalúa hosting en Chile y LATAM con datos verificables. Sin puntajes inventados, sin equipos ficticios, con divulgación clara de cómo nos financiamos.';
