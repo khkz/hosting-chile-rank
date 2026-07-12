@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Activity, Clock, ShieldCheck, ArrowRight, Download } from 'lucide-react';
-import { LATAM_META, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { isHiddenProvider } from '@/lib/providerLinks';
 
 interface Row {
@@ -120,6 +120,9 @@ const CountryBenchmark = () => {
         <meta property="og:url" content={canonical} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
+        <meta property="og:image" content={LATAM_OG_IMAGE[slug]} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={LATAM_OG_IMAGE[slug]} />
         <meta property="og:locale" content="es_419" />
         <link rel="alternate" type="application/json" href={`/data/benchmarks-${slug}.json`} title="Benchmarks JSON (CC-BY-4.0)" />
         <script type="application/ld+json">{JSON.stringify(itemListLd)}</script>
@@ -200,7 +203,7 @@ const CountryBenchmark = () => {
               <h2 className="font-semibold mb-2">Por qué no publicamos aún puntajes 1–10</h2>
               <p>Publicar rankings numéricos con menos de 60–90 días de datos exagera la precisión y castiga a proveedores con incidentes puntuales. Preferimos mostrar el dato crudo verificable y sumar puntaje cuando tengamos ventana estadística.</p>
               <p className="mt-2">
-                <Link to={`/${slug}/mejor-hosting-${meta.name.toLowerCase().replace(/[éí]/g, m => m === 'é' ? 'e' : 'i')}-2026`} className="text-blue-700 hover:underline inline-flex items-center gap-1">
+                <Link to={`/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`} className="text-blue-700 hover:underline inline-flex items-center gap-1">
                   Ver ranking editorial pre-benchmark <ArrowRight className="w-4 h-4" />
                 </Link>
               </p>

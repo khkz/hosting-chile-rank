@@ -2,7 +2,7 @@
 
 Fuente: https://eligetuhosting.com/mx
 Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
-Última actualización: 2026-07-06T10:51:07.817Z
+Última actualización: 2026-07-12T05:19:14.857Z
 
 ## Metodología resumida
 - Datacenter local verificado por ASN y declaraciones oficiales.
@@ -23,7 +23,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 104.20.39.236
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 724 ms (muestras: 8)
+- TTFB mediano 7d: 727 ms (muestras: 66)
 - Uptime 7d: 100%
 - Resumen editorial: Hospedando es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Neubox Internet, S.A. de C.V.. Forma parte del grupo Neubox. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: cPanel, WordPress, Softaculous, Correo. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -38,7 +38,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 69.46.7.42
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 622 ms (muestras: 8)
+- TTFB mediano 7d: 624 ms (muestras: 66)
 - Uptime 7d: 100%
 - Resumen editorial: HostingPlus México es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Grupo HostingPlus (opera desde Chile: PlusChile Internet Ltda.); sin entidad legal mexicana. Forma parte del grupo HostingPlus. Infraestructura: declara datacenter en el país (EE.UU. (Florida) — según su FAQ; sin datacenter propio en México), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, LiteSpeed + LSCache, SSD/NVMe, SSL. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -53,7 +53,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 104.20.45.130
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 962 ms (muestras: 8)
+- TTFB mediano 7d: 1037 ms (muestras: 66)
 - Uptime 7d: 100%
 - Resumen editorial: Neubox es un proveedor de hosting con actividad comercial en México. Su razón social registrada es NEUBOX Internet, S.A. de C.V.. Registra actividad desde 2004. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: cPanel, DirectAdmin, Hosting Windows, VPS, PCI DSS. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -68,7 +68,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 45.60.87.212
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 799 ms (muestras: 8)
+- TTFB mediano 7d: 827 ms (muestras: 66)
 - Uptime 7d: 100%
 - Resumen editorial: Akky es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Akky Online Solutions, S.A. de C.V.. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: cPanel, Dominios .MX, SSL, Creador de sitios. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -83,7 +83,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.66.40.57
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 122 ms (muestras: 8)
+- TTFB mediano 7d: 130 ms (muestras: 67)
 - Uptime 7d: 0%
 - Resumen editorial: Hosting-Mexico es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Innovation Group Hosting-Mexico, S. de R.L. de C.V.. Infraestructura: declara datacenter en Chicago, EE.UU. (declarado por el proveedor); opera como revendedor internacional para clientes de la región. Tecnologías declaradas: Hosting compartido, Reseller, Cloud, VPS, SiteLock, SSL. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -98,7 +98,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 192.250.234.151
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1057 ms (muestras: 8)
+- TTFB mediano 7d: 1074 ms (muestras: 66)
 - Uptime 7d: 100%
 - Resumen editorial: DigitalServer (SuEmpresa) es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Wingu Networks, S.A. de C.V.. Forma parte del grupo World Host Group. Infraestructura: declara datacenter en Sídney, Australia (planes cPanel de SuEmpresa); opera como revendedor internacional para clientes de la región. Tecnologías declaradas: cPanel, LiteSpeed, NVMe, CloudLinux, VPS. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -128,7 +128,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 199.60.103.2
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 566 ms (muestras: 8)
+- TTFB mediano 7d: 516 ms (muestras: 67)
 - Uptime 7d: 100%
 - Resumen editorial: Servnet es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Servnet México, S.A. de C.V.. Forma parte del grupo Servnet / iNBest. Registra actividad desde 1996. Infraestructura: declara datacenter en el país (CDMX, México (datacenter propio; red propia AS28546 bajo concesión IFT)), lo que reduce latencia para audiencias locales. Tecnologías declaradas: Servidores dedicados, Colocation, Cloud, VoIP/PBX, Firewall UTM. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -143,7 +143,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 194.195.217.122
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1062 ms (muestras: 8)
+- TTFB mediano 7d: 1197 ms (muestras: 67)
 - Uptime 7d: 100%
 - Resumen editorial: Artehosting es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Artehosting S.A. de C.V.. Forma parte del grupo Artehosting (marca Webzi). Registra actividad desde 2006. Infraestructura: declara datacenter en el país (CDMX, México (datacenter propio desde 2021) + bloques en EE.UU./Europa), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, CloudLinux, CentOS, Windows, VPS/Cloud. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -158,7 +158,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.66.42.208
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 102 ms (muestras: 8)
+- TTFB mediano 7d: 96 ms (muestras: 67)
 - Uptime 7d: 100%
 - Resumen editorial: WebHosting MX es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Web Hosting y Dominios S. de R.L. de C.V.. Infraestructura: declara datacenter en el país (EE.UU./Europa (revende OVHcloud); sin datacenter propio en México), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel/WHM, LiteSpeed, SSD NVMe, Imunify360. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -173,7 +173,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 67.18.65.185
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1080 ms (muestras: 8)
+- TTFB mediano 7d: 1098 ms (muestras: 67)
 - Uptime 7d: 100%
 - Resumen editorial: NetmarketingWeb es un proveedor de hosting con actividad comercial en México. Registra actividad desde 1998. Infraestructura: declara datacenter en el país (Dallas y Houston, Texas (EE.UU.); sin datacenter en México), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, PHP, MySQL, WordPress, constructor Juppi. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -188,7 +188,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 104.16.210.83
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 35 ms (muestras: 8)
+- TTFB mediano 7d: 40 ms (muestras: 67)
 - Uptime 7d: 100%
 - Resumen editorial: Hostinger México es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Hostinger International Ltd. (Lituania); sin entidad mexicana. Forma parte del grupo Hostinger (global). Registra actividad desde 2004. Infraestructura: declara datacenter en el país (EE.UU. y Brasil (São Paulo); sin datacenter en México), lo que reduce latencia para audiencias locales. Tecnologías declaradas: LiteSpeed, hPanel, WordPress, CDN. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -203,7 +203,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 23.209.209.25
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 43 ms (muestras: 8)
+- TTFB mediano 7d: 42 ms (muestras: 67)
 - Uptime 7d: 0%
 - Resumen editorial: GoDaddy México es un proveedor de hosting con actividad comercial en México. Su razón social registrada es Go Daddy México S. de R.L. de C.V.. Forma parte del grupo GoDaddy Inc. (global). Registra actividad desde 1997. Infraestructura: declara datacenter en el país (EE.UU. (Phoenix) + colocation NL/Singapur; sin datacenter en México), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, WordPress, VPS, Plesk. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -218,7 +218,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 74.208.4.77
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1841 ms (muestras: 8)
+- TTFB mediano 7d: 1842 ms (muestras: 67)
 - Uptime 7d: 100%
 - Resumen editorial: IONOS es un proveedor de hosting con actividad comercial en México. Su razón social registrada es IONOS Inc. / IONOS SE (Alemania); sin entidad mexicana con RFC. Forma parte del grupo United Internet / IONOS SE (global). Registra actividad desde 2018. Infraestructura: declara datacenter en el país (EE.UU. (Las Vegas/Newark/Lenexa) y Europa; sin datacenter en México), lo que reduce latencia para audiencias locales. Tecnologías declaradas: Hosting, WordPress, VPS, Cloud, Dedicados, M365. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -233,7 +233,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.66.40.12
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 141 ms (muestras: 8)
+- TTFB mediano 7d: 136 ms (muestras: 67)
 - Uptime 7d: 100%
 - Resumen editorial: HostGator México es un proveedor de hosting con actividad comercial en México. Su razón social registrada es HostGator.com LLC (Texas, EE.UU.); grupo Newfold; sin entidad mexicana. Forma parte del grupo Newfold Digital (global). Registra actividad desde 2002. Infraestructura: declara datacenter en el país (Atlanta, EE.UU.; sin datacenter en México), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, WordPress, VPS, Dedicados. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en México. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 

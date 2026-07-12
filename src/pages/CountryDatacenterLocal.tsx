@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Server, ShieldCheck, ArrowRight } from 'lucide-react';
-import { LATAM_META, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { LATAM_META, LATAM_OG_IMAGE, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { isHiddenProvider } from '@/lib/providerLinks';
 
 const CountryDatacenterLocal = () => {
@@ -86,6 +86,9 @@ const CountryDatacenterLocal = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={LATAM_OG_IMAGE[slug]} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={LATAM_OG_IMAGE[slug]} />
         <meta name="robots" content="index,follow" />
         <script type="application/ld+json">{JSON.stringify(itemListLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>

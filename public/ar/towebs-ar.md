@@ -23,9 +23,9 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:00:07.95+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 510 ms
-- Muestras: 8
-- Uptime observado: 100%
+- TTFB mediano: 794 ms
+- Muestras: 90
+- Uptime observado: 98.9%
 
 ## Contexto editorial
 Towebs es un proveedor de hosting con actividad comercial en Argentina. Su razón social registrada es Virtucom Networks S.A.. Forma parte del grupo Virtucom Networks. Registra actividad desde 2000.

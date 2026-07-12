@@ -43,7 +43,7 @@ export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp
  * - Injects per-page JSON-LD via `headExtra`
  * - Replaces empty <div id="root"></div> with the crawleable bodyContent
  */
-export function buildHtml({ title, description, canonical, locale = 'es', headExtra = '', bodyContent = '', keywords = '' }) {
+export function buildHtml({ title, description, canonical, locale = 'es', headExtra = '', bodyContent = '', keywords = '', ogImage = 'https://eligetuhosting.com/og/latam.png' }) {
   let html = CLEAN_SHELL;
   html = html.replace(/<html lang="[^"]*"/i, `<html lang="${esc(locale)}"`);
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${esc(title)}</title>`);
@@ -57,9 +57,11 @@ export function buildHtml({ title, description, canonical, locale = 'es', headEx
     `<meta property="og:title" content="${esc(title)}" />`,
     `<meta property="og:description" content="${esc(description)}" />`,
     `<meta property="og:url" content="${esc(canonical)}" />`,
-    `<meta name="twitter:card" content="summary" />`,
+    `<meta property="og:image" content="${esc(ogImage)}" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${esc(title)}" />`,
     `<meta name="twitter:description" content="${esc(description)}" />`,
+    `<meta name="twitter:image" content="${esc(ogImage)}" />`,
     `<meta name="robots" content="index,follow" />`,
     headExtra || '',
   ].filter(Boolean).join('\n    ');

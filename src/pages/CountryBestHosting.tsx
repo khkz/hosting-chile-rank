@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ShieldCheck, ExternalLink, ArrowRight, Server, FileText, Calendar, Building2 } from 'lucide-react';
-import { LATAM_META, hasLocalDatacenter, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, hasLocalDatacenter, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 
 const CountryBestHosting = () => {
@@ -32,7 +32,7 @@ const CountryBestHosting = () => {
   });
 
   const list = rankProviders(providers ?? [], slug);
-  const canonical = `https://eligetuhosting.com/${slug}/mejor-hosting-${meta.name.toLowerCase().replace(/[éí]/g, (m) => (m === 'é' ? 'e' : 'i'))}-2026`;
+  const canonical = `https://eligetuhosting.com/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`;
   const title = `Mejor hosting en ${meta.name} 2026 · Directorio verificado | EligeTuHosting`;
   const description = `Ranking pre-benchmark de proveedores de hosting en ${meta.name}, ordenados por datos objetivos: datacenter local real, razón social local y antigüedad. Sin puntajes inventados.`;
   const lastUpdated = new Date().toISOString().slice(0, 10);
@@ -86,6 +86,9 @@ const CountryBestHosting = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={LATAM_OG_IMAGE[slug]} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={LATAM_OG_IMAGE[slug]} />
         <meta name="robots" content="index,follow" />
         <script type="application/ld+json">{JSON.stringify(itemListLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>

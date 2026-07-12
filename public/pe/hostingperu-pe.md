@@ -23,9 +23,9 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:02:37.006+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 65 ms
-- Muestras: 8
-- Uptime observado: 25%
+- TTFB mediano: 33 ms
+- Muestras: 56
+- Uptime observado: 0%
 
 ## Contexto editorial
 Hosting Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es IntermediaHost S.A.C.. Registra actividad desde 2014.

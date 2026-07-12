@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
-import { LATAM_META, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 
 // /pe/comparativa/:pair  ·  :pair debe tener la forma slug-a-vs-slug-b
 const CountryComparativa = () => {
@@ -85,6 +85,9 @@ const CountryComparativa = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={LATAM_OG_IMAGE[slug]} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={LATAM_OG_IMAGE[slug]} />
         <meta name="robots" content="index,follow" />
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
       </Helmet>
@@ -134,7 +137,7 @@ const CountryComparativa = () => {
 
         <div className="text-sm space-x-3">
           <Link to={`/${slug}`} className="text-primary hover:underline">← Directorio {meta.name}</Link>
-          <Link to={`/${slug}/mejor-hosting-${meta.name.toLowerCase().replace(/[éí]/g, m => m === 'é' ? 'e' : 'i')}-2026`} className="text-primary hover:underline">Mejor hosting {meta.name} 2026</Link>
+          <Link to={`/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`} className="text-primary hover:underline">Mejor hosting {meta.name} 2026</Link>
         </div>
       </main>
       <Footer />

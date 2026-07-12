@@ -21,6 +21,24 @@ export type LatamSlug = keyof typeof LATAM_META;
 export const isLatamSlug = (s: string | undefined): s is LatamSlug =>
   !!s && ['pe', 'mx', 'co', 'ar'].includes(s.toLowerCase());
 
+// Slug del nombre largo del país sin acentos, usado en rutas como
+// /pe/mejor-hosting-peru-2026. Las rutas registradas en App.tsx NO llevan
+// acentos, así que aquí normalizamos con NFD para eliminar diacríticos.
+export const LATAM_LONG_SLUG: Record<LatamSlug, string> = {
+  pe: 'peru',
+  mx: 'mexico',
+  co: 'colombia',
+  ar: 'argentina',
+};
+
+// OG image por país (imagen propia bajo public/og/).
+export const LATAM_OG_IMAGE: Record<LatamSlug, string> = {
+  pe: 'https://eligetuhosting.com/og/pe.png',
+  mx: 'https://eligetuhosting.com/og/mx.png',
+  co: 'https://eligetuhosting.com/og/co.png',
+  ar: 'https://eligetuhosting.com/og/ar.png',
+};
+
 // Phrases that flip a country mention into a "NO local DC" statement.
 // We strip them from the string before testing for the country name so
 // that "sin datacenter en Perú" no longer produces a false positive.

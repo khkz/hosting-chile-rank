@@ -23,9 +23,9 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:00:07.691+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 641 ms
-- Muestras: 8
-- Uptime observado: 100%
+- TTFB mediano: 605 ms
+- Muestras: 90
+- Uptime observado: 98.9%
 
 ## Contexto editorial
 HostingPlus Argentina es un proveedor de hosting con actividad comercial en Argentina. Su razón social registrada es Pluschile Internet Ltda. (Chile, RUT 76.636.640-6); sin entidad legal argentina. Forma parte del grupo HostingPlus.

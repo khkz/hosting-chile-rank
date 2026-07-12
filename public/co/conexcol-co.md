@@ -23,9 +23,9 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:02:18.214+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 693 ms
-- Muestras: 8
-- Uptime observado: 100%
+- TTFB mediano: 819 ms
+- Muestras: 90
+- Uptime observado: 98.9%
 
 ## Contexto editorial
 Conexcol Cloud Colombia es un proveedor de hosting con actividad comercial en Colombia. Su razón social registrada es Conexcol Cloud Colombia S.A.S.. Registra actividad desde 1997.

@@ -178,7 +178,7 @@ const CountryLanding = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-5 text-sm">
               <Link
-                to={`/${info.slug}/mejor-hosting-${info.name.toLowerCase().replace(/[éí]/g, m => m === 'é' ? 'e' : 'i')}-2026`}
+                to={`/${info.slug}/mejor-hosting-${({pe:'peru',mx:'mexico',co:'colombia',ar:'argentina'} as const)[info.slug as 'pe'|'mx'|'co'|'ar']}-2026`}
                 className="px-4 py-2 rounded-md bg-[#2B2D42] text-white hover:bg-[#2B2D42]/90"
               >
                 🏆 Mejor hosting {info.name} 2026

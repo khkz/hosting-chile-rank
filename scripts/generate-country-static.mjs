@@ -108,7 +108,7 @@ function renderBestHosting(cslug, meta, providers) {
     ${faqs.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
   `;
   const headExtra = [itemList, breadcrumb, faqLd].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}` });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png` });
 }
 
 /* ---------- 2) Datacenter local ---------------------------------------- */
@@ -153,7 +153,7 @@ function renderDatacenterLocal(cslug, meta, providers) {
     <p><a href="/${cslug}">← Volver al directorio de ${esc(meta.name)}</a></p>
   `;
   const headExtra = [itemList, breadcrumb].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}` });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png` });
 }
 
 /* ---------- 3) Comparativa a-vs-b -------------------------------------- */
@@ -191,7 +191,7 @@ function renderComparativa(cslug, meta, p1, p2) {
     <p><a href="/${cslug}">← Directorio ${esc(meta.name)}</a> · <a href="/${cslug}/mejor-hosting-${meta.long}-2026">Mejor hosting ${esc(meta.name)} 2026</a></p>
   `;
   const headExtra = `<script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>`;
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}` });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png` });
 }
 
 /* ---------- Main -------------------------------------------------------- */
