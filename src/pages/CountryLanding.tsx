@@ -51,6 +51,31 @@ const CountryLanding = () => {
     },
   });
 
+  // Filtros client-side (T6)
+  const [onlyDcLocal, setOnlyDcLocal] = useState(false);
+  const [only247, setOnly247] = useState(false);
+  const [sort, setSort] = useState<SortMode>('default');
+  const dcSlug = info.slug as LatamDcSlug;
+  const filteredCompanies = useMemo(() => {
+    const base = companies ?? [];
+    let out = base.filter((c: any) => {
+      if (onlyDcLocal && !hasLocalDatacenter(dcSlug, c.datacenter_location)) return false;
+      if (only247 && !has247Support(c.contact_hours)) return false;
+      return true;
+    });
+    if (sort === 'name') {
+      out = [...out].sort((a: any, b: any) => a.name.localeCompare(b.name, 'es'));
+    } else if (sort === 'oldest') {
+      out = [...out].sort((a: any, b: any) => {
+        const ay = a.foundation_year ?? Number.POSITIVE_INFINITY;
+        const by = b.foundation_year ?? Number.POSITIVE_INFINITY;
+        if (ay !== by) return ay - by;
+        return a.name.localeCompare(b.name, 'es');
+      });
+    }
+    return out;
+  }, [companies, onlyDcLocal, only247, sort, dcSlug]);
+
   const canonical = `https://eligetuhosting.com/${info.slug}`;
   const title = `Hosting en ${info.name} — Directorio verificado · Elige Tu Hosting`;
   const description = `Directorio verificable de hosting en ${info.name}: proveedores con datos comprobables (razón social, ID fiscal, datacenter, tecnología) y metodología transparente.`;
