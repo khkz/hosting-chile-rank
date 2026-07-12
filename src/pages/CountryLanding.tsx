@@ -1,4 +1,5 @@
 import { useLocation, Link } from 'react-router-dom';
+import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,6 +24,8 @@ import {
 } from 'lucide-react';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
 import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
+import DirectoryFilterBar, { type SortMode } from '@/components/DirectoryFilterBar';
+import { hasLocalDatacenter, has247Support, type LatamDcSlug } from '@/lib/dcLocal';
 
 
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
@@ -38,7 +41,7 @@ const CountryLanding = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select(
-          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, is_verified, is_curated'
+          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, foundation_year, is_verified, is_curated'
         )
         .eq('country', info.code)
         .eq('is_verified', true)
@@ -47,6 +50,31 @@ const CountryLanding = () => {
       return (data || []).filter((c: any) => !isHiddenProvider(c.slug, c.website));
     },
   });
+
+  // Filtros client-side (T6)
+  const [onlyDcLocal, setOnlyDcLocal] = useState(false);
+  const [only247, setOnly247] = useState(false);
+  const [sort, setSort] = useState<SortMode>('default');
+  const dcSlug = info.slug as LatamDcSlug;
+  const filteredCompanies = useMemo(() => {
+    const base = companies ?? [];
+    let out = base.filter((c: any) => {
+      if (onlyDcLocal && !hasLocalDatacenter(dcSlug, c.datacenter_location)) return false;
+      if (only247 && !has247Support(c.contact_hours)) return false;
+      return true;
+    });
+    if (sort === 'name') {
+      out = [...out].sort((a: any, b: any) => a.name.localeCompare(b.name, 'es'));
+    } else if (sort === 'oldest') {
+      out = [...out].sort((a: any, b: any) => {
+        const ay = a.foundation_year ?? Number.POSITIVE_INFINITY;
+        const by = b.foundation_year ?? Number.POSITIVE_INFINITY;
+        if (ay !== by) return ay - by;
+        return a.name.localeCompare(b.name, 'es');
+      });
+    }
+    return out;
+  }, [companies, onlyDcLocal, only247, sort, dcSlug]);
 
   const canonical = `https://eligetuhosting.com/${info.slug}`;
   const title = `Hosting en ${info.name} — Directorio verificado · Elige Tu Hosting`;
@@ -240,8 +268,25 @@ const CountryLanding = () => {
               Cargando proveedores…
             </p>
           ) : (companies && companies.length > 0) ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {companies.map((c: any) => {
+            <>
+              <DirectoryFilterBar
+                onlyDcLocal={onlyDcLocal}
+                only247={only247}
+                sort={sort}
+                countryName={info.name}
+                onOnlyDcLocalChange={setOnlyDcLocal}
+                onOnly247Change={setOnly247}
+                onSortChange={setSort}
+                totalCount={companies.length}
+                visibleCount={filteredCompanies.length}
+              />
+              {filteredCompanies.length === 0 ? (
+                <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-center text-sm text-[#2B2D42]/70">
+                  Ningún proveedor cumple con esos filtros. Ajusta la selección arriba.
+                </div>
+              ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredCompanies.map((c: any) => {
                 const link = c.slug && c.website ? getProviderLink(c.slug, c.website) : null;
                 const techs: string[] = Array.isArray(c.technologies)
                   ? c.technologies.filter((t: any) => typeof t === 'string')
@@ -327,6 +372,8 @@ const CountryLanding = () => {
                 );
               })}
             </div>
+              )}
+            </>
           ) : (
             <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 md:p-8 text-center">
               <h2 className="text-xl font-semibold text-[#2B2D42] mb-2">
