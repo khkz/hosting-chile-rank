@@ -23,8 +23,8 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:02:27.722+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 962 ms
-- Muestras: 8
+- TTFB mediano: 1037 ms
+- Muestras: 66
 - Uptime observado: 100%
 
 ## Contexto editorial

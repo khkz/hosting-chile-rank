@@ -23,9 +23,9 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:02:38.116+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 939 ms
-- Muestras: 8
-- Uptime observado: 100%
+- TTFB mediano: 977 ms
+- Muestras: 55
+- Uptime observado: 98.2%
 
 ## Contexto editorial
 Hosting.com.pe (Orange) es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Orange Global Group S.A.C.. Forma parte del grupo Orange Global Group. Registra actividad desde 2008.

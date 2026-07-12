@@ -2,7 +2,7 @@
 
 Fuente: https://eligetuhosting.com/pe
 Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
-Última actualización: 2026-07-06T10:51:07.817Z
+Última actualización: 2026-07-12T05:19:14.857Z
 
 ## Metodología resumida
 - Datacenter local verificado por ASN y declaraciones oficiales.
@@ -23,7 +23,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 35.201.89.144
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 263 ms (muestras: 8)
+- TTFB mediano 7d: 267 ms (muestras: 55)
 - Uptime 7d: 100%
 - Resumen editorial: Hosting.pe es un proveedor de hosting con actividad comercial en Perú. Infraestructura: declara datacenter en el país (Lima, Perú (datacenter propio declarado por el proveedor)), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, VMware, VPS SSD. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -38,7 +38,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 150.171.109.101
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 124 ms (muestras: 8)
+- TTFB mediano 7d: 49 ms (muestras: 55)
 - Uptime 7d: 100%
 - Resumen editorial: BlueHosting Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Marca de Haulmer, Inc. (Chile); facturación en Perú vía PagoMaster S.A.C.. Forma parte del grupo Haulmer. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: Web Hosting, VPS SSD, SSL, PCI DSS (Haulmer). Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -53,8 +53,8 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.67.157.9
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 939 ms (muestras: 8)
-- Uptime 7d: 100%
+- TTFB mediano 7d: 977 ms (muestras: 55)
+- Uptime 7d: 98.2%
 - Resumen editorial: Hosting.com.pe (Orange) es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Orange Global Group S.A.C.. Forma parte del grupo Orange Global Group. Registra actividad desde 2008. Infraestructura: declara datacenter en EE.UU., Canadá y UE (revende infraestructura); opera como revendedor internacional para clientes de la región. Tecnologías declaradas: cPanel, Webuzo, LiteSpeed, SSD/NVMe. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
 ### NetSolution
@@ -68,7 +68,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 68.66.226.94
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1347 ms (muestras: 8)
+- TTFB mediano 7d: 720 ms (muestras: 55)
 - Uptime 7d: 100%
 - Resumen editorial: NetSolution es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Corporación Net Solution Perú S.A.C.. Registra actividad desde 2001. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: cPanel, Plesk, Linux/Windows, SSL. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -83,7 +83,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.66.40.242
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1023 ms (muestras: 8)
+- TTFB mediano 7d: 1089 ms (muestras: 55)
 - Uptime 7d: 100%
 - Resumen editorial: Dongee es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Industrialmedia S.A. (Colombia). Forma parte del grupo Industrialmedia. Registra actividad desde 2006. Infraestructura: declara datacenter en el país (EE.UU. (Miami/Virginia); opera de forma remota), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, Plesk, SSD NVMe, CDN. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -98,7 +98,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 69.46.7.42
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 782 ms (muestras: 8)
+- TTFB mediano 7d: 824 ms (muestras: 55)
 - Uptime 7d: 100%
 - Resumen editorial: HostingPlus Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Hostingplus Datacenter S.A.C.. Forma parte del grupo HostingPlus. Infraestructura: declara datacenter en Orlando, Florida (EE.UU.) — datacenter declarado en su ficha técnica; opera como revendedor internacional para clientes de la región. Tecnologías declaradas: cPanel, SSD RAID 10, VPS, Servidores Dedicados. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -113,7 +113,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 3.20.134.184
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1099 ms (muestras: 8)
+- TTFB mediano 7d: 697 ms (muestras: 56)
 - Uptime 7d: 100%
 - Resumen editorial: PlanetaHosting Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Planeta Hosting S.A.C.. Forma parte del grupo PlanetaHosting. Registra actividad desde 2012. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: cPanel, SSD, Softaculous, SSL. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -128,7 +128,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 190.216.179.134
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 4707 ms (muestras: 8)
+- TTFB mediano 7d: 3028 ms (muestras: 56)
 - Uptime 7d: 100%
 - Resumen editorial: MGD (MGDHost) es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es M.G. Digital S.A.C.. Registra actividad desde 2012. Infraestructura: declara datacenter en el país (Lima, Perú (datacenter propio declarado por el proveedor)), lo que reduce latencia para audiencias locales. Tecnologías declaradas: LiteSpeed, Imunify360, VPS SSD, nube dCloud. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -143,8 +143,8 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.67.219.145
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 65 ms (muestras: 8)
-- Uptime 7d: 25%
+- TTFB mediano 7d: 33 ms (muestras: 56)
+- Uptime 7d: 0%
 - Resumen editorial: Hosting Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es IntermediaHost S.A.C.. Registra actividad desde 2014. Infraestructura: declara datacenter en Houston, Dallas y Londres (revende infraestructura SoftLayer/IBM); opera como revendedor internacional para clientes de la región. Tecnologías declaradas: cPanel, SSD/NVMe, WordPress, SSL. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
 ### Apache Perú
@@ -158,7 +158,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 50.31.176.152
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1325 ms (muestras: 8)
+- TTFB mediano 7d: 1479 ms (muestras: 56)
 - Uptime 7d: 100%
 - Resumen editorial: Apache Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Apache Perú S.A.C.. Registra actividad desde 2012. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: MailChannels, discos RAID-1, SSL. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -173,7 +173,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.67.183.168
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 405 ms (muestras: 8)
+- TTFB mediano 7d: 398 ms (muestras: 55)
 - Uptime 7d: 100%
 - Resumen editorial: HostDime Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es HostDime.com.pe S.A.C.. Forma parte del grupo HostDime Global (Orlando, EE.UU.). Registra actividad desde 2015. Infraestructura: declara datacenter en el país (Lima, Perú (datacenter propio Tier IV, ~75.000 sq ft, red AS33182)), lo que reduce latencia para audiencias locales. Tecnologías declaradas: Servidores dedicados, VPS KVM, Cloud, Colocation, cPanel/Plesk. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -188,7 +188,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 216.246.46.135
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 949 ms (muestras: 8)
+- TTFB mediano 7d: 860 ms (muestras: 55)
 - Uptime 7d: 100%
 - Resumen editorial: WEB PERU es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Web Peru E.I.R.L.. Registra actividad desde 2004. Infraestructura: declara datacenter en el país (EE.UU. (revende infraestructura; sin datacenter en Perú)), lo que reduce latencia para audiencias locales. Tecnologías declaradas: Linux/Windows, cPanel/Plesk, PHP, MySQL. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -203,7 +203,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 104.243.33.234
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 933 ms (muestras: 8)
+- TTFB mediano 7d: 955 ms (muestras: 56)
 - Uptime 7d: 100%
 - Resumen editorial: HostingNice es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Net Hosting Solutions S.A.C.. Infraestructura: declara datacenter en el país (EE.UU. y Suiza (offshore); sin datacenter en Perú), lo que reduce latencia para audiencias locales. Tecnologías declaradas: LiteSpeed, SSD NVMe, cPanel/WHM, CloudLinux. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -218,8 +218,8 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 38.187.8.105
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 524 ms (muestras: 8)
-- Uptime 7d: 100%
+- TTFB mediano 7d: 510 ms (muestras: 48)
+- Uptime 7d: 85.7%
 - Resumen editorial: Hosting-Peru.pe es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Cosas Peruanas S.C.R.L.. Registra actividad desde 2009. Infraestructura: declara datacenter en el país (Lima, Perú (declarado para shared; dedicados en EE.UU./Alemania)), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, CloudLinux, SSD/NVMe, Cloudflare. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
 ### Inka Web Design
@@ -233,7 +233,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 172.241.25.211
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 1665 ms (muestras: 8)
+- TTFB mediano 7d: 1563 ms (muestras: 56)
 - Uptime 7d: 100%
 - Resumen editorial: Inka Web Design es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Doctor PC Peru E.I.R.L.. Forma parte del grupo Doctor PC Perú. Registra actividad desde 2003. Infraestructura: no publica ubicación de datacenter en su sitio oficial, por lo que la latencia y jurisdicción de los datos deben verificarse antes de contratar. Tecnologías declaradas: Linux CentOS, cPanel/WHM, Windows, streaming. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -248,7 +248,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 104.16.210.83
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 72 ms (muestras: 8)
+- TTFB mediano 7d: 79 ms (muestras: 56)
 - Uptime 7d: 100%
 - Resumen editorial: Hostinger Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Hostinger International Ltd. (Lituania); sin entidad peruana. Forma parte del grupo Hostinger (global). Registra actividad desde 2004. Infraestructura: declara datacenter en el país (EE.UU. y Brasil (São Paulo); sin datacenter en Perú), lo que reduce latencia para audiencias locales. Tecnologías declaradas: LiteSpeed, hPanel, WordPress, CDN. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -263,7 +263,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 23.209.209.25
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 33 ms (muestras: 8)
+- TTFB mediano 7d: 46 ms (muestras: 56)
 - Uptime 7d: 0%
 - Resumen editorial: GoDaddy Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es GoDaddy Operating Company, LLC (EE.UU.); sin entidad peruana. Forma parte del grupo GoDaddy Inc. (global). Registra actividad desde 1997. Infraestructura: declara datacenter en el país (EE.UU. (Phoenix) + colocation NL/Singapur; sin datacenter en Perú), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, WordPress, VPS, Plesk. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 
@@ -278,7 +278,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - IP resuelta: 188.114.97.3
 - ASN: — (—)
 - SSL: —
-- TTFB mediano 7d: 66 ms (muestras: 8)
+- TTFB mediano 7d: 93 ms (muestras: 56)
 - Uptime 7d: 100%
 - Resumen editorial: HostGator Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es HostGator.com LLC (Texas, EE.UU.); grupo Newfold Digital; sin entidad peruana. Forma parte del grupo Newfold Digital (global). Registra actividad desde 2002. Infraestructura: declara datacenter en el país (Atlanta, EE.UU.; sin datacenter en Perú), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, WordPress, VPS, Dedicados. Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
 

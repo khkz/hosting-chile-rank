@@ -23,9 +23,9 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:00:22.359+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 524 ms
-- Muestras: 8
-- Uptime observado: 100%
+- TTFB mediano: 510 ms
+- Muestras: 48
+- Uptime observado: 85.7%
 
 ## Contexto editorial
 Hosting-Peru.pe es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Cosas Peruanas S.C.R.L.. Registra actividad desde 2009.

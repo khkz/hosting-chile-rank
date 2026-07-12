@@ -23,9 +23,9 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Última verificación: 2026-07-06T05:02:19.051+00:00
 
 ## Benchmark (últimos 7 días)
-- TTFB mediano: 1953 ms
-- Muestras: 8
-- Uptime observado: 100%
+- TTFB mediano: 1999 ms
+- Muestras: 84
+- Uptime observado: 92.3%
 
 ## Contexto editorial
 Hosting Red es un proveedor de hosting con actividad comercial en Colombia. Su razón social registrada es Hosting Red S.A.S.. Registra actividad desde 2001.
