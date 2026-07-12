@@ -85,6 +85,9 @@ const CountryComparativa = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={LATAM_OG_IMAGE[slug]} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={LATAM_OG_IMAGE[slug]} />
         <meta name="robots" content="index,follow" />
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
       </Helmet>
