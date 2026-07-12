@@ -137,7 +137,7 @@ const CountryComparativa = () => {
 
         <div className="text-sm space-x-3">
           <Link to={`/${slug}`} className="text-primary hover:underline">← Directorio {meta.name}</Link>
-          <Link to={`/${slug}/mejor-hosting-${meta.name.toLowerCase().replace(/[éí]/g, m => m === 'é' ? 'e' : 'i')}-2026`} className="text-primary hover:underline">Mejor hosting {meta.name} 2026</Link>
+          <Link to={`/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`} className="text-primary hover:underline">Mejor hosting {meta.name} 2026</Link>
         </div>
       </main>
       <Footer />
