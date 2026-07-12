@@ -19,6 +19,8 @@ interface Row {
   ttfb_samples: number;
   uptime_pct: number | null;
   last_measured: string | null;
+  spark: (number | null)[]; // 30 días de mediana diaria (null cuando no hay datos)
+  spark_days_with_data: number;
 }
 
 const CountryBenchmark = () => {
@@ -40,20 +42,34 @@ const CountryBenchmark = () => {
       const list = (companies ?? []).filter((c: any) => !isHiddenProvider(c.slug, c.website));
       if (!list.length) return [];
       const ids = list.map((c: any) => c.id);
-      const since = new Date(Date.now() - 7 * 24 * 3600_000).toISOString();
+      const since30 = new Date(Date.now() - 30 * 24 * 3600_000).toISOString();
+      const since7 = new Date(Date.now() - 7 * 24 * 3600_000).toISOString();
       const { data: pings } = await supabase
         .from('uptime_pings')
         .select('company_id, ttfb_ms, ok, measured_at')
         .in('company_id', ids)
-        .gte('measured_at', since)
+        .gte('measured_at', since30)
         .order('measured_at', { ascending: false })
-        .range(0, 9999);
-      const byCompany = new Map<string, { ttfb: number[]; ok: number; total: number; last: string | null }>();
+        .range(0, 49999);
+      const byCompany = new Map<
+        string,
+        { ttfb7: number[]; ok7: number; total7: number; last: string | null; daily: Map<string, number[]> }
+      >();
       for (const p of (pings ?? []) as any[]) {
-        const b = byCompany.get(p.company_id) ?? { ttfb: [], ok: 0, total: 0, last: null };
-        if (typeof p.ttfb_ms === 'number') b.ttfb.push(p.ttfb_ms);
-        b.total += 1;
-        if (p.ok) b.ok += 1;
+        const b =
+          byCompany.get(p.company_id) ??
+          { ttfb7: [], ok7: 0, total7: 0, last: null as string | null, daily: new Map<string, number[]>() };
+        const day = String(p.measured_at).slice(0, 10);
+        if (typeof p.ttfb_ms === 'number') {
+          const arr = b.daily.get(day) ?? [];
+          arr.push(p.ttfb_ms);
+          b.daily.set(day, arr);
+        }
+        if (p.measured_at >= since7) {
+          if (typeof p.ttfb_ms === 'number') b.ttfb7.push(p.ttfb_ms);
+          b.total7 += 1;
+          if (p.ok) b.ok7 += 1;
+        }
         if (!b.last || p.measured_at > b.last) b.last = p.measured_at;
         byCompany.set(p.company_id, b);
       }
@@ -63,14 +79,28 @@ const CountryBenchmark = () => {
         const m = Math.floor(s.length / 2);
         return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2);
       };
+      // Construye 30 días fijos (cronológico, más antiguo primero).
+      const dayKeys: string[] = [];
+      for (let i = 29; i >= 0; i--) {
+        dayKeys.push(new Date(Date.now() - i * 24 * 3600_000).toISOString().slice(0, 10));
+      }
       return list.map((c: any): Row => {
         const b = byCompany.get(c.id);
+        const spark = dayKeys.map((d) => {
+          const arr = b?.daily.get(d);
+          return arr && arr.length ? median(arr) : null;
+        });
         return {
-          id: c.id, slug: c.slug, name: c.name, website: c.website,
-          ttfb_median: b ? median(b.ttfb) : null,
-          ttfb_samples: b?.ttfb.length ?? 0,
-          uptime_pct: b && b.total > 0 ? Math.round((b.ok / b.total) * 1000) / 10 : null,
+          id: c.id,
+          slug: c.slug,
+          name: c.name,
+          website: c.website,
+          ttfb_median: b ? median(b.ttfb7) : null,
+          ttfb_samples: b?.ttfb7.length ?? 0,
+          uptime_pct: b && b.total7 > 0 ? Math.round((b.ok7 / b.total7) * 1000) / 10 : null,
           last_measured: b?.last ?? null,
+          spark,
+          spark_days_with_data: spark.filter((v) => v != null).length,
         };
       }).sort((a, b) => {
         if (a.ttfb_median == null && b.ttfb_median == null) return a.name.localeCompare(b.name);
