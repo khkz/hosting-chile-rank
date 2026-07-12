@@ -75,8 +75,17 @@ const Index = () => {
         <StatsTicker />
 
         <Suspense fallback={null}>
+          {/* StoryBrand: la pyme protagonista, nosotros la guía */}
+          <StoryBrandGuide />
+
+          {/* Buyer journeys: blog / pyme / tienda */}
+          <BuyerJourneys />
+
           {/* ¿Qué tipo de proyecto tienes? */}
           <HostingQuiz />
+
+          {/* Objeciones frecuentes con respuestas verificables */}
+          <Objections />
 
           {/* Sección compacta de confianza (fusión) */}
           <WhyTrustUs />
