@@ -308,7 +308,7 @@ async function generateLatamHub() {
   const headExtra = `<script type="application/ld+json">${JSON.stringify(itemListLd)}</script>`;
   await fs.mkdir('public/latam', { recursive: true });
   await fs.writeFile('public/latam/index.html',
-    buildHtml({ title, description, canonical, locale: 'es-419', headExtra, bodyContent: body, keywords: 'hosting latam, hosting latinoamerica, hosting peru, hosting mexico, hosting colombia, hosting argentina' }), 'utf8');
+    buildHtml({ title, description, canonical, locale: 'es-419', headExtra, bodyContent: body, keywords: 'hosting latam, hosting latinoamerica, hosting peru, hosting mexico, hosting colombia, hosting argentina', ogImage: 'https://eligetuhosting.com/og/latam.png' }), 'utf8');
   console.log('✅ /latam generado');
 }
 
