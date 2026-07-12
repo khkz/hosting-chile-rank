@@ -120,6 +120,9 @@ const CountryBenchmark = () => {
         <meta property="og:url" content={canonical} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
+        <meta property="og:image" content={LATAM_OG_IMAGE[slug]} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={LATAM_OG_IMAGE[slug]} />
         <meta property="og:locale" content="es_419" />
         <link rel="alternate" type="application/json" href={`/data/benchmarks-${slug}.json`} title="Benchmarks JSON (CC-BY-4.0)" />
         <script type="application/ld+json">{JSON.stringify(itemListLd)}</script>
