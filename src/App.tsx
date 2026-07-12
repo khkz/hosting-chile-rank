@@ -113,6 +113,7 @@ import CountryComparativa from './pages/CountryComparativa';
 import CountryBenchmark from './pages/CountryBenchmark';
 import DatosAbiertos from './pages/DatosAbiertos';
 import Latam from './pages/Latam';
+import HostDimePePilot from './pages/pilot/HostDimePePilot';
 import HomeDispatcher from './components/HomeDispatcher';
 
 const HostingAdvisorFab = React.lazy(() => import('./components/advisor/HostingAdvisorFab'));
@@ -343,6 +344,7 @@ function App() {
             <Route path="/co/benchmark" element={<CountryBenchmark />} />
             <Route path="/ar/benchmark" element={<CountryBenchmark />} />
             <Route path="/pe" element={<CountryLanding />} />
+            <Route path="/pe/hostdime-pe" element={<HostDimePePilot />} />
             <Route path="/pe/:slug" element={<CountryProviderDetail />} />
             <Route path="/pe/*" element={<CountryLanding />} />
             <Route path="/mx" element={<CountryLanding />} />
