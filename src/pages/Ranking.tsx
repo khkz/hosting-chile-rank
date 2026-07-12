@@ -62,7 +62,7 @@ const hostProviders = [
     slug: "ecohosting",
     logo: "/logo-ecohosting.png",
     rating: 9.6,
-    price: "Desde $1.658/mes",
+    price: "Desde $3.325/mes",
     speed: "9.7/10",
     uptime: "99.96%",
     features: [
