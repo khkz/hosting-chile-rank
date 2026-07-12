@@ -1,4 +1,5 @@
 import { useLocation, Link } from 'react-router-dom';
+import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,6 +24,8 @@ import {
 } from 'lucide-react';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
 import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
+import DirectoryFilterBar, { type SortMode } from '@/components/DirectoryFilterBar';
+import { hasLocalDatacenter, has247Support, type LatamDcSlug } from '@/lib/dcLocal';
 
 
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
@@ -38,7 +41,7 @@ const CountryLanding = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select(
-          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, is_verified, is_curated'
+          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, foundation_year, is_verified, is_curated'
         )
         .eq('country', info.code)
         .eq('is_verified', true)
