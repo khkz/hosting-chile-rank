@@ -30,7 +30,7 @@ const HostingQuiz = () => {
       return {
         provider: 'EcoHosting',
         reason: 'Ideal para blogs personales con excelente relación precio-calidad',
-        price: 'desde $1.658/mes',
+        price: 'desde $3.325/mes',
         features: ['WordPress optimizado', 'SSL gratis', 'Backups diarios'],
         cta: 'Ver planes EcoHosting',
         link: '/catalogo/ecohosting'
@@ -41,7 +41,7 @@ const HostingQuiz = () => {
       return {
         provider: 'HostingPlus',
         reason: 'El #1 en velocidad y soporte para tiendas online',
-        price: 'desde $3.469/mes',
+        price: 'desde $4.219/mes',
         features: ['Datacenter en Santiago', 'Soporte 24/7 en español', 'Migración gratis'],
         cta: 'Probar HostingPlus 30 días',
         link: '/catalogo/hostingplus'
@@ -52,7 +52,7 @@ const HostingQuiz = () => {
       return {
         provider: 'HostingPlus',
         reason: 'Máximo rendimiento para sitios con alto tráfico',
-        price: 'desde $3.469/mes',
+        price: 'desde $4.219/mes',
         features: ['Servidores en Santiago', 'CDN incluido', 'Recursos dedicados'],
         cta: 'Ver planes premium',
         link: '/catalogo/hostingplus'
@@ -63,7 +63,7 @@ const HostingQuiz = () => {
     return {
       provider: 'HostingPlus',
       reason: 'La mejor opción para la mayoría de proyectos chilenos',
-      price: 'desde $3.469/mes',
+      price: 'desde $4.219/mes',
       features: ['Garantía 30 días', 'Soporte en español', 'Sin contratos largos'],
       cta: 'Ver ranking completo',
       link: '/ranking'

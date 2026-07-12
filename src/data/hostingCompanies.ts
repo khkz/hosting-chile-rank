@@ -44,13 +44,13 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
     plans: [
       {
         name: "Personal SSD",
-        price: 3469, // Precio mensual efectivo con descuento trianual
+        price: 4219, // Precio mensual efectivo con descuento trianual (jul 2026)
         pricing: {
           monthly: 19900,
           sixMonths: 16150, // $96,900/6 meses
-          annual: 4158, // $49,900/año
-          biannual: 3886, // $93,300/2 años 
-          triannual: 3469, // $124,900/3 años
+          annual: 5408, // $64,900/año (equivalente mensual, Personal NVMe anual)
+          biannual: 4726, // $113,400/2 años
+          triannual: 4219, // $151,900/3 años (equivalente mensual)
           includesDomainFrom: 'annual'
         },
         storage: "15 GB SSD",
