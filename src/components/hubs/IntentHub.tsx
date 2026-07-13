@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
 import { Star, ExternalLink, Check } from 'lucide-react';
+import HubDeepSections from '@/components/hubs/HubDeepSections';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
 import type { HubConfig } from '@/lib/segmentHubs';
@@ -106,7 +107,10 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
           <p className="text-base md:text-lg text-[#444] leading-relaxed">{config.intro}</p>
         </section>
 
+        <HubDeepSections hubKey={config.key} />
+
         <section className="container mx-auto px-4 pb-10 max-w-5xl">
+
           <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-5">Top 5 — {config.h1}</h2>
           <ol className="space-y-4">
             {providers.map((p, i) => (
