@@ -24,6 +24,25 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
+        manualChunks: (id) => {
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router-dom/') || id.includes('/scheduler/')) {
+            return 'vendor-react';
+          }
+          if (id.includes('/@supabase/') || id.includes('/@tanstack/react-query/')) {
+            return 'vendor-data';
+          }
+          if (id.includes('/recharts/') || id.includes('/d3-')) {
+            return 'vendor-charts';
+          }
+          if (id.includes('/react-markdown/') || id.includes('/remark-gfm/') || id.includes('/micromark') || id.includes('/unified/') || id.includes('/mdast') || id.includes('/hast') || id.includes('/unist')) {
+            return 'vendor-markdown';
+          }
+          if (id.includes('/lucide-react/')) {
+            return 'vendor-icons';
+          }
+          return 'vendor-ui';
+        },
         // IMPORTANTE: nombres SIN hash. El HTML prerenderizado commiteado en public/
         // referencia /assets/index.js y /assets/index.css; con hashes, cada rebuild
         // de la plataforma rompería esas referencias. El cache-busting se pierde,
