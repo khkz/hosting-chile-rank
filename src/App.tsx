@@ -39,10 +39,6 @@ import GuiaCompletaElegirHosting from './pages/GuiaCompletaElegirHosting';
 import ErroresComunesHosting from './pages/ErroresComunesHosting';
 import MejorHostingWordPressChile from './pages/MejorHostingWordPressChile';
 import MejorHostingEcommerceChile from './pages/MejorHostingEcommerceChile';
-import HubWordPress from './pages/hubs/HubWordPress';
-import HubEcommerce from './pages/hubs/HubEcommerce';
-import HubPymes from './pages/hubs/HubPymes';
-import HubVPS from './pages/hubs/HubVPS';
 import ComparativaRouteDispatcher from './components/ComparativaRouteDispatcher';
 import DirectorioRedirect from './components/DirectorioRedirect';
 import AlternativasA from './pages/AlternativasA';
@@ -117,6 +113,10 @@ import HostDimePePilot from './pages/pilot/HostDimePePilot';
 import HomeDispatcher from './components/HomeDispatcher';
 
 const HostingAdvisorFab = React.lazy(() => import('./components/advisor/HostingAdvisorFab'));
+const HubWordPress = React.lazy(() => import('./pages/hubs/HubWordPress'));
+const HubEcommerce = React.lazy(() => import('./pages/hubs/HubEcommerce'));
+const HubPymes = React.lazy(() => import('./pages/hubs/HubPymes'));
+const HubVPS = React.lazy(() => import('./pages/hubs/HubVPS'));
 
 function App() {
   return (
@@ -131,6 +131,7 @@ function App() {
         <React.Suspense fallback={null}>
           <HostingAdvisorFab />
         </React.Suspense>
+        <React.Suspense fallback={null}>
         <Routes>
         {/* Rutas para archivos estáticos */}
         <Route path="/sitemap.xml" element={<StaticSitemap />} />
@@ -358,6 +359,7 @@ function App() {
             <Route path="/ar/*" element={<CountryLanding />} />
             <Route path="*" element={<NotFound />} />
       </Routes>
+      </React.Suspense>
     </Router>
     </AuthProvider>
   );
