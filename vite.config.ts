@@ -25,23 +25,67 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (!id.includes('node_modules')) return undefined;
-          if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router-dom/') || id.includes('/scheduler/')) {
+          const moduleId = id.replace(/\\/g, '/');
+          if (moduleId.includes('commonjsHelpers') || moduleId.includes('vite/preload-helper')) {
             return 'vendor-react';
           }
-          if (id.includes('/@supabase/') || id.includes('/@tanstack/react-query/')) {
+          if (!moduleId.includes('/node_modules/')) return undefined;
+
+          // Keep React with libraries that create/read React context. Splitting
+          // @tanstack/react-query or React UI libraries into a different manual
+          // chunk caused production to evaluate them with an undefined React
+          // binding (`createContext` crash) on publish.
+          if (
+            moduleId.includes('/node_modules/react/') ||
+            moduleId.includes('/node_modules/react-dom/') ||
+            moduleId.includes('/node_modules/react-is/') ||
+            moduleId.includes('/node_modules/react-router/') ||
+            moduleId.includes('/node_modules/scheduler/') ||
+            moduleId.includes('/node_modules/react-router-dom/') ||
+            moduleId.includes('/node_modules/@remix-run/router/') ||
+            moduleId.includes('/node_modules/@tanstack/react-query/') ||
+            moduleId.includes('/node_modules/@tanstack/query-core/') ||
+            moduleId.includes('/node_modules/react-helmet/') ||
+            moduleId.includes('/node_modules/react-helmet-async/') ||
+            moduleId.includes('/node_modules/prop-types/') ||
+            moduleId.includes('/node_modules/hoist-non-react-statics/') ||
+            moduleId.includes('/node_modules/shallowequal/') ||
+            moduleId.includes('/node_modules/invariant/') ||
+            moduleId.includes('/node_modules/react-hook-form/') ||
+            moduleId.includes('/node_modules/@hookform/') ||
+            moduleId.includes('/node_modules/@radix-ui/') ||
+            moduleId.includes('/node_modules/cmdk/') ||
+            moduleId.includes('/node_modules/vaul/') ||
+            moduleId.includes('/node_modules/sonner/') ||
+            moduleId.includes('/node_modules/next-themes/') ||
+            moduleId.includes('/node_modules/input-otp/') ||
+            moduleId.includes('/node_modules/react-day-picker/') ||
+            moduleId.includes('/node_modules/react-resizable-panels/') ||
+            moduleId.includes('/node_modules/embla-carousel-react/') ||
+            moduleId.includes('/node_modules/@floating-ui/react-dom/') ||
+            moduleId.includes('/node_modules/react-remove-scroll/') ||
+            moduleId.includes('/node_modules/react-remove-scroll-bar/') ||
+            moduleId.includes('/node_modules/react-style-singleton/') ||
+            moduleId.includes('/node_modules/use-callback-ref/') ||
+            moduleId.includes('/node_modules/use-sidecar/') ||
+            moduleId.includes('/node_modules/use-debounce/')
+          ) {
+            return 'vendor-react';
+          }
+
+          if (moduleId.includes('/node_modules/@supabase/')) {
             return 'vendor-data';
           }
-          if (id.includes('/recharts/') || id.includes('/d3-')) {
+          if (moduleId.includes('/node_modules/recharts/') || moduleId.includes('/node_modules/d3-')) {
             return 'vendor-charts';
           }
-          if (id.includes('/react-markdown/') || id.includes('/remark-gfm/') || id.includes('/micromark') || id.includes('/unified/') || id.includes('/mdast') || id.includes('/hast') || id.includes('/unist')) {
+          if (moduleId.includes('/node_modules/react-markdown/') || moduleId.includes('/node_modules/remark-gfm/') || moduleId.includes('/node_modules/micromark') || moduleId.includes('/node_modules/unified/') || moduleId.includes('/node_modules/mdast') || moduleId.includes('/node_modules/hast') || moduleId.includes('/node_modules/unist')) {
             return 'vendor-markdown';
           }
-          if (id.includes('/lucide-react/')) {
+          if (moduleId.includes('/node_modules/lucide-react/')) {
             return 'vendor-icons';
           }
-          return 'vendor-ui';
+          return undefined;
         },
         // IMPORTANTE: nombres SIN hash. El HTML prerenderizado commiteado en public/
         // referencia /assets/index.js y /assets/index.css; con hashes, cada rebuild
