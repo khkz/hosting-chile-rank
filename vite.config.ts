@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => ({
           if (
             moduleId.includes('/node_modules/react/') ||
             moduleId.includes('/node_modules/react-dom/') ||
+            moduleId.includes('/node_modules/react-router/') ||
             moduleId.includes('/node_modules/scheduler/') ||
             moduleId.includes('/node_modules/react-router-dom/') ||
             moduleId.includes('/node_modules/@remix-run/router/') ||
@@ -52,6 +53,12 @@ export default defineConfig(({ mode }) => ({
             moduleId.includes('/node_modules/react-day-picker/') ||
             moduleId.includes('/node_modules/react-resizable-panels/') ||
             moduleId.includes('/node_modules/embla-carousel-react/') ||
+            moduleId.includes('/node_modules/@floating-ui/react-dom/') ||
+            moduleId.includes('/node_modules/react-remove-scroll/') ||
+            moduleId.includes('/node_modules/react-remove-scroll-bar/') ||
+            moduleId.includes('/node_modules/react-style-singleton/') ||
+            moduleId.includes('/node_modules/use-callback-ref/') ||
+            moduleId.includes('/node_modules/use-sidecar/') ||
             moduleId.includes('/node_modules/use-debounce/')
           ) {
             return 'vendor-react';
