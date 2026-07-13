@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
 import { Star, ExternalLink, Check } from 'lucide-react';
+import HubDeepSections from '@/components/hubs/HubDeepSections';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
 import type { HubConfig } from '@/lib/segmentHubs';
