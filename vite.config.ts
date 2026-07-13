@@ -26,6 +26,9 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: (id) => {
           const moduleId = id.replace(/\\/g, '/');
+          if (moduleId.includes('commonjsHelpers') || moduleId.includes('vite/preload-helper')) {
+            return 'vendor-react';
+          }
           if (!moduleId.includes('/node_modules/')) return undefined;
 
           // Keep React with libraries that create/read React context. Splitting
@@ -41,6 +44,7 @@ export default defineConfig(({ mode }) => ({
             moduleId.includes('/node_modules/@remix-run/router/') ||
             moduleId.includes('/node_modules/@tanstack/react-query/') ||
             moduleId.includes('/node_modules/@tanstack/query-core/') ||
+            moduleId.includes('/node_modules/react-helmet/') ||
             moduleId.includes('/node_modules/react-helmet-async/') ||
             moduleId.includes('/node_modules/react-hook-form/') ||
             moduleId.includes('/node_modules/@hookform/') ||
@@ -76,7 +80,7 @@ export default defineConfig(({ mode }) => ({
           if (moduleId.includes('/node_modules/lucide-react/')) {
             return 'vendor-icons';
           }
-          return 'vendor-ui';
+          return undefined;
         },
         // IMPORTANTE: nombres SIN hash. El HTML prerenderizado commiteado en public/
         // referencia /assets/index.js y /assets/index.css; con hashes, cada rebuild
