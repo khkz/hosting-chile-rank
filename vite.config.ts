@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => ({
           if (
             moduleId.includes('/node_modules/react/') ||
             moduleId.includes('/node_modules/react-dom/') ||
+            moduleId.includes('/node_modules/react-is/') ||
             moduleId.includes('/node_modules/react-router/') ||
             moduleId.includes('/node_modules/scheduler/') ||
             moduleId.includes('/node_modules/react-router-dom/') ||
@@ -46,6 +47,10 @@ export default defineConfig(({ mode }) => ({
             moduleId.includes('/node_modules/@tanstack/query-core/') ||
             moduleId.includes('/node_modules/react-helmet/') ||
             moduleId.includes('/node_modules/react-helmet-async/') ||
+            moduleId.includes('/node_modules/prop-types/') ||
+            moduleId.includes('/node_modules/hoist-non-react-statics/') ||
+            moduleId.includes('/node_modules/shallowequal/') ||
+            moduleId.includes('/node_modules/invariant/') ||
             moduleId.includes('/node_modules/react-hook-form/') ||
             moduleId.includes('/node_modules/@hookform/') ||
             moduleId.includes('/node_modules/@radix-ui/') ||
