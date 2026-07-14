@@ -91,8 +91,12 @@ export default defineConfig(({ mode }) => ({
         // referencia /assets/index.js y /assets/index.css; con hashes, cada rebuild
         // de la plataforma rompería esas referencias. El cache-busting se pierde,
         // pero garantiza que los HTML estáticos sigan hidratando tras cada publish.
+        // Entry y CSS SIN hash: los ~500 HTML prerenderizados commiteados en
+        // public/ referencian /assets/index.js e /assets/index.css literales.
+        // Chunks vendor-* SÍ hasheados para deploys consistentes (evita el
+        // crash de createContext por mezcla vendor viejo + entry nuevo).
         entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: (assetInfo) => {
           // Preserve XML and TXT files in their original location at root
           if (assetInfo.name && (assetInfo.name.endsWith('.xml') || assetInfo.name.endsWith('.txt'))) {
