@@ -2,10 +2,12 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { track } from '@/lib/track';
 
 const Hero = () => {
   const scrollToRanking = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    track('cta_ver_ranking', { location: 'hero' });
     const el = document.getElementById('ranking');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
