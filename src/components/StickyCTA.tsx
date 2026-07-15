@@ -26,7 +26,7 @@ const StickyCTA = () => {
         asChild
         className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90"
       >
-        <Link to="/cotiza-hosting">
+        <Link to="/cotiza-hosting" onClick={() => track('cta_cotizar', { location: 'sticky_mobile' })}>
           Cotiza tu hosting
         </Link>
       </Button>
