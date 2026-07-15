@@ -103,7 +103,7 @@ const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isH
             variant="outline" 
             className="w-full border-[#EF233C] text-[#EF233C] hover:bg-[#EF233C] hover:text-white"
           >
-            <a href={provider.reseñaUrl}>Ver ficha completa</a>
+            <a href={provider.reseñaUrl} onClick={() => track('click_ver_ficha', { slug: provider.id, location: 'provider_card' })}>Ver ficha completa</a>
           </Button>
         </div>
       </CardContent>
