@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, X } from 'lucide-react';
 import { track } from '@/lib/track';
+import DatacenterBadge from '@/components/DatacenterBadge';
 
 interface HostingProviderCardProps {
   provider: {
