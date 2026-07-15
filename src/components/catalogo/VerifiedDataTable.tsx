@@ -38,6 +38,7 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
             href={href}
             target="_blank"
             rel="noopener"
+            onClick={() => track('click_visitar_sitio', { slug: props.slug, location: 'ficha_verified_table' })}
             className="text-primary underline underline-offset-2 hover:opacity-80 break-all"
           >
             www.{label}
