@@ -70,6 +70,12 @@ const Index = () => {
         {/* Ranking arriba (Top 3 + puestos 4-10) */}
         <HostingRanking />
 
+        {/* Educación sobre datacenters (Chile) */}
+        <section className="py-8 px-4">
+          <DatacenterEducation />
+        </section>
+
+
         {/* Veredicto breve */}
         <TLDRVerdict />
 
