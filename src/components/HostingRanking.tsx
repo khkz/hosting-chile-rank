@@ -238,6 +238,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                 <Link
                   to={`/catalogo/${provider.slug}`}
                   className="text-primary hover:underline font-medium"
+                  onClick={() => track('click_ver_ficha', { slug: provider.slug, location: 'ranking_top3' })}
                 >
                   Review completa de {provider.name} →
                 </Link>
