@@ -460,6 +460,7 @@ const HostingRanking = () => {
             <Link
               to="/ranking"
               className="inline-flex items-center gap-2 text-[#EF233C] hover:text-[#b3001b] font-semibold text-base md:text-lg transition-colors duration-300 group"
+              onClick={() => track('cta_ver_ranking', { location: 'home_more' })}
             >
               Ver ranking completo
               <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
