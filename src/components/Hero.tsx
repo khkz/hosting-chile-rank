@@ -56,7 +56,7 @@ const Hero = () => {
               variant="outline"
               className="px-5 py-3 text-sm md:text-base rounded-xl font-poppins font-semibold min-h-[44px] touch-manipulation"
             >
-              <Link to="/cotiza-hosting">Cotizar gratis</Link>
+              <Link to="/cotiza-hosting" onClick={() => track('cta_cotizar', { location: 'hero' })}>Cotizar gratis</Link>
             </Button>
           </div>
         </div>
