@@ -14,6 +14,7 @@ import RankingPositions4to10 from './RankingPositions4to10';
 import RankingAuthorityBlock from './RankingAuthorityBlock';
 import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
+import DatacenterBadge from './DatacenterBadge';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
