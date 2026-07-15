@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, ArrowRight, Star } from 'lucide-react';
 import { useReviewStats } from '@/hooks/useReviewStats';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
+import { track } from '@/lib/track';
 
 // Orden y notas oficiales (4–10). Fuente única de verdad para el ranking extendido.
 export const EXTRA_RANKING: Array<{
