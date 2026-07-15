@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { COUNTRIES, DOT_COM_COUNTRIES } from '@/lib/country';
 import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
+import DatacenterEducation from '@/components/DatacenterEducation';
 
 
 /**
@@ -100,6 +101,8 @@ const LatamHub = () => {
               );
             })}
           </div>
+
+          <DatacenterEducation />
 
           <div className="max-w-3xl mx-auto text-left">
             <AdvisorEmbed />
