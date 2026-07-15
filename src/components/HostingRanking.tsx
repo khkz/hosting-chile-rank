@@ -142,6 +142,11 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
               <TrustSignalBadge companyId={provider.id} />
             </div>
 
+            {/* Datacenter status (P4-DC3) */}
+            <div className="flex justify-center mb-3">
+              <DatacenterBadge providerName={provider.name} />
+            </div>
+
             {/* Rating */}
             <div className="flex items-center justify-center gap-2">
               <div className="flex">
