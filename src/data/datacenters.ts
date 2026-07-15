@@ -4,7 +4,8 @@
  * SOURCING RULES (mandatory):
  * - Only values with a verifiable source are included.
  * - No source => estado: 'no_divulga'.
- * - "homologable" / self-declared without third-party audit => estado: 'autodeclarado'.
+ * - 'autodeclarado' ONLY if the provider uses Tier/homologable/'clase mundial' language on a
+ *   verifiable page (homepage alone is NOT enough). Otherwise => estado: 'no_divulga'.
  * - HostingPlus is explicitly tracked as colocation in Ascenty SCL2 (TUV TR3) per project methodology.
  */
 
