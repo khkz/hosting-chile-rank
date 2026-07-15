@@ -4,7 +4,8 @@
  * SOURCING RULES (mandatory):
  * - Only values with a verifiable source are included.
  * - No source => estado: 'no_divulga'.
- * - "homologable" / self-declared without third-party audit => estado: 'autodeclarado'.
+ * - 'autodeclarado' ONLY if the provider uses Tier/homologable/'clase mundial' language on a
+ *   verifiable page (homepage alone is NOT enough). Otherwise => estado: 'no_divulga'.
  * - HostingPlus is explicitly tracked as colocation in Ascenty SCL2 (TUV TR3) per project methodology.
  */
 
@@ -138,7 +139,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.ecohosting.cl/',
   },
   {
@@ -146,7 +147,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.hn.cl/',
   },
   {
@@ -161,8 +162,8 @@ export const rankingHosts: RankingHostDc[] = [
     nombre: 'HostGator.cl',
     dc_declarado: 'Santiago, Chile',
     operador: null,
-    tipo: 'colocation',
-    estado: 'autodeclarado',
+    tipo: 'extranjero',
+    estado: 'extranjero',
     fuente_url: 'https://www.hostgator.cl/',
   },
   {
@@ -178,7 +179,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.cloudhosting.cl/',
   },
   {
@@ -186,7 +187,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.1hosting.cl/',
   },
   {
@@ -194,7 +195,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.fullhosting.cl/',
   },
   {
@@ -202,7 +203,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago de Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.prohosting.cl/',
   },
   {
@@ -218,7 +219,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.fasthosting.cl/',
   },
   {
@@ -226,7 +227,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.hosting24.cl/',
   },
   {
@@ -250,7 +251,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.webhosting.cl/',
   },
   {
@@ -258,7 +259,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.smarthost.cl/',
   },
   {
@@ -274,16 +275,16 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.hostingchile.cl/',
   },
-  // Not curated but with explicit datacenter declarations in the ranking data
+  // Not curated; homepage alone is NOT sufficient for 'autodeclarado'
   {
     nombre: 'CBHosting',
     dc_declarado: 'Viña del Mar, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.cbhosting.cl/',
   },
   {
@@ -291,7 +292,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenter propio en Chile (Peñalolén)',
     operador: null,
     tipo: 'propio',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://chilecom.net/',
   },
   {
@@ -299,7 +300,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago de Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://cpanelhost.cl/',
   },
   {
@@ -307,7 +308,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenter propio (declarado); certificación ISO/IEC 27001',
     operador: null,
     tipo: 'propio',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://crearchile.com/',
   },
   {
@@ -315,7 +316,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenter propio en Santiago, Chile',
     operador: null,
     tipo: 'propio',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.gamehost.cl/',
   },
   {
@@ -323,7 +324,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenter propio en Santiago (Tier, 99.98%); partners Cogent, cPanel, Fortinet, Dell',
     operador: null,
     tipo: 'propio',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.grupocg.cl/',
   },
   {
@@ -331,7 +332,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago (declarado)',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://hosthunder.com/',
   },
   {
@@ -339,7 +340,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenter propio en Chile',
     operador: null,
     tipo: 'propio',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.hostingcenter.cl/',
   },
   {
@@ -347,7 +348,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.hostinglatam.cl/',
   },
   {
@@ -355,7 +356,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenter en Santiago, Chile (RM); latencia ~8ms',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://hostingnic.cl/',
   },
   {
@@ -363,7 +364,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Servidores en Santiago, Chile; miembro LACNIC',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://hostingprofesional.cl/',
   },
   {
@@ -371,7 +372,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenters propios en Viña del Mar y Santiago (+ Azure/AWS/Huawei)',
     operador: null,
     tipo: 'propio',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://www.ihosting.cl/',
   },
   {
@@ -379,7 +380,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Datacenter propio en Santiago (Porvenir 245)',
     operador: null,
     tipo: 'propio',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://iia.cl/',
   },
   {
@@ -387,7 +388,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://id1.cl/',
   },
   {
@@ -395,7 +396,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Ñuñoa, Santiago',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://itfinden.com/',
   },
   {
@@ -403,7 +404,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile',
     operador: null,
     tipo: 'colocation',
-    estado: 'autodeclarado',
+    estado: 'no_divulga',
     fuente_url: 'https://webhostchile.cl/',
   },
 ];
