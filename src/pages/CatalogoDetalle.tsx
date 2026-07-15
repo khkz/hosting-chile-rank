@@ -22,6 +22,7 @@ import { AlertTriangle } from 'lucide-react';
 import BrandFAQ, { buildBrandFAQ } from '@/components/catalogo/BrandFAQ';
 import VerifiedDataTable from '@/components/catalogo/VerifiedDataTable';
 import Veredicto from '@/components/catalogo/Veredicto';
+import DatacenterBadge from '@/components/DatacenterBadge';
 import { isHiddenProvider } from '@/lib/providerLinks';
 
 const SITE = 'https://eligetuhosting.cl';
@@ -343,6 +344,8 @@ const CatalogoDetalle = () => {
         </div>
 
         <HostingCompanyInfo company={companyData} />
+
+        <DatacenterBadge providerName={company.name} variant="row" className="my-4" />
 
         <VerifiedDataTable
           yearFounded={company.year_founded}

@@ -14,6 +14,7 @@ import RankingPositions4to10 from './RankingPositions4to10';
 import RankingAuthorityBlock from './RankingAuthorityBlock';
 import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
+import DatacenterBadge from './DatacenterBadge';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
@@ -139,6 +140,11 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
             {/* Señales reales: verificación + reclamos verificados */}
             <div className="flex justify-center mb-3">
               <TrustSignalBadge companyId={provider.id} />
+            </div>
+
+            {/* Datacenter status (P4-DC3) */}
+            <div className="flex justify-center mb-3">
+              <DatacenterBadge providerName={provider.name} />
             </div>
 
             {/* Rating */}
