@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { formatUptime } from '@/lib/uptime';
+import { track } from '@/lib/track';
 
 interface VerifiedDataTableProps {
   yearFounded?: number | null;
@@ -12,6 +13,7 @@ interface VerifiedDataTableProps {
   hasSslFree?: boolean | null;
   hasMigrationFree?: boolean | null;
   officialWebsite?: string | null;
+  slug?: string;
 }
 
 const formatOfficialUrl = (raw: string) => {
