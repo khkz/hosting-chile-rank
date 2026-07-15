@@ -221,6 +221,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                     target="_blank"
                     rel={link.rel}
                     referrerPolicy="no-referrer"
+                    onClick={() => track('click_visitar_sitio', { slug: provider.slug, location: 'ranking_top3', position: provider.ranking_position ?? undefined })}
                   >
                     {provider.cta_text || 'Ver Oferta'}
                   </a>
