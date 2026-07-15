@@ -72,6 +72,8 @@ const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isH
             </div>
           </div>
           
+          <DatacenterBadge providerName={provider.name} variant="row" className="mb-3" />
+
           <div className="grid grid-cols-3 gap-1 text-xs mb-4">
             <div className="flex items-center">
               {provider.hasLiteSpeed ? (
