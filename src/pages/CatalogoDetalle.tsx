@@ -345,6 +345,8 @@ const CatalogoDetalle = () => {
 
         <HostingCompanyInfo company={companyData} />
 
+        <DatacenterBadge providerName={company.name} variant="row" className="my-4" />
+
         <VerifiedDataTable
           yearFounded={company.year_founded}
           corporateGroup={company.corporate_group}
