@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, ArrowRight, Star } from 'lucide-react';
 import { useReviewStats } from '@/hooks/useReviewStats';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
+import { track } from '@/lib/track';
 
 // Orden y notas oficiales (4–10). Fuente única de verdad para el ranking extendido.
 export const EXTRA_RANKING: Array<{
@@ -108,7 +109,7 @@ const RankingPositions4to10: React.FC = () => {
                   <td className="p-3 text-right">
                     <div className="flex justify-end gap-2">
                       <Button asChild variant="outline" size="sm" className="min-h-[44px]">
-                        <Link to={`/catalogo/${row.slug}`}>Ver detalles</Link>
+                        <Link to={`/catalogo/${row.slug}`} onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10', position: row.position })}>Ver detalles</Link>
                       </Button>
                       {db?.website && (() => {
                         const link = getProviderLink(row.slug, db.website);
@@ -118,6 +119,7 @@ const RankingPositions4to10: React.FC = () => {
                               href={link.href}
                               target="_blank"
                               rel={link.rel}
+                              onClick={() => track('click_visitar_sitio', { slug: row.slug, location: 'ranking_4_10', position: row.position })}
                             >
                               Visitar sitio
                               <ExternalLink className="ml-1 h-3 w-3" />
@@ -167,7 +169,7 @@ const RankingPositions4to10: React.FC = () => {
               </p>
               <div className="flex gap-2">
                 <Button asChild variant="outline" size="sm" className="flex-1 min-h-[44px]">
-                  <Link to={`/catalogo/${row.slug}`}>Ver detalles</Link>
+                  <Link to={`/catalogo/${row.slug}`} onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}>Ver detalles</Link>
                 </Button>
                 {db?.website && (() => {
                   const link = getProviderLink(row.slug, db.website);
@@ -177,6 +179,7 @@ const RankingPositions4to10: React.FC = () => {
                         href={link.href}
                         target="_blank"
                         rel={link.rel}
+                        onClick={() => track('click_visitar_sitio', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}
                       >
                         Visitar
                         <ArrowRight className="ml-1 h-3 w-3" />

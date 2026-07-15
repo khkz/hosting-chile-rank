@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { formatUptime } from '@/lib/uptime';
+import { track } from '@/lib/track';
 
 interface VerifiedDataTableProps {
   yearFounded?: number | null;
@@ -12,6 +13,7 @@ interface VerifiedDataTableProps {
   hasSslFree?: boolean | null;
   hasMigrationFree?: boolean | null;
   officialWebsite?: string | null;
+  slug?: string;
 }
 
 const formatOfficialUrl = (raw: string) => {
@@ -36,6 +38,7 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
             href={href}
             target="_blank"
             rel="noopener"
+            onClick={() => track('click_visitar_sitio', { slug: props.slug, location: 'ficha_verified_table' })}
             className="text-primary underline underline-offset-2 hover:opacity-80 break-all"
           >
             www.{label}

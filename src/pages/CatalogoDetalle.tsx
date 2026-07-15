@@ -354,6 +354,7 @@ const CatalogoDetalle = () => {
           hasSslFree={(company as any).has_ssl_free}
           hasMigrationFree={(company as any).has_migration_free}
           officialWebsite={company.website}
+          slug={company.slug}
         />
 
         <p className="text-xs text-muted-foreground mt-3">

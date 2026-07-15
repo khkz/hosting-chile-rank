@@ -13,6 +13,7 @@ import IndependenceBadge from './IndependenceBadge';
 import RankingPositions4to10 from './RankingPositions4to10';
 import RankingAuthorityBlock from './RankingAuthorityBlock';
 import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
+import { track } from '@/lib/track';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
@@ -220,6 +221,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                     target="_blank"
                     rel={link.rel}
                     referrerPolicy="no-referrer"
+                    onClick={() => track('click_visitar_sitio', { slug: provider.slug, location: 'ranking_top3', position: provider.ranking_position ?? undefined })}
                   >
                     {provider.cta_text || 'Ver Oferta'}
                   </a>
@@ -236,6 +238,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                 <Link
                   to={`/catalogo/${provider.slug}`}
                   className="text-primary hover:underline font-medium"
+                  onClick={() => track('click_ver_ficha', { slug: provider.slug, location: 'ranking_top3' })}
                 >
                   Review completa de {provider.name} →
                 </Link>
@@ -457,6 +460,7 @@ const HostingRanking = () => {
             <Link
               to="/ranking"
               className="inline-flex items-center gap-2 text-[#EF233C] hover:text-[#b3001b] font-semibold text-base md:text-lg transition-colors duration-300 group"
+              onClick={() => track('cta_ver_ranking', { location: 'home_more' })}
             >
               Ver ranking completo
               <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>

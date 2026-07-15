@@ -2,10 +2,12 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { track } from '@/lib/track';
 
 const Hero = () => {
   const scrollToRanking = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    track('cta_ver_ranking', { location: 'hero' });
     const el = document.getElementById('ranking');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -54,7 +56,7 @@ const Hero = () => {
               variant="outline"
               className="px-5 py-3 text-sm md:text-base rounded-xl font-poppins font-semibold min-h-[44px] touch-manipulation"
             >
-              <Link to="/cotiza-hosting">Cotizar gratis</Link>
+              <Link to="/cotiza-hosting" onClick={() => track('cta_cotizar', { location: 'hero' })}>Cotizar gratis</Link>
             </Button>
           </div>
         </div>

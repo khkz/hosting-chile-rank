@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { track } from '@/lib/track';
 
 interface FinalCTAProps {
   title?: string;
@@ -26,11 +27,19 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({
           className="mt-4 cta-primary px-8 py-3 rounded-xl font-poppins font-semibold"
         >
           {buttonLink.startsWith('http') ? (
-            <a href={buttonLink} target="_blank" rel="noopener noreferrer">
+            <a
+              href={buttonLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track('click_visitar_sitio', { slug: 'hostingplus', location: 'final_cta' })}
+            >
               {buttonText}
             </a>
           ) : (
-            <Link to={buttonLink}>
+            <Link
+              to={buttonLink}
+              onClick={() => track(buttonLink.includes('cotiza') ? 'cta_cotizar' : 'cta_ver_ranking', { location: 'final_cta' })}
+            >
               {buttonText}
             </Link>
           )}
