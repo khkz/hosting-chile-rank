@@ -9,6 +9,8 @@ import ScrollProgress from '@/components/ScrollProgress';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import DatasetSchema from '@/components/SEO/DatasetSchema';
+import DatacenterEducation from '@/components/DatacenterEducation';
+
 
 
 const HostingQuiz = React.lazy(() => import('@/components/HostingQuiz'));
