@@ -20,7 +20,7 @@ const Migration = () => {
           asChild
           className="cta-tertiary min-h-[44px] touch-manipulation"
         >
-          <Link to="/cotiza-hosting">Solicitar migración</Link>
+          <Link to="/cotiza-hosting" onClick={() => track('cta_cotizar', { location: 'migration_banner' })}>Solicitar migración</Link>
         </Button>
       </div>
     </section>
