@@ -102,6 +102,8 @@ const LatamHub = () => {
             })}
           </div>
 
+          <DatacenterEducation />
+
           <div className="max-w-3xl mx-auto text-left">
             <AdvisorEmbed />
           </div>
