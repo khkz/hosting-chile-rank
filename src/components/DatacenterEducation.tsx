@@ -6,7 +6,6 @@ import {
   type DcStatus,
   type CertificationBody,
 } from '@/data/datacenters';
-import datacenterRealAsset from '@/assets/datacenter-real.jpg.asset.json';
 
 /**
  * P4-DC2 block for the LATAM Hub page.
@@ -96,12 +95,12 @@ const DatacenterEducation: React.FC = () => {
               <h3 className="font-semibold text-[#2B2D42]">Datacenter real</h3>
             </div>
             <img
-              src={datacenterRealAsset.url}
+              src="/img/datacenter-real.jpg"
               alt="Foto aérea del datacenter Ascenty en Santiago, Chile: edificio industrial con equipos de enfriamiento redundantes"
               loading="lazy"
               className="aspect-video w-full rounded-lg object-cover mb-2"
             />
-            <p className="text-xs text-[#2B2D42]/50 mb-4">Ascenty en Santiago, Chile</p>
+            <p className="text-xs text-[#2B2D42]/50 mb-4">Ascenty SCL2 en Quilicura, Santiago, Chile</p>
             <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
               <li>Edificio diseñado desde los cimientos para alojar servidores: pisos, paredes y techo con especificaciones técnicas.</li>
               <li>Estructura pensada para carga de racks, aislamiento acústico, rutas de cableado y acceso controlado.</li>
