@@ -90,29 +90,15 @@ const DatacenterEducation: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
                 <CheckCircle2 className="h-5 w-5 text-emerald-700" />
               </div>
-              <h3 className="font-semibold text-[#2B2D42]">Un datacenter real</h3>
+              <h3 className="font-semibold text-[#2B2D42]">Datacenter real</h3>
             </div>
-            <div
-              role="img"
-              aria-label="Ilustración de datacenter certificado: pasillos frescos, racks alineados y sistemas redundantes"
-              className="aspect-video rounded-lg bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 mb-4 relative overflow-hidden"
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="grid grid-cols-6 gap-1 w-4/5">
-                  {Array.from({ length: 24 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-8 rounded-sm bg-gradient-to-b from-slate-700 to-slate-950 border-t border-emerald-400/40"
-                    >
-                      <div className="h-0.5 w-1 mt-1 ml-1 bg-emerald-400/80 rounded" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="absolute bottom-2 right-2 text-[10px] text-emerald-300/80 font-mono">
-                TIER III · N+1 · 24/7
-              </div>
-            </div>
+            <img
+              src="/img/datacenter-real.png"
+              alt="Ilustración de datacenter certificado: pasillos frescos, racks alineados y sistemas redundantes"
+              loading="lazy"
+              className="aspect-video w-full rounded-lg object-cover mb-2"
+            />
+            <p className="text-xs text-[#2B2D42]/50 mb-4">Imagen ilustrativa</p>
             <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
               <li>Auditado por Uptime Institute, TÜV o ICREA.</li>
               <li>Redundancia N+1 en energía y enfriamiento.</li>
@@ -126,23 +112,15 @@ const DatacenterEducation: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
                 <AlertTriangle className="h-5 w-5 text-amber-700" />
               </div>
-              <h3 className="font-semibold text-[#2B2D42]">Una sala adaptada</h3>
+              <h3 className="font-semibold text-[#2B2D42]">"Datacenter propio"</h3>
             </div>
-            <div
-              role="img"
-              aria-label="Ilustración de sala de servidores no certificada, con racks sueltos y sin control ambiental documentado"
-              className="aspect-video rounded-lg bg-gradient-to-br from-amber-50 via-slate-100 to-amber-50 mb-4 relative overflow-hidden border border-amber-200/60"
-            >
-              <div className="absolute inset-0 flex items-center justify-center gap-2">
-                <div className="w-10 h-16 rounded-sm bg-slate-300 rotate-2" />
-                <div className="w-10 h-20 rounded-sm bg-slate-400 -rotate-3" />
-                <div className="w-10 h-14 rounded-sm bg-slate-300 rotate-1" />
-                <div className="w-10 h-18 rounded-sm bg-slate-400 -rotate-2" />
-              </div>
-              <div className="absolute bottom-2 right-2 text-[10px] text-amber-700/70 font-mono">
-                Sin certificación pública
-              </div>
-            </div>
+            <img
+              src="/img/datacenter-propio.png"
+              alt="Ilustración de sala de servidores no certificada, presentada como datacenter propio"
+              loading="lazy"
+              className="aspect-video w-full rounded-lg object-cover mb-2"
+            />
+            <p className="text-xs text-[#2B2D42]/50 mb-4">Imagen ilustrativa</p>
             <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
               <li>Oficina o bodega con aire acondicionado doméstico.</li>
               <li>Sin auditoría de terceros ni tier declarado.</li>
