@@ -33,8 +33,8 @@ const CountrySwitcher = ({ mobile = false }: { mobile?: boolean }) => {
   const rest = stripCountryPrefix(location.pathname);
 
   const goTo = (slug: string) => {
-    const path = slug ? `/${slug}${rest === '/' ? '' : rest}` : rest;
-    window.location.assign(path);
+    const path = slug ? `/${slug}${rest === '/' ? '' : rest}` : rest || '/';
+    window.location.assign(`https://eligetuhosting.com${path}`);
   };
 
   const goToChile = () => {
