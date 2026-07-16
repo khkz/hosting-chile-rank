@@ -6,7 +6,6 @@ import {
   type DcStatus,
   type CertificationBody,
 } from '@/data/datacenters';
-import datacenterRealAsset from '@/assets/datacenter-real.jpg.asset.json';
 
 /**
  * P4-DC2 block for the LATAM Hub page.
