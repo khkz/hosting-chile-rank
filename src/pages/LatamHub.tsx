@@ -82,9 +82,9 @@ const LatamHub = () => {
             {DOT_COM_COUNTRIES.map((c) => {
               const isPublished = c.code === 'PE' || c.code === 'MX' || c.code === 'CO' || c.code === 'AR';
               return (
-                <Link
+                <a
                   key={c.code}
-                  to={`/${c.slug}`}
+                  href={`https://eligetuhosting.com/${c.slug}`}
                   className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-left hover:border-[#EF233C] hover:shadow-md transition-all"
                 >
                   <div className="text-3xl mb-2">{c.flag}</div>
@@ -97,7 +97,7 @@ const LatamHub = () => {
                   <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
                     {isPublished ? 'Ver directorio' : 'Ver estado'} <ArrowRight className="h-3.5 w-3.5" />
                   </div>
-                </Link>
+                </a>
               );
             })}
           </div>
