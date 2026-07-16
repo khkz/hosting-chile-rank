@@ -94,12 +94,12 @@ const DatacenterEducation: React.FC = () => {
               <h3 className="font-semibold text-[#2B2D42]">Datacenter real</h3>
             </div>
             <img
-              src="/img/datacenter-real.png"
-              alt="Ilustración de datacenter certificado: pasillos frescos, racks alineados y sistemas redundantes"
+              src={datacenterRealAsset.url}
+              alt="Foto aérea del datacenter Ascenty en Santiago, Chile: edificio industrial con equipos de enfriamiento redundantes"
               loading="lazy"
               className="aspect-video w-full rounded-lg object-cover mb-2"
             />
-            <p className="text-xs text-[#2B2D42]/50 mb-4">Imagen ilustrativa</p>
+            <p className="text-xs text-[#2B2D42]/50 mb-4">Ascenty en Santiago, Chile</p>
             <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
               <li>Auditado por Uptime Institute, TÜV o ICREA.</li>
               <li>Redundancia N+1 en energía y enfriamiento.</li>
