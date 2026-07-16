@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Shield, AlertTriangle, CheckCircle2, RotateCcw, ArrowRight } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 
 type Option = { label: string; risk: 0 | 1 | 2 | 3 };
 type Question = { id: string; question: string; options: Option[]; tag: string };

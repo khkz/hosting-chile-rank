@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Zap, DollarSign, Shield } from 'lucide-react';
 import RelatedContent from '@/components/RelatedContent';
+import { trackEvent } from '@/lib/analytics';
 
 const HostingWordPressBlogPersonal = () => {
   return (
@@ -73,7 +74,12 @@ const HostingWordPressBlogPersonal = () => {
                   <span>10GB SSD NVMe</span>
                 </div>
                 <Button asChild className="w-full mt-4">
-                  <a href="https://clientes.hostingplus.cl/cart.php?gid=13" target="_blank" rel="nofollow sponsored noopener noreferrer">
+                  <a
+                    href="https://clientes.hostingplus.cl/cart.php?gid=13"
+                    target="_blank"
+                    rel="nofollow sponsored noopener noreferrer"
+                    onClick={() => trackEvent('cta_probar_gratis', { provider: 'hostingplus', location: 'wordpress_blog_personal' })}
+                  >
                     Probar gratis 30 días
                   </a>
                 </Button>
