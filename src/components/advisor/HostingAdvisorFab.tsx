@@ -26,8 +26,11 @@ const HostingAdvisorFab = () => {
     setInput('');
   };
 
+  const LONG: Record<string, string> = { pe: 'peru', mx: 'mexico', co: 'colombia', ar: 'argentina' };
   const dirLink =
-    country === 'CL' ? '/catalogo' : `/${country.toLowerCase()}`;
+    country === 'CL'
+      ? '/catalogo'
+      : `/${country.toLowerCase()}/mejor-hosting-${LONG[country.toLowerCase()] ?? country.toLowerCase()}-2026`;
 
   return (
     <>

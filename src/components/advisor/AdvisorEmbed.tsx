@@ -23,7 +23,10 @@ const AdvisorEmbed = () => {
     setInput('');
   };
 
-  const dirLink = country === 'CL' ? '/catalogo' : `/${country.toLowerCase()}`;
+  const LONG: Record<string, string> = { pe: 'peru', mx: 'mexico', co: 'colombia', ar: 'argentina' };
+  const dirLink = country === 'CL'
+    ? '/catalogo'
+    : `/${country.toLowerCase()}/mejor-hosting-${LONG[country.toLowerCase()] ?? country.toLowerCase()}-2026`;
 
   return (
     <section className="my-10 bg-white border border-[#2B2D42]/10 rounded-xl overflow-hidden">
