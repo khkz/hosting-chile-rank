@@ -213,11 +213,17 @@ const SecurityRiskQuiz: React.FC = () => {
   const progress = (step / questions.length) * 100;
 
   const handleAnswer = (risk: number) => {
+    if (step === 0 && Object.keys(answers).length === 0) {
+      trackEvent('quiz_start', { quiz: 'security_risk' });
+    }
     const next = { ...answers, [current.id]: risk };
     setAnswers(next);
     if (step + 1 < questions.length) {
       setStep(step + 1);
     } else {
+      const score = Object.values(next).reduce((a, b) => a + b, 0);
+      const tier = getTier(score);
+      trackEvent('quiz_complete', { quiz: 'security_risk', score, recomendacion: tier.level });
       setDone(true);
     }
   };
