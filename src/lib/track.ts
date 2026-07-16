@@ -15,6 +15,17 @@ export function track(event: string, props: TrackProps = {}): void {
       ...props,
     };
     w.dataLayer.push(payload);
+    // Alias affiliate outbound clicks as click_afiliado (with provider + posicion)
+    if (event === 'click_visitar_sitio') {
+      w.dataLayer.push({
+        event: 'click_afiliado',
+        ts: Date.now(),
+        page_path: payload.page_path,
+        provider: (props as Record<string, unknown>).slug,
+        posicion: (props as Record<string, unknown>).position ?? null,
+        location: (props as Record<string, unknown>).location,
+      });
+    }
     if (import.meta && (import.meta as any).env && (import.meta as any).env.DEV) {
       // eslint-disable-next-line no-console
       console.debug('[track]', event, payload);
