@@ -79,8 +79,10 @@ const DatacenterEducation: React.FC = () => {
             ¿Dónde vive realmente tu sitio?
           </h2>
           <p className="text-[#2B2D42]/70 max-w-2xl mx-auto">
-            No todo lo que se llama "datacenter" lo es. Acá te mostramos qué operadores están
-            auditados por terceros en Chile y qué proveedor de hosting usa cada uno.
+            No todo lo que se llama "datacenter" lo es. La diferencia clave está en la
+            construcción: un datacenter real se diseña desde los cimientos para alojar
+            servidores; una oficina o casa adaptada conserva los riesgos de una vivienda u
+            oficina común.
           </p>
         </div>
 
@@ -101,10 +103,10 @@ const DatacenterEducation: React.FC = () => {
             />
             <p className="text-xs text-[#2B2D42]/50 mb-4">Ascenty en Santiago, Chile</p>
             <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
-              <li>Auditado por Uptime Institute, TÜV o ICREA.</li>
-              <li>Redundancia N+1 en energía y enfriamiento.</li>
-              <li>Control de acceso biométrico y CCTV.</li>
-              <li>Documentación pública de tier y certificaciones.</li>
+              <li>Edificio diseñado desde los cimientos para alojar servidores: pisos, paredes y techo con especificaciones técnicas.</li>
+              <li>Estructura pensada para carga de racks, aislamiento acústico, rutas de cableado y acceso controlado.</li>
+              <li>Redundancia N+1 en energía y enfriamiento, con certificación de terceros (Uptime Institute, TÜV o ICREA).</li>
+              <li>Control de acceso biométrico, CCTV y documentación pública de tier y certificaciones.</li>
             </ul>
           </article>
 
@@ -117,16 +119,16 @@ const DatacenterEducation: React.FC = () => {
             </div>
             <img
               src="/img/datacenter-propio.png"
-              alt="Ilustración de sala de servidores no certificada, presentada como datacenter propio"
+              alt="Ilustración de una oficina o casa adaptada para alojar servidores, sin certificación de datacenter"
               loading="lazy"
               className="aspect-video w-full rounded-lg object-cover mb-2"
             />
             <p className="text-xs text-[#2B2D42]/50 mb-4">Imagen ilustrativa</p>
             <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
-              <li>Oficina o bodega con aire acondicionado doméstico.</li>
-              <li>Sin auditoría de terceros ni tier declarado.</li>
-              <li>UPS y generación no siempre redundantes.</li>
-              <li>"Tier III homologable" ≠ Tier III certificado.</li>
+              <li>Casa, oficina o bodega diseñada originalmente para personas, adaptada después para poner servidores.</li>
+              <li>Pisos, paredes y techo no construidos para soportar racks, calor constante ni ruido industrial.</li>
+              <li>Mayor exposición a riesgos locales: sismos, cortes de energía, humedad y refrigeración doméstica no redundante.</li>
+              <li>Sin auditoría de terceros ni certificación pública de tier. "Homologable" no es lo mismo que certificado.</li>
             </ul>
           </article>
         </div>
