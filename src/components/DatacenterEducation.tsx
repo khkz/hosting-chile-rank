@@ -95,7 +95,7 @@ const DatacenterEducation: React.FC = () => {
               <h3 className="font-semibold text-[#2B2D42]">Datacenter real</h3>
             </div>
             <img
-              src="/img/datacenter-real.jpg"
+              src="/img/datacenter-real.jpg?v=ascenty2"
               alt="Foto aérea del datacenter Ascenty en Santiago, Chile: edificio industrial con equipos de enfriamiento redundantes"
               loading="lazy"
               className="aspect-video w-full rounded-lg object-cover mb-2"
@@ -117,7 +117,7 @@ const DatacenterEducation: React.FC = () => {
               <h3 className="font-semibold text-[#2B2D42]">"Datacenter propio"</h3>
             </div>
             <img
-              src="/img/datacenter-propio.png"
+              src="/img/datacenter-propio.png?v=2"
               alt="Ilustración de una oficina o casa adaptada para alojar servidores, sin certificación de datacenter"
               loading="lazy"
               className="aspect-video w-full rounded-lg object-cover mb-2"
