@@ -201,8 +201,23 @@ const HostingQuiz = () => {
                   <button
                     key={option.value}
                     onClick={() => {
-                      setBudget(option.value as Budget);
+                      const finalBudget = option.value as Budget;
+                      setBudget(finalBudget);
                       setStep('result');
+                      // compute recommendation from current state + this selection
+                      const rec = (() => {
+                        if (projectType === 'blog' && finalBudget === 'economy') return 'EcoHosting';
+                        if (projectType === 'ecommerce') return 'HostingPlus';
+                        if (traffic === 'high' || finalBudget === 'premium') return 'HostingPlus';
+                        return 'HostingPlus';
+                      })();
+                      trackEvent('quiz_complete', {
+                        quiz: 'hosting_recommender',
+                        project_type: projectType,
+                        traffic,
+                        budget: finalBudget,
+                        recomendacion: rec,
+                      });
                     }}
                     className="w-full p-5 border-2 border-gray-200 rounded-xl hover:border-brand-red hover:bg-brand-red/5 transition-all text-left group active:scale-[0.98] min-h-[44px] touch-manipulation"
                   >
