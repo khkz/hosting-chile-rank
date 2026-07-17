@@ -15,14 +15,24 @@ const DomainRedirect = () => {
 
       const currentHost = window.location.host.toLowerCase();
       const targetDomain = 'eligetuhosting.cl';
+      const currentPath = window.location.pathname;
+      const currentSearch = window.location.search;
+      const currentHash = window.location.hash || '';
+
+      // 0) Cross-domain: if we're on .cl but the path is a LATAM country
+      //    (/pe, /mx, /co, /ar y subrutas) → redirigir a .com que es donde vive ese contenido.
+      const isCl = currentHost === targetDomain || currentHost === `www.${targetDomain}`;
+      if (isCl && /^\/(pe|mx|co|ar)(\/|$)/.test(currentPath)) {
+        window.location.replace(
+          `https://eligetuhosting.com${currentPath}${currentSearch}${currentHash}`
+        );
+        return;
+      }
 
       // 1) Redirect www.eligetuhosting.cl → eligetuhosting.cl (canonical no-www)
-      //    Mitigación client-side mientras se configura el 301 a nivel de DNS/edge.
       if (currentHost === `www.${targetDomain}`) {
-        const currentPath = window.location.pathname;
-        const currentSearch = window.location.search;
         window.location.replace(
-          `https://${targetDomain}${currentPath}${currentSearch}${window.location.hash || ''}`
+          `https://${targetDomain}${currentPath}${currentSearch}${currentHash}`
         );
         return;
       }
@@ -43,10 +53,8 @@ const DomainRedirect = () => {
       // If NOT a known production alias, do nothing (dev/preview/editor/localhost)
       if (!isKnownProductionAlias) return;
 
-      const currentPath = window.location.pathname;
-      const currentSearch = window.location.search;
       window.location.replace(
-        `https://${targetDomain}${currentPath}${currentSearch}${window.location.hash || ''}`
+        `https://${targetDomain}${currentPath}${currentSearch}${currentHash}`
       );
     } catch (error) {
       console.error('Error in domain redirect check:', error);
