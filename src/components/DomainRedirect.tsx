@@ -53,10 +53,8 @@ const DomainRedirect = () => {
       // If NOT a known production alias, do nothing (dev/preview/editor/localhost)
       if (!isKnownProductionAlias) return;
 
-      const currentPath = window.location.pathname;
-      const currentSearch = window.location.search;
       window.location.replace(
-        `https://${targetDomain}${currentPath}${currentSearch}${window.location.hash || ''}`
+        `https://${targetDomain}${currentPath}${currentSearch}${currentHash}`
       );
     } catch (error) {
       console.error('Error in domain redirect check:', error);
