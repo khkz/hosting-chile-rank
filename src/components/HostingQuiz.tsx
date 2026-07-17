@@ -134,6 +134,7 @@ const HostingQuiz = () => {
                   <button
                     key={option.value}
                     onClick={() => {
+                      trackEvent('quiz_start', { quiz: 'hosting_recommender', option: option.value });
                       setProjectType(option.value as ProjectType);
                       setStep(2);
                     }}
