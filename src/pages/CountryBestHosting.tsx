@@ -8,7 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ShieldCheck, ExternalLink, ArrowRight, Server, FileText, Calendar, Building2 } from 'lucide-react';
-import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, hasLocalDatacenter, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { classifyDc } from '@/lib/dcTier';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 
 const CountryBestHosting = () => {
@@ -143,7 +144,7 @@ const CountryBestHosting = () => {
                 <tr className="text-left">
                   <th className="px-3 py-2 font-medium">#</th>
                   <th className="px-3 py-2 font-medium">Proveedor</th>
-                  <th className="px-3 py-2 font-medium">Datacenter local</th>
+                  <th className="px-3 py-2 font-medium">Datacenter: ubicación + calidad</th>
                   <th className="px-3 py-2 font-medium">Razón social</th>
                   <th className="px-3 py-2 font-medium">Antigüedad</th>
                   <th className="px-3 py-2 font-medium">Ficha</th>
@@ -151,19 +152,20 @@ const CountryBestHosting = () => {
               </thead>
               <tbody>
                 {list.map((p: any, i: number) => {
-                  const localDc = hasLocalDatacenter(slug, p.datacenter_location);
+                  const dc = classifyDc(p, slug);
+                  const tone =
+                    dc.quality === 'tier_certified' ? 'bg-emerald-100 text-emerald-800' :
+                    dc.quality === 'self_declared' ? 'bg-amber-100 text-amber-800' :
+                    dc.quality === 'foreign_infra' ? 'bg-red-50 text-red-700' :
+                    'bg-muted text-muted-foreground';
                   return (
                     <tr key={p.id} className="border-t">
                       <td className="px-3 py-2 text-muted-foreground">{i + 1}</td>
                       <td className="px-3 py-2 font-medium">{p.name}</td>
                       <td className="px-3 py-2">
-                        {localDc ? (
-                          <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 text-[10px]">Sí</Badge>
-                        ) : p.datacenter_location ? (
-                          <span className="text-xs text-muted-foreground">Fuera: {p.datacenter_location}</span>
-                        ) : (
-                          <span className="text-xs text-muted-foreground">No declara</span>
-                        )}
+                        <span className={`inline-block px-2 py-0.5 rounded text-[11px] ${tone}`} title={dc.evidence}>
+                          {dc.label}
+                        </span>
                       </td>
                       <td className="px-3 py-2 text-xs">{p.legal_name || <span className="text-muted-foreground">—</span>}</td>
                       <td className="px-3 py-2 text-xs">{p.year_founded || <span className="text-muted-foreground">—</span>}</td>

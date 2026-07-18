@@ -56,27 +56,12 @@ export const datacenterLocalStatus = (slug: LatamSlug, datacenter_location?: str
   return hasLocalDatacenter(slug, datacenter_location);
 };
 
-// Orden objetivo declarado (Fase 2, pre-benchmark):
-// 1) datacenter local real  2) entidad legal local declarada  3) antigüedad (año fundación asc)
-export const rankProviders = <T extends {
-  datacenter_location?: string | null;
-  legal_name?: string | null;
-  year_founded?: number | null;
-  name: string;
-}>(providers: T[], slug: LatamSlug): T[] => {
-  return providers.slice().sort((a, b) => {
-    const la = hasLocalDatacenter(slug, a.datacenter_location) ? 0 : 1;
-    const lb = hasLocalDatacenter(slug, b.datacenter_location) ? 0 : 1;
-    if (la !== lb) return la - lb;
-    const ea = a.legal_name ? 0 : 1;
-    const eb = b.legal_name ? 0 : 1;
-    if (ea !== eb) return ea - eb;
-    const ya = a.year_founded ?? 9999;
-    const yb = b.year_founded ?? 9999;
-    if (ya !== yb) return ya - yb;
-    return a.name.localeCompare(b.name);
-  });
-};
+// Orden objetivo actualizado (LOTE PAISES-DC-TIER):
+// 1) calidad certificada del DC (Uptime Institute / ICREA)
+// 2) latencia/red al país (ASN local verificado por IP)
+// 3) razón social local
+// 4) antigüedad
+export { rankProvidersByDcTier as rankProviders } from './dcTier';
 
 // Slug canónico para la comparativa entre dos proveedores (ordenados alfabéticamente).
 export const pairSlug = (a: string, b: string): string => a < b ? `${a}-vs-${b}` : `${b}-vs-${a}`;

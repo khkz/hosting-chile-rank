@@ -15,6 +15,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { buildHtml, esc } from './lib/shell.mjs';
 import { hasLocalDatacenter } from './lib/dc-local.mjs';
+import { classifyDc, rankProvidersByDcTier } from './lib/dc-tier.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -36,18 +37,7 @@ async function fetchProviders(code) {
 
 const hasLocalDc = (cslug, s) => hasLocalDatacenter(cslug, s);
 
-const rank = (list, cslug) => list.slice().sort((a, b) => {
-  const la = hasLocalDc(cslug, a.datacenter_location) ? 0 : 1;
-  const lb = hasLocalDc(cslug, b.datacenter_location) ? 0 : 1;
-  if (la !== lb) return la - lb;
-  const ea = a.legal_name ? 0 : 1;
-  const eb = b.legal_name ? 0 : 1;
-  if (ea !== eb) return ea - eb;
-  const ya = a.year_founded ?? 9999;
-  const yb = b.year_founded ?? 9999;
-  if (ya !== yb) return ya - yb;
-  return a.name.localeCompare(b.name);
-});
+const rank = (list, cslug) => rankProvidersByDcTier(list, cslug);
 
 async function writeFile(relPath, html) {
   const abs = path.join('public', relPath);
@@ -77,31 +67,35 @@ function renderBestHosting(cslug, meta, providers) {
   };
   const faqs = [
     { q: `¿Por qué no publican puntajes numéricos todavía para ${meta.name}?`, a: `Porque publicar notas de 1–10 sin benchmarks propios, reclamos verificados y auditoría de ASN es exactamente lo que hacen los sitios falsos. En ${meta.name} estamos en la fase de datos: verificamos razón social, datacenter, tecnología y trayectoria.` },
-    { q: '¿Cómo se ordena este listado entonces?', a: 'Tres criterios objetivos declarados: (1) datacenter local real, (2) razón social local registrada, (3) antigüedad. Empates alfabéticos.' },
-    { q: `¿HostingPlus aparece primero por pagar?`, a: 'No. HostingPlus figura como recomendación editorial con divulgación visible. El orden del ranking respeta los tres criterios objetivos.' },
-    { q: '¿De dónde salen los datos?', a: `WHOIS, ASN + BGP, sitios oficiales, registros mercantiles y verificaciones técnicas propias. Todo descargable en /data/proveedores-${cslug}.json bajo CC-BY-4.0.` },
+    { q: '¿Cómo se ordena este listado entonces?', a: 'Cuatro criterios objetivos: (1) calidad certificada del datacenter (Uptime Institute / ICREA), (2) latencia y red al país (ASN local verificado por IP), (3) razón social local registrada, (4) antigüedad. Empates alfabéticos. Nunca inventamos un Tier: si el proveedor sólo lo afirma, aparece como "autodeclarado".' },
+    { q: `¿HostingPlus aparece primero por pagar?`, a: 'No. HostingPlus figura como recomendación editorial con divulgación visible. El orden del ranking respeta los criterios objetivos.' },
+    { q: '¿De dónde salen los datos de ubicación real?', a: `Resolvemos la IP del sitio oficial, buscamos su ASN y país registrado, y lo comparamos con la declaración del proveedor. Si el sitio está detrás de una CDN (Cloudflare/Akamai) marcamos "origen sin verificar". Todo descargable en /data/proveedores-${cslug}.json bajo CC-BY-4.0.` },
   ];
   const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
-  const rows = list.map((p, i) => `
+  const rows = list.map((p, i) => {
+    const dc = classifyDc(p, cslug);
+    return `
     <tr>
       <td>${i + 1}</td>
       <td><a href="/${cslug}/${esc(p.slug)}">${esc(p.name)}</a></td>
-      <td>${hasLocalDc(cslug, p.datacenter_location) ? 'Sí' : (p.datacenter_location ? `Fuera: ${esc(p.datacenter_location)}` : 'No declara')}</td>
+      <td title="${esc(dc.evidence)}">${esc(dc.label)}</td>
       <td>${esc(p.legal_name || '—')}</td>
       <td>${p.year_founded || '—'}</td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
   const bodyContent = `
     <nav><a href="/">Inicio</a> / <a href="/${cslug}">Hosting en ${meta.name}</a> / Mejor hosting ${meta.name} 2026</nav>
     <h1>Mejor hosting en ${esc(meta.name)} 2026 ${meta.flag}</h1>
-    <p>Directorio pre-benchmark ordenado por criterios objetivos: (1) datacenter local real, (2) razón social local declarada, (3) antigüedad. Sin puntajes inventados. ${list.length} proveedores verificados.</p>
+    <p>Directorio pre-benchmark ordenado por criterios objetivos: (1) calidad certificada del datacenter, (2) latencia/red al país verificada por ASN, (3) razón social local declarada, (4) antigüedad. Sin puntajes inventados. ${list.length} proveedores verificados.</p>
     ${curated ? `<section style="border:1px solid #EF233C40;background:#EF233C0d;padding:16px;border-radius:8px;margin:16px 0">
       <strong>Recomendado editorial:</strong> <a href="/${cslug}/${esc(curated.slug)}">${esc(curated.name)}</a>.
       Divulgación: podemos recibir comisión si contratas por este enlace; el orden objetivo del ranking no cambia.
     </section>` : ''}
     <table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="6">
-      <thead><tr><th>#</th><th>Proveedor</th><th>Datacenter local</th><th>Razón social</th><th>Antigüedad</th></tr></thead>
+      <thead><tr><th>#</th><th>Proveedor</th><th>Datacenter: ubicación + calidad</th><th>Razón social</th><th>Antigüedad</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
+    <p style="font-size:12px;color:#666;margin-top:8px">Columna Datacenter: <em>ubicación real</em> resuelta por ASN/IP + <em>calidad</em> según fuente pública. "autodeclarado" = el proveedor lo afirma sin certificación pública verificable. "origen CDN" = el sitio va detrás de Cloudflare/Akamai y no podemos confirmar la infraestructura desde fuera.</p>
     <h2>Metodología</h2>
     <p>Publicamos únicamente datos verificables. Cuando completemos benchmarks propios reproducibles y un ciclo de reclamos verificados por email, publicaremos rankings numéricos con la misma metodología usada en Chile. Ver también <a href="/${cslug}/hosting-con-datacenter-local">proveedores con datacenter local</a>.</p>
     <h2>Preguntas frecuentes</h2>
