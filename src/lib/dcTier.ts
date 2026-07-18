@@ -1,7 +1,7 @@
 // TS mirror de scripts/lib/dc-tier.mjs. Mantener sincronizado.
 // Fuente ASN: scripts/lib/asn-map.json (bundled aquí como import).
 
-import asnMap from '../../scripts/lib/asn-map.json';
+import asnMap from '@/data/asnMap.json';
 
 type Cc = 'PE' | 'MX' | 'CO' | 'AR' | 'CDN' | string;
 type AsnEntry = { cc: Cc; asn: string; org: string };
