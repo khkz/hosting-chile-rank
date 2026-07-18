@@ -254,10 +254,13 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
                   </div>
                   
                   <Button className="w-full mt-6" asChild>
-                    <a href={company.website} target="_blank" rel="noopener noreferrer">
-                      Contratar Plan
+                    <a href={company.website} target="_blank" rel="noopener noreferrer sponsored">
+                      Ver plan en {company.name}
                     </a>
                   </Button>
+                  <p className="mt-2 text-[11px] text-muted-foreground text-center leading-snug">
+                    Enlace de afiliado · Sin costo extra para ti
+                  </p>
                 </CardContent>
               </Card>
             ))}
