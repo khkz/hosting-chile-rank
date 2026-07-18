@@ -229,16 +229,23 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                     referrerPolicy="no-referrer"
                     onClick={() => track('click_visitar_sitio', { slug: provider.slug, location: 'ranking_top3', position: provider.ranking_position ?? undefined })}
                   >
-                    {provider.cta_text || 'Ver Oferta'}
+                    {provider.cta_text || 'Ver planes y precios'}
                   </a>
                 </Button>
               );
             })() : null}
-            {provider.cta_micro_copy && (
+            {provider.cta_micro_copy ? (
               <p className="text-xs text-center text-muted-foreground">
                 {provider.cta_micro_copy}
               </p>
+            ) : (
+              <p className="text-xs text-center text-muted-foreground">
+                Sin compromiso · Revisa el plan antes de contratar
+              </p>
             )}
+            <p className="text-[11px] text-center text-muted-foreground/80 leading-snug">
+              Enlace de afiliado. Puede generarnos una comisión sin costo extra para ti.
+            </p>
             {provider.slug && (
               <p className="text-center text-sm">
                 <Link
