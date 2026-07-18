@@ -229,7 +229,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                     referrerPolicy="no-referrer"
                     onClick={() => track('click_visitar_sitio', { slug: provider.slug, location: 'ranking_top3', position: provider.ranking_position ?? undefined })}
                   >
-                    {provider.cta_text || 'Ver Oferta'}
+                    {provider.cta_text || 'Ver planes y precios'}
                   </a>
                 </Button>
               );
