@@ -30,6 +30,7 @@ import { hasLocalDatacenter, has247Support, type LatamDcSlug } from '@/lib/dcLoc
 
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
+import PeReassurances from '@/components/country/PeReassurances';
 
 const CountryLanding = () => {
   const location = useLocation();
