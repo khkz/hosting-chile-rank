@@ -14,7 +14,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const asnMapRaw = JSON.parse(fs.readFileSync(path.join(__dirname, 'asn-map.json'), 'utf8'));
+const asnMapRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'data', 'asnMap.json'), 'utf8'));
 export const ASN_MAP = asnMapRaw.providers;
 
 // Slugs cuya certificación Tier está documentada públicamente por Uptime Institute / ICREA.
