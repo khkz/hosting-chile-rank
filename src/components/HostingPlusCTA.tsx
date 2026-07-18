@@ -131,7 +131,7 @@ const HostingPlusCTA: React.FC<HostingPlusCTAProps> = ({
                 window.open(primaryUrl, '_blank');
               }}
             >
-              Contratar {plan}
+              Ver planes y precios
               <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
             <Button 
@@ -146,8 +146,9 @@ const HostingPlusCTA: React.FC<HostingPlusCTAProps> = ({
             </Button>
           </div>
 
-          <div className="text-center text-sm text-muted-foreground">
-            ⭐ 4.8/5 en Google Reviews • +10,000 clientes • Soporte 24/7
+          <div className="text-center text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
+            <p>30 días de garantía de devolución publicada por el proveedor · Datacenter en Ascenty SCL2 (Santiago) · Soporte técnico local.</p>
+            <p className="mt-1 text-[11px]">Divulgación: enlace de afiliado; puede generarnos una comisión sin costo adicional para ti.</p>
           </div>
         </div>
       </CardContent>
