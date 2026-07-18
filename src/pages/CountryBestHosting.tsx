@@ -11,6 +11,7 @@ import { ShieldCheck, ExternalLink, ArrowRight, Server, FileText, Calendar, Buil
 import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { classifyDc } from '@/lib/dcTier';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
+import PeReassurances from '@/components/country/PeReassurances';
 
 const CountryBestHosting = () => {
   const location = useLocation();
