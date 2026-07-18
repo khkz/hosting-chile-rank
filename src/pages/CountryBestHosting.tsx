@@ -8,7 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ShieldCheck, ExternalLink, ArrowRight, Server, FileText, Calendar, Building2 } from 'lucide-react';
-import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, hasLocalDatacenter, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
+import { classifyDc } from '@/lib/dcTier';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 
 const CountryBestHosting = () => {
