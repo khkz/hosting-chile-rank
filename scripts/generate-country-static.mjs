@@ -37,18 +37,7 @@ async function fetchProviders(code) {
 
 const hasLocalDc = (cslug, s) => hasLocalDatacenter(cslug, s);
 
-const rank = (list, cslug) => list.slice().sort((a, b) => {
-  const la = hasLocalDc(cslug, a.datacenter_location) ? 0 : 1;
-  const lb = hasLocalDc(cslug, b.datacenter_location) ? 0 : 1;
-  if (la !== lb) return la - lb;
-  const ea = a.legal_name ? 0 : 1;
-  const eb = b.legal_name ? 0 : 1;
-  if (ea !== eb) return ea - eb;
-  const ya = a.year_founded ?? 9999;
-  const yb = b.year_founded ?? 9999;
-  if (ya !== yb) return ya - yb;
-  return a.name.localeCompare(b.name);
-});
+const rank = (list, cslug) => rankProvidersByDcTier(list, cslug);
 
 async function writeFile(relPath, html) {
   const abs = path.join('public', relPath);
