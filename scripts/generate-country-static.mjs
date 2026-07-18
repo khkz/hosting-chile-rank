@@ -65,7 +65,12 @@ function renderBestHosting(cslug, meta, providers) {
       { '@type': 'ListItem', position: 3, name: `Mejor hosting ${meta.name} 2026`, item: canonical },
     ],
   };
+  const peFaqs = cslug === 'pe' ? [
+    { q: '¿HostingPlus Perú tiene datacenter en Perú?', a: 'No. Su ficha técnica declara datacenter en Orlando, Florida (EE.UU.). Lo que sí tiene en Perú es razón social registrada (Hostingplus Datacenter S.A.C.), teléfono local (+51 1 640 9409) y soporte en español. Si necesitas datacenter físicamente en Perú, revisa /pe/hosting-con-datacenter-local.' },
+    { q: '¿Qué proveedores sí tienen datacenter en Perú verificado por ASN?', a: 'Según nuestra verificación por IP → ASN, se anuncian desde ASN peruanos Hosting Perú (NEXTNET SAC AS271814) y MGD (Level 3 Perú AS3549). Otros proveedores que declaran "datacenter en Perú" resuelven a infraestructura fuera del país o están detrás de CDN.' },
+  ] : [];
   const faqs = [
+    ...peFaqs,
     { q: `¿Por qué no publican puntajes numéricos todavía para ${meta.name}?`, a: `Porque publicar notas de 1–10 sin benchmarks propios, reclamos verificados y auditoría de ASN es exactamente lo que hacen los sitios falsos. En ${meta.name} estamos en la fase de datos: verificamos razón social, datacenter, tecnología y trayectoria.` },
     { q: '¿Cómo se ordena este listado entonces?', a: 'Cuatro criterios objetivos: (1) calidad certificada del datacenter (Uptime Institute / ICREA), (2) latencia y red al país (ASN local verificado por IP), (3) razón social local registrada, (4) antigüedad. Empates alfabéticos. Nunca inventamos un Tier: si el proveedor sólo lo afirma, aparece como "autodeclarado".' },
     { q: `¿HostingPlus aparece primero por pagar?`, a: 'No. HostingPlus figura como recomendación editorial con divulgación visible. El orden del ranking respeta los criterios objetivos.' },
@@ -83,14 +88,38 @@ function renderBestHosting(cslug, meta, providers) {
       <td>${p.year_founded || '—'}</td>
     </tr>`;
   }).join('');
+
+  // Bloque curated enriquecido (crawler-visible). Para PE: reaseguros verificables.
+  let curatedBlock = '';
+  if (curated) {
+    if (cslug === 'pe') {
+      curatedBlock = `
+    <section aria-labelledby="pe-curated" style="border:1px solid #EF233C66;background:linear-gradient(135deg,#EF233C0d,#fff,#EF233C14);padding:20px;border-radius:12px;margin:20px 0">
+      <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#EF233C;font-weight:700;margin-bottom:4px">Recomendado editorial · Perú</div>
+      <h2 id="pe-curated" style="margin:0 0 6px 0;font-size:22px;color:#2B2D42">${esc(curated.name)}</h2>
+      <p style="margin:0 0 12px 0;color:#2B2D42BF;font-size:14px">Operador regional con razón social peruana, soporte hispano y teléfono local. Datos verificables por WHOIS, registro mercantil y sitio oficial.</p>
+      <ul style="list-style:none;padding:0;margin:0 0 14px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;font-size:13px">
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Razón social peruana:</strong><br/>Hostingplus Datacenter S.A.C.</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Teléfono local:</strong><br/>+51 1 640 9409</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Soporte en español:</strong><br/>Ticket 24/7 · Lun–Vie 9:00–17:00</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Grupo regional:</strong><br/>HostingPlus (CL, PE, MX, CO, AR)</li>
+      </ul>
+      <p style="margin:0"><a href="https://www.hostingplus.pe/" rel="sponsored noopener" target="_blank" style="display:inline-block;background:#EF233C;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600">Ver planes y precios →</a> <span style="font-size:12px;color:#2B2D4299;margin-left:8px">Sin compromiso · atención en español</span></p>
+      <p style="font-size:11px;color:#2B2D4299;margin:12px 0 0 0;line-height:1.4"><strong>Divulgación:</strong> podemos recibir una comisión si contratas por este enlace. Datacenter declarado por el proveedor: Orlando, Florida (EE.UU.). La recomendación no altera el orden objetivo de la tabla.</p>
+    </section>`;
+    } else {
+      curatedBlock = `<section style="border:1px solid #EF233C40;background:#EF233C0d;padding:16px;border-radius:8px;margin:16px 0">
+      <strong>Recomendado editorial:</strong> <a href="/${cslug}/${esc(curated.slug)}">${esc(curated.name)}</a>.
+      Divulgación: podemos recibir comisión si contratas por este enlace; el orden objetivo del ranking no cambia.
+    </section>`;
+    }
+  }
+
   const bodyContent = `
     <nav><a href="/">Inicio</a> / <a href="/${cslug}">Hosting en ${meta.name}</a> / Mejor hosting ${meta.name} 2026</nav>
     <h1>Mejor hosting en ${esc(meta.name)} 2026 ${meta.flag}</h1>
     <p>Directorio pre-benchmark ordenado por criterios objetivos: (1) calidad certificada del datacenter, (2) latencia/red al país verificada por ASN, (3) razón social local declarada, (4) antigüedad. Sin puntajes inventados. ${list.length} proveedores verificados.</p>
-    ${curated ? `<section style="border:1px solid #EF233C40;background:#EF233C0d;padding:16px;border-radius:8px;margin:16px 0">
-      <strong>Recomendado editorial:</strong> <a href="/${cslug}/${esc(curated.slug)}">${esc(curated.name)}</a>.
-      Divulgación: podemos recibir comisión si contratas por este enlace; el orden objetivo del ranking no cambia.
-    </section>` : ''}
+    ${curatedBlock}
     <table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="6">
       <thead><tr><th>#</th><th>Proveedor</th><th>Datacenter: ubicación + calidad</th><th>Razón social</th><th>Antigüedad</th></tr></thead>
       <tbody>${rows}</tbody>
