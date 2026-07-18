@@ -73,7 +73,7 @@ const HostingPlusCTA: React.FC<HostingPlusCTAProps> = ({
                   window.open(primaryUrl, '_blank');
                 }}
               >
-                Contratar {plan}
+                Ver planes y precios
                 <ExternalLink className="ml-1 h-3 w-3" />
               </Button>
               <Button 
@@ -87,6 +87,9 @@ const HostingPlusCTA: React.FC<HostingPlusCTAProps> = ({
                 Cotizar
               </Button>
             </div>
+            <p className="text-[11px] text-muted-foreground leading-snug">
+              30 días de garantía de devolución publicada por el proveedor · Enlace de afiliado, sin costo extra para ti.
+            </p>
           </div>
         </CardContent>
       </Card>
