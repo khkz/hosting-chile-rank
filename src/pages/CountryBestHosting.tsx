@@ -41,7 +41,13 @@ const CountryBestHosting = () => {
 
   const curated = list.find((p: any) => p.is_curated);
 
+  const peFaqs = slug === 'pe' ? [
+    { q: '¿HostingPlus Perú tiene datacenter en Perú?', a: 'No. Su ficha técnica declara datacenter en Orlando, Florida (EE.UU.). Lo que sí tiene en Perú es razón social registrada (Hostingplus Datacenter S.A.C.), teléfono local (+51 1 640 9409) y soporte en español. Si necesitas datacenter físicamente en Perú, revisa nuestra lista de /pe/hosting-con-datacenter-local.' },
+    { q: '¿Qué proveedores sí tienen datacenter en Perú verificado por ASN?', a: 'Según nuestra verificación por IP → ASN, los que se anuncian desde ASN peruanos incluyen Hosting Perú (NEXTNET SAC AS271814) y MGD (Level 3 Perú AS3549). Otros proveedores que dicen "datacenter en Perú" resuelven en la práctica a infraestructura fuera del país o están detrás de CDN, y aparecen marcados en la tabla.' },
+  ] : [];
+
   const faqs = [
+    ...peFaqs,
     { q: `¿Por qué no publican puntajes numéricos todavía para ${meta.name}?`, a: `Porque publicar notas de 1–10 sin benchmarks propios, reclamos verificados y auditoría de ASN es exactamente lo que hacen los sitios falsos. En ${meta.name} estamos en la fase de datos: verificamos razón social, datacenter, tecnología y trayectoria. Cuando tengamos benchmarks propios reproducibles con la misma metodología aplicada en Chile, publicaremos rankings numéricos.` },
     { q: '¿Cómo se ordena este listado entonces?', a: 'Por tres criterios objetivos declarados: (1) datacenter local real (verificable por ASN y declaraciones del proveedor), (2) presencia de razón social local registrada, (3) antigüedad declarada. Empates se resuelven alfabéticamente. No hay ponderación oculta.' },
     { q: `¿HostingPlus aparece primero por pagar?`, a: 'No. HostingPlus figura como recomendación editorial regional visible con divulgación (podemos recibir comisión). Pero el orden del ranking sigue la regla de tres criterios objetivos: si un proveedor cumple mejor datacenter local + entidad legal + antigüedad, aparecerá antes que HostingPlus en la tabla.' },
