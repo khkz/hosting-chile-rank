@@ -122,7 +122,9 @@ const CountryBestHosting = () => {
           </p>
         </header>
 
-        {curated && (
+        {slug === 'pe' && curated ? (
+          <PeReassurances variant="best" />
+        ) : curated && (
           <Card className="mb-8 border-[#EF233C]/40 bg-[#EF233C]/5">
             <CardContent className="pt-5">
               <div className="flex items-start gap-3">
