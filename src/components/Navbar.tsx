@@ -69,7 +69,7 @@ const toolsItems: NavItem[] = [
   { to: '/transparencia-hosting-chile', label: 'Transparencia Hosting', icon: FileText },
   { to: '/estudio-hosting-chile-2026', label: 'Estudio Hosting Chile 2026', icon: Search },
   { to: '/vs/comparahosting', label: 'VS ComparaHosting', icon: GitCompare },
-  { to: '/vs/mejorhosting', label: 'VS MejorHosting', icon: GitCompare },
+  
   { to: '/vs/rankinghosting', label: 'VS RankingHosting', icon: GitCompare },
   { to: '/vs/hostingexperto', label: 'VS HostingExperto', icon: GitCompare },
 ];
