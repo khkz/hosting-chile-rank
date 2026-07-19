@@ -465,7 +465,7 @@ const EstudioHostingChile2026: React.FC = () => {
                   <strong>Hallazgo crítico:</strong> varios de los principales «comparadores de hosting» que
                   ranquean en Google.cl no son independientes. Son sitios afiliados operados por los mismos
                   hostings que aparecen en sus rankings, con enlaces de referido que monetizan cada venta.
-                  Se documentan los casos de <strong>rankinghosting.cl</strong>, <strong>mejorhosting.cl</strong>,{' '}
+                  Se documentan los casos de <strong>rankinghosting.cl</strong>,{' '}
                   <strong>comparahosting.cl</strong> y <strong>hostingexperto.cl</strong>.
                 </span>
               </p>
