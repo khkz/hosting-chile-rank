@@ -127,8 +127,8 @@ const PROVIDERS: Provider[] = [
     diff: 'Red propia Tier 1 chileno; 15+ años en el mercado; cooperación de red con Hosting.cl (entidades distintas)',
     reputation: 'Trayectoria sólida en B2B; perfil bajo en reclamos públicos',
     type: 'cl-asn',
-    affiliateNote: 'Opera mejorhosting.cl como comparador alineado (HN #1, INC #2)',
-    critical: 'Hostname y Hosting.cl son entidades distintas (diferente RUT y ASN). La existencia de mejorhosting.cl como supuesto comparador independiente que coloca a HN como #1 es el principal punto a transparentar.',
+    affiliateNote: '',
+    critical: 'Hostname y Hosting.cl son entidades distintas (diferente RUT y ASN).',
   },
   {
     rank: 5,
@@ -248,13 +248,6 @@ const AFFILIATE_CASES: AffiliateCase[] = [
     evidence: '4 de 4 enlaces del footer apuntan a la red HostingNet. WHOIS: Rodrigo Manríquez Salas. Auto-confesión: "puede recibir compensación por algunas de las compañías cuyos productos son revisados".',
     topPattern: '#1 HostingNet · #2 UnHosting · #3 HostingCom · #4 ZNet-Hosting · #5 WireNetChile — todas marcas del mismo grupo',
     citation: 'whois.com/whois/rankinghosting.cl · hostingnet.cl/nosotros · ipinfo.io/AS272144',
-  },
-  {
-    domain: 'mejorhosting.cl',
-    ownedBy: 'Hostname / HN (Hostname Limitada · RUT 76.096.415-8 · AS262256)',
-    evidence: 'Top con HN #1 e INC #2 (marca asociada). Enlace SEO interno a hn.cl. Testimonios destacados son clientes de HN e INC. Sin razón social ni RUT en aviso legal.',
-    topPattern: '#1 HN · #2 INC · #3 HOST.cl · #4 Hosting.cl · #5 PlanetaHosting · #6 HostingPlus · #7 Tecnoinver',
-    citation: 'mejorhosting.cl · hn.cl/empresa · peeringdb.com/net/8589',
   },
   {
     domain: 'comparahosting.cl',
@@ -379,7 +372,7 @@ const EstudioHostingChile2026: React.FC = () => {
         <title>Estudio Hosting Chile 2026 · ASN, precios y comparadores afiliados | EligeTuHosting</title>
         <meta
           name="description"
-          content="Investigación independiente del mercado de hosting en Chile 2026: 11 proveedores con ASN, RUT, precios CLP y reputación verificable. Alerta sobre comparadores afiliados (rankinghosting, mejorhosting, comparahosting, hostingexperto)."
+          content="Investigación independiente del mercado de hosting en Chile 2026: 11 proveedores con ASN, RUT, precios CLP y reputación verificable. Alerta sobre comparadores afiliados (rankinghosting, comparahosting, hostingexperto)."
         />
         <link rel="canonical" href="https://eligetuhosting.cl/estudio-hosting-chile-2026" />
         <meta property="og:title" content="Estudio Hosting Chile 2026 · ASN, precios y comparadores afiliados" />
@@ -472,7 +465,7 @@ const EstudioHostingChile2026: React.FC = () => {
                   <strong>Hallazgo crítico:</strong> varios de los principales «comparadores de hosting» que
                   ranquean en Google.cl no son independientes. Son sitios afiliados operados por los mismos
                   hostings que aparecen en sus rankings, con enlaces de referido que monetizan cada venta.
-                  Se documentan los casos de <strong>rankinghosting.cl</strong>, <strong>mejorhosting.cl</strong>,{' '}
+                  Se documentan los casos de <strong>rankinghosting.cl</strong>,{' '}
                   <strong>comparahosting.cl</strong> y <strong>hostingexperto.cl</strong>.
                 </span>
               </p>
