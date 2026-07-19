@@ -250,13 +250,6 @@ const AFFILIATE_CASES: AffiliateCase[] = [
     citation: 'whois.com/whois/rankinghosting.cl · hostingnet.cl/nosotros · ipinfo.io/AS272144',
   },
   {
-    domain: 'mejorhosting.cl',
-    ownedBy: 'Hostname / HN (Hostname Limitada · RUT 76.096.415-8 · AS262256)',
-    evidence: 'Top con HN #1 e INC #2 (marca asociada). Enlace SEO interno a hn.cl. Testimonios destacados son clientes de HN e INC. Sin razón social ni RUT en aviso legal.',
-    topPattern: '#1 HN · #2 INC · #3 HOST.cl · #4 Hosting.cl · #5 PlanetaHosting · #6 HostingPlus · #7 Tecnoinver',
-    citation: 'mejorhosting.cl · hn.cl/empresa · peeringdb.com/net/8589',
-  },
-  {
     domain: 'comparahosting.cl',
     ownedBy: 'Afiliación a Hosting.cl, PlanetaHosting y HostingCenter (propiedad: probable Hosting.cl, no demostrada)',
     evidence: 'Todos los CTA "Visitar Hosting" son enlaces de referido WHMCS: panel.hosting.cl/aff.php?aff=167 · panel.planetahosting.cl/aff.php?aff=78 · panel.hostingcenter.cl/aff.php?aff=1. Sin razón social ni RUT publicados.',
