@@ -21,12 +21,11 @@ const conglomerates = [
   {
     name: 'Grupo Hostname',
     brands: ['hostname.cl', 'hn.cl', 'host.cl', 'inc.cl'],
-    fakeComparisons: ['mejorhosting.cl'],
+    fakeComparisons: [],
     evidence: [
       'ASN compartido entre todas las marcas',
       'Mismos rangos de direcciones IP',
       'Propiedad corporativa común verificada en SII',
-      'mejorhosting.cl posiciona marcas del grupo como "mejores"',
     ],
   },
   {
