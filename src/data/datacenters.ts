@@ -147,7 +147,7 @@ export const rankingHosts: RankingHostDc[] = [
     dc_declarado: 'Santiago, Chile (HN Datacenter, Seminario 687)',
     operador: null,
     tipo: 'propio',
-    estado: 'no_divulga',
+    estado: 'autodeclarado',
     fuente_url: 'https://www.datacentermap.com/chile/santiago/hostnamecl/',
   },
   {
