@@ -5,14 +5,14 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting.cl (https://eligetuhosting.cl)",
-  "fecha_generacion": "2026-07-06T10:51:03.368Z",
+  "fecha_generacion": "2026-07-19T04:17:17.212Z",
   "total_proveedores": 113,
   "proveedores": [
     {
       "nombre": "HostingPlus.cl",
       "slug": "hostingplus",
       "nota": 9.9,
-      "precio_desde_clp": 4219,
+      "precio_desde_clp": 3469,
       "datacenter": "Ñuñoa, Santiago y Quilicura, Chile",
       "fundado": 2013,
       "grupo_corporativo": null,
@@ -20,13 +20,13 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingplus",
       "url_sitio": "https://www.hostingplus.cl/",
-      "fecha_actualizacion": "2026-06-27T21:58:07.807055+00:00"
+      "fecha_actualizacion": "2026-07-12T04:45:14.859396+00:00"
     },
     {
       "nombre": "EcoHosting.cl",
       "slug": "ecohosting",
       "nota": 9.6,
-      "precio_desde_clp": 3325,
+      "precio_desde_clp": 4990,
       "datacenter": "Chile",
       "fundado": 2015,
       "grupo_corporativo": null,
@@ -34,21 +34,21 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/ecohosting",
       "url_sitio": "https://www.ecohosting.cl/",
-      "fecha_actualizacion": "2026-06-27T21:58:07.807055+00:00"
+      "fecha_actualizacion": "2026-07-12T04:45:14.859396+00:00"
     },
     {
       "nombre": "HN.cl",
       "slug": "hn",
       "nota": 9.2,
       "precio_desde_clp": null,
-      "datacenter": "Chile",
+      "datacenter": "Santiago, Chile (HN Datacenter, Seminario 687)",
       "fundado": 2010,
       "grupo_corporativo": "Grupo Hostname",
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hn",
       "url_sitio": "https://www.hn.cl",
-      "fecha_actualizacion": "2026-06-27T22:00:19.249398+00:00"
+      "fecha_actualizacion": "2026-07-19T04:17:06.013582+00:00"
     },
     {
       "nombre": "PowerHost / IxMetro",
