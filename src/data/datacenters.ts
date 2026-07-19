@@ -144,11 +144,11 @@ export const rankingHosts: RankingHostDc[] = [
   },
   {
     nombre: 'HN.cl',
-    dc_declarado: 'Chile',
+    dc_declarado: 'Santiago, Chile (HN Datacenter, Seminario 687)',
     operador: null,
-    tipo: 'colocation',
+    tipo: 'propio',
     estado: 'no_divulga',
-    fuente_url: 'https://www.hn.cl/',
+    fuente_url: 'https://www.datacentermap.com/chile/santiago/hostnamecl/',
   },
   {
     nombre: 'PowerHost / IxMetro',
