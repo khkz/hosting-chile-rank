@@ -132,7 +132,7 @@ const TransparenciaHosting = () => {
             </h2>
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p>
-                En Chile existen sitios web como <strong>comparahosting.cl</strong>, <strong>mejorhosting.cl</strong> y 
+                En Chile existen sitios web como <strong>comparahosting.cl</strong> y
                 <strong> rankinghosting.cl</strong> que aparentan ser plataformas independientes de comparación de servicios de hosting.
                 Sin embargo, estos sitios son creados y operados por los mismos grupos empresariales que venden hosting.
               </p>
