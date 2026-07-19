@@ -97,7 +97,7 @@ const TransparenciaHosting = () => {
     <>
       <Helmet>
         <title>Transparencia: Sitios de Comparación Falsos en Chile | EligeTuHosting.cl</title>
-        <meta name="description" content="Investigación técnica que expone rankings de hosting no independientes en Chile. Evidencia ASN, IP y WHOIS que demuestra conflictos de interés en comparahosting.cl, mejorhosting.cl y otros." />
+        <meta name="description" content="Investigación técnica que expone rankings de hosting no independientes en Chile. Evidencia ASN, IP y WHOIS que demuestra conflictos de interés en comparahosting.cl y otros." />
         <link rel="canonical" href="https://eligetuhosting.cl/transparencia-hosting-chile" />
         <script type="application/ld+json">{JSON.stringify(claimReviewSchema)}</script>
       </Helmet>
