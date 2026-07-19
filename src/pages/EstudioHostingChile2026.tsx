@@ -127,8 +127,8 @@ const PROVIDERS: Provider[] = [
     diff: 'Red propia Tier 1 chileno; 15+ años en el mercado; cooperación de red con Hosting.cl (entidades distintas)',
     reputation: 'Trayectoria sólida en B2B; perfil bajo en reclamos públicos',
     type: 'cl-asn',
-    affiliateNote: 'Opera mejorhosting.cl como comparador alineado (HN #1, INC #2)',
-    critical: 'Hostname y Hosting.cl son entidades distintas (diferente RUT y ASN). La existencia de mejorhosting.cl como supuesto comparador independiente que coloca a HN como #1 es el principal punto a transparentar.',
+    affiliateNote: '',
+    critical: 'Hostname y Hosting.cl son entidades distintas (diferente RUT y ASN).',
   },
   {
     rank: 5,
