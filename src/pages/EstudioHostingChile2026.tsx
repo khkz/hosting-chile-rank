@@ -372,7 +372,7 @@ const EstudioHostingChile2026: React.FC = () => {
         <title>Estudio Hosting Chile 2026 · ASN, precios y comparadores afiliados | EligeTuHosting</title>
         <meta
           name="description"
-          content="Investigación independiente del mercado de hosting en Chile 2026: 11 proveedores con ASN, RUT, precios CLP y reputación verificable. Alerta sobre comparadores afiliados (rankinghosting, mejorhosting, comparahosting, hostingexperto)."
+          content="Investigación independiente del mercado de hosting en Chile 2026: 11 proveedores con ASN, RUT, precios CLP y reputación verificable. Alerta sobre comparadores afiliados (rankinghosting, comparahosting, hostingexperto)."
         />
         <link rel="canonical" href="https://eligetuhosting.cl/estudio-hosting-chile-2026" />
         <meta property="og:title" content="Estudio Hosting Chile 2026 · ASN, precios y comparadores afiliados" />
