@@ -140,16 +140,25 @@ export function buildSalesBody(args) {
   const { yes, no } = forWhoBlocks({ c, meta, dcLocalOf: null, dcLocal, techs });
   const faq = faqList({ c, meta, chk, complaintsCount, yearsOperating, dcLocal, techs });
 
+  // Normaliza uptime al formato "99,9%" (cap 99.9) — evita duplicar la lógica del front.
+  const uptimeStr = (() => {
+    const v = c.uptime_guarantee;
+    if (v === null || v === undefined || v === '') return null;
+    const raw = String(v).trim().replace('%', '').replace(',', '.').trim();
+    const num = Number(raw);
+    if (!Number.isFinite(num) || num <= 0) return null;
+    const capped = num >= 100 ? 99.9 : num;
+    return `${capped.toFixed(2).replace(/\.?0+$/, '').replace('.', ',')}%`;
+  })();
+
   const badges = [];
   if (dcLocal === true) badges.push(`Datacenter en ${meta.name} ${meta.flag || ''}`);
   if (c.legal_name) badges.push('Razón social verificada');
   if (c.year_founded && yearsOperating >= 5) badges.push(`${yearsOperating} años operando`);
+  if (c.has_ssl_free === true) badges.push('SSL Gratis');
+  if (c.has_migration_free === true) badges.push('Migración Gratis');
+  if (uptimeStr) badges.push(`Uptime ${uptimeStr}`);
   if (chk) badges.push('Verificación técnica al día');
-
-  const badgesHtml = badges.length ? `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-    <span style="background:#D1FAE5;color:#065F46;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">✓ Datos verificados</span>
-    ${badges.map(b => `<span style="border:1px solid #D1D5DB;padding:4px 10px;border-radius:999px;font-size:12px">${esc(b)}</span>`).join('')}
-  </div>` : '';
 
   const historyParas = [];
   if (c.year_founded) {
@@ -164,6 +173,11 @@ export function buildSalesBody(args) {
     historyParas.push(`Su portafolio técnico declarado incluye: <em>${esc(techs.slice(0, 10).join(', '))}</em>. Confirma en el plan concreto qué componentes están realmente incluidos antes de contratar.`);
   }
   if (c.editorial_summary) historyParas.push(esc(c.editorial_summary));
+
+  const badgesHtml = badges.length ? `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+    <span style="background:#D1FAE5;color:#065F46;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">✓ Datos verificados</span>
+    ${badges.map(b => `<span style="border:1px solid #D1D5DB;padding:4px 10px;border-radius:999px;font-size:12px">${esc(b)}</span>`).join('')}
+  </div>` : '';
 
   const historyBlock = historyParas.length ? `<h2>La historia detrás del proveedor</h2>
     ${historyParas.map(p => `<p>${p}</p>`).join('')}` : '';
@@ -185,6 +199,9 @@ export function buildSalesBody(args) {
     ['Grupo corporativo', c.corporate_group],
     ['Operando desde', c.year_founded],
     ['Datacenter declarado', c.datacenter_location],
+    ['Garantía de uptime', uptimeStr],
+    ['SSL gratis', c.has_ssl_free === true ? 'Sí (incluido)' : c.has_ssl_free === false ? 'No incluido' : null],
+    ['Migración gratis', c.has_migration_free === true ? 'Sí (incluida)' : c.has_migration_free === false ? 'No incluida' : null],
     ['Tecnologías', techs.join(', ')],
     ['Sitio oficial', c.website],
     ['Teléfono', c.contact_phone],
