@@ -22,7 +22,8 @@ export const ASN_MAP = asnMapRaw.providers;
 // está listado en el sitio de Uptime Institute; HostDime Perú anunció Tier IV en Lima
 // pero sin certificación pública verificable → queda self_declared.
 const TIER_CERTIFIED_SLUGS = new Set([
-  'hostdime-co', // Tocancipá, Tier IV Uptime Institute (verificable)
+  'hostdime-co',    // Tocancipá, Tier IV Uptime Institute (verificable)
+  'hostingplus-pe', // GTD Lima, Perú — Tier III certificado (operador identificado)
 ]);
 
 // Palabras que indican operación foránea sin datacenter local.

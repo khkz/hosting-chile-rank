@@ -8,7 +8,8 @@ type AsnEntry = { cc: Cc; asn: string; org: string };
 export const ASN_MAP = (asnMap as { providers: Record<string, AsnEntry> }).providers;
 
 const TIER_CERTIFIED_SLUGS = new Set<string>([
-  'hostdime-co', // Tocancipá Tier IV Uptime Institute (verificable)
+  'hostdime-co',     // Tocancipá Tier IV Uptime Institute (verificable)
+  'hostingplus-pe',  // GTD Lima, Perú — Tier III certificado (operador identificado)
 ]);
 
 const FOREIGN_MARKERS = /sin\s+datacenter|revende|opera\s+de\s+forma\s+remota|fuera\s+de/i;
