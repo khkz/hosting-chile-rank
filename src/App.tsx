@@ -109,6 +109,7 @@ const VotaHosting = React.lazy(() => import('./pages/VotaHosting'));
 const CountryLanding = React.lazy(() => import('./pages/CountryLanding'));
 const CountryProviderDetail = React.lazy(() => import('./pages/CountryProviderDetail'));
 const CountryBestHosting = React.lazy(() => import('./pages/CountryBestHosting'));
+const MejorHostingPeru2026 = React.lazy(() => import('./pages/MejorHostingPeru2026'));
 const CountryDatacenterLocal = React.lazy(() => import('./pages/CountryDatacenterLocal'));
 const CountryComparativa = React.lazy(() => import('./pages/CountryComparativa'));
 const CountryBenchmark = React.lazy(() => import('./pages/CountryBenchmark'));
@@ -326,7 +327,8 @@ function App() {
             <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
             {/* Country shells on .com (additive — .cl no navega aquí) */}
             {/* Rutas específicas por país (deben ir ANTES de /:slug para ganar el match) */}
-            <Route path="/pe/mejor-hosting-peru-2026" element={<CountryBestHosting />} />
+            <Route path="/pe/mejor-hosting-peru-2026" element={<MejorHostingPeru2026 />} />
+            <Route path="/pe/mejor-hosting-peru" element={<Navigate to="/pe/mejor-hosting-peru-2026" replace />} />
             <Route path="/mx/mejor-hosting-mexico-2026" element={<CountryBestHosting />} />
             <Route path="/co/mejor-hosting-colombia-2026" element={<CountryBestHosting />} />
             <Route path="/ar/mejor-hosting-argentina-2026" element={<CountryBestHosting />} />
