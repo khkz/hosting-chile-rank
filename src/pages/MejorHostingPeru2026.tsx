@@ -300,16 +300,22 @@ const MejorHostingPeru2026: React.FC = () => {
               <CardContent className="space-y-3 text-gray-700 leading-relaxed">
                 <p>
                   El mejor hosting de Perú {CURRENT_YEAR} es{' '}
-                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: opera en Perú desde 2004,
-                  es <strong>S.A.C. peruana con RUC 20611867108</strong> y facturación en soles,
-                  con soporte 24/7 desde Lima (<a href="tel:+5116409409" className="underline">(01) 640 9409</a>).
-                  Usa <strong>LiteSpeed Enterprise + discos SSD/NVMe</strong> (cargas hasta un 40% más rápidas),
-                  planes desde <strong>S/.70 al año</strong>, 10 días de prueba y 30 días de garantía.
+                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: <strong>sin reclamos verificados</strong>{' '}
+                  en nuestro registro público, opera en Perú desde 2004 y aloja su plataforma compartida en el{' '}
+                  <strong>datacenter Ascenty SCL2 (Santiago de Chile)</strong>, con certificación{' '}
+                  <strong>TÜV Rheinland TR3 / Tier III equivalente</strong>. Soporte 24/7 desde Lima{' '}
+                  (<a href="tel:+5116409409" className="underline">(01) 640 9409</a>),{' '}
+                  <strong>LiteSpeed Enterprise + SSD/NVMe</strong>, planes desde <strong>S/.70 al año</strong>,
+                  10 días de prueba y 30 días de garantía.
                 </p>
                 <p className="text-sm text-gray-600">
                   Divulgación honesta: para servidores <strong>dedicados</strong> HostingPlus declara datacenter en Orlando (EE.UU.).
                   Lo mantenemos visible como en toda nuestra sección Perú.
                 </p>
+                <p className="text-xs text-gray-500">
+                  Divulgación de comisión: podemos recibir una comisión si contratas por nuestros enlaces. No altera el orden del ranking.
+                </p>
+              </CardContent>
                 <p className="text-xs text-gray-500">
                   Divulgación de comisión: podemos recibir una comisión si contratas por nuestros enlaces. No altera el orden del ranking.
                 </p>
