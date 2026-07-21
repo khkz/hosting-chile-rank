@@ -11,10 +11,10 @@ import Footer from '@/components/Footer';
  * Renderiza contenido citable con totales reales por país.
  */
 const LATAM_STATIC = [
-  { code: 'PE', slug: 'pe', name: 'Perú', flag: '🇵🇪', total: 18, local: 4 },
-  { code: 'MX', slug: 'mx', name: 'México', flag: '🇲🇽', total: 15, local: 3 },
-  { code: 'CO', slug: 'co', name: 'Colombia', flag: '🇨🇴', total: 11, local: 5 },
-  { code: 'AR', slug: 'ar', name: 'Argentina', flag: '🇦🇷', total: 11, local: 7 },
+  { code: 'PE', slug: 'pe', paisSlug: 'peru',      name: 'Perú',      flag: '🇵🇪', total: 18, local: 4 },
+  { code: 'MX', slug: 'mx', paisSlug: 'mexico',    name: 'México',    flag: '🇲🇽', total: 15, local: 3 },
+  { code: 'CO', slug: 'co', paisSlug: 'colombia', name: 'Colombia',  flag: '🇨🇴', total: 11, local: 5 },
+  { code: 'AR', slug: 'ar', paisSlug: 'argentina', name: 'Argentina', flag: '🇦🇷', total: 11, local: 7 },
 ];
 
 const Latam = () => {
@@ -121,16 +121,23 @@ const Latam = () => {
               </div>
             </a>
             {LATAM_STATIC.map(c => (
-              <a key={c.code} href={`https://eligetuhosting.com/${c.slug}`} className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 hover:border-[#EF233C] hover:shadow-md transition-all">
-                <div className="text-3xl mb-2">{c.flag}</div>
-                <div className="font-semibold text-[#2B2D42] text-lg">{c.name}</div>
-                <div className="text-xs text-[#2B2D42]/60 mt-1">
-                  {c.total} proveedores · {c.local} con datacenter local
-                </div>
-                <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
-                  Ver directorio <ArrowRight className="h-3.5 w-3.5" />
-                </div>
-              </a>
+              <div key={c.code} className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 hover:border-[#EF233C] hover:shadow-md transition-all">
+                <a href={`https://eligetuhosting.com/${c.slug}`} className="block">
+                  <div className="text-3xl mb-2">{c.flag}</div>
+                  <div className="font-semibold text-[#2B2D42] text-lg">{c.name}</div>
+                  <div className="text-xs text-[#2B2D42]/60 mt-1">
+                    {c.total} proveedores · {c.local} con datacenter local
+                  </div>
+                  <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
+                    Ver directorio <ArrowRight className="h-3.5 w-3.5" />
+                  </div>
+                </a>
+                <ul className="mt-3 pt-3 border-t border-[#2B2D42]/10 space-y-1.5 text-xs">
+                  <li><a href={`https://eligetuhosting.com/${c.slug}/mejor-hosting-${c.paisSlug}-2026`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Mejor hosting {c.name} 2026</a></li>
+                  <li><a href={`https://eligetuhosting.com/${c.slug}/hosting-con-datacenter-local`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Datacenter local</a></li>
+                  <li><a href={`https://eligetuhosting.com/${c.slug}/benchmark`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Benchmark uptime/TTFB</a></li>
+                </ul>
+              </div>
             ))}
           </div>
 

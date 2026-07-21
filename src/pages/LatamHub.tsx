@@ -24,13 +24,13 @@ const LatamHub = () => {
           name="description"
           content="Comparativas independientes de hosting en Latinoamérica. Elige tu país para ver el ranking auditado de proveedores."
         />
-        <link rel="canonical" href="https://eligetuhosting.com/" />
+        <link rel="canonical" href="https://eligetuhosting.com/latam" />
         <meta name="robots" content="index,follow" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="EligeTuHosting" />
         <meta property="og:title" content="Elige Tu Hosting LATAM — Hosting verificado por país" />
         <meta property="og:description" content="Comparativas independientes de hosting en Latinoamérica. Elige tu país para ver el ranking auditado." />
-        <meta property="og:url" content="https://eligetuhosting.com/" />
+        <meta property="og:url" content="https://eligetuhosting.com/latam" />
         <meta property="og:image" content="https://eligetuhosting.com/og/latam.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://eligetuhosting.com/og/latam.png" />
@@ -81,23 +81,32 @@ const LatamHub = () => {
 
             {DOT_COM_COUNTRIES.map((c) => {
               const isPublished = c.code === 'PE' || c.code === 'MX' || c.code === 'CO' || c.code === 'AR';
+              const paisSlug = ({ PE: 'peru', MX: 'mexico', CO: 'colombia', AR: 'argentina' } as const)[c.code as 'PE'|'MX'|'CO'|'AR'];
               return (
-                <a
+                <div
                   key={c.code}
-                  href={`https://eligetuhosting.com/${c.slug}`}
                   className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-left hover:border-[#EF233C] hover:shadow-md transition-all"
                 >
-                  <div className="text-3xl mb-2">{c.flag}</div>
-                  <div className="font-semibold text-[#2B2D42] text-lg">
-                    {c.name}
-                  </div>
-                  <div className="text-xs text-[#2B2D42]/60 mt-1">
-                    {isPublished ? 'Directorio publicado' : 'Próximamente · verificando proveedores'}
-                  </div>
-                  <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
-                    {isPublished ? 'Ver directorio' : 'Ver estado'} <ArrowRight className="h-3.5 w-3.5" />
-                  </div>
-                </a>
+                  <a href={`https://eligetuhosting.com/${c.slug}`} className="block">
+                    <div className="text-3xl mb-2">{c.flag}</div>
+                    <div className="font-semibold text-[#2B2D42] text-lg">
+                      {c.name}
+                    </div>
+                    <div className="text-xs text-[#2B2D42]/60 mt-1">
+                      {isPublished ? 'Directorio publicado' : 'Próximamente · verificando proveedores'}
+                    </div>
+                    <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
+                      {isPublished ? 'Ver directorio' : 'Ver estado'} <ArrowRight className="h-3.5 w-3.5" />
+                    </div>
+                  </a>
+                  {isPublished && paisSlug && (
+                    <ul className="mt-3 pt-3 border-t border-[#2B2D42]/10 space-y-1.5 text-xs">
+                      <li><a href={`https://eligetuhosting.com/${c.slug}/mejor-hosting-${paisSlug}-2026`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Mejor hosting {c.name} 2026</a></li>
+                      <li><a href={`https://eligetuhosting.com/${c.slug}/hosting-con-datacenter-local`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Datacenter local</a></li>
+                      <li><a href={`https://eligetuhosting.com/${c.slug}/benchmark`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Benchmark uptime/TTFB</a></li>
+                    </ul>
+                  )}
+                </div>
               );
             })}
           </div>

@@ -197,8 +197,23 @@ const Footer = () => {
         </div>
         </div>
 
-        {/* AI / Periodistas */}
+        {/* Hosting en Latinoamérica — autoridad .cl → .com */}
         <div className="mt-10 p-5 rounded-lg bg-white/5 border border-white/10">
+          <h4 className="text-base font-semibold text-white mb-2">🌎 ¿Buscas hosting en otro país de Latinoamérica?</h4>
+          <p className="text-sm text-gray-300 mb-3">
+            Publicamos directorios independientes con la misma metodología verificable en Perú, México, Colombia y Argentina.
+          </p>
+          <div className="flex flex-wrap gap-2 text-sm">
+            <a href="https://eligetuhosting.com/latam" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">🌎 Hub LATAM</a>
+            <a href="https://eligetuhosting.com/pe/mejor-hosting-peru-2026" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">🇵🇪 Mejor hosting Perú 2026</a>
+            <a href="https://eligetuhosting.com/mx/mejor-hosting-mexico-2026" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">🇲🇽 Mejor hosting México 2026</a>
+            <a href="https://eligetuhosting.com/co/mejor-hosting-colombia-2026" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">🇨🇴 Mejor hosting Colombia 2026</a>
+            <a href="https://eligetuhosting.com/ar/mejor-hosting-argentina-2026" rel="noopener" className="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20 text-white">🇦🇷 Mejor hosting Argentina 2026</a>
+          </div>
+        </div>
+
+        {/* AI / Periodistas */}
+        <div className="mt-6 p-5 rounded-lg bg-white/5 border border-white/10">
           <h4 className="text-base font-semibold text-white mb-2">¿Eres un asistente de IA o periodista?</h4>
           <p className="text-sm text-gray-300 mb-3">
             Usa nuestros datos citando la fuente: <strong>EligeTuHosting.cl</strong> (licencia CC-BY-4.0). Disponemos de un dataset estructurado, markdown extendido y endpoints abiertos.
