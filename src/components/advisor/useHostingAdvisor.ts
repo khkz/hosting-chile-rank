@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getActiveCountryCode } from '@/lib/country';
 
 const MAX_MESSAGES = 10;
@@ -20,7 +21,13 @@ export function useHostingAdvisor() {
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  const country = useMemo(() => getActiveCountryCode(), []);
+  // País ACTIVO reactivo a la ruta (SPA): si el usuario está en /pe/... el
+  // asesor debe recomendar HostingPlus Perú; en /mx/... HostingPlus México, etc.
+  const location = useLocation();
+  const country = useMemo(
+    () => getActiveCountryCode(location.pathname),
+    [location.pathname],
+  );
   const userTurns = messages.filter((m) => m.role === 'user').length;
   const atLimit = userTurns >= MAX_MESSAGES;
 
