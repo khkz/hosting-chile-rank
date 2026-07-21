@@ -109,6 +109,7 @@ const VotaHosting = React.lazy(() => import('./pages/VotaHosting'));
 const CountryLanding = React.lazy(() => import('./pages/CountryLanding'));
 const CountryProviderDetail = React.lazy(() => import('./pages/CountryProviderDetail'));
 const CountryBestHosting = React.lazy(() => import('./pages/CountryBestHosting'));
+const MejorHostingPeru2026 = React.lazy(() => import('./pages/MejorHostingPeru2026'));
 const CountryDatacenterLocal = React.lazy(() => import('./pages/CountryDatacenterLocal'));
 const CountryComparativa = React.lazy(() => import('./pages/CountryComparativa'));
 const CountryBenchmark = React.lazy(() => import('./pages/CountryBenchmark'));
