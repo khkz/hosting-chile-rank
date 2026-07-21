@@ -122,6 +122,46 @@ const Index = () => {
             </div>
           </section>
 
+          {/* LATAM cross-link — autoridad .cl → .com */}
+          <section aria-labelledby="latam-crosslink" className="py-8 md:py-12 bg-[#EDF2F4]/60 border-y border-[#2B2D42]/10">
+            <div className="container mx-auto px-4 max-w-5xl">
+              <h2 id="latam-crosslink" className="text-2xl md:text-3xl font-bold text-[#2B2D42] mb-2">
+                🌎 ¿Buscas hosting en otro país de Latinoamérica?
+              </h2>
+              <p className="text-[#2B2D42]/70 mb-5">
+                Publicamos directorios independientes con la misma metodología verificable (razón social, ASN, datacenter y reclamos) en Perú, México, Colombia y Argentina.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <a href="https://eligetuhosting.com/pe/mejor-hosting-peru-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
+                  <div className="text-2xl mb-1">🇵🇪</div>
+                  <div className="font-semibold text-[#2B2D42]">Mejor hosting Perú 2026</div>
+                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 18 proveedores</div>
+                </a>
+                <a href="https://eligetuhosting.com/mx/mejor-hosting-mexico-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
+                  <div className="text-2xl mb-1">🇲🇽</div>
+                  <div className="font-semibold text-[#2B2D42]">Mejor hosting México 2026</div>
+                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 15 proveedores</div>
+                </a>
+                <a href="https://eligetuhosting.com/co/mejor-hosting-colombia-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
+                  <div className="text-2xl mb-1">🇨🇴</div>
+                  <div className="font-semibold text-[#2B2D42]">Mejor hosting Colombia 2026</div>
+                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 11 proveedores</div>
+                </a>
+                <a href="https://eligetuhosting.com/ar/mejor-hosting-argentina-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
+                  <div className="text-2xl mb-1">🇦🇷</div>
+                  <div className="font-semibold text-[#2B2D42]">Mejor hosting Argentina 2026</div>
+                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 11 proveedores</div>
+                </a>
+              </div>
+              <p className="mt-4 text-sm">
+                <a href="https://eligetuhosting.com/latam" rel="noopener" className="text-[#EF233C] font-medium hover:underline">
+                  Ver el hub LATAM completo →
+                </a>
+              </p>
+            </div>
+          </section>
+
+
           <MiniNav />
           <StickyCTA />
         </Suspense>
