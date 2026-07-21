@@ -25,7 +25,9 @@ type CountryReco = {
   trackSlug: string;
 };
 
-const RECOS: Record<LatamDcSlug, CountryReco> = {
+type LatamComSlug = Exclude<LatamDcSlug, 'cl'>;
+
+const RECOS: Record<LatamComSlug, CountryReco> = {
   pe: {
     provider: 'HostingPlus Perú',
     url: 'https://www.hostingplus.pe/',
