@@ -38,9 +38,10 @@ const RECOS: Record<LatamComSlug, CountryReco> = {
       { icon: 'phone',   label: 'Teléfono local en Perú',          value: '+51 1 640 9409' },
       { icon: 'support', label: 'Soporte en español',              value: 'Ticket 24/7 · Lun–Vie 9:00–17:00 hora local' },
       { icon: 'group',   label: 'Grupo regional',                  value: 'HostingPlus (opera en CL, PE, MX, CO, AR)' },
+      { icon: 'dc',      label: 'Datacenter verificado',           value: 'Ascenty SCL2, Santiago (TÜV Rheinland TR3 / Tier III eq.)' },
     ],
     datacenterDisclosure:
-      'Datacenter declarado por el proveedor: Orlando, Florida (EE.UU.). No opera datacenter propio dentro de Perú.',
+      'Datacenter de la plataforma compartida: Ascenty SCL2, Santiago de Chile (TÜV Rheinland TR3 / Tier III eq.). Para servidores dedicados declara adicionalmente Orlando, FL (EE.UU.).',
     trackSlug: 'hostingplus-pe',
   },
   mx: {
