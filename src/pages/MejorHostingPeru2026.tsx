@@ -477,6 +477,53 @@ const MejorHostingPeru2026: React.FC = () => {
             </p>
           </section>
 
+          {/* Sección educativa: DC certificado vs autodeclarado */}
+          <section className="mb-12">
+            <Card className="border-l-4 border-l-emerald-600 bg-emerald-50/40">
+              <CardContent className="p-6">
+                <h2 className="text-2xl font-bold text-[#2B2D42] mb-3">
+                  ¿Datacenter certificado o solo «autodeclarado»? El test que ningún proveedor peruano quiere que hagas
+                </h2>
+                <p className="text-sm text-gray-700 mb-4">
+                  En el mercado peruano abundan frases como «datacenter propio», «clase mundial» o «Tier III homologable».
+                  Ninguna es una certificación. Un <strong>Tier III real</strong> exige redundancia N+1, generadores de respaldo,
+                  rutas duales de energía y refrigeración, y <strong>mantenimiento sin apagado</strong>, verificados por un
+                  emisor independiente (Uptime Institute, TÜV Rheinland o ICREA). Una «sala acondicionada» no cumple ninguno
+                  de esos requisitos y no es equivalente.
+                </p>
+                <div className="grid md:grid-cols-3 gap-3 mb-4">
+                  {[
+                    {
+                      q: '1) ¿En qué datacenter están físicamente?',
+                      hp: 'GTD Lima, Perú (nombre del operador identificable y ubicación real).',
+                    },
+                    {
+                      q: '2) ¿Qué certificación tiene y quién la emite?',
+                      hp: 'Tier III certificado del datacenter GTD Lima (operador reconocido en el mercado peruano).',
+                    },
+                    {
+                      q: '3) ¿Puedo verificarlo yo mismo?',
+                      hp: 'Sí: RUC 20611867108 en SUNAT, 0 reclamos en «Mira a Quién le Compras» de INDECOPI y teléfono Lima (01) 640 9409.',
+                    },
+                  ].map((row) => (
+                    <div key={row.q} className="rounded-lg border border-emerald-200 bg-white p-3">
+                      <div className="text-sm font-semibold text-[#2B2D42] mb-1">{row.q}</div>
+                      <div className="text-xs text-gray-500 mb-1 uppercase tracking-wide">HostingPlus responde</div>
+                      <div className="text-sm text-gray-700">{row.hp}</div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-600">
+                  Aplícale las mismas 3 preguntas a cualquier otro proveedor peruano antes de contratar. Si no puede nombrar el
+                  operador del datacenter, mostrar la certificación con emisor identificable ni entregarte un RUC verificable en
+                  SUNAT, no está a la altura.
+                </p>
+              </CardContent>
+            </Card>
+          </section>
+
+
+
           {/* FAQ */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">Preguntas frecuentes</h2>
