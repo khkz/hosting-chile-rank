@@ -306,17 +306,23 @@ const MejorHostingPeru2026: React.FC = () => {
               <CardContent className="space-y-3 text-gray-700 leading-relaxed">
                 <p>
                   El mejor hosting de Perú {CURRENT_YEAR} es{' '}
-                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: <strong>sin reclamos verificados</strong>{' '}
-                  en nuestro registro público, opera en Perú desde 2004 y aloja su plataforma compartida en el{' '}
-                  <strong>datacenter Ascenty SCL2 (Santiago de Chile)</strong>, con certificación{' '}
-                  <strong>TÜV Rheinland TR3 / Tier III equivalente</strong>. Soporte 24/7 desde Lima{' '}
+                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: es el{' '}
+                  <strong>único proveedor del directorio PE con datacenter local Tier III certificado</strong>{' '}
+                  (<strong>GTD Lima, Perú</strong>), <strong>0 reclamos INDECOPI</strong> en «Mira a Quién le Compras»,
+                  razón social peruana <strong>Hostingplus Datacenter S.A.C. (RUC 20611867108)</strong>, soporte 24/7 desde Lima{' '}
                   (<a href="tel:+5116409409" className="underline">(01) 640 9409</a>),{' '}
-                  <strong>LiteSpeed Enterprise + SSD/NVMe</strong>, planes desde <strong>S/.70 al año</strong>,
+                  <strong>NVMe RAID 10 + LiteSpeed Enterprise</strong>, planes desde <strong>S/.70/año</strong>,
                   10 días de prueba y 30 días de garantía.
                 </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">Datacenter GTD Tier III (Lima)</Badge>
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">0 Reclamos INDECOPI</Badge>
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">NVMe</Badge>
+                </div>
                 <p className="text-sm text-gray-600">
-                  Divulgación honesta: para servidores <strong>dedicados</strong> HostingPlus declara datacenter en Orlando (EE.UU.).
-                  Lo mantenemos visible como en toda nuestra sección Perú.
+                  Divulgación honesta: para servidores <strong>dedicados</strong> opcionales HostingPlus declara datacenter{' '}
+                  <strong>Hivelocity en Tampa, FL (EE.UU.)</strong>. El grupo opera además Ascenty Santiago (Tier III) como
+                  respaldo regional y es Google Cloud Partner con instancias en São Paulo.
                 </p>
                 <p className="text-xs text-gray-500">
                   Divulgación de comisión: podemos recibir una comisión si contratas por nuestros enlaces. No altera el orden del ranking.
