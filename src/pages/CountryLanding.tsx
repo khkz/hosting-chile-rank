@@ -20,7 +20,7 @@ import {
   Building2,
   FileText,
   Cpu,
-  ShieldCheck,
+  
 } from 'lucide-react';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
 import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
