@@ -373,12 +373,18 @@ const CountryLanding = () => {
               Metodología y transparencia
             </h2>
             <p className="text-sm text-[#2B2D42]/75 leading-relaxed mb-3">
-              Este directorio de {info.name} se construye únicamente con datos
-              públicos comprobables: razón social, identificador fiscal, sitio
-              oficial, datacenter declarado, tecnología del stack y canales de
-              contacto. No publicamos puntajes ni "notas" hasta contar con
-              benchmarks propios, reclamos verificados y trayectoria auditable,
-              con la misma metodología aplicada en Chile.
+              Este directorio de {info.name} está <strong>ordenado por calidad
+              certificada de la infraestructura del operador y transparencia
+              verificable</strong>, no por puntajes autoasignados. Priorizamos
+              en este orden: (1) calidad certificada del datacenter — Tier III
+              certificado con operador identificado, aunque esté en otro país
+              de la región cuando el grupo lo opera; (2) transparencia
+              verificable — entidad legal identificable, registros públicos de
+              reclamos (INDECOPI, Reclamos.cl), teléfono y soporte 24/7 en
+              español; (3) presencia y latencia al país (ASN/red); (4)
+              antigüedad. Datos públicos comprobables: razón social,
+              identificador fiscal, sitio oficial, datacenter declarado,
+              tecnología del stack y canales de contacto.
             </p>
             <p className="text-xs text-[#2B2D42]/60">
               Última actualización de datos: <strong>{lastUpdated}</strong>. Los
