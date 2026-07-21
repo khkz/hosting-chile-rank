@@ -103,7 +103,7 @@ export default function CountryReassurances({
   countryName,
   variant = 'landing',
 }: {
-  country: LatamDcSlug;
+  country: LatamComSlug;
   countryName: string;
   variant?: 'landing' | 'best';
 }) {
