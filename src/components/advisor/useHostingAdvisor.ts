@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getActiveCountryCode } from '@/lib/country';
 
 const MAX_MESSAGES = 10;
