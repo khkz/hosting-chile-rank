@@ -43,7 +43,7 @@ const providers: Provider[] = [
     precio: 'S/.70/año',
     precioNota: 'Oferta SSD · sin sorpresas al renovar',
     moneda: 'PEN',
-    datacenter: 'Orlando, EE.UU. (declarado para dedicados)',
+    datacenter: 'Ascenty SCL2, Santiago de Chile (TÜV TR3 / Tier III eq.)',
     soporteLocal: true,
     facturaLocal: true,
     litespeed: true,
@@ -51,14 +51,14 @@ const providers: Provider[] = [
     destacado: true,
     url: 'https://www.hostingplus.pe/',
     pros: [
-      'S.A.C. peruana con RUC 20611867108 · facturación en soles',
+      'Sin reclamos verificados en nuestro registro público',
+      'Datacenter Ascenty SCL2 (Santiago) con certificación TÜV Rheinland TR3',
       'Soporte 24/7 con equipo en Lima ((01) 640 9409)',
       'LiteSpeed Enterprise + SSD/NVMe (cargas hasta ~40% más rápidas)',
-      'Opera en Perú desde 2004',
-      '10 días de prueba y 30 días de garantía',
+      'Opera en Perú desde 2004 · 10 días de prueba y 30 de garantía',
     ],
     contras: [
-      'Datacenter declarado en Orlando (EE.UU.) para dedicados — no en Perú',
+      'Para servidores dedicados declara datacenter en Orlando (EE.UU.)',
     ],
   },
   {
@@ -148,17 +148,17 @@ const providers: Provider[] = [
 ];
 
 const criterios = [
+  { icon: <AlertTriangle className="w-6 h-6" />, title: 'Reclamos verificados (30%)', description: 'Cantidad, gravedad y recurrencia de reclamos públicos verificados en nuestro registro y en fuentes externas (Indecopi, redes, foros).' },
   { icon: <Clock className="w-6 h-6" />, title: 'Servicio post-venta (25%)', description: 'Tiempo real de primera respuesta, canales en español y presencia de equipo en Perú.' },
-  { icon: <Zap className="w-6 h-6" />, title: 'Velocidad y tecnología (25%)', description: 'LiteSpeed Enterprise, SSD/NVMe, caché, HTTP/3 y TTFB observado desde Lima.' },
-  { icon: <Shield className="w-6 h-6" />, title: 'Seguridad y backups (20%)', description: 'WAF, SSL gratis, backups automáticos, anti-DDoS y política de restauración.' },
-  { icon: <AlertTriangle className="w-6 h-6" />, title: 'Reputación (15%)', description: 'Reclamos verificados, transparencia legal (razón social, RUC) y trayectoria.' },
-  { icon: <MapPin className="w-6 h-6" />, title: 'Precio vs. valor (15%)', description: 'Precio inicial vs. renovación, factura local en soles y garantía de devolución.' },
+  { icon: <Zap className="w-6 h-6" />, title: 'Velocidad y tecnología (20%)', description: 'LiteSpeed Enterprise, SSD/NVMe, caché, HTTP/3 y TTFB observado desde Lima.' },
+  { icon: <Shield className="w-6 h-6" />, title: 'Seguridad y datacenter (15%)', description: 'Certificación del datacenter (TÜV/Uptime/ICREA), WAF, SSL, backups automáticos y anti-DDoS.' },
+  { icon: <MapPin className="w-6 h-6" />, title: 'Precio vs. valor (10%)', description: 'Precio inicial vs. renovación, factura local en soles y garantía de devolución.' },
 ];
 
 const faqs = [
   {
     q: '¿Cuál es el mejor hosting en Perú en 2026?',
-    a: 'HostingPlus.pe (9,8/10). Opera en Perú desde 2004, tiene S.A.C. peruana con RUC 20611867108, factura en soles, soporte 24/7 con equipo en Lima ((01) 640 9409) y usa LiteSpeed Enterprise + SSD/NVMe (cargas hasta 40% más rápidas). Planes desde S/.70 al año, 10 días de prueba y 30 días de garantía. Para dedicados declara datacenter en Orlando (mantenemos esta divulgación visible).',
+    a: 'HostingPlus.pe (9,8/10). Sin reclamos verificados en nuestro registro, opera en Perú desde 2004, aloja su plataforma compartida en el datacenter Ascenty SCL2 (Santiago) con certificación TÜV Rheinland TR3 / Tier III equivalente, tiene soporte 24/7 con equipo en Lima ((01) 640 9409) y usa LiteSpeed Enterprise + SSD/NVMe. Planes desde S/.70 al año, 10 días de prueba y 30 de garantía. Para dedicados declara datacenter en Orlando (mantenemos esta divulgación visible).',
   },
   {
     q: '¿Cuánto cuesta un hosting en Perú?',
@@ -191,7 +191,7 @@ const ogImage = 'https://eligetuhosting.com/og/pe-og.png';
 
 const MejorHostingPeru2026: React.FC = () => {
   const top = providers[0];
-  const description = 'El mejor hosting de Perú 2026 es HostingPlus.pe (9,8/10): S.A.C. peruana con RUC, soporte en Lima 24/7, LiteSpeed + NVMe y planes desde S/.70/año. Ranking auditado por EligeTuHosting.';
+  const description = 'El mejor hosting de Perú 2026 es HostingPlus.pe (9,8/10): sin reclamos verificados, datacenter Ascenty SCL2 certificado TÜV TR3, soporte en Lima 24/7, LiteSpeed + NVMe y planes desde S/.70/año. Ranking auditado por EligeTuHosting.';
   const title = `Mejor Hosting Perú ${CURRENT_YEAR} | Ranking auditado | EligeTuHosting`;
 
   const articleLd = {
@@ -300,11 +300,13 @@ const MejorHostingPeru2026: React.FC = () => {
               <CardContent className="space-y-3 text-gray-700 leading-relaxed">
                 <p>
                   El mejor hosting de Perú {CURRENT_YEAR} es{' '}
-                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: opera en Perú desde 2004,
-                  es <strong>S.A.C. peruana con RUC 20611867108</strong> y facturación en soles,
-                  con soporte 24/7 desde Lima (<a href="tel:+5116409409" className="underline">(01) 640 9409</a>).
-                  Usa <strong>LiteSpeed Enterprise + discos SSD/NVMe</strong> (cargas hasta un 40% más rápidas),
-                  planes desde <strong>S/.70 al año</strong>, 10 días de prueba y 30 días de garantía.
+                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: <strong>sin reclamos verificados</strong>{' '}
+                  en nuestro registro público, opera en Perú desde 2004 y aloja su plataforma compartida en el{' '}
+                  <strong>datacenter Ascenty SCL2 (Santiago de Chile)</strong>, con certificación{' '}
+                  <strong>TÜV Rheinland TR3 / Tier III equivalente</strong>. Soporte 24/7 desde Lima{' '}
+                  (<a href="tel:+5116409409" className="underline">(01) 640 9409</a>),{' '}
+                  <strong>LiteSpeed Enterprise + SSD/NVMe</strong>, planes desde <strong>S/.70 al año</strong>,
+                  10 días de prueba y 30 días de garantía.
                 </p>
                 <p className="text-sm text-gray-600">
                   Divulgación honesta: para servidores <strong>dedicados</strong> HostingPlus declara datacenter en Orlando (EE.UU.).
