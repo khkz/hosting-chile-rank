@@ -370,17 +370,6 @@ const Navbar = () => {
                 </Accordion>
               </div>
               
-              <div className="mt-auto pb-6">
-                <Button 
-                  asChild 
-                  className="w-full bg-[#EF233C] hover:bg-[#EF233C]/90 text-white flex items-center justify-center gap-2"
-                >
-                  <Link to="/ranking" className="flex items-center gap-2">
-                    Compara ahora
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
             </div>
           </SheetContent>
         </Sheet>
