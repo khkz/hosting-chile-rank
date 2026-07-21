@@ -2,15 +2,15 @@
 
 Fuente: https://eligetuhosting.com/pe/hostingplus-pe
 Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
-Última actualización: 2026-07-06T04:46:35.076307+00:00
+Última actualización: 2026-07-21
 
 ## Datos verificables
 - Sitio oficial: https://www.hostingplus.pe/
 - Razón social: Hostingplus Datacenter S.A.C.
 - Grupo corporativo: HostingPlus
-- Datacenter declarado: Ascenty SCL2, Santiago de Chile (colocation, certificación TÜV Rheinland TR3 / Tier III equivalente). Para servidores dedicados HostingPlus declara adicionalmente Orlando, Florida (EE.UU.).
+- Datacenter declarado: Ascenty SCL2, Santiago de Chile (colocation, TÜV Rheinland TR3 / Tier III eq.). Para servidores dedicados también declara Orlando, FL (EE.UU.).
 - Año de fundación: —
-- Tecnologías declaradas: cPanel, SSD RAID 10, VPS, Servidores Dedicados
+- Tecnologías declaradas: cPanel, LiteSpeed Enterprise, SSD/NVMe RAID 10, VPS, servidores dedicados con anti-DDoS
 - Teléfono: +51 1 640 9409
 - Email: ventas@hostingplus.pe
 
@@ -20,7 +20,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - SSL emisor: —
 - SSL vigencia hasta: —
 - TTFB muestra: 1233 ms
-- Última verificación: 2026-07-06T05:02:37.644+00:00
+- Última verificación: 2026-07-06
 
 ## Benchmark (últimos 7 días)
 - TTFB mediano: 824 ms
@@ -28,11 +28,11 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Uptime observado: 100%
 
 ## Contexto editorial
-HostingPlus Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Hostingplus Datacenter S.A.C.. Forma parte del grupo HostingPlus.
+HostingPlus Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Hostingplus Datacenter S.A.C. y forma parte del grupo HostingPlus.
 
-Infraestructura: aloja su plataforma de hosting compartido en el datacenter Ascenty SCL2 (Santiago de Chile), en régimen de colocation, con certificación TÜV Rheinland TR3 / Tier III equivalente. Para servidores dedicados declara adicionalmente Orlando, Florida (EE.UU.). Tecnologías declaradas: cPanel, SSD RAID 10, VPS, Servidores Dedicados.
+Infraestructura: aloja su plataforma de hosting compartido en el datacenter Ascenty SCL2 (Santiago de Chile), en régimen de colocation, con certificación TÜV Rheinland TR3 / Tier III equivalente. Para servidores dedicados declara adicionalmente Orlando, Florida (EE.UU.). Tecnologías declaradas: cPanel, LiteSpeed Enterprise, SSD/NVMe RAID 10, VPS y servidores dedicados con anti-DDoS.
 
-Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Perú. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
+Reputación: sin reclamos verificados en nuestro registro público al corte de esta ficha. Perfil de uso: opción sólida si buscas soporte 24/7 en español desde Lima, facturación local en soles con RUC peruano y una plataforma alojada en un datacenter con certificación internacional.
 
 ## Enlaces
 - Volver al directorio: https://eligetuhosting.com/pe
