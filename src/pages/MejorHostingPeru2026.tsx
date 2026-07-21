@@ -160,7 +160,11 @@ const criterios = [
 const faqs = [
   {
     q: '¿Cuál es el mejor hosting en Perú en 2026?',
-    a: 'HostingPlus.pe (9,8/10). Sin reclamos verificados en nuestro registro, opera en Perú desde 2004, aloja su plataforma compartida en el datacenter Ascenty SCL2 (Santiago) con certificación TÜV Rheinland TR3 / Tier III equivalente, tiene soporte 24/7 con equipo en Lima ((01) 640 9409) y usa LiteSpeed Enterprise + SSD/NVMe. Planes desde S/.70 al año, 10 días de prueba y 30 de garantía. Para dedicados declara datacenter en Orlando (mantenemos esta divulgación visible).',
+    a: 'HostingPlus.pe (9,8/10). Es el único proveedor del directorio PE con datacenter local Tier III certificado (GTD Lima, Perú). 0 reclamos INDECOPI en el registro «Mira a Quién le Compras», razón social peruana Hostingplus Datacenter S.A.C. (RUC 20611867108), soporte 24/7 con equipo en Lima ((01) 640 9409), NVMe RAID 10 + LiteSpeed Enterprise. Planes desde S/.70/año, 10 días de prueba y 30 días de garantía. Para dedicados opcionales declara Hivelocity Tampa, FL (EE.UU.); lo mantenemos visible.',
+  },
+  {
+    q: '¿Dónde está físicamente el datacenter de HostingPlus Perú?',
+    a: 'El hosting web (compartido, WordPress, VPS) se aloja en el datacenter GTD de Lima, Perú, con certificación Tier III. Los servidores dedicados opcionales se declaran en el datacenter Hivelocity de Tampa, Florida (EE.UU.). El grupo HostingPlus opera además Ascenty Santiago (Tier III) como respaldo regional y es Google Cloud Partner con instancias en São Paulo.',
   },
   {
     q: '¿Cuánto cuesta un hosting en Perú?',
@@ -168,15 +172,15 @@ const faqs = [
   },
   {
     q: '¿Conviene hosting peruano o internacional?',
-    a: 'Si necesitas factura local con RUC peruano, soporte en horario Perú y contacto directo, un proveedor con presencia local (HostingPlus.pe o locales tradicionales) es más cómodo. Un internacional como Hostinger o BanaHosting puede tener precio inicial más bajo, pero cobra en USD, sin factura local y con renovaciones que suben fuerte.',
+    a: 'Si necesitas factura local con RUC peruano, soporte en horario Perú y datacenter dentro del país, HostingPlus.pe es la opción más clara (GTD Lima Tier III + RUC 20611867108). Un internacional como Hostinger o BanaHosting puede tener precio inicial más bajo, pero cobra en USD, sin factura local y con renovaciones que suben fuerte.',
   },
   {
     q: '¿Cuál es mejor para WordPress en Perú?',
-    a: 'Para WordPress recomendamos el plan WordPress de HostingPlus.pe (S/.389): incluye LiteSpeed Enterprise, cache LSCache, SSD/NVMe y soporte local. Alternativa premium en USD: SiteGround. Alternativa barata en USD con renovación agresiva: Hostinger.',
+    a: 'Para WordPress recomendamos el plan WordPress de HostingPlus.pe (S/.389): incluye LiteSpeed Enterprise, cache LSCache, NVMe RAID 10, datacenter GTD Lima Tier III y soporte local. Alternativa premium en USD: SiteGround. Alternativa barata en USD con renovación agresiva: Hostinger.',
   },
   {
     q: '¿Puedo migrar mi web sin perderla?',
-    a: 'Sí. HostingPlus.pe incluye migración asistida gratuita desde tu proveedor actual y 30 días de garantía de devolución, así puedes probar sin riesgo. Los planes internacionales también ofrecen migración, pero valida antes que soporten tu stack (WordPress, base de datos, correo).',
+    a: 'Sí. HostingPlus.pe incluye migración asistida gratuita desde tu proveedor actual y 30 días de garantía de devolución, así puedes probar sin riesgo.',
   },
 ];
 
