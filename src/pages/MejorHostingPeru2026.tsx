@@ -43,7 +43,7 @@ const providers: Provider[] = [
     precio: 'S/.70/año',
     precioNota: 'Oferta SSD · sin sorpresas al renovar',
     moneda: 'PEN',
-    datacenter: 'Orlando, EE.UU. (declarado para dedicados)',
+    datacenter: 'Ascenty SCL2, Santiago de Chile (TÜV TR3 / Tier III eq.)',
     soporteLocal: true,
     facturaLocal: true,
     litespeed: true,
@@ -51,14 +51,14 @@ const providers: Provider[] = [
     destacado: true,
     url: 'https://www.hostingplus.pe/',
     pros: [
-      'S.A.C. peruana con RUC 20611867108 · facturación en soles',
+      'Sin reclamos verificados en nuestro registro público',
+      'Datacenter Ascenty SCL2 (Santiago) con certificación TÜV Rheinland TR3',
       'Soporte 24/7 con equipo en Lima ((01) 640 9409)',
       'LiteSpeed Enterprise + SSD/NVMe (cargas hasta ~40% más rápidas)',
-      'Opera en Perú desde 2004',
-      '10 días de prueba y 30 días de garantía',
+      'Opera en Perú desde 2004 · 10 días de prueba y 30 de garantía',
     ],
     contras: [
-      'Datacenter declarado en Orlando (EE.UU.) para dedicados — no en Perú',
+      'Para servidores dedicados declara datacenter en Orlando (EE.UU.)',
     ],
   },
   {
