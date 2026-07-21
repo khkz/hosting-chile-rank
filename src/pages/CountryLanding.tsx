@@ -30,7 +30,8 @@ import { hasLocalDatacenter, has247Support, type LatamDcSlug } from '@/lib/dcLoc
 
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
-import PeReassurances from '@/components/country/PeReassurances';
+import CountryReassurances from '@/components/country/CountryReassurances';
+import BuyerRoutes from '@/components/country/BuyerRoutes';
 
 const CountryLanding = () => {
   const location = useLocation();
@@ -82,14 +83,7 @@ const CountryLanding = () => {
   const description = `Directorio verificable de hosting en ${info.name}: proveedores con datos comprobables (razón social, ID fiscal, datacenter, tecnología) y metodología transparente.`;
 
   const curatedCompany = (companies || []).find((c: any) => c.is_curated === true) || null;
-  const recommended = curatedCompany
-    ? {
-        name: curatedCompany.name,
-        url: curatedCompany.website || '#',
-        rel: 'noopener',
-        claim: `Operador regional con infraestructura propia y soporte hispano 24/7 en ${info.name}.`,
-      }
-    : null;
+  const hasRecommended = !!curatedCompany;
 
   const lastUpdated = new Date().toISOString().slice(0, 10);
 
@@ -221,48 +215,21 @@ const CountryLanding = () => {
             </div>
           </div>
 
-          {info.slug === 'pe' && recommended ? (
-            <PeReassurances variant="landing" />
-          ) : recommended && (
-            <Card className="mb-10 border-[#EF233C]/40 bg-[#EF233C]/5">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-3 flex-wrap">
-                  <ShieldCheck className="h-6 w-6 text-[#EF233C] mt-1 shrink-0" />
-                  <div className="flex-1 min-w-[240px]">
-                    <div className="text-xs uppercase tracking-wide text-[#EF233C] font-semibold mb-1">
-                      Recomendado por EligeTuHosting
-                    </div>
-                    <div className="text-xl font-bold text-[#2B2D42] mb-1">
-                      {recommended.name}
-                    </div>
-                    <p className="text-sm text-[#2B2D42]/70 mb-3">
-                      {recommended.claim}
-                    </p>
-                    <Button asChild size="sm" className="cta-primary">
-                      <a
-                        href={recommended.url}
-                        target="_blank"
-                        rel={recommended.rel}
-                        referrerPolicy="no-referrer"
-                        className="inline-flex items-center gap-2"
-                      >
-                        Visitar sitio oficial <ExternalLink className="h-4 w-4" />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-                <p className="text-[11px] text-[#2B2D42]/60 mt-4 leading-snug">
-                  <strong>Divulgación:</strong> EligeTuHosting puede recibir una
-                  comisión si contratas a través de este enlace. La recomendación
-                  se basa en trayectoria verificable del grupo en LATAM y no
-                  altera el resto del directorio, que se ordena por datos
-                  públicos comprobables.
-                </p>
-              </CardContent>
-            </Card>
+          {hasRecommended && (
+            <CountryReassurances
+              country={info.slug as 'pe' | 'mx' | 'co' | 'ar'}
+              countryName={info.name}
+              variant="landing"
+            />
           )}
 
+          <BuyerRoutes
+            country={info.slug as 'pe' | 'mx' | 'co' | 'ar'}
+            countryName={info.name}
+          />
+
           <AdvisorEmbed />
+
 
 
 
