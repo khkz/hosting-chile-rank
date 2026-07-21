@@ -66,8 +66,8 @@ function renderBestHosting(cslug, meta, providers) {
     ],
   };
   const peFaqs = cslug === 'pe' ? [
-    { q: '¿HostingPlus Perú tiene datacenter en Perú?', a: 'No. Su ficha técnica declara datacenter en Orlando, Florida (EE.UU.). Lo que sí tiene en Perú es razón social registrada (Hostingplus Datacenter S.A.C.), teléfono local (+51 1 640 9409) y soporte en español. Si necesitas datacenter físicamente en Perú, revisa /pe/hosting-con-datacenter-local.' },
-    { q: '¿Qué proveedores sí tienen datacenter en Perú verificado por ASN?', a: 'Según nuestra verificación por IP → ASN, se anuncian desde ASN peruanos Hosting Perú (NEXTNET SAC AS271814) y MGD (Level 3 Perú AS3549). Otros proveedores que declaran "datacenter en Perú" resuelven a infraestructura fuera del país o están detrás de CDN.' },
+    { q: '¿HostingPlus Perú tiene datacenter en Perú?', a: 'Sí. HostingPlus Perú aloja su hosting web (compartido, WordPress, VPS) en el datacenter GTD de Lima, Perú, con certificación Tier III. Para servidores dedicados opcionales declara adicionalmente Hivelocity en Tampa, Florida (EE.UU.). Su razón social peruana es Hostingplus Datacenter S.A.C. (RUC 20611867108).' },
+    { q: '¿Qué proveedores tienen datacenter en Perú verificado?', a: 'HostingPlus Perú es el único del directorio con datacenter local Tier III certificado de operador identificado (GTD Lima). Otros proveedores declaran "datacenter en Perú" pero resuelven a infraestructura fuera del país o están detrás de CDN.' },
   ] : [];
   const faqs = [
     ...peFaqs,
