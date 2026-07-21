@@ -235,15 +235,6 @@ const Navbar = () => {
             </Button>
           )}
           
-          <Button 
-            asChild 
-            className="cta-primary flex items-center gap-2"
-          >
-            <Link to="/ranking" className="flex items-center gap-2">
-              Compara ahora
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
         </div>
         
         {/* Mobile Menu */}
