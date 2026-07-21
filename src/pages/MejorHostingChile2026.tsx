@@ -709,6 +709,25 @@ const MejorHostingChile2026 = () => {
             </Card>
           </section>
 
+          {/* Cross-link a Perú */}
+          <section className="mt-8">
+            <Card className="bg-gray-50">
+              <CardContent className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <div className="font-semibold text-[#2B2D42]">¿Buscas hosting en Perú?</div>
+                  <div className="text-sm text-gray-600">
+                    Revisa nuestro ranking auditado para el mercado peruano (S/., factura local, LiteSpeed).
+                  </div>
+                </div>
+                <Button asChild variant="outline">
+                  <a href="https://eligetuhosting.com/pe/mejor-hosting-peru-2026" rel="noopener">
+                    Ver ranking Perú →
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          </section>
+
         </div>
       </main>
 
