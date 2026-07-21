@@ -32,16 +32,16 @@ const RECOS: Record<LatamComSlug, CountryReco> = {
     provider: 'HostingPlus Perú',
     url: 'https://www.hostingplus.pe/',
     headline:
-      'Operador regional con razón social peruana, soporte hispano y teléfono local. Datos verificables por WHOIS, registro mercantil y sitio oficial.',
+      'Único proveedor del directorio PE con datacenter local Tier III certificado (GTD Lima). Razón social peruana con RUC y teléfono en Lima. Datos verificables por WHOIS, SUNAT e INDECOPI.',
     bullets: [
-      { icon: 'legal',   label: 'Razón social peruana registrada', value: 'Hostingplus Datacenter S.A.C.' },
-      { icon: 'phone',   label: 'Teléfono local en Perú',          value: '+51 1 640 9409' },
-      { icon: 'support', label: 'Soporte en español',              value: 'Ticket 24/7 · Lun–Vie 9:00–17:00 hora local' },
-      { icon: 'group',   label: 'Grupo regional',                  value: 'HostingPlus (opera en CL, PE, MX, CO, AR)' },
-      { icon: 'dc',      label: 'Datacenter verificado',           value: 'Ascenty SCL2, Santiago (TÜV Rheinland TR3 / Tier III eq.)' },
+      { icon: 'legal',   label: 'Razón social peruana registrada', value: 'Hostingplus Datacenter S.A.C. · RUC 20611867108' },
+      { icon: 'phone',   label: 'Teléfono local en Lima',          value: '(01) 640 9409' },
+      { icon: 'support', label: 'Soporte en español',              value: 'Ticket 24/7 · Lun–Vie 9:00–17:00 hora Lima' },
+      { icon: 'group',   label: 'Grupo regional',                  value: 'HostingPlus (opera en CL, PE, MX, CO, AR) · 0 reclamos INDECOPI' },
+      { icon: 'dc',      label: 'Datacenter verificado',           value: 'GTD Lima, Perú — Tier III certificado (NVMe RAID 10 + LiteSpeed Enterprise)' },
     ],
     datacenterDisclosure:
-      'Datacenter de la plataforma compartida: Ascenty SCL2, Santiago de Chile (TÜV Rheinland TR3 / Tier III eq.). Para servidores dedicados declara adicionalmente Orlando, FL (EE.UU.).',
+      'Hosting web alojado en el datacenter GTD (Lima, Perú), Tier III certificado. Para servidores dedicados opcionales, HostingPlus declara datacenter Hivelocity en Tampa, FL (EE.UU.). El grupo opera además Ascenty Santiago (Tier III) como respaldo regional y es Google Cloud Partner con instancias en São Paulo.',
     trackSlug: 'hostingplus-pe',
   },
   mx: {

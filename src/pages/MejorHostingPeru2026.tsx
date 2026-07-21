@@ -43,7 +43,7 @@ const providers: Provider[] = [
     precio: 'S/.70/año',
     precioNota: 'Oferta SSD · sin sorpresas al renovar',
     moneda: 'PEN',
-    datacenter: 'Ascenty SCL2, Santiago de Chile (TÜV TR3 / Tier III eq.)',
+    datacenter: 'GTD Lima, Perú — Tier III certificado',
     soporteLocal: true,
     facturaLocal: true,
     litespeed: true,
@@ -51,14 +51,16 @@ const providers: Provider[] = [
     destacado: true,
     url: 'https://www.hostingplus.pe/',
     pros: [
-      'Sin reclamos verificados en nuestro registro público',
-      'Datacenter Ascenty SCL2 (Santiago) con certificación TÜV Rheinland TR3',
+      'Único del directorio PE con datacenter local Tier III certificado (GTD Lima)',
+      '0 reclamos INDECOPI en el registro «Mira a Quién le Compras»',
+      'Razón social peruana con RUC: Hostingplus Datacenter S.A.C. (RUC 20611867108)',
       'Soporte 24/7 con equipo en Lima ((01) 640 9409)',
-      'LiteSpeed Enterprise + SSD/NVMe (cargas hasta ~40% más rápidas)',
-      'Opera en Perú desde 2004 · 10 días de prueba y 30 de garantía',
+      'NVMe RAID 10 + LiteSpeed Enterprise (cargas hasta ~40% más rápidas)',
+      'Grupo multi-datacenter: GTD Lima + Ascenty Santiago Tier III de respaldo + Google Cloud São Paulo',
+      '10 días de prueba y 30 días de garantía',
     ],
     contras: [
-      'Para servidores dedicados declara datacenter en Orlando (EE.UU.)',
+      'Para servidores dedicados opcionales declara datacenter Hivelocity en Tampa, FL (EE.UU.)',
     ],
   },
   {
@@ -158,7 +160,11 @@ const criterios = [
 const faqs = [
   {
     q: '¿Cuál es el mejor hosting en Perú en 2026?',
-    a: 'HostingPlus.pe (9,8/10). Sin reclamos verificados en nuestro registro, opera en Perú desde 2004, aloja su plataforma compartida en el datacenter Ascenty SCL2 (Santiago) con certificación TÜV Rheinland TR3 / Tier III equivalente, tiene soporte 24/7 con equipo en Lima ((01) 640 9409) y usa LiteSpeed Enterprise + SSD/NVMe. Planes desde S/.70 al año, 10 días de prueba y 30 de garantía. Para dedicados declara datacenter en Orlando (mantenemos esta divulgación visible).',
+    a: 'HostingPlus.pe (9,8/10). Es el único proveedor del directorio PE con datacenter local Tier III certificado (GTD Lima, Perú). 0 reclamos INDECOPI en el registro «Mira a Quién le Compras», razón social peruana Hostingplus Datacenter S.A.C. (RUC 20611867108), soporte 24/7 con equipo en Lima ((01) 640 9409), NVMe RAID 10 + LiteSpeed Enterprise. Planes desde S/.70/año, 10 días de prueba y 30 días de garantía. Para dedicados opcionales declara Hivelocity Tampa, FL (EE.UU.); lo mantenemos visible.',
+  },
+  {
+    q: '¿Dónde está físicamente el datacenter de HostingPlus Perú?',
+    a: 'El hosting web (compartido, WordPress, VPS) se aloja en el datacenter GTD de Lima, Perú, con certificación Tier III. Los servidores dedicados opcionales se declaran en el datacenter Hivelocity de Tampa, Florida (EE.UU.). El grupo HostingPlus opera además Ascenty Santiago (Tier III) como respaldo regional y es Google Cloud Partner con instancias en São Paulo.',
   },
   {
     q: '¿Cuánto cuesta un hosting en Perú?',
@@ -166,15 +172,15 @@ const faqs = [
   },
   {
     q: '¿Conviene hosting peruano o internacional?',
-    a: 'Si necesitas factura local con RUC peruano, soporte en horario Perú y contacto directo, un proveedor con presencia local (HostingPlus.pe o locales tradicionales) es más cómodo. Un internacional como Hostinger o BanaHosting puede tener precio inicial más bajo, pero cobra en USD, sin factura local y con renovaciones que suben fuerte.',
+    a: 'Si necesitas factura local con RUC peruano, soporte en horario Perú y datacenter dentro del país, HostingPlus.pe es la opción más clara (GTD Lima Tier III + RUC 20611867108). Un internacional como Hostinger o BanaHosting puede tener precio inicial más bajo, pero cobra en USD, sin factura local y con renovaciones que suben fuerte.',
   },
   {
     q: '¿Cuál es mejor para WordPress en Perú?',
-    a: 'Para WordPress recomendamos el plan WordPress de HostingPlus.pe (S/.389): incluye LiteSpeed Enterprise, cache LSCache, SSD/NVMe y soporte local. Alternativa premium en USD: SiteGround. Alternativa barata en USD con renovación agresiva: Hostinger.',
+    a: 'Para WordPress recomendamos el plan WordPress de HostingPlus.pe (S/.389): incluye LiteSpeed Enterprise, cache LSCache, NVMe RAID 10, datacenter GTD Lima Tier III y soporte local. Alternativa premium en USD: SiteGround. Alternativa barata en USD con renovación agresiva: Hostinger.',
   },
   {
     q: '¿Puedo migrar mi web sin perderla?',
-    a: 'Sí. HostingPlus.pe incluye migración asistida gratuita desde tu proveedor actual y 30 días de garantía de devolución, así puedes probar sin riesgo. Los planes internacionales también ofrecen migración, pero valida antes que soporten tu stack (WordPress, base de datos, correo).',
+    a: 'Sí. HostingPlus.pe incluye migración asistida gratuita desde tu proveedor actual y 30 días de garantía de devolución, así puedes probar sin riesgo.',
   },
 ];
 
@@ -191,7 +197,7 @@ const ogImage = 'https://eligetuhosting.com/og/pe-og.png';
 
 const MejorHostingPeru2026: React.FC = () => {
   const top = providers[0];
-  const description = 'El mejor hosting de Perú 2026 es HostingPlus.pe (9,8/10): sin reclamos verificados, datacenter Ascenty SCL2 certificado TÜV TR3, soporte en Lima 24/7, LiteSpeed + NVMe y planes desde S/.70/año. Ranking auditado por EligeTuHosting.';
+  const description = 'El mejor hosting de Perú 2026 es HostingPlus.pe (9,8/10): único con datacenter local Tier III certificado (GTD Lima), 0 reclamos INDECOPI, RUC peruano, soporte 24/7 en Lima, NVMe + LiteSpeed y planes desde S/.70/año. Ranking auditado por EligeTuHosting.';
   const title = `Mejor Hosting Perú ${CURRENT_YEAR} | Ranking auditado | EligeTuHosting`;
 
   const articleLd = {
@@ -300,17 +306,23 @@ const MejorHostingPeru2026: React.FC = () => {
               <CardContent className="space-y-3 text-gray-700 leading-relaxed">
                 <p>
                   El mejor hosting de Perú {CURRENT_YEAR} es{' '}
-                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: <strong>sin reclamos verificados</strong>{' '}
-                  en nuestro registro público, opera en Perú desde 2004 y aloja su plataforma compartida en el{' '}
-                  <strong>datacenter Ascenty SCL2 (Santiago de Chile)</strong>, con certificación{' '}
-                  <strong>TÜV Rheinland TR3 / Tier III equivalente</strong>. Soporte 24/7 desde Lima{' '}
+                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: es el{' '}
+                  <strong>único proveedor del directorio PE con datacenter local Tier III certificado</strong>{' '}
+                  (<strong>GTD Lima, Perú</strong>), <strong>0 reclamos INDECOPI</strong> en «Mira a Quién le Compras»,
+                  razón social peruana <strong>Hostingplus Datacenter S.A.C. (RUC 20611867108)</strong>, soporte 24/7 desde Lima{' '}
                   (<a href="tel:+5116409409" className="underline">(01) 640 9409</a>),{' '}
-                  <strong>LiteSpeed Enterprise + SSD/NVMe</strong>, planes desde <strong>S/.70 al año</strong>,
+                  <strong>NVMe RAID 10 + LiteSpeed Enterprise</strong>, planes desde <strong>S/.70/año</strong>,
                   10 días de prueba y 30 días de garantía.
                 </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">Datacenter GTD Tier III (Lima)</Badge>
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">0 Reclamos INDECOPI</Badge>
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">NVMe</Badge>
+                </div>
                 <p className="text-sm text-gray-600">
-                  Divulgación honesta: para servidores <strong>dedicados</strong> HostingPlus declara datacenter en Orlando (EE.UU.).
-                  Lo mantenemos visible como en toda nuestra sección Perú.
+                  Divulgación honesta: para servidores <strong>dedicados</strong> opcionales HostingPlus declara datacenter{' '}
+                  <strong>Hivelocity en Tampa, FL (EE.UU.)</strong>. El grupo opera además Ascenty Santiago (Tier III) como
+                  respaldo regional y es Google Cloud Partner con instancias en São Paulo.
                 </p>
                 <p className="text-xs text-gray-500">
                   Divulgación de comisión: podemos recibir una comisión si contratas por nuestros enlaces. No altera el orden del ranking.
@@ -464,6 +476,53 @@ const MejorHostingPeru2026: React.FC = () => {
               <Link to="/pe/benchmark" className="underline">benchmark PE</Link>.
             </p>
           </section>
+
+          {/* Sección educativa: DC certificado vs autodeclarado */}
+          <section className="mb-12">
+            <Card className="border-l-4 border-l-emerald-600 bg-emerald-50/40">
+              <CardContent className="p-6">
+                <h2 className="text-2xl font-bold text-[#2B2D42] mb-3">
+                  ¿Datacenter certificado o solo «autodeclarado»? El test que ningún proveedor peruano quiere que hagas
+                </h2>
+                <p className="text-sm text-gray-700 mb-4">
+                  En el mercado peruano abundan frases como «datacenter propio», «clase mundial» o «Tier III homologable».
+                  Ninguna es una certificación. Un <strong>Tier III real</strong> exige redundancia N+1, generadores de respaldo,
+                  rutas duales de energía y refrigeración, y <strong>mantenimiento sin apagado</strong>, verificados por un
+                  emisor independiente (Uptime Institute, TÜV Rheinland o ICREA). Una «sala acondicionada» no cumple ninguno
+                  de esos requisitos y no es equivalente.
+                </p>
+                <div className="grid md:grid-cols-3 gap-3 mb-4">
+                  {[
+                    {
+                      q: '1) ¿En qué datacenter están físicamente?',
+                      hp: 'GTD Lima, Perú (nombre del operador identificable y ubicación real).',
+                    },
+                    {
+                      q: '2) ¿Qué certificación tiene y quién la emite?',
+                      hp: 'Tier III certificado del datacenter GTD Lima (operador reconocido en el mercado peruano).',
+                    },
+                    {
+                      q: '3) ¿Puedo verificarlo yo mismo?',
+                      hp: 'Sí: RUC 20611867108 en SUNAT, 0 reclamos en «Mira a Quién le Compras» de INDECOPI y teléfono Lima (01) 640 9409.',
+                    },
+                  ].map((row) => (
+                    <div key={row.q} className="rounded-lg border border-emerald-200 bg-white p-3">
+                      <div className="text-sm font-semibold text-[#2B2D42] mb-1">{row.q}</div>
+                      <div className="text-xs text-gray-500 mb-1 uppercase tracking-wide">HostingPlus responde</div>
+                      <div className="text-sm text-gray-700">{row.hp}</div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-600">
+                  Aplícale las mismas 3 preguntas a cualquier otro proveedor peruano antes de contratar. Si no puede nombrar el
+                  operador del datacenter, mostrar la certificación con emisor identificable ni entregarte un RUC verificable en
+                  SUNAT, no está a la altura.
+                </p>
+              </CardContent>
+            </Card>
+          </section>
+
+
 
           {/* FAQ */}
           <section className="mb-12">

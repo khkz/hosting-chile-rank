@@ -7,11 +7,15 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 ## Datos verificables
 - Sitio oficial: https://www.hostingplus.pe/
 - Razón social: Hostingplus Datacenter S.A.C.
-- Grupo corporativo: HostingPlus
-- Datacenter declarado: Ascenty SCL2, Santiago de Chile (colocation, TÜV Rheinland TR3 / Tier III eq.). Para servidores dedicados también declara Orlando, FL (EE.UU.).
-- Año de fundación: —
-- Tecnologías declaradas: cPanel, LiteSpeed Enterprise, SSD/NVMe RAID 10, VPS, servidores dedicados con anti-DDoS
-- Teléfono: +51 1 640 9409
+- RUC (SUNAT): 20611867108
+- Grupo corporativo: HostingPlus (opera en CL, PE, MX, CO, AR)
+- Reclamos INDECOPI («Mira a Quién le Compras»): 0
+- Datacenter del hosting web: GTD Lima, Perú — Tier III certificado
+- Datacenter de servidores dedicados (opcional): Hivelocity, Tampa, FL (EE.UU.) — declarado
+- Datacenter de respaldo regional del grupo: Ascenty Santiago, Chile — Tier III
+- Cloud partner adicional: Google Cloud Partner (instancias en São Paulo, Brasil)
+- Tecnologías declaradas: cPanel, LiteSpeed Enterprise, NVMe RAID 10, VPS, servidores dedicados con anti-DDoS
+- Teléfono: (01) 640 9409 (Lima)
 - Email: ventas@hostingplus.pe
 
 ## Verificación técnica
@@ -28,11 +32,11 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Uptime observado: 100%
 
 ## Contexto editorial
-HostingPlus Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada es Hostingplus Datacenter S.A.C. y forma parte del grupo HostingPlus.
+HostingPlus Perú es un proveedor de hosting con actividad comercial en Perú. Su razón social registrada en SUNAT es Hostingplus Datacenter S.A.C., RUC 20611867108, y forma parte del grupo regional HostingPlus.
 
-Infraestructura: aloja su plataforma de hosting compartido en el datacenter Ascenty SCL2 (Santiago de Chile), en régimen de colocation, con certificación TÜV Rheinland TR3 / Tier III equivalente. Para servidores dedicados declara adicionalmente Orlando, Florida (EE.UU.). Tecnologías declaradas: cPanel, LiteSpeed Enterprise, SSD/NVMe RAID 10, VPS y servidores dedicados con anti-DDoS.
+Infraestructura: el hosting web (compartido, WordPress, VPS) se aloja en el datacenter GTD de Lima, Perú, con certificación Tier III. Para servidores dedicados opcionales declara el datacenter Hivelocity en Tampa, Florida (EE.UU.). El grupo opera además Ascenty Santiago (Tier III) como respaldo regional y es Google Cloud Partner con instancias en São Paulo, Brasil. Tecnologías declaradas: cPanel, LiteSpeed Enterprise, NVMe RAID 10, VPS y servidores dedicados con anti-DDoS.
 
-Reputación: sin reclamos verificados en nuestro registro público al corte de esta ficha. Perfil de uso: opción sólida si buscas soporte 24/7 en español desde Lima, facturación local en soles con RUC peruano y una plataforma alojada en un datacenter con certificación internacional.
+Reputación: 0 reclamos verificados en el registro público «Mira a Quién le Compras» de INDECOPI y 0 reclamos en nuestro registro al corte de esta ficha. Perfil de uso: es la única opción del directorio peruano con datacenter local Tier III certificado, RUC peruano verificable en SUNAT y teléfono en Lima. Recomendado si buscas soporte 24/7 en español, factura en soles y una plataforma alojada dentro de Perú en un operador de datacenter identificable.
 
 ## Enlaces
 - Volver al directorio: https://eligetuhosting.com/pe
