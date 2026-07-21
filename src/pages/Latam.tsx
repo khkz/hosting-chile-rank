@@ -11,10 +11,10 @@ import Footer from '@/components/Footer';
  * Renderiza contenido citable con totales reales por país.
  */
 const LATAM_STATIC = [
-  { code: 'PE', slug: 'pe', name: 'Perú', flag: '🇵🇪', total: 18, local: 4 },
-  { code: 'MX', slug: 'mx', name: 'México', flag: '🇲🇽', total: 15, local: 3 },
-  { code: 'CO', slug: 'co', name: 'Colombia', flag: '🇨🇴', total: 11, local: 5 },
-  { code: 'AR', slug: 'ar', name: 'Argentina', flag: '🇦🇷', total: 11, local: 7 },
+  { code: 'PE', slug: 'pe', paisSlug: 'peru',      name: 'Perú',      flag: '🇵🇪', total: 18, local: 4 },
+  { code: 'MX', slug: 'mx', paisSlug: 'mexico',    name: 'México',    flag: '🇲🇽', total: 15, local: 3 },
+  { code: 'CO', slug: 'co', paisSlug: 'colombia', name: 'Colombia',  flag: '🇨🇴', total: 11, local: 5 },
+  { code: 'AR', slug: 'ar', paisSlug: 'argentina', name: 'Argentina', flag: '🇦🇷', total: 11, local: 7 },
 ];
 
 const Latam = () => {
