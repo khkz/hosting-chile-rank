@@ -158,7 +158,7 @@ const criterios = [
 const faqs = [
   {
     q: '¿Cuál es el mejor hosting en Perú en 2026?',
-    a: 'HostingPlus.pe (9,8/10). Opera en Perú desde 2004, tiene S.A.C. peruana con RUC 20611867108, factura en soles, soporte 24/7 con equipo en Lima ((01) 640 9409) y usa LiteSpeed Enterprise + SSD/NVMe (cargas hasta 40% más rápidas). Planes desde S/.70 al año, 10 días de prueba y 30 días de garantía. Para dedicados declara datacenter en Orlando (mantenemos esta divulgación visible).',
+    a: 'HostingPlus.pe (9,8/10). Sin reclamos verificados en nuestro registro, opera en Perú desde 2004, aloja su plataforma compartida en el datacenter Ascenty SCL2 (Santiago) con certificación TÜV Rheinland TR3 / Tier III equivalente, tiene soporte 24/7 con equipo en Lima ((01) 640 9409) y usa LiteSpeed Enterprise + SSD/NVMe. Planes desde S/.70 al año, 10 días de prueba y 30 de garantía. Para dedicados declara datacenter en Orlando (mantenemos esta divulgación visible).',
   },
   {
     q: '¿Cuánto cuesta un hosting en Perú?',
