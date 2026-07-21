@@ -24,13 +24,13 @@ const LatamHub = () => {
           name="description"
           content="Comparativas independientes de hosting en Latinoamérica. Elige tu país para ver el ranking auditado de proveedores."
         />
-        <link rel="canonical" href="https://eligetuhosting.com/" />
+        <link rel="canonical" href="https://eligetuhosting.com/latam" />
         <meta name="robots" content="index,follow" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="EligeTuHosting" />
         <meta property="og:title" content="Elige Tu Hosting LATAM — Hosting verificado por país" />
         <meta property="og:description" content="Comparativas independientes de hosting en Latinoamérica. Elige tu país para ver el ranking auditado." />
-        <meta property="og:url" content="https://eligetuhosting.com/" />
+        <meta property="og:url" content="https://eligetuhosting.com/latam" />
         <meta property="og:image" content="https://eligetuhosting.com/og/latam.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://eligetuhosting.com/og/latam.png" />
