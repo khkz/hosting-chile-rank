@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/co)",
-  "fecha_generacion": "2026-07-19T04:17:17.212Z",
+  "fecha_generacion": "2026-07-21T08:21:40.884Z",
   "pais": "CO",
   "total_proveedores": 11,
   "proveedores": [
@@ -15,19 +15,21 @@
       "pais": "CO",
       "razon_social": "HostingPlus LLC (Florida, EE.UU.); sin entidad legal colombiana",
       "sitio_oficial": "https://www.hostingplus.com.co/",
-      "datacenter": "EE.UU. (Florida) — según su FAQ; sin datacenter propio en Colombia",
+      "datacenter": "Grupo multi-datacenter: GTD Lima Tier III certificado + Ascenty Santiago Tier III certificado + Hivelocity Tampa (FL, EE.UU.) + Google Cloud Partner con instancias en São Paulo. Sin datacenter propio dentro de Colombia.",
       "datacenter_local": false,
       "tecnologias": [
         "cPanel",
-        "LiteSpeed + LSCache",
-        "SSD NVMe",
-        "SSL"
+        "LiteSpeed Enterprise",
+        "NVMe RAID 10",
+        "LSCache",
+        "SSL",
+        "Anti-DDoS"
       ],
       "telefono": "+57 601 3819361",
       "direccion": null,
       "recomendado_editorial": true,
       "verificado": true,
-      "fecha_actualizacion": "2026-07-06T04:46:35.076307+00:00",
+      "fecha_actualizacion": "2026-07-21T08:20:53.964873+00:00",
       "url_pais": "https://eligetuhosting.com/co"
     },
     {

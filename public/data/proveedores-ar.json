@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting (https://eligetuhosting.com/ar)",
-  "fecha_generacion": "2026-07-19T04:17:17.212Z",
+  "fecha_generacion": "2026-07-21T08:21:40.884Z",
   "pais": "AR",
   "total_proveedores": 11,
   "proveedores": [
@@ -15,18 +15,21 @@
       "pais": "AR",
       "razon_social": "Pluschile Internet Ltda. (Chile, RUT 76.636.640-6); sin entidad legal argentina",
       "sitio_oficial": "https://hostingplus.ar/",
-      "datacenter": "Orlando (EE.UU.) y Santiago (Chile) — según su ficha; sin datacenter propio en Argentina",
+      "datacenter": "Grupo multi-datacenter: GTD Lima Tier III certificado + Ascenty Santiago Tier III certificado + Hivelocity Tampa (FL, EE.UU.) + Google Cloud Partner con instancias en São Paulo. Sin datacenter propio dentro de Argentina.",
       "datacenter_local": false,
       "tecnologias": [
         "cPanel",
-        "LiteSpeed",
-        "SSD RAID 10"
+        "LiteSpeed Enterprise",
+        "NVMe RAID 10",
+        "LSCache",
+        "SSL",
+        "Anti-DDoS"
       ],
       "telefono": "+54 11 5168 5786",
       "direccion": null,
       "recomendado_editorial": true,
       "verificado": true,
-      "fecha_actualizacion": "2026-07-06T04:46:35.076307+00:00",
+      "fecha_actualizacion": "2026-07-21T08:20:53.964873+00:00",
       "url_pais": "https://eligetuhosting.com/ar"
     },
     {
