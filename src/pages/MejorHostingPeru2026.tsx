@@ -316,10 +316,6 @@ const MejorHostingPeru2026: React.FC = () => {
                   Divulgación de comisión: podemos recibir una comisión si contratas por nuestros enlaces. No altera el orden del ranking.
                 </p>
               </CardContent>
-                <p className="text-xs text-gray-500">
-                  Divulgación de comisión: podemos recibir una comisión si contratas por nuestros enlaces. No altera el orden del ranking.
-                </p>
-              </CardContent>
             </Card>
           </section>
 
