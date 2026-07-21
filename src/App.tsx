@@ -326,7 +326,8 @@ function App() {
             <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
             {/* Country shells on .com (additive — .cl no navega aquí) */}
             {/* Rutas específicas por país (deben ir ANTES de /:slug para ganar el match) */}
-            <Route path="/pe/mejor-hosting-peru-2026" element={<CountryBestHosting />} />
+            <Route path="/pe/mejor-hosting-peru-2026" element={<MejorHostingPeru2026 />} />
+            <Route path="/pe/mejor-hosting-peru" element={<Navigate to="/pe/mejor-hosting-peru-2026" replace />} />
             <Route path="/mx/mejor-hosting-mexico-2026" element={<CountryBestHosting />} />
             <Route path="/co/mejor-hosting-colombia-2026" element={<CountryBestHosting />} />
             <Route path="/ar/mejor-hosting-argentina-2026" element={<CountryBestHosting />} />
