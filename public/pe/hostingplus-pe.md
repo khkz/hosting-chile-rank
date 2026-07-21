@@ -8,7 +8,7 @@ Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
 - Sitio oficial: https://www.hostingplus.pe/
 - Razón social: Hostingplus Datacenter S.A.C.
 - Grupo corporativo: HostingPlus
-- Datacenter declarado: Orlando, Florida (EE.UU.) — datacenter declarado en su ficha técnica
+- Datacenter declarado: Ascenty SCL2, Santiago de Chile (colocation, certificación TÜV Rheinland TR3 / Tier III equivalente). Para servidores dedicados HostingPlus declara adicionalmente Orlando, Florida (EE.UU.).
 - Año de fundación: —
 - Tecnologías declaradas: cPanel, SSD RAID 10, VPS, Servidores Dedicados
 - Teléfono: +51 1 640 9409
