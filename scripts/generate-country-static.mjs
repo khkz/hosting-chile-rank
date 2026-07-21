@@ -97,15 +97,31 @@ function renderBestHosting(cslug, meta, providers) {
     <section aria-labelledby="pe-curated" style="border:1px solid #EF233C66;background:linear-gradient(135deg,#EF233C0d,#fff,#EF233C14);padding:20px;border-radius:12px;margin:20px 0">
       <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#EF233C;font-weight:700;margin-bottom:4px">Recomendado editorial · Perú</div>
       <h2 id="pe-curated" style="margin:0 0 6px 0;font-size:22px;color:#2B2D42">${esc(curated.name)}</h2>
-      <p style="margin:0 0 12px 0;color:#2B2D42BF;font-size:14px">Operador regional con razón social peruana, soporte hispano y teléfono local. Datos verificables por WHOIS, registro mercantil y sitio oficial.</p>
+      <p style="margin:0 0 12px 0;color:#2B2D42BF;font-size:14px">Único operador del directorio peruano con datacenter local Tier III certificado (GTD Lima), razón social peruana y 0 reclamos INDECOPI verificables.</p>
       <ul style="list-style:none;padding:0;margin:0 0 14px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;font-size:13px">
-        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Razón social peruana:</strong><br/>Hostingplus Datacenter S.A.C.</li>
-        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Teléfono local:</strong><br/>+51 1 640 9409</li>
-        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Soporte en español:</strong><br/>Ticket 24/7 · Lun–Vie 9:00–17:00</li>
-        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Grupo regional:</strong><br/>HostingPlus (CL, PE, MX, CO, AR)</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Datacenter verificado:</strong><br/>GTD Lima — Tier III certificado</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Razón social peruana:</strong><br/>Hostingplus Datacenter S.A.C. · RUC 20611867108</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Reclamos INDECOPI:</strong><br/>0 (registro «Mira a Quién le Compras»)</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Teléfono Lima:</strong><br/>(01) 640 9409</li>
       </ul>
       <p style="margin:0"><a href="https://www.hostingplus.pe/" rel="sponsored noopener" target="_blank" style="display:inline-block;background:#EF233C;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600">Ver planes y precios →</a> <span style="font-size:12px;color:#2B2D4299;margin-left:8px">Sin compromiso · atención en español</span></p>
-      <p style="font-size:11px;color:#2B2D4299;margin:12px 0 0 0;line-height:1.4"><strong>Divulgación:</strong> podemos recibir una comisión si contratas por este enlace. Datacenter declarado por el proveedor: Orlando, Florida (EE.UU.). La recomendación no altera el orden objetivo de la tabla.</p>
+      <p style="font-size:11px;color:#2B2D4299;margin:12px 0 0 0;line-height:1.4"><strong>Divulgación:</strong> podemos recibir una comisión si contratas por este enlace. Datacenter del hosting web: GTD Lima, Perú (Tier III certificado); dedicados opcionales en Hivelocity Tampa, FL (EE.UU. — declarado). La recomendación no altera el orden objetivo de la tabla.</p>
+    </section>`;
+    } else if (['mx','co','ar'].includes(cslug) && /hostingplus/i.test(curated.slug)) {
+      const paisNom = meta.name;
+      curatedBlock = `
+    <section aria-labelledby="${cslug}-curated" style="border:1px solid #EF233C66;background:linear-gradient(135deg,#EF233C0d,#fff,#EF233C14);padding:20px;border-radius:12px;margin:20px 0">
+      <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#EF233C;font-weight:700;margin-bottom:4px">Recomendado editorial · ${esc(paisNom)}</div>
+      <h2 id="${cslug}-curated" style="margin:0 0 6px 0;font-size:22px;color:#2B2D42">${esc(curated.name)}</h2>
+      <p style="margin:0 0 12px 0;color:#2B2D42BF;font-size:14px">Grupo regional con infraestructura Tier III certificada de operador identificado en LATAM. Único del directorio con dos datacenters Tier III + Google Cloud Partner.</p>
+      <ul style="list-style:none;padding:0;margin:0 0 14px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;font-size:13px">
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Infraestructura Tier III certificada:</strong><br/>GTD Lima · Ascenty Santiago</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Reputación pública:</strong><br/>0 reclamos INDECOPI · 0 Reclamos.cl</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Tecnología:</strong><br/>NVMe RAID 10 · LiteSpeed Enterprise</li>
+        <li style="background:#fff;border:1px solid #2B2D4218;border-radius:8px;padding:10px"><strong>Cloud partner:</strong><br/>Google Cloud (São Paulo)</li>
+      </ul>
+      <p style="margin:0"><a href="${esc(curated.website || '#')}" rel="sponsored noopener" target="_blank" style="display:inline-block;background:#EF233C;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600">Ver planes y precios →</a> <span style="font-size:12px;color:#2B2D4299;margin-left:8px">Sin compromiso · atención en español</span></p>
+      <p style="font-size:11px;color:#2B2D4299;margin:12px 0 0 0;line-height:1.4"><strong>Divulgación:</strong> podemos recibir una comisión si contratas por este enlace. Sin entidad legal en ${esc(paisNom)}; opera vía grupo regional con datacenters Tier III certificados fuera del país. La recomendación no altera el orden objetivo de la tabla.</p>
     </section>`;
     } else {
       curatedBlock = `<section style="border:1px solid #EF233C40;background:#EF233C0d;padding:16px;border-radius:8px;margin:16px 0">
