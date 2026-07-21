@@ -24,6 +24,11 @@ export const ASN_MAP = asnMapRaw.providers;
 const TIER_CERTIFIED_SLUGS = new Set([
   'hostdime-co',    // Tocancipá, Tier IV Uptime Institute (verificable)
   'hostingplus-pe', // GTD Lima, Perú — Tier III certificado (operador identificado)
+  // Grupo HostingPlus: infraestructura Tier III certificada del grupo
+  // (GTD Lima Tier III + Ascenty Santiago Tier III + Hivelocity Tampa + Google Cloud SP)
+  'hostingplus-mx',
+  'hostingplus-co',
+  'hostingplus-ar',
 ]);
 
 // Palabras que indican operación foránea sin datacenter local.
