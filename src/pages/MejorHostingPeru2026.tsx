@@ -148,11 +148,11 @@ const providers: Provider[] = [
 ];
 
 const criterios = [
+  { icon: <AlertTriangle className="w-6 h-6" />, title: 'Reclamos verificados (30%)', description: 'Cantidad, gravedad y recurrencia de reclamos públicos verificados en nuestro registro y en fuentes externas (Indecopi, redes, foros).' },
   { icon: <Clock className="w-6 h-6" />, title: 'Servicio post-venta (25%)', description: 'Tiempo real de primera respuesta, canales en español y presencia de equipo en Perú.' },
-  { icon: <Zap className="w-6 h-6" />, title: 'Velocidad y tecnología (25%)', description: 'LiteSpeed Enterprise, SSD/NVMe, caché, HTTP/3 y TTFB observado desde Lima.' },
-  { icon: <Shield className="w-6 h-6" />, title: 'Seguridad y backups (20%)', description: 'WAF, SSL gratis, backups automáticos, anti-DDoS y política de restauración.' },
-  { icon: <AlertTriangle className="w-6 h-6" />, title: 'Reputación (15%)', description: 'Reclamos verificados, transparencia legal (razón social, RUC) y trayectoria.' },
-  { icon: <MapPin className="w-6 h-6" />, title: 'Precio vs. valor (15%)', description: 'Precio inicial vs. renovación, factura local en soles y garantía de devolución.' },
+  { icon: <Zap className="w-6 h-6" />, title: 'Velocidad y tecnología (20%)', description: 'LiteSpeed Enterprise, SSD/NVMe, caché, HTTP/3 y TTFB observado desde Lima.' },
+  { icon: <Shield className="w-6 h-6" />, title: 'Seguridad y datacenter (15%)', description: 'Certificación del datacenter (TÜV/Uptime/ICREA), WAF, SSL, backups automáticos y anti-DDoS.' },
+  { icon: <MapPin className="w-6 h-6" />, title: 'Precio vs. valor (10%)', description: 'Precio inicial vs. renovación, factura local en soles y garantía de devolución.' },
 ];
 
 const faqs = [
