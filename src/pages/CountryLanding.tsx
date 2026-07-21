@@ -136,7 +136,7 @@ const CountryLanding = () => {
     },
     {
       q: `¿Por qué HostingPlus aparece como recomendado en ${info.name}?`,
-      a: 'HostingPlus opera regionalmente con infraestructura propia y soporte 24/7 en español. Divulgación: podemos recibir una comisión si contratas por ese enlace; la recomendación se basa en trayectoria verificable y no altera el resto del directorio.',
+      a: `HostingPlus es un grupo regional con más de una década operando en LATAM, teléfono local en ${info.name} y soporte en español. En Perú tiene entidad legal peruana (Hostingplus Datacenter S.A.C.); en México, Colombia y Argentina factura como grupo desde Chile/EE.UU. sin entidad local ni datacenter dentro del país. Divulgación: podemos recibir una comisión si contratas por ese enlace; la recomendación no altera el orden objetivo del directorio.`,
     },
     {
       q: '¿Cómo sugerir un proveedor o corregir datos?',
