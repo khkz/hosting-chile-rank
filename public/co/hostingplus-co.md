@@ -2,37 +2,23 @@
 
 Fuente: https://eligetuhosting.com/co/hostingplus-co
 Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
-Última actualización: 2026-07-06T04:46:35.076307+00:00
+Última actualización: 2026-07-21
 
 ## Datos verificables
 - Sitio oficial: https://www.hostingplus.com.co/
 - Razón social: HostingPlus LLC (Florida, EE.UU.); sin entidad legal colombiana
-- Grupo corporativo: HostingPlus
-- Datacenter declarado: EE.UU. (Florida) — según su FAQ; sin datacenter propio en Colombia
-- Año de fundación: —
-- Tecnologías declaradas: cPanel, LiteSpeed + LSCache, SSD NVMe, SSL
+- Grupo corporativo: HostingPlus (opera en CL, PE, MX, CO, AR)
+- Infraestructura del grupo: GTD Lima Tier III certificado + Ascenty Santiago Tier III certificado + Hivelocity Tampa (FL, EE.UU.) + Google Cloud Partner (São Paulo)
+- Datacenter físico dentro de Colombia: no
+- Reputación pública: 0 reclamos INDECOPI (Perú) y 0 en Reclamos.cl (Chile) para las marcas del grupo
+- Tecnologías declaradas: cPanel, LiteSpeed Enterprise, NVMe RAID 10, LSCache, SSL, Anti-DDoS
 - Teléfono: +57 601 3819361
 - Email: soporte@hostingplus.com.co
 
-## Verificación técnica
-- IP resuelta: 69.46.7.42
-- ASN: — (—)
-- SSL emisor: —
-- SSL vigencia hasta: —
-- TTFB muestra: 1080 ms
-- Última verificación: 2026-07-06T04:59:59.481+00:00
-
-## Benchmark (últimos 7 días)
-- TTFB mediano: 579 ms
-- Muestras: 91
-- Uptime observado: 100%
-
 ## Contexto editorial
-HostingPlus Colombia es un proveedor de hosting con actividad comercial en Colombia. Su razón social registrada es HostingPlus LLC (Florida, EE.UU.); sin entidad legal colombiana. Forma parte del grupo HostingPlus.
+HostingPlus Colombia forma parte del grupo regional HostingPlus, con infraestructura Tier III certificada de operador identificado en LATAM: GTD Lima (Perú, Tier III certificado), Ascenty Santiago (Chile, Tier III certificado), Hivelocity Tampa (FL, EE.UU.) y Google Cloud Partner con instancias en São Paulo. No opera datacenter propio dentro de Colombia ni tiene entidad legal colombiana; factura vía HostingPlus LLC (Florida, EE.UU.).
 
-Infraestructura: declara datacenter en el país (EE.UU. (Florida) — según su FAQ; sin datacenter propio en Colombia), lo que reduce latencia para audiencias locales. Tecnologías declaradas: cPanel, LiteSpeed + LSCache, SSD NVMe, SSL.
-
-Perfil de uso: es una opción a evaluar si buscas soporte y facturación en Colombia. Si tu proyecto requiere latencia mínima o cumplimiento normativo dentro del país, verifica primero la ubicación real del datacenter y la razón social que emite la factura.
+Perfil de uso: opción recomendable si valoras un grupo con infraestructura Tier III certificada y trayectoria regional verificable, aceptando que el datacenter físico no está dentro de Colombia. Si tu proyecto requiere latencia mínima o cumplimiento normativo estrictamente dentro del país, revisa HostDime, IPXON o Conexcol (declaran DC en Colombia).
 
 ## Enlaces
 - Volver al directorio: https://eligetuhosting.com/co

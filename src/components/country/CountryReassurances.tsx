@@ -48,45 +48,48 @@ const RECOS: Record<LatamComSlug, CountryReco> = {
     provider: 'HostingPlus México',
     url: 'https://www.hostingplus.mx/',
     headline:
-      'Operador regional con soporte hispano y teléfono local en México. No tiene entidad legal mexicana propia: factura como grupo desde Chile. Datos verificables por WHOIS y sitio oficial.',
+      'Grupo regional con infraestructura Tier III certificada en LATAM (GTD Lima + Ascenty Santiago) y partner Google Cloud São Paulo. Soporte hispano y teléfono local en México. No opera entidad legal ni datacenter propio dentro de MX.',
     bullets: [
       { icon: 'legal',   label: 'Entidad que factura',    value: 'Grupo HostingPlus · PlusChile Internet Ltda. (Chile) — sin entidad legal mexicana' },
       { icon: 'phone',   label: 'Teléfono local en México', value: '+52 55 4161 6883' },
       { icon: 'support', label: 'Soporte en español',       value: 'Ticket 24/7 · atención hispana' },
-      { icon: 'group',   label: 'Grupo regional',           value: 'HostingPlus (opera en CL, PE, MX, CO, AR)' },
+      { icon: 'group',   label: 'Grupo regional',           value: 'HostingPlus · 0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)' },
+      { icon: 'dc',      label: 'Infraestructura del grupo', value: 'GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo · NVMe' },
     ],
     datacenterDisclosure:
-      'Datacenter declarado por el proveedor: Florida (EE.UU.). No opera datacenter propio dentro de México. Si necesitas infraestructura dentro del país, revisa el directorio (Artehosting, Neubox, HostDime MX declaran DC en MX).',
+      'HostingPlus México no opera datacenter propio dentro de México. La infraestructura del grupo incluye GTD Lima (Tier III certificado), Ascenty Santiago (Tier III certificado), Hivelocity Tampa (FL, EE.UU.) y Google Cloud Partner con instancias en São Paulo. Si necesitas datacenter físicamente dentro del país, revisa el directorio (Artehosting, Neubox, HostDime MX declaran DC en MX).',
     trackSlug: 'hostingplus-mx',
   },
   co: {
     provider: 'HostingPlus Colombia',
     url: 'https://www.hostingplus.com.co/',
     headline:
-      'Operador regional con soporte hispano y teléfono local en Colombia. No tiene entidad legal colombiana ni datacenter propio en el país: factura desde su matriz internacional. Datos verificables por WHOIS y sitio oficial.',
+      'Grupo regional con infraestructura Tier III certificada en LATAM (GTD Lima + Ascenty Santiago) y partner Google Cloud São Paulo. Soporte hispano y teléfono local en Colombia. No opera entidad legal ni datacenter propio dentro de CO.',
     bullets: [
       { icon: 'legal',   label: 'Entidad que factura',      value: 'HostingPlus LLC (Florida, EE.UU.) — sin entidad legal colombiana' },
       { icon: 'phone',   label: 'Teléfono local en Colombia', value: '+57 601 3819361' },
       { icon: 'support', label: 'Soporte en español',         value: 'Ticket 24/7 · atención hispana' },
-      { icon: 'group',   label: 'Grupo regional',             value: 'HostingPlus (opera en CL, PE, MX, CO, AR)' },
+      { icon: 'group',   label: 'Grupo regional',             value: 'HostingPlus · 0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)' },
+      { icon: 'dc',      label: 'Infraestructura del grupo',  value: 'GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo · NVMe' },
     ],
     datacenterDisclosure:
-      'Datacenter declarado por el proveedor: Florida (EE.UU.). No opera datacenter propio dentro de Colombia. Si necesitas infraestructura dentro del país, revisa el directorio (HostDime, IPXON, Conexcol declaran DC en Colombia).',
+      'HostingPlus Colombia no opera datacenter propio dentro de Colombia. La infraestructura del grupo incluye GTD Lima (Tier III certificado), Ascenty Santiago (Tier III certificado), Hivelocity Tampa (FL, EE.UU.) y Google Cloud Partner con instancias en São Paulo. Si necesitas datacenter físicamente dentro del país, revisa el directorio (HostDime, IPXON, Conexcol declaran DC en Colombia).',
     trackSlug: 'hostingplus-co',
   },
   ar: {
     provider: 'HostingPlus Argentina',
     url: 'https://hostingplus.ar/',
     headline:
-      'Operador regional con soporte hispano y teléfono local en Argentina. No tiene entidad legal argentina: factura como grupo desde Chile. Datos verificables por WHOIS y sitio oficial.',
+      'Grupo regional con infraestructura Tier III certificada en LATAM (GTD Lima + Ascenty Santiago) y partner Google Cloud São Paulo. Soporte hispano y teléfono local en Argentina. No opera entidad legal ni datacenter propio dentro de AR.',
     bullets: [
       { icon: 'legal',   label: 'Entidad que factura',       value: 'Pluschile Internet Ltda. (Chile, RUT 76.636.640-6) — sin entidad legal argentina' },
       { icon: 'phone',   label: 'Teléfono local en Argentina', value: '+54 11 5168 5786' },
       { icon: 'support', label: 'Soporte en español',          value: 'Ticket 24/7 · atención hispana' },
-      { icon: 'group',   label: 'Grupo regional',              value: 'HostingPlus (opera en CL, PE, MX, CO, AR)' },
+      { icon: 'group',   label: 'Grupo regional',              value: 'HostingPlus · 0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)' },
+      { icon: 'dc',      label: 'Infraestructura del grupo',   value: 'GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo · NVMe' },
     ],
     datacenterDisclosure:
-      'Datacenter declarado por el proveedor: Orlando (EE.UU.) y Santiago (Chile). No opera datacenter propio dentro de Argentina. Si necesitas infraestructura dentro del país, revisa el directorio (BAEHOST, DonWeb, Ferozo declaran DC en Argentina).',
+      'HostingPlus Argentina no opera datacenter propio dentro de Argentina. La infraestructura del grupo incluye GTD Lima (Tier III certificado), Ascenty Santiago (Tier III certificado), Hivelocity Tampa (FL, EE.UU.) y Google Cloud Partner con instancias en São Paulo. Si necesitas datacenter físicamente dentro del país, revisa el directorio (BAEHOST, DonWeb, Ferozo declaran DC en Argentina).',
     trackSlug: 'hostingplus-ar',
   },
 };
