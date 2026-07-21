@@ -10,6 +10,12 @@ export const ASN_MAP = (asnMap as { providers: Record<string, AsnEntry> }).provi
 const TIER_CERTIFIED_SLUGS = new Set<string>([
   'hostdime-co',     // Tocancipá Tier IV Uptime Institute (verificable)
   'hostingplus-pe',  // GTD Lima, Perú — Tier III certificado (operador identificado)
+  // Grupo HostingPlus: infraestructura Tier III certificada del grupo
+  // (GTD Lima Tier III + Ascenty Santiago Tier III + Hivelocity Tampa + Google Cloud SP)
+  // aplicable a las marcas país sin DC local propio pero operadas por el mismo grupo.
+  'hostingplus-mx',
+  'hostingplus-co',
+  'hostingplus-ar',
 ]);
 
 const FOREIGN_MARKERS = /sin\s+datacenter|revende|opera\s+de\s+forma\s+remota|fuera\s+de/i;
