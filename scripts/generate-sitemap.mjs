@@ -102,7 +102,6 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
   const staticUrls = [
     // Páginas de máxima prioridad
     ['/mejor-hosting-chile-2026', '1.0', 'daily'],
-    ['/mejor-hosting-chile-2025', '0.9', 'monthly'],
     ['/', '0.9', 'daily'],
     ['/ranking', '0.9', 'daily'],
     // /directorio-hosting-chile es noindex (canonical → /catalogo), no listar en sitemap
@@ -114,7 +113,6 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     // Páginas de alta prioridad
     ['/catalogo', '0.8', 'daily'],
     ['/directorio', '0.8', 'daily'],
-    ['/mejor-hosting-chile', '0.8', 'daily'],
     ['/mejor-hosting-wordpress-chile', '0.8', 'weekly'],
     ['/mejor-hosting-ecommerce-chile', '0.8', 'weekly'],
     ['/comparativa', '0.8', 'weekly'],
@@ -141,13 +139,10 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     // Páginas secundarias
     ['/ultimos-dominios', '0.7', 'daily'],
     ['/contacto', '0.6', 'monthly'],
-    ['/acerca-de', '0.6', 'monthly'],
-    ['/sobre-nosotros', '0.6', 'monthly'],
     ['/quienes-somos', '0.7', 'monthly'],
     ['/vota-hosting', '0.6', 'weekly'],
     ['/calculadora-tco', '0.6', 'monthly'],
     ['/benchmark', '0.6', 'weekly'],
-    ['/seo-audit', '0.8', 'weekly'],
     ['/estudio-hosting-chile-2026', '0.9', 'yearly'],
   ].map(([path, prio, freq]) => urlTag(`${ROOT}${path}`, prio, freq)).join('');
 
@@ -221,7 +216,7 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     { hreflang: 'es-MX', href: 'https://eligetuhosting.com/mx' },
     { hreflang: 'es-CO', href: 'https://eligetuhosting.com/co' },
     { hreflang: 'es-AR', href: 'https://eligetuhosting.com/ar' },
-    { hreflang: 'x-default', href: 'https://eligetuhosting.com/' },
+    { hreflang: 'x-default', href: 'https://eligetuhosting.com/latam' },
   ];
   const alternatesXml = HREFLANG_CLUSTER
     .map(a => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${a.href}"/>`)
@@ -331,7 +326,7 @@ const generateDomainsSitemap = () => {
       const changefreq = 'daily';
       const lastmod = date ? new Date(date).toISOString() : NOW;
       
-      return urlTag(`${ROOT}/domain/${d.replace(/\./g, '-')}/`, priority, changefreq, lastmod);
+      return urlTag(`${ROOT}/domain/${d.replace(/\./g, '-')}`, priority, changefreq, lastmod);
     })
     .join('');
   
