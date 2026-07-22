@@ -43,10 +43,11 @@ export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp
  * - Injects per-page JSON-LD via `headExtra`
  * - Replaces empty <div id="root"></div> with the crawleable bodyContent
  */
-export function buildHtml({ title, description, canonical, locale = 'es', headExtra = '', bodyContent = '', keywords = '', ogImage = 'https://eligetuhosting.com/og/latam.png' }) {
+export function buildHtml({ title, description, canonical, locale = 'es', headExtra = '', bodyContent = '', keywords = '', ogImage = 'https://eligetuhosting.com/og/latam.png', alternates = [] }) {
   let html = CLEAN_SHELL;
   html = html.replace(/<html lang="[^"]*"/i, `<html lang="${esc(locale)}"`);
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${esc(title)}</title>`);
+  const entityLd = {"@context":"https://schema.org","@type":"Organization","@id":"https://eligetuhosting.cl/#organization",name:"EligeTuHosting",url:"https://eligetuhosting.com",logo:{"@type":"ImageObject",url:"https://eligetuhosting.cl/favicon-logo.svg"},sameAs:["https://eligetuhosting.cl","https://twitter.com/eligetuhosting","https://facebook.com/eligetuhosting","https://linkedin.com/company/eligetuhosting"],areaServed:[{"@type":"Country",name:"Perú"},{"@type":"Country",name:"México"},{"@type":"Country",name:"Colombia"},{"@type":"Country",name:"Argentina"},{"@type":"Country",name:"Chile"}]};
   const injected = [
     `<meta name="description" content="${esc(description)}" />`,
     keywords ? `<meta name="keywords" content="${esc(keywords)}" />` : '',
@@ -63,6 +64,8 @@ export function buildHtml({ title, description, canonical, locale = 'es', headEx
     `<meta name="twitter:description" content="${esc(description)}" />`,
     `<meta name="twitter:image" content="${esc(ogImage)}" />`,
     `<meta name="robots" content="index,follow" />`,
+    ...alternates.map(a => `<link rel="alternate" hreflang="${esc(a.hreflang)}" href="${esc(a.href)}" />`),
+    `<script type="application/ld+json">${JSON.stringify(entityLd)}</script>`,
     headExtra || '',
   ].filter(Boolean).join('\n    ');
   html = html.replace(/<\/head>/i, `    ${injected}\n  </head>`);
