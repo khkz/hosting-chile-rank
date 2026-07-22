@@ -208,7 +208,7 @@ function renderDatacenterLocal(cslug, meta, providers) {
     <p><a href="/${cslug}">← Volver al directorio de ${esc(meta.name)}</a></p>
   `;
   const headExtra = [itemList, breadcrumb].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png` });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png`, alternates: DC_CLUSTER });
 }
 
 /* ---------- 3) Comparativa a-vs-b -------------------------------------- */
