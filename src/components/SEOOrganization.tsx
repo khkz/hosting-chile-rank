@@ -4,6 +4,7 @@ const SEOOrganization: React.FC = () => {
   const org = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://eligetuhosting.cl/#organization",
     name: "EligeTuHosting",
     url: "https://eligetuhosting.cl",
     logo: {
@@ -18,6 +19,7 @@ const SEOOrganization: React.FC = () => {
       name: "Chile"
     },
     sameAs: [
+      "https://eligetuhosting.com",
       "https://twitter.com/eligetuhosting",
       "https://facebook.com/eligetuhosting",
       "https://linkedin.com/company/eligetuhosting"
