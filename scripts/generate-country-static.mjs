@@ -27,6 +27,22 @@ const COUNTRIES = {
   ar: { code: 'AR', slug: 'ar', name: 'Argentina', long: 'argentina', flag: '🇦🇷', locale: 'es-AR' },
 };
 
+const BEST_CLUSTER = [
+  { hreflang: 'es-CL', href: 'https://eligetuhosting.cl/mejor-hosting-chile-2026' },
+  { hreflang: 'es-PE', href: 'https://eligetuhosting.com/pe/mejor-hosting-peru-2026' },
+  { hreflang: 'es-MX', href: 'https://eligetuhosting.com/mx/mejor-hosting-mexico-2026' },
+  { hreflang: 'es-CO', href: 'https://eligetuhosting.com/co/mejor-hosting-colombia-2026' },
+  { hreflang: 'es-AR', href: 'https://eligetuhosting.com/ar/mejor-hosting-argentina-2026' },
+  { hreflang: 'x-default', href: 'https://eligetuhosting.com/latam' },
+];
+const DC_CLUSTER = [
+  { hreflang: 'es-PE', href: 'https://eligetuhosting.com/pe/hosting-con-datacenter-local' },
+  { hreflang: 'es-MX', href: 'https://eligetuhosting.com/mx/hosting-con-datacenter-local' },
+  { hreflang: 'es-CO', href: 'https://eligetuhosting.com/co/hosting-con-datacenter-local' },
+  { hreflang: 'es-AR', href: 'https://eligetuhosting.com/ar/hosting-con-datacenter-local' },
+  { hreflang: 'x-default', href: 'https://eligetuhosting.com/latam' },
+];
+
 async function fetchProviders(code) {
   const res = await fetch(`${SB_URL}/rest/v1/hosting_companies?select=id,slug,name,website,legal_name,datacenter_location,year_founded,corporate_group,contact_phone,contact_address,technologies,is_curated,updated_at&country=eq.${code}&is_verified=eq.true`, {
     headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
