@@ -163,7 +163,7 @@ function renderBestHosting(cslug, meta, providers) {
     ${faqs.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
   `;
   const headExtra = [itemList, breadcrumb, faqLd].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
-  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png` });
+  return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png`, alternates: BEST_CLUSTER });
 }
 
 /* ---------- 2) Datacenter local ---------------------------------------- */
