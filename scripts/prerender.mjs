@@ -307,12 +307,26 @@ async function main() {
 
         const outDir = route === '/' ? DIST : join(DIST, route);
         await mkdir(outDir, { recursive: true });
-        await writeFile(join(outDir, 'index.html'), html, 'utf8');
+        const distTarget = join(outDir, 'index.html');
+        // Guard: JAMÁS sobrescribir el index.html fuente del proyecto ni public/index.html.
+        const ROOT_INDEX = join(ROOT, 'index.html');
+        const PUBLIC_INDEX = join(PUBLIC_DIR, 'index.html');
+        if (distTarget === ROOT_INDEX || distTarget === PUBLIC_INDEX) {
+          warn(`✗ skip escritura peligrosa: ${distTarget}`);
+        } else {
+          await writeFile(distTarget, html, 'utf8');
+        }
         if (COPY_TO_PUBLIC && route !== '/') {
           const pubDir = join(PUBLIC_DIR, route);
           await mkdir(pubDir, { recursive: true });
-          await writeFile(join(pubDir, 'index.html'), html, 'utf8');
+          const pubTarget = join(pubDir, 'index.html');
+          if (pubTarget === ROOT_INDEX || pubTarget === PUBLIC_INDEX) {
+            warn(`✗ skip escritura peligrosa: ${pubTarget}`);
+          } else {
+            await writeFile(pubTarget, html, 'utf8');
+          }
         }
+
         ok++;
       } finally {
         await page.close().catch(() => {});

@@ -191,8 +191,9 @@ function App() {
         <Route path="/mejor-hosting-chile-2025" element={<Navigate to="/mejor-hosting-chile-2026" replace />} />
         <Route path="/mejor-hosting-chile" element={<Navigate to="/mejor-hosting-chile-2026" replace />} />
         <Route path="/calculadora-tco" element={<TCOCalculatorPage />} />
-        <Route path="/acerca-de" element={<AcercaDe />} />
-        <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+        <Route path="/acerca-de" element={<Navigate to="/quienes-somos" replace />} />
+        <Route path="/sobre-nosotros" element={<Navigate to="/quienes-somos" replace />} />
+
         <Route path="/quienes-somos" element={<QuienesSomos />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/sitemap" element={<Sitemap />} />
