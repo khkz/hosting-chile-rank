@@ -1,0 +1,30 @@
+name: SEO refresh (sitemaps)
+on:
+  schedule:
+    - cron: '30 5 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Regenerar sitemaps
+        run: node scripts/generate-sitemap.mjs
+      - name: Commit sitemaps
+        run: |
+          git config user.name "SEO Bot"
+          git config user.email "bot@eligetuhosting.cl"
+          git add public/sitemap*.xml
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(seo): refresh sitemaps $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            git push
+          else
+            echo "sin cambios en sitemaps"
+          fi

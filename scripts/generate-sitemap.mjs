@@ -295,8 +295,6 @@ ${asnMainPages}
 </urlset>`.trimStart();
 };
 
-};
-
 /* ---------- SITEMAP 4: DOMAINS (solo 100 más recientes <90 días) ---------- */
 const generateDomainsSitemap = () => {
   let domainsArr = [];
