@@ -286,16 +286,15 @@ const generateASNSitemap = () => {
     urlTag(`${ROOT}/asn/chile`, '0.9', 'weekly'),
   ].join('');
 
-  // ASN chilenos específicos
-  const asnUrls = CHILEAN_ASNS
-    .map(asn => urlTag(`${ROOT}/asn/AS${asn.asn}`, asn.priority, 'weekly'))
-    .join('');
+  // ASN por número (/asn/AS*) están bloqueados por robots.txt para Googlebot;
+  // no los incluimos en el sitemap para no reportar URLs bloqueadas.
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${asnMainPages}
-${asnUrls}
 </urlset>`.trimStart();
+};
+
 };
 
 /* ---------- SITEMAP 4: DOMAINS (solo 100 más recientes <90 días) ---------- */
