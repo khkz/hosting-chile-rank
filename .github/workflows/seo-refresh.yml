@@ -15,20 +15,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Regenerar datasets LLM
-        run: node scripts/generate-llms-data.mjs
-      - name: Regenerar estáticos por país
-        run: node scripts/generate-country-static.mjs
       - name: Regenerar sitemaps
         run: node scripts/generate-sitemap.mjs
-      - name: Commit datasets+sitemaps
+      - name: Commit sitemaps
         run: |
           git config user.name "SEO Bot"
           git config user.email "bot@eligetuhosting.cl"
-          git add public/data/proveedores*.json public/llms.txt public/llms-full.txt public/pe public/mx public/co public/ar public/sitemap*.xml
+          git add public/sitemap*.xml
           if ! git diff --cached --quiet; then
-            git commit -m "chore(seo): refresh datasets+sitemaps $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            git commit -m "chore(seo): refresh sitemaps $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             git push
           else
-            echo "sin cambios"
+            echo "sin cambios en sitemaps"
           fi
