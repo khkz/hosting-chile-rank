@@ -163,7 +163,23 @@ function renderBestHosting(cslug, meta, providers) {
     <h2>Preguntas frecuentes</h2>
     ${faqs.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
   `;
-  const headExtra = [itemList, breadcrumb, faqLd].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
+  const datasetLd = {
+    '@context': 'https://schema.org', '@type': 'Dataset',
+    name: `Directorio verificable de hosting en ${meta.name} 2026`,
+    description: `Dataset abierto de proveedores de hosting verificados en ${meta.name}: razón social, datacenter declarado, ASN/IP, tecnología y contacto. Regenerado desde la base pública de EligeTuHosting.`,
+    url: canonical,
+    identifier: `https://eligetuhosting.com/data/proveedores-${cslug}.json`,
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    isAccessibleForFree: true,
+    inLanguage: meta.locale,
+    dateModified: NOW_ISO,
+    creator: { '@type': 'Organization', name: 'EligeTuHosting', url: 'https://eligetuhosting.com' },
+    publisher: { '@type': 'Organization', name: 'EligeTuHosting', url: 'https://eligetuhosting.com' },
+    spatialCoverage: { '@type': 'Place', name: meta.name },
+    distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: `https://eligetuhosting.com/data/proveedores-${cslug}.json`, name: `Dataset JSON — hosting ${meta.name}` }],
+    creditText: 'Fuente: EligeTuHosting (https://eligetuhosting.com) — CC-BY-4.0',
+  };
+  const headExtra = [datasetLd, itemList, breadcrumb, faqLd].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
   return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png`, alternates: BEST_CLUSTER });
 }
 
