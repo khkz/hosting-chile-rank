@@ -19,6 +19,7 @@ import { classifyDc, rankProvidersByDcTier } from './lib/dc-tier.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
+const NOW_ISO = new Date().toISOString();
 
 const COUNTRIES = {
   pe: { code: 'PE', slug: 'pe', name: 'Perú', long: 'peru', flag: '🇵🇪', locale: 'es-PE' },
@@ -162,7 +163,23 @@ function renderBestHosting(cslug, meta, providers) {
     <h2>Preguntas frecuentes</h2>
     ${faqs.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
   `;
-  const headExtra = [itemList, breadcrumb, faqLd].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
+  const datasetLd = {
+    '@context': 'https://schema.org', '@type': 'Dataset',
+    name: `Directorio verificable de hosting en ${meta.name} 2026`,
+    description: `Dataset abierto de proveedores de hosting verificados en ${meta.name}: razón social, datacenter declarado, ASN/IP, tecnología y contacto. Regenerado desde la base pública de EligeTuHosting.`,
+    url: canonical,
+    identifier: `https://eligetuhosting.com/data/proveedores-${cslug}.json`,
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    isAccessibleForFree: true,
+    inLanguage: meta.locale,
+    dateModified: NOW_ISO,
+    creator: { '@type': 'Organization', name: 'EligeTuHosting', url: 'https://eligetuhosting.com' },
+    publisher: { '@type': 'Organization', name: 'EligeTuHosting', url: 'https://eligetuhosting.com' },
+    spatialCoverage: { '@type': 'Place', name: meta.name },
+    distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: `https://eligetuhosting.com/data/proveedores-${cslug}.json`, name: `Dataset JSON — hosting ${meta.name}` }],
+    creditText: 'Fuente: EligeTuHosting (https://eligetuhosting.com) — CC-BY-4.0',
+  };
+  const headExtra = [datasetLd, itemList, breadcrumb, faqLd].map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join('\n    ');
   return buildHtml({ title, description, canonical, locale: meta.locale, headExtra, bodyContent, keywords: `hosting ${meta.long}, mejor hosting ${meta.long}, hosting ${meta.name.toLowerCase()}, datacenter ${meta.long}`, ogImage: `https://eligetuhosting.com/og/${cslug}.png`, alternates: BEST_CLUSTER });
 }
 
