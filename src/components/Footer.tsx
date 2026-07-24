@@ -180,10 +180,6 @@ const Footer = () => {
             <h4 className="text-lg font-semibold text-white mb-4">Contacto</h4>
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-gray-400" />
-                <span>Av. Providencia 1650, Of. 305<br />Santiago, Chile</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gray-400" />
                 <span>contacto@eligetuhosting.cl</span>
             </div>
