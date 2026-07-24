@@ -13,6 +13,8 @@ import {
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import { track } from '@/lib/track';
+import { COUNTRY_CONTENT } from '@/data/countryContent';
+import { CountryHeroCopy, CountryFaqCopy } from '@/components/country/CountryHeroCopy';
 
 const LAST_UPDATED = new Date().toISOString().slice(0, 10);
 const CURRENT_YEAR = 2026;
