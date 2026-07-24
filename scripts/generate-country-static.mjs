@@ -68,9 +68,10 @@ async function writeFile(relPath, html) {
 /* ---------- 1) Mejor hosting {pais} 2026 -------------------------------- */
 function renderBestHosting(cslug, meta, providers) {
   const list = rank(providers, cslug);
+  const c = COUNTRY_CONTENT[cslug] || { kicker: '', title: '', subtitle: '', chips: [], intro: [], faq: [] };
   const canonical = `https://eligetuhosting.com/${cslug}/mejor-hosting-${meta.long}-2026`;
-  const title = `Mejor hosting en ${meta.name} 2026 · Directorio verificado | EligeTuHosting`;
-  const description = `Ranking pre-benchmark de proveedores de hosting en ${meta.name}, ordenados por datos objetivos: datacenter local real, razón social local y antigüedad. Sin puntajes inventados.`;
+  const title = `Hosting en ${meta.name} 2026 · Comparación independiente | EligeTuHosting`;
+  const description = c.subtitle || `Comparación independiente de proveedores de hosting en ${meta.name} con datos verificables.`;
   const curated = list.find(p => p.is_curated);
   const itemList = {
     '@context': 'https://schema.org', '@type': 'ItemList', name: title,
