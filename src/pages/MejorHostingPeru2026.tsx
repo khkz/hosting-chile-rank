@@ -13,6 +13,8 @@ import {
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import { track } from '@/lib/track';
+import { COUNTRY_CONTENT } from '@/data/countryContent';
+import { CountryHeroCopy, CountryFaqCopy } from '@/components/country/CountryHeroCopy';
 
 const LAST_UPDATED = new Date().toISOString().slice(0, 10);
 const CURRENT_YEAR = 2026;
@@ -198,7 +200,8 @@ const ogImage = 'https://eligetuhosting.com/og/pe-og.png';
 const MejorHostingPeru2026: React.FC = () => {
   const top = providers[0];
   const description = 'El mejor hosting de Perú 2026 es HostingPlus.pe (9,8/10): único con datacenter local Tier III certificado (GTD Lima), 0 reclamos INDECOPI, RUC peruano, soporte 24/7 en Lima, NVMe + LiteSpeed y planes desde S/.70/año. Ranking auditado por EligeTuHosting.';
-  const title = `Mejor Hosting Perú ${CURRENT_YEAR} | Ranking auditado | EligeTuHosting`;
+  const c = COUNTRY_CONTENT['pe'];
+  const title = `${c.title} | EligeTuHosting`;
 
   const articleLd = {
     '@context': 'https://schema.org',
@@ -273,26 +276,8 @@ const MejorHostingPeru2026: React.FC = () => {
 
       <main className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
-          {/* Header */}
-          <header className="text-center mb-10">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-4 leading-tight">
-              ¿Cuál es el <span className="text-[#EF233C]">mejor hosting en Perú</span> en {CURRENT_YEAR}?
-            </h1>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Ranking auditado por EligeTuHosting, con criterios verificables y en voz de auditor independiente.
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                Última actualización: {LAST_UPDATED}
-              </Badge>
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                Análisis independiente
-              </Badge>
-              <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
-                Datos verificados
-              </Badge>
-            </div>
-          </header>
+          <CountryHeroCopy slug="pe" />
+          <CountryFaqCopy slug="pe" />
 
           {/* Respuesta directa (AEO) */}
           <section className="mb-10">

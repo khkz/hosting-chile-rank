@@ -16,6 +16,9 @@ import path from 'node:path';
 import { buildHtml, esc } from './lib/shell.mjs';
 import { hasLocalDatacenter } from './lib/dc-local.mjs';
 import { classifyDc, rankProvidersByDcTier } from './lib/dc-tier.mjs';
+import { COUNTRY_CONTENT } from '../src/data/countryContent.mjs';
+
+const MES_ANIO = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -65,9 +68,10 @@ async function writeFile(relPath, html) {
 /* ---------- 1) Mejor hosting {pais} 2026 -------------------------------- */
 function renderBestHosting(cslug, meta, providers) {
   const list = rank(providers, cslug);
+  const c = COUNTRY_CONTENT[cslug] || { kicker: '', title: '', subtitle: '', chips: [], intro: [], faq: [] };
   const canonical = `https://eligetuhosting.com/${cslug}/mejor-hosting-${meta.long}-2026`;
-  const title = `Mejor hosting en ${meta.name} 2026 · Directorio verificado | EligeTuHosting`;
-  const description = `Ranking pre-benchmark de proveedores de hosting en ${meta.name}, ordenados por datos objetivos: datacenter local real, razón social local y antigüedad. Sin puntajes inventados.`;
+  const title = `Hosting en ${meta.name} 2026 · Comparación independiente | EligeTuHosting`;
+  const description = c.subtitle || `Comparación independiente de proveedores de hosting en ${meta.name} con datos verificables.`;
   const curated = list.find(p => p.is_curated);
   const itemList = {
     '@context': 'https://schema.org', '@type': 'ItemList', name: title,
@@ -87,6 +91,7 @@ function renderBestHosting(cslug, meta, providers) {
     { q: '¿Qué proveedores tienen datacenter en Perú verificado?', a: 'HostingPlus Perú es el único del directorio con datacenter local Tier III certificado de operador identificado (GTD Lima). Otros proveedores declaran "datacenter en Perú" pero resuelven a infraestructura fuera del país o están detrás de CDN.' },
   ] : [];
   const faqs = [
+    ...(Array.isArray(c.faq) ? c.faq : []),
     ...peFaqs,
     { q: `¿Por qué no publican puntajes numéricos todavía para ${meta.name}?`, a: `Porque publicar notas de 1–10 sin benchmarks propios, reclamos verificados y auditoría de ASN es exactamente lo que hacen los sitios falsos. En ${meta.name} estamos en la fase de datos: verificamos razón social, datacenter, tecnología y trayectoria.` },
     { q: '¿Cómo se ordena este listado entonces?', a: 'Cuatro criterios objetivos: (1) calidad certificada del datacenter (Uptime Institute / ICREA), (2) latencia y red al país (ASN local verificado por IP), (3) razón social local registrada, (4) antigüedad. Empates alfabéticos. Nunca inventamos un Tier: si el proveedor sólo lo afirma, aparece como "autodeclarado".' },
@@ -148,12 +153,31 @@ function renderBestHosting(cslug, meta, providers) {
     }
   }
 
+  const top3 = list.slice(0, 3).map((p, i) => {
+    const dc = classifyDc(p, cslug);
+    return `<div style="background:#fff;border:1px solid #2B2D4218;border-radius:10px;padding:14px;flex:1;min-width:220px">
+      <div style="font-size:11px;color:#EF233C;font-weight:700;letter-spacing:.05em">#${i + 1}</div>
+      <div style="font-weight:700;color:#2B2D42;font-size:16px;margin:2px 0 6px 0"><a href="/${cslug}/${esc(p.slug)}" style="color:#2B2D42;text-decoration:none">${esc(p.name)}</a></div>
+      <div style="font-size:12px;color:#2B2D42BF;margin-bottom:4px">${esc(dc.label)}</div>
+      <div style="font-size:12px;color:#2B2D4299">${esc(p.legal_name || 'Razón social no publicada')}</div>
+    </div>`;
+  }).join('');
+  const chipsHtml = (c.chips || []).map(ch => `<span style="display:inline-block;background:#ffffff1a;border:1px solid #ffffff40;color:#fff;padding:5px 10px;border-radius:999px;font-size:12px;margin:3px 4px 0 0">${esc(ch)}</span>`).join('');
+  const introHtml = (c.intro || []).map(p => `<p>${esc(p)}</p>`).join('');
   const bodyContent = `
     <nav><a href="/">Inicio</a> / <a href="/${cslug}">Hosting en ${meta.name}</a> / Mejor hosting ${meta.name} 2026</nav>
-    <h1>Mejor hosting en ${esc(meta.name)} 2026 ${meta.flag}</h1>
-    <p>Directorio pre-benchmark ordenado por criterios objetivos: (1) calidad certificada del datacenter, (2) latencia/red al país verificada por ASN, (3) razón social local declarada, (4) antigüedad. Sin puntajes inventados. ${list.length} proveedores verificados.</p>
+    <section style="background:linear-gradient(135deg,#2B2D42,#3a3d5c);color:#fff;padding:26px;border-radius:12px;margin:16px 0 20px 0">
+      ${c.kicker ? `<div style="font-size:12px;letter-spacing:.06em;opacity:.85;margin-bottom:6px">${esc(c.kicker)}</div>` : ''}
+      <h1 style="color:#fff;font-size:28px;line-height:1.25;margin:0 0 10px 0">${esc(c.title || `Mejor hosting en ${meta.name} 2026 ${meta.flag}`)}</h1>
+      ${c.subtitle ? `<p style="color:#ffffffcc;font-size:15px;margin:0 0 12px 0;max-width:780px">${esc(c.subtitle)}</p>` : ''}
+      <div style="margin:6px 0 14px 0">${chipsHtml}</div>
+      <a href="#tabla" style="display:inline-block;background:#EF233C;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px">Ver ranking ↓</a>
+      <div style="margin-top:14px;font-size:12px;color:#ffffff99">Verificado por el equipo editorial de EligeTuHosting · Metodología pública · Actualizado ${esc(MES_ANIO)}</div>
+    </section>
+    ${introHtml}
     ${curatedBlock}
-    <table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="6">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:16px 0">${top3}</div>
+    <table id="tabla" style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="6">
       <thead><tr><th>#</th><th>Proveedor</th><th>Datacenter: ubicación + calidad</th><th>Razón social</th><th>Antigüedad</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>

@@ -12,6 +12,8 @@ import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, rankProviders, isLatamSlug
 import { classifyDc } from '@/lib/dcTier';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import PeReassurances from '@/components/country/PeReassurances';
+import { CountryHeroCopy, CountryFaqCopy } from '@/components/country/CountryHeroCopy';
+import { COUNTRY_CONTENT } from '@/data/countryContent';
 
 const CountryBestHosting = () => {
   const location = useLocation();
@@ -33,10 +35,11 @@ const CountryBestHosting = () => {
     },
   });
 
+  const c = COUNTRY_CONTENT[slug];
   const list = rankProviders(providers ?? [], slug);
   const canonical = `https://eligetuhosting.com/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`;
-  const title = `Mejor hosting en ${meta.name} 2026 · Directorio verificado | EligeTuHosting`;
-  const description = `Ranking pre-benchmark de proveedores de hosting en ${meta.name}, ordenados por datos objetivos: datacenter local real, razón social local y antigüedad. Sin puntajes inventados.`;
+  const title = `${c.title} | EligeTuHosting`;
+  const description = c.subtitle;
   const lastUpdated = new Date().toISOString().slice(0, 10);
 
   const curated = list.find((p: any) => p.is_curated);
@@ -47,6 +50,7 @@ const CountryBestHosting = () => {
   ] : [];
 
   const faqs = [
+    ...(c?.faq ?? []),
     ...peFaqs,
     { q: `¿Por qué no publican puntajes numéricos todavía para ${meta.name}?`, a: `Porque publicar notas de 1–10 sin benchmarks propios, reclamos verificados y auditoría de ASN es exactamente lo que hacen los sitios falsos. En ${meta.name} estamos en la fase de datos: verificamos razón social, datacenter, tecnología y trayectoria. Cuando tengamos benchmarks propios reproducibles con la misma metodología aplicada en Chile, publicaremos rankings numéricos.` },
     { q: '¿Cómo se ordena este listado entonces?', a: 'Por tres criterios objetivos declarados: (1) datacenter local real (verificable por ASN y declaraciones del proveedor), (2) presencia de razón social local registrada, (3) antigüedad declarada. Empates se resuelven alfabéticamente. No hay ponderación oculta.' },
@@ -110,17 +114,11 @@ const CountryBestHosting = () => {
           <span className="text-foreground font-medium">Mejor hosting {meta.name} 2026</span>
         </nav>
 
-        <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#2B2D42]">
-            Mejor hosting en {meta.name} 2026 {meta.flag}
-          </h1>
-          <p className="mt-3 text-[#2B2D42]/75">
-            Directorio pre-benchmark ordenado por criterios objetivos: (1) datacenter local real, (2) razón social local declarada, (3) antigüedad. Sin puntajes inventados.
-          </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Última actualización de datos: <time dateTime={lastUpdated}>{lastUpdated}</time> · {list.length} proveedores verificados
-          </p>
-        </header>
+        <CountryHeroCopy slug={slug} />
+        <p className="mt-2 mb-6 text-xs text-muted-foreground">
+          Última actualización de datos: <time dateTime={lastUpdated}>{lastUpdated}</time> · {list.length} proveedores verificados
+        </p>
+        <CountryFaqCopy slug={slug} />
 
         {slug === 'pe' && curated ? (
           <PeReassurances variant="best" />
