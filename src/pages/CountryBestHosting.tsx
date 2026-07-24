@@ -50,6 +50,7 @@ const CountryBestHosting = () => {
   ] : [];
 
   const faqs = [
+    ...(c?.faq ?? []),
     ...peFaqs,
     { q: `¿Por qué no publican puntajes numéricos todavía para ${meta.name}?`, a: `Porque publicar notas de 1–10 sin benchmarks propios, reclamos verificados y auditoría de ASN es exactamente lo que hacen los sitios falsos. En ${meta.name} estamos en la fase de datos: verificamos razón social, datacenter, tecnología y trayectoria. Cuando tengamos benchmarks propios reproducibles con la misma metodología aplicada en Chile, publicaremos rankings numéricos.` },
     { q: '¿Cómo se ordena este listado entonces?', a: 'Por tres criterios objetivos declarados: (1) datacenter local real (verificable por ASN y declaraciones del proveedor), (2) presencia de razón social local registrada, (3) antigüedad declarada. Empates se resuelven alfabéticamente. No hay ponderación oculta.' },
