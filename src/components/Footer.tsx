@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
-import { Shield, ShieldCheck, MapPin, Mail, Clock } from 'lucide-react';
+import { Shield, ShieldCheck, Mail, Clock } from 'lucide-react';
 
 type LatamCode = 'pe' | 'mx' | 'co' | 'ar';
 const LATAM_META: Record<LatamCode, { name: string; flag: string; featured: { slug: string; name: string }[] }> = {
