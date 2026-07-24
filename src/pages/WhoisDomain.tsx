@@ -360,7 +360,7 @@ const WhoisDomain = () => {
             </div>
             
             {/* Debug info panel (only show in development or when there are issues) */}
-            {process.env.NODE_ENV === 'development' && debugInfo && (
+            {import.meta.env.DEV && debugInfo && (
               <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
                 <h4 className="font-medium text-gray-800 mb-2">Debug Info</h4>
                 <p className="text-sm text-gray-600">{debugInfo}</p>

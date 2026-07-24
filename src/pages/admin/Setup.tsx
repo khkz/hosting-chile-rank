@@ -180,7 +180,7 @@ export default function Setup() {
       for (const category of categories) {
         const { error } = await supabase
           .from('certification_categories')
-          .upsert(category, { onConflict: 'slug' });
+          .upsert(category as any, { onConflict: 'slug' });
 
         if (error) throw error;
       }

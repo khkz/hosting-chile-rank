@@ -51,7 +51,7 @@ const RSSFeed: React.FC<RSSFeedProps> = ({ title, description, link, items }) =>
     
     // For local development only - won't work in production
     // This is just to demonstrate what would happen
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       try {
         // Show that we're generating the RSS feed
         console.log('In a real production environment, we would save this to public/feeds/latest-domains.xml');
