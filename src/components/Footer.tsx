@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
-import { Shield, ShieldCheck, MapPin, Mail, Clock } from 'lucide-react';
+import { Shield, ShieldCheck, Mail, Clock } from 'lucide-react';
 
 type LatamCode = 'pe' | 'mx' | 'co' | 'ar';
 const LATAM_META: Record<LatamCode, { name: string; flag: string; featured: { slug: string; name: string }[] }> = {
@@ -179,10 +179,6 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold text-white mb-4">Contacto</h4>
             <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-gray-400" />
-                <span>Av. Providencia 1650, Of. 305<br />Santiago, Chile</span>
-              </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gray-400" />
                 <span>contacto@eligetuhosting.cl</span>
