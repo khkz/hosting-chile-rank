@@ -16,6 +16,9 @@ import path from 'node:path';
 import { buildHtml, esc } from './lib/shell.mjs';
 import { hasLocalDatacenter } from './lib/dc-local.mjs';
 import { classifyDc, rankProvidersByDcTier } from './lib/dc-tier.mjs';
+import { COUNTRY_CONTENT } from '../src/data/countryContent.mjs';
+
+const MES_ANIO = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
