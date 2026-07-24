@@ -12,6 +12,8 @@ import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, rankProviders, isLatamSlug
 import { classifyDc } from '@/lib/dcTier';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import PeReassurances from '@/components/country/PeReassurances';
+import { CountryHeroCopy, CountryFaqCopy } from '@/components/country/CountryHeroCopy';
+import { COUNTRY_CONTENT } from '@/data/countryContent';
 
 const CountryBestHosting = () => {
   const location = useLocation();
