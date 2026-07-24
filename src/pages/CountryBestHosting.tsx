@@ -114,17 +114,11 @@ const CountryBestHosting = () => {
           <span className="text-foreground font-medium">Mejor hosting {meta.name} 2026</span>
         </nav>
 
-        <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#2B2D42]">
-            Mejor hosting en {meta.name} 2026 {meta.flag}
-          </h1>
-          <p className="mt-3 text-[#2B2D42]/75">
-            Directorio pre-benchmark ordenado por criterios objetivos: (1) datacenter local real, (2) razón social local declarada, (3) antigüedad. Sin puntajes inventados.
-          </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Última actualización de datos: <time dateTime={lastUpdated}>{lastUpdated}</time> · {list.length} proveedores verificados
-          </p>
-        </header>
+        <CountryHeroCopy slug={slug} />
+        <p className="mt-2 mb-6 text-xs text-muted-foreground">
+          Última actualización de datos: <time dateTime={lastUpdated}>{lastUpdated}</time> · {list.length} proveedores verificados
+        </p>
+        <CountryFaqCopy slug={slug} />
 
         {slug === 'pe' && curated ? (
           <PeReassurances variant="best" />
