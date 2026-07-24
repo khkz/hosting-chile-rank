@@ -35,10 +35,11 @@ const CountryBestHosting = () => {
     },
   });
 
+  const c = COUNTRY_CONTENT[slug];
   const list = rankProviders(providers ?? [], slug);
   const canonical = `https://eligetuhosting.com/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`;
-  const title = `Mejor hosting en ${meta.name} 2026 · Directorio verificado | EligeTuHosting`;
-  const description = `Ranking pre-benchmark de proveedores de hosting en ${meta.name}, ordenados por datos objetivos: datacenter local real, razón social local y antigüedad. Sin puntajes inventados.`;
+  const title = `${c.title} | EligeTuHosting`;
+  const description = c.subtitle;
   const lastUpdated = new Date().toISOString().slice(0, 10);
 
   const curated = list.find((p: any) => p.is_curated);
