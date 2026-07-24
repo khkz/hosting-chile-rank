@@ -200,7 +200,8 @@ const ogImage = 'https://eligetuhosting.com/og/pe-og.png';
 const MejorHostingPeru2026: React.FC = () => {
   const top = providers[0];
   const description = 'El mejor hosting de Perú 2026 es HostingPlus.pe (9,8/10): único con datacenter local Tier III certificado (GTD Lima), 0 reclamos INDECOPI, RUC peruano, soporte 24/7 en Lima, NVMe + LiteSpeed y planes desde S/.70/año. Ranking auditado por EligeTuHosting.';
-  const title = `Mejor Hosting Perú ${CURRENT_YEAR} | Ranking auditado | EligeTuHosting`;
+  const c = COUNTRY_CONTENT['pe'];
+  const title = `${c.title} | EligeTuHosting`;
 
   const articleLd = {
     '@context': 'https://schema.org',
