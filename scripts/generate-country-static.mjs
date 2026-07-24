@@ -91,6 +91,7 @@ function renderBestHosting(cslug, meta, providers) {
     { q: '¿Qué proveedores tienen datacenter en Perú verificado?', a: 'HostingPlus Perú es el único del directorio con datacenter local Tier III certificado de operador identificado (GTD Lima). Otros proveedores declaran "datacenter en Perú" pero resuelven a infraestructura fuera del país o están detrás de CDN.' },
   ] : [];
   const faqs = [
+    ...(Array.isArray(c.faq) ? c.faq : []),
     ...peFaqs,
     { q: `¿Por qué no publican puntajes numéricos todavía para ${meta.name}?`, a: `Porque publicar notas de 1–10 sin benchmarks propios, reclamos verificados y auditoría de ASN es exactamente lo que hacen los sitios falsos. En ${meta.name} estamos en la fase de datos: verificamos razón social, datacenter, tecnología y trayectoria.` },
     { q: '¿Cómo se ordena este listado entonces?', a: 'Cuatro criterios objetivos: (1) calidad certificada del datacenter (Uptime Institute / ICREA), (2) latencia y red al país (ASN local verificado por IP), (3) razón social local registrada, (4) antigüedad. Empates alfabéticos. Nunca inventamos un Tier: si el proveedor sólo lo afirma, aparece como "autodeclarado".' },
