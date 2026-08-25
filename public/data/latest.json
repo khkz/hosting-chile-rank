@@ -1,6 +1,10 @@
 {
-  "updated": "2026-08-25T09:29:11.859Z",
+  "updated": "2026-08-25T10:24:58.025Z",
   "domains": [
+    {
+      "d": "stadiumo.cl",
+      "date": "2026-08-25T05:58:01Z"
+    },
     {
       "d": "pharmatik.cl",
       "date": "2026-08-25T05:28:04Z"
@@ -3196,10 +3200,6 @@
     {
       "d": "tecfor.cl",
       "date": "2026-08-24T10:55:55Z"
-    },
-    {
-      "d": "confeccionesmipac.cl",
-      "date": "2026-08-24T10:55:45Z"
     }
   ]
 }
