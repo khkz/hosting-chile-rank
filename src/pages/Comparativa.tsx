@@ -54,7 +54,7 @@ const hostingProviders: HostingProvider[] = [
     hasLiteSpeed: true,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: '$49.900/año',
+    priceLabel: 'Consultar',
     priceCLP: 49900,
     reseñaUrl: '/reseñas/hostingplus',
   },
@@ -69,7 +69,7 @@ const hostingProviders: HostingProvider[] = [
     hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: '$19.900/año',
+    priceLabel: 'Consultar',
     priceCLP: 19900,
     reseñaUrl: '/reseñas/ecohosting',
   },
@@ -129,7 +129,7 @@ const hostingProviders: HostingProvider[] = [
     hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: '$43.900/año',
+    priceLabel: 'Consultar',
     priceCLP: 43900,
     reseñaUrl: '/reseñas/bluehosting',
   },
@@ -140,7 +140,6 @@ const ComparativaPage = () => {
     liteSpeed: false,
     waf: false,
     backups: false,
-    lowPrice: false,
   });
 
   const [showFilters, setShowFilters] = useState(false);
@@ -150,7 +149,6 @@ const ComparativaPage = () => {
     if (filters.liteSpeed && !provider.hasLiteSpeed) return false;
     if (filters.waf && !provider.hasWAF) return false;
     if (filters.backups && !provider.hasBackups) return false;
-    if (filters.lowPrice && (provider.priceCLP === null || provider.priceCLP > 30000)) return false;
     return true;
   });
 
@@ -159,7 +157,7 @@ const ComparativaPage = () => {
   };
 
   const resetFilters = () => {
-    setFilters({ liteSpeed: false, waf: false, backups: false, lowPrice: false });
+    setFilters({ liteSpeed: false, waf: false, backups: false });
   };
 
   const anyFilterActive = Object.values(filters).some(Boolean);
@@ -238,10 +236,6 @@ const ComparativaPage = () => {
               <div className="flex items-center space-x-2">
                 <Checkbox id="backups" checked={filters.backups} onCheckedChange={() => handleFilterChange('backups')} />
                 <Label htmlFor="backups" className="cursor-pointer">Backups diarios</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="price" checked={filters.lowPrice} onCheckedChange={() => handleFilterChange('lowPrice')} />
-                <Label htmlFor="price" className="cursor-pointer">Precio menor a $30.000/año</Label>
               </div>
               {anyFilterActive && (
                 <button onClick={resetFilters} className="text-[#EF233C] underline text-sm hover:text-red-700">

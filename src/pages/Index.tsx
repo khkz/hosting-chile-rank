@@ -47,7 +47,7 @@ const Index = () => {
         },
         {
           question: "¿Cuánto cuesta un hosting en Chile?",
-          answer: "Los precios de hosting en Chile varían entre $2.990 y $15.990 CLP mensuales. Los planes básicos cuestan $3.000-5.000/mes con 10-25GB SSD."
+          answer: "Los precios de hosting en Chile varían según proveedor, plan y periodo de contratación. La mayoría se cobra de forma anual y con IVA aparte. Consulta el precio vigente en el sitio de cada proveedor."
         },
         {
           question: "¿Qué incluye un plan de hosting compartido?",
