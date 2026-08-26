@@ -1,184 +1,88 @@
 import React, { useState, useMemo } from 'react';
-import { Calculator, Download, Zap, Shield, Clock, DollarSign } from 'lucide-react';
+import { Calculator, Download, Zap, Clock, DollarSign, Shield } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { hostingCompanies } from '@/data/hostingCompanies';
 
-interface TCOResult {
-  year1: number;
-  year3: number;
-  year5: number;
-  savings: number;
-  bestAlternative: string;
-  alternativeExplanation: string;
-  alternatives: Array<{name: string, score: number, price: number, explanation: string}>;
-  monthlyTotal: number;
-  baseCost: number;
-  extrasTotal: number;
-}
+type ExtraKey = 'ssl' | 'backup' | 'security' | 'domain' | 'siteBuilder' | 'email';
+
+const EXTRA_LABELS: Record<ExtraKey, string> = {
+  ssl: 'Certificado SSL premium',
+  backup: 'Backups automáticos',
+  security: 'Seguridad avanzada / WAF',
+  domain: 'Dominio',
+  siteBuilder: 'Constructor de sitios',
+  email: 'Email profesional',
+};
+
+const EMPTY_EXTRAS: Record<ExtraKey, number> = {
+  ssl: 0,
+  backup: 0,
+  security: 0,
+  domain: 0,
+  siteBuilder: 0,
+  email: 0,
+};
+
+const clp = (n: number) => `$${Math.round(n).toLocaleString('es-CL')}`;
 
 const TCOCalculator = () => {
-  const [selectedProvider, setSelectedProvider] = useState<string>('');
-  const [selectedPlan, setSelectedPlan] = useState<string>('');
-  const [extras, setExtras] = useState({
-    ssl: false,
-    backup: false,
-    security: false,
-    domain: false,
-    siteBuilder: false,
-    email: false
-  });
+  const [providerName, setProviderName] = useState('');
+  const [planName, setPlanName] = useState('');
+  const [monthlyPrice, setMonthlyPrice] = useState<string>('');
+  const [renewalPrice, setRenewalPrice] = useState<string>('');
+  const [extras, setExtras] = useState<Record<ExtraKey, number>>({ ...EMPTY_EXTRAS });
 
-  const extraCosts = {
-    ssl: 990,    // SSL premium anual -> ~990 CLP/mes
-    backup: 1490, // Backups automáticos premium -> ~1490 CLP/mes  
-    security: 2490, // Seguridad avanzada (firewall premium) -> ~2490 CLP/mes
-    domain: 1190, // Dominio .cl -> ~1190 CLP/mes (promedio anual)
-    siteBuilder: 990, // Constructor de sitios premium -> ~990 CLP/mes
-    email: 1790  // Email profesional con más almacenamiento -> ~1790 CLP/mes
+  const setExtra = (key: ExtraKey, raw: string) => {
+    const value = raw === '' ? 0 : Math.max(0, Number(raw) || 0);
+    setExtras((prev) => ({ ...prev, [key]: value }));
   };
 
-  const providers = Object.values(hostingCompanies);
-  const selectedProviderData = selectedProvider ? hostingCompanies[selectedProvider] : null;
-  const selectedPlanData = selectedProviderData?.plans.find(plan => plan.name === selectedPlan);
+  const results = useMemo(() => {
+    const base = Number(monthlyPrice) || 0;
+    if (base <= 0) return null;
 
-  const tcoResults = useMemo(() => {
-    if (!selectedPlanData) return null;
+    const renewal = Number(renewalPrice) > 0 ? Number(renewalPrice) : base;
+    const extrasTotal = (Object.keys(extras) as ExtraKey[]).reduce((sum, k) => sum + extras[k], 0);
 
-    const monthlyCosts = Object.entries(extras)
-      .filter(([_, enabled]) => enabled)
-      .reduce((total, [extra]) => total + extraCosts[extra as keyof typeof extraCosts], 0);
-    
-    // Use real pricing structure if available, otherwise fallback to price multiplication
-    const pricing = selectedPlanData.pricing;
-    let year1Cost, year3Cost, year5Cost;
-    let baseCost = selectedPlanData.price; // Reference price for display
-    
-    if (pricing) {
-      // Use real period pricing
-      year1Cost = (pricing.annual * 12) + (monthlyCosts * 12);
-      year3Cost = (pricing.triannual * 36) + (monthlyCosts * 36);
-      // For 5 years: 3 years + 2 years (assuming 2-year renewal available, otherwise use annual)
-      const year5Base = (pricing.triannual * 36) + ((pricing.biannual || pricing.annual) * 24);
-      year5Cost = year5Base + (monthlyCosts * 60);
-      
-      // Update base cost to reflect the actual annual price for display consistency
-      baseCost = pricing.annual;
-    } else {
-      // Fallback to linear calculation for providers without detailed pricing
-      const monthlyTotal = baseCost + monthlyCosts;
-      year1Cost = monthlyTotal * 12;
-      year3Cost = monthlyTotal * 36;
-      year5Cost = monthlyTotal * 60;
-    }
-    
-    const monthlyTotal = baseCost + monthlyCosts;
-    
-    // Find best value alternative with improved algorithm
-    const currentPlan = providers.find(p => p.id === selectedProvider)?.plans.find(p => p.name === selectedPlan);
-    const currentPrice = currentPlan?.price || 0;
-    const currentHasUnlimited = currentPlan?.bandwidth === "Ilimitado";
-    
-    let bestAlternative = '';
-    let bestValue = 0;
-    let bestPrice = Infinity;
-    let alternativeExplanation = '';
-    const alternatives: Array<{name: string, score: number, price: number, explanation: string}> = [];
-    
-    providers.forEach(provider => {
-      provider.plans.forEach(plan => {
-        if (provider.id !== selectedProvider) {
-          // Quality filters
-          if (provider.rating < 8.5) return;
-          
-          // Price range filter (within 50% of current price)
-          const priceRatio = plan.price / currentPrice;
-          if (priceRatio > 1.5 || priceRatio < 0.5) return;
-          
-          // Bandwidth compatibility
-          if (currentHasUnlimited && plan.bandwidth !== "Ilimitado") return;
-          
-          // Calculate enhanced value score
-          const storageGB = parseInt(plan.storage.replace(/[^0-9]/g, '')) || 10;
-          const ratingScore = (provider.rating / 10) * 0.5; // 50% weight
-          const storageScore = Math.min(storageGB / 100, 1) * 0.3; // 30% weight, capped at 1
-          const priceScore = (currentPrice / plan.price) * 0.2; // 20% weight (better price = higher score)
-          
-          // Bonus for premium providers
-          const providerBonus = (provider.id === 'hostingplus' || provider.id === 'ecohosting') ? 0.1 : 0;
-          
-          const valueScore = ratingScore + storageScore + priceScore + providerBonus;
-          
-          const explanation = `Rating: ${provider.rating}/10 (${(ratingScore*10).toFixed(1)}pts) + Storage: ${plan.storage} (${(storageScore*10).toFixed(1)}pts) + Precio: $${plan.price.toLocaleString()} (${(priceScore*10).toFixed(1)}pts)${providerBonus > 0 ? ' + Proveedor Premium (+1.0pts)' : ''}`;
-          
-          alternatives.push({
-            name: `${provider.name} - ${plan.name}`,
-            score: valueScore,
-            price: plan.price,
-            explanation
-          });
-          
-          if (valueScore > bestValue || (Math.abs(valueScore - bestValue) < 0.01 && plan.price < bestPrice)) {
-            bestValue = valueScore;
-            bestPrice = plan.price;
-            bestAlternative = `${provider.name} - ${plan.name}`;
-            alternativeExplanation = explanation;
-          }
-        }
-      });
-    });
-    
-    // Sort alternatives by score
-    alternatives.sort((a, b) => b.score - a.score);
-    
-    const savings = year5Cost - (bestPrice * 60);
-    
-    return {
-      year1: year1Cost,
-      year3: year3Cost,
-      year5: year5Cost,
-      savings,
-      bestAlternative,
-      alternativeExplanation,
-      alternatives: alternatives.slice(0, 3), // Top 3 alternatives
-      monthlyTotal,
-      baseCost,
-      extrasTotal: monthlyCosts
-    };
-  }, [selectedPlanData, extras, selectedProvider]);
+    const monthlyTotal = base + extrasTotal;
+    const renewalMonthly = renewal + extrasTotal;
+
+    const year1 = monthlyTotal * 12;
+    const year3 = year1 + renewalMonthly * 24;
+    const year5 = year1 + renewalMonthly * 48;
+
+    return { base, renewal, extrasTotal, monthlyTotal, renewalMonthly, year1, year3, year5 };
+  }, [monthlyPrice, renewalPrice, extras]);
 
   const exportResults = () => {
-    if (!tcoResults || !selectedProviderData || !selectedPlanData) return;
-    
+    if (!results) return;
     const data = {
-      provider: selectedProviderData.name,
-      plan: selectedPlanData.name,
-      analysis: {
-        basePrice: tcoResults.baseCost,
-        extrasPrice: tcoResults.extrasTotal,
-        monthlyTotal: tcoResults.monthlyTotal,
-        year1: tcoResults.year1,
-        year3: tcoResults.year3,
-        year5: tcoResults.year5,
-        bestAlternative: tcoResults.bestAlternative,
-        savings: tcoResults.savings
+      provider: providerName || null,
+      plan: planName || null,
+      inputs: {
+        monthlyPrice: results.base,
+        renewalMonthlyPrice: results.renewal,
+        extras,
       },
-      extras: Object.entries(extras)
-        .filter(([_, enabled]) => enabled)
-        .map(([extra]) => extra),
-      generatedAt: new Date().toISOString()
+      analysis: {
+        extrasTotal: results.extrasTotal,
+        monthlyTotal: results.monthlyTotal,
+        year1: results.year1,
+        year3: results.year3,
+        year5: results.year5,
+      },
+      note: 'Cálculo hecho con los precios introducidos por el usuario. EligeTuHosting no precarga precios.',
+      generatedAt: new Date().toISOString(),
     };
-    
+
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `tco-analysis-${selectedProviderData.name.toLowerCase().replace(/\s+/g, '-')}.json`;
+    a.download = `tco-analysis-${(providerName || 'hosting').toLowerCase().replace(/\s+/g, '-')}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -195,8 +99,11 @@ const TCOCalculator = () => {
           </h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Calcula el Costo Total de Propiedad (TCO) de tu hosting a 1, 3 y 5 años. 
+          Calcula el Costo Total de Propiedad (TCO) de tu hosting a 1, 3 y 5 años.
           Incluye extras, compara opciones y descubre cuánto puedes ahorrar.
+        </p>
+        <p className="text-sm text-muted-foreground max-w-3xl mx-auto">
+          Introduce los precios que te entregue cada proveedor. No precargamos precios porque estamos reverificando el catálogo.
         </p>
       </div>
 
@@ -209,86 +116,84 @@ const TCOCalculator = () => {
               Configuración del Hosting
             </CardTitle>
             <CardDescription>
-              Selecciona tu proveedor, plan y servicios adicionales
+              Escribe el proveedor, el plan y los precios que te dieron
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="provider">Proveedor de Hosting</Label>
-              <Select value={selectedProvider} onValueChange={setSelectedProvider}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un proveedor" />
-                </SelectTrigger>
-                <SelectContent>
-                  {providers.map(provider => (
-                    <SelectItem key={provider.id} value={provider.id}>
-                      <div className="flex items-center gap-2">
-                        <img src={provider.logo} alt={provider.name} className="w-4 h-4" />
-                        {provider.name}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="provider">Proveedor (opcional)</Label>
+                <Input
+                  id="provider"
+                  value={providerName}
+                  onChange={(e) => setProviderName(e.target.value)}
+                  placeholder="Ej: proveedor que estás evaluando"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="plan">Plan (opcional)</Label>
+                <Input
+                  id="plan"
+                  value={planName}
+                  onChange={(e) => setPlanName(e.target.value)}
+                  placeholder="Ej: plan que estás evaluando"
+                />
+              </div>
             </div>
 
-            {selectedProviderData && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="plan">Plan de Hosting</Label>
-                <Select value={selectedPlan} onValueChange={setSelectedPlan}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecciona un plan" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {selectedProviderData.plans.map(plan => (
-                      <SelectItem key={plan.name} value={plan.name}>
-                        <div className="flex items-center justify-between w-full">
-                          <span>{plan.name}</span>
-                          <Badge variant="outline">${plan.price.toLocaleString()}/mes</Badge>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="monthlyPrice">Precio mensual del plan (CLP)</Label>
+                <Input
+                  id="monthlyPrice"
+                  type="number"
+                  min={0}
+                  inputMode="numeric"
+                  value={monthlyPrice}
+                  onChange={(e) => setMonthlyPrice(e.target.value)}
+                  placeholder="0"
+                />
               </div>
-            )}
+              <div className="space-y-2">
+                <Label htmlFor="renewalPrice">Precio mensual al renovar (CLP)</Label>
+                <Input
+                  id="renewalPrice"
+                  type="number"
+                  min={0}
+                  inputMode="numeric"
+                  value={renewalPrice}
+                  onChange={(e) => setRenewalPrice(e.target.value)}
+                  placeholder="Si no lo sabes, se usa el mismo"
+                />
+              </div>
+            </div>
 
             <Separator />
 
             <div className="space-y-4">
-              <Label className="text-base font-semibold">Servicios Adicionales</Label>
-              
+              <Label className="text-base font-semibold">Servicios adicionales (CLP al mes)</Label>
+              <p className="text-sm text-muted-foreground">
+                Deja en 0 lo que no contrates o lo que venga incluido.
+              </p>
+
               <div className="grid grid-cols-1 gap-3">
-                {Object.entries({
-                  ssl: { label: 'Certificado SSL Premium', icon: Shield },
-                  backup: { label: 'Backups Automáticos', icon: Clock },
-                  security: { label: 'Seguridad Avanzada', icon: Shield },
-                  domain: { label: 'Dominio Premium', icon: Zap },
-                  siteBuilder: { label: 'Constructor de Sitios', icon: Zap },
-                  email: { label: 'Email Profesional', icon: Zap }
-                }).map(([key, config]) => {
-                  const Icon = config.icon;
-                  return (
-                    <div key={key} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Checkbox
-                          id={key}
-                          checked={extras[key as keyof typeof extras]}
-                          onCheckedChange={(checked) => 
-                            setExtras(prev => ({ ...prev, [key]: checked }))
-                          }
-                        />
-                        <Icon className="h-4 w-4 text-muted-foreground" />
-                        <Label htmlFor={key} className="cursor-pointer">
-                          {config.label}
-                        </Label>
-                      </div>
-                      <Badge variant="secondary">
-                        +${extraCosts[key as keyof typeof extraCosts].toLocaleString()}/mes
-                      </Badge>
-                    </div>
-                  );
-                })}
+                {(Object.keys(EXTRA_LABELS) as ExtraKey[]).map((key) => (
+                  <div key={key} className="flex items-center justify-between gap-3 p-3 border rounded-lg">
+                    <Label htmlFor={`extra-${key}`} className="cursor-pointer">
+                      {EXTRA_LABELS[key]}
+                    </Label>
+                    <Input
+                      id={`extra-${key}`}
+                      type="number"
+                      min={0}
+                      inputMode="numeric"
+                      className="w-32"
+                      value={extras[key] === 0 ? '' : String(extras[key])}
+                      onChange={(e) => setExtra(key, e.target.value)}
+                      placeholder="0"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </CardContent>
@@ -306,117 +211,56 @@ const TCOCalculator = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {tcoResults && selectedPlanData ? (
+            {results ? (
               <div className="space-y-6">
-                {/* Current Selection Summary */}
                 <div className="p-4 bg-muted rounded-lg">
                   <h3 className="font-semibold mb-2">Configuración Actual</h3>
                   <div className="text-sm space-y-1">
                     <div className="flex justify-between">
                       <span>Plan base:</span>
-                      <span>${tcoResults.baseCost.toLocaleString()}/mes</span>
+                      <span>{clp(results.base)}/mes</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Extras:</span>
-                      <span>+${tcoResults.extrasTotal.toLocaleString()}/mes</span>
+                      <span>+{clp(results.extrasTotal)}/mes</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Al renovar:</span>
+                      <span>{clp(results.renewalMonthly)}/mes</span>
                     </div>
                     <Separator className="my-2" />
                     <div className="flex justify-between font-semibold">
                       <span>Total mensual:</span>
-                      <span>${tcoResults.monthlyTotal.toLocaleString()}/mes</span>
+                      <span>{clp(results.monthlyTotal)}/mes</span>
                     </div>
                   </div>
                 </div>
 
-                {/* TCO Projection */}
                 <div className="space-y-4">
                   <h3 className="font-semibold">Proyección de Costos</h3>
-                  
+
                   {[
-                    { 
-                      period: '1 año', 
-                      cost: tcoResults.year1, 
-                      description: selectedPlanData?.pricing ? 
-                        `Plan: $${(selectedPlanData.pricing.annual * 12).toLocaleString()} + Extras: $${(tcoResults.extrasTotal * 12).toLocaleString()}` :
-                        `12 meses × $${tcoResults.monthlyTotal.toLocaleString()}`,
-                      hasFreeDomain: selectedPlanData?.pricing?.includesDomainFrom && ['annual', 'biannual', 'triannual'].includes(selectedPlanData.pricing.includesDomainFrom)
-                    },
-                    { 
-                      period: '3 años', 
-                      cost: tcoResults.year3, 
-                      description: selectedPlanData?.pricing ? 
-                        `Plan: $${(selectedPlanData.pricing.triannual * 36).toLocaleString()} + Extras: $${(tcoResults.extrasTotal * 36).toLocaleString()}` :
-                        `36 meses × $${tcoResults.monthlyTotal.toLocaleString()}`,
-                      hasFreeDomain: selectedPlanData?.pricing?.includesDomainFrom && ['triannual'].includes(selectedPlanData.pricing.includesDomainFrom)
-                    },
-                    { 
-                      period: '5 años', 
-                      cost: tcoResults.year5, 
-                      description: selectedPlanData?.pricing ? 
-                        `3 años + 2 años + Extras: $${(tcoResults.extrasTotal * 60).toLocaleString()}` :
-                        `60 meses × $${tcoResults.monthlyTotal.toLocaleString()}`,
-                      hasFreeDomain: selectedPlanData?.pricing?.includesDomainFrom
-                    }
-                  ].map(({ period, cost, description, hasFreeDomain }) => (
+                    { period: '1 año', cost: results.year1, description: `12 meses × ${clp(results.monthlyTotal)}` },
+                    { period: '3 años', cost: results.year3, description: `12 meses × ${clp(results.monthlyTotal)} + 24 × ${clp(results.renewalMonthly)}` },
+                    { period: '5 años', cost: results.year5, description: `12 meses × ${clp(results.monthlyTotal)} + 48 × ${clp(results.renewalMonthly)}` },
+                  ].map(({ period, cost, description }) => (
                     <div key={period} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
-                        <div className="font-medium flex items-center gap-2">
-                          {period}
-                          {hasFreeDomain && (
-                            <Badge variant="secondary" className="text-xs">Dominio Gratis</Badge>
-                          )}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          {description}
-                        </div>
+                        <div className="font-medium">{period}</div>
+                        <div className="text-sm text-muted-foreground">{description}</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold">${cost.toLocaleString()}</div>
+                        <div className="text-lg font-bold">{clp(cost)}</div>
                         <div className="text-sm text-muted-foreground">CLP</div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Savings Analysis */}
-                <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-lg border border-green-200 dark:border-green-800">
-                  <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">
-                    Análisis de Ahorro
-                  </h3>
-                  <div className="text-sm text-green-800 dark:text-green-200 space-y-2">
-                    <div>Mejor alternativa: <span className="font-medium">{tcoResults.bestAlternative}</span></div>
-                    <div className="font-medium">
-                      {tcoResults.savings > 0 
-                        ? `Podrías ahorrar $${Math.abs(tcoResults.savings).toLocaleString()} en 5 años`
-                        : `Costo adicional de $${Math.abs(tcoResults.savings).toLocaleString()} vs la opción más económica`
-                      }
-                    </div>
-                    {tcoResults.alternativeExplanation && (
-                      <div className="text-xs opacity-80 mt-2 p-2 bg-white/50 dark:bg-black/20 rounded">
-                        <strong>¿Por qué esta alternativa?</strong><br />
-                        {tcoResults.alternativeExplanation}
-                      </div>
-                    )}
-                  </div>
+                <div className="p-4 bg-muted rounded-lg text-sm text-muted-foreground">
+                  Repite el cálculo con los precios de otro proveedor y compara el total a 3 y 5 años:
+                  la diferencia entre ambos totales es tu ahorro real.
                 </div>
-
-                {/* Top Alternatives */}
-                {tcoResults.alternatives && tcoResults.alternatives.length > 0 && (
-                  <div className="space-y-3">
-                    <h3 className="font-semibold">Mejores Alternativas (Top 3)</h3>
-                    {tcoResults.alternatives.map((alt, index) => (
-                      <div key={alt.name} className="p-3 border rounded-lg">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium">#{index + 1} {alt.name}</span>
-                          <Badge variant="outline">${alt.price.toLocaleString()}/mes</Badge>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Score: {alt.score.toFixed(2)} - {alt.explanation}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
 
                 <Button onClick={exportResults} className="w-full" variant="outline">
                   <Download className="h-4 w-4 mr-2" />
@@ -426,7 +270,7 @@ const TCOCalculator = () => {
             ) : (
               <div className="text-center text-muted-foreground py-8">
                 <Calculator className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>Selecciona un proveedor y plan para ver el análisis de costos TCO</p>
+                <p>Introduce el precio mensual del plan para ver el análisis de costos TCO</p>
               </div>
             )}
           </CardContent>
@@ -440,10 +284,10 @@ const TCOCalculator = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-muted-foreground">
-            El TCO incluye todos los costos asociados con tu hosting durante su vida útil, no solo el precio mensual. 
+            El TCO incluye todos los costos asociados con tu hosting durante su vida útil, no solo el precio mensual.
             Esto incluye servicios adicionales, migraciones, tiempo de inactividad y costos ocultos.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center p-4 border rounded-lg">
               <DollarSign className="h-8 w-8 mx-auto mb-2 text-primary" />
