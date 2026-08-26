@@ -12,9 +12,6 @@ function fmtDate(d) { return d ? String(d).slice(0, 10) : null; }
 function heroAnswer({ c, meta, complaintsCount, yearsOperating, dcLocal }) {
   const parts = [];
   parts.push(`${c.name} es un proveedor de hosting con actividad comercial en ${meta.name}.`);
-  if (c.year_founded && yearsOperating != null) {
-    parts.push(`Opera desde ${c.year_founded} (${yearsOperating} años).`);
-  }
   
   if (dcLocal === true) parts.push(`Declara datacenter en ${meta.name}, lo que reduce la latencia local.`);
   else if (dcLocal === false) parts.push(`No declara datacenter en ${meta.name}.`);
@@ -51,7 +48,6 @@ function faqList({ c, meta, chk, complaintsCount, yearsOperating, dcLocal, techs
         : `${c.name} no publica en su sitio la ubicación exacta del datacenter. Antes de contratar, confirma con soporte si la infraestructura está dentro de ${meta.name}.`,
   });
   
-  if (c.year_founded) faq.push({ q: `¿Hace cuánto opera ${c.name}?`, a: `Registra actividad desde ${c.year_founded}, es decir ${yearsOperating} años en el mercado. La antigüedad no garantiza calidad, pero sí trayectoria y ayuda a evaluar estabilidad frente a proveedores muy nuevos.` });
   if (techs.length) faq.push({ q: `¿Qué tecnologías declara ${c.name}?`, a: `Su stack público incluye: ${techs.slice(0, 8).join(', ')}. Estas tecnologías son declaradas por el proveedor; verifica en su sitio oficial que estén disponibles en el plan concreto que planeas contratar.` });
   if (c.contact_phone || c.contact_email) faq.push({ q: `¿Cómo contactar a ${c.name}?`, a: `Canales publicados: ${[c.contact_phone && `teléfono ${c.contact_phone}`, c.contact_email && `correo ${c.contact_email}`].filter(Boolean).join(' y ')}. Un canal telefónico local suele indicar operación real en el país; confírmalo antes de contratar.` });
   faq.push({
@@ -159,9 +155,7 @@ export function buildSalesBody(args) {
   if (chk) badges.push('Verificación técnica al día');
 
   const historyParas = [];
-  if (c.year_founded) {
-    historyParas.push(`${c.name} abrió operaciones en <strong>${c.year_founded}</strong>${yearsOperating ? ` (${yearsOperating} años)` : ''}${c.corporate_group ? `, parte del grupo <strong>${esc(c.corporate_group)}</strong>` : ''}.`);
-  } else if (c.corporate_group) {
+  if (c.corporate_group) {
     historyParas.push(`${c.name} es parte del grupo <strong>${esc(c.corporate_group)}</strong>.`);
   }
   if (c.datacenter_location) {
@@ -193,7 +187,6 @@ export function buildSalesBody(args) {
 
   const dataTable = verifiableTable([
     ['Grupo corporativo', c.corporate_group],
-    ['Operando desde', c.year_founded],
     ['Datacenter declarado', c.datacenter_location],
     ['Garantía de uptime', uptimeStr],
     ['SSL gratis', c.has_ssl_free === true ? 'Sí (incluido)' : c.has_ssl_free === false ? 'No incluido' : null],
@@ -217,8 +210,7 @@ export function buildSalesBody(args) {
     ${badgesHtml}
     <h1 style="font-size:32px;font-weight:700;margin:0 0 12px">¿Es bueno ${esc(c.name)}?</h1>
     <p style="font-size:17px;line-height:1.6">${esc(hero)}</p>
-    <p style="font-size:12px;color:#6B7280;margin-top:8px">✓ Revisado por el equipo editorial: <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time></p>
-    ${techVerify(chk)}
+      ${techVerify(chk)}
     ${historyBlock}
     ${forWhoBlock}
     ${plansTable(plans, currency)}
@@ -231,7 +223,7 @@ export function buildSalesBody(args) {
     <h2>Preguntas frecuentes</h2>
     ${faq.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
     <hr style="margin:24px 0;border:0;border-top:1px solid #E5E7EB" />
-    <p style="font-size:13px;color:#6B7280"><strong>✓ Revisado por el equipo editorial de EligeTuHosting</strong> el <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Metodología: <a href="/nuestro-metodo">nuestro método</a>.</p>
+    <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última generación: <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Metodología: <a href="/nuestro-metodo">nuestro método</a>.</p>
   `;
 
   const orgLd = {
@@ -241,7 +233,6 @@ export function buildSalesBody(args) {
     ...(c.website ? { url: c.website } : {}),
     ...(c.contact_phone ? { telephone: c.contact_phone } : {}),
     ...(c.contact_email ? { email: c.contact_email } : {}),
-    ...(c.year_founded ? { foundingDate: String(c.year_founded) } : {}),
     ...(c.corporate_group ? { parentOrganization: { '@type': 'Organization', name: c.corporate_group } } : {}),
     address: { '@type': 'PostalAddress', addressCountry: meta.code },
   };
