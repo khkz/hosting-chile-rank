@@ -47,10 +47,10 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
         price: 4219, // Precio mensual efectivo con descuento trianual (jul 2026)
         pricing: {
           monthly: 19900,
-          sixMonths: 16150, // $96,900/6 meses
-          annual: 5408, // $64,900/año (equivalente mensual, Personal NVMe anual)
-          biannual: 4726, // $113,400/2 años
-          triannual: 4219, // $151,900/3 años (equivalente mensual)
+          sixMonths: 16150, // 6 meses
+          annual: 5408, // año (equivalente mensual, Personal NVMe anual)
+          biannual: 4726, // 2 años
+          triannual: 4219, // 3 años (equivalente mensual)
           includesDomainFrom: 'annual'
         },
         storage: "15 GB SSD",
@@ -71,10 +71,10 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
         price: 3886, // Precio mensual efectivo con descuento trianual
         pricing: {
           monthly: 23900,
-          sixMonths: 19150, // $114,900/6 meses
-          annual: 5575, // $66,900/año
-          biannual: 4742, // $113,800/2 años
-          triannual: 3886, // $139,900/3 años
+          sixMonths: 19150, // 6 meses
+          annual: 5575, // año
+          biannual: 4742, // 2 años
+          triannual: 3886, // 3 años
           includesDomainFrom: 'annual'
         },
         storage: "30 GB SSD",
@@ -96,10 +96,10 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
         price: 5553, // Precio mensual efectivo con descuento trianual + Dominio Gratis
         pricing: {
           monthly: 29900,
-          sixMonths: 23150, // $138,900/6 meses
-          annual: 6992, // $83,900/año + Dominio Gratis
-          biannual: 6250, // $150,000/2 años + Dominio Gratis
-          triannual: 5553, // $199,900/3 años + Dominio Gratis
+          sixMonths: 23150, // 6 meses
+          annual: 6992, // año + Dominio Gratis
+          biannual: 6250, // 2 años + Dominio Gratis
+          triannual: 5553, // 3 años + Dominio Gratis
           includesDomainFrom: 'annual'
         },
         storage: "50 GB SSD",
@@ -123,10 +123,10 @@ export const hostingCompanies: Record<string, HostingCompanyData> = {
         price: 7664, // Precio mensual efectivo con descuento trianual + Dominio Gratis
         pricing: {
           monthly: 22900,
-          sixMonths: 12150, // $72,900/6 meses
-          annual: 11242, // $134,900/año + Dominio Gratis
-          biannual: 8329, // $199,900/2 años + Dominio Gratis
-          triannual: 7664, // $275,900/3 años + Dominio Gratis
+          sixMonths: 12150, // 6 meses
+          annual: 11242, // año + Dominio Gratis
+          biannual: 8329, // 2 años + Dominio Gratis
+          triannual: 7664, // 3 años + Dominio Gratis
           includesDomainFrom: 'annual'
         },
         storage: "100 GB SSD",

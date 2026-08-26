@@ -894,11 +894,11 @@ Servicios recomendados para Chile:
    - Múltiples métodos de pago
    - Cuotas sin interés
 
-3. **Chilexpress Official** (Pago, ~$89.990/año)
+3. **Chilexpress Official** (Pago, valor a consultar)
    - Cálculo automático tarifas
    - Seguimiento de envíos
 
-4. **Facturación Electrónica SII** (Pago, ~$49.990/año)
+4. **Facturación Electrónica SII** (Pago, valor a consultar)
    - Boletas y facturas electrónicas
    - Integración con SII
 
@@ -919,7 +919,7 @@ Servicios recomendados para Chile:
 
 | Característica | WooCommerce | Shopify |
 |---|---|---|
-| Costo mensual | $0 (+ hosting) | Desde $29 USD/mes |
+| Costo mensual | Gratis (+ hosting) | a consultar |
 | Comisión por venta | 0% | 2% (plan básico) |
 | Control de datos | Total | Limitado |
 | Personalización | Ilimitada | Restrictiva |
@@ -950,27 +950,27 @@ Servicios recomendados para Chile:
 **Perfil:** Artesanías hechas a mano
 - 50-100 productos
 - Ventas: 20-40 pedidos/mes
-- Hosting: Plan WooCommerce ($8.990/mes)
+- Hosting: Plan WooCommerce (valor a consultar)
 - Plugins: Gratis + Webpay
-- **Inversión inicial:** ~$150.000 CLP
+- **Inversión inicial:** valor a consultar
 
 ### Tienda mediana
 
 **Perfil:** Tienda de ropa online
 - 500-1,000 productos
 - Ventas: 200-500 pedidos/mes
-- Hosting: VPS ($29.990/mes)
-- Plugins: Premium (~$200.000/año)
-- **Inversión inicial:** ~$800.000 CLP
+- Hosting: VPS (valor a consultar)
+- Plugins: Premium (valor a consultar)
+- **Inversión inicial:** valor a consultar
 
 ### E-commerce enterprise
 
 **Perfil:** Retailer multicanal
 - 10,000+ productos
 - Ventas: 2,000+ pedidos/mes
-- Hosting: Servidor dedicado ($199.990/mes)
-- Desarrollo custom: $5M+ CLP
-- **Inversión inicial:** ~$15M CLP
+- Hosting: Servidor dedicado (valor a consultar)
+- Desarrollo custom: valor a consultar+ CLP
+- **Inversión inicial:** valor a consultar
 
 ## Hosting recomendado para WooCommerce en Chile
 
@@ -992,17 +992,17 @@ Servicios recomendados para Chile:
 **Tienda pequeña (0-50 productos):**
 - Hosting compartido WooCommerce
 - 2 GB RAM, 20 GB SSD
-- ~$8.990/mes
+- valor a consultar
 
 **Tienda mediana (50-500 productos):**
 - VPS WooCommerce
 - 4 GB RAM, 80 GB SSD
-- ~$29.990/mes
+- valor a consultar
 
 **Tienda grande (500+ productos):**
 - Servidor dedicado
 - 16 GB RAM, 500 GB SSD
-- ~$199.990/mes
+- valor a consultar
 
 ## Recursos y aprendizaje
 
@@ -1057,7 +1057,7 @@ Con el hosting adecuado en Chile, WooCommerce puede competir con cualquier plata
     faq: [
       {
         question: '¿Cuánto cuesta WooCommerce en Chile?',
-        answer: 'WooCommerce es 100% gratuito. Solo pagas por hosting ($8.990-$199.990/mes según tamaño), dominio (~$12.990/año), y plugins premium opcionales. No hay comisiones por venta ni tarifas mensuales obligatorias.'
+        answer: 'WooCommerce es 100% gratuito. Solo pagas por hosting (valor a consultar según tamaño), dominio (valor a consultar), y plugins premium opcionales. No hay comisiones por venta ni tarifas mensuales obligatorias.'
       },
       {
         question: '¿WooCommerce funciona con Transbank en Chile?',
@@ -1453,7 +1453,7 @@ function minify_css_output($buffer) {
 - 80% de ataques exitosos usan credenciales robadas
 - 1 de cada 3 sitios web chilenos es atacado anualmente
 - 2FA reduce hackeos exitosos en 99.9%
-- Costo promedio de hackeo: $2.5M CLP
+- Costo promedio de hackeo: valor a consultar
 
 ### **Vectores de ataque comunes**
 **Password attacks**
@@ -1864,7 +1864,7 @@ add_action('wp_scheduled_backup_check', 'check_daily_backup');
 ### **Estadísticas email Chile 2026**
 - 73% de emails marketing van a spam
 - Solo 15% de emails reach inbox sin autenticación
-- Pérdida promedio: $3.2M CLP anuales por mala deliverability
+- Pérdida promedio: valor a consultar anuales por mala deliverability
 - 92% de empresas chilenas NO tienen SPF/DKIM configurado
 
 ### **¿Por qué fallan los emails?**
@@ -1927,7 +1927,7 @@ Herramientas para revisar:
 **Para transaccional**:
 - **SendGrid**: 100 emails/día gratuito
 - **Mailgun**: Excellent para developers
-- **Amazon SES**: $0.10 per 1000 emails
+- **Amazon SES**: valor a consultar
 - **Postmark**: Specialized en transaccional
 
 **Para marketing**:
@@ -2021,7 +2021,7 @@ define('WPMS_SMTP_PASS', 'app-password');
 
 ### **Personalización local**
 - Usar horario Chile en timestamps
-- Precios en CLP formato $1.500
+- Precios en CLP formato valor a consultar
 - Referencias culturales apropiadas
 - Legal disclaimer Chilean compliance
 
@@ -2149,14 +2149,14 @@ Password: app-password (not regular password)
 - **Host**: smtp.sendgrid.net
 - **Port**: 587
 - **Límite**: 100 emails/día (free), unlimited (paid)
-- **Cost**: $0 - $15/month
+- **Cost**: valor a consultar/month
 - **Features**: Analytics, tracking, templates
 
 **Mailgun** (Developer-friendly)
 - **Host**: smtp.mailgun.org
 - **Port**: 587
 - **Límite**: 10,000 emails/month (free)
-- **Cost**: $0.80 per 1000 emails
+- **Cost**: valor a consultar
 - **Features**: API integration, webhooks
 
 ## Configuración paso a paso
@@ -4002,7 +4002,7 @@ Mobile First Approach:
 
 | Aspecto | Elementor Pro | Divi Builder | Gutenberg FSE | Beaver Builder |
 |---------|---------------|--------------|---------------|----------------|
-| **Precio anual** | $59 | $89 | Gratis | $99 |
+| **Precio anual** | valor a consultar | valor a consultar | Gratis | valor a consultar |
 | **Curva aprendizaje** | Fácil | Media | Fácil | Fácil |
 | **Widgets incluidos** | 90+ | 46 | 40+ | 40+ |
 | **Theme Builder** | ✅ Completo | ✅ Completo | ✅ FSE | ✅ Limitado |
@@ -4022,17 +4022,17 @@ Mobile First Approach:
 - E-commerce WooCommerce
 - Landing pages optimizadas
 - Sitios que requieren popups
-- Presupuesto medio ($59/año)
+- Presupuesto medio
 
 **Divi**
 - Acceso de por vida preferible
 - Múltiples sitios ilimitados
 - Template library masiva necesaria
-- Presupuesto: $89/año o $249 lifetime
+- Presupuesto: licencia anual o licencia lifetime (valores a consultar)
 
 **Gutenberg FSE**
 - Sitios simples blog/corporate
-- Presupuesto $0 critical
+- Presupuesto cero es crítico
 - Prefer WordPress nativo
 - No necesitas WooCommerce avanzado
 
@@ -4046,7 +4046,7 @@ Mobile First Approach:
 
 ### **Performance Boosters**
 
-**1. Perfmatters** ($24.95/año)
+**1. Perfmatters** (valor a consultar)
 \`\`\`
 Optimizations específicas Elementor:
 ├── Disable Elementor Google Fonts
@@ -4067,7 +4067,7 @@ Optimizations específicas Elementor:
 
 ### **Functionality Extenders**
 
-**Essential Addons for Elementor** (Gratuito + Pro $39)
+**Essential Addons for Elementor** (Gratuito + Pro valor a consultar)
 \`\`\`
 90+ widgets adicionales:
 ├── Advanced Data Table
@@ -4080,13 +4080,13 @@ Optimizations específicas Elementor:
 └── Woo Product Grid
 \`\`\`
 
-**JetElements** ($26 Elementor Cloud Hosting)
+**JetElements** (valor a consultar Elementor Cloud Hosting)
 - 50+ widgets únicos
 - Mega menu builder
 - Tabs & Accordions avanzados
 - Portfolio grids
 
-**Happy Addons** (Gratuito + Pro $39)
+**Happy Addons** (Gratuito + Pro valor a consultar)
 \`\`\`
 Chile-specific útiles:
 ├── WhatsApp Chat widget
@@ -4203,7 +4203,7 @@ SSL: Let's Encrypt mínimo
 
 **HostingPlus** (Recomendado #1)
 \`\`\`
-Plan WordPress Pro: $8.990/mes
+Plan WordPress Pro: valor a consultar
 ├── PHP 8.1 + OPcache
 ├── RAM 4GB garantizada
 ├── SSD NVMe 50GB
@@ -4215,7 +4215,7 @@ Plan WordPress Pro: $8.990/mes
 \`\`\`
 
 **Hosting24**
-- Planes desde $4.990/mes
+- Planes a consultar
 - PHP 8.0, MySQL 8.0
 - Buena performance precio/calidad
 - Soporte limitado Elementor
@@ -4223,7 +4223,7 @@ Plan WordPress Pro: $8.990/mes
 **EcoHosting**
 - Enfoque sustentable
 - Performance sólido
-- $6.990/mes plan medio
+- valor a consultar plan medio
 - Comunidad Elementor Chile activa
 
 ### **Configuración Hosting Ideal**
@@ -4272,8 +4272,8 @@ Plan WordPress Pro: $8.990/mes
 - **Meetups WordPress Santiago**: Eventos mensuales
 
 ### **Cursos Recomendados (Español)**
-1. **Udemy**: "Elementor Pro Completo" - $12.990
-2. **Domestika**: "Diseño Web con Elementor" - $19.990  
+1. **Udemy**: "Elementor Pro Completo" - valor a consultar
+2. **Domestika**: "Diseño Web con Elementor" - valor a consultar  
 3. **YouTube**: Canal "Diseño y Programación Web" (gratis)
 4. **LinkedIn Learning**: Elementor path (gratis trial)
 
@@ -4287,7 +4287,7 @@ Plan WordPress Pro: $8.990/mes
 - SaaS Landing Chile
 
 **Premium Template Providers:**
-- **Envato Elements**: $16.50/mes, 1000+ kits
+- **Envato Elements**: valor a consultar, 1000+ kits
 - **Template Monster**: One-time purchase
 - **Qodeinteractive**: Premium themes Elementor`,
     category: 'builders',
@@ -4371,14 +4371,14 @@ Plan WordPress Pro: $8.990/mes
 
 ## Planes y Precios
 
-### **Divi Yearly Access** - $89/año
+### **Divi Yearly Access** - valor a consultar
 - Divi Theme + Builder
 - Todos los layouts premium
 - Premium support
 - Updates por 1 año
 - **[Obtener Divi](https://www.elegantthemes.com/join/)**
 
-### **Divi Lifetime Access** - $249 una vez
+### **Divi Lifetime Access** - valor a consultar una vez
 - Todo lo anterior
 - Acceso de por vida
 - Mejor valor a largo plazo
@@ -4394,7 +4394,7 @@ Plan WordPress Pro: $8.990/mes
 
 | Aspecto | Divi | Elementor Pro | Beaver Builder |
 |---------|------|---------------|----------------|
-| Precio anual | $89 | $59 | $99 |
+| Precio anual | valor a consultar | valor a consultar | valor a consultar |
 | Tema incluido | ✅ | ❌ | ❌ |
 | A/B Testing | ✅ | ❌ | ❌ |
 | Layouts pre-hechos | 2000+ | 300+ | 500+ |
@@ -4448,7 +4448,7 @@ Plan WordPress Pro: $8.990/mes
     faq: [
       {
         question: '¿Vale la pena el Lifetime Access de Divi?',
-        answer: 'Si planeas usar Divi por más de 3 años, el Lifetime Access ($249) es más económico que renovar anualmente ($89/año).'
+        answer: 'Si planeas usar Divi por más de 3 años, el Lifetime Access (valor a consultar) es más económico que renovar anualmente (valor a consultar).'
       },
       {
         question: '¿Divi incluye tema o solo el builder?',
@@ -4527,7 +4527,7 @@ Plan WordPress Pro: $8.990/mes
 
 ## Mejores plugins de cache 2025
 
-### **WP Rocket** - Premium ($59/año)
+### **WP Rocket** - Premium (valor a consultar)
 - Setup automático inteligente
 - Cache de páginas + optimizaciones
 - Lazy loading avanzado
@@ -4694,18 +4694,18 @@ Cuando alguien escribe tu dominio en su navegador, se conecta a un servidor (com
 
 ### **Hosting Compartido** - Ideal para empezar
 - Múltiples sitios en un servidor
-- Más económico ($2.000-$8.000/mes)
+- Más económico (valor a consultar)
 - Perfecto para blogs y sitios pequeños
 
 ### **VPS** - Recursos garantizados  
 - Servidor virtual privado
 - Mayor control y rendimiento
-- Ideal para e-commerce ($15.000-$50.000/mes)
+- Ideal para e-commerce (valor a consultar)
 
 ### **Servidor Dedicado** - Máximo control
 - Servidor completo para ti
 - Máximo rendimiento
-- Para sitios enterprise ($80.000+/mes)
+- Para sitios enterprise (valor a consultar)
 
 ## ¿Por qué el hosting local es mejor?
 
@@ -4745,7 +4745,7 @@ En Chile, elegir hosting nacional tiene ventajas específicas:
     faq: [
       {
         question: '¿Cuánto cuesta el hosting en Chile?',
-        answer: 'Hosting compartido desde $2.000/mes, VPS desde $15.000/mes, servidores dedicados desde $80.000/mes. Incluyen dominio y SSL el primer año.'
+        answer: 'Hosting compartido a consultar, VPS a consultar, servidores dedicados a consultar. Incluyen dominio y SSL el primer año.'
       },
       {
         question: '¿Qué diferencia hay entre hosting compartido y VPS?',
@@ -4899,13 +4899,13 @@ En Chile, elegir hosting nacional tiene ventajas específicas:
 - Valida identidad de la organización
 - Proceso manual 1-3 días
 - Muestra nombre de empresa
-- Ideal para e-commerce ($50-200/año)
+- Ideal para e-commerce (valor a consultar)
 
 ### **Extended Validation (EV)** - Máxima confianza
 - Validación exhaustiva de empresa
 - Barra verde en navegador (navegadores antiguos)
 - Proceso 1-2 semanas
-- Para bancos, seguros ($200-500/año)
+- Para bancos, seguros (valor a consultar)
 
 ## SSL gratuito vs premium
 
@@ -5137,7 +5137,7 @@ Tipo MX: mail.miempresa.cl → servidor-email
       },
       {
         question: '¿Cuánto cuesta mantener un dominio?',
-        answer: 'Dominio .cl cuesta ~$15.000/año. .com ~$20.000/año. Muchos providers incluyen dominio gratis el primer año con hosting.'
+        answer: 'Dominio .cl cuesta valor a consultar. .com valor a consultar. Muchos providers incluyen dominio gratis el primer año con hosting.'
       },
       {
         question: '¿Puedo cambiar de dominio después?',
@@ -5186,7 +5186,7 @@ Servidor Físico (ejemplo)
 ## Ventajas del hosting compartido
 
 ### **✅ Beneficios principales**
-- **Económico**: Desde $2.000/mes en Chile
+- **Económico**: a consultar en Chile
 - **Mantenimiento incluido**: Sin gestión técnica
 - **Panel control**: cPanel/Plesk fácil de usar
 - **Soporte técnico**: 24/7 en español
@@ -5224,10 +5224,10 @@ Servidor Físico (ejemplo)
 ### **Comparación de precios 2025**
 \`\`\`
 Plan Básico (1 sitio):
-├── HostingPlus: $2.490/mes
-├── WebHosting: $2.990/mes  
-├── Hosting24: $1.990/mes
-└── EcoHosting: $2.790/mes
+├── HostingPlus: valor a consultar
+├── WebHosting: valor a consultar  
+├── Hosting24: valor a consultar
+└── EcoHosting: valor a consultar
 \`\`\`
 
 ## Optimización en shared hosting
@@ -5280,7 +5280,7 @@ ini_set('memory_limit', '256M');
       title: 'Hosting Compartido Esencial',
       keyPoints: [
         'Múltiples sitios comparten recursos del mismo servidor',
-        'Opción más económica: desde $2.000/mes en Chile',
+        'Opción más económica: a consultar en Chile',
         'Ideal para sitios nuevos con <1000 visitas/día',
         'Incluye mantenimiento y soporte técnico completo'
       ]
@@ -5332,13 +5332,13 @@ Servidor Físico
 - Monitoreo 24/7 por el proveedor
 - Soporte técnico completo
 - Backup automático incluido
-- **Precio**: $25.000-$80.000/mes
+- **Precio**: valor a consultar
 
 **VPS No Administrado (Unmanaged)**  
 - Control total del servidor
 - Tú gestionas actualizaciones y seguridad
 - Soporte limitado a hardware
-- **Precio**: $8.000-$30.000/mes
+- **Precio**: valor a consultar
 - Requiere conocimientos técnicos
 
 ### **Sistemas operativos populares**
@@ -5374,19 +5374,19 @@ Servidor Físico
 
 ### **Configuraciones recomendadas**
 \`\`\`
-VPS Básico ($25.000/mes):
+VPS Básico (valor a consultar):
 ├── 2GB RAM
 ├── 2 CPU cores  
 ├── 50GB SSD
 └── 2TB transferencia
 
-VPS Intermedio ($45.000/mes):
+VPS Intermedio (valor a consultar):
 ├── 4GB RAM
 ├── 4 CPU cores
 ├── 100GB SSD  
 └── 4TB transferencia
 
-VPS Avanzado ($80.000/mes):
+VPS Avanzado (valor a consultar):
 ├── 8GB RAM
 ├── 6 CPU cores
 ├── 200GB SSD
@@ -5437,7 +5437,7 @@ sudo swapon /swapfile
 - **CloudHosting**: Infraestructura moderna
 
 ### **Internacionales populares**
-- **DigitalOcean**: $5 USD/mes, muy popular
+- **DigitalOcean**: valor a consultar, muy popular
 - **Linode**: Rendimiento excepcional
 - **Vultr**: Red global, precios competitivos`,
     category: 'hosting-fundamentals',
@@ -5460,7 +5460,7 @@ sudo swapon /swapfile
         'Servidor virtual con recursos 100% dedicados',
         'Equilibrio perfecto: control + gestión simplificada',  
         'Ideal para sitios con 5K-50K visitas diarias',
-        'Escalable: desde $25.000/mes en Chile'
+        'Escalable: a consultar en Chile'
       ]
     },
     lastUpdated: '2025-01-15'
@@ -5711,7 +5711,7 @@ sudo certbot renew --force-renewal
 ## Ventajas vs SSL premium
 
 ### **✅ Let's Encrypt advantages**
-- **Costo**: $0 vs $50-200/año SSL premium
+- **Costo**: gratis (Let's Encrypt) vs SSL premium de pago
 - **Automatización**: Sin intervención manual
 - **Encriptación**: 256-bit idéntica a premium
 - **Compatibilidad**: 99%+ browsers modernos
@@ -5733,7 +5733,7 @@ Let's Encrypt ideal para:
 
 SSL Premium necesario para:
 ├── Banca y finanzas
-├── E-commerce con >$1M ventas/año
+├── E-commerce con >valor a consultar ventas/año
 ├── Sitios que requieren Extended Validation
 └── Cumplimiento normativo estricto
 \`\`\`
@@ -6103,15 +6103,15 @@ Multi-proveedor setup:
 ## Impacto del downtime
 
 ### **💰 Costo por minuto offline**
-- **E-commerce pequeño**: $50-200/hora
-- **E-commerce mediano**: $500-2,000/hora
-- **Portal de noticias**: $100-500/hora
-- **SaaS empresarial**: $1,000-10,000/hora
+- **E-commerce pequeño**: valor a consultar
+- **E-commerce mediano**: valor a consultar
+- **Portal de noticias**: valor a consultar
+- **SaaS empresarial**: valor a consultar
 
 ### **🔍 Casos de estudio**
-- **Amazon**: $220,000 USD por minuto
-- **Facebook**: $90,000 USD por minuto
-- **E-commerce chileno promedio**: $30-150 por minuto
+- **Amazon**: valor a consultar
+- **Facebook**: valor a consultar
+- **E-commerce chileno promedio**: valor a consultarpor minuto
 
 ### **SEO y reputación**
 - Downtime frecuente afecta ranking Google
@@ -6152,7 +6152,7 @@ Multi-proveedor setup:
       keyPoints: [
         '99.9% = máximo 8.76 horas offline por año',
         'Monitoreo esencial con alertas automáticas',
-        'Downtime cuesta $30-150/minuto a e-commerce chileno promedio',
+        'Downtime cuesta valor a consultar a e-commerce chileno promedio',
         'SLA con compensación indica hosting profesional'
       ]
     },
@@ -6357,7 +6357,7 @@ WebHosting:
 ├── Backup semanal básico
 ├── Retención 14 días  
 ├── Restauración manual
-└── Backup diario: +$5,000/mes
+└── Backup diario: +valor a consultar
 
 NetHosting:
 ├── Backup cada 6 horas
@@ -6659,8 +6659,8 @@ Hosting chileno con buen DNS:
 
 Servicios DNS premium:
 ├── CloudFlare: Gratis, muy rápido
-├── Route 53: $0.50/zona, enterprise
-├── Google Cloud DNS: $0.20/1M queries
+├── Route 53: valor a consultar, enterprise
+├── Google Cloud DNS: valor a consultar
 └── Azure DNS: Integración Microsoft
 \`\`\``,
     category: 'domains',
@@ -6903,7 +6903,7 @@ Opciones SSL subdominios:
 └── Let's Encrypt: Automático para cada uno
 
 Wildcard SSL setup:
-├── Compra: $50-200/año según proveedor
+├── Compra: valor a consultar según proveedor
 ├── Instalación: Panel control o manual
 ├── Cobertura: Todos subdominios presentes/futuros
 └── Renovación: Anual típicamente
@@ -7169,14 +7169,14 @@ Domain Validated (DV):
 Organization Validated (OV):
 ├── Validación: Empresa + dominio
 ├── Tiempo: 1-3 días manual
-├── Costo: $50-200/año
+├── Costo: valor a consultar
 ├── Indicador: Candado + info empresa
 └── Ideal para: Sitios corporativos
 
 Extended Validation (EV):
 ├── Validación: Exhaustiva legal + física
 ├── Tiempo: 7-14 días verificación
-├── Costo: $200-1000/año
+├── Costo: valor a consultar
 ├── Indicador: Barra verde con empresa
 └── Ideal para: Banca, e-commerce premium
 \`\`\`
@@ -7186,21 +7186,21 @@ Extended Validation (EV):
 Single Domain:
 ├── Cubre: miempresa.cl únicamente
 ├── NO cubre: www.miempresa.cl (separate)
-├── Costo: $0 (Let's Encrypt) - $50/año
+├── Costo: Gratis (Let's Encrypt) - valor a consultar
 └── Uso: Sitios simples
 
 Wildcard:
 ├── Cubre: *.miempresa.cl
 ├── Incluye: blog.miempresa.cl, tienda.miempresa.cl
 ├── NO incluye: miempresa.cl (requiere separate)
-├── Costo: $50-300/año
+├── Costo: valor a consultar
 └── Uso: Múltiples subdominios
 
 Multi-Domain (SAN):
 ├── Cubre: Lista específica dominios
 ├── Ejemplo: miempresa.cl, miempresa.com, mi-empresa.cl
 ├── Límite: 100-250 dominios típico
-├── Costo: $100-500/año
+├── Costo: valor a consultar
 └── Uso: Múltiples dominios empresa
 \`\`\`
 
@@ -7316,13 +7316,13 @@ done
 \`\`\`
 HostingPlus:
 ├── Let's Encrypt: Automático gratis
-├── SSL premium: Desde $25.000/año
-├── Wildcard: $75.000/año
-├── EV: $150.000/año
+├── SSL premium: a consultar
+├── Wildcard: valor a consultar
+├── EV: valor a consultar
 └── Instalación: 1-click
 
 WebHosting:
-├── SSL básico: $15.000/año
+├── SSL básico: valor a consultar
 ├── Let's Encrypt: Manual setup
 ├── Soporte SSL: Email only
 └── Renovación: Manual
@@ -7404,10 +7404,10 @@ Ejemplo 5 subdominios:
 ┌─────────────────┬──────────────┬─────────────────┐
 │ Método          │ Costo anual  │ Gestión         │
 ├─────────────────┼──────────────┼─────────────────┤
-│ 5 SSL simples   │ $0 (Let's E.)│ 5 renovaciones  │
-│ 5 SSL premium   │ $250-500     │ 5 instalaciones │
-│ Wildcard básico │ $50-150      │ 1 instalación   │
-│ Wildcard EV     │ $200-800     │ 1 renovación    │
+│ 5 SSL simples   │ Gratis (Let's E.)│ 5 renovaciones  │
+│ 5 SSL premium   │ valor a consultar│ 5 instalaciones │
+│ Wildcard básico │ valor a consultar│ 1 instalación   │
+│ Wildcard EV     │ valor a consultar│ 1 renovación    │
 └─────────────────┴──────────────┴─────────────────┘
 \`\`\`
 
@@ -7681,13 +7681,13 @@ fi
 \`\`\`
 HostingPlus:
 ├── Let's Encrypt wildcard: Manual setup  
-├── SSL wildcard premium: $75.000/año
+├── SSL wildcard premium: valor a consultar
 ├── Instalación: Soporte técnico incluido
 ├── Renovación: Automática premium
 └── DNS API: CloudFlare integration
 
 WebHosting:
-├── Wildcard SSL: $120.000/año
+├── Wildcard SSL: valor a consultar
 ├── Let's Encrypt: No soportado oficialmente
 ├── Instalación: Manual via ticket
 └── Soporte: Limitado a horario oficina
@@ -8238,9 +8238,9 @@ whois dominio.com
 - Mejor posicionamiento SEO
 
 ### **Costo vs beneficio**
-- Certificado EV: $200-500 USD/año
+- Certificado EV: valor a consultar
 - Aumento conversión 20%
-- ROI positivo con $2,500 ventas/mes
+- ROI positivo con valor a consultar ventas/mes
 - Payback típico: 1-3 meses`,
     category: 'ssl-security',
     cms: 'general',
@@ -8594,12 +8594,12 @@ getLCP(console.log);
 
 ### CloudFlare (Recomendado)
 - **Plan Free**: Protección básica DDoS
-- **Plan Pro**: $20/mes, WAF completo
+- **Plan Pro**: valor a consultar, WAF completo
 - **Ventajas**: CDN + Security integrado
 - **Desventaja**: Configuración técnica
 
 ### Sucuri WAF
-- **Costo**: $200-500/año
+- **Costo**: valor a consultar
 - **Ventajas**: Especialistas WordPress
 - **Cleanup**: Limpieza malware incluida
 - **Soporte**: En español disponible
@@ -8693,10 +8693,10 @@ SecRule REQUEST_URI "@beginsWith /wp-admin" \\
 - **VirusTotal**: Multi-engine analysis
 
 ### Servicios de limpieza
-- **Sucuri**: $200/año, cleanup incluido
-- **MalCare**: $99/año, automático
+- **Sucuri**: valor a consultar, cleanup incluido
+- **MalCare**: valor a consultar, automático
 - **SiteLock**: Múltiples planes
-- **Wordfence Premium**: $99/año
+- **Wordfence Premium**: valor a consultar
 
 ## Estrategias de prevención
 
@@ -8751,8 +8751,8 @@ chmod 600 wp-config.php
 ## Impacto business específico Chile
 
 ### Costos típicos infección
-- **Cleanup profesional**: $300-1,500 USD
-- **Downtime revenue**: $500-5,000/día
+- **Cleanup profesional**: valor a consultar
+- **Downtime revenue**: valor a consultar
 - **SEO recovery**: 2-6 meses
 - **Customer trust**: Daño reputacional
 

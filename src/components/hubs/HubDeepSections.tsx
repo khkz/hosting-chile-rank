@@ -15,7 +15,7 @@ const HubDeepSections: React.FC<{ hubKey: HubKey }> = ({ hubKey }) => {
         <div className="flex items-start gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-900 rounded-md p-3">
           <Info className="h-4 w-4 mt-0.5 flex-shrink-0" aria-hidden="true" />
           <p>
-            <strong>Divulgación:</strong> algunos enlaces "Visitar sitio" son de afiliados; la comisión no afecta el orden del ranking. El orden depende únicamente de datos verificables (ASN, TTFB medido, uptime, reclamos, reputación). Precios verificados a julio 2026.
+            <strong>Divulgación:</strong> algunos enlaces "Visitar sitio" son de afiliados; la comisión no afecta el orden del ranking. El orden depende únicamente de datos verificables (ASN, TTFB medido, uptime, reclamos, reputación).
           </p>
         </div>
       </section>

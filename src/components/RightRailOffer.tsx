@@ -38,7 +38,7 @@ const RightRailOffer: React.FC<RightRailOfferProps> = ({
                 #1 Hosting Chile
               </Badge>
               <h3 className="font-bold text-lg">WordPress Turbo</h3>
-              <p className="text-primary font-bold text-xl">$4.990/mes</p>
+              <p className="text-primary font-bold text-xl">Planes a consultar</p>
             </div>
             
             <div className="space-y-2 text-sm">
@@ -81,7 +81,7 @@ const RightRailOffer: React.FC<RightRailOfferProps> = ({
           </Badge>
           <CardTitle className="text-xl">¿Necesitas hosting rápido?</CardTitle>
           <div className="text-3xl font-bold text-primary">WordPress Turbo</div>
-          <div className="text-lg text-muted-foreground">desde $4.990/mes</div>
+          <div className="text-lg text-muted-foreground">planes a consultar</div>
         </CardHeader>
 
         <CardContent className="space-y-4">

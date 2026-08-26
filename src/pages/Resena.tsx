@@ -171,7 +171,6 @@ const hostingData = {
       'ASN propio AS263237 con anuncios BGP verificables',
       'Datacenters propios en Santiago y presencia internacional (NY, MOW, AMS) según el proveedor',
       'Infraestructura 100% independiente, sin reventa',
-      'Más de 20 años operando en Chile',
       'Servicios de housing, colocation y cross connect para empresas',
       'Conexión directa a AmericaIX (IXP) para reducir latencia internacional'
     ],
@@ -188,13 +187,12 @@ const hostingData = {
     name: 'Hosting.cl',
     logo: 'https://logo.clearbit.com/hosting.cl',
     rating: 8.4,
-    description: 'Hosting.cl es uno de los proveedores con más años en el mercado chileno, con datacenter propio en Santiago y ASN AS265839. Su trayectoria es extensa pero arrastra reclamos públicos repetidos entre 2012 y 2025 que se deben considerar. Nota editorial: Hosting.cl publicita "100% uptime", una garantía técnicamente imposible de cumplir; los SLA serios del sector rondan el 99,9%.',
+    description: 'Hosting.cl es un proveedor chileno con datacenter propio en Santiago y ASN AS265839. Arrastra reclamos públicos repetidos entre 2012 y 2025 que se deben considerar. Nota editorial: Hosting.cl publicita "100% uptime", una garantía técnicamente imposible de cumplir; los SLA serios del sector rondan el 99,9%.',
     pros: [
       'Datacenter propio en Santiago (baja latencia local)',
       'ASN propio AS265839 verificable',
       'Servidores con LiteSpeed y WAF incluidos',
-      'Backups diarios y dominio .CL en planes anuales',
-      'Más de 15 años operando en Chile'
+      'Backups diarios y dominio .CL en planes anuales'
     ],
     cons: [
       'Publicita "100% uptime", garantía técnicamente imposible de cumplir (SLA realista del sector: 99,9%)',
@@ -210,7 +208,7 @@ const hostingData = {
     rating: 8.2,
     description: 'BlueHosting.cl es un proveedor chileno que opera sobre infraestructura de Haulmer en Curicó (ASN AS64111). Su sitio web y estrategia de marketing sugieren una orientación mayor hacia la captación de tráfico y posicionamiento SEO que hacia la especialización técnica en hosting puro. Ofrece planes anuales con precios visibles y un perfil de reclamos mixto que conviene revisar antes de contratar.',
     pros: [
-      'Precios anuales transparentes (desde $43.900/año)',
+      'Publica precios anuales en su sitio',
       'Infraestructura en datacenter Haulmer (Curicó, Chile)',
       'Firewall WAF y backups diarios incluidos',
       'Dominio .CL gratis el primer año',

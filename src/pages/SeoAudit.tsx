@@ -178,7 +178,7 @@ export default function SeoAudit() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Auditoría SEO Profesional Chile | Elige Tu Hosting</title>
-        <meta name="description" content="Auditoría SEO completa con datos reales de Google: técnico, Core Web Vitals, keywords, backlinks y competidores. Suscripción desde $19.990/mes." />
+        <meta name="description" content="Auditoría SEO completa con datos reales de Google: técnico, Core Web Vitals, keywords, backlinks y competidores. Suscripción a consultar." />
         <link rel="canonical" href="https://eligetuhosting.cl/seo-audit" />
         <meta property="og:title" content="Auditoría SEO Profesional Chile" />
         <meta property="og:description" content="Auditoría SEO con datos reales de Google CL. Mini-audit gratis." />

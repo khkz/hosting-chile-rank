@@ -48,7 +48,7 @@ const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdat
         <span aria-hidden="true">·</span>
         <span className="inline-flex items-center gap-1">
           <Calendar className="w-3.5 h-3.5" />
-          Última actualización: <time dateTime={typeof lastUpdated === 'string' ? lastUpdated : undefined}>{formatDate(lastUpdated)}</time>
+          Última revisión del ranking: julio 2026
         </span>
       </div>
 

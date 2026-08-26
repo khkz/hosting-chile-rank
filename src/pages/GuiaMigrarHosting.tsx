@@ -62,7 +62,7 @@ const GuiaMigrarHosting = () => {
               <p className="text-lg mb-4">
                 <strong>Historia real:</strong> En 2023, una tienda online de Valparaíso me contactó desesperada. 
                 Su hosting anterior se había "comido" 3 días de ventas durante una migración mal hecha. 
-                Perdieron $800.000 en ventas y la confianza de sus clientes.
+                Perdieron ventas y la confianza de sus clientes.
               </p>
               <p className="text-muted-foreground">
                 Desde entonces, he perfeccionado un proceso que garantiza 0% pérdida de datos. 
@@ -306,7 +306,7 @@ const GuiaMigrarHosting = () => {
                       <li>• ✅ 0% pérdida de datos</li>
                       <li>• ✅ 40% mejora en velocidad</li>
                       <li>• ✅ Black Friday sin caídas</li>
-                      <li>• ✅ Cliente ahorró $2M anuales</li>
+                      <li>• ✅ El cliente redujo su costo anual</li>
                     </ul>
                   </div>
                 </div>
@@ -350,7 +350,7 @@ const GuiaMigrarHosting = () => {
               <div className="bg-white/50 p-4 rounded-lg">
                 <h3 className="font-bold mb-2">¿Necesitas ayuda con tu migración?</h3>
                 <p className="text-sm text-muted-foreground">
-                  Si tu sitio maneja más de $500,000 mensuales o tienes más de 10,000 visitantes/mes, 
+                  Si tu sitio maneja más de a consultar o tienes más de 10,000 visitantes/mes, 
                   considera contratar un profesional. El riesgo no vale la pena.
                 </p>
               </div>

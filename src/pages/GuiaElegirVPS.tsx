@@ -73,9 +73,9 @@ const GuiaElegirVPS = () => {
             <section className="mb-12 bg-emerald-50 p-6 rounded-lg border-l-4 border-emerald-400">
               <h2 className="text-2xl font-bold mb-4 text-emerald-800">4 años después: La lección más cara que aprendí</h2>
               <p className="text-emerald-700 mb-4">
-                En 2021 migré a un restaurante a un VPS "premium" de $89.000/mes. En 3 meses quebró. 
+                En 2021 migré a un restaurante a un VPS "premium" sobredimensionado. En 3 meses quebró. 
                 <strong> No porque el VPS fuera malo, sino porque no necesitaba VPS.</strong> 
-                Con su tráfico real (150 visitas diarias), un hosting compartido de $15.000 le sobraba.
+                Con su tráfico real (150 visitas diarias), un hosting compartido le sobraba.
               </p>
               <p className="text-emerald-700">
                 <strong>Lección brutal:</strong> VPS no es sinónimo de éxito. Es una herramienta cara para problemas específicos. 
@@ -98,7 +98,7 @@ const GuiaElegirVPS = () => {
                   <div className="bg-red-100 p-3 rounded">
                     <p className="text-red-800 text-sm">
                       <strong>Caso real:</strong> Clínica Dental Providencia - 50 reservas diarias, se caía cada lunes en la mañana. 
-                      VPS básico de $24.990/mes = problema resuelto hace 8 meses.
+                      Un VPS básico = problema resuelto hace 8 meses.
                     </p>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ const GuiaElegirVPS = () => {
                   <div className="bg-yellow-100 p-3 rounded">
                     <p className="text-yellow-800 text-sm">
                       <strong>Caso real:</strong> Fintech Santiago - App tardaba 8 segundos en cargar dashboard. 
-                      VPS de $45.990/mes = tiempo de carga bajo 1 segundo, conversiones +34%.
+                      Un VPS adecuado = tiempo de carga bajo 1 segundo, conversiones +34%.
                     </p>
                   </div>
                 </div>
@@ -175,7 +175,7 @@ const GuiaElegirVPS = () => {
                   <li>• Web personal o blog con menos de 500 visitas diarias</li>
                   <li>• Sitio corporativo básico (solo información, sin funcionalidades)</li>
                   <li>• Proyecto en fase de prototipo o testeo</li>
-                  <li>• Presupuesto menor a $25.000/mes para hosting</li>
+                  <li>• Presupuesto acotado para hosting</li>
                 </ul>
               </div>
             </section>
@@ -210,7 +210,7 @@ const GuiaElegirVPS = () => {
                       <h4 className="font-semibold text-green-700">✅ Lo mejor:</h4>
                       <ul className="text-sm text-gray-600 space-y-1">
                         <li>• Soporte técnico responde en 15 minutos</li>
-                        <li>• Panel cPanel incluido (valor $12.000)</li>
+                        <li>• Panel cPanel incluido</li>
                         <li>• Backup automático diario</li>
                         <li>• Migración gratuita profesional</li>
                       </ul>
@@ -225,8 +225,8 @@ const GuiaElegirVPS = () => {
                   </div>
                   <div className="bg-green-100 p-3 rounded mb-4">
                     <p className="text-green-800 text-sm">
-                      <strong>Plan recomendado:</strong> VPS Básico - 2 CPU, 4GB RAM, 80GB SSD = $29.990/mes 
-                      (o $24.990/mes pagando anual)
+                      <strong>Plan recomendado:</strong> VPS Básico - 2 CPU, 4GB RAM, 80GB SSD = a consultar 
+                      (o a consultar pagando anual)
                     </p>
                   </div>
                   <a 
@@ -253,7 +253,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-green-100 p-3 rounded mb-4">
                     <p className="text-green-800 text-sm">
-                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 60GB SSD = $32.990/mes
+                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 60GB SSD = a consultar
                     </p>
                   </div>
                   <a 
@@ -280,7 +280,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-blue-100 p-3 rounded mb-4">
                     <p className="text-blue-800 text-sm">
-                      <strong>Plan recomendado:</strong> VPS Pro - 2 CPU, 4GB RAM, 80GB SSD = $34.990/mes
+                      <strong>Plan recomendado:</strong> VPS Pro - 2 CPU, 4GB RAM, 80GB SSD = a consultar
                     </p>
                   </div>
                   <a 
@@ -307,7 +307,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-purple-100 p-3 rounded mb-4">
                     <p className="text-purple-800 text-sm">
-                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 40GB SSD = $159.990/mes (USD convertido)
+                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 40GB SSD = a consultar (USD convertido)
                     </p>
                   </div>
                   <a 
@@ -334,7 +334,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-green-100 p-3 rounded mb-4">
                     <p className="text-green-800 text-sm">
-                      <strong>Plan recomendado:</strong> VPS Starter - 1 CPU, 2GB RAM, 40GB SSD = $14.990/mes
+                      <strong>Plan recomendado:</strong> VPS Starter - 1 CPU, 2GB RAM, 40GB SSD = a consultar
                     </p>
                   </div>
                   <a 
@@ -358,7 +358,7 @@ const GuiaElegirVPS = () => {
                 <div className="bg-red-50 p-5 rounded-lg border-l-4 border-red-500">
                   <h3 className="font-bold text-red-800 mb-2">❌ ERROR #1: Elegir VPS por precio sin ver ubicación</h3>
                   <p className="text-red-700 mb-2">
-                    <strong>El error:</strong> Contratar VPS "chileno" que está en Brasil o Argentina para ahorrar $5.000.
+                    <strong>El error:</strong> Contratar VPS "chileno" que está en Brasil o Argentina para ahorrar unos pesos.
                   </p>
                   <p className="text-red-700">
                     <strong>Consecuencia real:</strong> +100ms latencia = usuarios abandonan la web. Perdiste más en ventas que ahorraste.
@@ -371,7 +371,7 @@ const GuiaElegirVPS = () => {
                     <strong>El error:</strong> "El proveedor me dijo que ellos hacen el backup" y confiar 100%.
                   </p>
                   <p className="text-orange-700">
-                    <strong>Consecuencia real:</strong> Se perdieron 2 años de contenido de un blog. Costo de recuperación: $1.2M.
+                    <strong>Consecuencia real:</strong> Se perdieron 2 años de contenido de un blog. Costo de recuperación: muy alto.
                   </p>
                 </div>
 
@@ -391,7 +391,7 @@ const GuiaElegirVPS = () => {
                     <strong>El error:</strong> "Por si acaso" contratar VPS de 8GB RAM cuando necesitas 2GB.
                   </p>
                   <p className="text-purple-700">
-                    <strong>Consecuencia real:</strong> Gastas $40.000 extra al mes por 2 años = $960.000 botados.
+                    <strong>Consecuencia real:</strong> Pagas de más cada mes durante 2 años.
                   </p>
                 </div>
               </div>

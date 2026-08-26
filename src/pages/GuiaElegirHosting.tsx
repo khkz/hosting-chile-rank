@@ -98,9 +98,9 @@ const GuiaElegirHosting = () => {
             <section className="mb-12 bg-amber-50 p-6 rounded-lg border-l-4 border-amber-400">
               <h2 className="text-2xl font-bold mb-4 text-amber-800">Mi experiencia: El error que me costó caro</h2>
               <p className="text-amber-700 mb-4">
-                En 2016 lancé mi primera tienda online con el hosting más barato que encontré: $990 pesos mensuales. 
+                En 2016 lancé mi primera tienda online con el hosting más barato que encontré. 
                 Parecía una ganga, ¿verdad? Error garrafal. En pleno CyberDay, con 500 visitantes simultáneos, 
-                el sitio se cayó por 6 horas. Perdí más de $2 millones en ventas y la confianza de muchos clientes.
+                el sitio se cayó por 6 horas. Perdí ventas y la confianza de muchos clientes.
               </p>
               <p className="text-amber-700">
                 Desde entonces, aprendí que <strong>el hosting no es un gasto, es una inversión</strong>. 
@@ -118,7 +118,7 @@ const GuiaElegirHosting = () => {
                   <p className="mb-3">
                     Es como vivir en un departamento compartido: divides los recursos (cocina, baño, internet) con otros. 
                     Perfecto para blogs personales, sitios de iglesias o emprendimientos que recién arrancan. 
-                    <strong>Precio en Chile:</strong> Entre $1.500 - $8.000 mensuales.
+                    <strong>Precio en Chile:</strong> a consultar.
                   </p>
                   <div className="bg-blue-50 p-3 rounded mb-3">
                     <p className="text-sm text-blue-800">
@@ -138,7 +138,7 @@ const GuiaElegirHosting = () => {
                   <p className="mb-3">
                     Imagínate tener tu propia oficina en un edificio corporativo. Tienes tus recursos garantizados, 
                     pero compartes la infraestructura. Ideal cuando tu web recibe +1.000 visitas diarias o manejas datos sensibles.
-                    <strong>Precio en Chile:</strong> Entre $15.000 - $80.000 mensuales.
+                    <strong>Precio en Chile:</strong> a consultar.
                   </p>
                   <div className="bg-green-50 p-3 rounded mb-3">
                     <p className="text-sm text-green-800">

@@ -85,8 +85,7 @@ const hostProviders = [
     features: [
       "Infraestructura SSD con datacenter en Chile",
       "Soporte técnico en español de excelencia",
-      "0 reclamos verificados en los últimos 12 meses",
-      "Más de 15 años operando en el mercado chileno"
+      "0 reclamos verificados en los últimos 12 meses"
     ],
     url: "https://www.hn.cl"
   }

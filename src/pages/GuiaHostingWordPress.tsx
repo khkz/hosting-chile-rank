@@ -61,7 +61,7 @@ const GuiaHostingWordPress = () => {
             <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
               <p className="text-lg mb-4">
                 <strong>2019 - El proyecto que me abrió los ojos:</strong> Una inmobiliaria de Las Condes 
-                tenía un WordPress que cargaba en 18 segundos. Perdían $3 millones mensuales en leads.
+                tenía un WordPress que cargaba en 18 segundos. Perdían leads cada mes.
               </p>
               <p className="text-blue-700 mb-4">
                 Solo cambiando de hosting (de uno "barato" a uno optimizado para WordPress) 
@@ -239,9 +239,9 @@ const GuiaHostingWordPress = () => {
                   <div>
                     <p className="font-bold mb-2">Precios Chile:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• <strong>Básico:</strong> $2.990/mes</li>
-                      <li>• <strong>Plus:</strong> $5.990/mes</li>
-                      <li>• <strong>Pro:</strong> $9.990/mes</li>
+                      <li>• <strong>Básico:</strong> a consultar</li>
+                      <li>• <strong>Plus:</strong> a consultar</li>
+                      <li>• <strong>Pro:</strong> a consultar</li>
                     </ul>
                     <p className="text-green-600 text-sm font-medium mt-2">⭐ Mejor hosting local Chile</p>
                   </div>
@@ -274,9 +274,9 @@ const GuiaHostingWordPress = () => {
                   <div>
                     <p className="font-bold mb-2">Precios Chile:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• <strong>Eco Básico:</strong> $3.490/mes</li>
-                      <li>• <strong>Eco Plus:</strong> $6.990/mes</li>
-                      <li>• <strong>Eco Pro:</strong> $11.990/mes</li>
+                      <li>• <strong>Eco Básico:</strong> a consultar</li>
+                      <li>• <strong>Eco Plus:</strong> a consultar</li>
+                      <li>• <strong>Eco Pro:</strong> a consultar</li>
                     </ul>
                     <p className="text-blue-600 text-sm font-medium mt-2">⭐ Hosting más sustentable</p>
                   </div>
@@ -309,9 +309,9 @@ const GuiaHostingWordPress = () => {
                   <div>
                     <p className="font-bold mb-2">Precios Chile:</p>
                     <ul className="text-sm space-y-1">
-                      <li>• <strong>Starter:</strong> $1.990/mes</li>
-                      <li>• <strong>Business:</strong> $3.990/mes</li>
-                      <li>• <strong>Premium:</strong> $7.990/mes</li>
+                      <li>• <strong>Starter:</strong> a consultar</li>
+                      <li>• <strong>Business:</strong> a consultar</li>
+                      <li>• <strong>Premium:</strong> a consultar</li>
                     </ul>
                     <p className="text-orange-600 text-sm font-medium mt-2">⭐ Mejor para principiantes</p>
                   </div>
@@ -372,7 +372,7 @@ const GuiaHostingWordPress = () => {
                     <div className="space-y-3">
                       <div className="bg-green-50 p-3 rounded">
                         <p className="font-bold text-sm">WP Rocket (Premium) - Mi favorito</p>
-                        <p className="text-xs text-green-700">$59/año - Todo en uno, fácil configuración</p>
+                        <p className="text-xs text-green-700">Plan de pago — todo en uno, fácil configuración</p>
                       </div>
                       <div className="bg-blue-50 p-3 rounded">
                         <p className="font-bold text-sm">LiteSpeed Cache (Gratis)</p>
@@ -385,7 +385,7 @@ const GuiaHostingWordPress = () => {
                     <div className="space-y-3">
                       <div className="bg-blue-50 p-3 rounded">
                         <p className="font-bold text-sm">ShortPixel (Mi favorito)</p>
-                        <p className="text-xs text-blue-700">100 img/mes gratis, luego $4.99/mes</p>
+                        <p className="text-xs text-blue-700">100 img/mes gratis, luego plan de pago</p>
                       </div>
                       <div className="bg-purple-50 p-3 rounded">
                         <p className="font-bold text-sm">Imagify</p>

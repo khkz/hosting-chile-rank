@@ -36,8 +36,8 @@ const objections: { q: string; a: React.ReactNode }[] = [
     a: (
       <>
         A veces sí. Publicamos precio promocional <em>y</em> precio de renovación cuando el
-        proveedor lo declara. HostingPlus: $4.219/mes. EcoHosting: $3.325/mes. Precios verificados
-        a julio 2026 e incluyen IVA. Todos los detalles en cada{' '}
+        proveedor lo declara. Los valores vigentes se consultan en el sitio de cada proveedor
+        (habitualmente con IVA aparte). Todos los detalles en cada{' '}
         <Link to="/catalogo" className="text-primary font-medium hover:underline">ficha del catálogo</Link>.
       </>
     ),

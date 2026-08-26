@@ -73,7 +73,7 @@ const MejorHostingEcommerceChile = () => {
   const requirements = [
     {
       title: "Uptime 99.99% mínimo",
-      description: "1 hora de caída mensual = pérdida promedio $500.000 CLP en ventas",
+      description: "Cada hora de caída son ventas que no ocurren",
       icon: TrendingUp,
       critical: true
     },
@@ -171,11 +171,11 @@ const MejorHostingEcommerceChile = () => {
                   <ul className="space-y-2 text-yellow-800">
                     <li className="flex items-start gap-2">
                       <span className="font-bold">•</span>
-                      <span>Multas de hasta $50.000.000 CLP por incumplir normativas PCI DSS</span>
+                      <span>Multas por incumplir normativas PCI DSS</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="font-bold">•</span>
-                      <span>Pérdida de $500.000+ CLP por cada hora de caída durante Black Friday</span>
+                      <span>Pérdida de ventas por cada hora de caída durante Black Friday</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="font-bold">•</span>
@@ -312,42 +312,13 @@ const MejorHostingEcommerceChile = () => {
           <section className="max-w-4xl mx-auto mb-16">
             <h2 className="text-3xl font-bold mb-8">Costo Real del Downtime en E-Commerce</h2>
             <Card className="p-8 bg-red-50 border-red-200">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b-2 border-red-300">
-                      <th className="text-left p-4 font-semibold">Ventas Mensuales</th>
-                      <th className="text-right p-4 font-semibold">Pérdida por Hora</th>
-                      <th className="text-right p-4 font-semibold">Pérdida por Día</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-red-200">
-                    <tr>
-                      <td className="p-4">$1.000.000 CLP/mes</td>
-                      <td className="p-4 text-right font-bold text-red-700">$1.400 CLP</td>
-                      <td className="p-4 text-right font-bold text-red-700">$33.000 CLP</td>
-                    </tr>
-                    <tr>
-                      <td className="p-4">$5.000.000 CLP/mes</td>
-                      <td className="p-4 text-right font-bold text-red-700">$7.000 CLP</td>
-                      <td className="p-4 text-right font-bold text-red-700">$167.000 CLP</td>
-                    </tr>
-                    <tr>
-                      <td className="p-4">$10.000.000 CLP/mes</td>
-                      <td className="p-4 text-right font-bold text-red-700">$14.000 CLP</td>
-                      <td className="p-4 text-right font-bold text-red-700">$333.000 CLP</td>
-                    </tr>
-                    <tr>
-                      <td className="p-4">$50.000.000 CLP/mes</td>
-                      <td className="p-4 text-right font-bold text-red-700">$70.000 CLP</td>
-                      <td className="p-4 text-right font-bold text-red-700">$1.667.000 CLP</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <p className="text-red-900">
+                El costo de una caída es proporcional a lo que vendes: mientras la tienda está
+                inaccesible, cada pedido que no entra no se recupera. Calcula tu propio impacto con
+                tus ventas mensuales reales dividiendo por las horas del mes.
+              </p>
               <p className="text-sm text-red-800 mt-4 italic">
-                * Cálculos asumen distribución uniforme de ventas 24/7. Durante Black Friday o Cyber Monday, 
-                las pérdidas pueden ser 5-10x superiores.
+                * Durante Black Friday o Cyber Monday el impacto es bastante mayor que en un día normal.
               </p>
             </Card>
           </section>

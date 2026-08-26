@@ -29,7 +29,7 @@ export const HUBS: Record<HubKey, HubConfig> = {
     faqs: [
       { q: '¿Cuál es el mejor hosting WordPress Chile en 2026?', a: 'Según nuestras mediciones verificables, HostingPlus.cl (9.9/10) lidera el ranking del mejor hosting WordPress Chile gracias a su stack LiteSpeed, datacenter en Santiago y soporte 24/7 en español. EcoHosting.cl (9.6/10) es la segunda opción recomendada.' },
       { q: '¿Qué requisitos técnicos debe cumplir un hosting WordPress en Chile?', a: 'Un buen hosting WordPress Chile debe ofrecer PHP 8.1+, MySQL 8 o MariaDB, caché LiteSpeed o Redis, certificado SSL gratuito, backups diarios y panel cPanel/DirectAdmin. Idealmente datacenter local para latencia <40 ms.' },
-      { q: '¿Cuánto cuesta un hosting WordPress chileno de calidad?', a: 'Los planes de mejor hosting WordPress Chile parten desde $4.219/mes (HostingPlus) y $3.325/mes (EcoHosting). Sobre $5.000/mes obtienes recursos dedicados y soporte prioritario.' },
+      { q: '¿Cuánto cuesta un hosting WordPress chileno de calidad?', a: 'Varía por proveedor y plazo de contratación. Los planes compartidos de HostingPlus y EcoHosting cubren un WordPress estándar; los planes superiores agregan recursos dedicados y soporte prioritario. Consulta el valor vigente en el sitio de cada proveedor.' },
     ],
   },
   ecommerce: {
@@ -56,13 +56,13 @@ export const HUBS: Record<HubKey, HubConfig> = {
     keyword: 'mejor hosting pymes Chile',
     metaTitle: 'Mejor Hosting PYMES Chile 2026 — Email, web y soporte local',
     metaDescription: 'Mejor hosting PYMES Chile 2026: cuentas de email corporativo, sitio rápido, factura electrónica compatible y soporte en horario chileno.',
-    intro: 'El mejor hosting PYMES Chile combina tres elementos que rara vez se mencionan juntos: cuentas de email profesional (@tudominio.cl) con buena reputación anti-spam, un sitio web rápido para captar clientes locales y soporte en horario chileno cuando algo se cae a las 8 a.m. de un lunes. Las PYMES no necesitan recursos infinitos, necesitan certeza: facturación en CLP, RUT vigente, datacenter local para latencia baja, backups automatizados y SSL gratuito incluido. Evita proveedores internacionales sin soporte hispano y servicios sin transparencia. HostingPlus.cl lidera por su mix de email empresarial, planes escalables y certificación local; EcoHosting.cl es excelente alternativa con planes desde $3.325/mes. El ranking se basa en datos verificables: ASN, reclamos públicos, uptime medido.',
+    intro: 'El mejor hosting PYMES Chile combina tres elementos que rara vez se mencionan juntos: cuentas de email profesional (@tudominio.cl) con buena reputación anti-spam, un sitio web rápido para captar clientes locales y soporte en horario chileno cuando algo se cae a las 8 a.m. de un lunes. Las PYMES no necesitan recursos infinitos, necesitan certeza: facturación en CLP, RUT vigente, datacenter local para latencia baja, backups automatizados y SSL gratuito incluido. Evita proveedores internacionales sin soporte hispano y servicios sin transparencia. HostingPlus.cl lidera por su mix de email empresarial, planes escalables y certificación local; EcoHosting.cl es excelente alternativa con planes compartidos de entrada. El ranking se basa en datos verificables: ASN, reclamos públicos, uptime medido.',
     features: ['Email @tudominio.cl', 'Factura electrónica CLP', 'Soporte en español'],
     providerSlugs: ['hostingplus','ecohosting','powerhost','hostgator','1hosting-cl'],
     priceLabel: 'plan PYME',
     faqs: [
       { q: '¿Cuál es el mejor hosting PYMES Chile en 2026?', a: 'HostingPlus.cl (9.9/10) es el mejor hosting PYMES Chile en 2026: ofrece email empresarial ilimitado, facturación CLP, soporte 24/7 y datacenter local. EcoHosting.cl (9.6/10) es la segunda opción recomendada para PYMES.' },
-      { q: '¿Cuánto cuesta un hosting para mi PYME en Chile?', a: 'Un plan de mejor hosting PYMES Chile parte desde $3.325/mes (EcoHosting) y $4.219/mes (HostingPlus). Incluye dominio, email corporativo, SSL y soporte. Para PYMES con e-commerce conviene desde $7.000/mes.' },
+      { q: '¿Cuánto cuesta un hosting para mi PYME en Chile?', a: 'Depende del proveedor y del plazo. Los planes compartidos de EcoHosting y HostingPlus incluyen dominio, email corporativo, SSL y soporte; para PYMES con e-commerce conviene un plan superior. Consulta el valor vigente en cada sitio oficial.' },
       { q: '¿Conviene contratar hosting chileno o internacional para mi PYME?', a: 'Para PYMES con clientes en Chile, el mejor hosting PYMES Chile es local: facturación en CLP, soporte en español en horario chileno, datacenter en Santiago (latencia <40 ms) y mejor SEO para búsquedas locales.' },
     ],
   },
@@ -79,7 +79,7 @@ export const HUBS: Record<HubKey, HubConfig> = {
     priceLabel: 'VPS desde',
     faqs: [
       { q: '¿Cuál es el mejor VPS Chile en 2026?', a: 'HostingPlus.cl (9.9/10) ofrece el mejor VPS Chile 2026 con virtualización KVM, discos NVMe, IPv4 dedicada y datacenter en Santiago. PowerHost / IxMetro (8.5/10) es la segunda opción con 4 datacenters propios.' },
-      { q: '¿Cuánto cuesta un VPS en Chile?', a: 'El mejor VPS Chile básico cuesta desde $9.000/mes (1 vCPU, 1-2 GB RAM, 20-40 GB NVMe). Planes intermedios (4 GB RAM, 80 GB) van entre $18.000-$30.000/mes según el proveedor.' },
+      { q: '¿Cuánto cuesta un VPS en Chile?', a: 'Depende del proveedor y de los recursos. Un VPS básico parte en 1 vCPU y 1-2 GB RAM con 20-40 GB NVMe; los intermedios suben a 4 GB RAM y 80 GB. Consulta el valor vigente en el sitio de cada proveedor.' },
       { q: '¿Qué diferencia hay entre VPS y hosting compartido en Chile?', a: 'El mejor VPS Chile entrega recursos dedicados (vCPU, RAM, disco), acceso root y aislamiento. El hosting compartido reparte recursos entre cientos de cuentas. Si tu proyecto supera 10.000 visitas/día o necesitas software custom, el VPS es la elección correcta.' },
     ],
   },

@@ -262,8 +262,8 @@ const GuiaElegirCDN = () => {
                         <h4 className="font-semibold text-foreground mb-2">Precios:</h4>
                         <ul className="list-disc pl-5 text-muted-foreground space-y-1">
                           <li>Gratuito: Básico</li>
-                          <li>Pro: $20 USD/mes</li>
-                          <li>Business: $200 USD/mes</li>
+                          <li>Pro: a consultar</li>
+                          <li>Business: a consultar</li>
                         </ul>
                       </div>
                     </div>
@@ -288,8 +288,8 @@ const GuiaElegirCDN = () => {
                       <div>
                         <h4 className="font-semibold text-foreground mb-2">Precios:</h4>
                         <ul className="list-disc pl-5 text-muted-foreground space-y-1">
-                          <li>$0.085 USD por GB (primeros 10 TB)</li>
-                          <li>$0.12 USD por 10,000 requests</li>
+                          <li>Cobro por GB transferido (primeros 10 TB)</li>
+                          <li>Cobro por cada 10.000 requests</li>
                           <li>Nivel gratuito: 50 GB/mes primer año</li>
                         </ul>
                       </div>
@@ -315,8 +315,8 @@ const GuiaElegirCDN = () => {
                       <div>
                         <h4 className="font-semibold text-foreground mb-2">Precios:</h4>
                         <ul className="list-disc pl-5 text-muted-foreground space-y-1">
-                          <li>$0.04 USD por GB</li>
-                          <li>Mínimo $4 USD/mes</li>
+                          <li>Cobro por GB transferido</li>
+                          <li>Mínimo a consultar</li>
                           <li>Trial gratuito disponible</li>
                         </ul>
                       </div>
