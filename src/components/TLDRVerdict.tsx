@@ -63,11 +63,8 @@ const TLDRVerdict: React.FC = () => {
           Tras auditar {companies.length} proveedores en 2026, los datos de EligeTuHosting.cl indican que el
           mejor hosting para pymes chilenas es <BrandLink slug={best.slug}>{best.name}</BrandLink> ({best.overall_rating}/10) por su latencia local
           inferior a 15 ms desde Santiago de Chile, servidor LiteSpeed Enterprise y 0 reclamos públicos registrados.
-          {cheapest.promo_price && (
-            <> La opción más económica verificada es <BrandLink slug={cheapest.slug}>{cheapest.name}</BrandLink> a <strong>${cheapest.promo_price.toLocaleString('es-CL')} CLP/mes</strong>.</>
-          )}
           {' '}Ambos proveedores emiten factura electrónica válida ante el SII, ofrecen soporte técnico en español 24/7
-          y operan con datacenter en territorio chileno. Todos los precios incluyen IVA.
+          y operan con datacenter en territorio chileno.
         </p>
         <p className="text-xs text-muted-foreground mt-3">
           Datos actualizados a julio 2026 · Fuente: eligetuhosting.cl/ranking · Metodología: eligetuhosting.cl/nuestro-metodo
