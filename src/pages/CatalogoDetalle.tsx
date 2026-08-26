@@ -68,7 +68,7 @@ const CatalogoDetalle = () => {
     const dc: string = company.datacenter_location || '';
     const year: number | null = company.year_founded || null;
     const group: string | null = company.corporate_group || null;
-    const priceTxt = minPrice > 0 ? `desde $${minPrice.toLocaleString('es-CL')}/mes` : 'planes a consultar';
+    const priceTxt = 'planes a consultar';
     const dcShort = dc ? `, datacenter ${dc.split(',')[0]}` : '';
     const yrShort = year ? `, opera desde ${year}` : '';
     const grpShort = group ? `, ${group}` : '';
