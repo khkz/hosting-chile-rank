@@ -187,31 +187,6 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
             ))}
           </ul>
 
-          {/* Pricing */}
-          {provider.promo_price && (
-            <div className="mb-5 text-center" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-              <meta itemProp="priceCurrency" content="CLP" />
-              <meta itemProp="price" content={String(provider.promo_price)} />
-              <meta itemProp="availability" content="https://schema.org/InStock" />
-              <link itemProp="url" href={provider.website || ''} />
-              <div className="flex items-baseline justify-center gap-2">
-                {provider.original_price && (
-                  <span className="text-sm text-muted-foreground line-through">
-                    ${provider.original_price.toLocaleString('es-CL')}
-                  </span>
-                )}
-                <span className={`${isWinner ? 'text-4xl' : 'text-3xl'} font-bold text-foreground`}>
-                  ${provider.promo_price.toLocaleString('es-CL')}
-                </span>
-                <span className="text-sm text-muted-foreground">/{provider.price_period}</span>
-              </div>
-              {provider.original_price && (
-                <p className="text-xs font-semibold text-green-600 mt-1">
-                  Ahorras {Math.round((1 - provider.promo_price / provider.original_price) * 100)}%
-                </p>
-              )}
-            </div>
-          )}
 
           {/* CTA */}
           <div className="space-y-2">
