@@ -216,7 +216,7 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
                 <CardHeader className="bg-muted">
                   <CardTitle>{plan.name}</CardTitle>
                   <div className="mt-2 text-2xl font-bold text-foreground">
-                    ${plan.price.toLocaleString('es-CL')}/mes
+                    Consultar en el sitio oficial
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6">

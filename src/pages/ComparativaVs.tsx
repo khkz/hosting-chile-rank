@@ -26,7 +26,7 @@ interface Company {
   total_reviews: number | null;
 }
 
-const formatPrice = (p: number | null) => (p ? `$${Number(p).toLocaleString('es-CL')}/mes` : 'Consultar');
+const formatPrice = (_p: number | null) => 'Consultar';
 
 const ComparativaVs: React.FC = () => {
   const { rival } = useParams<{ rival: string }>();

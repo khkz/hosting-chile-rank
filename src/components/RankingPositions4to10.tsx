@@ -36,10 +36,7 @@ const getMinPrice = (db: any): number | null => {
   return null;
 };
 
-const formatPrice = (price: number | null | undefined) => {
-  if (!price || price <= 0) return 'Consultar';
-  return `$${price.toLocaleString('es-CL')}/mes`;
-};
+const formatPrice = (_price: number | null | undefined) => 'Consultar';
 
 const VISIBLE_RANKING = EXTRA_RANKING
   .filter((p) => !isHiddenProvider(p.slug))
