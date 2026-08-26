@@ -21,10 +21,10 @@ const StoryBrandGuide: React.FC = () => {
             Tú tienes un proyecto que crecer. Nosotros hicimos la tarea aburrida.
           </h2>
           <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-            Sabemos lo que se siente elegir hosting a ciegas: 20 planes que parecen iguales,
+            Sabemos lo que se siente elegir hosting a ciegas: decenas de planes que parecen iguales,
             promesas de "ilimitado" que no lo son, y el miedo a migrar el sitio de tu pyme y
-            que se caiga justo cuando llega un cliente. Por eso auditamos <strong>20 proveedores
-            chilenos</strong> con métricas reales — no con reviews compradas.
+            que se caiga justo cuando llega un cliente. Por eso auditamos <strong>los proveedores
+            chilenos del directorio</strong> con métricas reales — no con reviews compradas.
           </p>
         </div>
 
@@ -42,7 +42,7 @@ const StoryBrandGuide: React.FC = () => {
             <Target className="h-6 w-6 text-brand-red mb-3" aria-hidden />
             <h3 className="font-semibold text-[#2B2D42] mb-2">2. Compara con datos reales</h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              +5.700 dominios analizados, ping desde Santiago, uptime medido y reclamos verificados
+              Dominios .CL analizados, ping desde Santiago, uptime medido y reclamos verificados
               en Reclamos.cl. Toda la metodología está publicada en{' '}
               <Link to="/nuestro-metodo" className="text-primary font-medium hover:underline">
                 /nuestro-metodo

@@ -3,8 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Database, Download, Code, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useSiteStats, formatStatNumber } from '@/hooks/useSiteStats';
 
 const OpenDataBadge: React.FC = () => {
+  const { domainCount, companyCount } = useSiteStats();
   const handleDownload = () => {
     // Download the latest JSON feed
     window.open('/feeds/latest-domains.json', '_blank');
@@ -31,18 +33,14 @@ const OpenDataBadge: React.FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-2 gap-4">
           <div className="bg-background p-4 rounded-lg border">
-            <p className="text-3xl font-bold text-primary">22,000+</p>
+            <p className="text-3xl font-bold text-primary">{domainCount != null ? formatStatNumber(domainCount) : '—'}</p>
             <p className="text-sm text-muted-foreground">Sitios analizados</p>
           </div>
           <div className="bg-background p-4 rounded-lg border">
-            <p className="text-3xl font-bold text-primary">50+</p>
-            <p className="text-sm text-muted-foreground">Proveedores evaluados</p>
-          </div>
-          <div className="bg-background p-4 rounded-lg border">
-            <p className="text-3xl font-bold text-primary">5 años</p>
-            <p className="text-sm text-muted-foreground">De datos históricos</p>
+            <p className="text-3xl font-bold text-primary">{companyCount != null ? companyCount : '—'}</p>
+            <p className="text-sm text-muted-foreground">Proveedores en el directorio</p>
           </div>
         </div>
 

@@ -1,45 +1,12 @@
-
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { getActiveCountryCode } from '@/lib/country';
+import { useSiteStats, formatStatNumber } from '@/hooks/useSiteStats';
 
 const StatsTicker = () => {
-  const { data: domainCount } = useQuery({
-    queryKey: ['stats-domain-count'],
-    queryFn: async () => {
-      const { count } = await supabase
-        .from('domains')
-        .select('*', { count: 'exact', head: true });
-      return count ?? 0;
-    },
-    staleTime: 1000 * 60 * 30,
-  });
-
-  const { data: companyCount } = useQuery({
-    queryKey: ['stats-company-count'],
-    queryFn: async () => {
-      const { count } = await supabase
-        .from('hosting_companies')
-        .select('*', { count: 'exact', head: true })
-        .eq('country', getActiveCountryCode())
-        .eq('is_verified', true);
-      return count ?? 0;
-    },
-    staleTime: 1000 * 60 * 30,
-  });
-
-  const formatNumber = (n: number) => {
-    if (n >= 1000) {
-      const rounded = Math.floor(n / 100) * 100;
-      return `${rounded.toLocaleString('es-CL')}+`;
-    }
-    return n.toString();
-  };
+  const { domainCount, companyCount } = useSiteStats();
 
   const stats = [
-    { value: domainCount != null ? formatNumber(domainCount) : '...', label: "Dominios .CL analizados" },
-    { value: companyCount != null ? `${companyCount}` : '...', label: "Proveedores verificados" },
+    { value: domainCount != null ? formatStatNumber(domainCount) : '...', label: "Dominios .CL analizados" },
+    { value: companyCount != null ? `${companyCount}` : '...', label: "Proveedores en el directorio" },
     { value: "99.9%", label: "Uptime garantizado" },
     { value: "24/7", label: "Soporte en español" }
   ];

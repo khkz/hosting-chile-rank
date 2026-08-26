@@ -10,7 +10,7 @@ const objections: { q: string; a: React.ReactNode }[] = [
     q: '"¿No serán todos iguales? Marketing puro."',
     a: (
       <>
-        No. Entre los 20 proveedores auditados, los TTFB desde Santiago varían de menos de 200 ms
+        No. Entre los proveedores auditados, los TTFB desde Santiago varían de menos de 200 ms
         a más de 1,5 s en el mismo test. La diferencia sale de tener datacenter en Chile, tecnología
         LiteSpeed y capacidad real — no del logo. Ver{' '}
         <Link to="/nuestro-metodo" className="text-primary font-medium hover:underline">metodología completa</Link>{' '}

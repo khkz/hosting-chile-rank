@@ -45,7 +45,6 @@ export async function migrateHostingCompanies() {
           contact_address: company.contactInfo?.address,
           contact_hours: company.contactInfo?.hours,
           overall_rating: company.rating,
-          is_verified: true,
         })
         .select()
         .single();

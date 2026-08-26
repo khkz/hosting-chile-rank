@@ -3,8 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { track } from '@/lib/track';
+import { useSiteStats, formatStatNumber } from '@/hooks/useSiteStats';
+import { useTopRankedProvider } from '@/hooks/useTopRankedProvider';
 
 const Hero = () => {
+  const { domainCount, companyCount } = useSiteStats();
+  const { data: topProvider } = useTopRankedProvider();
+  const topRating = topProvider?.overall_rating != null ? Number(topProvider.overall_rating).toFixed(1) : null;
+  const badgeText = topProvider ? `Mejor Hosting Chile 2026: ${topProvider.name}${topRating ? ` — ${topRating}/10` : ''}` : null;
   const scrollToRanking = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     track('cta_ver_ranking', { location: 'hero' });
@@ -18,15 +24,17 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10 py-4 md:py-6">
         <div className="max-w-2xl">
           {/* Badge líder */}
-          <a
-            href="#ranking"
-            onClick={scrollToRanking}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-300 text-yellow-900 px-4 py-2 rounded-full text-xs md:text-sm font-semibold shadow-sm hover:shadow-md transition-all mb-3 min-h-[44px]"
-            aria-label="Ir al ranking: HostingPlus es el #1 con 9.9 de 10"
-          >
-            <Trophy className="h-4 w-4 text-yellow-600" aria-hidden />
-            <span>🏆 Mejor Hosting Chile 2026: <strong>HostingPlus.cl</strong> — 9.9/10</span>
-          </a>
+          {badgeText && (
+            <a
+              href="#ranking"
+              onClick={scrollToRanking}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-300 text-yellow-900 px-4 py-2 rounded-full text-xs md:text-sm font-semibold shadow-sm hover:shadow-md transition-all mb-3 min-h-[44px]"
+              aria-label={`Ir al ranking: ${badgeText}`}
+            >
+              <Trophy className="h-4 w-4 text-yellow-600" aria-hidden />
+              <span>🏆 {badgeText}</span>
+            </a>
+          )}
 
           <h1 className="font-poppins text-2xl md:text-3xl lg:text-4xl font-bold text-[#2B2D42] mb-2 leading-tight">
             Encuentra el{' '}
@@ -36,9 +44,11 @@ const Hero = () => {
 
           <p className="text-sm md:text-base text-gray-600 mb-3 leading-relaxed">
             Ranking independiente 2026 con métricas verificables.
-            <span className="block text-xs text-gray-500 mt-0.5">
-              20 proveedores verificados · +5.700 dominios analizados
-            </span>
+            {companyCount != null && domainCount != null && (
+              <span className="block text-xs text-gray-500 mt-0.5">
+                {companyCount} proveedores en el directorio · {formatStatNumber(domainCount)} dominios .CL analizados
+              </span>
+            )}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
