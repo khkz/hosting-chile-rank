@@ -123,15 +123,6 @@ const CatalogoDetalle = () => {
       };
     }
 
-    if (minPrice > 0) {
-      productSchema.offers = {
-        '@type': 'AggregateOffer',
-        lowPrice: minPrice,
-        priceCurrency: 'CLP',
-        offerCount: company.hosting_plans?.length || 1,
-        availability: 'https://schema.org/InStock',
-      };
-    }
 
     // AggregateRating: combina nota editorial + reseñas aprobadas si existen
     const userCount = userReviews?.count || 0;
@@ -301,7 +292,7 @@ const CatalogoDetalle = () => {
           </p>
           {(company as any).updated_at && (
             <p className="text-xs text-muted-foreground mt-1">
-              ✓ Datos verificados al {new Date((company as any).updated_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' })}
+              Última actualización de datos: {new Date((company as any).updated_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' })}
             </p>
           )}
         </header>
@@ -360,9 +351,6 @@ const CatalogoDetalle = () => {
           slug={company.slug}
         />
 
-        <p className="text-xs text-muted-foreground mt-3">
-          Precios referenciales verificados a julio 2026; pueden variar — confirma en el sitio del proveedor.
-        </p>
 
         <Veredicto
           name={company.name}
