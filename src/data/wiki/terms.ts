@@ -4022,17 +4022,17 @@ Mobile First Approach:
 - E-commerce WooCommerce
 - Landing pages optimizadas
 - Sitios que requieren popups
-- Presupuesto medio (valor a consultar)
+- Presupuesto medio
 
 **Divi**
 - Acceso de por vida preferible
 - Múltiples sitios ilimitados
 - Template library masiva necesaria
-- Presupuesto: valor a consultar o valor a consultar lifetime
+- Presupuesto: licencia anual o licencia lifetime (valores a consultar)
 
 **Gutenberg FSE**
 - Sitios simples blog/corporate
-- Presupuesto Gratis critical
+- Presupuesto cero es crítico
 - Prefer WordPress nativo
 - No necesitas WooCommerce avanzado
 
@@ -5711,7 +5711,7 @@ sudo certbot renew --force-renewal
 ## Ventajas vs SSL premium
 
 ### **✅ Let's Encrypt advantages**
-- **Costo**: Gratis vs valor a consultar SSL premium
+- **Costo**: gratis (Let's Encrypt) vs SSL premium de pago
 - **Automatización**: Sin intervención manual
 - **Encriptación**: 256-bit idéntica a premium
 - **Compatibilidad**: 99%+ browsers modernos
