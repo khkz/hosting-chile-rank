@@ -45,7 +45,7 @@ const hostProviders = [
     slug: "hostingplus",
     logo: "/logo-hostingplus-official.png",
     rating: 9.9,
-    price: "Desde $4.219/mes",
+    price: "Consultar",
     speed: "9.9/10",
     uptime: "99.98%",
     features: [
@@ -62,7 +62,7 @@ const hostProviders = [
     slug: "ecohosting",
     logo: "/logo-ecohosting.png",
     rating: 9.6,
-    price: "Desde $3.325/mes",
+    price: "Consultar",
     speed: "9.7/10",
     uptime: "99.96%",
     features: [
