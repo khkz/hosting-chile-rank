@@ -43,15 +43,15 @@ const ErroresComunesHosting = () => {
         "Restricciones ocultas en el contrato",
         "Servidores sobrecargados con cientos de sitios"
       ],
-      solution: "Evalúa el valor real: compara recursos, soporte y uptime. Un hosting $2.000 CLP más caro puede ahorrarte $50.000 CLP en pérdidas por caídas.",
-      realCost: "Pérdida promedio: a consultar en ventas caídas"
+      solution: "Evalúa el valor real: compara recursos, soporte y uptime. Pagar algo más por un proveedor estable suele costar menos que las caídas que evita.",
+      realCost: "Impacto típico: ventas caídas mientras el sitio está inaccesible"
     },
     {
       title: "No leer la política de renovación",
       icon: AlertTriangle,
       description: "Los precios promocionales pueden ser engañosos.",
       consequences: [
-        "Precio inicial a consultar → Renovación a consultar",
+        "Precio promocional bajo el primer periodo → renovación bastante más alta",
         "Cargos automáticos sin previo aviso",
         "Penalidades por cancelación anticipada",
         "Costos ocultos por servicios 'incluidos'"
@@ -162,7 +162,7 @@ const ErroresComunesHosting = () => {
               8 Errores Comunes al Elegir Hosting en Chile
             </h1>
             <p className="text-xl text-muted-foreground mb-4">
-              Evita pérdidas de hasta $2.000.000 CLP conociendo estos errores antes de contratar
+              Evita pérdidas evitables conociendo estos errores antes de contratar
             </p>
             <p className="text-sm text-muted-foreground">
               Basado en análisis de 500+ casos reales de usuarios chilenos
@@ -175,7 +175,7 @@ const ErroresComunesHosting = () => {
               <h2 className="text-2xl font-semibold mb-4 text-foreground">⚠️ Por qué leer esta guía</h2>
               <p className="text-lg leading-relaxed mb-4">
                 El 73% de los usuarios chilenos que contratan su primer hosting cometen al menos uno de estos errores, 
-                resultando en pérdidas promedio de $150.000 CLP en el primer año.
+                lo que suele salir caro durante el primer año.
               </p>
               <p className="text-lg leading-relaxed">
                 Esta guía está basada en casos reales documentados y te mostrará no solo qué evitar, 

@@ -14,8 +14,8 @@ const HostingWordPressBlogPersonal = () => {
   return (
     <>
       <DynamicMetaTags
-        title="Mejor Hosting WordPress para Blog Personal Chile 2025 | a consultar"
-        description="Hosting WordPress optimizado para blogs personales en Chile. Comparativa de planes a consultar con instalación 1-click, certificado SSL gratis y soporte en español."
+        title="Mejor Hosting WordPress para Blog Personal en Chile"
+        description="Hosting WordPress optimizado para blogs personales en Chile. Comparativa de planes con instalación 1-click, certificado SSL gratis y soporte en español."
         canonical="https://eligetuhosting.cl/hosting-wordpress-blog-personal-chile"
         keywords="hosting wordpress blog, hosting blog personal, wordpress chile, hosting barato wordpress"
       />
@@ -38,7 +38,7 @@ const HostingWordPressBlogPersonal = () => {
             Mejor Hosting WordPress para Blog Personal Chile 2025
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Hosting optimizado para WordPress desde <strong className="text-primary">a consultar</strong>. 
+            Hosting optimizado para WordPress con planes a consultar en el sitio de cada proveedor. 
             Instalación en 1-click, SSL gratis y soporte en español 24/7.
           </p>
         </section>
@@ -53,8 +53,8 @@ const HostingWordPressBlogPersonal = () => {
                   <CardTitle className="text-lg">HostingPlus</CardTitle>
                   <span className="text-2xl font-bold text-primary">★ 9.8</span>
                 </div>
-                <p className="text-3xl font-bold text-foreground mt-2">a consultar</p>
-                <p className="text-sm text-muted-foreground line-through">a consultar</p>
+                <p className="text-2xl font-bold text-foreground mt-2">Planes a consultar</p>
+                
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-2 text-sm">
@@ -92,7 +92,7 @@ const HostingWordPressBlogPersonal = () => {
                   <CardTitle className="text-lg">EcoHosting</CardTitle>
                   <span className="text-2xl font-bold text-primary">★ 9.5</span>
                 </div>
-                <p className="text-3xl font-bold text-foreground mt-2">a consultar</p>
+                <p className="text-2xl font-bold text-foreground mt-2">Planes a consultar</p>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-2 text-sm">
@@ -125,7 +125,7 @@ const HostingWordPressBlogPersonal = () => {
                   <CardTitle className="text-lg">Hostname</CardTitle>
                   <span className="text-2xl font-bold text-primary">★ 9.2</span>
                 </div>
-                <p className="text-3xl font-bold text-foreground mt-2">a consultar</p>
+                <p className="text-2xl font-bold text-foreground mt-2">Planes a consultar</p>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-2 text-sm">
@@ -235,8 +235,8 @@ const HostingWordPressBlogPersonal = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Los planes para blogs personales en Chile van a consultar hasta a consultar. 
-                  Para empezar, un plan básico de a consultar es suficiente para 500-1000 visitas diarias.
+                  Los planes para blogs personales en Chile varían según proveedor y plazo de contratación. 
+                  Para empezar, un plan compartido básico es suficiente para 500-1000 visitas diarias.
                 </p>
               </CardContent>
             </Card>

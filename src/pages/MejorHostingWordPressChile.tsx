@@ -67,7 +67,7 @@ const MejorHostingWordPressChile = () => {
         "Soporte experto WordPress 24/7"
       ],
       pros: "Herramientas WordPress más avanzadas. Soporte excepcional.",
-      cons: "Precio más alto al renovar (hasta $12.990).",
+      cons: "El precio sube al renovar; revisa el valor de renovación antes de contratar.",
       url: "https://siteground.com",
       affiliate: false
     },

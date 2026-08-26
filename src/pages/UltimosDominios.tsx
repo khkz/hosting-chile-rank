@@ -178,7 +178,7 @@ const UltimosDominios = () => {
     },
     {
       question: "¿Cuánto cuesta registrar un dominio .cl?",
-      answer: "El costo de inscripción de un dominio .cl en NIC Chile es de aproximadamente $15.900 CLP + IVA por dos años. Algunos proveedores de hosting incluyen el dominio gratis al contratar un plan de alojamiento."
+      answer: "NIC Chile cobra la inscripción de un dominio .cl por periodos de dos años; el valor vigente se publica en nic.cl (con IVA aparte). Algunos proveedores de hosting incluyen el dominio al contratar un plan de alojamiento."
     },
     {
       question: "¿De dónde provienen los datos de esta página?",

@@ -260,7 +260,7 @@ const CotizaHosting = () => {
                                   <RadioGroupItem value="menos_5000" />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Menos de $5.000
+                                  Presupuesto ajustado
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
@@ -268,21 +268,21 @@ const CotizaHosting = () => {
                                   <RadioGroupItem value="5000_10000" />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  a consultar</FormLabel>
+                                  Presupuesto medio</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
                                 <FormControl>
                                   <RadioGroupItem value="10000_20000" />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  a consultar</FormLabel>
+                                  Presupuesto holgado</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
                                 <FormControl>
                                   <RadioGroupItem value="mas_20000" />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Más de $20.000
+                                  Sin límite definido
                                 </FormLabel>
                               </FormItem>
                             </RadioGroup>
@@ -636,7 +636,7 @@ const CotizaHosting = () => {
                       <span className="font-bold text-[#EF233C]">9.8/10</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Desde:</span>
+                      <span>Planes:</span>
                       <span className="font-bold">a consultar</span>
                     </div>
                   </div>
@@ -661,7 +661,7 @@ const CotizaHosting = () => {
                       <span className="font-bold text-[#EF233C]">9.2/10</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Desde:</span>
+                      <span>Planes:</span>
                       <span className="font-bold">a consultar</span>
                     </div>
                   </div>
@@ -686,7 +686,7 @@ const CotizaHosting = () => {
                       <span className="font-bold text-[#EF233C]">9.0/10</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Desde:</span>
+                      <span>Planes:</span>
                       <span className="font-bold">a consultar</span>
                     </div>
                   </div>
@@ -711,7 +711,7 @@ const CotizaHosting = () => {
                       <span className="font-bold text-[#EF233C]">8.8/10</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Desde:</span>
+                      <span>Planes:</span>
                       <span className="font-bold">a consultar</span>
                     </div>
                   </div>

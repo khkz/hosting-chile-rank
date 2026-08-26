@@ -61,7 +61,7 @@ const GuiaHostingWordPress = () => {
             <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
               <p className="text-lg mb-4">
                 <strong>2019 - El proyecto que me abrió los ojos:</strong> Una inmobiliaria de Las Condes 
-                tenía un WordPress que cargaba en 18 segundos. Perdían a consultar en leads.
+                tenía un WordPress que cargaba en 18 segundos. Perdían leads cada mes.
               </p>
               <p className="text-blue-700 mb-4">
                 Solo cambiando de hosting (de uno "barato" a uno optimizado para WordPress) 
@@ -372,7 +372,7 @@ const GuiaHostingWordPress = () => {
                     <div className="space-y-3">
                       <div className="bg-green-50 p-3 rounded">
                         <p className="font-bold text-sm">WP Rocket (Premium) - Mi favorito</p>
-                        <p className="text-xs text-green-700">a consultar - Todo en uno, fácil configuración</p>
+                        <p className="text-xs text-green-700">Plan de pago — todo en uno, fácil configuración</p>
                       </div>
                       <div className="bg-blue-50 p-3 rounded">
                         <p className="font-bold text-sm">LiteSpeed Cache (Gratis)</p>
@@ -385,7 +385,7 @@ const GuiaHostingWordPress = () => {
                     <div className="space-y-3">
                       <div className="bg-blue-50 p-3 rounded">
                         <p className="font-bold text-sm">ShortPixel (Mi favorito)</p>
-                        <p className="text-xs text-blue-700">100 img/mes gratis, luego a consultar</p>
+                        <p className="text-xs text-blue-700">100 img/mes gratis, luego plan de pago</p>
                       </div>
                       <div className="bg-purple-50 p-3 rounded">
                         <p className="font-bold text-sm">Imagify</p>

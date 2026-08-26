@@ -65,7 +65,7 @@ const GuiaSeguridadWeb = () => {
                 y pusieron pornografía en su sitio.
               </p>
               <p className="text-red-700 mb-4">
-                Resultado: $15 millones en pérdidas, demandas de clientes, y 6 meses para recuperar la confianza.
+                Resultado: pérdidas cuantiosas, demandas de clientes, y 6 meses para recuperar la confianza.
               </p>
               <p className="font-medium">
                 Desde entonces, he limpiado más de 300 sitios hackeados y desarrollado un protocolo 
@@ -76,7 +76,7 @@ const GuiaSeguridadWeb = () => {
             <Alert className="mb-6">
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                <strong>Realidad chilena:</strong> El 80% de los hackeos que veo podrían haberse evitado con medidas básicas de seguridad que cuestan menos de a consultar.
+                <strong>Realidad chilena:</strong> El 80% de los hackeos que veo podrían haberse evitado con medidas básicas de seguridad de costo bajo.
               </AlertDescription>
             </Alert>
           </section>
@@ -225,7 +225,7 @@ const GuiaSeguridadWeb = () => {
                     <h4 className="font-bold mb-3 text-green-600">Opción Premium (Recomendada)</h4>
                     <div className="bg-green-50 p-4 rounded">
                       <p className="font-bold">Wordfence Premium</p>
-                      <p className="text-sm mb-2">a consultar</p>
+                      <p className="text-sm mb-2">Precio a consultar</p>
                       <ul className="text-sm space-y-1">
                         <li>• Firewall con reglas en tiempo real</li>
                         <li>• Escaneo malware diario</li>
@@ -238,7 +238,7 @@ const GuiaSeguridadWeb = () => {
                     <h4 className="font-bold mb-3 text-blue-600">Opción Gratuita</h4>
                     <div className="bg-blue-50 p-4 rounded">
                       <p className="font-bold">Wordfence Free + Limit Login</p>
-                      <p className="text-sm mb-2">$0</p>
+                      <p className="text-sm mb-2">Gratuito</p>
                       <ul className="text-sm space-y-1">
                         <li>• Firewall básico</li>
                         <li>• Escaneo malware semanal</li>
@@ -293,7 +293,7 @@ const GuiaSeguridadWeb = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-card p-6 rounded-lg border">
                   <h3 className="text-lg font-bold mb-3 text-green-600">Cloudflare</h3>
-                  <p className="text-sm mb-3">a consultar</p>
+                  <p className="text-sm mb-3">Precio a consultar</p>
                   <ul className="text-sm space-y-1 mb-4">
                     <li>• Plan gratuito robusto</li>
                     <li>• CDN incluido</li>
@@ -305,7 +305,7 @@ const GuiaSeguridadWeb = () => {
 
                 <div className="bg-card p-6 rounded-lg border">
                   <h3 className="text-lg font-bold mb-3 text-blue-600">Sucuri</h3>
-                  <p className="text-sm mb-3">a consultar</p>
+                  <p className="text-sm mb-3">Precio a consultar</p>
                   <ul className="text-sm space-y-1 mb-4">
                     <li>• Limpieza malware incluida</li>
                     <li>• Soporte especializado</li>
@@ -317,7 +317,7 @@ const GuiaSeguridadWeb = () => {
 
                 <div className="bg-card p-6 rounded-lg border">
                   <h3 className="text-lg font-bold mb-3 text-purple-600">AWS WAF</h3>
-                  <p className="text-sm mb-3">a consultar</p>
+                  <p className="text-sm mb-3">Precio a consultar</p>
                   <ul className="text-sm space-y-1 mb-4">
                     <li>• Máxima personalización</li>
                     <li>• Escalabilidad enterprise</li>
@@ -368,10 +368,10 @@ const GuiaSeguridadWeb = () => {
                   </div>
 
                   <div className="bg-blue-50 p-4 rounded">
-                    <h4 className="font-bold text-blue-800 mb-2">SSL Pagado ($30-100/año)</h4>
+                    <h4 className="font-bold text-blue-800 mb-2">SSL Pagado</h4>
                     <p className="text-sm text-blue-700 mb-2">Perfecto para: E-commerce, empresas, servicios financieros</p>
                     <ul className="text-sm space-y-1">
-                      <li>• ✅ Garantía monetaria hasta $1M</li>
+                      <li>• ✅ Incluye garantía monetaria del emisor</li>
                       <li>• ✅ Validación empresa (EV)</li>
                       <li>• ✅ Sello de confianza</li>
                       <li>• ✅ Soporte dedicado</li>
@@ -538,8 +538,8 @@ const GuiaSeguridadWeb = () => {
                       <li>• ✅ Backup semanal</li>
                       <li>• ✅ Hosting actualizado</li>
                     </ul>
-                    <p className="text-blue-600 font-medium mt-2">Costo prevención: a consultar</p>
-                    <p className="text-red-600 font-medium">Costo limpieza: $250.000</p>
+                    <p className="text-blue-600 font-medium mt-2">Costo de prevención: bajo</p>
+                    <p className="text-red-600 font-medium">Costo de limpieza: bastante mayor que prevenir</p>
                   </div>
                 </div>
               </div>
