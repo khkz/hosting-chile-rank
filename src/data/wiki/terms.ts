@@ -919,7 +919,7 @@ Servicios recomendados para Chile:
 
 | Característica | WooCommerce | Shopify |
 |---|---|---|
-| Costo mensual | $0 (+ hosting) | a consultar |
+| Costo mensual | Gratis (+ hosting) | a consultar |
 | Comisión por venta | 0% | 2% (plan básico) |
 | Control de datos | Total | Limitado |
 | Personalización | Ilimitada | Restrictiva |
@@ -969,7 +969,7 @@ Servicios recomendados para Chile:
 - 10,000+ productos
 - Ventas: 2,000+ pedidos/mes
 - Hosting: Servidor dedicado (valor a consultar)
-- Desarrollo custom: $5M+ CLP
+- Desarrollo custom: valor a consultar+ CLP
 - **Inversión inicial:** valor a consultar
 
 ## Hosting recomendado para WooCommerce en Chile
@@ -2021,7 +2021,7 @@ define('WPMS_SMTP_PASS', 'app-password');
 
 ### **Personalización local**
 - Usar horario Chile en timestamps
-- Precios en CLP formato $1.500
+- Precios en CLP formato valor a consultar
 - Referencias culturales apropiadas
 - Legal disclaimer Chilean compliance
 
@@ -4002,7 +4002,7 @@ Mobile First Approach:
 
 | Aspecto | Elementor Pro | Divi Builder | Gutenberg FSE | Beaver Builder |
 |---------|---------------|--------------|---------------|----------------|
-| **Precio anual** | $59 | $89 | Gratis | $99 |
+| **Precio anual** | valor a consultar | valor a consultar | Gratis | valor a consultar |
 | **Curva aprendizaje** | Fácil | Media | Fácil | Fácil |
 | **Widgets incluidos** | 90+ | 46 | 40+ | 40+ |
 | **Theme Builder** | ✅ Completo | ✅ Completo | ✅ FSE | ✅ Limitado |
@@ -4028,11 +4028,11 @@ Mobile First Approach:
 - Acceso de por vida preferible
 - Múltiples sitios ilimitados
 - Template library masiva necesaria
-- Presupuesto: valor a consultar o $249 lifetime
+- Presupuesto: valor a consultar o valor a consultar lifetime
 
 **Gutenberg FSE**
 - Sitios simples blog/corporate
-- Presupuesto $0 critical
+- Presupuesto Gratis critical
 - Prefer WordPress nativo
 - No necesitas WooCommerce avanzado
 
@@ -4067,7 +4067,7 @@ Optimizations específicas Elementor:
 
 ### **Functionality Extenders**
 
-**Essential Addons for Elementor** (Gratuito + Pro $39)
+**Essential Addons for Elementor** (Gratuito + Pro valor a consultar)
 \`\`\`
 90+ widgets adicionales:
 ├── Advanced Data Table
@@ -4080,13 +4080,13 @@ Optimizations específicas Elementor:
 └── Woo Product Grid
 \`\`\`
 
-**JetElements** ($26 Elementor Cloud Hosting)
+**JetElements** (valor a consultar Elementor Cloud Hosting)
 - 50+ widgets únicos
 - Mega menu builder
 - Tabs & Accordions avanzados
 - Portfolio grids
 
-**Happy Addons** (Gratuito + Pro $39)
+**Happy Addons** (Gratuito + Pro valor a consultar)
 \`\`\`
 Chile-specific útiles:
 ├── WhatsApp Chat widget
@@ -4272,8 +4272,8 @@ Plan WordPress Pro: valor a consultar
 - **Meetups WordPress Santiago**: Eventos mensuales
 
 ### **Cursos Recomendados (Español)**
-1. **Udemy**: "Elementor Pro Completo" - $12.990
-2. **Domestika**: "Diseño Web con Elementor" - $19.990  
+1. **Udemy**: "Elementor Pro Completo" - valor a consultar
+2. **Domestika**: "Diseño Web con Elementor" - valor a consultar  
 3. **YouTube**: Canal "Diseño y Programación Web" (gratis)
 4. **LinkedIn Learning**: Elementor path (gratis trial)
 
@@ -4378,7 +4378,7 @@ Plan WordPress Pro: valor a consultar
 - Updates por 1 año
 - **[Obtener Divi](https://www.elegantthemes.com/join/)**
 
-### **Divi Lifetime Access** - $249 una vez
+### **Divi Lifetime Access** - valor a consultar una vez
 - Todo lo anterior
 - Acceso de por vida
 - Mejor valor a largo plazo
@@ -4394,7 +4394,7 @@ Plan WordPress Pro: valor a consultar
 
 | Aspecto | Divi | Elementor Pro | Beaver Builder |
 |---------|------|---------------|----------------|
-| Precio anual | $89 | $59 | $99 |
+| Precio anual | valor a consultar | valor a consultar | valor a consultar |
 | Tema incluido | ✅ | ❌ | ❌ |
 | A/B Testing | ✅ | ❌ | ❌ |
 | Layouts pre-hechos | 2000+ | 300+ | 500+ |
@@ -4448,7 +4448,7 @@ Plan WordPress Pro: valor a consultar
     faq: [
       {
         question: '¿Vale la pena el Lifetime Access de Divi?',
-        answer: 'Si planeas usar Divi por más de 3 años, el Lifetime Access ($249) es más económico que renovar anualmente (valor a consultar).'
+        answer: 'Si planeas usar Divi por más de 3 años, el Lifetime Access (valor a consultar) es más económico que renovar anualmente (valor a consultar).'
       },
       {
         question: '¿Divi incluye tema o solo el builder?',
@@ -4899,13 +4899,13 @@ En Chile, elegir hosting nacional tiene ventajas específicas:
 - Valida identidad de la organización
 - Proceso manual 1-3 días
 - Muestra nombre de empresa
-- Ideal para e-commerce ($50-200/año)
+- Ideal para e-commerce (valor a consultar)
 
 ### **Extended Validation (EV)** - Máxima confianza
 - Validación exhaustiva de empresa
 - Barra verde en navegador (navegadores antiguos)
 - Proceso 1-2 semanas
-- Para bancos, seguros ($200-500/año)
+- Para bancos, seguros (valor a consultar)
 
 ## SSL gratuito vs premium
 
@@ -5711,7 +5711,7 @@ sudo certbot renew --force-renewal
 ## Ventajas vs SSL premium
 
 ### **✅ Let's Encrypt advantages**
-- **Costo**: $0 vs $50-200/año SSL premium
+- **Costo**: Gratis vs valor a consultar SSL premium
 - **Automatización**: Sin intervención manual
 - **Encriptación**: 256-bit idéntica a premium
 - **Compatibilidad**: 99%+ browsers modernos
@@ -5733,7 +5733,7 @@ Let's Encrypt ideal para:
 
 SSL Premium necesario para:
 ├── Banca y finanzas
-├── E-commerce con >$1M ventas/año
+├── E-commerce con >valor a consultar ventas/año
 ├── Sitios que requieren Extended Validation
 └── Cumplimiento normativo estricto
 \`\`\`
@@ -6103,15 +6103,15 @@ Multi-proveedor setup:
 ## Impacto del downtime
 
 ### **💰 Costo por minuto offline**
-- **E-commerce pequeño**: $50-200/hora
-- **E-commerce mediano**: $500-2,000/hora
-- **Portal de noticias**: $100-500/hora
-- **SaaS empresarial**: $1,000-10,000/hora
+- **E-commerce pequeño**: valor a consultar
+- **E-commerce mediano**: valor a consultar
+- **Portal de noticias**: valor a consultar
+- **SaaS empresarial**: valor a consultar
 
 ### **🔍 Casos de estudio**
 - **Amazon**: valor a consultar
 - **Facebook**: valor a consultar
-- **E-commerce chileno promedio**: $30-150 por minuto
+- **E-commerce chileno promedio**: valor a consultarpor minuto
 
 ### **SEO y reputación**
 - Downtime frecuente afecta ranking Google
@@ -6152,7 +6152,7 @@ Multi-proveedor setup:
       keyPoints: [
         '99.9% = máximo 8.76 horas offline por año',
         'Monitoreo esencial con alertas automáticas',
-        'Downtime cuesta $30-150/minuto a e-commerce chileno promedio',
+        'Downtime cuesta valor a consultar a e-commerce chileno promedio',
         'SLA con compensación indica hosting profesional'
       ]
     },
@@ -6903,7 +6903,7 @@ Opciones SSL subdominios:
 └── Let's Encrypt: Automático para cada uno
 
 Wildcard SSL setup:
-├── Compra: $50-200/año según proveedor
+├── Compra: valor a consultar según proveedor
 ├── Instalación: Panel control o manual
 ├── Cobertura: Todos subdominios presentes/futuros
 └── Renovación: Anual típicamente
@@ -7169,14 +7169,14 @@ Domain Validated (DV):
 Organization Validated (OV):
 ├── Validación: Empresa + dominio
 ├── Tiempo: 1-3 días manual
-├── Costo: $50-200/año
+├── Costo: valor a consultar
 ├── Indicador: Candado + info empresa
 └── Ideal para: Sitios corporativos
 
 Extended Validation (EV):
 ├── Validación: Exhaustiva legal + física
 ├── Tiempo: 7-14 días verificación
-├── Costo: $200-1000/año
+├── Costo: valor a consultar
 ├── Indicador: Barra verde con empresa
 └── Ideal para: Banca, e-commerce premium
 \`\`\`
@@ -7186,21 +7186,21 @@ Extended Validation (EV):
 Single Domain:
 ├── Cubre: miempresa.cl únicamente
 ├── NO cubre: www.miempresa.cl (separate)
-├── Costo: $0 (Let's Encrypt) - valor a consultar
+├── Costo: Gratis (Let's Encrypt) - valor a consultar
 └── Uso: Sitios simples
 
 Wildcard:
 ├── Cubre: *.miempresa.cl
 ├── Incluye: blog.miempresa.cl, tienda.miempresa.cl
 ├── NO incluye: miempresa.cl (requiere separate)
-├── Costo: $50-300/año
+├── Costo: valor a consultar
 └── Uso: Múltiples subdominios
 
 Multi-Domain (SAN):
 ├── Cubre: Lista específica dominios
 ├── Ejemplo: miempresa.cl, miempresa.com, mi-empresa.cl
 ├── Límite: 100-250 dominios típico
-├── Costo: $100-500/año
+├── Costo: valor a consultar
 └── Uso: Múltiples dominios empresa
 \`\`\`
 
@@ -7404,10 +7404,10 @@ Ejemplo 5 subdominios:
 ┌─────────────────┬──────────────┬─────────────────┐
 │ Método          │ Costo anual  │ Gestión         │
 ├─────────────────┼──────────────┼─────────────────┤
-│ 5 SSL simples   │ $0 (Let's E.)│ 5 renovaciones  │
-│ 5 SSL premium   │ $250-500     │ 5 instalaciones │
-│ Wildcard básico │ $50-150      │ 1 instalación   │
-│ Wildcard EV     │ $200-800     │ 1 renovación    │
+│ 5 SSL simples   │ Gratis (Let's E.)│ 5 renovaciones  │
+│ 5 SSL premium   │ valor a consultar│ 5 instalaciones │
+│ Wildcard básico │ valor a consultar│ 1 instalación   │
+│ Wildcard EV     │ valor a consultar│ 1 renovación    │
 └─────────────────┴──────────────┴─────────────────┘
 \`\`\`
 
@@ -8238,9 +8238,9 @@ whois dominio.com
 - Mejor posicionamiento SEO
 
 ### **Costo vs beneficio**
-- Certificado EV: $200-500 USD/año
+- Certificado EV: valor a consultar
 - Aumento conversión 20%
-- ROI positivo con $2,500 ventas/mes
+- ROI positivo con valor a consultar ventas/mes
 - Payback típico: 1-3 meses`,
     category: 'ssl-security',
     cms: 'general',
@@ -8599,7 +8599,7 @@ getLCP(console.log);
 - **Desventaja**: Configuración técnica
 
 ### Sucuri WAF
-- **Costo**: $200-500/año
+- **Costo**: valor a consultar
 - **Ventajas**: Especialistas WordPress
 - **Cleanup**: Limpieza malware incluida
 - **Soporte**: En español disponible
@@ -8751,8 +8751,8 @@ chmod 600 wp-config.php
 ## Impacto business específico Chile
 
 ### Costos típicos infección
-- **Cleanup profesional**: $300-1,500 USD
-- **Downtime revenue**: $500-5,000/día
+- **Cleanup profesional**: valor a consultar
+- **Downtime revenue**: valor a consultar
 - **SEO recovery**: 2-6 meses
 - **Customer trust**: Daño reputacional
 
