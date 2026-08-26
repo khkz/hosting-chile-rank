@@ -11,7 +11,7 @@ const TLDRVerdict: React.FC = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
-        .select('name, slug, overall_rating, promo_price, speed_rating, price_rating, ranking_position')
+        .select('name, slug, overall_rating, speed_rating, price_rating, ranking_position')
         .eq('country', getActiveCountryCode())
         .eq('is_verified', true)
         .not('ranking_position', 'is', null)
@@ -39,7 +39,6 @@ const TLDRVerdict: React.FC = () => {
   if (!companies || companies.length === 0) return null;
 
   const best = [...companies].sort((a, b) => (b.overall_rating ?? 0) - (a.overall_rating ?? 0))[0];
-  const cheapest = [...companies].sort((a, b) => (a.promo_price ?? Infinity) - (b.promo_price ?? Infinity))[0];
 
   const BrandLink = ({ slug, children }: { slug?: string | null; children: React.ReactNode }) =>
     slug ? (

@@ -263,6 +263,10 @@ const RankingSkeleton = () => (
 );
 
 // ── Main Ranking Component ──────────────────────────────────────
+/** Elimina de las features cualquier mención de antigüedad o cifra de precio (dato no verificado). */
+const cleanFeatures = (features?: string[] | null) =>
+  (features || []).filter((f) => !/años?\s+(operando|en el mercado)|\$\s?\d/i.test(f));
+
 /** El cta_text de la BD puede traer precios interpolados; los retiramos. */
 const cleanCtaText = (text?: string | null) => {
   const cleaned = (text || '')
@@ -328,12 +332,6 @@ const HostingRanking = () => {
         return `${provider.overall_rating ?? 0}/10`;
     }
   };
-
-  /** Elimina de las features cualquier mención de antigüedad o cifra de precio (dato no verificado). */
-  const cleanFeatures = (features?: string[] | null) =>
-    (features || []).filter(
-      (f) => !/años?\s+(operando|en el mercado)|\$\s?\d/i.test(f)
-    );
 
   const getSchemaItems = () =>
     sortedHostingData.map((provider) => ({
