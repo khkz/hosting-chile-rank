@@ -41,8 +41,13 @@ const formatPrice = (price: number | null | undefined) => {
   return `$${price.toLocaleString('es-CL')}/mes`;
 };
 
+const VISIBLE_RANKING = EXTRA_RANKING
+  .filter((p) => !isHiddenProvider(p.slug))
+  .map((p, i) => ({ ...p, position: i + 4 }));
+
 const RankingPositions4to10: React.FC = () => {
-  const slugs = EXTRA_RANKING.map((p) => p.slug);
+  const slugs = VISIBLE_RANKING.map((p) => p.slug);
+
 
   const { data } = useQuery({
     queryKey: ['ranking-4-10', slugs],
