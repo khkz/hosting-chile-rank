@@ -15,7 +15,7 @@ import {
 
 const ORG_LABEL: Record<CertificationBody, string> = {
   uptime: 'Uptime Institute',
-  tuv_tr3: 'TÜV Rheinland TR3',
+  tuv_tr3: 'Certificaciones publicadas por el operador',
   icrea: 'ICREA',
 };
 
@@ -104,7 +104,7 @@ const DatacenterEducation: React.FC = () => {
             <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
               <li>Edificio diseñado desde los cimientos para alojar servidores: pisos, paredes y techo con especificaciones técnicas.</li>
               <li>Estructura pensada para carga de racks, aislamiento acústico, rutas de cableado y acceso controlado.</li>
-              <li>Redundancia N+1 en energía y enfriamiento, con certificación de terceros (Uptime Institute, TÜV o ICREA).</li>
+              <li>Redundancia N+1 en energía y enfriamiento, con certificaciones o auditorías de terceros publicadas por el operador.</li>
               <li>Control de acceso biométrico, CCTV y documentación pública de tier y certificaciones.</li>
             </ul>
           </article>
@@ -271,7 +271,7 @@ const DatacenterEducation: React.FC = () => {
               >
                 lista oficial pública
               </a>
-              ), página pública de certificaciones de Ascenty (TÜV Rheinland TR3).
+              ), página pública de certificaciones de Ascenty (ISO/IEC 27001, PCI-DSS, SOC 1/2/3 Type II).
             </li>
             <li>
               <strong>Datacenter declarado por host:</strong> únicamente lo declarado en el
@@ -284,7 +284,7 @@ const DatacenterEducation: React.FC = () => {
             </li>
             <li>
               <strong>HostingPlus:</strong> se lista como colocation dentro de Ascenty SCL2
-              (TÜV TR3), no como datacenter propio.
+              no como datacenter propio.
             </li>
             <li>
               Última revisión de fuentes: julio 2026. Si detectas un cambio, escribinos a

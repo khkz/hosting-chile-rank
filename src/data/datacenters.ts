@@ -32,13 +32,13 @@ export interface RankingHostDc {
 
 /**
  * (a) Operators with third-party datacenter certifications in Chile.
- * Sources: Uptime Institute public awards list, Ascenty public certification page.
+ * Sources: Uptime Institute public awards list, Ascenty public certification page (only certifications published by the operator).
  */
 export const certifiedOperators: CertifiedOperator[] = [
   {
     nombre: 'Ascenty SCL2',
     organismo: 'tuv_tr3',
-    nivel: 'TÜV Rheinland TR3 / Tier III equivalente',
+    nivel: 'ISO/IEC 27001, PCI-DSS, SOC 1/2/3 Type II (publicadas por el operador)',
     ubicacion: 'Guacolda 2100, Quilicura, Santiago, Chile',
     fuente_url: 'https://ascenty.com/data-centers/seguranca-e-certificacoes/certificacoes/',
   },
