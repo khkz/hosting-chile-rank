@@ -124,7 +124,7 @@ const PROVIDERS: Provider[] = [
     asnPrefixes: '23 IPv4',
     dc: 'HN Datacenter propio en Chile (Seminario 687-A, Ñuñoa)',
     panel: 'cPanel',
-    diff: 'Red propia Tier 1 chileno; 15+ años en el mercado; cooperación de red con Hosting.cl (entidades distintas)',
+    diff: 'Red propia Tier 1 chileno; cooperación de red con Hosting.cl (entidades distintas)',
     reputation: 'Trayectoria sólida en B2B; perfil bajo en reclamos públicos',
     type: 'cl-asn',
     affiliateNote: '',

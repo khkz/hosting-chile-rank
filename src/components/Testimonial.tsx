@@ -35,14 +35,6 @@ const buildSignals = (c: CompanyRow): { icon: React.ReactNode; label: string }[]
     signals.push({ icon: <MapPin className="w-3.5 h-3.5" />, label: 'Datacenter en Chile' });
   }
 
-  const founded = c.foundation_year ?? c.year_founded;
-  if (founded && founded > 1990 && founded <= new Date().getFullYear()) {
-    const years = new Date().getFullYear() - founded;
-    if (years >= 1) {
-      signals.push({ icon: <Calendar className="w-3.5 h-3.5" />, label: `${years}+ años en el mercado` });
-    }
-  }
-
   if (c.is_independent === true) {
     signals.push({ icon: <Building2 className="w-3.5 h-3.5" />, label: 'Empresa independiente' });
   } else if (c.is_independent === false && c.corporate_group) {
@@ -112,7 +104,7 @@ const Testimonial = () => {
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Combinamos fuentes públicas y datos curados de cada proveedor: ubicación del datacenter,
-            años en el mercado, independencia corporativa y servicios incluidos. Sin estrellas inventadas.
+            independencia corporativa y servicios incluidos. Sin estrellas inventadas.
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-6 rounded-full"></div>
         </div>
