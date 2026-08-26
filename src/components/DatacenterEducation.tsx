@@ -283,7 +283,7 @@ const DatacenterEducation: React.FC = () => {
               auditoría de tercero se marcan como <em>autodeclarado</em>.
             </li>
             <li>
-              <strong>HostingPlus:</strong> se lista como colocation dentro de Ascenty SCL2
+              <strong>HostingPlus:</strong> se lista como colocation dentro de Ascenty SCL2,
               no como datacenter propio.
             </li>
             <li>
