@@ -155,7 +155,7 @@ const HostDimePePilot = () => {
   };
 
   const title = `${NAME} — ¿Es bueno? Análisis verificable 2026 | EligeTuHosting`;
-  const description = `HostDime Perú: datacenter Tier IV propio en Lima, ${yearsOperating} años operando como HostDime.com.pe S.A.C. (RUC 20563098296). Datos técnicos, reputación y para quién sí conviene.`;
+  const description = `HostDime Perú: datacenter Tier IV propio en Lima, opera como HostDime.com.pe S.A.C. (RUC 20563098296). Datos técnicos, reputación y para quién sí conviene.`;
 
   return (
     <>
