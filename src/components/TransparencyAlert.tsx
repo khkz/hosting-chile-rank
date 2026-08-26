@@ -28,7 +28,7 @@ const TransparencyAlert: React.FC = () => {
                 Compromiso de EligeTuHosting.cl
               </p>
               <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                Garantizamos un análisis 100% neutral. No compartimos razón social, directivos ni participación accionaria con ningún proveedor evaluado. Cada empresa es identificada con su razón social real y su grupo corporativo cuando corresponde.
+                Este sitio es operado de forma independiente y se financia con enlaces de afiliación, que están señalizados. Estamos reverificando el catálogo proveedor por proveedor: mientras dura ese proceso no publicamos precios ni razón social, y los datos que ves son los que cada proveedor declara públicamente.
               </p>
             </div>
           </div>
