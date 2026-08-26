@@ -28,7 +28,8 @@ interface Company {
   website: string | null;
 }
 
-const fmtPrice = (p: number | null) => (p ? `$${Number(p).toLocaleString('es-CL')}/mes` : 'Consultar');
+/** No publicamos precios mientras dura la reverificación del catálogo. */
+const fmtPrice = (_p: number | null) => 'Consultar';
 
 const AlternativasA: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();

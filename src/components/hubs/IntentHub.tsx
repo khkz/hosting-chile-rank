@@ -135,7 +135,7 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
                       {Number(p.overall_rating ?? 0).toFixed(1)}/10
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {config.priceLabel}: {p.promo_price ? `$${Number(p.promo_price).toLocaleString('es-CL')}/mes` : 'Consultar'}
+                      {config.priceLabel}: Consultar
                     </div>
                   </div>
                   <ul className="md:w-1/4 text-xs text-gray-600 space-y-1">
