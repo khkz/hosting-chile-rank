@@ -23,7 +23,7 @@ export const COUNTRY_CONTENT = {
       "De cada proveedor revisamos su RFC y razón social, dónde aloja realmente sus servidores, qué tecnología usa y cómo anda en el Buró Comercial de PROFECO. Cuando un dato no se puede verificar, lo marcamos así — nada de inventar una calificación para rellenar."
     ],
     faq: [
-      { q: "¿Cuánto cuesta un hosting en México?", a: "Un plan compartido decente ronda los $80 a $250 MXN al mes según proveedor y contratación. Aguas con el precio de enganche del primer año: fíjate siempre en cuánto sube la renovación. En cada ficha ves el precio y quién te va a facturar." },
+      { q: "¿Cuánto cuesta un hosting en México?", a: "Depende del proveedor y del plazo que contrates. Aguas con el precio de enganche del primer año: fíjate siempre en cuánto sube la renovación. Consulta el precio vigente en el sitio oficial de cada proveedor." },
       { q: "¿Sirve que el hosting tenga datacenter en México?", a: "Si tu audiencia está en México, un datacenter local mejora la velocidad y la parte legal. El detalle: muchos dicen tener servidores en México y en realidad revenden infraestructura de EE.UU. Señalamos cuáles sí tienen presencia local comprobable." }
     ],
   },
@@ -37,7 +37,7 @@ export const COUNTRY_CONTENT = {
       "De cada proveedor verificamos su NIT y razón social, dónde aloja de verdad sus servidores, qué tecnología declara y su historial de reclamos ante la Superintendencia de Industria y Comercio. Si algo no es verificable, lo dejamos claro; no rellenamos con una nota inventada."
     ],
     faq: [
-      { q: "¿Cuánto cuesta un hosting en Colombia?", a: "Un plan compartido serio va, más o menos, entre $15.000 y $45.000 COP al mes según el proveedor y el plazo. Tenga cuidado con el precio del primer año: mire siempre a cuánto queda la renovación. En cada ficha aparece el precio y la razón social que le factura." },
+      { q: "¿Cuánto cuesta un hosting en Colombia?", a: "Depende del proveedor y del plazo que contrate. Tenga cuidado con el precio del primer año: mire siempre a cuánto queda la renovación. Consulte el precio vigente en el sitio oficial de cada proveedor." },
       { q: "¿Vale la pena un hosting con datacenter en Colombia?", a: "Si su público está en Colombia, un datacenter local mejora la velocidad y el respaldo legal. Pero ojo: varios dicen tener «servidores en Colombia» y en realidad revenden infraestructura de afuera. Señalamos cuáles tienen presencia local verificable." }
     ],
   },

@@ -44,7 +44,7 @@ export const HUB_DEEP: Record<HubKey, HubDeep> = {
     objections: [
       { q: '¿Y si mi sitio actual está en el extranjero?', a: 'La migración a un hosting con datacenter en Santiago suele bajar el TTFB de 900 ms a 200-300 ms para usuarios chilenos. HostingPlus y EcoHosting incluyen migración gratis.' },
       { q: '¿WordPress no anda bien en cualquier hosting compartido?', a: 'Anda, pero con LiteSpeed + Redis los tiempos de carga bajan al menos 40%. La diferencia se nota sobre 5.000 visitas/día o con plugins pesados (WooCommerce, Elementor).' },
-      { q: '¿Puedo empezar barato y escalar?', a: 'Sí. Un plan desde $3.325/mes cubre 500-1.000 visitas/día. Cuando escales, migras al plan superior sin cambiar de proveedor.' },
+      { q: '¿Puedo empezar barato y escalar?', a: 'Sí. Un plan compartido de entrada cubre sitios de tráfico bajo. Cuando escales, migras al plan superior sin cambiar de proveedor.' },
     ],
     journeys: [
       { persona: 'Blogger o creador de contenido', scenario: 'Menos de 1.000 visitas/día, presupuesto ajustado, quieres empezar bien.', recommendation: 'EcoHosting plan básico', slug: 'ecohosting', guide: { label: 'Guía blog personal', href: '/hosting-wordpress-blog-personal-chile' } },
@@ -92,7 +92,7 @@ export const HUB_DEEP: Record<HubKey, HubDeep> = {
     objections: [
       { q: '¿No me sale más barato Google Workspace + hosting internacional?', a: 'En dólares sí, en pesos y con soporte local casi siempre no. Además pierdes la ventaja de datacenter en Santiago para el sitio.' },
       { q: '¿Cambiar de hosting no es riesgoso para mi email?', a: 'HostingPlus y EcoHosting migran cuentas de correo con historial incluido. El downtime real suele ser inferior a 1 hora si se hace bien.' },
-      { q: '¿Necesito plan caro?', a: 'No. Desde $3.325/mes (EcoHosting) o $4.219/mes (HostingPlus) cubres una PYME chica con web + emails corporativos.' },
+      { q: '¿Necesito plan caro?', a: 'No. Los planes compartidos de entrada de EcoHosting o HostingPlus cubren una PYME chica con web + emails corporativos. Consulta el valor vigente en el sitio de cada proveedor.' },
     ],
     journeys: [
       { persona: 'Emprendedor recién partiendo', scenario: 'Necesitas 3-5 correos y una landing simple.', recommendation: 'EcoHosting plan básico', slug: 'ecohosting' },
@@ -139,7 +139,7 @@ export const HUB_DEEP: Record<HubKey, HubDeep> = {
     },
     objections: [
       { q: '¿Necesito VPS desde el día uno?', a: 'Bajo 5.000-10.000 visitas/día un plan ecommerce optimizado alcanza. Sobre eso, VPS o cloud dedicado.' },
-      { q: '¿Cuánto cuesta un hosting ecommerce serio?', a: 'Desde $4.219/mes (HostingPlus) para tiendas pequeñas. Sobre $7.000/mes obtienes recursos dedicados y prioridad de soporte.' },
+      { q: '¿Cuánto cuesta un hosting ecommerce serio?', a: 'Depende del plan: los compartidos sirven para tiendas pequeñas y los planes superiores agregan recursos dedicados y prioridad de soporte. Consulta el valor vigente en el sitio del proveedor.' },
       { q: '¿Y si mi pasarela local exige certificaciones?', a: 'Los proveedores chilenos del Top 5 son PCI-compatibles y trabajan con Webpay/Mercado Pago sin fricciones.' },
     ],
     journeys: [

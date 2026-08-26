@@ -31,7 +31,7 @@ const HostingQuiz = () => {
       return {
         provider: 'EcoHosting',
         reason: 'Ideal para blogs personales con excelente relación precio-calidad',
-        price: 'desde $3.325/mes',
+        price: 'planes a consultar',
         features: ['WordPress optimizado', 'SSL gratis', 'Backups diarios'],
         cta: 'Ver planes EcoHosting',
         link: '/catalogo/ecohosting'
@@ -42,7 +42,7 @@ const HostingQuiz = () => {
       return {
         provider: 'HostingPlus',
         reason: 'El #1 en velocidad y soporte para tiendas online',
-        price: 'desde $4.219/mes',
+        price: 'planes a consultar',
         features: ['Datacenter en Santiago', 'Soporte 24/7 en español', 'Migración gratis'],
         cta: 'Probar HostingPlus 30 días',
         link: '/catalogo/hostingplus'
@@ -53,7 +53,7 @@ const HostingQuiz = () => {
       return {
         provider: 'HostingPlus',
         reason: 'Máximo rendimiento para sitios con alto tráfico',
-        price: 'desde $4.219/mes',
+        price: 'planes a consultar',
         features: ['Servidores en Santiago', 'CDN incluido', 'Recursos dedicados'],
         cta: 'Ver planes premium',
         link: '/catalogo/hostingplus'
@@ -64,7 +64,7 @@ const HostingQuiz = () => {
     return {
       provider: 'HostingPlus',
       reason: 'La mejor opción para la mayoría de proyectos chilenos',
-      price: 'desde $4.219/mes',
+      price: 'planes a consultar',
       features: ['Garantía 30 días', 'Soporte en español', 'Sin contratos largos'],
       cta: 'Ver ranking completo',
       link: '/ranking'
@@ -194,9 +194,9 @@ const HostingQuiz = () => {
               </h3>
               <div className="space-y-3">
                 {[
-                  { value: 'economy', label: 'Hasta $2,500/mes', subtitle: 'Máximo ahorro' },
-                  { value: 'balanced', label: '$2,500 - $5,000/mes', subtitle: 'Equilibrio precio-calidad' },
-                  { value: 'premium', label: 'Más de $5,000/mes', subtitle: 'Máximo rendimiento' }
+                  { value: 'economy', label: 'Lo más económico', subtitle: 'Máximo ahorro' },
+                  { value: 'balanced', label: 'Gama media', subtitle: 'Equilibrio precio-calidad' },
+                  { value: 'premium', label: 'Gama alta', subtitle: 'Máximo rendimiento' }
                 ].map((option) => (
                   <button
                     key={option.value}

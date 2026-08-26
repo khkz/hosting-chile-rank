@@ -31,27 +31,27 @@ export const buildHostingPlusURL = (
 export const getHostingPlusPlans = () => {
   return {
     'WordPress Básico': {
-      price: '$2.990/mes',
+      price: 'Consultar',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=1',
       features: ['1 Sitio Web', 'SSL Gratis', 'Backup Diario', 'Soporte 24/7']
     },
     'WordPress Turbo': {
-      price: '$4.990/mes',
+      price: 'Consultar',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=3',
       features: ['LiteSpeed Enterprise', 'HTTP/3 + QUIC', 'JetBackup', 'Staging']
     },
     'WordPress Pro': {
-      price: '$7.990/mes', 
+      price: 'Consultar', 
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=4',
       features: ['Redis Cache', 'WAF Premium', 'Sitios Ilimitados', 'Priority Support']
     },
     'WordPress E-commerce': {
-      price: '$9.990/mes',
+      price: 'Consultar',
       url: 'https://clientes.hostingplus.cl/cart.php?a=add&pid=5',
       features: ['Optimizado WooCommerce', 'CDN Premium', 'SSL Wildcard', 'Resources Dedicados']
     },
     'VPS Cloud': {
-      price: 'Desde $19.990/mes',
+      price: 'Consultar',
       url: 'https://clientes.hostingplus.cl/vps-cloud',
       features: ['CPU/RAM Dedicada', 'Root Access', 'IP Dedicada', 'Configuración Personalizada']
     }
