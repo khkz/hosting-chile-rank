@@ -224,14 +224,12 @@ const CatalogoPage = () => {
                             <span className="text-muted-foreground">{company.datacenter_location}</span>
                           </div>
                         )}
-                        {minPrice && (
-                          <div className="flex items-start gap-2">
-                            <span className="font-medium min-w-[80px]">Desde:</span>
-                            <span className="text-primary font-semibold">
-                              ${minPrice.toLocaleString('es-CL')}/mes
-                            </span>
-                          </div>
-                        )}
+                        <div className="flex items-start gap-2">
+                          <span className="font-medium min-w-[80px]">Desde:</span>
+                          <span className="text-primary font-semibold">
+                            Consultar
+                          </span>
+                        </div>
                       </div>
                     </CardContent>
                     <CardFooter className="border-t bg-muted/50 flex flex-col sm:flex-row gap-3 p-4">

@@ -1,6 +1,4 @@
 import React from 'react';
-import { CheckCircle2 } from 'lucide-react';
-import { formatUptime } from '@/lib/uptime';
 import { track } from '@/lib/track';
 
 interface VerifiedDataTableProps {
@@ -26,8 +24,7 @@ const formatOfficialUrl = (raw: string) => {
   }
 }
 
-const fmtPrice = (p?: number | null) =>
-  p && p > 0 ? `$${p.toLocaleString('es-CL')} CLP / mes` : 'Consultar con el proveedor';
+const fmtPrice = (_p?: number | null) => 'Consultar en el sitio oficial';
 
 const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
   const officialLink = props.officialWebsite
@@ -64,9 +61,8 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
 
   return (
     <section className="mt-10">
-      <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-        <CheckCircle2 className="w-5 h-5 text-green-600" />
-        Datos verificados
+      <h2 className="text-2xl font-bold mb-4">
+        Datos declarados por el proveedor
       </h2>
       <div className="overflow-x-auto border rounded-lg">
         <table className="w-full text-sm">

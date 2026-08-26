@@ -55,9 +55,7 @@ export function buildBrandFAQ(opts: {
 }): BrandFAQItem[] {
   const { name, rating, minPrice, datacenter, yearFounded, corporateGroup, uptimeGuarantee } = opts;
 
-  const priceTxt = minPrice && minPrice > 0
-    ? `desde $${minPrice.toLocaleString('es-CL')} CLP al mes en su plan más económico`
-    : 'bajo cotización directa con el proveedor (no publica precios estándar en su sitio público)';
+  const priceTxt = 'bajo cotización directa con el proveedor (no publica precios estándar en su sitio público)';
 
   const dcTxt = datacenter && datacenter.trim().length > 0
     ? datacenter
