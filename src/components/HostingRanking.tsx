@@ -179,7 +179,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
 
           {/* Features */}
           <ul className="space-y-2 mb-4 text-sm">
-            {provider.ranking_features?.map((feature, index) => (
+            {cleanFeatures(provider.ranking_features).map((feature, index) => (
               <li key={index} className="flex items-start gap-2">
                 <Check className={`w-4 h-4 ${isWinner ? 'text-[#EF233C]' : 'text-green-500'} mt-0.5 flex-shrink-0`} />
                 <span className="text-muted-foreground font-medium">{feature}</span>
@@ -204,7 +204,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
                     referrerPolicy="no-referrer"
                     onClick={() => track('click_visitar_sitio', { slug: provider.slug, location: 'ranking_top3', position: provider.ranking_position ?? undefined })}
                   >
-                    {provider.cta_text || 'Ver planes y precios'}
+                    {cleanCtaText(provider.cta_text)}
                   </a>
                 </Button>
               );
@@ -263,6 +263,20 @@ const RankingSkeleton = () => (
 );
 
 // ── Main Ranking Component ──────────────────────────────────────
+/** Elimina de las features cualquier mención de antigüedad o cifra de precio (dato no verificado). */
+const cleanFeatures = (features?: string[] | null) =>
+  (features || []).filter((f) => !/años?\s+(operando|en el mercado)|\$\s?\d/i.test(f));
+
+/** El cta_text de la BD puede traer precios interpolados; los retiramos. */
+const cleanCtaText = (text?: string | null) => {
+  const cleaned = (text || '')
+    .replace(/\s*(desde|por)?\s*\$\s?[\d.,]+\s*(CLP)?\s*(\/\s*(mes|año)|mensuales?|al mes)?/gi, '')
+    .replace(/\s+y\s+precios\s*$/i, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+  return cleaned || 'Ver planes';
+};
+
 const HostingRanking = () => {
   const [sortCriteria, setSortCriteria] = useState('overall');
 
@@ -322,14 +336,12 @@ const HostingRanking = () => {
   const getSchemaItems = () =>
     sortedHostingData.map((provider) => ({
       name: provider.name,
-      description: (provider.ranking_features || []).join('. '),
+      description: cleanFeatures(provider.ranking_features).join('. '),
       url: provider.website || '',
       image: `https://eligetuhosting.cl${provider.logo_url || ''}`,
       brand: provider.name,
       rating: provider.overall_rating ?? 0,
       reviewCount: 1,
-      price: provider.promo_price ?? 0,
-      priceCurrency: 'CLP',
     }));
 
   return (
