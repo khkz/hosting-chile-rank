@@ -12,6 +12,8 @@ export const HIDDEN_SLUGS = new Set([
   'masternet',
   'chileinternet',
   'afrohosting',
+  'cloudhosting',
+  'smarthost',
 ]);
 export const HIDDEN_DOMAINS = [
   'hosting24.cl',
@@ -19,6 +21,8 @@ export const HIDDEN_DOMAINS = [
   'masternet.cl',
   'chileinternet.cl',
   'afrohosting.cl',
+  'cloudhosting.cl',
+  'smarthost.cl',
 ];
 
 const extractHost = (raw?: string | null): string | null => {
