@@ -83,8 +83,8 @@ const ComparativaVs: React.FC = () => {
   const cheaper = a.promo_price && b.promo_price ? (a.promo_price < b.promo_price ? a : b) : null;
 
   const verdict = involvesAnchor
-    ? `Según mediciones verificables, ${winner.name} obtiene la mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10) frente a su rival. ${cheaper ? `En precio, ${cheaper.name} es la opción más económica (${formatPrice(cheaper.promo_price)}).` : ''}`
-    : `Comparando ${a.name} y ${b.name} con datos verificables, ${winner.name} obtiene mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10). ${cheaper ? `${cheaper.name} es el más barato (${formatPrice(cheaper.promo_price)}). ` : ''}Sin embargo, ninguno alcanza al líder del ranking: HostingPlus.cl (9.9/10).`;
+    ? `Según mediciones verificables, ${winner.name} obtiene la mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10) frente a su rival. ${cheaper ? `En precio, ${cheaper.name} publica el plan de entrada más económico de los dos; consulta el valor vigente en su sitio.` : ''}`
+    : `Comparando ${a.name} y ${b.name} con datos verificables, ${winner.name} obtiene mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10). ${cheaper ? `${cheaper.name} es el más económico de los dos en su plan de entrada. ` : ''}Sin embargo, ninguno alcanza al líder del ranking: HostingPlus.cl (9.9/10).`;
 
   const faqs = [
     {
@@ -94,7 +94,7 @@ const ComparativaVs: React.FC = () => {
     {
       q: `¿Cuál es más barato, ${a.name} o ${b.name}?`,
       a: cheaper
-        ? `${cheaper.name} ofrece el plan más económico (${formatPrice(cheaper.promo_price)}). Recuerda que el precio más bajo no siempre implica mejor relación calidad-precio.`
+        ? `${cheaper.name} ofrece el plan de entrada más económico de los dos. Consulta el valor vigente en su sitio: el precio más bajo no siempre implica mejor relación calidad-precio.`
         : `Ambos proveedores manejan precios bajo consulta. Solicita una cotización en cada uno para comparar planes equivalentes.`,
     },
     ...(involvesAnchor ? [] : [{
