@@ -92,7 +92,7 @@ const RankingPositions4to10: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {EXTRA_RANKING.map((row) => {
+            {VISIBLE_RANKING.map((row) => {
               const db = bySlug.get(row.slug);
               return (
                 <tr key={row.slug} className="border-t border-border hover:bg-muted/30">
@@ -143,7 +143,7 @@ const RankingPositions4to10: React.FC = () => {
 
       {/* Cards en mobile */}
       <div className="md:hidden space-y-3">
-        {EXTRA_RANKING.map((row) => {
+        {VISIBLE_RANKING.map((row) => {
           const db = bySlug.get(row.slug);
           return (
             <div

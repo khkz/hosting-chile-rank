@@ -391,7 +391,7 @@ const CatalogoDetalle = () => {
                 <span className="text-xs uppercase text-gray-500 font-semibold">Alternativas</span>
                 <p className="font-semibold text-[#2B2D42] mt-1">Mejores alternativas a {company.name} →</p>
               </a>
-              {(['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','cloudhosting','webhosting'] as const).includes(slug as any) && (
+              {(['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','webhosting'] as const).includes(slug as any) && (
                 <a href={`/migrar-de/${slug}`} className="block p-4 rounded-xl border bg-white hover:border-[#EF233C] transition">
                   <span className="text-xs uppercase text-gray-500 font-semibold">Migración gratuita</span>
                   <p className="font-semibold text-[#2B2D42] mt-1">Migrar de {company.name} sin downtime →</p>
