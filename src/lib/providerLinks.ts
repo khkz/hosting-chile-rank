@@ -8,19 +8,11 @@ export const DOFOLLOW_DOMAINS = ['hostingplus.cl', 'ecohosting.cl', 'hostingplus
 
 export const HIDDEN_SLUGS = new Set([
   'hosting24',
-  'hostengine',
-  'masternet',
-  'chileinternet',
-  'afrohosting',
   'cloudhosting',
   'smarthost',
 ]);
 export const HIDDEN_DOMAINS = [
   'hosting24.cl',
-  'hostengine.cl',
-  'masternet.cl',
-  'chileinternet.cl',
-  'afrohosting.cl',
   'cloudhosting.cl',
   'smarthost.cl',
 ];
