@@ -15,7 +15,7 @@ function heroAnswer({ c, meta, complaintsCount, yearsOperating, dcLocal }) {
   if (c.year_founded && yearsOperating != null) {
     parts.push(`Opera desde ${c.year_founded} (${yearsOperating} años).`);
   }
-  if (c.legal_name) parts.push(`Razón social: ${c.legal_name}.`);
+  
   if (dcLocal === true) parts.push(`Declara datacenter en ${meta.name}, lo que reduce la latencia local.`);
   else if (dcLocal === false) parts.push(`No declara datacenter en ${meta.name}.`);
   parts.push(complaintsCount === 0
@@ -28,14 +28,14 @@ function forWhoBlocks({ c, meta, dcLocal, techs }) {
   const yes = [];
   const no = [];
   if (dcLocal === true) yes.push(`Proyectos con audiencia en ${meta.name} que necesitan latencia local.`);
-  if (c.legal_name && c.country && c.country !== 'CL') yes.push(`Empresas que necesitan facturación con entidad local (${c.legal_name}).`);
+  
   if (techs.some(t => /cpanel|plesk/i.test(t))) yes.push('Usuarios que buscan panel estándar (cPanel/Plesk).');
   if (techs.some(t => /wordpress/i.test(t))) yes.push('Sitios WordPress con optimizaciones específicas.');
   if (techs.some(t => /dedicad|vps|cloud|colocation/i.test(t))) yes.push('Cargas medianas o altas: VPS, dedicados, cloud o colocation.');
   if (yes.length === 0) yes.push(`Quienes buscan un proveedor con presencia declarada en ${meta.name}.`);
 
   if (dcLocal === false) no.push(`Proyectos que exigen datos y latencia estrictamente dentro de ${meta.name}.`);
-  if (!c.legal_name) no.push('Empresas que requieren factura emitida por una entidad local verificable.');
+  
   no.push('Comparadores de precio puros: verifica también soporte, uptime real y política de reembolso.');
   return { yes, no };
 }
@@ -50,7 +50,7 @@ function faqList({ c, meta, chk, complaintsCount, yearsOperating, dcLocal, techs
         ? `No. Su información pública indica que el datacenter está fuera de ${meta.name}${c.datacenter_location ? ` (${c.datacenter_location})` : ''}. Si necesitas latencia mínima o cumplimiento local, considéralo antes de contratar.`
         : `${c.name} no publica en su sitio la ubicación exacta del datacenter. Antes de contratar, confirma con soporte si la infraestructura está dentro de ${meta.name}.`,
   });
-  if (c.legal_name) faq.push({ q: `¿Cuál es la razón social de ${c.name}?`, a: `La razón social registrada es ${c.legal_name}${c.corporate_group ? `, del grupo ${c.corporate_group}` : ''}. Verifica que la factura sea emitida por esta entidad si necesitas crédito fiscal local.` });
+  
   if (c.year_founded) faq.push({ q: `¿Hace cuánto opera ${c.name}?`, a: `Registra actividad desde ${c.year_founded}, es decir ${yearsOperating} años en el mercado. La antigüedad no garantiza calidad, pero sí trayectoria y ayuda a evaluar estabilidad frente a proveedores muy nuevos.` });
   if (techs.length) faq.push({ q: `¿Qué tecnologías declara ${c.name}?`, a: `Su stack público incluye: ${techs.slice(0, 8).join(', ')}. Estas tecnologías son declaradas por el proveedor; verifica en su sitio oficial que estén disponibles en el plan concreto que planeas contratar.` });
   if (c.contact_phone || c.contact_email) faq.push({ q: `¿Cómo contactar a ${c.name}?`, a: `Canales publicados: ${[c.contact_phone && `teléfono ${c.contact_phone}`, c.contact_email && `correo ${c.contact_email}`].filter(Boolean).join(' y ')}. Un canal telefónico local suele indicar operación real en el país; confírmalo antes de contratar.` });
@@ -60,7 +60,7 @@ function faqList({ c, meta, chk, complaintsCount, yearsOperating, dcLocal, techs
   });
   faq.push({
     q: `¿Cómo se verifican estos datos?`,
-    a: `Cruzamos el sitio oficial, registros mercantiles públicos, ASN + BGP para la IP de origen y una medición TTFB con timestamp${chk?.checked_at ? ` (último check: ${fmtDate(chk.checked_at)})` : ''}. Sin puntajes inventados; solo datos verificables.`,
+    a: `Los datos de esta ficha son los que declara públicamente el proveedor en su sitio oficial. Estamos reverificando el catálogo proveedor por proveedor; mientras tanto no publicamos precios ni razón social. Confirma siempre en el sitio del proveedor antes de contratar.`,
   });
   return faq;
 }
@@ -91,7 +91,7 @@ function plansTable(plans, currency) {
   return `<h2>Planes y precios</h2>
   <table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="8">
     <thead><tr><th align="left">Plan</th><th align="left">Precio${currency ? ` (${currency})` : ''}</th><th align="left">Capturado</th></tr></thead>
-    <tbody>${plans.map(p => `<tr><td>${esc(p.name || '—')}</td><td>${p.price != null ? esc(String(p.price)) : '—'}</td><td>${fmtDate(p.updated_at) || '—'}</td></tr>`).join('')}</tbody>
+    <tbody>${plans.map(p => `<tr><td>${esc(p.name || '—')}</td><td>Consultar en el sitio oficial</td><td>${fmtDate(p.updated_at) || '—'}</td></tr>`).join('')}</tbody>
   </table>`;
 }
 
@@ -153,8 +153,6 @@ export function buildSalesBody(args) {
 
   const badges = [];
   if (dcLocal === true) badges.push(`Datacenter en ${meta.name} ${meta.flag || ''}`);
-  if (c.legal_name) badges.push('Razón social verificada');
-  if (c.year_founded && yearsOperating >= 5) badges.push(`${yearsOperating} años operando`);
   if (c.has_ssl_free === true) badges.push('SSL Gratis');
   if (c.has_migration_free === true) badges.push('Migración Gratis');
   if (uptimeStr) badges.push(`Uptime ${uptimeStr}`);
@@ -162,9 +160,9 @@ export function buildSalesBody(args) {
 
   const historyParas = [];
   if (c.year_founded) {
-    historyParas.push(`${c.name} abrió operaciones en <strong>${c.year_founded}</strong>${yearsOperating ? ` (${yearsOperating} años)` : ''}${c.legal_name ? ` bajo la razón social <strong>${esc(c.legal_name)}</strong>` : ''}${c.corporate_group ? `, parte del grupo <strong>${esc(c.corporate_group)}</strong>` : ''}.`);
-  } else if (c.legal_name) {
-    historyParas.push(`${c.name} opera bajo la razón social <strong>${esc(c.legal_name)}</strong>${c.corporate_group ? `, parte del grupo <strong>${esc(c.corporate_group)}</strong>` : ''}.`);
+    historyParas.push(`${c.name} abrió operaciones en <strong>${c.year_founded}</strong>${yearsOperating ? ` (${yearsOperating} años)` : ''}${c.corporate_group ? `, parte del grupo <strong>${esc(c.corporate_group)}</strong>` : ''}.`);
+  } else if (c.corporate_group) {
+    historyParas.push(`${c.name} es parte del grupo <strong>${esc(c.corporate_group)}</strong>.`);
   }
   if (c.datacenter_location) {
     historyParas.push(`Infraestructura declarada: <strong>${esc(c.datacenter_location)}</strong>.${dcLocal === true ? ` Al estar dentro de ${meta.name}, la latencia local suele ser mejor que en proveedores que revenden infraestructura extranjera.` : dcLocal === false ? ` Esto ubica su infraestructura fuera de ${meta.name}, algo relevante si necesitas latencia mínima o cumplimiento normativo local.` : ''}`);
@@ -175,7 +173,6 @@ export function buildSalesBody(args) {
   if (c.editorial_summary) historyParas.push(esc(c.editorial_summary));
 
   const badgesHtml = badges.length ? `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-    <span style="background:#D1FAE5;color:#065F46;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">✓ Datos verificados</span>
     ${badges.map(b => `<span style="border:1px solid #D1D5DB;padding:4px 10px;border-radius:999px;font-size:12px">${esc(b)}</span>`).join('')}
   </div>` : '';
 
@@ -195,7 +192,6 @@ export function buildSalesBody(args) {
     </div>`;
 
   const dataTable = verifiableTable([
-    ['Razón social', c.legal_name],
     ['Grupo corporativo', c.corporate_group],
     ['Operando desde', c.year_founded],
     ['Datacenter declarado', c.datacenter_location],
@@ -230,7 +226,7 @@ export function buildSalesBody(args) {
     <p><strong style="font-size:18px">${complaintsCount}</strong> ${complaintsCount === 1 ? 'reclamo verificado' : 'reclamos verificados'} sobre ${esc(c.name)} en nuestro registro público. Verificamos cada reclamo por correo antes de publicarlo. Ausencia de reclamos no equivale a ausencia de problemas.</p>
     <p><a href="/reclamos">Reportar problema</a> · <a href="/resena?empresa=${esc(c.slug)}">Dejar una reseña</a></p>
     ${cta}
-    ${dataTable ? `<h2>Datos verificables</h2>${dataTable}` : ''}
+    ${dataTable ? `<h2>Datos declarados por el proveedor</h2>${dataTable}` : ''}
     ${alternativesBlock({ c, others, meta, urlBase, dcLocalOf })}
     <h2>Preguntas frecuentes</h2>
     ${faq.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
@@ -241,7 +237,7 @@ export function buildSalesBody(args) {
   const orgLd = {
     '@context': 'https://schema.org', '@type': 'Organization',
     name: c.name,
-    ...(c.legal_name ? { legalName: c.legal_name } : {}),
+    
     ...(c.website ? { url: c.website } : {}),
     ...(c.contact_phone ? { telephone: c.contact_phone } : {}),
     ...(c.contact_email ? { email: c.contact_email } : {}),
@@ -270,7 +266,7 @@ export function buildSalesBody(args) {
   const title = `${c.name} — ¿Es bueno? Análisis verificable 2026 | EligeTuHosting`;
   const descBits = [
     `${c.name}: análisis verificable de hosting en ${meta.name}.`,
-    c.legal_name ? `Razón social ${c.legal_name}.` : '',
+    
     c.datacenter_location ? `Datacenter: ${c.datacenter_location}.` : '',
     'Datos técnicos, reputación y para quién sí conviene.',
   ].filter(Boolean).join(' ');
