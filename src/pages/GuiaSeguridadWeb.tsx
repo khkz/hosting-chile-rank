@@ -76,7 +76,7 @@ const GuiaSeguridadWeb = () => {
             <Alert className="mb-6">
               <Shield className="h-4 w-4" />
               <AlertDescription>
-                <strong>Realidad chilena:</strong> El 80% de los hackeos que veo podrían haberse evitado con medidas básicas de seguridad que cuestan menos de $20.000 mensuales.
+                <strong>Realidad chilena:</strong> El 80% de los hackeos que veo podrían haberse evitado con medidas básicas de seguridad que cuestan menos de a consultar.
               </AlertDescription>
             </Alert>
           </section>
@@ -225,7 +225,7 @@ const GuiaSeguridadWeb = () => {
                     <h4 className="font-bold mb-3 text-green-600">Opción Premium (Recomendada)</h4>
                     <div className="bg-green-50 p-4 rounded">
                       <p className="font-bold">Wordfence Premium</p>
-                      <p className="text-sm mb-2">$99 USD/año</p>
+                      <p className="text-sm mb-2">a consultar</p>
                       <ul className="text-sm space-y-1">
                         <li>• Firewall con reglas en tiempo real</li>
                         <li>• Escaneo malware diario</li>
@@ -293,7 +293,7 @@ const GuiaSeguridadWeb = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-card p-6 rounded-lg border">
                   <h3 className="text-lg font-bold mb-3 text-green-600">Cloudflare</h3>
-                  <p className="text-sm mb-3">Desde $0/mes</p>
+                  <p className="text-sm mb-3">a consultar</p>
                   <ul className="text-sm space-y-1 mb-4">
                     <li>• Plan gratuito robusto</li>
                     <li>• CDN incluido</li>
@@ -305,7 +305,7 @@ const GuiaSeguridadWeb = () => {
 
                 <div className="bg-card p-6 rounded-lg border">
                   <h3 className="text-lg font-bold mb-3 text-blue-600">Sucuri</h3>
-                  <p className="text-sm mb-3">Desde $199/año</p>
+                  <p className="text-sm mb-3">a consultar</p>
                   <ul className="text-sm space-y-1 mb-4">
                     <li>• Limpieza malware incluida</li>
                     <li>• Soporte especializado</li>
@@ -317,7 +317,7 @@ const GuiaSeguridadWeb = () => {
 
                 <div className="bg-card p-6 rounded-lg border">
                   <h3 className="text-lg font-bold mb-3 text-purple-600">AWS WAF</h3>
-                  <p className="text-sm mb-3">Desde $5/mes</p>
+                  <p className="text-sm mb-3">a consultar</p>
                   <ul className="text-sm space-y-1 mb-4">
                     <li>• Máxima personalización</li>
                     <li>• Escalabilidad enterprise</li>
@@ -538,7 +538,7 @@ const GuiaSeguridadWeb = () => {
                       <li>• ✅ Backup semanal</li>
                       <li>• ✅ Hosting actualizado</li>
                     </ul>
-                    <p className="text-blue-600 font-medium mt-2">Costo prevención: $15.000/mes</p>
+                    <p className="text-blue-600 font-medium mt-2">Costo prevención: a consultar</p>
                     <p className="text-red-600 font-medium">Costo limpieza: $250.000</p>
                   </div>
                 </div>

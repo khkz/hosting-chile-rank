@@ -44,14 +44,14 @@ const ErroresComunesHosting = () => {
         "Servidores sobrecargados con cientos de sitios"
       ],
       solution: "Evalúa el valor real: compara recursos, soporte y uptime. Un hosting $2.000 CLP más caro puede ahorrarte $50.000 CLP en pérdidas por caídas.",
-      realCost: "Pérdida promedio: $30.000-$150.000 CLP/mes en ventas caídas"
+      realCost: "Pérdida promedio: a consultar en ventas caídas"
     },
     {
       title: "No leer la política de renovación",
       icon: AlertTriangle,
       description: "Los precios promocionales pueden ser engañosos.",
       consequences: [
-        "Precio inicial $3.000/mes → Renovación $12.000/mes",
+        "Precio inicial a consultar → Renovación a consultar",
         "Cargos automáticos sin previo aviso",
         "Penalidades por cancelación anticipada",
         "Costos ocultos por servicios 'incluidos'"
@@ -109,7 +109,7 @@ const ErroresComunesHosting = () => {
         "Pérdida de momentum en campañas"
       ],
       solution: "Calcula crecimiento esperado a 12 meses. Elige un plan que permita escalar fácilmente sin cambiar de proveedor.",
-      realCost: "Costo migración: $50.000-$200.000 CLP + tiempo perdido"
+      realCost: "Costo migración: a consultar+ tiempo perdido"
     },
     {
       title: "No tener backups propios",
@@ -135,7 +135,7 @@ const ErroresComunesHosting = () => {
         "Pérdida total de confianza de clientes"
       ],
       solution: "Verifica que incluya: SSL gratis, firewall, anti-malware, actualizaciones automáticas, y monitoreo de seguridad 24/7.",
-      realCost: "Recuperación de hackeo: $200.000-$2.000.000 CLP"
+      realCost: "Recuperación de hackeo: a consultar"
     }
   ];
 

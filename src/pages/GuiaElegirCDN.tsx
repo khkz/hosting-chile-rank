@@ -262,8 +262,8 @@ const GuiaElegirCDN = () => {
                         <h4 className="font-semibold text-foreground mb-2">Precios:</h4>
                         <ul className="list-disc pl-5 text-muted-foreground space-y-1">
                           <li>Gratuito: Básico</li>
-                          <li>Pro: $20 USD/mes</li>
-                          <li>Business: $200 USD/mes</li>
+                          <li>Pro: a consultar</li>
+                          <li>Business: a consultar</li>
                         </ul>
                       </div>
                     </div>
@@ -316,7 +316,7 @@ const GuiaElegirCDN = () => {
                         <h4 className="font-semibold text-foreground mb-2">Precios:</h4>
                         <ul className="list-disc pl-5 text-muted-foreground space-y-1">
                           <li>$0.04 USD por GB</li>
-                          <li>Mínimo $4 USD/mes</li>
+                          <li>Mínimo a consultar</li>
                           <li>Trial gratuito disponible</li>
                         </ul>
                       </div>

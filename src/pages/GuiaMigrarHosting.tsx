@@ -350,7 +350,7 @@ const GuiaMigrarHosting = () => {
               <div className="bg-white/50 p-4 rounded-lg">
                 <h3 className="font-bold mb-2">¿Necesitas ayuda con tu migración?</h3>
                 <p className="text-sm text-muted-foreground">
-                  Si tu sitio maneja más de $500,000 mensuales o tienes más de 10,000 visitantes/mes, 
+                  Si tu sitio maneja más de a consultar o tienes más de 10,000 visitantes/mes, 
                   considera contratar un profesional. El riesgo no vale la pena.
                 </p>
               </div>

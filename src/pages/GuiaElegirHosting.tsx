@@ -118,7 +118,7 @@ const GuiaElegirHosting = () => {
                   <p className="mb-3">
                     Es como vivir en un departamento compartido: divides los recursos (cocina, baño, internet) con otros. 
                     Perfecto para blogs personales, sitios de iglesias o emprendimientos que recién arrancan. 
-                    <strong>Precio en Chile:</strong> Entre $1.500 - $8.000 mensuales.
+                    <strong>Precio en Chile:</strong> a consultar.
                   </p>
                   <div className="bg-blue-50 p-3 rounded mb-3">
                     <p className="text-sm text-blue-800">
@@ -138,7 +138,7 @@ const GuiaElegirHosting = () => {
                   <p className="mb-3">
                     Imagínate tener tu propia oficina en un edificio corporativo. Tienes tus recursos garantizados, 
                     pero compartes la infraestructura. Ideal cuando tu web recibe +1.000 visitas diarias o manejas datos sensibles.
-                    <strong>Precio en Chile:</strong> Entre $15.000 - $80.000 mensuales.
+                    <strong>Precio en Chile:</strong> a consultar.
                   </p>
                   <div className="bg-green-50 p-3 rounded mb-3">
                     <p className="text-sm text-green-800">

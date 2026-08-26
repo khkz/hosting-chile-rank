@@ -323,22 +323,22 @@ const MejorHostingEcommerceChile = () => {
                   </thead>
                   <tbody className="divide-y divide-red-200">
                     <tr>
-                      <td className="p-4">$1.000.000 CLP/mes</td>
+                      <td className="p-4">a consultar</td>
                       <td className="p-4 text-right font-bold text-red-700">$1.400 CLP</td>
                       <td className="p-4 text-right font-bold text-red-700">$33.000 CLP</td>
                     </tr>
                     <tr>
-                      <td className="p-4">$5.000.000 CLP/mes</td>
+                      <td className="p-4">a consultar</td>
                       <td className="p-4 text-right font-bold text-red-700">$7.000 CLP</td>
                       <td className="p-4 text-right font-bold text-red-700">$167.000 CLP</td>
                     </tr>
                     <tr>
-                      <td className="p-4">$10.000.000 CLP/mes</td>
+                      <td className="p-4">a consultar</td>
                       <td className="p-4 text-right font-bold text-red-700">$14.000 CLP</td>
                       <td className="p-4 text-right font-bold text-red-700">$333.000 CLP</td>
                     </tr>
                     <tr>
-                      <td className="p-4">$50.000.000 CLP/mes</td>
+                      <td className="p-4">a consultar</td>
                       <td className="p-4 text-right font-bold text-red-700">$70.000 CLP</td>
                       <td className="p-4 text-right font-bold text-red-700">$1.667.000 CLP</td>
                     </tr>

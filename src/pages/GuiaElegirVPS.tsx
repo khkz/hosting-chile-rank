@@ -73,7 +73,7 @@ const GuiaElegirVPS = () => {
             <section className="mb-12 bg-emerald-50 p-6 rounded-lg border-l-4 border-emerald-400">
               <h2 className="text-2xl font-bold mb-4 text-emerald-800">4 años después: La lección más cara que aprendí</h2>
               <p className="text-emerald-700 mb-4">
-                En 2021 migré a un restaurante a un VPS "premium" de $89.000/mes. En 3 meses quebró. 
+                En 2021 migré a un restaurante a un VPS "premium" de a consultar. En 3 meses quebró. 
                 <strong> No porque el VPS fuera malo, sino porque no necesitaba VPS.</strong> 
                 Con su tráfico real (150 visitas diarias), un hosting compartido de $15.000 le sobraba.
               </p>
@@ -98,7 +98,7 @@ const GuiaElegirVPS = () => {
                   <div className="bg-red-100 p-3 rounded">
                     <p className="text-red-800 text-sm">
                       <strong>Caso real:</strong> Clínica Dental Providencia - 50 reservas diarias, se caía cada lunes en la mañana. 
-                      VPS básico de $24.990/mes = problema resuelto hace 8 meses.
+                      VPS básico de a consultar = problema resuelto hace 8 meses.
                     </p>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ const GuiaElegirVPS = () => {
                   <div className="bg-yellow-100 p-3 rounded">
                     <p className="text-yellow-800 text-sm">
                       <strong>Caso real:</strong> Fintech Santiago - App tardaba 8 segundos en cargar dashboard. 
-                      VPS de $45.990/mes = tiempo de carga bajo 1 segundo, conversiones +34%.
+                      VPS de a consultar = tiempo de carga bajo 1 segundo, conversiones +34%.
                     </p>
                   </div>
                 </div>
@@ -175,7 +175,7 @@ const GuiaElegirVPS = () => {
                   <li>• Web personal o blog con menos de 500 visitas diarias</li>
                   <li>• Sitio corporativo básico (solo información, sin funcionalidades)</li>
                   <li>• Proyecto en fase de prototipo o testeo</li>
-                  <li>• Presupuesto menor a $25.000/mes para hosting</li>
+                  <li>• Presupuesto menor a a consultar para hosting</li>
                 </ul>
               </div>
             </section>
@@ -225,8 +225,8 @@ const GuiaElegirVPS = () => {
                   </div>
                   <div className="bg-green-100 p-3 rounded mb-4">
                     <p className="text-green-800 text-sm">
-                      <strong>Plan recomendado:</strong> VPS Básico - 2 CPU, 4GB RAM, 80GB SSD = $29.990/mes 
-                      (o $24.990/mes pagando anual)
+                      <strong>Plan recomendado:</strong> VPS Básico - 2 CPU, 4GB RAM, 80GB SSD = a consultar 
+                      (o a consultar pagando anual)
                     </p>
                   </div>
                   <a 
@@ -253,7 +253,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-green-100 p-3 rounded mb-4">
                     <p className="text-green-800 text-sm">
-                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 60GB SSD = $32.990/mes
+                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 60GB SSD = a consultar
                     </p>
                   </div>
                   <a 
@@ -280,7 +280,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-blue-100 p-3 rounded mb-4">
                     <p className="text-blue-800 text-sm">
-                      <strong>Plan recomendado:</strong> VPS Pro - 2 CPU, 4GB RAM, 80GB SSD = $34.990/mes
+                      <strong>Plan recomendado:</strong> VPS Pro - 2 CPU, 4GB RAM, 80GB SSD = a consultar
                     </p>
                   </div>
                   <a 
@@ -307,7 +307,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-purple-100 p-3 rounded mb-4">
                     <p className="text-purple-800 text-sm">
-                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 40GB SSD = $159.990/mes (USD convertido)
+                      <strong>Plan recomendado:</strong> Cloud VPS - 2 CPU, 4GB RAM, 40GB SSD = a consultar (USD convertido)
                     </p>
                   </div>
                   <a 
@@ -334,7 +334,7 @@ const GuiaElegirVPS = () => {
                   </p>
                   <div className="bg-green-100 p-3 rounded mb-4">
                     <p className="text-green-800 text-sm">
-                      <strong>Plan recomendado:</strong> VPS Starter - 1 CPU, 2GB RAM, 40GB SSD = $14.990/mes
+                      <strong>Plan recomendado:</strong> VPS Starter - 1 CPU, 2GB RAM, 40GB SSD = a consultar
                     </p>
                   </div>
                   <a 

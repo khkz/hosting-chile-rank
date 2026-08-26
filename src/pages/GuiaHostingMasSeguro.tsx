@@ -297,7 +297,7 @@ const GuiaHostingMasSeguro = () => {
                 <tr className="bg-card">
                   <td className="px-4 py-4">
                     <div className="font-medium">HostingPlus</div>
-                    <div className="text-xs text-muted-foreground mt-1">Desde $4.219/mes</div>
+                    <div className="text-xs text-muted-foreground mt-1">a consultar</div>
                   </td>
                   <td className="px-3 py-4 text-center">
                     <Info className="w-5 h-5 mx-auto text-blue-600" />
@@ -321,7 +321,7 @@ const GuiaHostingMasSeguro = () => {
                 <tr className="bg-card">
                   <td className="px-4 py-4">
                     <div className="font-medium">EcoHosting</div>
-                    <div className="text-xs text-muted-foreground mt-1">Desde $4.990/mes</div>
+                    <div className="text-xs text-muted-foreground mt-1">a consultar</div>
                   </td>
                   <td className="px-3 py-4 text-center">
                     <XCircle className="w-5 h-5 mx-auto text-gray-400" />
@@ -345,7 +345,7 @@ const GuiaHostingMasSeguro = () => {
                 <tr className="bg-card">
                   <td className="px-4 py-4">
                     <div className="font-medium">1Hosting</div>
-                    <div className="text-xs text-muted-foreground mt-1">Desde $2.990/mes</div>
+                    <div className="text-xs text-muted-foreground mt-1">a consultar</div>
                   </td>
                   <td className="px-3 py-4 text-center">
                     <XCircle className="w-5 h-5 mx-auto text-gray-400" />

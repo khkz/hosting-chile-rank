@@ -69,7 +69,7 @@ const GuiaCompletaElegirHosting = () => {
   const faqs = [
     {
       question: "¿Cuánto debería invertir en hosting para mi primer sitio web?",
-      answer: "Para un sitio web básico o blog personal, puedes empezar con planes desde $2.000-$5.000 CLP mensuales. Para e-commerce o sitios corporativos, considera invertir entre $10.000-$30.000 CLP mensuales para asegurar rendimiento y seguridad adecuados."
+      answer: "Para un sitio web básico o blog personal, puedes empezar con planes a consultar. Para e-commerce o sitios corporativos, considera invertir a consultar para asegurar rendimiento y seguridad adecuados."
     },
     {
       question: "¿Es mejor hosting compartido o VPS para empezar?",

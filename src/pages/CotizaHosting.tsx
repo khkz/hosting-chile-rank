@@ -268,16 +268,14 @@ const CotizaHosting = () => {
                                   <RadioGroupItem value="5000_10000" />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  $5.000 - $10.000
-                                </FormLabel>
+                                  a consultar</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
                                 <FormControl>
                                   <RadioGroupItem value="10000_20000" />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  $10.000 - $20.000
-                                </FormLabel>
+                                  a consultar</FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center space-x-3 space-y-0">
                                 <FormControl>
@@ -639,7 +637,7 @@ const CotizaHosting = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Desde:</span>
-                      <span className="font-bold">$2.990/mes</span>
+                      <span className="font-bold">a consultar</span>
                     </div>
                   </div>
                 </CardContent>
@@ -664,7 +662,7 @@ const CotizaHosting = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Desde:</span>
-                      <span className="font-bold">$1.990/mes</span>
+                      <span className="font-bold">a consultar</span>
                     </div>
                   </div>
                 </CardContent>
@@ -689,7 +687,7 @@ const CotizaHosting = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Desde:</span>
-                      <span className="font-bold">$2.490/mes</span>
+                      <span className="font-bold">a consultar</span>
                     </div>
                   </div>
                 </CardContent>
@@ -714,7 +712,7 @@ const CotizaHosting = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Desde:</span>
-                      <span className="font-bold">$2.190/mes</span>
+                      <span className="font-bold">a consultar</span>
                     </div>
                   </div>
                 </CardContent>
