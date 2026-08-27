@@ -28,7 +28,7 @@ const competitors: Record<string, Competitor> = {
     slug: 'comparahosting',
     name: 'ComparaHosting.cl',
     fullDomain: 'comparahosting.cl',
-    corporateGroup: 'Grupo Casamayor',
+    corporateGroup: 'Grupo Hosting',
     parentCompanies: ['hosting.cl', 'planetahosting.cl'],
     relatedSites: ['hosting.cl', 'planetahosting.cl', 'ninjahosting.cl', 'hostingcenter.cl', 'ihost.cl', 'todohosting.cl'],
     asn: 'AS267804',
