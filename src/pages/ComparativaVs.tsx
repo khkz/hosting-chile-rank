@@ -182,7 +182,7 @@ const ComparativaVs: React.FC = () => {
                 {renderCell('Precio desde', formatPrice(a.promo_price), formatPrice(b.promo_price))}
                 {renderCell('Datacenter', a.datacenter_location || 'No informado', b.datacenter_location || 'No informado')}
                 {renderCell('Año de fundación', a.foundation_year || '—', b.foundation_year || '—')}
-                {renderCell('Grupo corporativo', a.corporate_group || 'Independiente', b.corporate_group || 'Independiente')}
+                {renderCell('Grupo corporativo', a.corporate_group || 'No declarado', b.corporate_group || 'No declarado')}
                 {renderCell('Reseñas verificadas', a.total_reviews ?? 0, b.total_reviews ?? 0)}
               </tbody>
             </table>

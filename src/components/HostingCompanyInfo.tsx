@@ -47,7 +47,7 @@ export interface HostingCompanyData {
   description: string;
   descriptionEditorial?: string;
   rating: number;
-  yearFounded: number;
+  yearFounded?: number | null;
   datacenterLocation: string;
   website: string;
   contactInfo: ContactInfo;
@@ -96,7 +96,7 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
           </div>
           
           <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-sm text-muted-foreground">
-            {company.yearFounded > 0 && <div>Fundado en {company.yearFounded}</div>}
+            {!!company.yearFounded && company.yearFounded > 0 && <div>Fundado en {company.yearFounded}</div>}
             {company.datacenterLocation && <div>Datacenter en {company.datacenterLocation}</div>}
           </div>
           

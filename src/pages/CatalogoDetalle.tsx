@@ -206,7 +206,7 @@ const CatalogoDetalle = () => {
     description: company.description || '',
     descriptionEditorial: (company as any).description_editorial || '',
     rating: company.overall_rating || 0,
-    yearFounded: company.year_founded || 0,
+    yearFounded: company.year_founded ?? null,
     datacenterLocation: company.datacenter_location || '',
     website: company.website || '',
     contactInfo: {
@@ -218,9 +218,9 @@ const CatalogoDetalle = () => {
     plans: (company.hosting_plans || []).map((plan: any) => ({
       name: plan.name,
       price: plan.price_monthly,
-      storage: plan.storage_gb ? `${plan.storage_gb} GB SSD` : 'Ilimitado',
-      bandwidth: plan.bandwidth || 'Ilimitada',
-      domains: plan.domains_allowed || 1,
+      storage: plan.storage_gb ? `${plan.storage_gb} GB SSD` : 'No declarado',
+      bandwidth: plan.bandwidth && String(plan.bandwidth).trim() ? plan.bandwidth : 'No declarado',
+      domains: plan.domains_allowed ?? 'No declarado',
       features: plan.features || [],
     })),
     technologies: company.technologies || [],
