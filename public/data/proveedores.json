@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting.cl (https://eligetuhosting.cl)",
-  "fecha_generacion": "2026-08-27T15:12:27.390Z",
+  "fecha_generacion": "2026-08-27T15:16:29.327Z",
   "total_proveedores": 113,
   "proveedores": [
     {
@@ -14,13 +14,13 @@
       "nota": 9.9,
       "precio_desde_clp": null,
       "datacenter": "Ascenty SCL2 Tier III — Quilicura, Santiago, Chile",
-      "fundado": 2013,
+      "fundado": 2004,
       "grupo_corporativo": null,
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingplus",
       "url_sitio": "https://www.hostingplus.cl/",
-      "fecha_actualizacion": "2026-08-27T15:11:40.899588+00:00"
+      "fecha_actualizacion": "2026-08-27T15:16:24.775326+00:00"
     },
     {
       "nombre": "EcoHosting.cl",
@@ -197,12 +197,12 @@
       "precio_desde_clp": null,
       "datacenter": "Chile",
       "fundado": 2008,
-      "grupo_corporativo": "Grupo Casamayor",
+      "grupo_corporativo": "Grupo Hosting",
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/planetahosting",
       "url_sitio": "https://www.planetahosting.cl/",
-      "fecha_actualizacion": "2026-06-11T12:56:54.578441+00:00"
+      "fecha_actualizacion": "2026-08-27T15:16:24.775326+00:00"
     },
     {
       "nombre": "INC Web Hosting Chile",
