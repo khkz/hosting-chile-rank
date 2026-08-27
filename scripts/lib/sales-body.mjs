@@ -107,9 +107,13 @@ function plansTable(plans, currency) {
   </table>`;
 }
 
+// Espejo de HIDDEN_SLUGS en src/lib/providerLinks.ts (este script .mjs no puede
+// importar TypeScript). Mantener sincronizado; no ampliar aquí.
+const HIDDEN_SLUGS = new Set(['hosting24', 'hostengine', 'masternet', 'chileinternet', 'afrohosting', 'cloudhosting', 'smarthost']);
+
 function alternativesBlock({ c, others, meta, urlBase, dcLocalOf }) {
   const list = others
-    .filter(o => o.slug !== c.slug)
+    .filter(o => o.slug !== c.slug && !HIDDEN_SLUGS.has(String(o.slug || '').toLowerCase()))
     .sort((a, b) => {
       const la = dcLocalOf(a) ? 0 : 1;
       const lb = dcLocalOf(b) ? 0 : 1;
