@@ -50,7 +50,7 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
   const rows: Array<[string, React.ReactNode]> = [
     ['Sitio oficial', officialLink],
     ['Año de fundación', props.yearFounded ?? '—'],
-    ['Grupo corporativo', props.corporateGroup ?? 'Independiente'],
+    ['Grupo corporativo', props.corporateGroup ?? 'No declarado'],
     ['Ubicación datacenter', props.datacenter && props.datacenter.trim() ? props.datacenter : '—'],
     ['Precio desde', fmtPrice(props.minPrice)],
     [
