@@ -219,10 +219,10 @@ export function buildSalesBody(args) {
 
   const cta = `<div style="background:#2B2D42;color:#fff;padding:20px;border-radius:8px;margin:24px 0">
       <div style="font-weight:600;font-size:18px;margin-bottom:6px">¿Listo para evaluar ${esc(c.name)}?</div>
-      <p style="color:rgba(255,255,255,0.75);font-size:14px;margin:0 0 12px">Enlace directo al sitio oficial. Compara antes de contratar.</p>
+      <p style="color:rgba(255,255,255,0.75);font-size:14px;margin:0 0 12px">Compara antes de contratar.</p>
       <a href="/ir/${esc(c.slug)}" rel="nofollow noopener sponsored" style="display:inline-block;background:#fff;color:#2B2D42;padding:10px 16px;border-radius:6px;font-weight:600;text-decoration:none;margin-right:8px">Visitar sitio oficial ↗</a>
       ${compareUrl ? `<a href="${esc(compareUrl)}" style="display:inline-block;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">Comparar en ${esc(meta.name)}</a>` : ''}
-      <p style="font-size:11px;color:rgba(255,255,255,0.6);margin:12px 0 0"><strong>Divulgación:</strong> el enlace puede generarnos una comisión sin costo adicional. La recomendación se basa en datos verificables.</p>
+      <p style="font-size:11px;color:rgba(255,255,255,0.6);margin:12px 0 0"><strong>Divulgación:</strong> algunos enlaces pueden generarnos una comisión, sin costo adicional para ti. Los datos de esta ficha son los que declara el proveedor; las fuentes están al final de la página.</p>
     </div>`;
 
   const body = `
@@ -274,9 +274,9 @@ export function buildSalesBody(args) {
     `<script type="application/ld+json">${JSON.stringify(faqLd)}</script>`,
   ].join('\n    ');
 
-  const title = `${c.name} — ¿Es bueno? Análisis verificable 2026 | EligeTuHosting`;
+  const title = `${c.name} — ¿Es bueno? Datos y fuentes 2026 | EligeTuHosting`;
   const descBits = [
-    `${c.name}: análisis verificable de hosting en ${meta.name}.`,
+    `${c.name}: datos declarados y fuentes consultadas, hosting en ${meta.name}.`,
     
     c.datacenter_location ? `Datacenter: ${c.datacenter_location}.` : '',
     'Datos técnicos, reputación y para quién sí conviene.',
