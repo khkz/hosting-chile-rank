@@ -18,7 +18,7 @@ export interface HostingASNMapping {
 const knownHostingASNs: HostingASNMapping[] = [
   {
     asnNumber: 'AS265839',
-    hostingCompany: 'Grupo Casamayor',
+    hostingCompany: 'Grupo Hosting',
     companyLogo: '/logo-hostingcl.svg',
     companyRating: 4.2,
     companyUrl: 'https://www.hosting.cl',
