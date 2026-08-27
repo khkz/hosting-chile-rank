@@ -80,7 +80,7 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
         </table>
       </div>
       <p className="text-xs text-muted-foreground mt-2">
-        Fuente: catálogo verificado EligeTuHosting.cl · datos consultados desde el sitio oficial del proveedor.
+        Datos declarados por el proveedor en su sitio oficial. Las fuentes concretas de cada ficha están al final de esta página.
       </p>
     </section>
   );
