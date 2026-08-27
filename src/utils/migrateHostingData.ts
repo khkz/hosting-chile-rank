@@ -62,7 +62,7 @@ export async function migrateHostingCompanies() {
         for (const plan of company.plans) {
           // Extract storage as number (remove "GB", "SSD", etc.)
           const storageMatch = plan.storage.match(/(\d+)/);
-          const storageGb = storageMatch ? parseInt(storageMatch[1]) : null;
+          const storageGb = storageMatch ? parseInt(storageMatch[1]) : undefined;
 
           const { error: planError } = await supabase.from('hosting_plans').insert({
             company_id: insertedCompany.id,
