@@ -21,6 +21,7 @@ import CompanyPresence from '@/components/CompanyPresence';
 import { AlertTriangle } from 'lucide-react';
 import BrandFAQ, { buildBrandFAQ } from '@/components/catalogo/BrandFAQ';
 import VerifiedDataTable from '@/components/catalogo/VerifiedDataTable';
+import SourcesConsulted from '@/components/catalogo/SourcesConsulted';
 import Veredicto from '@/components/catalogo/Veredicto';
 import DatacenterBadge from '@/components/DatacenterBadge';
 import { isHiddenProvider } from '@/lib/providerLinks';
@@ -90,8 +91,7 @@ const CatalogoDetalle = () => {
       datePublished: (company as any).created_at || '2026-01-01',
       dateModified: (company as any).updated_at || new Date().toISOString(),
     };
-    if (company.website) productSchema.sameAs = [company.website];
-    if (company.logo_url) productSchema.image = ogImage;
+        if (company.logo_url) productSchema.image = ogImage;
 
     // Organization / LocalBusiness schema para TODAS las fichas — refuerza brand SEO
     // y permite a buscadores y LLMs vincular nombre + sitio + contacto + dirección.
@@ -100,12 +100,11 @@ const CatalogoDetalle = () => {
       '@context': 'https://schema.org',
       '@type': hasLocalSignals ? 'LocalBusiness' : 'Organization',
       name,
-      url: company.website || canonical,
+      url: canonical,
       areaServed: { '@type': 'Country', name: 'Chile' },
     };
     if (company.logo_url) orgSchema.logo = ogImage;
-    if (company.website) orgSchema.sameAs = [company.website];
-    if (company.contact_phone) orgSchema.telephone = company.contact_phone;
+        if (company.contact_phone) orgSchema.telephone = company.contact_phone;
     if (company.contact_email) orgSchema.email = company.contact_email;
     if (company.contact_address) {
       orgSchema.address = {
@@ -349,6 +348,11 @@ const CatalogoDetalle = () => {
           hasMigrationFree={(company as any).has_migration_free}
           officialWebsite={company.website}
           slug={company.slug}
+        />
+
+        <SourcesConsulted
+          fuentes={(company as any).fuentes}
+          fechaVerificacion={(company as any).fecha_verificacion}
         />
 
 

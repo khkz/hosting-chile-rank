@@ -1,3 +1,4 @@
+import { isDofollowProvider } from '@/lib/providerLinks';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -112,7 +113,7 @@ const MejorHostingEcommerceChile = () => {
   const schemaItems = topProviders.map((provider, index) => ({
     name: provider.name,
     description: `Hosting e-commerce con ${provider.uptime} uptime y soporte ${provider.support}`,
-    url: provider.url,
+    url: isDofollowProvider(null, provider.url) ? provider.url : undefined,
     image: `https://eligetuhosting.cl${provider.logo}`,
     brand: provider.name.split(' ')[0],
     rating: provider.score,

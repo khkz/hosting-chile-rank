@@ -9,6 +9,22 @@ const REVIEWED_ON = NOW_ISO.slice(0, 10);
 
 function fmtDate(d) { return d ? String(d).slice(0, 10) : null; }
 
+// Muestra solo el host del sitio del proveedor (sin protocolo ni www) como TEXTO.
+// Nunca se emite como <a>: identifica al proveedor sin pasarle autoridad.
+function hostOnly(raw) {
+  if (!raw) return null;
+  return String(raw).trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/.*$/, '');
+}
+
+// Bloque de fuentes: SIEMPRE texto plano escapado, jamás enlaces.
+function sourcesBlock(c) {
+  if (!c.fuentes) return '';
+  const fecha = fmtDate(c.fecha_verificacion);
+  return `<h3>Fuentes consultadas</h3>
+    <p style="white-space:pre-line;font-size:13px;color:#4B5563">${esc(String(c.fuentes))}</p>
+    ${fecha ? `<p style="font-size:12px;color:#6B7280">Datos verificados el ${esc(fecha)}</p>` : ''}`;
+}
+
 function heroAnswer({ c, meta, complaintsCount, yearsOperating, dcLocal }) {
   const parts = [];
   parts.push(`${c.name} es un proveedor de hosting con actividad comercial en ${meta.name}.`);
@@ -192,7 +208,7 @@ export function buildSalesBody(args) {
     ['SSL gratis', c.has_ssl_free === true ? 'Sí (incluido)' : c.has_ssl_free === false ? 'No incluido' : null],
     ['Migración gratis', c.has_migration_free === true ? 'Sí (incluida)' : c.has_migration_free === false ? 'No incluida' : null],
     ['Tecnologías', techs.join(', ')],
-    ['Sitio oficial', c.website],
+    ['Sitio oficial', hostOnly(c.website)],
     ['Teléfono', c.contact_phone],
     ['Email', c.contact_email],
   ]);
@@ -222,6 +238,7 @@ export function buildSalesBody(args) {
     ${alternativesBlock({ c, others, meta, urlBase, dcLocalOf })}
     <h2>Preguntas frecuentes</h2>
     ${faq.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
+    ${sourcesBlock(c)}
     <hr style="margin:24px 0;border:0;border-top:1px solid #E5E7EB" />
     <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última generación: <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Metodología: <a href="/nuestro-metodo">nuestro método</a>.</p>
   `;
@@ -230,7 +247,6 @@ export function buildSalesBody(args) {
     '@context': 'https://schema.org', '@type': 'Organization',
     name: c.name,
     
-    ...(c.website ? { url: c.website } : {}),
     ...(c.contact_phone ? { telephone: c.contact_phone } : {}),
     ...(c.contact_email ? { email: c.contact_email } : {}),
     ...(c.corporate_group ? { parentOrganization: { '@type': 'Organization', name: c.corporate_group } } : {}),

@@ -1,3 +1,4 @@
+import { getProviderLink } from '@/lib/providerLinks';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -214,9 +215,9 @@ export default function DirectorioHosting() {
                   </Link>
                   {company.website && (
                     <a 
-                      href={company.website}
+                      href={getProviderLink(company.slug, company.website).href}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel={getProviderLink(company.slug, company.website).rel}
                       className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
                     >
                       <ExternalLink className="w-5 h-5" />

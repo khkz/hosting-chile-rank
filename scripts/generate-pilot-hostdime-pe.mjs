@@ -61,7 +61,7 @@ const faq = [
 
 const orgLd = {
   '@context': 'https://schema.org', '@type': 'Organization', name: NAME,
-  legalName: 'HostDime.com.pe S.A.C.', url: c.website, telephone: c.contact_phone, email: c.contact_email,
+  legalName: 'HostDime.com.pe S.A.C.', telephone: c.contact_phone, email: c.contact_email,
   foundingDate: String(c.year_founded), taxID: 'RUC 20563098296',
   parentOrganization: { '@type': 'Organization', name: 'HostDime Global' },
   address: { '@type': 'PostalAddress', streetAddress: c.contact_address, addressCountry: 'PE' },

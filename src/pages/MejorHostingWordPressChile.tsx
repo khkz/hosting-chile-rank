@@ -1,3 +1,4 @@
+import { isDofollowProvider } from '@/lib/providerLinks';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -117,7 +118,7 @@ const MejorHostingWordPressChile = () => {
   const schemaItems = topProviders.map((provider, index) => ({
     name: provider.name,
     description: `Hosting WordPress optimizado: ${provider.pros}`,
-    url: provider.url,
+    url: isDofollowProvider(null, provider.url) ? provider.url : undefined,
     image: `https://eligetuhosting.cl${provider.logo}`,
     brand: provider.name,
     rating: provider.score,

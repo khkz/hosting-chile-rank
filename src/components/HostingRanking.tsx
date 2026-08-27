@@ -1,3 +1,4 @@
+import { isDofollowProvider } from '@/lib/providerLinks';
 import React, { useState, useMemo } from 'react';
 import { Trophy, Check, Star, Shield, Zap, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -337,7 +338,7 @@ const HostingRanking = () => {
     sortedHostingData.map((provider) => ({
       name: provider.name,
       description: cleanFeatures(provider.ranking_features).join('. '),
-      url: provider.website || '',
+      url: isDofollowProvider(provider.slug, provider.website) ? (provider.website || '') : '',
       image: `https://eligetuhosting.cl${provider.logo_url || ''}`,
       brand: provider.name,
       rating: provider.overall_rating ?? 0,

@@ -102,7 +102,7 @@ const CountryLanding = () => {
     const org: any = {
       '@type': 'Organization',
       name: c.name,
-      url: c.website || canonical,
+      url: canonical,
     };
     if (c.contact_address) org.address = c.contact_address;
     if (c.contact_phone) org.telephone = c.contact_phone;

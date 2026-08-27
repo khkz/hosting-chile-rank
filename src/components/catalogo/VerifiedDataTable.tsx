@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatUptime } from '@/lib/uptime';
+import { getProviderLink } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
 
 interface VerifiedDataTableProps {
@@ -30,16 +31,17 @@ const fmtPrice = (_p?: number | null) => 'Consultar en el sitio oficial';
 const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
   const officialLink = props.officialWebsite
     ? (() => {
-        const { href, label } = formatOfficialUrl(props.officialWebsite!);
+        const { label } = formatOfficialUrl(props.officialWebsite!);
+        const link = getProviderLink(props.slug, props.officialWebsite);
         return (
           <a
-            href={href}
+            href={link.href}
             target="_blank"
-            rel="noopener"
+            rel={link.rel}
             onClick={() => track('click_visitar_sitio', { slug: props.slug, location: 'ficha_verified_table' })}
             className="text-primary underline underline-offset-2 hover:opacity-80 break-all"
           >
-            www.{label}
+            {label}
           </a>
         );
       })()
