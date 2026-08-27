@@ -315,13 +315,13 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
                   <TableCell>{company.paymentMethods.join(', ')}</TableCell>
                 </TableRow>
               )}
-              {company.hasSslFree !== undefined && (
+              {typeof company.hasSslFree === 'boolean' && (
                 <TableRow>
                   <TableCell className="font-medium">SSL Gratuito</TableCell>
                   <TableCell>{company.hasSslFree ? '✅ Incluido' : '❌ No incluido'}</TableCell>
                 </TableRow>
               )}
-              {company.hasMigrationFree !== undefined && (
+              {typeof company.hasMigrationFree === 'boolean' && (
                 <TableRow>
                   <TableCell className="font-medium">Migración Gratuita</TableCell>
                   <TableCell>{company.hasMigrationFree ? '✅ Incluida' : '❌ No incluida'}</TableCell>
