@@ -7,16 +7,17 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const conglomerates = [
   {
-    name: 'Grupo Casamayor',
-    brands: ['hosting.cl', 'planetahosting.cl', 'ninjahosting.cl', 'hostingcenter.cl', 'ihost.cl', 'todohosting.cl'],
+    name: 'Grupo Hosting',
+    brands: ['hosting.cl', 'planetahosting.cl', 'ninjahosting.cl', 'hostingcenter.cl', 'ihost.cl', 'freehost.cl'],
     fakeComparisons: ['comparahosting.cl'],
     evidence: [
       'Todos los dominios comparten el mismo ASN (Autonomous System Number)',
       'Rangos de IP idénticos detectados en infraestructura compartida',
       'Datos de registrante WHOIS vinculados al mismo propietario',
-      'Misma razón social en registros SII de Chile',
+      'Marcas listadas públicamente en grupohosting.cl',
       'comparahosting.cl promociona sistemáticamente las marcas del grupo en primeras posiciones',
     ],
+
   },
   {
     name: 'Grupo Hostname',
