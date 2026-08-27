@@ -1,3 +1,4 @@
+import SourcesConsulted from '@/components/catalogo/SourcesConsulted';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
@@ -525,6 +526,11 @@ const CountryProviderDetail = () => {
             </div>
           </section>
         )}
+
+        <SourcesConsulted
+          fuentes={(company as any).fuentes}
+          fechaVerificacion={(company as any).fecha_verificacion}
+        />
 
         <div className="text-sm">
           <Link to={`/${info.slug}`} className="text-primary hover:underline">

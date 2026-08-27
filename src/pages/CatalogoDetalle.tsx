@@ -21,6 +21,7 @@ import CompanyPresence from '@/components/CompanyPresence';
 import { AlertTriangle } from 'lucide-react';
 import BrandFAQ, { buildBrandFAQ } from '@/components/catalogo/BrandFAQ';
 import VerifiedDataTable from '@/components/catalogo/VerifiedDataTable';
+import SourcesConsulted from '@/components/catalogo/SourcesConsulted';
 import Veredicto from '@/components/catalogo/Veredicto';
 import DatacenterBadge from '@/components/DatacenterBadge';
 import { isHiddenProvider } from '@/lib/providerLinks';
@@ -347,6 +348,11 @@ const CatalogoDetalle = () => {
           hasMigrationFree={(company as any).has_migration_free}
           officialWebsite={company.website}
           slug={company.slug}
+        />
+
+        <SourcesConsulted
+          fuentes={(company as any).fuentes}
+          fechaVerificacion={(company as any).fecha_verificacion}
         />
 
 
