@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { getAllHostingCompanies } from '@/data/hostingCompanies';
 
 /**
@@ -73,8 +74,8 @@ export async function migrateHostingCompanies() {
             domains_allowed: plan.domains,
             features: plan.features.map(f => ({
               name: f.name,
-              included: f.included
-            })),
+              included: f.included,
+            })) as unknown as Json,
           });
 
           if (planError) {
