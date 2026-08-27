@@ -36,7 +36,7 @@ interface Plan {
   pricing?: PricingPeriod;
   storage: string;
   bandwidth: string;
-  domains: number;
+  domains: number | string;
   features: PlanFeature[];
 }
 
