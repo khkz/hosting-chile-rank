@@ -33,7 +33,7 @@ async function sb(path) {
 async function run() {
   let total = 0;
   for (const [cslug, meta] of Object.entries(COUNTRIES)) {
-    const companies = await sb(`hosting_companies?select=id,slug,name,country,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,updated_at&country=eq.${meta.code}&is_verified=eq.true&limit=999`);
+    const companies = await sb(`hosting_companies?select=id,slug,name,country,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,fuentes,fecha_verificacion,updated_at&country=eq.${meta.code}&is_verified=eq.true&limit=999`);
     if (!companies.length) { console.log(`⚠️  ${meta.code}: 0 proveedores`); continue; }
     const ids = companies.map(c => `"${c.id}"`).join(',');
     const [checks, complaints, plans] = await Promise.all([

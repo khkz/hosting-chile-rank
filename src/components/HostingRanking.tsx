@@ -337,7 +337,7 @@ const HostingRanking = () => {
     sortedHostingData.map((provider) => ({
       name: provider.name,
       description: cleanFeatures(provider.ranking_features).join('. '),
-      url: provider.website || '',
+      url: '',
       image: `https://eligetuhosting.cl${provider.logo_url || ''}`,
       brand: provider.name,
       rating: provider.overall_rating ?? 0,

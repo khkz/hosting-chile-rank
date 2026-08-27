@@ -132,7 +132,7 @@ const CountryProviderDetail = () => {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: company.name,
-    url: company.website || canonical,
+    url: canonical,
   };
   if (company.contact_phone) orgLd.telephone = company.contact_phone;
   if (company.contact_email) orgLd.email = company.contact_email;

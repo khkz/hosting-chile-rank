@@ -90,8 +90,7 @@ const CatalogoDetalle = () => {
       datePublished: (company as any).created_at || '2026-01-01',
       dateModified: (company as any).updated_at || new Date().toISOString(),
     };
-    if (company.website) productSchema.sameAs = [company.website];
-    if (company.logo_url) productSchema.image = ogImage;
+        if (company.logo_url) productSchema.image = ogImage;
 
     // Organization / LocalBusiness schema para TODAS las fichas — refuerza brand SEO
     // y permite a buscadores y LLMs vincular nombre + sitio + contacto + dirección.
@@ -100,12 +99,11 @@ const CatalogoDetalle = () => {
       '@context': 'https://schema.org',
       '@type': hasLocalSignals ? 'LocalBusiness' : 'Organization',
       name,
-      url: company.website || canonical,
+      url: canonical,
       areaServed: { '@type': 'Country', name: 'Chile' },
     };
     if (company.logo_url) orgSchema.logo = ogImage;
-    if (company.website) orgSchema.sameAs = [company.website];
-    if (company.contact_phone) orgSchema.telephone = company.contact_phone;
+        if (company.contact_phone) orgSchema.telephone = company.contact_phone;
     if (company.contact_email) orgSchema.email = company.contact_email;
     if (company.contact_address) {
       orgSchema.address = {
