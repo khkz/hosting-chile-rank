@@ -970,7 +970,9 @@ export type Database = {
           display_name_second: string | null
           display_name_second_color: string | null
           editorial_summary: string | null
+          fecha_verificacion: string | null
           foundation_year: number | null
+          fuentes: string | null
           has_migration_free: boolean | null
           has_ssl_free: boolean | null
           id: string
@@ -1045,7 +1047,9 @@ export type Database = {
           display_name_second?: string | null
           display_name_second_color?: string | null
           editorial_summary?: string | null
+          fecha_verificacion?: string | null
           foundation_year?: number | null
+          fuentes?: string | null
           has_migration_free?: boolean | null
           has_ssl_free?: boolean | null
           id?: string
@@ -1120,7 +1124,9 @@ export type Database = {
           display_name_second?: string | null
           display_name_second_color?: string | null
           editorial_summary?: string | null
+          fecha_verificacion?: string | null
           foundation_year?: number | null
+          fuentes?: string | null
           has_migration_free?: boolean | null
           has_ssl_free?: boolean | null
           id?: string
