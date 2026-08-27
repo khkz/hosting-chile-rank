@@ -47,19 +47,21 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
       })()
     : '—';
 
+  const triState = (v?: boolean | null) => (v === true ? 'Sí' : v === false ? 'No' : 'No declarado');
+
   const rows: Array<[string, React.ReactNode]> = [
     ['Sitio oficial', officialLink],
-    ['Año de fundación', props.yearFounded ?? '—'],
+    ['Año de fundación', props.yearFounded ?? 'No declarado'],
     ['Grupo corporativo', props.corporateGroup ?? 'No declarado'],
-    ['Ubicación datacenter', props.datacenter && props.datacenter.trim() ? props.datacenter : '—'],
+    ['Ubicación datacenter', props.datacenter && props.datacenter.trim() ? props.datacenter : 'No declarado'],
     ['Precio desde', fmtPrice(props.minPrice)],
     [
       'Tecnologías declaradas',
-      props.technologies && props.technologies.length > 0 ? props.technologies.join(', ') : '—',
+      props.technologies && props.technologies.length > 0 ? props.technologies.join(', ') : 'No declarado',
     ],
-    ['Garantía de uptime', formatUptime(props.uptimeGuarantee) ?? '—'],
-    ['SSL gratis', props.hasSslFree ? 'Sí' : 'No declarado'],
-    ['Migración gratis', props.hasMigrationFree ? 'Sí' : 'No declarado'],
+    ['Garantía de uptime', formatUptime(props.uptimeGuarantee) ?? 'No declarado'],
+    ['SSL gratis', triState(props.hasSslFree)],
+    ['Migración gratis', triState(props.hasMigrationFree)],
   ];
 
   return (
