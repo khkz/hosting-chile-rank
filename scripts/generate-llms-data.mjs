@@ -75,7 +75,7 @@ async function main() {
       nombre: c.name,
       slug: c.slug,
       nota: Number(c.overall_rating) || null,
-      precio_desde_clp: minPrice,
+      precio_desde_clp: null,
       datacenter: c.datacenter_location || null,
       fundado: c.year_founded || null,
       grupo_corporativo: c.corporate_group || null,
@@ -270,7 +270,7 @@ Cluster hreflang activo: es-CL, es-PE, es-MX, es-CO, es-AR (x-default = https://
     const company = companies.find((c) => c.slug === p.slug);
     const cp = (plansByCompany.get(company.id) || []).sort((a, b) => (a.price_monthly || 0) - (b.price_monthly || 0));
     const planLines = cp.length
-      ? cp.map((pl) => `  - ${pl.name}: ${fmtCLP(pl.price_monthly)}${pl.storage_gb ? `, ${pl.storage_gb} GB SSD` : ''}${pl.bandwidth ? `, ${pl.bandwidth}` : ''}${pl.domains_allowed ? `, ${pl.domains_allowed} dominio(s)` : ''}`).join('\n')
+      ? cp.map((pl) => `  - ${pl.name}: Consultar en el sitio oficial${pl.storage_gb ? `, ${pl.storage_gb} GB SSD` : ''}${pl.bandwidth ? `, ${pl.bandwidth}` : ''}${pl.domains_allowed ? `, ${pl.domains_allowed} dominio(s)` : ''}`).join('\n')
       : '  - Sin planes publicados; consultar con el proveedor.';
     const rs = reviewsBySlug.get(p.slug) || [];
     const reviewLines = rs.length
@@ -285,7 +285,7 @@ Cluster hreflang activo: es-CL, es-PE, es-MX, es-CO, es-AR (x-default = https://
     return `## ${p.nombre}
 - Slug: ${p.slug}
 - Nota editorial: ${p.nota?.toFixed(1) ?? 'N/A'}/10
-- Precio desde: ${fmtCLP(p.precio_desde_clp)}
+- Precio desde: Consultar en el sitio oficial
 - Datacenter: ${p.datacenter || 'N/D'}
 - Fundado: ${p.fundado || 'N/D'}
 - Grupo corporativo: ${p.grupo_corporativo || 'Independiente'}
@@ -313,6 +313,7 @@ ${reviewLines}
 
 Última actualización: ${NOW_HUMAN} (${NOW_ISO})
 Fuente: EligeTuHosting.cl (${SITE}) · Licencia CC-BY-4.0
+Nota: no publicamos precios mientras reverificamos el catálogo proveedor por proveedor. Consulta el valor vigente en el sitio de cada proveedor.
 Dataset JSON Chile: ${SITE}/data/proveedores.json
 
 ## LATAM (eligetuhosting.com)
