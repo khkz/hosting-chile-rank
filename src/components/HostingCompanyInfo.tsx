@@ -254,7 +254,7 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
                   </div>
                   
                   <Button className="w-full mt-6" asChild>
-                    <a href={getProviderLink(company.slug, company.website).href} target="_blank" rel={getProviderLink(company.slug, company.website).rel}>
+                    <a href={getProviderLink(company.id, company.website).href} target="_blank" rel={getProviderLink(company.id, company.website).rel}>
                       Ver plan en {company.name}
                     </a>
                   </Button>
