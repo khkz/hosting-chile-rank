@@ -1,6 +1,6 @@
 # EligeTuHosting.cl — Datos completos por proveedor
 
-Última actualización: 27 de agosto de 2026 (2026-08-27T16:38:00.693Z)
+Última actualización: 27 de agosto de 2026 (2026-08-27T18:57:18.583Z)
 Fuente: EligeTuHosting.cl (https://eligetuhosting.cl) · Licencia CC-BY-4.0
 Nota: no publicamos precios mientras reverificamos el catálogo proveedor por proveedor. Consulta el valor vigente en el sitio de cada proveedor.
 Dataset JSON Chile: https://eligetuhosting.cl/data/proveedores.json
@@ -74,17 +74,17 @@ EcoHosting ofrece hosting rápido y confiable en Chile, ideal para correos corpo
 - Slug: hn
 - Nota editorial: 9.2/10
 - Precio desde: Consultar en el sitio oficial
-- Datacenter: Santiago, Chile (HN Datacenter, Seminario 687)
-- Fundado: 2010
-- Grupo corporativo: Grupo Hostname
+- Datacenter: HN Datacenter — Seminario 687, Ñuñoa, RM 7770266, Santiago, Chile
+- Fundado: 2007
+- Grupo corporativo: Servicios Informáticos Hostname (misma sociedad, RUT 76.096.415-8, opera las marcas HN.cl / HN Datacenter y Hostname.cl)
 - Sitio oficial: https://www.hn.cl
 - Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/hn
-- Tecnologías: N/D
-- Uptime garantizado: 99,9%
+- Tecnologías: cPanel & WHM, Softaculous, Site.pro, discos SSD
+- Uptime garantizado: N/D
 - SSL gratis: Sí
-- Migración gratis: Sí
-- Contacto: No publicado
-- Última actualización: 2026-07-19T04:17:06.013582+00:00
+- Migración gratis: No declarado
+- Contacto: Tel: (+562) 28401900 · Email: pagos@hn.cl · Dirección: Seminario 687, Ñuñoa, Santiago, Chile
+- Última actualización: 2026-08-27T18:57:09.429284+00:00
 
 ### Descripción
 Marca económica del Grupo Hostname con presencia en Chile. Cierra el Top 10 del ranking 2026 con datos limitados de transparencia técnica; recomendada para proyectos personales muy pequeños o para quienes ya operan dentro del ecosistema Hostname.
@@ -101,17 +101,17 @@ Marca económica del Grupo Hostname con presencia en Chile. Cierra el Top 10 del
 - Slug: powerhost
 - Nota editorial: 8.5/10
 - Precio desde: Consultar en el sitio oficial
-- Datacenter: 4 DC propios (SCL, NY, MOW, AMS)
-- Fundado: 2001
+- Datacenter: Santiago, Chile — Luis Beltran 1647, Ñuñoa
+- Fundado: N/D
 - Grupo corporativo: Independiente
 - Sitio oficial: https://www.powerhost.cl/
 - Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/powerhost
-- Tecnologías: cPanel, DirectAdmin, Plesk, WAF
-- Uptime garantizado: 99,9%
-- SSL gratis: Sí
-- Migración gratis: Sí
-- Contacto: No publicado
-- Última actualización: 2026-06-27T21:38:47.218595+00:00
+- Tecnologías: LiteSpeed Webserver Enterprise, LiteSpeed Cache, cPanel, MySQL, HTTP/2 y HTTP/3, VMware, Veeam Backup, DELL EMC, NetApp
+- Uptime garantizado: N/D
+- SSL gratis: No declarado
+- Migración gratis: No declarado
+- Contacto: Tel: (562) 2583 0262 · Email: facturacion@powerhost.cl · Dirección: Luis Beltran 1647, Ñuñoa, Santiago - Chile
+- Última actualización: 2026-08-27T18:57:09.429284+00:00
 
 ### Descripción
 Operador con red propia (AS263237) y cuatro datacenters Tier III. Más de 20 años en el mercado chileno con un único reclamo público no técnico documentado en el Estudio Hosting Chile 2026.
@@ -128,17 +128,17 @@ Operador con red propia (AS263237) y cuatro datacenters Tier III. Más de 20 añ
 - Slug: hostgator
 - Nota editorial: 8.4/10
 - Precio desde: Consultar en el sitio oficial
-- Datacenter: Santiago, Chile
-- Fundado: 2011
-- Grupo corporativo: Newfold Digital (EIG)
+- Datacenter: Atlanta (Estados Unidos)
+- Fundado: N/D
+- Grupo corporativo: Newfold Digital
 - Sitio oficial: https://www.hostgator.cl/
 - Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/hostgator
-- Tecnologías: cPanel, LiteSpeed, CloudLinux
-- Uptime garantizado: 99,9%
-- SSL gratis: No declarado
-- Migración gratis: No declarado
-- Contacto: Tel: 855-435-0974 · Email: soporte@hostgator.cl · Dirección: Av. El Bosque Norte 0123, Oficina 402, Las Condes, Santiago
-- Última actualización: 2026-06-11T12:14:02.877295+00:00
+- Tecnologías: cPanel, CDN Cloudflare en todos los planes
+- Uptime garantizado: N/D
+- SSL gratis: Sí
+- Migración gratis: Sí
+- Contacto: Email: ventas@hostgator.cl
+- Última actualización: 2026-08-27T18:57:09.429284+00:00
 
 ### Descripción
 HostGator Chile proporciona servicios de hosting web, dominios y correo profesional con herramientas de IA. Ideal para emprendedores y empresas que buscan un rendimiento óptimo y soporte en español.
@@ -157,17 +157,17 @@ HostGator Chile proporciona servicios de hosting web, dominios y correo profesio
 - Slug: bluehost
 - Nota editorial: 8.3/10
 - Precio desde: Consultar en el sitio oficial
-- Datacenter: Santiago, Chile
-- Fundado: 2012
+- Datacenter: N/D
+- Fundado: 2010
 - Grupo corporativo: Haulmer
 - Sitio oficial: https://www.bluehosting.cl/
 - Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/bluehost
-- Tecnologías: cPanel, SSD, Web Application Firewall, Anti-Spam Premium
-- Uptime garantizado: 99,9%
+- Tecnologías: PHP 5.4 - 5.5 - 5.6 - 7.0 - 7.1 - 7.4 - 8.0 - 8.1 y 8.2, Apache 2.4, MySQL 10.6, MariaDB 10.6, cPanel V110, Todo en SSD, Web Application Firewall Premium, Anti-Spam Premium 95% de efectividad, Instalador de Apps, Softaculous
+- Uptime garantizado: N/D
 - SSL gratis: Sí
 - Migración gratis: Sí
-- Contacto: Tel: +56 2 2405 4230 · Email: contacto@bluehost.cl · Dirección: Isidora Goyenechea 2800, Oficina 501, Las Condes, Santiago
-- Última actualización: 2026-06-11T12:14:02.877295+00:00
+- Contacto: Tel: +56 2 3210 3143 · Email: pago@bluehosting.host · Dirección: Prat 527, Curicó, Región del Maule, Chile
+- Última actualización: 2026-08-27T18:57:09.429284+00:00
 
 ### Descripción
 BlueHosting ofrece servicios de hosting con sub dominios ilimitados, migración gratuita y SSL gratuito. Ideal para bloggers, diseñadores y desarrolladores que buscan rendimiento y seguridad.
@@ -385,35 +385,6 @@ En Hosting24.cl ofrecemos registro de dominios .cl y premium con asesoría gratu
 
 ---
 
-## PlanetaHosting.cl
-- Slug: planetahosting
-- Nota editorial: 7.4/10
-- Precio desde: Consultar en el sitio oficial
-- Datacenter: Chile
-- Fundado: 2008
-- Grupo corporativo: Grupo Hosting
-- Sitio oficial: https://www.planetahosting.cl/
-- Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/planetahosting
-- Tecnologías: cPanel, LiteSpeed, CloudLinux
-- Uptime garantizado: N/D
-- SSL gratis: No declarado
-- Migración gratis: No declarado
-- Contacto: Tel: +56 2 2840 5600 · Email: ventas@planetahosting.cl · Dirección: Av. Apoquindo 4700, Oficina 1101, Las Condes, Santiago
-- Última actualización: 2026-08-27T15:16:24.775326+00:00
-
-### Descripción
-Proveedor integrado al Grupo Hosting (grupohosting.cl), el mismo grupo de Hosting.cl, NinjaHosting.cl, HostingCenter.cl, iHost.cl y FreeHost.cl. Catálogo estándar de hosting compartido y VPS; conviene contrastar reseñas externas dada la concentración corporativa del grupo.
-
-### Planes
-  - Plan Básico: Consultar en el sitio oficial, 20 GB SSD, Ilimitada, 1 dominio(s)
-  - Plan Avanzado: Consultar en el sitio oficial, 50 GB SSD, Ilimitada, 5 dominio(s)
-  - Plan Corporativo: Consultar en el sitio oficial, 100 GB SSD, Ilimitada, 10 dominio(s)
-
-### Reseñas aprobadas
-  - Sin reseñas aprobadas todavía.
-
----
-
 ## INC Web Hosting Chile
 - Slug: inc-cl
 - Nota editorial: 7.4/10
@@ -438,6 +409,35 @@ INC Hosting ofrece soluciones de web hosting, dominios y servidores dedicados co
   - Emprende: Consultar en el sitio oficial, 30 GB SSD, Ilimitada, 3 dominio(s)
   - Corporativo: Consultar en el sitio oficial, 60 GB SSD, Ilimitada, 10 dominio(s)
   - Empresas: Consultar en el sitio oficial, 120 GB SSD, Ilimitada, 25 dominio(s)
+
+### Reseñas aprobadas
+  - Sin reseñas aprobadas todavía.
+
+---
+
+## PlanetaHosting.cl
+- Slug: planetahosting
+- Nota editorial: 7.4/10
+- Precio desde: Consultar en el sitio oficial
+- Datacenter: Santiago, Chile
+- Fundado: 2001
+- Grupo corporativo: Grupo Hosting
+- Sitio oficial: https://www.planetahosting.cl/
+- Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/planetahosting
+- Tecnologías: Panel de control cPanel, Discos Sólidos SSD, Certificado SSL, Instalador de Apps, Antivirus Mail
+- Uptime garantizado: N/D
+- SSL gratis: Sí
+- Migración gratis: Sí
+- Contacto: Tel: +562 24 110 350 · Email: ventas@planetahosting.cl · Dirección: Badajoz 100, Oficina 820, Las Condes, Santiago
+- Última actualización: 2026-08-27T18:57:09.429284+00:00
+
+### Descripción
+Proveedor integrado al Grupo Hosting (grupohosting.cl), el mismo grupo de Hosting.cl, NinjaHosting.cl, HostingCenter.cl, iHost.cl y FreeHost.cl. Catálogo estándar de hosting compartido y VPS; conviene contrastar reseñas externas dada la concentración corporativa del grupo.
+
+### Planes
+  - Plan Básico: Consultar en el sitio oficial, 20 GB SSD, Ilimitada, 1 dominio(s)
+  - Plan Avanzado: Consultar en el sitio oficial, 50 GB SSD, Ilimitada, 5 dominio(s)
+  - Plan Corporativo: Consultar en el sitio oficial, 100 GB SSD, Ilimitada, 10 dominio(s)
 
 ### Reseñas aprobadas
   - Sin reseñas aprobadas todavía.

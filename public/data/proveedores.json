@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting.cl (https://eligetuhosting.cl)",
-  "fecha_generacion": "2026-08-27T16:38:00.693Z",
+  "fecha_generacion": "2026-08-27T18:57:18.583Z",
   "total_proveedores": 113,
   "proveedores": [
     {
@@ -41,56 +41,56 @@
       "slug": "hn",
       "nota": 9.2,
       "precio_desde_clp": null,
-      "datacenter": "Santiago, Chile (HN Datacenter, Seminario 687)",
-      "fundado": 2010,
-      "grupo_corporativo": "Grupo Hostname",
+      "datacenter": "HN Datacenter — Seminario 687, Ñuñoa, RM 7770266, Santiago, Chile",
+      "fundado": 2007,
+      "grupo_corporativo": "Servicios Informáticos Hostname (misma sociedad, RUT 76.096.415-8, opera las marcas HN.cl / HN Datacenter y Hostname.cl)",
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hn",
       "url_sitio": "https://www.hn.cl",
-      "fecha_actualizacion": "2026-07-19T04:17:06.013582+00:00"
+      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
     },
     {
       "nombre": "PowerHost / IxMetro",
       "slug": "powerhost",
       "nota": 8.5,
       "precio_desde_clp": null,
-      "datacenter": "4 DC propios (SCL, NY, MOW, AMS)",
-      "fundado": 2001,
+      "datacenter": "Santiago, Chile — Luis Beltran 1647, Ñuñoa",
+      "fundado": null,
       "grupo_corporativo": null,
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/powerhost",
       "url_sitio": "https://www.powerhost.cl/",
-      "fecha_actualizacion": "2026-06-27T21:38:47.218595+00:00"
+      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
     },
     {
       "nombre": "HostGator.cl",
       "slug": "hostgator",
       "nota": 8.4,
       "precio_desde_clp": null,
-      "datacenter": "Santiago, Chile",
-      "fundado": 2011,
-      "grupo_corporativo": "Newfold Digital (EIG)",
+      "datacenter": "Atlanta (Estados Unidos)",
+      "fundado": null,
+      "grupo_corporativo": "Newfold Digital",
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostgator",
       "url_sitio": "https://www.hostgator.cl/",
-      "fecha_actualizacion": "2026-06-11T12:14:02.877295+00:00"
+      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
     },
     {
       "nombre": "BlueHosting.cl",
       "slug": "bluehost",
       "nota": 8.3,
       "precio_desde_clp": null,
-      "datacenter": "Santiago, Chile",
-      "fundado": 2012,
+      "datacenter": null,
+      "fundado": 2010,
       "grupo_corporativo": "Haulmer",
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/bluehost",
       "url_sitio": "https://www.bluehosting.cl/",
-      "fecha_actualizacion": "2026-06-11T12:14:02.877295+00:00"
+      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
     },
     {
       "nombre": "CloudHosting.cl",
@@ -191,20 +191,6 @@
       "fecha_actualizacion": "2026-06-11T12:56:54.578441+00:00"
     },
     {
-      "nombre": "PlanetaHosting.cl",
-      "slug": "planetahosting",
-      "nota": 7.4,
-      "precio_desde_clp": null,
-      "datacenter": "Chile",
-      "fundado": 2008,
-      "grupo_corporativo": "Grupo Hosting",
-      "verificado": true,
-      "curado": true,
-      "url_ficha": "https://eligetuhosting.cl/catalogo/planetahosting",
-      "url_sitio": "https://www.planetahosting.cl/",
-      "fecha_actualizacion": "2026-08-27T15:16:24.775326+00:00"
-    },
-    {
       "nombre": "INC Web Hosting Chile",
       "slug": "inc-cl",
       "nota": 7.4,
@@ -217,6 +203,20 @@
       "url_ficha": "https://eligetuhosting.cl/catalogo/inc-cl",
       "url_sitio": "https://www.inc.cl/",
       "fecha_actualizacion": "2026-06-11T12:56:54.578441+00:00"
+    },
+    {
+      "nombre": "PlanetaHosting.cl",
+      "slug": "planetahosting",
+      "nota": 7.4,
+      "precio_desde_clp": null,
+      "datacenter": "Santiago, Chile",
+      "fundado": 2001,
+      "grupo_corporativo": "Grupo Hosting",
+      "verificado": true,
+      "curado": true,
+      "url_ficha": "https://eligetuhosting.cl/catalogo/planetahosting",
+      "url_sitio": "https://www.planetahosting.cl/",
+      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
     },
     {
       "nombre": "WebHosting.cl",
