@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting.cl (https://eligetuhosting.cl)",
-  "fecha_generacion": "2026-08-27T20:05:32.494Z",
+  "fecha_generacion": "2026-08-28T03:43:57.654Z",
   "total_proveedores": 113,
   "proveedores": [
     {
@@ -153,14 +153,14 @@
       "slug": "hostingcl",
       "nota": 7.7,
       "precio_desde_clp": null,
-      "datacenter": "Datacenter propio en Santiago, Chile",
+      "datacenter": "Declarado por el proveedor: datacenter propio en Las Condes, Santiago, con enlaces nacionales de 10 Gbps. El grupo declara la dirección Flor de Azucena 73, Las Condes.",
       "fundado": 1999,
-      "grupo_corporativo": "Grupo Hosting",
+      "grupo_corporativo": "Grupo Hosting (el propio sitio del grupo lista Hosting.cl, PlanetaHosting.cl, NinjaHosting.cl, HostingCenter.cl, iHost.cl y FreeHost.cl, y declara que todas sus marcas corren sobre un datacenter propio en Las Condes)",
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingcl",
       "url_sitio": "https://www.hosting.cl/",
-      "fecha_actualizacion": "2026-08-27T15:12:23.270039+00:00"
+      "fecha_actualizacion": "2026-08-28T03:42:32.193151+00:00"
     },
     {
       "nombre": "FastHosting.cl",
@@ -191,20 +191,6 @@
       "fecha_actualizacion": "2026-06-11T12:56:54.578441+00:00"
     },
     {
-      "nombre": "PlanetaHosting.cl",
-      "slug": "planetahosting",
-      "nota": 7.4,
-      "precio_desde_clp": null,
-      "datacenter": "Santiago, Chile",
-      "fundado": 2001,
-      "grupo_corporativo": "Grupo Hosting",
-      "verificado": true,
-      "curado": true,
-      "url_ficha": "https://eligetuhosting.cl/catalogo/planetahosting",
-      "url_sitio": "https://www.planetahosting.cl/",
-      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
-    },
-    {
       "nombre": "INC Web Hosting Chile",
       "slug": "inc-cl",
       "nota": 7.4,
@@ -217,6 +203,20 @@
       "url_ficha": "https://eligetuhosting.cl/catalogo/inc-cl",
       "url_sitio": "https://www.inc.cl/",
       "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+    },
+    {
+      "nombre": "PlanetaHosting.cl",
+      "slug": "planetahosting",
+      "nota": 7.4,
+      "precio_desde_clp": null,
+      "datacenter": "Declarado por el proveedor: datacenter propio en Santiago, Chile, con infraestructura VMware, conectividad de 10 Gbps y enlace con GTD Teleducto.",
+      "fundado": 2001,
+      "grupo_corporativo": "Grupo Hosting",
+      "verificado": true,
+      "curado": true,
+      "url_ficha": "https://eligetuhosting.cl/catalogo/planetahosting",
+      "url_sitio": "https://www.planetahosting.cl/",
+      "fecha_actualizacion": "2026-08-28T03:42:32.193151+00:00"
     },
     {
       "nombre": "WebHosting.cl",

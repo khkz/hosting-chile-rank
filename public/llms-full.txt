@@ -1,6 +1,6 @@
 # EligeTuHosting.cl — Datos completos por proveedor
 
-Última actualización: 27 de agosto de 2026 (2026-08-27T20:05:32.494Z)
+Última actualización: 28 de agosto de 2026 (2026-08-28T03:43:57.654Z)
 Fuente: EligeTuHosting.cl (https://eligetuhosting.cl) · Licencia CC-BY-4.0
 Nota: no publicamos precios mientras reverificamos el catálogo proveedor por proveedor. Consulta el valor vigente en el sitio de cada proveedor.
 Dataset JSON Chile: https://eligetuhosting.cl/data/proveedores.json
@@ -302,17 +302,17 @@ ProHosting ofrece servicios de hosting confiables y fáciles de usar, con soport
 - Slug: hostingcl
 - Nota editorial: 7.7/10
 - Precio desde: Consultar en el sitio oficial
-- Datacenter: Datacenter propio en Santiago, Chile
+- Datacenter: Declarado por el proveedor: datacenter propio en Las Condes, Santiago, con enlaces nacionales de 10 Gbps. El grupo declara la dirección Flor de Azucena 73, Las Condes.
 - Fundado: 1999
-- Grupo corporativo: Grupo Hosting
+- Grupo corporativo: Grupo Hosting (el propio sitio del grupo lista Hosting.cl, PlanetaHosting.cl, NinjaHosting.cl, HostingCenter.cl, iHost.cl y FreeHost.cl, y declara que todas sus marcas corren sobre un datacenter propio en Las Condes)
 - Sitio oficial: https://www.hosting.cl/
 - Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/hostingcl
-- Tecnologías: cPanel, VMware, Softaculous, MailChannels, SiteLock, R1Soft
+- Tecnologías: N/D
 - Uptime garantizado: N/D
-- SSL gratis: No declarado
-- Migración gratis: No declarado
+- SSL gratis: Sí
+- Migración gratis: Sí
 - Contacto: Tel: +562 2411 0300 · Email: soporte@hosting.cl · Dirección: Flor de Azucena 73, Las Condes, Santiago
-- Última actualización: 2026-08-27T15:12:23.270039+00:00
+- Última actualización: 2026-08-28T03:42:32.193151+00:00
 
 ### Descripción
 Marca veterana del mercado chileno (desde 1999) y parte del Grupo Hosting (grupohosting.cl), que agrupa también a NinjaHosting, HostingCenter, iHost y FreeHost. Catálogo amplio de planes; al pertenecer a un grupo con varias marcas, conviene leer con cautela las recomendaciones cruzadas entre ellas.
@@ -385,35 +385,6 @@ En Hosting24.cl ofrecemos registro de dominios .cl y premium con asesoría gratu
 
 ---
 
-## PlanetaHosting.cl
-- Slug: planetahosting
-- Nota editorial: 7.4/10
-- Precio desde: Consultar en el sitio oficial
-- Datacenter: Santiago, Chile
-- Fundado: 2001
-- Grupo corporativo: Grupo Hosting
-- Sitio oficial: https://www.planetahosting.cl/
-- Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/planetahosting
-- Tecnologías: Panel de control cPanel, Discos Sólidos SSD, Certificado SSL, Instalador de Apps, Antivirus Mail
-- Uptime garantizado: N/D
-- SSL gratis: Sí
-- Migración gratis: Sí
-- Contacto: Tel: +562 24 110 350 · Email: ventas@planetahosting.cl · Dirección: Badajoz 100, Oficina 820, Las Condes, Santiago
-- Última actualización: 2026-08-27T18:57:09.429284+00:00
-
-### Descripción
-Proveedor integrado al Grupo Hosting (grupohosting.cl), el mismo grupo de Hosting.cl, NinjaHosting.cl, HostingCenter.cl, iHost.cl y FreeHost.cl. Catálogo estándar de hosting compartido y VPS; conviene contrastar reseñas externas dada la concentración corporativa del grupo.
-
-### Planes
-  - Plan Básico: Consultar en el sitio oficial, 20 GB SSD, Ilimitada, 1 dominio(s)
-  - Plan Avanzado: Consultar en el sitio oficial, 50 GB SSD, Ilimitada, 5 dominio(s)
-  - Plan Corporativo: Consultar en el sitio oficial, 100 GB SSD, Ilimitada, 10 dominio(s)
-
-### Reseñas aprobadas
-  - Sin reseñas aprobadas todavía.
-
----
-
 ## INC Web Hosting Chile
 - Slug: inc-cl
 - Nota editorial: 7.4/10
@@ -438,6 +409,35 @@ INC Hosting ofrece soluciones de web hosting, dominios y servidores dedicados co
   - Emprende: Consultar en el sitio oficial, 30 GB SSD, Ilimitada, 3 dominio(s)
   - Corporativo: Consultar en el sitio oficial, 60 GB SSD, Ilimitada, 10 dominio(s)
   - Empresas: Consultar en el sitio oficial, 120 GB SSD, Ilimitada, 25 dominio(s)
+
+### Reseñas aprobadas
+  - Sin reseñas aprobadas todavía.
+
+---
+
+## PlanetaHosting.cl
+- Slug: planetahosting
+- Nota editorial: 7.4/10
+- Precio desde: Consultar en el sitio oficial
+- Datacenter: Declarado por el proveedor: datacenter propio en Santiago, Chile, con infraestructura VMware, conectividad de 10 Gbps y enlace con GTD Teleducto.
+- Fundado: 2001
+- Grupo corporativo: Grupo Hosting
+- Sitio oficial: https://www.planetahosting.cl/
+- Ficha en EligeTuHosting.cl: https://eligetuhosting.cl/catalogo/planetahosting
+- Tecnologías: Panel de control cPanel, Discos Sólidos SSD, Certificado SSL, Instalador de Apps, Antivirus Mail
+- Uptime garantizado: N/D
+- SSL gratis: Sí
+- Migración gratis: Sí
+- Contacto: Tel: +562 24 110 350 · Email: ventas@planetahosting.cl · Dirección: Badajoz 100, Oficina 820, Las Condes, Santiago
+- Última actualización: 2026-08-28T03:42:32.193151+00:00
+
+### Descripción
+Proveedor integrado al Grupo Hosting (grupohosting.cl), el mismo grupo de Hosting.cl, NinjaHosting.cl, HostingCenter.cl, iHost.cl y FreeHost.cl. Catálogo estándar de hosting compartido y VPS; conviene contrastar reseñas externas dada la concentración corporativa del grupo.
+
+### Planes
+  - Plan Básico: Consultar en el sitio oficial, 20 GB SSD, Ilimitada, 1 dominio(s)
+  - Plan Avanzado: Consultar en el sitio oficial, 50 GB SSD, Ilimitada, 5 dominio(s)
+  - Plan Corporativo: Consultar en el sitio oficial, 100 GB SSD, Ilimitada, 10 dominio(s)
 
 ### Reseñas aprobadas
   - Sin reseñas aprobadas todavía.
