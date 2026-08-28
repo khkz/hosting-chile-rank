@@ -86,8 +86,7 @@ const Contacto = () => {
             "mainEntity": {
               "@type": "ContactPoint",
               "contactType": "customer service",
-              "email": "contacto@eligetuhosting.cl",
-              "telephone": "+56912345678",
+"email": "contacto@eligetuhosting.cl",
               "areaServed": "CL",
               "availableLanguage": ["Spanish"]
             }
@@ -230,20 +229,7 @@ const Contacto = () => {
                 <CardHeader>
                   <CardTitle>Información de contacto</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-[#EDF2F4] p-2 rounded-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF233C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Teléfono</h3>
-                      <p className="text-gray-600">+56 9 1234 5678</p>
-                      <p className="text-xs text-gray-600 mt-1">Lunes a viernes: 9:00 - 18:00</p>
-                    </div>
-                  </div>
-                  
+<CardContent className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="bg-[#EDF2F4] p-2 rounded-full">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF233C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -255,20 +241,6 @@ const Contacto = () => {
                       <h3 className="font-medium">Email</h3>
                       <p className="text-gray-600">contacto@eligetuhosting.cl</p>
                       <p className="text-xs text-gray-600 mt-1">Respuesta en menos de 24 horas</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <div className="bg-[#EDF2F4] p-2 rounded-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EF233C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Dirección</h3>
-                      <p className="text-gray-600">Av. Providencia 1650, Of. 303</p>
-                      <p className="text-gray-600">Santiago, Chile</p>
                     </div>
                   </div>
                 </CardContent>
