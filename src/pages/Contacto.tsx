@@ -86,8 +86,7 @@ const Contacto = () => {
             "mainEntity": {
               "@type": "ContactPoint",
               "contactType": "customer service",
-              "email": "contacto@eligetuhosting.cl",
-              "telephone": "+56912345678",
+"email": "contacto@eligetuhosting.cl",
               "areaServed": "CL",
               "availableLanguage": ["Spanish"]
             }
