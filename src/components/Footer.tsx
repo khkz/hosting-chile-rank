@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
+import SiteNotice from './SiteNotice';
 import { Shield, ShieldCheck, Mail, Clock } from 'lucide-react';
 
 type LatamCode = 'pe' | 'mx' | 'co' | 'ar';
@@ -36,6 +37,8 @@ const Footer = () => {
   if (latam) {
     const meta = LATAM_META[latam];
     return (
+      <>
+      <SiteNotice />
       <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">
         <div className="container mx-auto px-4 py-8 md:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
