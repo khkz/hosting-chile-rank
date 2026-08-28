@@ -65,7 +65,7 @@ export async function migrateHostingCompanies() {
           const storageMatch = plan.storage.match(/(\d+)/);
           const storageGb = storageMatch ? parseInt(storageMatch[1]) : undefined;
 
-          const { error: planError } = await supabase.from('hosting_plans').insert({
+          const planRow: TablesInsert<'hosting_plans'> = {
             company_id: insertedCompany.id,
             name: plan.name,
             price_monthly: plan.price,
@@ -76,7 +76,10 @@ export async function migrateHostingCompanies() {
               name: f.name,
               included: f.included,
             })) as unknown as Json,
-          });
+          };
+
+          const { error: planError } = await supabase.from('hosting_plans').insert(planRow);
+
 
           if (planError) {
             console.error(`❌ Error insertando plan ${plan.name}:`, planError);
