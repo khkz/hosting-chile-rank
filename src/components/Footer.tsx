@@ -94,11 +94,14 @@ const Footer = () => {
           </div>
         </div>
       </footer>
+      </>
     );
   }
-  
-  
+
+
   return (
+    <>
+    <SiteNotice />
     <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-8 md:py-16">
