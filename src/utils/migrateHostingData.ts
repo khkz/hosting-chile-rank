@@ -71,7 +71,9 @@ export async function migrateHostingCompanies() {
             price_monthly: plan.price,
             storage_gb: storageGb,
             bandwidth: plan.bandwidth,
-            domains_allowed: plan.domains,
+            domains_allowed: typeof plan.domains === 'number'
+              ? plan.domains
+              : (parseInt(String(plan.domains), 10) || null),
             features: plan.features.map(f => ({
               name: f.name,
               included: f.included,
