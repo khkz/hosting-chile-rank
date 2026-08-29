@@ -366,13 +366,23 @@ const Metodologia: React.FC = () => {
                           <td className="py-2 font-semibold">Score compuesto</td>
                           <td />
                           <td className="py-2 text-right font-mono font-bold text-primary">
-                            {top.benchmark?.composite_score
-                              ? Number(top.benchmark.composite_score).toFixed(2)
-                              : Number(top.company.overall_rating).toFixed(2)}
+                            {(() => {
+                              const raw = top.benchmark?.composite_score ?? top.company.overall_rating;
+                              const n = Number(raw);
+                              if (!Number.isFinite(n)) return '—';
+                              // El benchmark almacena el compuesto en escala 0-100;
+                              // las notas por factor están en escala 0-10. Se normaliza a 0-10.
+                              const normalized = n > 10 ? n / 10 : n;
+                              return `${normalized.toFixed(2)} / 10`;
+                            })()}
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                    <p className="text-xs text-muted-foreground mt-3">
+                      Todas las notas por factor y el score compuesto se expresan en escala 0-10. Cuando el
+                      benchmark almacena el compuesto en escala 0-100, se normaliza dividiendo por 10.
+                    </p>
                   </CardContent>
                 </Card>
               ) : (
@@ -477,7 +487,7 @@ const Metodologia: React.FC = () => {
                   variant="outline"
                   className="min-h-[44px] justify-start"
                 >
-                  <Link to="/nuestro-metodo">
+                  <Link to="/metodologia">
                     <FileText className="h-4 w-4 mr-2" aria-hidden />
                     Proceso editorial
                   </Link>

@@ -94,7 +94,6 @@ const ProviderCertifications = React.lazy(() => import('./pages/provider/Certifi
 const BadgeGenerator = React.lazy(() => import('./pages/provider/BadgeGenerator'));
 const Certificaciones = React.lazy(() => import('./pages/Certificaciones'));
 const Auth = React.lazy(() => import('./pages/Auth'));
-const NuestroMetodo = React.lazy(() => import('./pages/NuestroMetodo'));
 const HostingWordPressBlogPersonal = React.lazy(() => import('./pages/HostingWordPressBlogPersonal'));
 const DominiosPremium = React.lazy(() => import('./pages/DominiosPremium'));
 const TransparenciaHosting = React.lazy(() => import('./pages/TransparenciaHosting'));
@@ -205,7 +204,8 @@ function App() {
         <Route path="/wiki/:slug" element={<WikiTerm />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/nuestro-metodo" element={<NuestroMetodo />} />
+        {/* Consolidación: /nuestro-metodo redirige a la página canónica /metodologia */}
+        <Route path="/nuestro-metodo" element={<Navigate to="/metodologia" replace />} />
         <Route path="/hosting-wordpress-blog-personal-chile" element={<HostingWordPressBlogPersonal />} />
         <Route path="/dominios-premium" element={<DominiosPremium />} />
         <Route path="/transparencia-hosting-chile" element={<TransparenciaHosting />} />

@@ -354,7 +354,7 @@ const HostingRanking = () => {
             Top 3 Mejores Hostings Chile
           </h2>
           <p className="text-sm md:text-lg text-muted-foreground max-w-3xl mx-auto">
-            Ranking independiente basado en pruebas técnicas reales de velocidad, uptime y soporte
+            Ranking editorial con metodología y pesos publicados: velocidad, uptime, soporte y reputación
           </p>
           <p className="text-xs text-muted-foreground mt-2">
             Última revisión del ranking: julio 2026
@@ -376,7 +376,7 @@ const HostingRanking = () => {
         {!isLoading && sortedHostingData.length > 0 && (
           <ItemListSchema
             name="Ranking Mejores Hosting Chile 2026"
-            description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas técnicas de velocidad, uptime y soporte"
+            description="Ranking editorial de proveedores de hosting en Chile, con metodología y pesos publicados: velocidad, uptime, soporte y reputación"
             items={getSchemaItems()}
             listType="ranking"
           />

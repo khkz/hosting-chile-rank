@@ -133,7 +133,7 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     ['/guia-seguridad-web', '0.8', 'weekly'],
     ['/errores-comunes-hosting', '0.7', 'monthly'],
     ['/hosting-wordpress-blog-personal-chile', '0.7', 'weekly'],
-    ['/nuestro-metodo', '0.7', 'monthly'],
+    ['/metodologia', '0.7', 'monthly'],
     ['/blog', '0.7', 'daily'],
 
     // Páginas secundarias

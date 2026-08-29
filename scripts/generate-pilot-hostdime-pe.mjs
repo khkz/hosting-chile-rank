@@ -176,7 +176,7 @@ const body = `
   ${faq.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
 
   <hr style="margin:24px 0;border:0;border-top:1px solid #E5E7EB" />
-  <p style="font-size:13px;color:#6B7280"><strong>✓ Revisado por el equipo editorial de EligeTuHosting</strong> el <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Datos técnicos verificados mediante resolución DNS, medición TTFB y consulta al RUC público. Metodología: <a href="/nuestro-metodo">nuestro método</a>.</p>
+  <p style="font-size:13px;color:#6B7280"><strong>✓ Revisado por el equipo editorial de EligeTuHosting</strong> el <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Datos técnicos verificados mediante resolución DNS, medición TTFB y consulta al RUC público. Metodología: <a href="/metodologia">nuestro método</a>.</p>
 `;
 
 const headExtra = [

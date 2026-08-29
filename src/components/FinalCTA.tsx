@@ -50,7 +50,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({
         </p>
         {isExternal && (
           <p className="mt-2 text-[11px] text-white/60">
-            Divulgación: el enlace puede generarnos una comisión sin costo adicional para ti. Nuestro ranking se basa en datos verificables (<Link to="/nuestro-metodo" className="underline">metodología</Link>).
+            Divulgación: el enlace puede generarnos una comisión sin costo adicional para ti. Nuestro ranking se basa en datos verificables (<Link to="/metodologia" className="underline">metodología</Link>).
           </p>
         )}
       </div>

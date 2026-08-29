@@ -314,7 +314,7 @@ const VsComparison = () => {
                 <div>
                   <dt className="text-muted-foreground">Metodología</dt>
                   <dd className="text-foreground">
-                    <a href="/nuestro-metodo" className="text-primary hover:underline flex items-center gap-1">
+                    <a href="/metodologia" className="text-primary hover:underline flex items-center gap-1">
                       Pública y verificable <ExternalLink className="w-3 h-3" />
                     </a>
                   </dd>

@@ -66,7 +66,7 @@ const TLDRVerdict: React.FC = () => {
           y operan con datacenter en territorio chileno.
         </p>
         <p className="text-xs text-muted-foreground mt-3">
-          Datos actualizados a julio 2026 · Fuente: eligetuhosting.cl/ranking · Metodología: eligetuhosting.cl/nuestro-metodo
+          Datos actualizados a julio 2026 · Fuente: eligetuhosting.cl/ranking · Metodología: eligetuhosting.cl/metodologia
         </p>
       </div>
     </aside>

@@ -44,8 +44,8 @@ const StoryBrandGuide: React.FC = () => {
             <p className="text-sm text-gray-600 leading-relaxed">
               Dominios .CL analizados, ping desde Santiago, uptime medido y reclamos verificados
               en Reclamos.cl. Toda la metodología está publicada en{' '}
-              <Link to="/nuestro-metodo" className="text-primary font-medium hover:underline">
-                /nuestro-metodo
+              <Link to="/metodologia" className="text-primary font-medium hover:underline">
+                /metodologia
               </Link>.
             </p>
           </div>

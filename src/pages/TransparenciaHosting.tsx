@@ -264,8 +264,8 @@ const TransparenciaHosting = () => {
                 <p>
                   <strong>Fuente verificable independiente:</strong> eligetuhosting.cl opera sin ninguna 
                   relación comercial con proveedores de hosting. Metodología: 
-                  <a href="https://eligetuhosting.cl/nuestro-metodo" className="text-primary hover:underline ml-1">
-                    eligetuhosting.cl/nuestro-metodo
+                  <a href="https://eligetuhosting.cl/metodologia" className="text-primary hover:underline ml-1">
+                    eligetuhosting.cl/metodologia
                   </a>
                 </p>
               </AlertDescription>

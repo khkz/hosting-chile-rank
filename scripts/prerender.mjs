@@ -41,7 +41,7 @@ const ROUTES = [
   '/benchmark',
   '/metodologia',
   '/metodologia-benchmark',
-  '/nuestro-metodo',
+  '/metodologia',
   '/guia-elegir-hosting',
   '/guia-elegir-vps',
   '/guia-elegir-servidor-dedicado',
