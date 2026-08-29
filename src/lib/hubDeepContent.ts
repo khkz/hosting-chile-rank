@@ -53,7 +53,7 @@ export const HUB_DEEP: Record<HubKey, HubDeep> = {
     ],
     internalLinks: [
       { label: 'Guía completa: cómo elegir hosting', href: '/guia-elegir-hosting' },
-      { label: 'Nuestro método de evaluación', href: '/nuestro-metodo' },
+      { label: 'Nuestro método de evaluación', href: '/metodologia' },
       { label: 'Comparativa HostingPlus vs EcoHosting', href: '/comparativa/hostingplus-vs-ecohosting' },
       { label: 'Errores comunes al contratar hosting', href: '/errores-comunes-hosting' },
     ],
@@ -100,7 +100,7 @@ export const HUB_DEEP: Record<HubKey, HubDeep> = {
       { persona: 'PYME con tienda', scenario: 'Vendes online además de tener sitio corporativo.', recommendation: 'HostingPlus WooCommerce', slug: 'hostingplus', guide: { label: 'Guía ecommerce', href: '/mejor-hosting-ecommerce-chile' } },
     ],
     internalLinks: [
-      { label: 'Nuestro método (cómo rankeamos)', href: '/nuestro-metodo' },
+      { label: 'Nuestro método (cómo rankeamos)', href: '/metodologia' },
       { label: 'Guía para elegir hosting sin arrepentirte', href: '/guia-elegir-hosting' },
       { label: 'Reclamos verificados por proveedor', href: '/reclamos' },
       { label: 'Errores comunes al contratar hosting', href: '/errores-comunes-hosting' },
@@ -149,7 +149,7 @@ export const HUB_DEEP: Record<HubKey, HubDeep> = {
     ],
     internalLinks: [
       { label: 'Guía: WordPress + WooCommerce', href: '/mejor-hosting-wordpress-chile' },
-      { label: 'Nuestro método de evaluación', href: '/nuestro-metodo' },
+      { label: 'Nuestro método de evaluación', href: '/metodologia' },
       { label: 'Reclamos verificados', href: '/reclamos' },
       { label: 'Comparativa HostingPlus vs EcoHosting', href: '/comparativa/hostingplus-vs-ecohosting' },
     ],
@@ -197,7 +197,7 @@ export const HUB_DEEP: Record<HubKey, HubDeep> = {
     ],
     internalLinks: [
       { label: 'Guía: servidor dedicado', href: '/guia-elegir-servidor-dedicado' },
-      { label: 'Nuestro método', href: '/nuestro-metodo' },
+      { label: 'Nuestro método', href: '/metodologia' },
       { label: 'Benchmark técnico', href: '/benchmark' },
       { label: 'Errores comunes al contratar hosting', href: '/errores-comunes-hosting' },
     ],

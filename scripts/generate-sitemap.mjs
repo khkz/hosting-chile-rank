@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const providers = require('./providers.json');
 
 // Slugs de comparativas vs/ rivales (sitios de comparación falsa)
-const VS_RIVALS = ['comparahosting', 'mejorhosting', 'rankinghosting', 'hostingexperto'];
+const VS_RIVALS = ['comparahosting', 'rankinghosting'];
 
 // Anon key hardcoded fallback (mismo valor público de src/integrations/supabase/client.ts).
 // CRÍTICO: en el deploy real de Lovable NO están seteadas las envs SUPABASE_*, así que
@@ -133,7 +133,7 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     ['/guia-seguridad-web', '0.8', 'weekly'],
     ['/errores-comunes-hosting', '0.7', 'monthly'],
     ['/hosting-wordpress-blog-personal-chile', '0.7', 'weekly'],
-    ['/nuestro-metodo', '0.7', 'monthly'],
+    ['/metodologia', '0.7', 'monthly'],
     ['/blog', '0.7', 'daily'],
 
     // Páginas secundarias

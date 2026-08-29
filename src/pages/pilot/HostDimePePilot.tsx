@@ -416,7 +416,7 @@ const HostDimePePilot = () => {
             <strong>Revisado por el equipo editorial de EligeTuHosting</strong> el <time dateTime={REVIEWED_ON}>{REVIEWED_ON}</time>.
           </p>
           <p className="text-xs">
-            Datos técnicos verificados mediante resolución DNS, medición TTFB y consulta al RUC público. Metodología: <Link to="/nuestro-metodo" className="text-primary hover:underline">nuestro método</Link>.
+            Datos técnicos verificados mediante resolución DNS, medición TTFB y consulta al RUC público. Metodología: <Link to="/metodologia" className="text-primary hover:underline">nuestro método</Link>.
           </p>
         </footer>
       </main>

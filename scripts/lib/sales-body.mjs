@@ -244,7 +244,7 @@ export function buildSalesBody(args) {
     ${faq.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
     ${sourcesBlock(c)}
     <hr style="margin:24px 0;border:0;border-top:1px solid #E5E7EB" />
-    <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última generación: <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Metodología: <a href="/nuestro-metodo">nuestro método</a>.</p>
+    <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última generación: <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Metodología: <a href="/metodologia">nuestro método</a>.</p>
   `;
 
   const orgLd = {

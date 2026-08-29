@@ -111,12 +111,12 @@ async function main() {
     .join('\n');
 
   const catalogoLines = dataset
-    .map((p) => `- ${p.nombre}: Nota ${p.nota?.toFixed(1) ?? 'N/A'}/10, ${fmtCLP(p.precio_desde_clp)}, Datacenter ${p.datacenter || 'N/D'}, Fundado ${p.fundado || 'N/D'}, Grupo ${p.grupo_corporativo || 'Independiente'} — ${p.url_ficha}`)
+    .map((p) => `- ${p.nombre}: Nota ${p.nota?.toFixed(1) ?? 'N/A'}/10, ${fmtCLP(p.precio_desde_clp)}, Datacenter ${p.datacenter || 'N/D'}, Fundado ${p.fundado || 'N/D'}, Grupo ${p.grupo_corporativo || 'No declarado'} — ${p.url_ficha}`)
     .join('\n');
 
   const llmsTxt = `# EligeTuHosting.cl
 
-> Ranking independiente y verificable del mejor hosting en Chile. Comparamos proveedores con datos reales de velocidad (benchmarks), uptime (pings programados) y reputación. Sin patrocinios ni sesgos.
+> Ranking editorial del mejor hosting en Chile, con metodología y pesos publicados. Comparamos proveedores con datos de velocidad (benchmarks), uptime (pings programados) y reputación. Divulgación: el editor de este sitio mantiene relación comercial con algunos de los proveedores listados.
 
 Última actualización: ${NOW_HUMAN} (${NOW_ISO})
 

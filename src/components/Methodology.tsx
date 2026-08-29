@@ -1,14 +1,8 @@
-
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
-const methodologyFactors = [
-  { name: "Servicio post-venta", weight: "25 %" },
-  { name: "Velocidad/tecnología", weight: "25 %" },
-  { name: "Seguridad & Backups", weight: "20 %" },
-  { name: "Reputación", weight: "15 %" },
-  { name: "Precio vs. valor", weight: "15 %" },
-];
+import { RANKING_FACTORS, FORMULA_TEXT } from '@/lib/rankingWeights';
+import { COMMERCIAL_DISCLOSURE } from '@/data/verified2026';
 
 const Methodology = () => {
   return (
@@ -17,10 +11,10 @@ const Methodology = () => {
         <h2 className="text-3xl font-semibold text-center mb-8">Puntuación y Metodología</h2>
         <div className="max-w-3xl mx-auto">
           <p className="text-lg mb-6">
-            Asignamos puntajes (0-10) según cinco factores: Servicio post-venta (25 %), 
-            Velocidad/tecnología (25 %), Seguridad & Backups (20 %), Reputación (15 %), 
-            Precio vs. valor (15 %). Datos obtenidos de pruebas reales de ping, uptime públicos, 
-            Reclamos.cl y documentación de cada proveedor.
+            Cada proveedor recibe un puntaje de 0 a 10 a partir de cinco factores con pesos publicados.
+            Las fuentes son mediciones propias de uptime y TTFB, reclamos públicos y documentación
+            declarada por cada proveedor. Los puntajes compuestos que provienen de benchmarks en escala
+            0–100 se normalizan a 0–10 antes de combinarse.
           </p>
           <div className="overflow-x-auto">
             <Table>
@@ -31,17 +25,24 @@ const Methodology = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {methodologyFactors.map((factor) => (
-                  <TableRow key={factor.name}>
-                    <TableCell className="font-medium">{factor.name}</TableCell>
-                    <TableCell className="text-right">{factor.weight}</TableCell>
+                {RANKING_FACTORS.map((factor) => (
+                  <TableRow key={factor.key}>
+                    <TableCell className="font-medium">{factor.label}</TableCell>
+                    <TableCell className="text-right">{factor.weight} %</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
-          <p className="text-sm text-gray-600 mt-6">Última actualización: {new Date().toLocaleDateString('es-CL')}</p>
-          <p className="text-xs text-gray-500 mt-2">Divulgación: Algunos enlaces pueden ser afiliados. Nunca alteran nuestras evaluaciones ni el orden del ranking.</p>
+          <p className="text-sm text-muted-foreground mt-4 font-mono break-words">{FORMULA_TEXT}</p>
+          <p className="text-sm text-muted-foreground mt-4">
+            Detalle de fuentes, frecuencias y normalización en{' '}
+            <Link to="/metodologia" className="text-primary hover:underline">
+              /metodologia
+            </Link>
+            .
+          </p>
+          <p className="text-xs text-muted-foreground mt-2">{COMMERCIAL_DISCLOSURE}</p>
         </div>
       </div>
     </section>

@@ -1,14 +1,19 @@
 {
   "title": "Estudio de Hosting Chile 2026",
-  "lastUpdated": "2026-01-01",
+  "lastUpdated": "2026-08-28",
   "methodology": {
+    "scale": "0-10 (los puntajes de benchmark en escala 0-100 se normalizan a 0-10)",
+    "formula": "score_final = 0.30·reputacion + 0.25·uptime + 0.20·velocidad + 0.15·soporte + 0.10·precio",
     "factors": [
-      { "name": "Servicio post-venta", "weight": 0.25 },
-      { "name": "Velocidad/tecnología", "weight": 0.25 },
-      { "name": "Seguridad & Backups", "weight": 0.20 },
-      { "name": "Reputación", "weight": 0.15 },
-      { "name": "Precio vs. valor", "weight": 0.15 }
+      { "name": "Reputación", "weight": 0.30 },
+      { "name": "Uptime & Disponibilidad", "weight": 0.25 },
+      { "name": "Velocidad & Rendimiento", "weight": 0.20 },
+      { "name": "Soporte & Documentación", "weight": 0.15 },
+      { "name": "Precio & Valor", "weight": 0.10 }
     ]
   },
-  "notes": "Este dataset es un placeholder público para IA y motores de búsqueda."
+  "pricing": "Precios de entrada anualizados y netos, salvo indicación expresa. Consultar el precio vigente en el sitio de cada proveedor.",
+  "disclosure": "Divulgación: el editor de este sitio mantiene relación comercial con algunos de los proveedores listados.",
+  "sources": ["LACNIC RDAP", "RIPEstat", "PeeringDB", "bgp.tools", "webs oficiales de cada proveedor"],
+  "notes": "Dataset público de referencia para IA y motores de búsqueda. Ranking editorial con metodología y pesos publicados."
 }

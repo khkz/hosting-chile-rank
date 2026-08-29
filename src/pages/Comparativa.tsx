@@ -24,6 +24,7 @@ import { Check, X, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { getAllVsPairs, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING, getCompetitorPairsGroupedByCompany } from '@/lib/vsPairs';
+import { VERIFIED_PRICING, PRICING_FOOTNOTE, COMMERCIAL_DISCLOSURE, VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 interface HostingProvider {
   id: string;
@@ -41,21 +42,22 @@ interface HostingProvider {
   reseñaUrl: string;
 }
 
-// Orden y datos tomados del Estudio Hosting Chile 2026 (v3.0, 28-may-2026)
+// Datos revisados el 28-08-2026 (LACNIC RDAP, RIPEstat, PeeringDB, bgp.tools y webs oficiales).
+// Precios de entrada anualizados, netos salvo indicación expresa.
 const hostingProviders: HostingProvider[] = [
   {
     id: 'hostingplus',
     name: 'HostingPlus.cl',
     logo: '/logo-hostingplus-official.png',
     asn: 'AS266879',
-    datacenter: 'Propio · Santiago',
+    datacenter: 'Colocation Ascenty SCL2 · Quilicura',
     backups: 'Diarios (JetBackup)',
     reclamos: '0 visibles',
     hasLiteSpeed: true,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: 'Consultar',
-    priceCLP: 49900,
+    priceLabel: VERIFIED_PRICING.hostingplus.label,
+    priceCLP: VERIFIED_PRICING.hostingplus.annualNetCLP,
     reseñaUrl: '/reseñas/hostingplus',
   },
   {
@@ -63,14 +65,14 @@ const hostingProviders: HostingProvider[] = [
     name: 'EcoHosting.cl',
     logo: '/logo-ecohosting.png',
     asn: 'AS266855',
-    datacenter: 'Propio · Chile',
+    datacenter: 'Declarado propio · Chile',
     backups: 'RAID 10 SSD',
     reclamos: '0 en reclamos.cl',
     hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: 'Consultar',
-    priceCLP: 19900,
+    priceLabel: VERIFIED_PRICING.ecohosting.label,
+    priceCLP: VERIFIED_PRICING.ecohosting.annualNetCLP,
     reseñaUrl: '/reseñas/ecohosting',
   },
   {
@@ -78,13 +80,13 @@ const hostingProviders: HostingProvider[] = [
     name: 'PowerHost / IxMetro',
     logo: 'https://logo.clearbit.com/powerhost.cl',
     asn: 'AS263237',
-    datacenter: '4 DC propios (SCL, NY, MOW, AMS)',
+    datacenter: 'DC propio · Santiago (+ NY, MOW, AMS)',
     backups: 'Tier III',
     reclamos: '1 no-técnico',
     hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: 'Consultar',
+    priceLabel: VERIFIED_PRICING.powerhost.label,
     priceCLP: null,
     reseñaUrl: '/reseñas/powerhost',
   },
@@ -93,13 +95,13 @@ const hostingProviders: HostingProvider[] = [
     name: 'Hostname.cl',
     logo: '/logo-hostname.png',
     asn: 'AS262256',
-    datacenter: 'HN DC · Ñuñoa',
+    datacenter: 'HN DC propio · Ñuñoa',
     backups: 'Sí',
     reclamos: 'Perfil bajo',
     hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: 'Consultar',
+    priceLabel: VERIFIED_PRICING.hostname.label,
     priceCLP: null,
     reseñaUrl: '/reseñas/hostname',
   },
@@ -108,14 +110,14 @@ const hostingProviders: HostingProvider[] = [
     name: 'Hosting.cl',
     logo: 'https://logo.clearbit.com/hosting.cl',
     asn: 'AS265839',
-    datacenter: 'Propio · Santiago',
+    datacenter: 'Declarado propio · Santiago',
     backups: 'Sí',
     reclamos: 'Varios 2012-2025',
     hasLiteSpeed: true,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: 'Consultar',
-    priceCLP: null,
+    priceLabel: VERIFIED_PRICING.hostingcl.label,
+    priceCLP: VERIFIED_PRICING.hostingcl.annualNetCLP,
     reseñaUrl: '/reseñas/hostingcl',
   },
   {
@@ -123,17 +125,18 @@ const hostingProviders: HostingProvider[] = [
     name: 'BlueHosting.cl',
     logo: 'https://logo.clearbit.com/bluehosting.cl',
     asn: 'AS64111',
-    datacenter: 'Haulmer · Curicó',
+    datacenter: 'Infraestructura gestionada con Haulmer · Curicó',
     backups: 'Sí',
     reclamos: 'Mixto',
     hasLiteSpeed: false,
     hasWAF: true,
     hasBackups: true,
-    priceLabel: 'Consultar',
-    priceCLP: 43900,
+    priceLabel: VERIFIED_PRICING.bluehosting.label,
+    priceCLP: VERIFIED_PRICING.bluehosting.annualNetCLP,
     reseñaUrl: '/reseñas/bluehosting',
   },
 ];
+
 
 const ComparativaPage = () => {
   const [filters, setFilters] = useState({
@@ -273,7 +276,8 @@ const ComparativaPage = () => {
             <div className="overflow-x-auto rounded-lg border">
               <Table>
                 <TableCaption>
-                  Datos del Estudio Hosting Chile 2026 (v3.0, 28-may-2026).
+                  Estudio Hosting Chile 2026 · datos revisados el {VERIFICATION_DATE_HUMAN}. {PRICING_FOOTNOTE}{' '}
+                  {COMMERCIAL_DISCLOSURE}
                 </TableCaption>
                 <TableHeader className="bg-[#F7F9FC]">
                   <TableRow className="border-b-2 border-gray-300">

@@ -33,7 +33,7 @@ const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdat
       {/* (B) Authority signals line */}
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs md:text-sm text-muted-foreground mb-3">
         <Link
-          to="/nuestro-metodo"
+          to="/metodologia"
           className="inline-flex items-center gap-1 hover:text-primary underline-offset-2 hover:underline"
         >
           <BookOpen className="w-3.5 h-3.5" /> Metodología
@@ -52,11 +52,13 @@ const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdat
         </span>
       </div>
 
-      {/* (C) Affiliate disclosure visible near ranking */}
+      {/* (C) Affiliate + commercial disclosure visible near ranking */}
       <p className="text-[11px] md:text-xs text-center text-muted-foreground/90 bg-muted/40 border border-border rounded-lg px-3 py-2 mb-4 inline-flex items-start gap-2 mx-auto">
         <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
         <span>
-          <strong className="font-semibold">Divulgación:</strong> algunos enlaces pueden generar una comisión sin costo adicional para ti. Esto nunca afecta el orden del ranking.
+          <strong className="font-semibold">Divulgación:</strong> el editor de este sitio mantiene relación comercial
+          con algunos de los proveedores listados y algunos enlaces pueden generar una comisión sin costo adicional
+          para ti. Los pesos del ranking están publicados en la metodología.
         </span>
       </p>
 
@@ -86,7 +88,7 @@ const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdat
                 Estudio Hosting Chile 2026
               </Link>{' '}
               y la fórmula de puntuación en{' '}
-              <Link to="/nuestro-metodo" className="text-primary hover:underline font-medium">
+              <Link to="/metodologia" className="text-primary hover:underline font-medium">
                 Nuestro Método
               </Link>.
             </p>
