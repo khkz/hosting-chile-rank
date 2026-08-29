@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { RANKING_FACTORS, FORMULA_TEXT } from '@/lib/rankingWeights';
-import { DISCLOSURE_TEXT } from '@/data/verified2026';
+import { COMMERCIAL_DISCLOSURE } from '@/data/verified2026';
 
 const Methodology = () => {
   return (
@@ -42,7 +42,7 @@ const Methodology = () => {
             </Link>
             .
           </p>
-          <p className="text-xs text-muted-foreground mt-2">{DISCLOSURE_TEXT}</p>
+          <p className="text-xs text-muted-foreground mt-2">{COMMERCIAL_DISCLOSURE}</p>
         </div>
       </div>
     </section>
