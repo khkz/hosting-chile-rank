@@ -30,28 +30,28 @@ const conglomerates = [
     ],
   },
   {
-    name: 'Grupo Haulmer',
-    brands: ['bluehosting.cl', 'hosty.cl', 'rackeo.cl', 'solucionhost.cl', 'boxhosting.cl', 'livehost.cl', 'sitiohost.cl'],
-    fakeComparisons: ['hostingexperto.cl'],
+    name: 'BlueHosting y Haulmer (relación comercial)',
+    brands: ['bluehosting.cl', 'hosty.cl'],
+    fakeComparisons: [],
     evidence: [
-      'Misma matriz corporativa según registros públicos',
-      'Marcas que se presentan como empresas independientes pero comparten propiedad',
-      'hostingexperto.cl opera como sitio de "comparación" pero pertenece al mismo grupo',
-      'Múltiples marcas (rackeo, solucionhost, boxhosting, livehost, sitiohost) bajo la misma entidad',
+      'Informática BlueHosting Limitada (RUT 76.102.497-3) y Haulmer Chile SpA (RUT 76.795.561-8) son personas jurídicas distintas',
+      'La evidencia pública acredita relación comercial e infraestructura compartida, no una matriz común atribuible por RUT',
+      'No publicamos atribuciones de propiedad que no consten en registros públicos',
     ],
   },
   {
-    name: 'Grupo HostingNet',
+    name: 'Red HostingNet',
     brands: ['hostingnet.cl', 'unhosting.cl', 'hostingcom.cl'],
     fakeComparisons: ['rankinghosting.cl'],
     evidence: [
-      'Infraestructura y propiedad compartida',
-      'rankinghosting.cl opera como herramienta de marketing del grupo',
+      'rankinghosting.cl enlaza a marcas de la red HostingNet y declara que puede recibir comisión por referencias',
       'hostingcom.cl comparte la misma IP (144.217.215.210) alojada en OVH',
-      'Verificable vía DNSlytics reverse IP lookup',
+      'AS272144 (HostingNet) figura inactivo: 0 prefijos, 0 vecinos, sin anuncios BGP desde mayo de 2024',
+      'No publicamos el nombre del titular del dominio: es una persona natural',
     ],
   },
 ];
+
 
 const TransparenciaHosting = () => {
   const claimReviewSchema = {
