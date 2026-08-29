@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const providers = require('./providers.json');
 
 // Slugs de comparativas vs/ rivales (sitios de comparación falsa)
-const VS_RIVALS = ['comparahosting', 'mejorhosting', 'rankinghosting'];
+const VS_RIVALS = ['comparahosting', 'rankinghosting'];
 
 // Anon key hardcoded fallback (mismo valor público de src/integrations/supabase/client.ts).
 // CRÍTICO: en el deploy real de Lovable NO están seteadas las envs SUPABASE_*, así que
