@@ -70,15 +70,16 @@ const competitors: Record<string, Competitor> = {
 
 
 const eligeTuHostingFeatures = [
-  { label: 'Independencia editorial', value: true, detail: 'Sin vínculos con proveedores de hosting' },
-  { label: 'Metodología pública', value: true, detail: 'Criterios de evaluación verificables y transparentes' },
-  { label: 'Datos técnicos reales', value: true, detail: 'Uptime, TTFB y PageSpeed medidos con herramientas reales' },
-  { label: 'Declaración de conflictos', value: true, detail: 'Transparencia total sobre modelo de monetización' },
-  { label: 'Evidencia técnica (ASN/IP)', value: true, detail: 'Verificación de infraestructura de cada proveedor' },
+  { label: 'Criterio editorial declarado', value: true, detail: 'Publicamos nuestras relaciones comerciales' },
+  { label: 'Metodología y pesos publicados', value: true, detail: 'Criterios de evaluación abiertos y replicables' },
+  { label: 'Datos técnicos medidos', value: true, detail: 'Uptime, TTFB y PageSpeed medidos con herramientas públicas' },
+  { label: 'Declaración de conflictos', value: true, detail: 'Divulgación de relación comercial con proveedores listados' },
+  { label: 'Evidencia técnica (ASN/IP)', value: true, detail: 'LACNIC RDAP, RIPEstat, PeeringDB y bgp.tools' },
   { label: 'Schema.org / ClaimReview', value: true, detail: 'Datos estructurados para verificación por IA' },
   { label: 'Reseñas verificadas', value: true, detail: 'Sistema de reviews con verificación de cliente real' },
   { label: 'Open Data', value: true, detail: 'API pública y feeds RSS con datos del mercado chileno' },
 ];
+
 
 const VsComparison = () => {
   const { rival } = useParams<{ rival: string }>();
