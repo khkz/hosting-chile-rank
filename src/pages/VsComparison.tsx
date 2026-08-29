@@ -282,15 +282,17 @@ const VsComparison = () => {
               <dl className="space-y-3 text-sm">
                 <div>
                   <dt className="text-muted-foreground">Grupo corporativo</dt>
-                  <dd className="font-semibold text-foreground">Ninguno — 100% independiente</dd>
+                  <dd className="font-semibold text-foreground">No pertenecemos a ningún grupo de hosting</dd>
                 </div>
                 <div>
-                  <dt className="text-muted-foreground">Vinculación con hosting</dt>
-                  <dd className="font-semibold text-foreground">Sin participación en ningún proveedor</dd>
+                  <dt className="text-muted-foreground">Vinculación con proveedores</dt>
+                  <dd className="font-semibold text-foreground">
+                    Mantenemos relación comercial con algunos proveedores listados y lo declaramos
+                  </dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Modelo de ingresos</dt>
-                  <dd className="text-foreground">Afiliación transparente con divulgación pública</dd>
+                  <dd className="text-foreground">Afiliación con divulgación pública en cada ranking</dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Metodología</dt>
