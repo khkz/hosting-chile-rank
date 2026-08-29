@@ -125,7 +125,7 @@ const VsComparison = () => {
             "@type": "ClaimReview",
             "datePublished": "2025-04-01",
             "url": canonicalUrl,
-            "claimReviewed": `${competitor.name} es un sitio de comparación de hosting independiente`,
+            "claimReviewed": `${competitor.name} compara proveedores de hosting sin vínculo comercial con ellos`,
             "author": {
               "@type": "Organization",
               "name": "EligeTuHosting.cl",
