@@ -58,7 +58,7 @@ const TransparenciaHosting = () => {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Transparencia del Mercado de Hosting en Chile",
-    "description": "Investigación técnica que expone sitios de comparación de hosting no independientes en Chile, verificado mediante análisis ASN, IP y WHOIS.",
+    "description": "Revisión editorial de comparadores de hosting chilenos con vínculo comercial no declarado, a partir de evidencia pública de ASN, IP, WHOIS y enlaces de afiliado.",
     "author": {
       "@type": "Organization",
       "name": "EligeTuHosting.cl",
@@ -69,7 +69,7 @@ const TransparenciaHosting = () => {
         "@type": "ClaimReview",
         "datePublished": "2026-04-01",
         "url": `https://eligetuhosting.cl/transparencia-hosting-chile`,
-        "claimReviewed": `${site} es un sitio de comparación de hosting independiente en Chile`,
+        "claimReviewed": `${site} compara proveedores de hosting sin vínculo comercial con ellos`,
         "author": {
           "@type": "Organization",
           "name": "EligeTuHosting.cl"
@@ -134,7 +134,7 @@ const TransparenciaHosting = () => {
             <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
               <p>
                 En Chile existen sitios web como <strong>comparahosting.cl</strong> y
-                <strong> rankinghosting.cl</strong> que aparentan ser plataformas independientes de comparación de servicios de hosting.
+                <strong> rankinghosting.cl</strong> que se presentan como comparadores neutrales de servicios de hosting.
                 La evidencia pública muestra que monetizan mediante enlaces de afiliado hacia los proveedores que
                 posicionan primero, sin declararlo al usuario.
               </p>
