@@ -98,8 +98,8 @@ const VsComparison = () => {
   }
 
   const canonicalUrl = `https://eligetuhosting.cl/vs/${competitor.slug}`;
-  const pageTitle = `EligeTuHosting vs ${competitor.name} – ¿Cuál es realmente independiente?`;
-  const pageDescription = `Comparativa detallada entre EligeTuHosting.cl y ${competitor.name}. Evidencia técnica (ASN, IP, WHOIS) que demuestra por qué ${competitor.name} no es un comparador independiente.`;
+  const pageTitle = `EligeTuHosting vs ${competitor.name} – ¿quién declara sus vínculos comerciales?`;
+  const pageDescription = `Comparativa entre EligeTuHosting.cl y ${competitor.name}: evidencia pública (ASN, enlaces de afiliado y metodología) sobre los vínculos comerciales de ${competitor.name}.`;
 
   return (
     <>
