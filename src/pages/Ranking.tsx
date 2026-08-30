@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
 import { 
   Server, 
   Package, 
@@ -8,8 +7,7 @@ import {
   Layers, 
   Cloud, 
   Cpu, 
-  Globe,
-  ExternalLink
+  Globe
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
@@ -34,10 +32,8 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
-import { getProviderLink } from '@/lib/providerLinks';
 import { useLatestDomains } from '@/hooks/useLatestDomains';
 
 // El Top 3 se construye desde `hosting_companies` (ver TopProvidersPodium):
