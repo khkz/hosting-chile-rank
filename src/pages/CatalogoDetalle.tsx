@@ -238,6 +238,10 @@ const CatalogoDetalle = () => {
           fechaVerificacion={(company as any).fecha_verificacion}
         />
 
+        <ScoreBreakdown companyId={company.id} companyName={company.name} />
+
+
+
 
         <Veredicto
           name={company.name}
