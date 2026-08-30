@@ -3,8 +3,6 @@
  * Service to connect ASN data with hosting company information
  */
 
-import { hostingCompanies } from '@/data/hostingCompanies';
-
 export interface HostingASNMapping {
   asnNumber: string;
   hostingCompany: string;
@@ -87,33 +85,6 @@ export const isHostingASN = (asn: string): boolean => {
  */
 export const getAllHostingASNs = (): HostingASNMapping[] => {
   return [...knownHostingASNs];
-};
-
-/**
- * Suggest hosting companies for an ASN based on name patterns
- */
-export const suggestHostingCompany = (asnName: string, asnDescription?: string): string | null => {
-  const text = `${asnName} ${asnDescription || ''}`.toLowerCase();
-  
-  // Look for hosting-related keywords
-  const hostingKeywords = [
-    'hosting', 'host', 'server', 'datacenter', 'data center', 'cloud',
-    'vps', 'dedicated', 'colocation', 'colo', 'internet service'
-  ];
-  
-  const hasHostingKeywords = hostingKeywords.some(keyword => text.includes(keyword));
-  
-  if (hasHostingKeywords) {
-    // Try to match with known hosting companies
-    const company = Object.values(hostingCompanies).find(hc => 
-      text.includes(hc.name.toLowerCase()) || 
-      hc.name.toLowerCase().includes(asnName.toLowerCase())
-    );
-    
-    return company ? company.name : 'Empresa de Hosting';
-  }
-  
-  return null;
 };
 
 /**
