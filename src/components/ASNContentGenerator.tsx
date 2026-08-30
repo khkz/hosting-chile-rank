@@ -28,7 +28,6 @@ export const ASNContentGenerator = ({ asn, asnName, description }: ASNContentGen
 
       const { data, error } = await supabase.functions.invoke('asn-content-generator', {
         body: { asn, asnName, description },
-        headers: { 'x-admin-api-key': import.meta.env.VITE_ADMIN_SECRET_KEY || '' },
       });
 
       if (error) {
