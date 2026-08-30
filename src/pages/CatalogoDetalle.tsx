@@ -23,6 +23,8 @@ import BrandFAQ from '@/components/catalogo/BrandFAQ';
 import { buildCatalogoSeo } from '@/components/catalogo/buildCatalogoSeo';
 import VerifiedDataTable from '@/components/catalogo/VerifiedDataTable';
 import SourcesConsulted from '@/components/catalogo/SourcesConsulted';
+import ScoreBreakdown from '@/components/ranking/ScoreBreakdown';
+
 import Veredicto from '@/components/catalogo/Veredicto';
 import DatacenterBadge from '@/components/DatacenterBadge';
 import { isHiddenProvider } from '@/lib/providerLinks';
