@@ -35,6 +35,7 @@ import { Card } from '@/components/ui/card';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import { useLatestDomains } from '@/hooks/useLatestDomains';
+import { RANKING_TESTIMONIALS as testimonials, RANKING_FAQ as faqItems } from '@/data/rankingContent';
 
 // El Top 3 se construye desde `hosting_companies` (ver TopProvidersPodium):
 // el orden lo determina el dato, no un array escrito a mano.
@@ -83,46 +84,6 @@ const categories = [
     icon: <Globe className="h-8 w-8 text-pink-600" />,
     bgColor: "bg-pink-50",
     url: "https://clientes.hostingplus.cl/cart.php?a=add&domain=register"
-  }
-];
-
-// Testimonials data
-const testimonials = [
-  {
-    quote: "Migré mi tienda desde GoDaddy y la velocidad mejoró un 300%. El soporte es increíblemente rápido y eficiente.",
-    author: "Carolina Pérez, Tienda Online"
-  },
-  {
-    quote: "La diferencia de tener mi sitio en un servidor con IP chilena es notable. Mi posicionamiento en Google mejoró notablemente.",
-    author: "Sebastián Muñoz, Blog de Viajes"
-  },
-  {
-    quote: "Llevo 3 años con ellos y nunca he tenido caídas. El panel de control es intuitivo y el soporte siempre responde en minutos.",
-    author: "Andrea Soto, Agencia Marketing"
-  },
-  {
-    quote: "La migración fue gratuita y sin complicaciones. Me sorprendió lo fácil que fue el proceso completo.",
-    author: "Rodrigo Vega, Desarrollador"
-  }
-];
-
-// FAQ data
-const faqItems = [
-  {
-    question: "¿Cómo se elabora el ranking?",
-    answer: "Nuestro equipo realiza pruebas de rendimiento utilizando herramientas como GTmetrix, Pingdom y LoadImpact. Evaluamos tiempo de carga, TTFB, estabilidad, seguridad y soporte técnico. Cada servidor es sometido a las mismas pruebas bajo idénticas condiciones."
-  },
-  {
-    question: "¿Qué ventaja tiene un hosting con IP chilena?",
-    answer: "Un hosting con IP chilena ofrece menor latencia para visitantes locales, mejor posicionamiento SEO en búsquedas geográficas de Chile, y mayor protección legal al estar bajo jurisdicción chilena (Ley 19.628)."
-  },
-  {
-    question: "¿Incluyen migración gratuita?",
-    answer: "Sí, los tres proveedores del Top 3 ofrecen migración gratuita desde cualquier otro hosting. El proceso es realizado por sus técnicos y generalmente toma menos de 24 horas sin interrupciones de servicio."
-  },
-  {
-    question: "¿Por qué HostingPlus lidera el ranking?",
-    answer: "HostingPlus combina LiteSpeed Enterprise, datacenter en Santiago, BitNinja y soporte 24/7 en español. Las métricas exactas de velocidad y uptime medidas mensualmente están publicadas en /benchmark."
   }
 ];
 
