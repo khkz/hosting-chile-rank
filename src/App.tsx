@@ -82,7 +82,6 @@ const AdminPublicReviews = React.lazy(() => import('./pages/admin/PublicReviews'
 const Setup = React.lazy(() => import('./pages/admin/Setup'));
 const Companies = React.lazy(() => import('./pages/admin/Companies'));
 const AdminCertifications = React.lazy(() => import('./pages/admin/Certifications'));
-const DataMigration = React.lazy(() => import('./pages/admin/DataMigration'));
 const DomainSniper = React.lazy(() => import('./pages/admin/DomainSniper'));
 const CompanyCuration = React.lazy(() => import('./pages/admin/CompanyCuration'));
 const AdminPrecios = React.lazy(() => import('./pages/admin/Precios'));
@@ -256,11 +255,8 @@ function App() {
                 <AdminCertifications />
               </ProtectedRoute>
             } />
-            <Route path="/admin/migracion" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <DataMigration />
-              </ProtectedRoute>
-            } />
+            <Route path="/admin/migracion" element={<Navigate to="/admin/setup" replace />} />
+
             <Route path="/admin/domain-sniper" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DomainSniper />

@@ -10,7 +10,6 @@ import { Loader2, CheckCircle2, AlertCircle, Database, Award, Building2 } from '
 import { toast } from 'sonner';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getAllHostingCompanies } from '@/data/hostingCompanies';
 
 interface SetupStatus {
   companies: number;
@@ -52,74 +51,6 @@ export default function Setup() {
       console.error('Error checking status:', error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const migrateCompanies = async () => {
-    setMigrating(true);
-    try {
-      const companies = getAllHostingCompanies();
-      
-      for (const company of companies) {
-        const { error } = await supabase
-          .from('hosting_companies')
-          .upsert({
-            slug: company.id,
-            name: company.name,
-            logo_url: company.logo,
-            description: company.description,
-            website: company.website,
-            datacenter_location: company.datacenterLocation,
-            year_founded: company.yearFounded,
-            overall_rating: company.rating,
-            speed_rating: company.rating,
-            support_rating: company.rating,
-            price_rating: company.rating,
-            contact_phone: company.contactInfo.phone,
-            contact_email: company.contactInfo.email,
-            contact_address: company.contactInfo.address,
-            contact_hours: company.contactInfo.hours,
-            is_verified: true,
-            is_featured: company.rating >= 9,
-          }, { onConflict: 'slug' });
-
-        if (error) throw error;
-
-        // Insert plans
-        const { data: companyData } = await supabase
-          .from('hosting_companies')
-          .select('id')
-          .eq('slug', company.id)
-          .single();
-
-        if (companyData) {
-          for (const plan of company.plans) {
-            const storageMatch = plan.storage.match(/\d+/);
-            const domainsMatch = plan.domains.toString();
-            
-            await supabase
-              .from('hosting_plans')
-              .insert([{
-                company_id: companyData.id,
-                name: plan.name,
-                price_monthly: plan.price,
-                storage_gb: storageMatch ? parseInt(storageMatch[0]) : null,
-                bandwidth: plan.bandwidth,
-                domains_allowed: parseInt(domainsMatch) || 1,
-                features: plan.features as any,
-                is_active: true,
-              }]);
-          }
-        }
-      }
-
-      toast.success(`${companies.length} empresas migradas exitosamente`);
-      await checkStatus();
-    } catch (error: any) {
-      toast.error('Error migrando empresas: ' + error.message);
-      console.error(error);
-    } finally {
-      setMigrating(false);
     }
   };
 
@@ -322,48 +253,6 @@ export default function Setup() {
 
           {/* Setup Steps */}
           <div className="space-y-6">
-            {/* Step 1: Migrate Companies */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">
-                    1
-                  </span>
-                  Migrar Empresas de Hosting
-                </CardTitle>
-                <CardDescription>
-                  Migra {getAllHostingCompanies().length} empresas desde el código a la base de datos Supabase
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {status.companies > 0 && (
-                  <Alert>
-                    <CheckCircle2 className="h-4 w-4" />
-                    <AlertDescription>
-                      Ya hay {status.companies} empresas en la base de datos. Puedes volver a migrar para actualizar.
-                    </AlertDescription>
-                  </Alert>
-                )}
-                <Button 
-                  onClick={migrateCompanies} 
-                  disabled={migrating}
-                  className="w-full md:w-auto"
-                >
-                  {migrating ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Migrando...
-                    </>
-                  ) : (
-                    <>
-                      <Database className="mr-2 h-4 w-4" />
-                      Migrar Empresas
-                    </>
-                  )}
-                </Button>
-              </CardContent>
-            </Card>
-
             {/* Step 2: Create Categories */}
             <Card>
               <CardHeader>
@@ -390,7 +279,7 @@ export default function Setup() {
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      Primero debes migrar las empresas (Paso 1)
+                      No hay empresas en la base de datos aún
                     </AlertDescription>
                   </Alert>
                 )}
