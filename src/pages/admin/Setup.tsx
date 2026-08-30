@@ -279,7 +279,7 @@ export default function Setup() {
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      Primero debes migrar las empresas (Paso 1)
+                      No hay empresas en la base de datos aún
                     </AlertDescription>
                   </Alert>
                 )}
