@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { 
@@ -36,6 +36,7 @@ import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import { getProviderLink } from '@/lib/providerLinks';
+import { useLatestDomains } from '@/hooks/useLatestDomains';
 
 // Host provider data — Top 3 oficial del ranking 2026
 const hostProviders = [
