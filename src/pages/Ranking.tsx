@@ -15,6 +15,8 @@ import Navbar from '@/components/Navbar';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
 import RankingPositions4to10 from '@/components/RankingPositions4to10';
 import RankingAuthorityBlock from '@/components/RankingAuthorityBlock';
+import TopProvidersPodium from '@/components/ranking/TopProvidersPodium';
+
 import {
   Accordion,
   AccordionContent,
