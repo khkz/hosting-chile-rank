@@ -38,59 +38,9 @@ import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import { getProviderLink } from '@/lib/providerLinks';
 import { useLatestDomains } from '@/hooks/useLatestDomains';
 
-// Host provider data — Top 3 oficial del ranking 2026
-const hostProviders = [
-  {
-    id: 1,
-    name: "HostingPlus.cl",
-    slug: "hostingplus",
-    logo: "/logo-hostingplus-official.png",
-    rating: 9.9,
-    price: "Consultar",
-    speed: "9.9/10",
-    uptime: "99.98%",
-    features: [
-      "Carga más rápida en Chile (servidores en Santiago)",
-      "Protección 24/7 con BitNinja",
-      "Backups automáticos con recuperación 1 clic",
-      "Email anti-spam (SPF, DKIM y DMARC)"
-    ],
-    url: "https://clientes.hostingplus.cl/cart.php?gid=13"
-  },
-  {
-    id: 2,
-    name: "EcoHosting.cl",
-    slug: "ecohosting",
-    logo: "/logo-ecohosting.png",
-    rating: 9.6,
-    price: "Consultar",
-    speed: "9.7/10",
-    uptime: "99.96%",
-    features: [
-      "Apache optimizado",
-      "Datacenter en Providencia",
-      "IP chilena",
-      "Energía 100% renovable"
-    ],
-    url: "https://www.ecohosting.cl/"
-  },
-  {
-    id: 3,
-    name: "HN.cl",
-    slug: "hn",
-    logo: "/placeholder.svg",
-    rating: 9.2,
-    price: "Consultar",
-    speed: "9.2/10",
-    uptime: "99.95%",
-    features: [
-      "Infraestructura SSD con datacenter en Chile",
-      "Soporte técnico en español de excelencia",
-      "0 reclamos verificados en los últimos 12 meses"
-    ],
-    url: "https://www.hn.cl"
-  }
-];
+// El Top 3 se construye desde `hosting_companies` (ver TopProvidersPodium):
+// el orden lo determina el dato, no un array escrito a mano.
+
 
 // Categories data
 const categories = [
