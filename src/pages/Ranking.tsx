@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
 import { 
   Server, 
   Package, 
@@ -8,13 +7,14 @@ import {
   Layers, 
   Cloud, 
   Cpu, 
-  Globe,
-  ExternalLink
+  Globe
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import HostingSectionsNav from '@/components/HostingSectionsNav';
 import RankingPositions4to10 from '@/components/RankingPositions4to10';
 import RankingAuthorityBlock from '@/components/RankingAuthorityBlock';
+import TopProvidersPodium from '@/components/ranking/TopProvidersPodium';
+
 import {
   Accordion,
   AccordionContent,
@@ -32,65 +32,14 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
-import { getProviderLink } from '@/lib/providerLinks';
 import { useLatestDomains } from '@/hooks/useLatestDomains';
+import { RANKING_TESTIMONIALS as testimonials, RANKING_FAQ as faqItems } from '@/data/rankingContent';
 
-// Host provider data — Top 3 oficial del ranking 2026
-const hostProviders = [
-  {
-    id: 1,
-    name: "HostingPlus.cl",
-    slug: "hostingplus",
-    logo: "/logo-hostingplus-official.png",
-    rating: 9.9,
-    price: "Consultar",
-    speed: "9.9/10",
-    uptime: "99.98%",
-    features: [
-      "Carga más rápida en Chile (servidores en Santiago)",
-      "Protección 24/7 con BitNinja",
-      "Backups automáticos con recuperación 1 clic",
-      "Email anti-spam (SPF, DKIM y DMARC)"
-    ],
-    url: "https://clientes.hostingplus.cl/cart.php?gid=13"
-  },
-  {
-    id: 2,
-    name: "EcoHosting.cl",
-    slug: "ecohosting",
-    logo: "/logo-ecohosting.png",
-    rating: 9.6,
-    price: "Consultar",
-    speed: "9.7/10",
-    uptime: "99.96%",
-    features: [
-      "Apache optimizado",
-      "Datacenter en Providencia",
-      "IP chilena",
-      "Energía 100% renovable"
-    ],
-    url: "https://www.ecohosting.cl/"
-  },
-  {
-    id: 3,
-    name: "HN.cl",
-    slug: "hn",
-    logo: "/placeholder.svg",
-    rating: 9.2,
-    price: "Consultar",
-    speed: "9.2/10",
-    uptime: "99.95%",
-    features: [
-      "Infraestructura SSD con datacenter en Chile",
-      "Soporte técnico en español de excelencia",
-      "0 reclamos verificados en los últimos 12 meses"
-    ],
-    url: "https://www.hn.cl"
-  }
-];
+// El Top 3 se construye desde `hosting_companies` (ver TopProvidersPodium):
+// el orden lo determina el dato, no un array escrito a mano.
+
 
 // Categories data
 const categories = [
@@ -135,46 +84,6 @@ const categories = [
     icon: <Globe className="h-8 w-8 text-pink-600" />,
     bgColor: "bg-pink-50",
     url: "https://clientes.hostingplus.cl/cart.php?a=add&domain=register"
-  }
-];
-
-// Testimonials data
-const testimonials = [
-  {
-    quote: "Migré mi tienda desde GoDaddy y la velocidad mejoró un 300%. El soporte es increíblemente rápido y eficiente.",
-    author: "Carolina Pérez, Tienda Online"
-  },
-  {
-    quote: "La diferencia de tener mi sitio en un servidor con IP chilena es notable. Mi posicionamiento en Google mejoró notablemente.",
-    author: "Sebastián Muñoz, Blog de Viajes"
-  },
-  {
-    quote: "Llevo 3 años con ellos y nunca he tenido caídas. El panel de control es intuitivo y el soporte siempre responde en minutos.",
-    author: "Andrea Soto, Agencia Marketing"
-  },
-  {
-    quote: "La migración fue gratuita y sin complicaciones. Me sorprendió lo fácil que fue el proceso completo.",
-    author: "Rodrigo Vega, Desarrollador"
-  }
-];
-
-// FAQ data
-const faqItems = [
-  {
-    question: "¿Cómo se elabora el ranking?",
-    answer: "Nuestro equipo realiza pruebas de rendimiento utilizando herramientas como GTmetrix, Pingdom y LoadImpact. Evaluamos tiempo de carga, TTFB, estabilidad, seguridad y soporte técnico. Cada servidor es sometido a las mismas pruebas bajo idénticas condiciones."
-  },
-  {
-    question: "¿Qué ventaja tiene un hosting con IP chilena?",
-    answer: "Un hosting con IP chilena ofrece menor latencia para visitantes locales, mejor posicionamiento SEO en búsquedas geográficas de Chile, y mayor protección legal al estar bajo jurisdicción chilena (Ley 19.628)."
-  },
-  {
-    question: "¿Incluyen migración gratuita?",
-    answer: "Sí, los tres proveedores del Top 3 ofrecen migración gratuita desde cualquier otro hosting. El proceso es realizado por sus técnicos y generalmente toma menos de 24 horas sin interrupciones de servicio."
-  },
-  {
-    question: "¿Por qué HostingPlus lidera el ranking?",
-    answer: "HostingPlus combina LiteSpeed Enterprise, datacenter en Santiago, BitNinja y soporte 24/7 en español. Las métricas exactas de velocidad y uptime medidas mensualmente están publicadas en /benchmark."
   }
 ];
 
@@ -300,82 +209,13 @@ const RankingPage = () => {
         <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-4">
           Top 3 proveedores de hosting
         </h2>
+        <p className="text-center text-sm text-gray-600 max-w-3xl mx-auto mb-4">
+          El orden se calcula por fórmula sobre datos verificables. El editor mantiene relación
+          comercial con algunos proveedores listados.
+        </p>
         <RankingAuthorityBlock className="mb-8" />
-        <div className="grid md:grid-cols-3 gap-6">
-          {hostProviders.map((provider, index) => (
-            <div key={provider.id} className={`
-              bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300
-              ${index === 0 
-                ? 'ring-2 ring-[#EF233C] transform md:scale-105' 
-                : 'hover:scale-105'}
-            `}>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold flex-shrink-0 ${
-                      index === 0
-                        ? 'bg-[#EF233C] text-white'
-                        : 'bg-gray-100 text-[#2B2D42]'
-                    }`}>
-                      {provider.id}
-                    </span>
-                    <h3 className="text-lg md:text-xl font-bold text-[#2B2D42] truncate">
-                      {provider.name}
-                    </h3>
-                  </div>
-                  {index === 0 && (
-                    <Badge className="bg-[#EF233C] text-white flex-shrink-0">Top</Badge>
-                  )}
-                </div>
+        <TopProvidersPodium />
 
-                <div className="flex flex-wrap gap-2 mb-3 items-center">
-                  <span className="inline-flex items-center bg-primary/10 text-primary font-bold px-2 py-1 rounded text-sm">
-                    {provider.rating.toFixed(1)}/10
-                  </span>
-                  <Badge variant="secondary" className="bg-slate-100 rounded-full px-3 text-xs">
-                    {provider.price}
-                  </Badge>
-                </div>
-
-                <ul className="mb-6 text-sm space-y-2">
-                  {provider.features.map((feature, i) => (
-                    <li key={i} className="flex items-start">
-                      <svg className="w-5 h-5 text-green-500 mr-1.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="space-y-2">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full font-semibold py-3 rounded-lg min-h-[44px]"
-                  >
-                    <Link to={`/catalogo/${provider.slug}`}>Ver detalles</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    className={`w-full font-semibold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 min-h-[44px] ${
-                      index === 0
-                        ? 'bg-[#EF233C] hover:bg-[#d01d34] text-white'
-                        : 'bg-[#2B2D42] hover:bg-[#1a1c2e] text-white'
-                    }`}
-                  >
-                    {(() => { const link = getProviderLink(provider.slug, provider.url); return (
-                      <a href={link.href} target="_blank" rel={link.rel} className="flex items-center justify-center">
-                        Visitar sitio
-                        <ExternalLink className="ml-2 h-4 w-4" />
-                      </a>
-                    ); })()}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
 
         {/* Puestos 4-10 */}
         <RankingPositions4to10 />
