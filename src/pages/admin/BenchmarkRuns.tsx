@@ -42,9 +42,7 @@ const BenchmarkRuns: React.FC = () => {
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("run-benchmark", {
-        headers: { "x-admin-api-key": adminKey },
-      });
+      const { data, error } = await supabase.functions.invoke("run-benchmark");
       if (error) throw error;
       toast.success(`Run lanzado: ${(data as any)?.run_id ?? "ok"}`);
       await load();
