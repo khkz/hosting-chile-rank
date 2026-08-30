@@ -108,7 +108,7 @@ const OSINTScanner = () => {
     try {
       setScanProgress(["🔎 Consultando registro NIC Chile..."]);
 
-      const adminHeaders = { 'x-admin-api-key': import.meta.env.VITE_ADMIN_SECRET_KEY || '' };
+      const adminHeaders = {} as Record<string, string>;
 
       // Phase 1: WHOIS + ASN + AI Scraper (parallel)
       const [whoisRes, asnRes, scraperRes] = await Promise.all([
@@ -292,7 +292,7 @@ const OSINTScanner = () => {
           const domain = c.website?.replace(/^https?:\/\//, "").replace(/\/$/, "") || `${c.slug}.cl`;
           const fullUrl = c.website || `https://${c.slug}.cl`;
 
-          const batchAdminHeaders = { 'x-admin-api-key': import.meta.env.VITE_ADMIN_SECRET_KEY || '' };
+          const batchAdminHeaders = {} as Record<string, string>;
           const [scraperRes, complaintsRes] = await Promise.all([
             supabase.functions.invoke("ai-web-scraper", { body: { url: fullUrl, mode: "full" }, headers: batchAdminHeaders }),
             supabase.functions.invoke("complaints-checker", { body: { company_name: c.name, domain, company_id: c.id }, headers: batchAdminHeaders }),

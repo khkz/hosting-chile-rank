@@ -1,9 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { requireAdmin, adminDenied } from "../_shared/security.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-admin-api-key',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-service-secret',
 };
 
 serve(async (req) => {
@@ -11,13 +12,8 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const adminKey = req.headers.get('x-admin-api-key');
-  const expectedKey = Deno.env.get('ADMIN_SECRET_KEY');
-  if (!expectedKey || adminKey !== expectedKey) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  }
+  const check = await requireAdmin(req);
+  if (!check.ok) return adminDenied(check, corsHeaders);
 
   try {
     const body = await req.json().catch(() => ({}));
@@ -53,7 +49,7 @@ serve(async (req) => {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${serviceKey}`,
-            'x-admin-api-key': expectedKey,
+            'x-service-secret': Deno.env.get('ADMIN_SECRET_KEY') ?? '',
           },
           body: JSON.stringify({ company_name: c.name, company_id: c.id }),
         });

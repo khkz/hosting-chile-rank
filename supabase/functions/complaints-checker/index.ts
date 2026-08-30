@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { requireAdmin, adminDenied } from "../_shared/security.ts";
 
 async function persistSnapshot(payload: {
   company_id: string;
@@ -32,19 +33,13 @@ async function persistSnapshot(payload: {
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-admin-api-key, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-service-secret, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-// ── Admin API Key Guard ─────────────────────────────────────────
-function validateAdminKey(req: Request): Response | null {
-  const adminKey = req.headers.get('x-admin-api-key');
-  const expectedKey = Deno.env.get('ADMIN_SECRET_KEY');
-  if (!expectedKey || adminKey !== expectedKey) {
-    return new Response(
-      JSON.stringify({ error: 'Unauthorized — invalid or missing x-admin-api-key' }),
-      { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
-    );
-  }
+// Admin Guard: JWT de usuario admin verificado server-side, o x-service-secret para cron
+async function validateAdminKey(req: Request): Promise<Response | null> {
+  const check = await requireAdmin(req);
+  if (!check.ok) return adminDenied(check, corsHeaders);
   return null;
 }
 
@@ -78,7 +73,7 @@ serve(async (req) => {
   }
 
   // ── Auth gate ──
-  const authError = validateAdminKey(req);
+  const authError = await validateAdminKey(req);
   if (authError) return authError;
 
   try {

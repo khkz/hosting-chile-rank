@@ -9,8 +9,6 @@ import { RefreshCw, Loader2 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-const ADMIN_KEY = (import.meta.env.VITE_ADMIN_SECRET_KEY as string | undefined) ?? '';
-
 interface Row {
   id: string;
   name: string;
@@ -58,15 +56,10 @@ export default function AdminReputation() {
   });
 
   const refresh = async (companyId?: string) => {
-    if (!ADMIN_KEY) {
-      toast.error('Falta VITE_ADMIN_SECRET_KEY');
-      return;
-    }
     setBusy(companyId ?? 'all');
     try {
       const { data, error } = await supabase.functions.invoke('refresh-reputation', {
         body: companyId ? { company_id: companyId } : { all: true },
-        headers: { 'x-admin-api-key': ADMIN_KEY },
       });
       if (error) throw error;
       toast.success(`Procesado: ${(data as { processed?: number })?.processed ?? 0}`);
