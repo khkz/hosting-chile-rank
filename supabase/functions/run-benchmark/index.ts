@@ -8,7 +8,7 @@ import { requireAdmin, adminDenied } from "../_shared/security.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-admin-api-key",
+    "authorization, x-client-info, apikey, content-type, x-service-secret",
 };
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
