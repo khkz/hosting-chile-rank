@@ -256,11 +256,8 @@ function App() {
                 <AdminCertifications />
               </ProtectedRoute>
             } />
-            <Route path="/admin/migracion" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <DataMigration />
-              </ProtectedRoute>
-            } />
+            <Route path="/admin/migracion" element={<Navigate to="/admin/setup" replace />} />
+
             <Route path="/admin/domain-sniper" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DomainSniper />
