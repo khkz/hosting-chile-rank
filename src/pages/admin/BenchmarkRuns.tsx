@@ -21,7 +21,6 @@ interface Run {
 
 const BenchmarkRuns: React.FC = () => {
   const [runs, setRuns] = useState<Run[]>([]);
-  const [adminKey, setAdminKey] = useState("");
   const [loading, setLoading] = useState(false);
 
   const load = async () => {
@@ -36,10 +35,6 @@ const BenchmarkRuns: React.FC = () => {
   useEffect(() => { load(); }, []);
 
   const trigger = async () => {
-    if (!adminKey) {
-      toast.error("Ingresa la admin key");
-      return;
-    }
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("run-benchmark");
@@ -68,12 +63,6 @@ const BenchmarkRuns: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex gap-2">
-            <Input
-              type="password"
-              placeholder="x-admin-api-key"
-              value={adminKey}
-              onChange={(e) => setAdminKey(e.target.value)}
-            />
             <Button onClick={trigger} disabled={loading} className="min-h-11">
               {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Play className="w-4 h-4 mr-2" />}
               Ejecutar ahora
