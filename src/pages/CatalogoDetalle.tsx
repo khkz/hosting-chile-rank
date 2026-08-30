@@ -240,7 +240,14 @@ const CatalogoDetalle = () => {
           fechaVerificacion={(company as any).fecha_verificacion}
         />
 
-        <ScoreBreakdown companyId={company.id} companyName={company.name} />
+        <ScoreBreakdown
+          companyId={company.id}
+          companyName={company.name}
+          supportRating={company.support_rating ?? null}
+          priceRating={company.price_rating ?? null}
+          publishedRating={company.overall_rating ?? null}
+        />
+
 
 
 
