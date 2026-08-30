@@ -184,44 +184,10 @@ const Section = ({ children, id, className = "" }) => (
 );
 
 const RankingPage = () => {
-  const [latestDomains, setLatestDomains] = useState([]);
-  const [domainUpdateTime, setDomainUpdateTime] = useState('');
-  const [domainsLoading, setDomainsLoading] = useState(true);
-  const [domainsError, setDomainsError] = useState(null);
+  const { domains: latestDomains, updatedAt: domainUpdateTime, isLoading: domainsLoading, error: domainsError } = useLatestDomains(200);
   const [currentPage, setCurrentPage] = useState(1);
   const domainsPerPage = 10;
 
-  useEffect(() => {
-    const fetchLatestDomains = async () => {
-      setDomainsLoading(true);
-      try {
-        // GitHub raw URL for the latest.json file
-        const githubRawUrl = "https://raw.githubusercontent.com/khkz/hosting-chile-rank/main/public/data/latest.json";
-        // Add timestamp to URL to avoid cache
-        const timestamp = Date.now();
-        const response = await fetch(`${githubRawUrl}?ts=${timestamp}`);
-        
-        if (!response.ok) {
-          throw new Error(`No se pudieron cargar los dominios desde GitHub: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        if (data.domains && Array.isArray(data.domains)) {
-          setLatestDomains(data.domains);
-          setDomainUpdateTime(data.updated || new Date().toISOString());
-        } else {
-          throw new Error('Formato de datos no válido');
-        }
-      } catch (error) {
-        console.error('Error fetching domains from GitHub:', error);
-        setDomainsError(error.message);
-      } finally {
-        setDomainsLoading(false);
-      }
-    };
-
-    fetchLatestDomains();
-  }, []);
 
   // Pagination logic
   const indexOfLastDomain = currentPage * domainsPerPage;
