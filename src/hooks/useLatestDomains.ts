@@ -15,14 +15,16 @@ export const useLatestDomains = (limit = 200) => {
     queryKey: ['latest-domains', limit],
     queryFn: async (): Promise<LatestDomain[]> => {
       const { data, error } = await supabase
-        .rpc('get_public_domains')
+        .from('domains')
+        .select('domain, timestamp')
         .order('timestamp', { ascending: false })
         .limit(limit);
       if (error) throw error;
-      return (data ?? []).map((row: any) => ({
-        d: row.domain as string,
-        date: row.timestamp as string,
+      return (data ?? []).map((row) => ({
+        d: row.domain,
+        date: row.timestamp,
       }));
+
     },
     staleTime: 1000 * 60 * 10,
   });
