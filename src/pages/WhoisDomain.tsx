@@ -16,7 +16,6 @@ import SitePreview from '@/components/SitePreview';
 import { analyzeDomain, loadCachedAnalysis, type DomainAnalysisResult } from '@/services/domainAnalysis';
 import { hasValidIP } from '@/lib/utils';
 import { DomainUniqueContent } from '@/components/DomainUniqueContent';
-import { SEOAnalysis } from '@/components/SEOAnalysis';
 
 // Function to capitalize the first letter of a string
 const capitalizeFirstLetter = (string: string): string => {
@@ -372,11 +371,6 @@ const WhoisDomain = () => {
             
             {/* Unique SEO Content Section */}
             <DomainUniqueContent domainName={domainName} domainData={domainData} />
-            
-            {/* AI SEO Analysis Section - DESACTIVADO TEMPORALMENTE */}
-            {/* <div className="mt-12">
-              <SEOAnalysis />
-            </div> */}
             
             {/* Recommendation section */}
             <div className="mt-12 bg-white p-6 rounded-lg shadow-md">

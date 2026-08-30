@@ -31,6 +31,39 @@ function generateToken(): string {
   return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+const FROM_EMAIL = 'Elige Tu Hosting <onboarding@resend.dev>';
+const SITE_URL = 'https://eligetuhosting.cl';
+
+function esc(s: string) {
+  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
+}
+
+async function sendVerificationEmail(to: string, title: string, verifyUrl: string) {
+  const key = Deno.env.get('RESEND_API_KEY');
+  if (!key) throw new Error('RESEND_API_KEY not configured');
+  const html = `
+    <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6">
+      <h2>Verifica tu reclamo</h2>
+      <p>Recibimos tu reclamo: <strong>${esc(title)}</strong></p>
+      <p>Para publicarlo necesitamos confirmar tu correo. Haz clic en el siguiente enlace:</p>
+      <p><a href="${verifyUrl}" style="background:#1d4ed8;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">Verificar mi reclamo</a></p>
+      <p>O copia esta dirección en tu navegador:<br><span style="word-break:break-all">${verifyUrl}</span></p>
+      <p style="color:#666;font-size:13px">Si no enviaste este reclamo, ignora este correo.</p>
+    </div>`;
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject: 'Verifica tu reclamo — Elige Tu Hosting', html }),
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    console.error('Resend error', res.status, txt);
+    throw new Error(`Resend failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
@@ -100,26 +133,31 @@ Deno.serve(async (req) => {
 
     if (insertError) throw insertError;
 
-    // Generate verification token
+    // Generate verification token (solo viaja por email, nunca en la respuesta)
     const token = generateToken();
-    await supabase.from('complaint_verifications').insert({
+    const { error: tokenError } = await supabase.from('complaint_verifications').insert({
       complaint_id: complaint.id,
       token,
       email: body.reporter_email.toLowerCase().trim(),
     });
+    if (tokenError) throw tokenError;
 
-    const verifyUrl = `https://eligetuhosting.cl/verificar-reclamo?token=${token}`;
+    const verifyUrl = `${SITE_URL}/verificar-reclamo?token=${token}`;
 
-    // TODO: send actual email when RESEND_API_KEY is configured
-    console.log('[submit-complaint] Verification URL:', verifyUrl);
+    try {
+      await sendVerificationEmail(body.reporter_email.toLowerCase().trim(), body.title.trim(), verifyUrl);
+    } catch (mailErr) {
+      console.error('[submit-complaint] email error', mailErr);
+      return new Response(JSON.stringify({
+        error: 'No pudimos enviar el correo de verificación. Intenta nuevamente más tarde.',
+      }), { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     return new Response(JSON.stringify({
       success: true,
-      message: 'Reclamo recibido. Revisa tu email para verificarlo.',
-      complaint_id: complaint.id,
-      // dev only — remove in production
-      verify_url_dev: verifyUrl,
+      message: 'Reclamo recibido. Te enviamos un correo con un enlace para verificarlo.',
     }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error desconocido';
     console.error('[submit-complaint]', msg);
