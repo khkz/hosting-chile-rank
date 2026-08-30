@@ -23,6 +23,10 @@ Deno.serve(async (req) => {
     return new Response('ok', { headers: corsHeaders });
   }
 
+  if (rateLimited(`pagerank:${clientIp(req)}`, 30, 60_000)) {
+    return rateLimitResponse(corsHeaders);
+  }
+
   try {
     const url = new URL(req.url);
     const domain = url.searchParams.get('domain');

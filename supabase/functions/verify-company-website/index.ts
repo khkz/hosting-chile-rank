@@ -12,6 +12,9 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const auth = await requireAdmin(req);
+  if (!auth.ok) return adminDenied(auth, corsHeaders);
+
   try {
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,

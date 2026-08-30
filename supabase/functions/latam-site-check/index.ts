@@ -144,6 +144,10 @@ async function checkOne(company: { id: string; website: string; name: string }) 
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  const auth = await requireAdmin(req);
+  if (!auth.ok) return adminDenied(auth, corsHeaders);
+
   try {
     const body = await req.json().catch(() => ({}));
     const only: string | undefined = body?.slug;

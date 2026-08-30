@@ -179,6 +179,10 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  if (rateLimited(`whois:${clientIp(req)}`, 20, 60_000)) {
+    return rateLimitResponse(corsHeaders);
+  }
+
   try {
     const body = await req.json();
     const domain: string = body.domain;

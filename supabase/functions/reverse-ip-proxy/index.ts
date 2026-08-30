@@ -13,6 +13,10 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  if (rateLimited(`revip:${clientIp(req)}`, 15, 60_000)) {
+    return rateLimitResponse(corsHeaders);
+  }
+
   try {
     const { ip } = await req.json();
     
