@@ -8,11 +8,13 @@ export type AdminCheck = { ok: true; via: "service" | "admin"; userId?: string }
 
 export async function requireAdmin(req: Request): Promise<AdminCheck> {
   // 1) Invocaciones de cron / servidor: secreto sólo del lado servidor.
+  //    Nunca se acepta una clave expuesta al navegador (VITE_*).
   const serviceSecret = Deno.env.get("ADMIN_SECRET_KEY");
-  const provided = req.headers.get("x-service-secret") ?? req.headers.get("x-admin-api-key");
+  const provided = req.headers.get("x-service-secret");
   if (serviceSecret && provided && provided === serviceSecret) {
     return { ok: true, via: "service" };
   }
+
 
   // 2) Usuario autenticado con rol admin verificado server-side.
   const authHeader = req.headers.get("Authorization");
