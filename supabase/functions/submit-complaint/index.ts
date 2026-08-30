@@ -100,26 +100,31 @@ Deno.serve(async (req) => {
 
     if (insertError) throw insertError;
 
-    // Generate verification token
+    // Generate verification token (solo viaja por email, nunca en la respuesta)
     const token = generateToken();
-    await supabase.from('complaint_verifications').insert({
+    const { error: tokenError } = await supabase.from('complaint_verifications').insert({
       complaint_id: complaint.id,
       token,
       email: body.reporter_email.toLowerCase().trim(),
     });
+    if (tokenError) throw tokenError;
 
-    const verifyUrl = `https://eligetuhosting.cl/verificar-reclamo?token=${token}`;
+    const verifyUrl = `${SITE_URL}/verificar-reclamo?token=${token}`;
 
-    // TODO: send actual email when RESEND_API_KEY is configured
-    console.log('[submit-complaint] Verification URL:', verifyUrl);
+    try {
+      await sendVerificationEmail(body.reporter_email.toLowerCase().trim(), body.title.trim(), verifyUrl);
+    } catch (mailErr) {
+      console.error('[submit-complaint] email error', mailErr);
+      return new Response(JSON.stringify({
+        error: 'No pudimos enviar el correo de verificación. Intenta nuevamente más tarde.',
+      }), { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     return new Response(JSON.stringify({
       success: true,
-      message: 'Reclamo recibido. Revisa tu email para verificarlo.',
-      complaint_id: complaint.id,
-      // dev only — remove in production
-      verify_url_dev: verifyUrl,
+      message: 'Reclamo recibido. Te enviamos un correo con un enlace para verificarlo.',
     }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Error desconocido';
     console.error('[submit-complaint]', msg);
