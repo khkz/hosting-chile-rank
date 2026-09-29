@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
 import SiteNotice from './SiteNotice';
 import { Shield, ShieldCheck, Mail, Clock } from 'lucide-react';
+import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 type LatamCode = 'pe' | 'mx' | 'co' | 'ar';
 const LATAM_META: Record<LatamCode, { name: string; flag: string; featured: { slug: string; name: string }[] }> = {
@@ -45,11 +46,11 @@ const Footer = () => {
             <div>
               <Logo variant="option-a" darkBackground className="h-12 w-auto mb-4" />
               <p className="text-gray-300 leading-relaxed text-sm">
-                Directorio independiente de hosting en {meta.name} {meta.flag}. Misma metodología verificable que aplicamos en Chile.
+                Directorio editorial de hosting en {meta.name} {meta.flag}. Misma metodología y pesos publicados que aplicamos en Chile.
               </p>
               <div className="mt-4 space-y-2 text-sm">
-                <div className="flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /><span>Análisis independiente</span></div>
-                <div className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-yellow-400" /><span>Metodología abierta</span></div>
+                <div className="flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /><span>Ranking editorial</span></div>
+                <div className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-yellow-400" /><span>Metodología y pesos publicados</span></div>
               </div>
             </div>
 
@@ -112,7 +113,7 @@ const Footer = () => {
             <div className="mb-6">
               <Logo variant="option-a" darkBackground={true} className="h-12 w-auto mb-4" />
               <p className="text-gray-300 leading-relaxed">
-                El análisis más completo y objetivo de hosting en Chile. Metodología abierta y reproducible.
+                Ranking editorial de hosting en Chile. Metodología y pesos publicados.
               </p>
             </div>
             
@@ -120,15 +121,15 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
                 <Shield className="w-4 h-4 text-green-400" />
-                <span>Análisis 100% independiente</span>
+                <span>Ranking editorial con metodología publicada</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <ShieldCheck className="w-4 h-4 text-yellow-400" />
-                <span>Metodología 100% verificable</span>
+                <span>Metodología y pesos publicados</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Clock className="w-4 h-4 text-blue-400" />
-                <span>Actualizado diariamente</span>
+                <span>Última revisión: {VERIFICATION_DATE_HUMAN}</span>
               </div>
             </div>
           </div>

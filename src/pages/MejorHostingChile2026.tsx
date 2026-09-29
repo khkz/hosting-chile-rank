@@ -247,7 +247,7 @@ const MejorHostingChile2026 = () => {
       {/* ItemList Schema for Ranking */}
       <ItemListSchema 
         name={`Mejores Hosting Chile ${CURRENT_YEAR} - Ranking Completo`}
-        description="Ranking independiente de los mejores proveedores de hosting en Chile basado en pruebas de uptime, velocidad y análisis de reclamos"
+        description="Ranking editorial con metodología publicada de proveedores de hosting en Chile basado en pruebas de uptime, velocidad y análisis de reclamos"
         items={hostingProviders.map(p => ({
           name: p.name,
           description: `Hosting en Chile con ${p.uptime} uptime, velocidad ${p.velocidad}, datacenter en ${p.datacenter}`,

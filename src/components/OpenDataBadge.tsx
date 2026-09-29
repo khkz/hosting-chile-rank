@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Database, Download, Code, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useSiteStats, formatStatNumber } from '@/hooks/useSiteStats';
+import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 const OpenDataBadge: React.FC = () => {
   const { domainCount, companyCount } = useSiteStats();
@@ -21,7 +22,7 @@ const OpenDataBadge: React.FC = () => {
             Open Data
           </Badge>
           <Badge variant="outline" className="gap-1">
-            Actualizado diariamente
+            Revisado el {VERIFICATION_DATE_HUMAN}
           </Badge>
         </div>
         <CardTitle className="text-2xl flex items-center gap-2">

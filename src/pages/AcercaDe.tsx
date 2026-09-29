@@ -27,8 +27,8 @@ const AcercaDe: React.FC = () => {
       <main className="container mx-auto px-4 py-12 max-w-3xl">
         <h1 className="text-3xl font-bold mb-4">Acerca de EligeTuHosting</h1>
         <p className="text-gray-700 mb-6">
-          Somos un equipo independiente que evalúa proveedores de hosting en Chile. Nuestras recomendaciones
-          se basan en pruebas técnicas, datos públicos y políticas de transparencia, con una metodología 100% verificable.
+          Somos un equipo editorial que evalúa proveedores de hosting en Chile. Nuestras recomendaciones
+          se basan en pruebas técnicas, datos públicos y políticas de transparencia, con metodología y pesos publicados.
         </p>
         <h2 className="text-2xl font-semibold mb-3">Transparencia</h2>
         <p className="text-gray-700 mb-6">

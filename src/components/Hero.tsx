@@ -43,7 +43,7 @@ const Hero = () => {
           </h1>
 
           <p className="text-sm md:text-base text-gray-600 mb-3 leading-relaxed">
-            Ranking independiente 2026 con métricas verificables.
+            Ranking editorial con metodología publicada.
             {companyCount != null && domainCount != null && (
               <span className="block text-xs text-gray-500 mt-0.5">
                 {companyCount} proveedores en el directorio · {formatStatNumber(domainCount)} dominios .CL analizados

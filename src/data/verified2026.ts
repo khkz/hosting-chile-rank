@@ -5,7 +5,7 @@ export const VERIFICATION_DATE_ISO = '2026-08-28';
 export const VERIFICATION_DATE_HUMAN = '28 de agosto de 2026';
 
 export const PRICING_FOOTNOTE =
-  'Precios netos (sin IVA 19%) salvo donde se indique. Los valores «desde» pueden ser promocionales o exigir permanencia; consulta el precio de renovación en el sitio del proveedor.';
+  "Precios netos sin IVA salvo donde se indique. Los valores 'desde' pueden ser promocionales o exigir permanencia.";
 
 export const COMMERCIAL_DISCLOSURE =
   'Divulgación: el editor de este sitio mantiene relación comercial con algunos de los proveedores listados.';
@@ -28,16 +28,16 @@ export const VERIFIED_PRICING: Record<string, VerifiedPrice> = {
     annualNetCLP: 64900,
     tax: 'neto',
     category: 'shared',
-    label: '$64.900 + IVA/año',
+    label: 'Personal NVME $64.900 + IVA/año',
     detail:
       '25 GB NVMe, 10 casillas, 1 sitio, dominio .CL incluido. Multianual: 24 meses $108.900 y 36 meses $151.900 (+IVA).',
   },
   ecohosting: {
-    plan: 'Hosting Eco Personal',
+    plan: 'Eco Personal',
     annualNetCLP: 24900,
     tax: 'neto',
     category: 'shared',
-    label: '$24.900/año (1er año con 50% dcto.)',
+    label: 'Eco Personal $24.900 primer año (50% dcto)',
     detail:
       '10 GB, 10 correos, 1 sitio. No incluye dominio .cl: el dominio .CL gratis está solo en el plan Eco Pro ($109.900). El precio de entrada aplica 50% de descuento el primer año.',
   },
@@ -90,7 +90,7 @@ export const VERIFIED_PRICING: Record<string, VerifiedPrice> = {
     annualNetCLP: 18000,
     tax: 'con IVA',
     category: 'shared',
-    label: '$18.000/año con IVA incluido ($1.500/mes)',
+    label: 'LinuxPersonal $1.500/mes en plan anual = $18.000/año, IVA incluido',
     detail:
       '$1.800/mes en tarifa mensual promocional o $1.500/mes contratando anual ($18.000/año). Renueva a $4.290/mes. Es el único proveedor del listado que publica precios con IVA incluido.',
   },

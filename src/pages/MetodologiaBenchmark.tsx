@@ -30,7 +30,7 @@ const MetodologiaBenchmark: React.FC = () => {
         <title>Metodología del Benchmark | EligeTuHosting.cl</title>
         <meta
           name="description"
-          content="Cómo medimos el rendimiento de los proveedores de hosting en Chile. Metodología pública, versionada y reproducible."
+          content="Cómo medimos el rendimiento de los proveedores de hosting en Chile. Metodología y pesos publicados."
         />
         <link rel="canonical" href="https://eligetuhosting.cl/metodologia-benchmark" />
       </Helmet>

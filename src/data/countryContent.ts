@@ -12,7 +12,7 @@ export type CountryCopy = {
 
 export const COUNTRY_CONTENT: Record<'pe' | 'mx' | 'co' | 'ar', CountryCopy> = {
   pe: {
-    kicker: "🇵🇪 Perú · Ranking independiente 2026",
+    kicker: "🇵🇪 Perú · Ranking editorial con metodología publicada 2026",
     title: "Hosting en Perú 2026: la comparación honesta que no encontrarás en los blogs de siempre",
     subtitle: "Comparamos proveedores con datos que puedes verificar tú mismo: RUC en SUNAT, dónde están los servidores de verdad, reseñas y reclamos en INDECOPI. Sin rankings pagados ni «top» inventados.",
     chips: ["18 proveedores verificados", "RUC peruano comprobable", "Datacenter local verificado", "Reclamos INDECOPI a la vista"],
@@ -26,7 +26,7 @@ export const COUNTRY_CONTENT: Record<'pe' | 'mx' | 'co' | 'ar', CountryCopy> = {
     ],
   },
   mx: {
-    kicker: "🇲🇽 México · Ranking independiente 2026",
+    kicker: "🇲🇽 México · Ranking editorial con metodología publicada 2026",
     title: "Hosting en México 2026: comparativa sin cortinas de humo",
     subtitle: "Nada de «top 10» pagados. Comparamos proveedores con datos que puedes checar: RFC, dónde están los servidores de verdad, reseñas y quejas en el Buró Comercial de PROFECO.",
     chips: ["Proveedores verificados", "RFC y razón social", "Servidores: dónde de verdad", "Quejas PROFECO a la vista"],
@@ -40,7 +40,7 @@ export const COUNTRY_CONTENT: Record<'pe' | 'mx' | 'co' | 'ar', CountryCopy> = {
     ],
   },
   co: {
-    kicker: "🇨🇴 Colombia · Ranking independiente 2026",
+    kicker: "🇨🇴 Colombia · Ranking editorial con metodología publicada 2026",
     title: "Hosting en Colombia 2026: una comparación en la que sí puede confiar",
     subtitle: "Sin rankings pagados. Comparamos proveedores con datos verificables: NIT, dónde están realmente los servidores, reseñas y reclamos ante la SIC.",
     chips: ["Proveedores verificados", "NIT y razón social", "Datacenter: ubicación real", "Reclamos SIC a la vista"],
@@ -54,7 +54,7 @@ export const COUNTRY_CONTENT: Record<'pe' | 'mx' | 'co' | 'ar', CountryCopy> = {
     ],
   },
   ar: {
-    kicker: "🇦🇷 Argentina · Ranking independiente 2026",
+    kicker: "🇦🇷 Argentina · Ranking editorial con metodología publicada 2026",
     title: "Hosting en Argentina 2026: la comparación que no te van a mostrar los de siempre",
     subtitle: "Sin rankings comprados. Comparamos proveedores con datos que podés chequear vos mismo: CUIT, dónde están los servidores en serio, reseñas y reclamos en Defensa del Consumidor.",
     chips: ["Proveedores verificados", "CUIT y razón social", "Servidores: dónde en serio", "Reclamos oficiales a la vista"],
