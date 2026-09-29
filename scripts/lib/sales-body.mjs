@@ -92,10 +92,26 @@ function techVerify(chk) {
     </div>`).join('')}</div>`;
 }
 
+// r[2] === true → r[1] ya es HTML seguro (construido con esc()).
 function verifiableTable(rows) {
   const visible = rows.filter(r => r[1] != null && r[1] !== '');
   if (!visible.length) return '';
-  return `<table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="8"><tbody>${visible.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(String(r[1]))}</td></tr>`).join('')}</tbody></table>`;
+  return `<table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="8"><tbody>${visible.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${r[2] ? r[1] : esc(String(r[1]))}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// Certificaciones del datacenter: solo se muestran con fuente pública; si no, "No publicada en su sitio".
+function certificationsCell(c) {
+  const srcs = Array.isArray(c.datacenter_certifications_sources) ? c.datacenter_certifications_sources.filter(Boolean) : [];
+  if (!c.datacenter_certifications || !srcs.length) return 'No publicada en su sitio';
+  const links = srcs.map(u => `<a href="${esc(u)}" rel="nofollow noopener" target="_blank">${esc(hostOnly(u) + String(u).replace(/^https?:\/\/[^/]+/i, ''))}</a>`).join(' · ');
+  return `${esc(c.datacenter_certifications)}<br><span style="font-size:12px;color:#6B7280">Fuente: ${links}</span>`;
+}
+
+function correctionBlock(c) {
+  if (!c.correction_note) return '';
+  const d = fmtDate(c.correction_date);
+  const dTxt = d ? d.split('-').reverse().join('-') : '';
+  return `<div style="border:1px solid #D1D5DB;background:#F9FAFB;padding:12px 16px;border-radius:8px;margin:16px 0;font-size:14px"><strong>Nota de corrección${dTxt ? ` (${esc(dTxt)})` : ''}:</strong> ${esc(c.correction_note)}</div>`;
 }
 
 function plansTable(plans, currency) {
