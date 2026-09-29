@@ -44,10 +44,10 @@ const conglomerates = [
     brands: ['hostingnet.cl', 'unhosting.cl', 'hostingcom.cl'],
     fakeComparisons: ['rankinghosting.cl'],
     evidence: [
-      'rankinghosting.cl enlaza a marcas de la red HostingNet y declara que puede recibir comisión por referencias',
+      'rankinghosting.cl está vinculado comercialmente a marcas de la red HostingNet y declara: «Podemos recibir una comisión por referencias. Esto no altera nuestra metodología editorial.»',
       'hostingcom.cl comparte la misma IP (144.217.215.210) alojada en OVH',
       'AS272144 (HostingNet) figura inactivo: 0 prefijos, 0 vecinos, sin anuncios BGP desde mayo de 2024',
-      'No publicamos el nombre del titular del dominio: es una persona natural',
+      'El titular del dominio es una persona natural, no una sociedad',
     ],
   },
 ];

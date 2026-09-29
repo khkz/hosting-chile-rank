@@ -128,7 +128,7 @@ export const certifiedOperators: CertifiedOperator[] = [
 export const rankingHosts: RankingHostDc[] = [
   {
     nombre: 'HostingPlus.cl',
-    dc_declarado: 'Ñuñoa, Santiago y Quilicura, Chile',
+    dc_declarado: 'Ascenty SCL2, Tier III, Quilicura',
     operador: 'Ascenty SCL2',
     tipo: 'colocation',
     estado: 'certificado',
