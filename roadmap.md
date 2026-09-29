@@ -4,4 +4,4 @@
 - [x] Exigir admin o secreto interno en las funciones administrativas indicadas.
 - [x] Eliminar `seo-analysis` al no tener consumidores.
 - [x] Limitar por IP las tres funciones públicas indicadas.
-- [ ] Validar las funciones modificadas sin desplegarlas; bloqueado hasta ejecutar las pruebas locales.
+- [x] Validar las funciones modificadas sin desplegarlas.
