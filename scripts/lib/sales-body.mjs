@@ -148,9 +148,7 @@ export function buildSalesBody(args) {
   const { c, meta, chk, complaintsCount, plans, others, urlBase, canonical, currency, breadcrumbHome, breadcrumbHomeUrl, compareUrl, dcLocalOf } = args;
   const techs = Array.isArray(c.technologies) ? c.technologies : [];
   const yearsOperating = c.year_founded ? new Date().getFullYear() - c.year_founded : null;
-  const dcLocal = c.datacenter_location
-    ? (meta.code === 'CL' ? /chile/i.test(String(c.datacenter_location).replace(/sin\s+datacenter[^,.;]*/gi, ' ')) : hasLocalDatacenter(meta.slug, c.datacenter_location))
-    : null;
+  const dcLocal = c.datacenter_location ? hasLocalDatacenter(meta.slug, c.datacenter_location) : null;
 
   const hero = heroAnswer({ c, meta, complaintsCount, yearsOperating, dcLocal });
   const { yes, no } = forWhoBlocks({ c, meta, dcLocalOf: null, dcLocal, techs });

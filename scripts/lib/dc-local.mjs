@@ -10,6 +10,7 @@
 //   - null  → no datacenter declared (null/empty source string).
 
 export const LATAM_REGEX = {
+  cl: /chile|santiago|las\s+condes|providencia|quilicura|[ñn]u[ñn]oa|temuco|vi[ñn]a\s+del\s+mar|valpara[ií]so|v\s+regi[oó]n|concepci[oó]n|puerto\s+montt|antofagasta/i,
   pe: /per[uú]/i,
   mx: /m[eé]xico/i,
   co: /colombia/i,
@@ -18,7 +19,7 @@ export const LATAM_REGEX = {
 
 // Phrases that flip a country mention into a "NO local DC" statement.
 // We strip them from the string before testing for the country name.
-const NEGATION_RE = /sin\s+datacenter[^,.;]*|sin\s+dc[^,.;]*|fuera\s+de[^,.;]*|revende(?:\s+infraestructura)?[^,.;]*|opera\s+de\s+forma\s+remota[^,.;]*/gi;
+const NEGATION_RE = /no\s+declara\s+datacenter[^,.;]*|sin\s+datacenter[^,.;]*|sin\s+dc[^,.;]*|fuera\s+de[^,.;]*|revende(?:\s+infraestructura)?[^,.;]*|opera\s+de\s+forma\s+remota[^,.;]*|oficinas?\s+[^,.;]*/gi;
 
 export function hasLocalDatacenter(slug, datacenterLocation) {
   if (!datacenterLocation) return false;

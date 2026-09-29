@@ -4,6 +4,7 @@
 import fs from 'node:fs/promises';
 import { buildHtml } from './lib/shell.mjs';
 import { buildSalesBody } from './lib/sales-body.mjs';
+import { hasLocalDatacenter } from './lib/dc-local.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -30,7 +31,7 @@ async function run() {
   const plansMap = {};
   for (const p of plans) (plansMap[p.company_id] ||= []).push(p);
 
-  const dcLocalOf = (o) => o.datacenter_location && /chile/i.test(String(o.datacenter_location).replace(/sin\s+datacenter[^,.;]*/gi, ' '));
+  const dcLocalOf = (o) => hasLocalDatacenter('cl', o.datacenter_location);
 
   let total = 0;
   for (const c of companies) {
