@@ -170,13 +170,13 @@ const hostingData = {
     pros: [
       'ASN propio AS263237 con anuncios BGP verificables',
       'Datacenters propios en Santiago y presencia internacional (NY, MOW, AMS) según el proveedor',
-      'Infraestructura 100% independiente, sin reventa',
+      'Infraestructura propia declarada por el proveedor',
       'Servicios de housing, colocation y cross connect para empresas',
       'Conexión directa a AmericaIX (IXP) para reducir latencia internacional'
     ],
     cons: [
       'No vende hosting compartido tradicional: enfoque actual es datacenter e infraestructura',
-      'Planes orientados a empresas: precios bajo cotización, poca transparencia inicial',
+      'Planes orientados a empresas: VPS SSD desde $43.000 + IVA/mes y dedicados desde 10,5 UF + IVA/mes',
       'Curva de entrada más técnica que un hosting compartido convencional',
       'Certificación Tier III declarada por el proveedor, sin verificación independiente del Uptime Institute'
     ],
@@ -197,7 +197,7 @@ const hostingData = {
     cons: [
       'Publicita "100% uptime", garantía técnicamente imposible de cumplir (SLA realista del sector: 99,9%)',
       'Reclamos públicos recurrentes entre 2012 y 2025 en Reclamos.cl',
-      'Precios bajo cotización: poca transparencia inicial',
+      'Planes PYME desde $159.900 + IVA/año',
       'Tiempos de respuesta de soporte variables según horario'
     ],
     url: 'https://www.hosting.cl/'
