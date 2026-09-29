@@ -66,7 +66,7 @@ export const VERIFIED_PRICING: Record<string, VerifiedPrice> = {
     category: 'shared',
     label: '$11.900 + IVA/año',
     detail:
-      '20 GB, 1 dominio. El valor «$10.000» que circula aparece solo en el title/meta SEO de esa página, no en la tabla de planes.',
+      '20 GB, 1 dominio. Precio de lista del Plan Estándar 1 a la fecha de revisión.',
   },
   hostingcl: {
     plan: 'PYME',

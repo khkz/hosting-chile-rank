@@ -28,9 +28,9 @@ export const EXTRA_RANKING: Array<{
 
 const getMinPrice = (db: any): number | null => {
   if (db?.promo_price && db.promo_price > 0) return db.promo_price;
-  const plans = db?.hosting_plans as Array<{ price_monthly: number; is_active?: boolean }> | undefined;
+  const plans = db?.hosting_plans as Array<{ price_monthly: number }> | undefined;
   if (plans && plans.length > 0) {
-    const prices = plans.filter((p) => p.is_active !== false).map((p) => p.price_monthly).filter((p) => typeof p === 'number' && p > 0);
+    const prices = plans.map((p) => p.price_monthly).filter((p) => typeof p === 'number' && p > 0);
     if (prices.length > 0) return Math.min(...prices);
   }
   return null;
@@ -51,7 +51,7 @@ const RankingPositions4to10: React.FC = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
-        .select('slug, name, website, promo_price, hosting_plans(price_monthly, is_active)')
+        .select('slug, name, website, promo_price, hosting_plans(price_monthly)')
         .eq('country', getActiveCountryCode())
         .in('slug', slugs);
       if (error) throw error;
