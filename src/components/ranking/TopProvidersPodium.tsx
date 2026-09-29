@@ -4,51 +4,12 @@ import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getProviderLink } from '@/lib/providerLinks';
-import { useRankingProviders, type RankingProvider } from '@/features/ranking';
-
-/**
- * Respaldo SOLO si la base no devuelve un podio completo (3 proveedores con
- * nota). Mantiene el orden vigente para no dejar la página en blanco.
- */
-const FALLBACK: RankingProvider[] = [
-  {
-    id: 'fallback-1',
-    slug: 'hostingplus',
-    name: 'HostingPlus.cl',
-    logo_url: null,
-    website: 'https://www.hostingplus.cl/',
-    overall_rating: null,
-    ranking_position: 1,
-    ranking_features: [],
-  },
-  {
-    id: 'fallback-2',
-    slug: 'ecohosting',
-    name: 'EcoHosting.cl',
-    logo_url: null,
-    website: 'https://www.ecohosting.cl/',
-    overall_rating: null,
-    ranking_position: 2,
-    ranking_features: [],
-  },
-  {
-    id: 'fallback-3',
-    slug: 'hn',
-    name: 'HN.cl',
-    logo_url: null,
-    website: 'https://www.hn.cl',
-    overall_rating: null,
-    ranking_position: 3,
-    ranking_features: [],
-  },
-];
+import { useRankingProviders } from '@/features/ranking';
 
 const TopProvidersPodium: React.FC = () => {
   const { data, isLoading } = useRankingProviders(3);
 
-  const fromData = (data ?? []).filter((p) => p.overall_rating != null);
-  const usingFallback = fromData.length < 3;
-  const providers = usingFallback ? FALLBACK : fromData;
+  const providers = (data ?? []).filter((provider) => provider.overall_rating != null);
 
   if (isLoading && !data) {
     return (
@@ -58,6 +19,10 @@ const TopProvidersPodium: React.FC = () => {
         ))}
       </div>
     );
+  }
+
+  if (providers.length === 0) {
+    return <p className="text-sm text-muted-foreground text-center">Ranking pendiente de mediciones.</p>;
   }
 
   return (
@@ -141,12 +106,6 @@ const TopProvidersPodium: React.FC = () => {
         })}
       </div>
 
-      {usingFallback && (
-        <p className="mt-4 text-xs text-muted-foreground text-center">
-          Mostrando el orden de respaldo: la base de datos no devolvió tres proveedores con nota. Las
-          notas aparecen como "sin medir" hasta que el dato esté disponible.
-        </p>
-      )}
     </>
   );
 };
