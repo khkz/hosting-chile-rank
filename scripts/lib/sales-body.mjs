@@ -166,6 +166,7 @@ export function buildSalesBody(args) {
   const yearsOperating = c.year_founded ? new Date().getFullYear() - c.year_founded : null;
   const dcLocal = c.datacenter_location ? hasLocalDatacenter(meta.slug, c.datacenter_location) : null;
 
+  const lastUpdated = fmtDate(c.fecha_verificacion) || REVIEWED_ON;
   const hero = heroAnswer({ c, meta, complaintsCount, yearsOperating, dcLocal });
   const { yes, no } = forWhoBlocks({ c, meta, dcLocalOf: null, dcLocal, techs });
   const faq = faqList({ c, meta, chk, complaintsCount, yearsOperating, dcLocal, techs });
@@ -222,6 +223,8 @@ export function buildSalesBody(args) {
   const dataTable = verifiableTable([
     ['Grupo corporativo', c.corporate_group],
     ['Datacenter declarado', c.datacenter_location],
+    ['Certificaciones del datacenter', certificationsCell(c), true],
+    ['Año de fundación', c.year_founded ? `${c.year_founded} (declarado por el proveedor)` : null],
     ['Garantía de uptime', uptimeStr],
     ['SSL gratis', c.has_ssl_free === true ? 'Sí (incluido)' : c.has_ssl_free === false ? 'No incluido' : null],
     ['Migración gratis', c.has_migration_free === true ? 'Sí (incluida)' : c.has_migration_free === false ? 'No incluida' : null],
@@ -257,8 +260,9 @@ export function buildSalesBody(args) {
     <h2>Preguntas frecuentes</h2>
     ${faq.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
     ${sourcesBlock(c)}
+    ${correctionBlock(c)}
     <hr style="margin:24px 0;border:0;border-top:1px solid #E5E7EB" />
-    <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última generación: <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Metodología: <a href="/metodologia">nuestro método</a>.</p>
+    <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última actualización de datos: <time datetime="${lastUpdated}">${lastUpdated}</time>. Metodología: <a href="/metodologia">nuestro método</a>.</p>
   `;
 
   const orgLd = {
@@ -279,7 +283,7 @@ export function buildSalesBody(args) {
     ],
   };
   const faqLd = {
-    '@context': 'https://schema.org', '@type': 'FAQPage', dateModified: REVIEWED_ON,
+    '@context': 'https://schema.org', '@type': 'FAQPage', dateModified: lastUpdated,
     mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
   const headExtra = [
