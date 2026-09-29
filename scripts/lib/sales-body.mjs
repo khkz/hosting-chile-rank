@@ -22,7 +22,7 @@ function sourcesBlock(c) {
   const fecha = fmtDate(c.fecha_verificacion);
   return `<h3>Fuentes consultadas</h3>
     <p style="white-space:pre-line;font-size:13px;color:#4B5563">${esc(String(c.fuentes))}</p>
-    ${fecha ? `<p style="font-size:12px;color:#6B7280">Datos verificados el ${esc(fecha)}</p>` : ''}`;
+    ${fecha ? `<p style="font-size:12px;color:#6B7280">Fuentes consultadas el ${esc(fecha)}</p>` : ''}`;
 }
 
 function heroAnswer({ c, meta, complaintsCount, yearsOperating, dcLocal }) {
