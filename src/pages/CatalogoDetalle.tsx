@@ -233,6 +233,10 @@ const CatalogoDetalle = () => {
           hasMigrationFree={(company as any).has_migration_free}
           officialWebsite={company.website}
           slug={company.slug}
+          datacenterCertifications={(company as any).datacenter_certifications}
+          datacenterCertificationsSources={(company as any).datacenter_certifications_sources}
+          correctionNote={(company as any).correction_note}
+          correctionDate={(company as any).correction_date}
         />
 
         <SourcesConsulted

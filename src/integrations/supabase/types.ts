@@ -955,6 +955,8 @@ export type Database = {
           contact_hours: string | null
           contact_phone: string | null
           corporate_group: string | null
+          correction_date: string | null
+          correction_note: string | null
           country: string
           created_at: string | null
           cta_micro_copy: string | null
@@ -962,6 +964,8 @@ export type Database = {
           curated_at: string | null
           curation_notes: string | null
           data_confidence: Json | null
+          datacenter_certifications: string | null
+          datacenter_certifications_sources: string[] | null
           datacenter_location: string | null
           description: string | null
           description_editorial: string | null
@@ -1032,6 +1036,8 @@ export type Database = {
           contact_hours?: string | null
           contact_phone?: string | null
           corporate_group?: string | null
+          correction_date?: string | null
+          correction_note?: string | null
           country?: string
           created_at?: string | null
           cta_micro_copy?: string | null
@@ -1039,6 +1045,8 @@ export type Database = {
           curated_at?: string | null
           curation_notes?: string | null
           data_confidence?: Json | null
+          datacenter_certifications?: string | null
+          datacenter_certifications_sources?: string[] | null
           datacenter_location?: string | null
           description?: string | null
           description_editorial?: string | null
@@ -1109,6 +1117,8 @@ export type Database = {
           contact_hours?: string | null
           contact_phone?: string | null
           corporate_group?: string | null
+          correction_date?: string | null
+          correction_note?: string | null
           country?: string
           created_at?: string | null
           cta_micro_copy?: string | null
@@ -1116,6 +1126,8 @@ export type Database = {
           curated_at?: string | null
           curation_notes?: string | null
           data_confidence?: Json | null
+          datacenter_certifications?: string | null
+          datacenter_certifications_sources?: string[] | null
           datacenter_location?: string | null
           description?: string | null
           description_editorial?: string | null

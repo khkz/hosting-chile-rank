@@ -4,6 +4,7 @@
 import fs from 'node:fs/promises';
 import { buildHtml } from './lib/shell.mjs';
 import { buildSalesBody } from './lib/sales-body.mjs';
+import { hasLocalDatacenter } from './lib/dc-local.mjs';
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -18,7 +19,7 @@ async function sb(path) {
 }
 
 async function run() {
-  const companies = await sb(`hosting_companies?select=id,slug,name,country,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,fuentes,fecha_verificacion,updated_at,uptime_guarantee,has_ssl_free,has_migration_free&country=eq.CL&is_verified=eq.true&limit=999`);
+  const companies = await sb(`hosting_companies?select=id,slug,name,country,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,fuentes,fecha_verificacion,updated_at,datacenter_certifications,datacenter_certifications_sources,correction_note,correction_date,uptime_guarantee,has_ssl_free,has_migration_free&country=eq.CL&is_verified=eq.true&limit=999`);
   if (!companies.length) { console.log('⚠️  CL: 0 proveedores'); return; }
   const ids = companies.map(c => `"${c.id}"`).join(',');
   const [complaints, plans] = await Promise.all([
@@ -30,7 +31,7 @@ async function run() {
   const plansMap = {};
   for (const p of plans) (plansMap[p.company_id] ||= []).push(p);
 
-  const dcLocalOf = (o) => o.datacenter_location && /chile/i.test(String(o.datacenter_location).replace(/sin\s+datacenter[^,.;]*/gi, ' '));
+  const dcLocalOf = (o) => hasLocalDatacenter('cl', o.datacenter_location);
 
   let total = 0;
   for (const c of companies) {

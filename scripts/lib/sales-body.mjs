@@ -92,10 +92,26 @@ function techVerify(chk) {
     </div>`).join('')}</div>`;
 }
 
+// r[2] === true → r[1] ya es HTML seguro (construido con esc()).
 function verifiableTable(rows) {
   const visible = rows.filter(r => r[1] != null && r[1] !== '');
   if (!visible.length) return '';
-  return `<table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="8"><tbody>${visible.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${esc(String(r[1]))}</td></tr>`).join('')}</tbody></table>`;
+  return `<table style="width:100%;border-collapse:collapse;font-size:14px" border="1" cellpadding="8"><tbody>${visible.map(r => `<tr><td><strong>${esc(r[0])}</strong></td><td>${r[2] ? r[1] : esc(String(r[1]))}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// Certificaciones del datacenter: solo se muestran con fuente pública; si no, "No publicada en su sitio".
+function certificationsCell(c) {
+  const srcs = Array.isArray(c.datacenter_certifications_sources) ? c.datacenter_certifications_sources.filter(Boolean) : [];
+  if (!c.datacenter_certifications || !srcs.length) return 'No publicada en su sitio';
+  const links = srcs.map(u => `<a href="${esc(u)}" rel="nofollow noopener" target="_blank">${esc(hostOnly(u) + String(u).replace(/^https?:\/\/[^/]+/i, ''))}</a>`).join(' · ');
+  return `${esc(c.datacenter_certifications)}<br><span style="font-size:12px;color:#6B7280">Fuente: ${links}</span>`;
+}
+
+function correctionBlock(c) {
+  if (!c.correction_note) return '';
+  const d = fmtDate(c.correction_date);
+  const dTxt = d ? d.split('-').reverse().join('-') : '';
+  return `<div style="border:1px solid #D1D5DB;background:#F9FAFB;padding:12px 16px;border-radius:8px;margin:16px 0;font-size:14px"><strong>Nota de corrección${dTxt ? ` (${esc(dTxt)})` : ''}:</strong> ${esc(c.correction_note)}</div>`;
 }
 
 function plansTable(plans, currency) {
@@ -148,10 +164,9 @@ export function buildSalesBody(args) {
   const { c, meta, chk, complaintsCount, plans, others, urlBase, canonical, currency, breadcrumbHome, breadcrumbHomeUrl, compareUrl, dcLocalOf } = args;
   const techs = Array.isArray(c.technologies) ? c.technologies : [];
   const yearsOperating = c.year_founded ? new Date().getFullYear() - c.year_founded : null;
-  const dcLocal = c.datacenter_location
-    ? (meta.code === 'CL' ? /chile/i.test(String(c.datacenter_location).replace(/sin\s+datacenter[^,.;]*/gi, ' ')) : hasLocalDatacenter(meta.slug, c.datacenter_location))
-    : null;
+  const dcLocal = c.datacenter_location ? hasLocalDatacenter(meta.slug, c.datacenter_location) : null;
 
+  const lastUpdated = fmtDate(c.fecha_verificacion) || REVIEWED_ON;
   const hero = heroAnswer({ c, meta, complaintsCount, yearsOperating, dcLocal });
   const { yes, no } = forWhoBlocks({ c, meta, dcLocalOf: null, dcLocal, techs });
   const faq = faqList({ c, meta, chk, complaintsCount, yearsOperating, dcLocal, techs });
@@ -208,6 +223,8 @@ export function buildSalesBody(args) {
   const dataTable = verifiableTable([
     ['Grupo corporativo', c.corporate_group],
     ['Datacenter declarado', c.datacenter_location],
+    ['Certificaciones del datacenter', certificationsCell(c), true],
+    ['Año de fundación', c.year_founded ? `${c.year_founded} (declarado por el proveedor)` : null],
     ['Garantía de uptime', uptimeStr],
     ['SSL gratis', c.has_ssl_free === true ? 'Sí (incluido)' : c.has_ssl_free === false ? 'No incluido' : null],
     ['Migración gratis', c.has_migration_free === true ? 'Sí (incluida)' : c.has_migration_free === false ? 'No incluida' : null],
@@ -243,8 +260,9 @@ export function buildSalesBody(args) {
     <h2>Preguntas frecuentes</h2>
     ${faq.map(f => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}
     ${sourcesBlock(c)}
+    ${correctionBlock(c)}
     <hr style="margin:24px 0;border:0;border-top:1px solid #E5E7EB" />
-    <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última generación: <time datetime="${REVIEWED_ON}">${REVIEWED_ON}</time>. Metodología: <a href="/metodologia">nuestro método</a>.</p>
+    <p style="font-size:13px;color:#6B7280">Ficha generada automáticamente a partir de datos declarados por el proveedor. Última actualización de datos: <time datetime="${lastUpdated}">${lastUpdated}</time>. Metodología: <a href="/metodologia">nuestro método</a>.</p>
   `;
 
   const orgLd = {
@@ -265,7 +283,7 @@ export function buildSalesBody(args) {
     ],
   };
   const faqLd = {
-    '@context': 'https://schema.org', '@type': 'FAQPage', dateModified: REVIEWED_ON,
+    '@context': 'https://schema.org', '@type': 'FAQPage', dateModified: lastUpdated,
     mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
   const headExtra = [
