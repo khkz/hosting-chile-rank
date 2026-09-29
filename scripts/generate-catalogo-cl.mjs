@@ -19,7 +19,7 @@ async function sb(path) {
 }
 
 async function run() {
-  const companies = await sb(`hosting_companies?select=id,slug,name,country,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,fuentes,fecha_verificacion,updated_at,uptime_guarantee,has_ssl_free,has_migration_free&country=eq.CL&is_verified=eq.true&limit=999`);
+  const companies = await sb(`hosting_companies?select=id,slug,name,country,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,fuentes,fecha_verificacion,updated_at,datacenter_certifications,datacenter_certifications_sources,correction_note,correction_date,uptime_guarantee,has_ssl_free,has_migration_free&country=eq.CL&is_verified=eq.true&limit=999`);
   if (!companies.length) { console.log('⚠️  CL: 0 proveedores'); return; }
   const ids = companies.map(c => `"${c.id}"`).join(',');
   const [complaints, plans] = await Promise.all([
