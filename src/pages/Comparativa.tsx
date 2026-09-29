@@ -388,10 +388,9 @@ const ComparativaPage = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl font-bold mb-4">¿Por qué HostingPlus encabeza el ranking?</h2>
           <p className="text-lg max-w-3xl mx-auto mb-8">
-            Según el Estudio Hosting Chile 2026, HostingPlus cumple los cuatro criterios
-            duros: ASN propio (AS266879), RUT vigente, más de 20 años de operación continua
-            y cero reclamos visibles en fuentes públicas. Por eso ocupa la primera posición
-            en la comparativa.
+            Según el Estudio Hosting Chile 2026, HostingPlus tiene RUT vigente, infraestructura en
+            Ascenty SCL2 bajo modalidad de colocation y 0 prefijos IPv4 originados / 1 IPv6 en AS266879.
+            El orden de la comparativa se calcula con la metodología y los pesos publicados.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a

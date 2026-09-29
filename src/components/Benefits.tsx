@@ -60,7 +60,7 @@ const Benefits = () => {
                 <div className="text-gray-300 text-sm">Mediciones reproducibles</div>
               </a>
               <a href="/metodologia" className="block p-6 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors">
-                <div className="text-2xl font-bold text-[#EF233C] mb-1">Metodología abierta</div>
+                <div className="text-2xl font-bold text-[#EF233C] mb-1">Metodología y pesos publicados</div>
                 <div className="text-gray-300 text-sm">Pesos y fórmulas públicas</div>
               </a>
             </div>

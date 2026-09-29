@@ -357,7 +357,7 @@ const HostingRanking = () => {
             Ranking editorial con metodología y pesos publicados: velocidad, uptime, soporte y reputación
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            Última revisión del ranking: julio 2026
+            Última revisión del ranking: 28 de agosto de 2026
           </p>
 
           <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-4 rounded-full" />

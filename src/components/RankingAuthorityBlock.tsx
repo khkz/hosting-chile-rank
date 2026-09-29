@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 interface RankingAuthorityBlockProps {
   lastUpdated?: string | Date | null;
@@ -48,7 +49,7 @@ const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdat
         <span aria-hidden="true">·</span>
         <span className="inline-flex items-center gap-1">
           <Calendar className="w-3.5 h-3.5" />
-          Última revisión del ranking: julio 2026
+          Última revisión del ranking: {VERIFICATION_DATE_HUMAN}
         </span>
       </div>
 
@@ -57,7 +58,7 @@ const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdat
         <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
         <span>
           <strong className="font-semibold">Divulgación:</strong> el editor de este sitio mantiene relación comercial
-          con algunos de los proveedores listados y algunos enlaces pueden generar una comisión sin costo adicional
+          con algunos de los proveedores listados. Algunos enlaces pueden generar una comisión sin costo adicional
           para ti. Los pesos del ranking están publicados en la metodología.
         </span>
       </p>

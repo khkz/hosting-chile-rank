@@ -266,7 +266,7 @@ export const AFFILIATE_CASES: AffiliateCase[] = [
     domain: 'rankinghosting.cl',
     link: 'Vinculado comercialmente a la red HostingNet (Telecomunicaciones HostingNet SpA · AS272144)',
     evidence:
-      'Los enlaces salientes hacia marcas de la red HostingNet están en el cuerpo de las fichas (el footer no contiene enlaces externos). El titular del dominio es una persona natural, no una sociedad. El propio sitio declara, sin comillas literales, que puede recibir una comisión por referencias y que ello no altera su metodología editorial. Nota: AS272144 figura inactivo (0 prefijos, 0 vecinos, sin anuncios desde mayo de 2024).',
+      'Los enlaces salientes hacia marcas de la red HostingNet están en el cuerpo de las fichas. El titular del dominio es una persona natural, no una sociedad. El propio sitio declara: «Podemos recibir una comisión por referencias. Esto no altera nuestra metodología editorial.» Nota: AS272144 figura inactivo (0 prefijos, 0 vecinos, sin anuncios desde mayo de 2024).',
     topPattern: '#1 HostingNet · #2 UnHosting · #3 HostingCom · #4 ZNet-Hosting · #5 WireNetChile — marcas del mismo grupo',
     citation: 'rankinghosting.cl (inspección de enlaces) · hostingnet.cl/nosotros · RIPEstat AS272144',
     status: 'relacion-comercial',

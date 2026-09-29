@@ -210,8 +210,8 @@ const RankingPage = () => {
           Top 3 proveedores de hosting
         </h2>
         <p className="text-center text-sm text-gray-600 max-w-3xl mx-auto mb-4">
-          El orden se calcula por fórmula sobre datos verificables. El editor mantiene relación
-          comercial con algunos proveedores listados.
+          El orden se calcula por fórmula sobre datos verificables. Divulgación: el editor de este sitio mantiene
+          relación comercial con algunos de los proveedores listados.
         </p>
         <RankingAuthorityBlock className="mb-8" />
         <TopProvidersPodium />

@@ -287,7 +287,7 @@ const DatacenterEducation: React.FC = () => {
               no como datacenter propio.
             </li>
             <li>
-              Última revisión de fuentes: julio 2026. Si detectas un cambio, escribinos a
+              Última revisión de fuentes: 28 de agosto de 2026. Si detectas un cambio, escribinos a
               contacto@eligetuhosting.cl y lo corregimos con evidencia.
             </li>
           </ul>

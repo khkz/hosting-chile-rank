@@ -15,9 +15,8 @@ const TransparencyAlert: React.FC = () => {
         </AlertTitle>
         <AlertDescription className="space-y-4">
           <p className="text-sm md:text-base leading-relaxed text-amber-900/90">
-            Análisis técnicos revelan que populares sitios de rankings en Chile (ej. comparahosting) presentan un{' '}
-            <strong>conflicto de interés no declarado</strong>, compartiendo matriz corporativa con las empresas que posicionan.
-            EligeTuHosting garantiza una auditoría 100% independiente, validada con NIC Chile.
+            La revisión de enlaces salientes muestra que algunos comparadores chilenos monetizan mediante afiliación
+            con proveedores que incluyen en sus listados. EligeTuHosting publica su metodología y sus relaciones comerciales.
           </p>
 
           {/* Commitment block */}
@@ -28,7 +27,8 @@ const TransparencyAlert: React.FC = () => {
                 Compromiso de EligeTuHosting.cl
               </p>
               <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                Este sitio es operado de forma independiente y se financia con enlaces de afiliación, que están señalizados. Estamos reverificando el catálogo proveedor por proveedor: mientras dura ese proceso no publicamos precios ni razón social, y los datos que ves son los que cada proveedor declara públicamente.
+                Este sitio se financia con enlaces de afiliación señalizados. El editor mantiene relación comercial con algunos
+                proveedores listados y publica la metodología y los pesos del ranking.
               </p>
             </div>
           </div>

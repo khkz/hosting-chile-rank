@@ -31,7 +31,7 @@ def make(name, title, subtitle, label=None, accent=(76,175,80)):
     # Brand row
     draw_check(d, 90, 90, 36)
     d.text((146, 62), "EligeTuHosting", font=f(40), fill="white")
-    d.text((148, 108), "Ranking independiente · Datos verificables", font=f(20), fill=(180,190,210))
+    d.text((148, 108), "Ranking editorial · Metodología publicada", font=f(20), fill=(180,190,210))
 
     # rule
     d.rectangle([80, 168, W-80, 170], fill=(255,255,255))
@@ -69,12 +69,12 @@ def make(name, title, subtitle, label=None, accent=(76,175,80)):
     img.save(f"{OUT}/{name}.png", "PNG", optimize=True)
     print("→", name)
 
-make("home", "Mejor Hosting Chile 2026", "Ranking independiente · +5.700 dominios analizados", "CHILE")
+make("home", "Mejor Hosting Chile 2026", "Ranking editorial · Metodología publicada", "CHILE")
 make("latam", "Hosting en LATAM", "Chile · Perú · México · Colombia · Argentina", "LATAM")
-make("pe", "Hosting en Perú", "Directorio verificable · Metodología abierta", "PERÚ")
-make("mx", "Hosting en México", "Directorio verificable · Metodología abierta", "MÉXICO")
-make("co", "Hosting en Colombia", "Directorio verificable · Metodología abierta", "COLOMBIA")
-make("ar", "Hosting en Argentina", "Directorio verificable · Metodología abierta", "ARGENTINA")
+make("pe", "Hosting en Perú", "Ranking editorial · Metodología publicada", "PERÚ")
+make("mx", "Hosting en México", "Ranking editorial · Metodología publicada", "MÉXICO")
+make("co", "Hosting en Colombia", "Ranking editorial · Metodología publicada", "COLOMBIA")
+make("ar", "Hosting en Argentina", "Ranking editorial · Metodología publicada", "ARGENTINA")
 make("datos", "Datos abiertos LATAM", "JSON + Markdown · Licencia CC-BY-4.0", "DATOS")
 make("mejor-hosting-cl", "Mejor hosting Chile 2026", "Velocidad, uptime y precio comparados", "CHILE")
 make("quienes-somos", "Quiénes somos", "Un equipo pequeño que evalúa hosting en LATAM", "ETH")
