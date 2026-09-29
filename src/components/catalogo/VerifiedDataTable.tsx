@@ -14,6 +14,10 @@ interface VerifiedDataTableProps {
   hasMigrationFree?: boolean | null;
   officialWebsite?: string | null;
   slug?: string;
+  datacenterCertifications?: string | null;
+  datacenterCertificationsSources?: string[] | null;
+  correctionNote?: string | null;
+  correctionDate?: string | null;
 }
 
 const formatOfficialUrl = (raw: string) => {
@@ -49,11 +53,33 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
 
   const triState = (v?: boolean | null) => (v === true ? 'Sí' : v === false ? 'No' : 'No declarado');
 
+  const certSources = (props.datacenterCertificationsSources ?? []).filter(Boolean);
+  const certCell: React.ReactNode =
+    props.datacenterCertifications && certSources.length > 0 ? (
+      <>
+        {props.datacenterCertifications}
+        <span className="block text-xs mt-1">
+          Fuente:{' '}
+          {certSources.map((u, i) => (
+            <React.Fragment key={u}>
+              {i > 0 && ' · '}
+              <a href={u} target="_blank" rel="nofollow noopener" className="underline underline-offset-2 break-all">
+                {u.replace(/^https?:\/\/(www\.)?/, '')}
+              </a>
+            </React.Fragment>
+          ))}
+        </span>
+      </>
+    ) : (
+      'No publicada en su sitio'
+    );
+
   const rows: Array<[string, React.ReactNode]> = [
     ['Sitio oficial', officialLink],
     ['Año de fundación', props.yearFounded ?? 'No declarado'],
     ['Grupo corporativo', props.corporateGroup ?? 'No declarado'],
     ['Ubicación datacenter', props.datacenter && props.datacenter.trim() ? props.datacenter : 'No declarado'],
+    ['Certificaciones del datacenter', certCell],
     ['Precio desde', fmtPrice(props.minPrice)],
     [
       'Tecnologías declaradas',
@@ -69,6 +95,15 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
       <h2 className="text-2xl font-bold mb-4">
         Datos declarados por el proveedor
       </h2>
+      {props.correctionNote && (
+        <p className="mb-4 text-sm border rounded-lg bg-muted/30 px-4 py-3">
+          <strong>
+            Nota de corrección
+            {props.correctionDate ? ` (${props.correctionDate.slice(0, 10).split('-').reverse().join('-')})` : ''}:
+          </strong>{' '}
+          {props.correctionNote}
+        </p>
+      )}
       <div className="overflow-x-auto border rounded-lg">
         <table className="w-full text-sm">
           <tbody>
