@@ -154,8 +154,7 @@ Deno.serve(async (req) => {
     }
 
     return new Response(JSON.stringify({
-      success: true,
-      message: 'Reclamo recibido. Te enviamos un correo con un enlace para verificarlo.',
+      message: 'Te enviamos un correo con un enlace para verificar el reclamo.',
     }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   } catch (e) {
