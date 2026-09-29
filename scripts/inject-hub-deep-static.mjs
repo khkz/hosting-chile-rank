@@ -53,7 +53,7 @@ function renderDeep(d) {
   const criteria = d.criteria.map(c => `<li>${esc(c)}</li>`).join('');
 
   return `<div id="hub-deep-static" style="display:none" aria-hidden="true">
-<section><p><strong>Divulgación:</strong> algunos enlaces "Visitar sitio" son de afiliados; la comisión no afecta el orden del ranking. El orden depende únicamente de datos verificables (ASN, TTFB medido, uptime, reclamos, reputación). Precios verificados a julio 2026.</p></section>
+<section><p><strong>Divulgación:</strong> el editor de este sitio mantiene relación comercial con algunos de los proveedores listados. Algunos enlaces "Visitar sitio" son de afiliados. El orden se calcula con la metodología y los pesos publicados. Precios revisados el 28 de agosto de 2026.</p></section>
 <section><p>${esc(d.protagonist)}</p></section>
 <section><h2>${esc(d.problem.title)}</h2><p>${esc(d.problem.body)}</p><ul>${pains}</ul></section>
 <section><h2>${esc(d.guide.title)}</h2><p>${esc(d.guide.body)}</p>${pillars}<p><small>Datos que verificamos:</small></p><ul>${criteria}</ul></section>
