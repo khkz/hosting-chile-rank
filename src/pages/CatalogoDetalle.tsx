@@ -100,7 +100,7 @@ const CatalogoDetalle = () => {
       address: company.contact_address || '',
       hours: company.contact_hours || '',
     },
-    plans: (company.hosting_plans || []).map((plan: any) => ({
+    plans: (company.hosting_plans || []).filter((plan: any) => plan.is_active !== false).map((plan: any) => ({
       name: plan.name,
       price: plan.price_monthly,
       storage: plan.storage_gb ? `${plan.storage_gb} GB SSD` : 'No declarado',
