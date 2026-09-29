@@ -8,3 +8,7 @@
 - [x] Retirar `VITE_ADMIN_SECRET_KEY` del navegador y usar `requireAdmin` en funciones administrativas.
 - [x] Confirmar escritura exclusiva de `service_role` y lectura pública en las once tablas técnicas.
 - [x] Confirmar RLS y políticas vigentes de `profiles` y `news_articles`.
+- [x] Eliminar el dataset duplicado de proveedores y migrar sus consumidores a `hosting_companies`.
+- [x] Retirar de Ranking la dependencia de `latest.json` externo.
+- [x] Borrar las páginas redirigidas sin consumidores.
+- [x] Ubicar las consultas de Ranking en su capa `features/ranking/data/hooks`.

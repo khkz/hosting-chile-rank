@@ -4,7 +4,7 @@ import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getProviderLink } from '@/lib/providerLinks';
-import { useRankingProviders, type RankingProvider } from '@/hooks/useRankingProviders';
+import { useRankingProviders, type RankingProvider } from '@/features/ranking';
 
 /**
  * Respaldo SOLO si la base no devuelve un podio completo (3 proveedores con
