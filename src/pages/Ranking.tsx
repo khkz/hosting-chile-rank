@@ -34,7 +34,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
-import { useLatestDomains } from '@/hooks/useLatestDomains';
+import { useLatestDomains } from '@/features/ranking';
 import { RANKING_TESTIMONIALS as testimonials, RANKING_FAQ as faqItems } from '@/data/rankingContent';
 
 // El Top 3 se construye desde `hosting_companies` (ver TopProvidersPodium):
