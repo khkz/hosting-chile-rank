@@ -12,6 +12,6 @@
 - [x] Retirar de Ranking la dependencia de `latest.json` externo.
 - [x] Borrar las páginas redirigidas sin consumidores.
 - [x] Ubicar las consultas de Ranking en su capa `features/ranking/data/hooks`.
-- [ ] Corregir las dos afirmaciones antiguas de la portada y regenerar solo `/`.
-- [ ] Documentar, solo lectura, el formulario y las solicitudes empresariales de los últimos 30 días.
+- [x] Corregir las dos afirmaciones antiguas de la portada y regenerar solo `/`.
+- [x] Documentar, solo lectura, el formulario y las solicitudes empresariales de los últimos 30 días.
 
