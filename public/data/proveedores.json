@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting.cl (https://eligetuhosting.cl)",
-  "fecha_generacion": "2026-09-30T11:16:23.026Z",
+  "fecha_generacion": "2026-09-30T20:04:09.358Z",
   "total_proveedores": 113,
   "proveedores": [
     {
@@ -209,14 +209,14 @@
       "slug": "planetahosting",
       "nota": 7.4,
       "precio_desde_clp": null,
-      "datacenter": "Declarado por el proveedor: datacenter propio en Santiago, Chile, con infraestructura VMware, conectividad de 10 Gbps y enlace con GTD Teleducto.",
+      "datacenter": "datacenter propio en Las Condes, Santiago, con 2×10 Gbps nacionales por rutas físicas separadas (GTD y Ufinet), 5 Gbps internacionales y conexión directa a PIT Chile",
       "fundado": 2001,
       "grupo_corporativo": "Grupo Hosting",
       "verificado": true,
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/planetahosting",
       "url_sitio": "https://www.planetahosting.cl/",
-      "fecha_actualizacion": "2026-08-28T03:42:32.193151+00:00"
+      "fecha_actualizacion": "2026-09-30T20:04:00.965094+00:00"
     },
     {
       "nombre": "WebHosting.cl",
