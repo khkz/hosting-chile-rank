@@ -18,7 +18,6 @@ import { hasLocalDatacenter } from './lib/dc-local.mjs';
 import { classifyDc, rankProvidersByDcTier } from './lib/dc-tier.mjs';
 import { COUNTRY_CONTENT } from '../src/data/countryContent.mjs';
 
-const MES_ANIO = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -68,6 +67,7 @@ async function writeFile(relPath, html) {
 /* ---------- 1) Mejor hosting {pais} 2026 -------------------------------- */
 function renderBestHosting(cslug, meta, providers) {
   const list = rank(providers, cslug);
+  const lastVerified = providers.map(p => p.fecha_verificacion).filter(Boolean).map(d => String(d).slice(0, 10)).sort().pop() || null;
   const c = COUNTRY_CONTENT[cslug] || { kicker: '', title: '', subtitle: '', chips: [], intro: [], faq: [] };
   const canonical = `https://eligetuhosting.com/${cslug}/mejor-hosting-${meta.long}-2026`;
   const title = `Hosting en ${meta.name} 2026 · Comparación independiente | EligeTuHosting`;
