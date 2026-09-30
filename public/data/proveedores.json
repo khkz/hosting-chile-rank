@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting.cl (https://eligetuhosting.cl)",
-  "fecha_generacion": "2026-09-30T20:09:47.235Z",
+  "fecha_generacion": "2026-09-30T21:21:30.923Z",
   "total_proveedores": 113,
   "proveedores": [
     {
@@ -275,6 +275,20 @@
       "fecha_actualizacion": "2026-08-27"
     },
     {
+      "nombre": "Bitsur",
+      "slug": "bitsur",
+      "nota": null,
+      "precio_desde_clp": null,
+      "datacenter": "3 ubicaciones (Chile · USA · Europa)",
+      "fundado": 2010,
+      "grupo_corporativo": "Bitsur SpA",
+      "verificado": true,
+      "curado": false,
+      "url_ficha": "https://eligetuhosting.cl/catalogo/bitsur",
+      "url_sitio": "https://bitsur.cl",
+      "fecha_actualizacion": null
+    },
+    {
       "nombre": "CBHosting",
       "slug": "cbhosting",
       "nota": null,
@@ -482,20 +496,6 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingcompany",
       "url_sitio": "https://www.hostingcompany.cl",
-      "fecha_actualizacion": null
-    },
-    {
-      "nombre": "HostingLatam",
-      "slug": "hostinglatam",
-      "nota": null,
-      "precio_desde_clp": null,
-      "datacenter": "Chile",
-      "fundado": 2014,
-      "grupo_corporativo": null,
-      "verificado": true,
-      "curado": false,
-      "url_ficha": "https://eligetuhosting.cl/catalogo/hostinglatam",
-      "url_sitio": "https://www.hostinglatam.cl",
       "fecha_actualizacion": null
     },
     {
@@ -1395,6 +1395,20 @@
       "fecha_actualizacion": null
     },
     {
+      "nombre": "HostingLatam",
+      "slug": "hostinglatam",
+      "nota": null,
+      "precio_desde_clp": null,
+      "datacenter": "Chile",
+      "fundado": 2014,
+      "grupo_corporativo": null,
+      "verificado": true,
+      "curado": false,
+      "url_ficha": "https://eligetuhosting.cl/catalogo/hostinglatam",
+      "url_sitio": "https://www.hostinglatam.cl",
+      "fecha_actualizacion": "2026-09-30"
+    },
+    {
       "nombre": "DCH / Dominios Chile",
       "slug": "dch",
       "nota": null,
@@ -1574,20 +1588,6 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/bestsolution",
       "url_sitio": "https://bestsolution.cl",
-      "fecha_actualizacion": null
-    },
-    {
-      "nombre": "Bitsur",
-      "slug": "bitsur",
-      "nota": null,
-      "precio_desde_clp": null,
-      "datacenter": "3 ubicaciones (Chile · USA · Europa)",
-      "fundado": 2010,
-      "grupo_corporativo": "Bitsur SpA",
-      "verificado": true,
-      "curado": false,
-      "url_ficha": "https://eligetuhosting.cl/catalogo/bitsur",
-      "url_sitio": "https://bitsur.cl",
       "fecha_actualizacion": null
     }
   ]
