@@ -18,7 +18,6 @@ import { hasLocalDatacenter } from './lib/dc-local.mjs';
 import { classifyDc, rankProvidersByDcTier } from './lib/dc-tier.mjs';
 import { COUNTRY_CONTENT } from '../src/data/countryContent.mjs';
 
-const MES_ANIO = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
 
 const SB_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://oegvwjxrlmtwortyhsrv.supabase.co';
 const SB_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lZ3Z3anhybG10d29ydHloc3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NjA4NzEsImV4cCI6MjA2MjAzNjg3MX0.ruA3v0xiTGgH2vubqAnWPgbvwSOlaVp7Oc0e2YeZq4M';
@@ -48,7 +47,7 @@ const DC_CLUSTER = [
 ];
 
 async function fetchProviders(code) {
-  const res = await fetch(`${SB_URL}/rest/v1/hosting_companies?select=id,slug,name,website,legal_name,datacenter_location,year_founded,corporate_group,contact_phone,contact_address,technologies,is_curated,updated_at&country=eq.${code}&is_verified=eq.true`, {
+  const res = await fetch(`${SB_URL}/rest/v1/hosting_companies?select=id,slug,name,website,legal_name,datacenter_location,year_founded,corporate_group,contact_phone,contact_address,technologies,is_curated,updated_at,fecha_verificacion&country=eq.${code}&is_verified=eq.true`, {
     headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
   });
   if (!res.ok) return [];
@@ -68,6 +67,7 @@ async function writeFile(relPath, html) {
 /* ---------- 1) Mejor hosting {pais} 2026 -------------------------------- */
 function renderBestHosting(cslug, meta, providers) {
   const list = rank(providers, cslug);
+  const lastVerified = providers.map(p => p.fecha_verificacion).filter(Boolean).map(d => String(d).slice(0, 10)).sort().pop() || null;
   const c = COUNTRY_CONTENT[cslug] || { kicker: '', title: '', subtitle: '', chips: [], intro: [], faq: [] };
   const canonical = `https://eligetuhosting.com/${cslug}/mejor-hosting-${meta.long}-2026`;
   const title = `Hosting en ${meta.name} 2026 · Comparación independiente | EligeTuHosting`;
@@ -172,7 +172,7 @@ function renderBestHosting(cslug, meta, providers) {
       ${c.subtitle ? `<p style="color:#ffffffcc;font-size:15px;margin:0 0 12px 0;max-width:780px">${esc(c.subtitle)}</p>` : ''}
       <div style="margin:6px 0 14px 0">${chipsHtml}</div>
       <a href="#tabla" style="display:inline-block;background:#EF233C;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px">Ver ranking ↓</a>
-      <div style="margin-top:14px;font-size:12px;color:#ffffff99">Verificado por el equipo editorial de EligeTuHosting · Metodología pública · Actualizado ${esc(MES_ANIO)}</div>
+      <div style="margin-top:14px;font-size:12px;color:#ffffff99">Verificado por el equipo editorial de EligeTuHosting · Metodología pública${lastVerified ? ` · Datos verificados hasta ${esc(lastVerified)}` : ''}</div>
     </section>
     ${introHtml}
     ${curatedBlock}
@@ -196,7 +196,7 @@ function renderBestHosting(cslug, meta, providers) {
     license: 'https://creativecommons.org/licenses/by/4.0/',
     isAccessibleForFree: true,
     inLanguage: meta.locale,
-    dateModified: NOW_ISO,
+    ...(lastVerified ? { dateModified: lastVerified } : {}),
     creator: { '@type': 'Organization', name: 'EligeTuHosting', url: 'https://eligetuhosting.com' },
     publisher: { '@type': 'Organization', name: 'EligeTuHosting', url: 'https://eligetuhosting.com' },
     spatialCoverage: { '@type': 'Place', name: meta.name },

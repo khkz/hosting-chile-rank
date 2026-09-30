@@ -5,7 +5,7 @@
   "licencia": "CC-BY-4.0",
   "licencia_url": "https://creativecommons.org/licenses/by/4.0/deed.es",
   "atribucion_requerida": "Fuente: EligeTuHosting.cl (https://eligetuhosting.cl)",
-  "fecha_generacion": "2026-09-30T20:04:09.358Z",
+  "fecha_generacion": "2026-09-30T20:09:47.235Z",
   "total_proveedores": 113,
   "proveedores": [
     {
@@ -20,7 +20,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingplus",
       "url_sitio": "https://www.hostingplus.cl/",
-      "fecha_actualizacion": "2026-08-27T15:16:24.775326+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "EcoHosting.cl",
@@ -34,7 +34,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/ecohosting",
       "url_sitio": "https://www.ecohosting.cl/",
-      "fecha_actualizacion": "2026-09-29T22:17:25.950343+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HN.cl",
@@ -48,7 +48,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hn",
       "url_sitio": "https://www.hn.cl",
-      "fecha_actualizacion": "2026-09-29T22:17:25.950343+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "PowerHost / IxMetro",
@@ -62,7 +62,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/powerhost",
       "url_sitio": "https://www.powerhost.cl/",
-      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "HostGator.cl",
@@ -76,7 +76,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostgator",
       "url_sitio": "https://www.hostgator.cl/",
-      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "BlueHosting.cl",
@@ -90,7 +90,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/bluehost",
       "url_sitio": "https://www.bluehosting.cl/",
-      "fecha_actualizacion": "2026-08-27T18:57:09.429284+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "CloudHosting.cl",
@@ -104,7 +104,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/cloudhosting",
       "url_sitio": "https://www.cloudhosting.cl/",
-      "fecha_actualizacion": "2026-06-11T12:14:02.877295+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "1Hosting.cl",
@@ -118,7 +118,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/1hosting-cl",
       "url_sitio": "https://www.1hosting.cl/",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "FullHosting.cl",
@@ -132,7 +132,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/fullhosting",
       "url_sitio": "https://www.fullhosting.cl/",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "ProHosting.cl",
@@ -146,7 +146,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/prohosting",
       "url_sitio": "https://www.prohosting.cl/",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "Hosting.cl",
@@ -160,7 +160,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingcl",
       "url_sitio": "https://www.hosting.cl/",
-      "fecha_actualizacion": "2026-09-29T22:28:14.104222+00:00"
+      "fecha_actualizacion": "2026-09-29"
     },
     {
       "nombre": "FastHosting.cl",
@@ -174,7 +174,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/fasthosting",
       "url_sitio": "https://www.fasthosting.cl/",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "Hosting24.cl",
@@ -188,7 +188,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hosting24",
       "url_sitio": "https://www.hosting24.cl/",
-      "fecha_actualizacion": "2026-06-11T12:56:54.578441+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "INC Web Hosting Chile",
@@ -202,7 +202,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/inc-cl",
       "url_sitio": "https://www.inc.cl/",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "PlanetaHosting.cl",
@@ -216,7 +216,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/planetahosting",
       "url_sitio": "https://www.planetahosting.cl/",
-      "fecha_actualizacion": "2026-09-30T20:04:00.965094+00:00"
+      "fecha_actualizacion": "2026-09-30"
     },
     {
       "nombre": "WebHosting.cl",
@@ -230,7 +230,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/webhosting",
       "url_sitio": "https://www.webhosting.cl/",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "SmartHost.cl",
@@ -244,7 +244,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/smarthost",
       "url_sitio": "https://www.smarthost.cl/",
-      "fecha_actualizacion": "2026-06-11T12:56:54.578441+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "GoDaddy.cl",
@@ -258,7 +258,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/godaddy",
       "url_sitio": "https://www.godaddy.com/es",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "HostingChile.cl",
@@ -272,7 +272,7 @@
       "curado": true,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingchile",
       "url_sitio": "https://www.hostingchile.cl/",
-      "fecha_actualizacion": "2026-08-27T20:03:08.188945+00:00"
+      "fecha_actualizacion": "2026-08-27"
     },
     {
       "nombre": "CBHosting",
@@ -286,7 +286,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/cbhosting",
       "url_sitio": "https://www.cbhosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "ChileCom",
@@ -300,7 +300,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/chilecom",
       "url_sitio": "https://chilecom.net",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Concehost / Chile Digital",
@@ -314,7 +314,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/concehost",
       "url_sitio": "https://www.concehost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Concehosting",
@@ -328,7 +328,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/concehosting",
       "url_sitio": "https://concehosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "cPanelHost",
@@ -342,7 +342,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/cpanelhost",
       "url_sitio": "https://cpanelhost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "CpanelHosting",
@@ -356,7 +356,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/cpanelhosting",
       "url_sitio": "https://cpanelhosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Crear Chile",
@@ -370,7 +370,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/crearchile",
       "url_sitio": "https://crearchile.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "GameHost",
@@ -384,7 +384,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/gamehost",
       "url_sitio": "https://www.gamehost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "GrupoCG",
@@ -398,7 +398,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/grupocg",
       "url_sitio": "https://www.grupocg.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostChile",
@@ -412,7 +412,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostchile",
       "url_sitio": "https://hostchile.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Host Hunder",
@@ -426,7 +426,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hosthunder",
       "url_sitio": "https://hosthunder.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingBioBio",
@@ -440,7 +440,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingbiobio",
       "url_sitio": "https://hostingbiobio.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingCenter",
@@ -454,7 +454,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingcenter",
       "url_sitio": "https://www.hostingcenter.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingCom",
@@ -468,7 +468,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingcom",
       "url_sitio": "https://www.hostingcom.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingCompany",
@@ -482,7 +482,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingcompany",
       "url_sitio": "https://www.hostingcompany.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingLatam",
@@ -496,7 +496,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostinglatam",
       "url_sitio": "https://www.hostinglatam.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingMedia",
@@ -510,7 +510,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingmedia",
       "url_sitio": "https://www.hostingmedia.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingNIC",
@@ -524,7 +524,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingnic",
       "url_sitio": "https://hostingnic.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "HostingProfesional",
@@ -538,7 +538,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostingprofesional",
       "url_sitio": "https://hostingprofesional.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "iHosting",
@@ -552,7 +552,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/ihosting",
       "url_sitio": "https://www.ihosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "IIA",
@@ -566,7 +566,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/iia",
       "url_sitio": "https://iia.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "ID1",
@@ -580,7 +580,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/id1",
       "url_sitio": "https://id1.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "ItFinden",
@@ -594,7 +594,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/itfinden",
       "url_sitio": "https://itfinden.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Linea Host",
@@ -608,7 +608,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/lineahost",
       "url_sitio": "https://lineahost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "LinuxHost",
@@ -622,7 +622,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/linuxhost",
       "url_sitio": "https://www.linuxhost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Media Web Chile",
@@ -636,7 +636,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/mediawebchile",
       "url_sitio": "https://mediawebchile.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Mega Hosting",
@@ -650,7 +650,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/megahosting",
       "url_sitio": "https://www.megahosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Microservers",
@@ -664,7 +664,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/microservers",
       "url_sitio": "https://portal.microservers.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "NeboxHost",
@@ -678,7 +678,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/neboxhost",
       "url_sitio": "https://neboxhost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "NetLinux",
@@ -692,7 +692,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/netlinux",
       "url_sitio": "https://netlinux.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "NutHost",
@@ -706,7 +706,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/nuthost",
       "url_sitio": "https://nuthost.com/es-cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "OneServidores",
@@ -720,7 +720,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/oneservidores",
       "url_sitio": "https://oneservidores.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "PapuHost",
@@ -734,7 +734,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/papu",
       "url_sitio": "https://papu.host",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "PremiumHosting",
@@ -748,7 +748,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/premiumhosting",
       "url_sitio": "https://premiumhosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Rackeo",
@@ -762,7 +762,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/rackeo",
       "url_sitio": "https://rackeo.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "RDSNode",
@@ -776,7 +776,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/rdsnode",
       "url_sitio": "https://rdsnode.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Reselhost",
@@ -790,7 +790,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/reselhost",
       "url_sitio": "https://www.reselhost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "SeguriHost",
@@ -804,7 +804,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/segurihost",
       "url_sitio": "https://segurihost.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Silverhost",
@@ -818,7 +818,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/silverhost",
       "url_sitio": "https://www.silverhost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Skilled",
@@ -832,7 +832,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/skilled",
       "url_sitio": "https://skilled.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Smart.cl (Smart Systems)",
@@ -846,7 +846,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/smart",
       "url_sitio": "https://www.smart.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "SolucionHost",
@@ -860,7 +860,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/solucionhost",
       "url_sitio": "https://www.solucionhost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TBHS",
@@ -874,7 +874,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/tbhs",
       "url_sitio": "https://www.tbhs.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TChile",
@@ -888,7 +888,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/tchile",
       "url_sitio": "https://www.tchile.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TecReamos",
@@ -902,7 +902,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/tecreamos",
       "url_sitio": "https://www.tecreamos.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TecnoInver",
@@ -916,7 +916,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/tecnoinver",
       "url_sitio": "https://www.tecnoinver.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TecnoWeb",
@@ -930,7 +930,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/tecnoweb",
       "url_sitio": "https://www.tecnoweb.net",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TPC Hosting / Tu PC Chile",
@@ -944,7 +944,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/tupcchile",
       "url_sitio": "https://web.tupcchile.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TruoBox",
@@ -958,7 +958,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/truobox",
       "url_sitio": "https://www.truobox.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "TuPagina",
@@ -972,7 +972,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/tupagina",
       "url_sitio": "https://tupagina.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Ultra Hosting",
@@ -986,7 +986,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/ultrahosting",
       "url_sitio": "https://ultrahosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "V2 Networks",
@@ -1000,7 +1000,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/v2networks",
       "url_sitio": "https://v2networks.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "VIARED",
@@ -1014,7 +1014,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/viared",
       "url_sitio": "https://www.viared.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Vinculo",
@@ -1028,7 +1028,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/vinculo",
       "url_sitio": "https://vinculo.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "VPS Server Chile",
@@ -1042,7 +1042,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/vps-chile",
       "url_sitio": "https://www.vps-chile.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "WebHostChile",
@@ -1056,7 +1056,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/webhostchile",
       "url_sitio": "https://webhostchile.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Squarespace",
@@ -1070,7 +1070,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/squarespace",
       "url_sitio": "https://www.squarespace.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "WireNet Chile",
@@ -1084,7 +1084,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/wirenetchile",
       "url_sitio": "https://www.wirenetchile.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Zglobal Host",
@@ -1098,7 +1098,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/zgh",
       "url_sitio": "https://zgh.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "ZNet Hosting",
@@ -1112,7 +1112,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/znet-hosting",
       "url_sitio": "https://znet-hosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "WNPower",
@@ -1126,7 +1126,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/wnpower",
       "url_sitio": "https://www.wnpower.net/cl/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DonWeb (ex-Dattatec)",
@@ -1140,7 +1140,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/donweb",
       "url_sitio": "https://donweb.com/es-cl/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Hostinger",
@@ -1154,7 +1154,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hostinger",
       "url_sitio": "https://www.hostinger.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Namecheap",
@@ -1168,7 +1168,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/namecheap",
       "url_sitio": "https://www.namecheap.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "SiteGround",
@@ -1182,7 +1182,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/siteground",
       "url_sitio": "https://es.siteground.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "IONOS",
@@ -1196,7 +1196,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/ionos",
       "url_sitio": "https://www.ionos.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "OVHcloud",
@@ -1210,7 +1210,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/ovhcloud",
       "url_sitio": "https://www.ovhcloud.com/es/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Hetzner",
@@ -1224,7 +1224,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/hetzner",
       "url_sitio": "https://www.hetzner.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DigitalOcean",
@@ -1238,7 +1238,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/digitalocean",
       "url_sitio": "https://www.digitalocean.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Amazon Web Services",
@@ -1252,7 +1252,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/aws-amazon",
       "url_sitio": "https://aws.amazon.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Google Cloud",
@@ -1266,7 +1266,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/cloud-google",
       "url_sitio": "https://cloud.google.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Vercel",
@@ -1280,7 +1280,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/vercel",
       "url_sitio": "https://vercel.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Webempresa",
@@ -1294,7 +1294,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/webempresa",
       "url_sitio": "https://www.webempresa.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Banahosting",
@@ -1308,7 +1308,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/banahosting",
       "url_sitio": "https://banahosting.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Wix",
@@ -1322,7 +1322,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/wix",
       "url_sitio": "https://es.wix.com/",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Shopify",
@@ -1336,7 +1336,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/shopify",
       "url_sitio": "https://www.shopify.com/cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Creattiva Datacenter",
@@ -1350,7 +1350,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/creattiva",
       "url_sitio": "https://www.creattiva.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DaleHosting",
@@ -1364,7 +1364,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/dalehosting",
       "url_sitio": "https://dalehosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Databyte",
@@ -1378,7 +1378,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/databyte",
       "url_sitio": "https://www.databyte.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "GTD",
@@ -1392,7 +1392,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/gtd",
       "url_sitio": "https://www.gtd.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DCH / Dominios Chile",
@@ -1406,7 +1406,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/dch",
       "url_sitio": "https://www.dch.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DeHosting",
@@ -1420,7 +1420,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/dehosting",
       "url_sitio": "https://www.dehosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DominioHosting",
@@ -1434,7 +1434,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/dominiohosting",
       "url_sitio": "https://dominiohosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DominiosChile.com",
@@ -1448,7 +1448,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/dominioschile",
       "url_sitio": "https://www.dominioschile.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "DylanHost",
@@ -1462,7 +1462,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/dylanhost",
       "url_sitio": "https://dylanhost.net",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Freehost",
@@ -1476,7 +1476,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/freehost",
       "url_sitio": "https://www.freehost.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Infranetworking",
@@ -1490,7 +1490,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/infranetworking",
       "url_sitio": "https://www.infranetworking.com/chile",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Intercity Networks",
@@ -1504,7 +1504,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/intercity",
       "url_sitio": "https://intercity.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Acsystem",
@@ -1518,7 +1518,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/acsystem",
       "url_sitio": "https://www.acsystem.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Anaconda Web",
@@ -1532,7 +1532,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/anacondaweb",
       "url_sitio": "https://www.anacondaweb.com",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Andino Host",
@@ -1546,7 +1546,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/andino",
       "url_sitio": "https://cl.andino.host",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Benza Hosting",
@@ -1560,7 +1560,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/benzahosting",
       "url_sitio": "https://www.benzahosting.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "BestSolution",
@@ -1574,7 +1574,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/bestsolution",
       "url_sitio": "https://bestsolution.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     },
     {
       "nombre": "Bitsur",
@@ -1588,7 +1588,7 @@
       "curado": false,
       "url_ficha": "https://eligetuhosting.cl/catalogo/bitsur",
       "url_sitio": "https://bitsur.cl",
-      "fecha_actualizacion": "2026-06-20T22:09:27.173963+00:00"
+      "fecha_actualizacion": null
     }
   ]
 }

@@ -45,7 +45,7 @@ async function loadProvidersLatam() {
 }
 
 async function fetchCompanies(code) {
-  return sbFetch(`hosting_companies?select=id,slug,name,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,updated_at&country=eq.${code}&is_verified=eq.true&limit=999`);
+  return sbFetch(`hosting_companies?select=id,slug,name,website,legal_name,corporate_group,datacenter_location,year_founded,technologies,contact_phone,contact_email,editorial_summary,updated_at,fecha_verificacion&country=eq.${code}&is_verified=eq.true&limit=999`);
 }
 
 async function fetchPings(ids) {
@@ -125,6 +125,7 @@ async function generateForCountry(cslug) {
   const tableHtml = `
     <table><thead><tr><th>#</th><th>Proveedor</th><th>TTFB mediano (ms)</th><th>Muestras 7d</th><th>Uptime 7d</th><th>Última medición</th></tr></thead>
     <tbody>${rows.map((r, i) => `<tr><td>${i + 1}</td><td><a href="/${cslug}/${r.slug}">${esc(r.nombre)}</a></td><td>${r.ttfb_mediano_ms ?? '—'}</td><td>${r.ttfb_muestras}</td><td>${r.uptime_7d_pct != null ? r.uptime_7d_pct + '%' : '—'}</td><td>${r.ultima_medicion ? r.ultima_medicion.slice(0,16).replace('T', ' ') : '—'}</td></tr>`).join('')}</tbody></table>`;
+  const lastMeasured = rows.map(r => r.ultima_medicion).filter(Boolean).sort().pop() || null;
   const canonicalBench = `${ROOT}/${cslug}/benchmark`;
   const titleBench = `Benchmark de hosting en ${meta.name} · TTFB y uptime medidos | EligeTuHosting`;
   const descBench = `Mediciones propias de TTFB y uptime de proveedores de hosting verificados en ${meta.name}. Datos abiertos CC-BY-4.0.`;
@@ -134,7 +135,7 @@ async function generateForCountry(cslug) {
     license: 'https://creativecommons.org/licenses/by/4.0/',
     creator: { '@type': 'Organization', name: 'EligeTuHosting', url: `${ROOT}/` },
     distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: `${ROOT}/data/benchmarks-${cslug}.json` }],
-    dateModified: NOW,
+    ...(lastMeasured ? { dateModified: lastMeasured } : {}),
   };
   const bodyBench = `
     <header><h1>Benchmark de hosting en ${meta.name} ${meta.flag}</h1>
@@ -154,7 +155,7 @@ async function generateForCountry(cslug) {
 
 Fuente: ${ROOT}/${cslug}
 Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
-Última actualización: ${NOW}
+Archivo generado: ${NOW}
 
 ## Metodología resumida
 - Datacenter local verificado por ASN y declaraciones oficiales.
@@ -199,8 +200,7 @@ ${chk ? `- IP resuelta: ${chk.resolved_ip ?? '—'}\n- ASN: ${chk.asn ? 'AS' + c
 
 Fuente: ${ROOT}/${cslug}/${c.slug}
 Licencia: CC-BY-4.0 · Atribución: EligeTuHosting
-Última actualización: ${c.updated_at || NOW}
-
+${c.fecha_verificacion ? `Última verificación de datos: ${String(c.fecha_verificacion).slice(0, 10)}\n` : ''}
 ## Datos verificables
 - Sitio oficial: ${c.website ?? '—'}
 - Razón social: ${c.legal_name ?? '—'}
@@ -269,7 +269,6 @@ async function generateDatosPage() {
     license: 'https://creativecommons.org/licenses/by/4.0/',
     creator: { '@type': 'Organization', name: 'EligeTuHosting', url: `${ROOT}/` },
     distribution: endpoints.map(p => ({ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: `${ROOT}${p}` })),
-    dateModified: NOW,
   };
   const headExtra = `<script type="application/ld+json">${JSON.stringify(datasetLd)}</script>`;
   await fs.mkdir('public/datos', { recursive: true });
@@ -299,7 +298,7 @@ async function generateLatamHub() {
   };
   const body = `<header><h1>Hosting en Latinoamérica ${items.map(i => i.m.flag).join(' ')}</h1>
     <p>${esc(description)}</p>
-    <p style="font-size:13px;color:#6B7280"><strong>Última actualización:</strong> ${NOW.slice(0, 10)}</p></header>
+    <p style="font-size:13px;color:#6B7280"><strong>Página generada:</strong> ${NOW.slice(0, 10)}</p></header>
     <section><h2>Directorios verificados</h2><ul>
       ${items.map(it => `<li>${it.m.flag} <a href="${it.chile ? 'https://eligetuhosting.cl/' : `/${it.cslug}`}"><strong>${esc(it.m.name)}</strong></a>${it.total != null ? ` — ${it.total} proveedores verificados` : ''}${it.chile ? '' : ` · <a href="/${it.cslug}/mejor-hosting-${it.m.long}-2026">mejor hosting ${it.m.long}</a> · <a href="/${it.cslug}/hosting-con-datacenter-local">datacenter local</a> · <a href="/${it.cslug}/benchmark">benchmark</a>`}</li>`).join('')}
     </ul></section>

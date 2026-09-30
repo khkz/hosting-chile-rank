@@ -49,7 +49,7 @@ async function main() {
     return;
   }
 
-  const companies = await rest('hosting_companies?select=id,slug,name,overall_rating,datacenter_location,year_founded,corporate_group,website,description,description_editorial,technologies,uptime_guarantee,has_ssl_free,has_migration_free,contact_phone,contact_email,contact_address,updated_at,is_verified,is_curated,country&is_verified=eq.true&country=eq.CL&order=overall_rating.desc.nullslast');
+  const companies = await rest('hosting_companies?select=id,slug,name,overall_rating,datacenter_location,year_founded,corporate_group,website,description,description_editorial,technologies,uptime_guarantee,has_ssl_free,has_migration_free,contact_phone,contact_email,contact_address,updated_at,fecha_verificacion,is_verified,is_curated,country&is_verified=eq.true&country=eq.CL&order=overall_rating.desc.nullslast');
   const plans = await rest('hosting_plans?select=company_id,name,price_monthly,storage_gb,bandwidth,domains_allowed,features');
   let reviews = [];
   try {
@@ -83,7 +83,7 @@ async function main() {
       curado: !!c.is_curated,
       url_ficha: `${SITE}/catalogo/${c.slug}`,
       url_sitio: c.website || null,
-      fecha_actualizacion: c.updated_at || null,
+      fecha_actualizacion: c.fecha_verificacion || null,
     };
   });
 
@@ -118,7 +118,7 @@ async function main() {
 
 > Ranking editorial del mejor hosting en Chile, con metodología y pesos publicados. Comparamos proveedores con datos de velocidad (benchmarks), uptime (pings programados) y reputación. Divulgación: el editor de este sitio mantiene relación comercial con algunos de los proveedores listados.
 
-Última actualización: ${NOW_HUMAN} (${NOW_ISO})
+Archivo generado: ${NOW_HUMAN} (${NOW_ISO})
 
 ## Cómo citarnos
 Fuente: EligeTuHosting.cl (${SITE}) — Licencia CC-BY-4.0. Atribución requerida con enlace activo.
@@ -212,7 +212,7 @@ ${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donw
   const latamSummary = [];
   for (const c of LATAM) {
     try {
-      const rows = await rest(`hosting_companies?select=slug,name,legal_name,website,datacenter_location,technologies,contact_phone,contact_address,country,is_verified,is_curated,updated_at&is_verified=eq.true&country=eq.${c.code}&order=is_curated.desc,name.asc`);
+      const rows = await rest(`hosting_companies?select=slug,name,legal_name,website,datacenter_location,technologies,contact_phone,contact_address,country,is_verified,is_curated,updated_at,fecha_verificacion&is_verified=eq.true&country=eq.${c.code}&order=is_curated.desc,name.asc`);
       const { datacenterLocalStatus } = await import('./lib/dc-local.mjs');
       const proveedores = rows.map((r) => ({
         nombre: r.name,
@@ -227,7 +227,7 @@ ${['hostingplus','ecohosting','1hosting','hostgator','hostname','bluehost','donw
         direccion: r.contact_address || null,
         recomendado_editorial: !!r.is_curated,
         verificado: !!r.is_verified,
-        fecha_actualizacion: r.updated_at || null,
+        fecha_actualizacion: r.fecha_verificacion || null,
         url_pais: c.site,
       }));
       const payload = {
@@ -296,8 +296,7 @@ Cluster hreflang activo: es-CL, es-PE, es-MX, es-CO, es-AR (x-default = https://
 - SSL gratis: ${company.has_ssl_free ? 'Sí' : 'No declarado'}
 - Migración gratis: ${company.has_migration_free ? 'Sí' : 'No declarado'}
 - Contacto: ${contact}
-- Última actualización: ${p.fecha_actualizacion || 'N/D'}
-
+${p.fecha_actualizacion ? `- Última verificación de datos: ${p.fecha_actualizacion}\n` : ''}
 ### Descripción
 ${(company.description_editorial || company.description || 'Sin descripción.').replace(/\s+/g, ' ').trim()}
 
@@ -311,7 +310,7 @@ ${reviewLines}
 
   const llmsFull = `# EligeTuHosting.cl — Datos completos por proveedor
 
-Última actualización: ${NOW_HUMAN} (${NOW_ISO})
+Archivo generado: ${NOW_HUMAN} (${NOW_ISO})
 Fuente: EligeTuHosting.cl (${SITE}) · Licencia CC-BY-4.0
 Nota: no publicamos precios mientras reverificamos el catálogo proveedor por proveedor. Consulta el valor vigente en el sitio de cada proveedor.
 Dataset JSON Chile: ${SITE}/data/proveedores.json
