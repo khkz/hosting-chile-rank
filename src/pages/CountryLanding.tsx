@@ -47,7 +47,7 @@ const CountryLanding = () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select(
-          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, foundation_year, is_verified, is_curated'
+          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, foundation_year, is_verified, is_curated, updated_at'
         )
         .eq('country', info.code)
         .eq('is_verified', true)
@@ -90,7 +90,16 @@ const CountryLanding = () => {
   const curatedCompany = (companies || []).find((c: any) => c.is_curated === true) || null;
   const hasRecommended = !!curatedCompany;
 
-  const lastUpdated = new Date().toISOString().slice(0, 10);
+  // Fecha real de los datos: la última modificación de un proveedor del país
+  // (antes se mostraba la fecha de hoy en cada visita).
+  const latestIso = (companies || []).reduce<string | null>(
+    (max, c: any) => (c.updated_at && (!max || c.updated_at > max) ? c.updated_at : max),
+    null
+  );
+  const lastUpdated = (latestIso ? new Date(latestIso) : new Date()).toISOString().slice(0, 10);
+  const lastUpdatedHuman = latestIso
+    ? new Date(latestIso).toLocaleDateString(info.locale, { day: 'numeric', month: 'long', year: 'numeric' })
+    : '…';
 
   // JSON-LD: BreadcrumbList
   const breadcrumbLd = {
@@ -228,7 +237,7 @@ const CountryLanding = () => {
                 </div>
                 <div className="flex items-baseline justify-between py-3">
                   <dt className="text-sm text-ink-2">Datos actualizados</dt>
-                  <dd className="font-semibold">{lastUpdated}</dd>
+                  <dd className="font-semibold">{lastUpdatedHuman}</dd>
                 </div>
               </dl>
             </aside>
@@ -399,7 +408,7 @@ const CountryLanding = () => {
                 reclamos, teléfono y soporte en español; (3) presencia y latencia al país (ASN y red); (4) antigüedad.
               </p>
               <p className="text-sm text-ink-3">
-                Última actualización de datos: {lastUpdated}. Datos bajo licencia CC-BY-4.0, de acceso libre.
+                Última actualización de datos: {lastUpdatedHuman}. Datos bajo licencia CC-BY-4.0, de acceso libre.
               </p>
             </div>
           </section>

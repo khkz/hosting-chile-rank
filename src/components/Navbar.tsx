@@ -99,8 +99,13 @@ const Navbar = () => {
 
   const dashboardLink = role === 'admin' ? '/admin/dashboard' : role === 'hosting_provider' ? '/provider/dashboard' : '/';
 
-  const isCurrent = (item: NavLinkItem) =>
-    !item.external && (location.pathname === item.href || (item.href !== '/' && location.pathname.startsWith(`${item.href}/`)));
+  // Sección activa: la de ruta más específica que contiene a la página actual
+  // (en /mx/mejor-hosting-mexico-2026 gana "Ranking", no "Proveedores" (/mx)).
+  const activeHref = sections
+    .filter((item) => !item.external)
+    .filter((item) => location.pathname === item.href || (item.href !== '/' && location.pathname.startsWith(`${item.href}/`)))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
+  const isCurrent = (item: NavLinkItem) => !item.external && item.href === activeHref;
 
   return (
     <>
