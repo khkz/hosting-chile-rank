@@ -114,7 +114,7 @@ const Benchmark: React.FC = () => {
         <title>{`Benchmark Hosting Chile ${new Date().getFullYear()} | Datos reales medidos | EligeTuHosting.cl`}</title>
         <meta
           name="description"
-          content="Benchmark independiente de hosting Chile. TTFB, Lighthouse y uptime medidos cada hora. Metodología pública y datos descargables."
+          content="Benchmark de hosting en Chile. TTFB, Lighthouse y uptime medidos cada hora. Metodología pública y datos descargables."
         />
         <link rel="canonical" href="https://eligetuhosting.cl/benchmark" />
         {datasetSchema && (

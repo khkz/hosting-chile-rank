@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
+import { hreflangAlternates } from '@/lib/countries';
 
 interface DynamicMetaTagsProps {
   title: string;
@@ -13,11 +14,11 @@ interface DynamicMetaTagsProps {
 }
 
 /**
- * react-helmet-async requiere que los hijos del <Helmet> sean ELEMENTOS
- * DIRECTOS (no arrays, no Fragments, no false/undefined). Cualquier hijo
- * inválido puede hacer que Helmet descarte silenciosamente TODO el bloque
- * (bug detectado: sin canonical, sin hreflang, title sin sufijo).
- * Por eso aquí construimos dos ramas completas con elementos directos.
+ * react-helmet-async no acepta Fragments ni false/undefined como hijos del
+ * <Helmet>: un hijo inválido puede hacer que descarte TODO el bloque (bug
+ * detectado: sin canonical, sin hreflang, title sin sufijo). Los arrays de
+ * elementos (.map) sí son válidos. Por eso hay dos ramas completas y el
+ * hreflang sale del registro de países como array.
  */
 const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
   title,
@@ -41,12 +42,9 @@ const DynamicMetaTags: React.FC<DynamicMetaTagsProps> = ({
         <meta name="description" content={description} />
         <meta name="keywords" content={kw} />
         <link rel="canonical" href={url} />
-          <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
-          <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
-          <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
-          <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
-          <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
-          <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/latam" />
+        {hreflangAlternates().map((a) => (
+          <link key={a.hrefLang} rel="alternate" hrefLang={a.hrefLang} href={a.href} />
+        ))}
         <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={url} />

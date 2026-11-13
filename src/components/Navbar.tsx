@@ -1,399 +1,277 @@
-import React, { useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  Menu, 
-  ChevronDown,
-  Home,
-  BarChart2,
-  GitCompare,
-  ShoppingCart,
-  Globe,
-  FileText,
-  Star,
-  BookOpen,
-  Wrench,
-  ArrowRight,
-  User,
-  LogOut,
-  LayoutDashboard,
-  Award,
-  Search,
-  type LucideIcon
-} from 'lucide-react';
+import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ChevronDown, Globe, LayoutDashboard, LogOut, Menu, User } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import Logo from './Logo';
-import CountrySwitcher from './CountrySwitcher';
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import Flag from './data/Flag';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
+import { useEdition } from '@/hooks/useEdition';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+  PUBLISHED_EDITIONS,
+  VERIFYING_EDITIONS,
+  editionHref,
+  type EditionKey,
+} from '@/lib/countries';
+import { guideGroups, sectionsFor, type NavLinkItem } from '@/lib/siteNav';
 
-const navLinkClasses = "text-sm font-medium flex items-center text-ink hover:text-brand transition-all duration-300 hover:scale-105";
-const activeNavLinkClasses = "text-brand";
-const mobileNavLinkClasses = "text-base font-medium py-3 flex items-center gap-2 text-ink hover:text-brand transition-colors";
-const iconClasses = "h-4 w-4 mr-1 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6";
+/** Enlace que usa el router si es relativo y <a> si cruza de dominio. */
+const SmartLink: React.FC<{ item: NavLinkItem; className?: string; onClick?: () => void; children?: React.ReactNode; 'aria-current'?: 'page' | undefined }> = ({
+  item,
+  className,
+  onClick,
+  children,
+  ...rest
+}) =>
+  item.external ? (
+    <a href={item.href} className={className} onClick={onClick} {...rest}>
+      {children ?? item.label}
+    </a>
+  ) : (
+    <Link to={item.href} className={className} onClick={onClick} {...rest}>
+      {children ?? item.label}
+    </Link>
+  );
 
-interface NavItem {
-  to: string;
-  label: string;
-  icon: LucideIcon;
-}
+const EDITION_ORDER: EditionKey[] = ['LATAM', ...PUBLISHED_EDITIONS.map((e) => e.code)];
 
-const mainNavItems: NavItem[] = [
-  { to: '/', label: 'Inicio', icon: Home },
-  { to: '/ranking', label: 'Ranking', icon: BarChart2 },
-  { to: '/comparativa', label: 'Comparativa', icon: GitCompare },
-  { to: '/wiki', label: 'Wiki', icon: BookOpen },
-  { to: '/certificaciones', label: 'Certificaciones', icon: Award },
-  { to: '/catalogo', label: 'Directorio', icon: Award },
-  { to: '/directorio', label: 'Directorio completo', icon: BookOpen },
-];
+const editionName = (key: EditionKey) =>
+  key === 'LATAM' ? 'Latinoamérica' : PUBLISHED_EDITIONS.find((e) => e.code === key)?.name ?? key;
 
-const toolsItems: NavItem[] = [
-  { to: '/cotiza-hosting', label: 'Cotiza hosting', icon: ShoppingCart },
-  { to: '/ultimos-dominios', label: 'Últimos dominios', icon: Globe },
-  { to: '/transparencia-hosting-chile', label: 'Transparencia Hosting', icon: FileText },
-  { to: '/estudio-hosting-chile-2026', label: 'Estudio Hosting Chile 2026', icon: Search },
-  { to: '/vs/comparahosting', label: 'VS ComparaHosting', icon: GitCompare },
-  
-  { to: '/vs/rankinghosting', label: 'VS RankingHosting', icon: GitCompare },
-];
-
-const guidesItems: NavItem[] = [
-  { to: '/mejor-hosting-chile-2026', label: 'Mejor Hosting Chile 2026', icon: Star },
-  { to: '/mejor-hosting-wordpress-chile', label: 'Mejor Hosting WordPress', icon: Star },
-  { to: '/mejor-hosting-ecommerce-chile', label: 'Mejor Hosting Ecommerce', icon: Star },
-  { to: '/mejor-hosting-pymes-chile', label: 'Mejor Hosting PYMES', icon: Star },
-  { to: '/mejor-vps-chile', label: 'Mejor VPS Chile', icon: Star },
-  { to: '/guia-elegir-hosting', label: 'Cómo elegir Hosting', icon: FileText },
-  { to: '/guia-elegir-vps', label: 'Cómo elegir VPS', icon: FileText },
-  { to: '/guia-elegir-servidor-dedicado', label: 'Cómo elegir Servidor Dedicado', icon: FileText },
-  { to: '/guia-elegir-ssl', label: 'Cómo elegir SSL', icon: FileText },
-  { to: '/guia-elegir-cdn', label: 'Cómo elegir CDN', icon: FileText },
-  { to: '/guia-migrar-hosting', label: 'Migrar Hosting Seguro', icon: FileText },
-  { to: '/guia-seguridad-web', label: 'Seguridad Web', icon: FileText },
-  { to: '/guia-hosting-wordpress', label: 'Hosting WordPress', icon: FileText },
-];
+/**
+ * Barra de ediciones: el país es la primera dimensión del sitio. Siempre
+ * visible en .cl y .com; la edición activa lleva el subrayado rojo.
+ */
+const EditionBar: React.FC<{ active: EditionKey }> = ({ active }) => (
+  <div className="bg-ink text-white/70">
+    <div className="container mx-auto px-4 flex h-9 items-center justify-between gap-6">
+      <nav aria-label="Ediciones por país" className="-mx-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="flex items-center gap-1 whitespace-nowrap text-[13px]">
+          {EDITION_ORDER.map((key) => {
+            const isActive = key === active;
+            return (
+              <li key={key}>
+                <a
+                  href={editionHref(key)}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`relative inline-flex h-9 items-center gap-1.5 px-2 transition-colors ${
+                    isActive ? 'font-semibold text-white' : 'hover:text-white'
+                  }`}
+                >
+                  {key === 'LATAM' ? <Globe className="h-3.5 w-3.5" aria-hidden /> : <Flag code={key} size={16} />}
+                  {editionName(key)}
+                  {isActive && <span className="absolute inset-x-2 bottom-0 h-[2px] bg-brand-on-dark" aria-hidden />}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      <a
+        href={`${editionHref('LATAM')}#cobertura`}
+        className="hidden lg:inline text-[13px] text-white/60 hover:text-white whitespace-nowrap"
+      >
+        {VERIFYING_EDITIONS.length} países más en verificación
+      </a>
+    </div>
+  </div>
+);
 
 const Navbar = () => {
-  const [isGuideMenuOpen, setIsGuideMenuOpen] = useState(false);
-  const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, role, signOut } = useAuth();
+  const { key, label } = useEdition();
+  const sections = sectionsFor(key);
+  const guides = guideGroups();
+  const homeHref = editionHref(key);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
   };
 
-  const getDashboardLink = () => {
-    if (role === 'admin') return '/admin/dashboard';
-    if (role === 'hosting_provider') return '/provider/dashboard';
-    return '/';
-  };
+  const dashboardLink = role === 'admin' ? '/admin/dashboard' : role === 'hosting_provider' ? '/provider/dashboard' : '/';
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isCurrent = (item: NavLinkItem) =>
+    !item.external && (location.pathname === item.href || (item.href !== '/' && location.pathname.startsWith(`${item.href}/`)));
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm animate-fade-in">
-      <div className="container mx-auto px-4 flex justify-between items-center h-16 md:h-20">
-        <a href="https://eligetuhosting.cl" className="flex items-center">
-          <Logo variant="option-a" className="h-10 md:h-12 w-auto mr-2" />
-        </a>
-        
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-1">
-          {mainNavItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink 
-                key={item.to}
-                to={item.to} 
-                className={({ isActive }) => 
-                  `${navLinkClasses} ${isActive ? activeNavLinkClasses : ''} px-3 py-2 group`
-                }
-              >
-                <Icon className={iconClasses} />
-                {item.label}
-              </NavLink>
-            );
-          })}
-          
-          {/* Dropdown Menu for "Herramientas" */}
-          <DropdownMenu open={isToolsMenuOpen} onOpenChange={setIsToolsMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <button 
-                className={`${navLinkClasses} px-3 py-2 flex items-center gap-1 group ${
-                  toolsItems.some(item => location.pathname === item.to)
-                    ? activeNavLinkClasses 
-                    : ''
-                }`}
-              >
-                <Wrench className={iconClasses} />
-                Herramientas
-                <ChevronDown className="h-4 w-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-white z-50 animate-scale-in">
-              {toolsItems.map((item) => {
-                const Icon = item.icon;
+    <>
+      <EditionBar active={key} />
+      <header className="sticky top-0 z-50 border-b border-rule bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
+        <div className="container mx-auto px-4 flex h-16 items-center gap-6">
+          <a href={homeHref} className="shrink-0" aria-label={`EligeTuHosting ${label}, portada`}>
+            <Logo edition={label} />
+          </a>
+
+          {/* Secciones de la edición */}
+          <nav aria-label={`Secciones de ${label}`} className="hidden lg:block">
+            <ul className="flex items-center gap-1">
+              {sections.map((item) => {
+                const current = isCurrent(item);
                 return (
-                  <DropdownMenuItem key={item.to} asChild>
-                    <Link 
-                      to={item.to} 
-                      className={`w-full px-2 py-2 flex items-center gap-2 ${isActive(item.to) ? 'text-brand' : ''}`}
-                    >
-                      <Icon className="h-4 w-4" />
-                      {item.label}
-                    </Link>
-                  </DropdownMenuItem>
+                  <li key={item.label}>
+                    <SmartLink
+                      item={item}
+                      aria-current={current ? 'page' : undefined}
+                      className={`inline-flex h-16 items-center px-3 text-[15px] font-medium transition-colors border-b-2 ${
+                        current ? 'border-brand text-ink' : 'border-transparent text-ink-2 hover:text-ink'
+                      }`}
+                    />
+                  </li>
                 );
               })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
-          {/* Dropdown Menu for "Guías" */}
-          <DropdownMenu open={isGuideMenuOpen} onOpenChange={setIsGuideMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <button 
-                className={`${navLinkClasses} px-3 py-2 flex items-center gap-1 group ${
-                  guidesItems.some(item => location.pathname === item.to)
-                    ? activeNavLinkClasses 
-                    : ''
-                }`}
-              >
-                <FileText className={iconClasses} />
-                Guías
-                <ChevronDown className="h-4 w-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64 bg-white z-50 animate-scale-in">
-              {guidesItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <DropdownMenuItem key={item.to} asChild>
-                    <Link 
-                      to={item.to} 
-                      className={`w-full px-2 py-2 flex items-center gap-2 ${isActive(item.to) ? 'text-brand' : ''}`}
-                    >
-                      <Icon className="h-4 w-4" />
-                      {item.label}
-                    </Link>
-                  </DropdownMenuItem>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        
-        {/* CTA Button and User Menu */}
-        <div className="hidden md:flex items-center gap-3">
-          <CountrySwitcher />
-          {user ? (
+            </ul>
+          </nav>
+
+          <div className="ml-auto flex items-center gap-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <User className="h-5 w-5" />
-                </Button>
+                <button className="hidden md:inline-flex h-10 items-center gap-1 rounded-md px-3 text-[15px] font-medium text-ink-2 hover:text-ink hover:bg-paper data-[state=open]:bg-paper data-[state=open]:text-ink">
+                  Guías y herramientas
+                  <ChevronDown className="h-4 w-4" aria-hidden />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <div className="flex flex-col space-y-1 px-2 py-1.5">
-                  <p className="text-sm font-medium">{user.email}</p>
-                  <p className="text-xs text-muted-foreground capitalize">{role || 'user'}</p>
+              <DropdownMenuContent align="end" sideOffset={8} className="w-[min(92vw,760px)] rounded-lg border-rule p-0 shadow-lg">
+                <div className="grid gap-0 sm:grid-cols-3 sm:divide-x sm:divide-rule">
+                  {guides.map((group) => (
+                    <div key={group.title} className="p-4">
+                      <p className="mb-2 text-xs font-semibold text-ink-3">{group.title}</p>
+                      <ul className="space-y-0.5">
+                        {group.items.map((item) => (
+                          <li key={item.href}>
+                            <DropdownMenuItem asChild className="cursor-pointer rounded px-2 py-1.5 text-sm text-ink focus:bg-paper">
+                              <SmartLink item={item} />
+                            </DropdownMenuItem>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
-                <DropdownMenuItem onClick={() => navigate(getDashboardLink())}>
-                  <LayoutDashboard className="mr-2 h-4 w-4" />
-                  Mi Dashboard
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Cerrar Sesión
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          ) : (
-            <Button asChild variant="ghost">
-              <Link to="/auth">Iniciar Sesión</Link>
-            </Button>
-          )}
-          
-          <Button 
-            asChild 
-            className="cta-primary flex items-center gap-2"
-          >
-            <Link to="/ranking" className="flex items-center gap-2">
-              Compara ahora
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
+
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink-2 hover:bg-paper hover:text-ink" aria-label="Tu cuenta">
+                    <User className="h-5 w-5" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-60">
+                  <div className="px-2 py-1.5">
+                    <p className="truncate text-sm font-medium text-ink">{user.email}</p>
+                    <p className="text-xs text-ink-3">{role === 'admin' ? 'Administrador' : role === 'hosting_provider' ? 'Proveedor' : 'Usuario'}</p>
+                  </div>
+                  <DropdownMenuItem onClick={() => navigate(dashboardLink)}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Mi panel
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Cerrar sesión
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                to="/auth"
+                className="hidden md:inline-flex h-10 items-center rounded-md px-3 text-[15px] font-medium text-ink-2 hover:bg-paper hover:text-ink"
+              >
+                Ingresar
+              </Link>
+            )}
+
+            {/* Menú móvil */}
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
+                <button className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink lg:hidden" aria-label="Abrir menú">
+                  <Menu className="h-6 w-6" />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[88%] max-w-sm overflow-y-auto p-0">
+                <SheetTitle className="sr-only">Menú de EligeTuHosting</SheetTitle>
+                <div className="border-b border-rule p-5">
+                  <Logo edition={label} />
+                </div>
+                <nav aria-label="Secciones" className="p-5">
+                  <p className="mb-2 text-xs font-semibold text-ink-3">{label}</p>
+                  <ul className="mb-6">
+                    {sections.map((item) => (
+                      <li key={item.label}>
+                        <SmartLink
+                          item={item}
+                          onClick={() => setMobileOpen(false)}
+                          className={`flex min-h-[44px] items-center border-b border-rule/70 text-base font-medium ${isCurrent(item) ? 'text-brand-ink' : 'text-ink'}`}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="mb-2 text-xs font-semibold text-ink-3">Ediciones</p>
+                  <ul className="mb-6 grid grid-cols-2 gap-x-4">
+                    {EDITION_ORDER.map((k) => (
+                      <li key={k}>
+                        <a
+                          href={editionHref(k)}
+                          className={`flex min-h-[44px] items-center gap-2 text-[15px] ${k === key ? 'font-semibold text-ink' : 'text-ink-2'}`}
+                        >
+                          {k === 'LATAM' ? <Globe className="h-4 w-4" aria-hidden /> : <Flag code={k} size={18} />}
+                          {editionName(k)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {guides.map((group) => (
+                    <div key={group.title} className="mb-5">
+                      <p className="mb-1 text-xs font-semibold text-ink-3">{group.title}</p>
+                      <ul>
+                        {group.items.map((item) => (
+                          <li key={item.href}>
+                            <SmartLink
+                              item={item}
+                              onClick={() => setMobileOpen(false)}
+                              className="flex min-h-[40px] items-center text-[15px] text-ink-2 hover:text-ink"
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+
+                  <div className="border-t border-rule pt-4">
+                    {user ? (
+                      <div className="space-y-1">
+                        <p className="truncate text-sm text-ink-2">{user.email}</p>
+                        <button onClick={() => { setMobileOpen(false); navigate(dashboardLink); }} className="flex min-h-[44px] items-center gap-2 text-base font-medium text-ink">
+                          <LayoutDashboard className="h-4 w-4" /> Mi panel
+                        </button>
+                        <button onClick={handleSignOut} className="flex min-h-[44px] items-center gap-2 text-base font-medium text-ink">
+                          <LogOut className="h-4 w-4" /> Cerrar sesión
+                        </button>
+                      </div>
+                    ) : (
+                      <Link to="/auth" onClick={() => setMobileOpen(false)} className="flex min-h-[44px] items-center text-base font-medium text-ink">
+                        Ingresar
+                      </Link>
+                    )}
+                  </div>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
-        
-        {/* Mobile Menu */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-6 w-6 text-ink" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-[80%] sm:max-w-sm animate-slide-in-right">
-            <div className="flex flex-col h-full">
-              <div className="flex flex-col space-y-4 py-4">
-                <a href="https://eligetuhosting.cl" className="flex items-center mb-6">
-                  <Logo variant="option-a" className="h-8 w-auto mr-2" />
-                </a>
-                
-                {mainNavItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <NavLink 
-                      key={item.to}
-                      to={item.to} 
-                      className={({ isActive }) => 
-                        `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
-                      }
-                    >
-                      <Icon className="h-5 w-5 mr-2" />
-                      {item.label}
-                    </NavLink>
-                  );
-                })}
-
-                <CountrySwitcher mobile />
-
-                {/* User Menu / Login Button */}
-                {user ? (
-                  <div className="border-t pt-4 mt-4">
-                    <div className="flex items-center gap-2 mb-3 px-1">
-                      <User className="h-5 w-5 text-ink" />
-                      <div>
-                        <p className="text-sm font-medium text-ink">{user.email}</p>
-                        <p className="text-xs text-muted-foreground capitalize">{role || 'user'}</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Button 
-                        variant="outline" 
-                        className="w-full justify-start"
-                        onClick={() => navigate(getDashboardLink())}
-                      >
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        Mi Dashboard
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="w-full justify-start"
-                        onClick={handleSignOut}
-                      >
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Cerrar Sesión
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="border-t pt-4 mt-4">
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={() => navigate('/auth')}
-                    >
-                      Iniciar Sesión
-                    </Button>
-                  </div>
-                )}
-                
-                {/* Accordion for Herramientas & Guías */}
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="herramientas" className="border-none">
-                    <AccordionTrigger className="py-3 text-base font-medium text-ink hover:text-brand hover:no-underline">
-                      <div className="flex items-center gap-2">
-                        <Wrench className="h-5 w-5" />
-                        Herramientas
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <div className="flex flex-col space-y-3 pt-2">
-                        {toolsItems.map((item) => {
-                          const Icon = item.icon;
-                          return (
-                            <NavLink 
-                              key={item.to}
-                              to={item.to} 
-                              className={({ isActive }) => 
-                                `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
-                              }
-                            >
-                              <Icon className="h-5 w-5 mr-2" />
-                              {item.label}
-                            </NavLink>
-                          );
-                        })}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                  
-                  <AccordionItem value="guias" className="border-none">
-                    <AccordionTrigger className="py-3 text-base font-medium text-ink hover:text-brand hover:no-underline">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-5 w-5" />
-                        Guías
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <div className="flex flex-col space-y-3 pt-2">
-                        {guidesItems.map((item) => {
-                          const Icon = item.icon;
-                          return (
-                            <NavLink 
-                              key={item.to}
-                              to={item.to} 
-                              className={({ isActive }) => 
-                                `${mobileNavLinkClasses} ${isActive ? activeNavLinkClasses : ''}`
-                              }
-                            >
-                              <Icon className="h-5 w-5 mr-2" />
-                              {item.label}
-                            </NavLink>
-                          );
-                        })}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-              
-              <div className="mt-auto pb-6">
-                <Button 
-                  asChild 
-                  className="w-full bg-brand hover:bg-brand/90 text-white flex items-center justify-center gap-2"
-                >
-                  <Link to="/ranking" className="flex items-center gap-2">
-                    Compara ahora
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </nav>
+      </header>
+    </>
   );
 };
 

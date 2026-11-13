@@ -110,7 +110,7 @@ const SobreNosotros: React.FC = () => {
             Quiénes escriben las guías de EligeTuHosting
           </h1>
           <p className="text-lg text-muted-foreground">
-            Somos un equipo editorial técnico, independiente, enfocado en evaluar proveedores de
+            Somos un equipo editorial técnico enfocado en evaluar proveedores de
             hosting en Chile. Nuestras guías combinan benchmarks verificables,
             datos públicos auditables y verificación OSINT de cada
             proveedor que listamos.

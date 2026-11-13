@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { ProvenanceTag } from '@/components/data/Provenance';
 import { ShieldCheck, FileText, Phone, Headphones, Building2, ExternalLink, Server } from 'lucide-react';
 import { track } from '@/lib/track';
 import type { LatamDcSlug } from '@/lib/dcLocal';
@@ -120,16 +121,16 @@ export default function CountryReassurances({
   return (
     <section
       aria-labelledby={`${country}-curated-heading`}
-      className="mb-10 rounded-2xl border border-brand/40 bg-gradient-to-br from-brand/5 via-white to-brand/10 shadow-sm overflow-hidden"
+      className="mb-10 overflow-hidden rounded-lg border border-signal-editorial/30 bg-white"
     >
       <div className="p-5 md:p-7">
         <div className="flex items-start gap-3 mb-4">
-          <div className="rounded-full bg-brand/10 p-2 shrink-0">
-            <ShieldCheck className="h-5 w-5 text-brand" aria-hidden />
+          <div className="shrink-0 rounded-md bg-signal-editorial-bg p-2">
+            <ShieldCheck className="h-5 w-5 text-signal-editorial" aria-hidden />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-wider text-brand font-semibold">
-              Recomendado editorial · {countryName}
+            <div className="flex items-center gap-2 text-sm font-semibold text-signal-editorial">
+              Recomendación editorial en {countryName} <ProvenanceTag kind="editorial" />
             </div>
             <h2
               id={`${country}-curated-heading`}
@@ -147,7 +148,7 @@ export default function CountryReassurances({
             return (
               <li
                 key={b.label}
-                className="flex items-start gap-2.5 rounded-lg bg-white/70 border border-ink/10 p-3"
+                className="flex items-start gap-2.5 rounded-md border border-rule bg-paper p-3"
               >
                 <Icon className="h-4 w-4 text-ink/70 mt-0.5 shrink-0" aria-hidden />
                 <div className="text-xs leading-snug">
@@ -172,7 +173,7 @@ export default function CountryReassurances({
               Ver planes y precios <ExternalLink className="h-4 w-4" aria-hidden />
             </a>
           </Button>
-          <span className="text-xs text-ink/60">Sin compromiso · atención en español</span>
+          <span className="text-xs text-ink-3">Sin compromiso. Atención en español.</span>
         </div>
 
         <p className="text-[11px] text-ink/60 mt-4 leading-snug">

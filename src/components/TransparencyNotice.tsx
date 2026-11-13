@@ -16,7 +16,7 @@ const TransparencyNotice = () => {
               Transparencia Total
             </h2>
             <p className="text-xl text-gray-600">
-              Conoce nuestra metodología de evaluación independiente
+              Cómo evaluamos y de dónde sale cada dato
             </p>
           </div>
 
@@ -29,11 +29,12 @@ const TransparencyNotice = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
                   <Eye className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-ink">Análisis Independiente</h3>
+                <h3 className="text-xl font-bold text-ink">Relación comercial declarada</h3>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                No recibimos pagos por posicionamiento en rankings. Nuestras evaluaciones se basan únicamente en 
-                métricas técnicas verificables: velocidad, uptime, seguridad y soporte técnico.
+                El ranking es editorial, con pesos publicados. Algunos enlaces son de afiliado y el editor mantiene
+                relación comercial con algunos proveedores listados. Cada dato indica si lo medimos, si lo declara el
+                proveedor o si es criterio editorial.
               </p>
             </div>
 

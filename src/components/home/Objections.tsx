@@ -56,13 +56,14 @@ const objections: { q: string; a: React.ReactNode }[] = [
     ),
   },
   {
-    q: '"¿Ustedes ganan comisión? Entonces no son neutrales."',
+    q: '"¿Ustedes ganan comisión? Entonces, ¿cómo confío en el orden?"',
     a: (
       <>
-        Sí ganamos comisión de algunos proveedores. Y sí somos independientes: el puntaje sale
-        de mediciones técnicas y de reclamos públicos, no de cuánto paga cada uno. Proveedores
-        con reclamos altos aparecen igual — con reclamos y todo. Nuestra política y quiénes
-        somos: <Link to="/quienes-somos" className="text-primary font-medium hover:underline">/quienes-somos</Link>.
+        Sí: algunos enlaces son de afiliado y el editor mantiene relación comercial con algunos de los
+        proveedores listados. Por eso el ranking es editorial con pesos publicados, y cada dato indica si lo
+        medimos nosotros, si lo declara el proveedor o si es criterio editorial. Los proveedores con reclamos
+        aparecen igual, con sus reclamos a la vista. Más contexto en{' '}
+        <Link to="/quienes-somos" className="text-primary font-medium hover:underline">/quienes-somos</Link>.
       </>
     ),
   },

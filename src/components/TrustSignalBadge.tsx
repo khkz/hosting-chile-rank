@@ -31,22 +31,22 @@ const TrustSignalBadge: React.FC<TrustSignalBadgeProps> = ({ companyId, classNam
   });
 
   return (
-    <div className={`inline-flex items-center gap-2 flex-wrap justify-center ${className}`}>
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
-        <ShieldCheck className="w-3 h-3" aria-hidden />
+    <span className={`inline-flex flex-wrap items-center gap-x-3 gap-y-1 ${className}`}>
+      <span className="inline-flex items-center gap-1">
+        <ShieldCheck className="h-3.5 w-3.5 text-ok" aria-hidden />
         {getLastUpdatedText()}
       </span>
       {typeof complaints === 'number' && complaints > 0 && (
         <Link
           to="/reclamos"
-          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium hover:bg-amber-100 transition-colors"
+          className="inline-flex items-center gap-1 text-signal-declared underline-offset-4 hover:underline"
           aria-label={`${complaints} reclamos verificados`}
         >
-          <AlertTriangle className="w-3 h-3" aria-hidden />
+          <AlertTriangle className="h-3.5 w-3.5" aria-hidden />
           {complaints} {complaints === 1 ? 'reclamo verificado' : 'reclamos verificados'}
         </Link>
       )}
-    </div>
+    </span>
   );
 };
 

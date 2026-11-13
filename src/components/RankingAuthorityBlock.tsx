@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, ShieldCheck, Calendar, Info } from 'lucide-react';
+import { BookOpen, ShieldCheck } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 interface RankingAuthorityBlockProps {
   lastUpdated?: string | Date | null;
@@ -30,43 +29,31 @@ const formatDate = (value?: string | Date | null) => {
  */
 const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdated, className = '' }) => {
   return (
-    <div className={`max-w-3xl mx-auto ${className}`}>
-      {/* (B) Authority signals line */}
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs md:text-sm text-muted-foreground mb-3">
-        <Link
-          to="/metodologia"
-          className="inline-flex items-center gap-1 hover:text-primary underline-offset-2 hover:underline"
-        >
-          <BookOpen className="w-3.5 h-3.5" /> Metodología
-        </Link>
-        <span aria-hidden="true">·</span>
-        <Link
-          to="/transparencia-hosting-chile"
-          className="inline-flex items-center gap-1 hover:text-primary underline-offset-2 hover:underline"
-        >
-          <ShieldCheck className="w-3.5 h-3.5" /> Transparencia
-        </Link>
-        <span aria-hidden="true">·</span>
-        <span className="inline-flex items-center gap-1">
-          <Calendar className="w-3.5 h-3.5" />
-          Última revisión del ranking: {VERIFICATION_DATE_HUMAN}
-        </span>
+    <div className={className}>
+      <div className="flex flex-col gap-3 border-l-2 border-rule pl-4 text-sm text-ink-2 md:flex-row md:items-start md:justify-between md:gap-8">
+        <p className="max-w-[78ch] leading-relaxed">
+          <strong className="font-semibold text-ink">Divulgación:</strong> el editor de este sitio mantiene relación
+          comercial con algunos de los proveedores listados. Algunos enlaces pueden generar una comisión sin costo
+          adicional para ti. Los pesos del ranking están publicados en la metodología.
+        </p>
+        <ul className="flex shrink-0 flex-wrap gap-x-4 gap-y-1">
+          <li>
+            <Link to="/metodologia" className="inline-flex items-center gap-1 font-medium text-ink underline decoration-rule underline-offset-4 hover:decoration-ink">
+              <BookOpen className="h-3.5 w-3.5" aria-hidden /> Metodología
+            </Link>
+          </li>
+          <li>
+            <Link to="/transparencia-hosting-chile" className="inline-flex items-center gap-1 font-medium text-ink underline decoration-rule underline-offset-4 hover:decoration-ink">
+              <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> Transparencia
+            </Link>
+          </li>
+        </ul>
       </div>
 
-      {/* (C) Affiliate + commercial disclosure visible near ranking */}
-      <p className="text-[11px] md:text-xs text-center text-muted-foreground/90 bg-muted/40 border border-border rounded-lg px-3 py-2 mb-4 inline-flex items-start gap-2 mx-auto">
-        <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-        <span>
-          <strong className="font-semibold">Divulgación:</strong> el editor de este sitio mantiene relación comercial
-          con algunos de los proveedores listados. Algunos enlaces pueden generar una comisión sin costo adicional
-          para ti. Los pesos del ranking están publicados en la metodología.
-        </span>
-      </p>
-
       {/* (A) Why HostingPlus is #1 accordion */}
-      <Accordion type="single" collapsible className="bg-card border border-border rounded-xl px-4">
+      <Accordion type="single" collapsible className="mt-4 rounded-lg border border-rule bg-white px-4">
         <AccordionItem value="por-que-hp" className="border-0">
-          <AccordionTrigger className="text-sm md:text-base font-semibold text-foreground hover:no-underline">
+          <AccordionTrigger className="text-left text-sm font-semibold text-ink hover:no-underline md:text-base">
             ¿Por qué HostingPlus es #1?
           </AccordionTrigger>
           <AccordionContent className="text-sm text-muted-foreground space-y-3">
@@ -90,7 +77,7 @@ const RankingAuthorityBlock: React.FC<RankingAuthorityBlockProps> = ({ lastUpdat
               </Link>{' '}
               y la fórmula de puntuación en{' '}
               <Link to="/metodologia" className="text-primary hover:underline font-medium">
-                Nuestro Método
+                la metodología
               </Link>.
             </p>
           </AccordionContent>

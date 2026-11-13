@@ -24,10 +24,11 @@ const FAQ = React.lazy(() => import('@/components/FAQ'));
 const Footer = React.lazy(() => import('@/components/Footer'));
 const StickyCTA = React.lazy(() => import('@/components/StickyCTA'));
 const MiniNav = React.lazy(() => import('@/components/MiniNav'));
+const LatamEditions = React.lazy(() => import('@/components/home/LatamEditions'));
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-paper to-white font-montserrat text-[#333] overflow-x-hidden">
+    <div className="min-h-screen bg-white text-ink overflow-x-hidden">
       <ScrollProgress />
 
       <DynamicMetaTags
@@ -122,44 +123,8 @@ const Index = () => {
             </div>
           </section>
 
-          {/* LATAM cross-link — autoridad .cl → .com */}
-          <section aria-labelledby="latam-crosslink" className="py-8 md:py-12 bg-paper-deep/60 border-y border-ink/10">
-            <div className="container mx-auto px-4 max-w-5xl">
-              <h2 id="latam-crosslink" className="text-2xl md:text-3xl font-bold text-ink mb-2">
-                🌎 ¿Buscas hosting en otro país de Latinoamérica?
-              </h2>
-              <p className="text-ink/70 mb-5">
-                Publicamos directorios independientes con la misma metodología verificable (razón social, ASN, datacenter y reclamos) en Perú, México, Colombia y Argentina.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <a href="https://eligetuhosting.com/pe/mejor-hosting-peru-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-ink/10 hover:border-brand transition">
-                  <div className="text-2xl mb-1">🇵🇪</div>
-                  <div className="font-semibold text-ink">Mejor hosting Perú 2026</div>
-                  <div className="text-xs text-ink/60 mt-1">Ranking auditado · 18 proveedores</div>
-                </a>
-                <a href="https://eligetuhosting.com/mx/mejor-hosting-mexico-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-ink/10 hover:border-brand transition">
-                  <div className="text-2xl mb-1">🇲🇽</div>
-                  <div className="font-semibold text-ink">Mejor hosting México 2026</div>
-                  <div className="text-xs text-ink/60 mt-1">Ranking auditado · 15 proveedores</div>
-                </a>
-                <a href="https://eligetuhosting.com/co/mejor-hosting-colombia-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-ink/10 hover:border-brand transition">
-                  <div className="text-2xl mb-1">🇨🇴</div>
-                  <div className="font-semibold text-ink">Mejor hosting Colombia 2026</div>
-                  <div className="text-xs text-ink/60 mt-1">Ranking auditado · 11 proveedores</div>
-                </a>
-                <a href="https://eligetuhosting.com/ar/mejor-hosting-argentina-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-ink/10 hover:border-brand transition">
-                  <div className="text-2xl mb-1">🇦🇷</div>
-                  <div className="font-semibold text-ink">Mejor hosting Argentina 2026</div>
-                  <div className="text-xs text-ink/60 mt-1">Ranking auditado · 11 proveedores</div>
-                </a>
-              </div>
-              <p className="mt-4 text-sm">
-                <a href="https://eligetuhosting.com/latam" rel="noopener" className="text-brand font-medium hover:underline">
-                  Ver el hub LATAM completo →
-                </a>
-              </p>
-            </div>
-          </section>
+          {/* Ediciones del .com: enlaces con cifras desde la base */}
+          <LatamEditions />
 
 
           <MiniNav />

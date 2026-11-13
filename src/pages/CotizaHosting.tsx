@@ -436,7 +436,7 @@ const CotizaHosting = () => {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-medium">Comparativa imparcial</h3>
+                      <h3 className="font-medium">Comparativa con metodología publicada</h3>
                       <p className="text-sm text-gray-600">Analizamos múltiples proveedores para recomendarte la mejor opción.</p>
                     </div>
                   </div>

@@ -115,7 +115,7 @@ const BeforeAfter = () => {
           <div className="inline-flex items-center gap-2 bg-white border border-gray-200 px-6 py-3 rounded-full shadow-sm">
             <CheckCircle2 className="w-5 h-5 text-green-500" />
             <span className="text-sm font-medium text-gray-700">
-              Todos nuestros datos son verificados con herramientas independientes
+              Cada dato indica si es medido, declarado por el proveedor o editorial
             </span>
           </div>
         </div>

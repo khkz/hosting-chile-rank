@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, AlertTriangle, ExternalLink, CheckCircle2, XCircle, HelpCircle, Globe2 } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, ExternalLink, CheckCircle2, XCircle, HelpCircle, Globe2, ChevronDown } from 'lucide-react';
 import {
   certifiedOperators,
   rankingHosts,
@@ -132,11 +132,16 @@ const DatacenterEducation: React.FC = () => {
           </article>
         </div>
 
-        {/* 2) Ranking de operadores por criterios objetivos */}
-        <div className="mb-14">
-          <h3 className="text-2xl font-bold text-ink mb-2">
-            Operadores certificados en Chile
-          </h3>
+        {/* 2) Ranking de operadores por criterios objetivos (plegable) */}
+        <details className="group mb-4 rounded-lg border border-rule bg-white">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 [&::-webkit-details-marker]:hidden">
+            <span>
+              <span className="block text-xl font-bold text-ink">Operadores certificados en Chile</span>
+              <span className="text-sm text-ink-2">{rankedOperators.length} operadores con certificación pública verificable</span>
+            </span>
+            <ChevronDown className="h-5 w-5 shrink-0 text-ink-2 transition-transform group-open:rotate-180" aria-hidden />
+          </summary>
+          <div className="px-5 pb-5">
           <p className="text-sm text-ink/60 mb-5">
             Ordenados por criterios objetivos: nivel Tier declarado, evidencia de instalación
             construida ("Constructed Facility") y sustentabilidad Gold. Solo incluye operadores
@@ -170,13 +175,19 @@ const DatacenterEducation: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+          </div>
+        </details>
 
-        {/* 3) Tabla host -> datacenter */}
-        <div className="mb-14">
-          <h3 className="text-2xl font-bold text-ink mb-2">
-            ¿Qué datacenter usa cada proveedor?
-          </h3>
+        {/* 3) Tabla host -> datacenter (plegable) */}
+        <details className="group mb-14 rounded-lg border border-rule bg-white">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 [&::-webkit-details-marker]:hidden">
+            <span>
+              <span className="block text-xl font-bold text-ink">¿Qué datacenter usa cada proveedor?</span>
+              <span className="text-sm text-ink-2">{rankingHosts.length} proveedores, con su fuente pública</span>
+            </span>
+            <ChevronDown className="h-5 w-5 shrink-0 text-ink-2 transition-transform group-open:rotate-180" aria-hidden />
+          </summary>
+          <div className="px-5 pb-5">
           <p className="text-sm text-ink/60 mb-5">
             Estado según fuentes públicas del propio proveedor. Cuando el proveedor no
             transparenta operador o certificación, lo marcamos como autodeclarado o "no divulga".
@@ -231,7 +242,8 @@ const DatacenterEducation: React.FC = () => {
               </tbody>
             </table>
           </div>
-        </div>
+          </div>
+        </details>
 
         {/* 4) Checklist del comprador */}
         <div className="mb-14 bg-white border border-ink/10 rounded-xl p-6">

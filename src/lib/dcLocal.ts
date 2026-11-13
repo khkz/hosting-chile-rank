@@ -28,3 +28,16 @@ export function has247Support(contactHours: string | null | undefined): boolean 
   const s = contactHours.toLowerCase();
   return /24\s*[\/x]\s*7|24\s*horas|24h|24\s*hrs|siempre\s+disponible|permanente/i.test(s);
 }
+
+/**
+ * Variante genérica para cualquier edición del registro: recibe el patrón
+ * del país (Edition.dcPattern) y aplica la misma lista de negaciones.
+ */
+export function declaresDatacenterIn(
+  countryPattern: RegExp,
+  datacenterLocation: string | null | undefined
+): boolean {
+  if (!datacenterLocation) return false;
+  const cleaned = String(datacenterLocation).replace(NEGATION_RE, ' ');
+  return countryPattern.test(cleaned);
+}

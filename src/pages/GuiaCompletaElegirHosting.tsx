@@ -85,7 +85,7 @@ const GuiaCompletaElegirHosting = () => {
     },
     {
       question: "¿Cómo puedo verificar la reputación de un proveedor de hosting?",
-      answer: "Revisa rankings independientes como EligeTuHosting.cl, busca opiniones en redes sociales chilenas, consulta en Reclamos.cl, prueba el soporte antes de contratar, y verifica certificaciones de calidad y tiempo en el mercado."
+      answer: "Revisa rankings con metodología publicada, como EligeTuHosting.cl, busca opiniones en redes sociales chilenas, consulta en Reclamos.cl, prueba el soporte antes de contratar, y verifica certificaciones de calidad y tiempo en el mercado."
     }
   ];
 

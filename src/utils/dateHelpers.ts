@@ -17,7 +17,7 @@ const MONTHS_ES = [
 export function getLastUpdatedText(): string {
   const now = new Date();
   const month = MONTHS_ES[now.getMonth()];
-  return `Actualizado ${month} ${CURRENT_YEAR}`;
+  return `Actualizado en ${month.toLowerCase()} de ${CURRENT_YEAR}`;
 }
 
 /**

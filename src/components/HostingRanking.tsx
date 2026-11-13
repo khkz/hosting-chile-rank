@@ -1,21 +1,21 @@
 import { isDofollowProvider } from '@/lib/providerLinks';
 import React, { useState, useMemo } from 'react';
-import { Trophy, Check, Star, Shield, Zap, Award } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
-import { Button } from '@/components/ui/button';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Skeleton } from '@/components/ui/skeleton';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import TrustSignalBadge from './TrustSignalBadge';
-import IndependenceBadge from './IndependenceBadge';
 import RankingPositions4to10 from './RankingPositions4to10';
 import RankingAuthorityBlock from './RankingAuthorityBlock';
 import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
-import DatacenterBadge from './DatacenterBadge';
+import { lookupHostDc } from './DatacenterBadge';
+import { ProvenanceTag } from './data/Provenance';
+import { formatCorporateGroup } from '@/lib/formatGroup';
+import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
+import { useReviewStatsForSlug } from '@/hooks/useReviewStats';
 
 // ── Types mapped to Supabase columns ────────────────────────────
 interface RankingCompany {
@@ -51,37 +51,33 @@ interface RankingCompany {
   sortPosition: number;
 }
 
-// ── Reusable card for any position ──────────────────────────────
-interface RankingCardProps {
+// ── Fila del ranking (puestos 1 a 3) ───────────────────────────
+interface RankingRowProps {
   provider: RankingCompany;
   ratingLabel: string;
   isWinner: boolean;
 }
 
-import { useReviewStatsForSlug } from '@/hooks/useReviewStats';
+const DC_TEXT: Record<string, string> = {
+  certificado: 'Datacenter certificado',
+  autodeclarado: 'Datacenter autodeclarado',
+  extranjero: 'Infraestructura extranjera',
+  no_divulga: 'No divulga datacenter',
+};
 
-const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinner }) => {
+const RankingRow: React.FC<RankingRowProps> = ({ provider, ratingLabel, isWinner }) => {
   const { data: userStats } = useReviewStatsForSlug(provider.slug);
-  const borderClass = isWinner ? `border-4 ${provider.border_color || 'border-primary'}` : 'border-2 border-border';
-  const numberSize = isWinner ? 'w-16 h-16 text-2xl md:w-20 md:h-20 md:text-3xl' : 'w-14 h-14 text-xl md:w-16 md:h-16 md:text-2xl';
-  const numberBg = isWinner
-    ? 'bg-gradient-to-br from-yellow-400 to-orange-500'
-    : provider.sortPosition === 2
-      ? 'bg-gradient-to-br from-gray-400 to-gray-500'
-      : 'bg-gradient-to-br from-amber-600 to-amber-700';
-
-  const badgeGradient = isWinner
-    ? 'from-brand to-pink-500 text-white'
-    : provider.sortPosition === 2
-      ? 'from-gray-100 to-gray-200 text-gray-700'
-      : 'from-amber-100 to-orange-200 text-amber-700';
-
-  const ratingColor = isWinner ? 'text-brand' : provider.sortPosition === 2 ? 'text-gray-600' : 'text-amber-600';
+  const dc = lookupHostDc(provider.name);
+  const features = cleanFeatures(provider.ranking_features);
+  const link = provider.slug && provider.website ? getProviderLink(provider.slug, provider.website) : null;
+  const name = `${provider.display_name_first || provider.name}${provider.display_name_second || ''}`;
 
   return (
     <article
-      className="w-full"
-      aria-label={`Posición ${provider.sortPosition}: ${provider.name}`}
+      className={`relative grid gap-x-8 gap-y-5 border-b border-rule py-8 md:grid-cols-[88px_minmax(0,1fr)_240px] ${
+        isWinner ? 'md:-mx-4 md:rounded-lg md:border md:border-ink/15 md:bg-paper md:px-4' : ''
+      }`}
+      aria-label={`Puesto ${provider.sortPosition}: ${provider.name}`}
       itemScope
       itemType="https://schema.org/SoftwareApplication"
     >
@@ -89,175 +85,135 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
       <meta itemProp="applicationCategory" content="Web Hosting Service" />
       <meta itemProp="operatingSystem" content="Linux" />
 
-      {/* Position number */}
-      <div className="relative text-center pb-4">
-        <div className="inline-flex items-center justify-center">
-          <div className="relative">
-            <span className={`inline-flex items-center justify-center ${numberSize} ${numberBg} text-white rounded-full shadow-2xl font-black border-4 border-background`}>
-              {provider.sortPosition}
-            </span>
-            {isWinner && <Trophy className="w-6 h-6 md:w-8 md:h-8 text-yellow-500 absolute -top-2 -right-6 md:-right-8" />}
-          </div>
-        </div>
-        {isWinner && provider.is_recommended && (
-          <div className="mt-2 flex justify-center">
-            <span className="bg-gradient-to-r from-brand to-pink-500 text-white text-xs md:text-sm px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
-              <Check size={14} /> Más Recomendado
-            </span>
-          </div>
-        )}
+      {isWinner && <span className="absolute left-0 top-8 bottom-8 hidden w-1 rounded-r bg-brand md:block" aria-hidden />}
+
+      <div className="flex items-center gap-4 md:block">
+        <span
+          className={`type-display block text-5xl tabular md:text-6xl ${isWinner ? 'text-brand' : 'text-ink/30'}`}
+          aria-hidden
+        >
+          {provider.sortPosition}
+        </span>
+        <h3 className="text-2xl font-bold text-ink md:hidden">{name}</h3>
       </div>
 
-      {/* Card */}
-      <div className={`relative bg-card ${borderClass} rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300`}>
-        {isWinner && <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent rounded-3xl pointer-events-none" />}
+      <div className="min-w-0">
+        <h3 className="hidden text-[1.7rem] font-bold leading-tight text-ink md:block">{name}</h3>
 
-        {/* Top badges */}
-        <div className="absolute -top-3 left-3 flex flex-wrap gap-1.5 z-20">
-          {provider.ranking_badges?.map((badge, idx) => (
-            <span key={idx} className={`px-2.5 py-1 bg-gradient-to-r ${badgeGradient} text-[10px] md:text-xs font-medium rounded-full ${isWinner ? 'shadow-lg' : ''}`}>
-              {badge}
-            </span>
-          ))}
-        </div>
-
-        <div className="p-5 md:p-6 lg:p-8 pt-10 md:pt-12 relative">
-          {/* Header */}
-          <div className="text-center mb-4">
-            <h3 className={`${isWinner ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-bold mb-2`}>
-              <span className={provider.display_name_first_color || 'text-foreground'}>{provider.display_name_first || provider.name}</span>
-              <span className={provider.display_name_second_color || 'text-foreground'}>{provider.display_name_second || ''}</span>
-            </h3>
-
-            {/* Independence Badge */}
-            <div className="flex justify-center mb-2">
-              <IndependenceBadge
-                isIndependent={provider.is_independent ?? true}
-                corporateGroup={provider.corporate_group ?? undefined}
-                legalName={provider.legal_name ?? undefined}
-              />
+        <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-ink-2">
+          {provider.corporate_group && (
+            <div className="flex gap-1">
+              <dt className="text-ink-3">Grupo:</dt>
+              <dd>{formatCorporateGroup(provider.corporate_group)}</dd>
             </div>
-
-            {/* Señales reales: verificación + reclamos verificados */}
-            <div className="flex justify-center mb-3">
-              <TrustSignalBadge companyId={provider.id} />
+          )}
+          {dc && (
+            <div className="flex gap-1">
+              <dt className="sr-only">Datacenter:</dt>
+              <dd>
+                {DC_TEXT[dc.estado] ?? 'Datacenter'}
+                {dc.operador && <span className="text-ink-3"> ({dc.operador})</span>}
+              </dd>
             </div>
-
-            {/* Datacenter status (P4-DC3) */}
-            <div className="flex justify-center mb-3">
-              <DatacenterBadge providerName={provider.name} />
-            </div>
-
-            {/* Rating */}
-            <div className="flex items-center justify-center gap-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`${isWinner ? 'w-5 h-5' : 'w-4 h-4'} fill-yellow-400 text-yellow-400`} />
-                ))}
-              </div>
-              <span
-                className={`${isWinner ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-bold ${ratingColor}`}
-                itemProp="aggregateRating"
-                itemScope
-                itemType="https://schema.org/AggregateRating"
-              >
-                <meta itemProp="ratingValue" content={String(provider.overall_rating)} />
-                <meta itemProp="bestRating" content="10" />
-                <meta itemProp="ratingCount" content="1" />
-                {ratingLabel}
-              </span>
-            </div>
-            {userStats && userStats.count > 0 && (
-              <p className="mt-1 text-xs text-muted-foreground flex items-center justify-center gap-1">
-                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                <span className="font-semibold text-foreground">{userStats.avg.toFixed(1)}</span>
-                · {userStats.count} reseña{userStats.count === 1 ? '' : 's'} de usuarios
-              </p>
-            )}
+          )}
+          <div>
+            <dt className="sr-only">Verificación y reclamos:</dt>
+            <dd><TrustSignalBadge companyId={provider.id} /></dd>
           </div>
+        </dl>
 
-
-
-          {/* Features */}
-          <ul className="space-y-2 mb-4 text-sm">
-            {cleanFeatures(provider.ranking_features).map((feature, index) => (
+        {features.length > 0 && (
+          <ul className="mt-5 grid gap-x-6 gap-y-2 text-[15px] text-ink sm:grid-cols-2">
+            {features.map((feature, index) => (
               <li key={index} className="flex items-start gap-2">
-                <Check className={`w-4 h-4 ${isWinner ? 'text-brand' : 'text-green-500'} mt-0.5 flex-shrink-0`} />
-                <span className="text-muted-foreground font-medium">{feature}</span>
+                <Check className={`mt-1 h-4 w-4 shrink-0 ${isWinner ? 'text-brand' : 'text-ok'}`} aria-hidden />
+                <span>{feature}</span>
               </li>
             ))}
           </ul>
+        )}
 
+        {provider.ranking_badges?.length > 0 && (
+          <ul className="mt-4 flex flex-wrap gap-2" aria-label="Distinciones editoriales">
+            {provider.ranking_badges.map((badge, idx) => (
+              <li key={idx} className="rounded border border-ink/15 bg-white px-2 py-0.5 text-xs font-medium text-ink-2">
+                {badge}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
-          {/* CTA */}
-          <div className="space-y-2">
-            {provider.slug && provider.website ? (() => {
-              const link = getProviderLink(provider.slug, provider.website);
-              return (
-                <Button
-                  asChild
-                  className={`w-full ${provider.button_color || 'bg-primary'} hover:opacity-90 text-white py-6 text-lg font-bold rounded-xl shadow-2xl hover:shadow-xl transition-all duration-300 min-h-[56px] touch-manipulation`}
-                >
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel={link.rel}
-                    referrerPolicy="no-referrer"
-                    onClick={() => track('click_visitar_sitio', { slug: provider.slug, location: 'ranking_top3', position: provider.ranking_position ?? undefined })}
-                  >
-                    {cleanCtaText(provider.cta_text)}
-                  </a>
-                </Button>
-              );
-            })() : null}
-            {provider.cta_micro_copy ? (
-              <p className="text-xs text-center text-muted-foreground">
-                {provider.cta_micro_copy}
-              </p>
-            ) : (
-              <p className="text-xs text-center text-muted-foreground">
-                Sin compromiso · Revisa el plan antes de contratar
-              </p>
-            )}
-            <p className="text-[11px] text-center text-muted-foreground/80 leading-snug">
-              Enlace de afiliado. Puede generarnos una comisión sin costo extra para ti.
+      <div className="flex flex-col gap-3 md:items-end md:text-right">
+        <div>
+          <p className="flex items-baseline gap-1 md:justify-end">
+            <span
+              className="text-4xl font-bold text-ink tabular"
+              itemProp="aggregateRating"
+              itemScope
+              itemType="https://schema.org/AggregateRating"
+            >
+              <meta itemProp="ratingValue" content={String(provider.overall_rating)} />
+              <meta itemProp="bestRating" content="10" />
+              <meta itemProp="ratingCount" content="1" />
+              {ratingLabel.replace('/10', '').replace('.', ',')}
+            </span>
+            <span className="text-ink-3">/10</span>
+          </p>
+          <p className="mt-1 flex md:justify-end">
+            <ProvenanceTag kind="editorial" />
+          </p>
+          {userStats && userStats.count > 0 && (
+            <p className="mt-2 text-xs text-ink-2 tabular">
+              Usuarios: {userStats.avg.toFixed(1).replace('.', ',')} de 5 en {userStats.count} reseña{userStats.count === 1 ? '' : 's'}
             </p>
-            {provider.slug && (
-              <p className="text-center text-sm">
-                <Link
-                  to={`/catalogo/${provider.slug}`}
-                  className="text-primary hover:underline font-medium"
-                  onClick={() => track('click_ver_ficha', { slug: provider.slug, location: 'ranking_top3' })}
-                >
-                  Review completa de {provider.name} →
-                </Link>
-              </p>
-            )}
-          </div>
+          )}
         </div>
+
+        {link && (
+          <a
+            href={link.href}
+            target="_blank"
+            rel={link.rel}
+            referrerPolicy="no-referrer"
+            onClick={() => track('click_visitar_sitio', { slug: provider.slug, location: 'ranking_top3', position: provider.ranking_position ?? undefined })}
+            className={`inline-flex min-h-[48px] w-full items-center justify-center rounded-md px-5 text-base font-semibold md:w-auto md:min-w-[200px] ${
+              isWinner ? 'bg-brand text-white hover:bg-brand-ink' : 'bg-ink text-white hover:bg-ink-soft'
+            }`}
+          >
+            {cleanCtaText(provider.cta_text)}
+          </a>
+        )}
+        <p className="text-xs text-ink-3">
+          {provider.cta_micro_copy || 'Sin compromiso. Revisa el plan antes de contratar.'}
+        </p>
+        {provider.slug && (
+          <Link
+            to={`/catalogo/${provider.slug}`}
+            className="text-sm font-semibold text-ink underline decoration-rule underline-offset-4 hover:decoration-ink"
+            onClick={() => track('click_ver_ficha', { slug: provider.slug, location: 'ranking_top3' })}
+          >
+            Análisis completo de {provider.name}
+          </Link>
+        )}
+        <p className="text-[11px] leading-snug text-ink-3">Enlace de afiliado: puede generarnos una comisión sin costo extra para ti.</p>
       </div>
     </article>
   );
 };
 
-// ── Loading skeleton ────────────────────────────────────────────
+// ── Esqueleto de carga ──────────────────────────────────────────
 const RankingSkeleton = () => (
-  <div className="flex flex-col md:flex-row md:items-end md:justify-center gap-6 md:gap-8 max-w-6xl mx-auto">
+  <div aria-busy="true" aria-label="Cargando el ranking">
     {[1, 2, 3].map((i) => (
-      <div key={i} className="w-full md:w-1/3">
-        <div className="text-center pb-4">
-          <Skeleton className="w-16 h-16 rounded-full mx-auto" />
+      <div key={i} className="grid gap-8 border-b border-rule py-8 md:grid-cols-[88px_minmax(0,1fr)_240px]">
+        <span className="type-display text-6xl text-ink/15">{i}</span>
+        <div className="space-y-3">
+          <div className="h-7 w-1/3 animate-pulse rounded bg-paper-deep" />
+          <div className="h-4 w-2/3 animate-pulse rounded bg-paper-deep" />
+          <div className="h-4 w-1/2 animate-pulse rounded bg-paper-deep" />
         </div>
-        <div className="bg-card border-2 border-border rounded-3xl p-6 space-y-4">
-          <Skeleton className="h-8 w-3/4 mx-auto" />
-          <Skeleton className="h-4 w-1/2 mx-auto" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-10 w-2/3 mx-auto" />
-          <Skeleton className="h-14 w-full rounded-xl" />
-        </div>
+        <div className="h-12 animate-pulse rounded bg-paper-deep" />
       </div>
     ))}
   </div>
@@ -345,32 +301,47 @@ const HostingRanking = () => {
       reviewCount: 1,
     }));
 
-  return (
-    <section id="ranking" className="py-6 md:py-10 bg-gradient-to-b from-background to-muted/30">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-6 md:mb-10">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">
-            Top 3 Mejores Hostings Chile
-          </h2>
-          <p className="text-sm md:text-lg text-muted-foreground max-w-3xl mx-auto">
-            Ranking editorial con metodología y pesos publicados: velocidad, uptime, soporte y reputación
-          </p>
-          <p className="text-xs text-muted-foreground mt-2">
-            Última revisión del ranking: 28 de agosto de 2026
-          </p>
+  const sortOptions: { value: string; label: string }[] = [
+    { value: 'overall', label: 'General' },
+    { value: 'speed', label: 'Velocidad' },
+    { value: 'price', label: 'Precio' },
+  ];
 
-          <div className="w-24 h-1 bg-gradient-to-r from-brand to-pink-400 mx-auto mt-4 rounded-full" />
+  return (
+    <section id="ranking" className="scroll-mt-20 bg-white">
+      <div className="container mx-auto px-4 py-14">
+        <div className="grid gap-6 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-7">
+            <h2 className="type-wide text-3xl font-bold text-ink md:text-4xl">Ranking de hosting en Chile 2026</h2>
+            <p className="mt-2 max-w-[60ch] text-ink-2">
+              Ranking editorial con pesos publicados: velocidad, uptime, soporte y reputación. Última revisión:{' '}
+              {VERIFICATION_DATE_HUMAN}.
+            </p>
+          </div>
+          <div className="md:col-span-5 md:flex md:justify-end">
+            <div role="tablist" aria-label="Ordenar el ranking por" className="inline-flex rounded-md border border-ink/20 bg-white p-1">
+              {sortOptions.map((opt) => {
+                const active = sortCriteria === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setSortCriteria(opt.value)}
+                    className={`min-h-[40px] rounded px-4 text-sm font-semibold transition-colors ${
+                      active ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        {/* Authority signals + affiliate disclosure + "Why HostingPlus #1?" accordion */}
         <RankingAuthorityBlock
-          lastUpdated={
-            sortedHostingData.length > 0 && sortedHostingData[0].updated_at
-              ? new Date(Math.max(...sortedHostingData.map((c: any) => new Date(c.updated_at).getTime()))).toISOString()
-              : null
-          }
-          className="mb-6 md:mb-8"
+          className="mt-6"
         />
 
         {!isLoading && sortedHostingData.length > 0 && (
@@ -382,86 +353,35 @@ const HostingRanking = () => {
           />
         )}
 
-        {/* Sort Controls */}
-        <div className="flex justify-center mb-8 md:mb-12">
-          <ToggleGroup
-            type="single"
-            value={sortCriteria}
-            onValueChange={(value) => value && setSortCriteria(value)}
-            className="bg-card rounded-2xl p-1.5 shadow-lg border border-border"
-          >
-            <ToggleGroupItem
-              value="overall"
-              variant="outline"
-              className={`px-4 md:px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 min-h-[44px] touch-manipulation ${
-                sortCriteria === 'overall' ? 'bg-foreground text-background shadow-lg' : 'hover:bg-muted'
-              }`}
-            >
-              <Award className="w-4 h-4 mr-1.5" />
-              General
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="speed"
-              variant="outline"
-              className={`px-4 md:px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 min-h-[44px] touch-manipulation ${
-                sortCriteria === 'speed' ? 'bg-foreground text-background shadow-lg' : 'hover:bg-muted'
-              }`}
-            >
-              <Zap className="w-4 h-4 mr-1.5" />
-              Velocidad
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="price"
-              variant="outline"
-              className={`px-4 md:px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 min-h-[44px] touch-manipulation ${
-                sortCriteria === 'price' ? 'bg-foreground text-background shadow-lg' : 'hover:bg-muted'
-              }`}
-            >
-              <Shield className="w-4 h-4 mr-1.5" />
-              Precio
-            </ToggleGroupItem>
-          </ToggleGroup>
+        <div className="mt-6 border-t-2 border-ink">
+          {isLoading ? (
+            <RankingSkeleton />
+          ) : (
+            <ol className="m-0 list-none p-0" aria-label="Ranking de los mejores hostings en Chile 2026">
+              {sortedHostingData.slice(0, 3).map((provider) => (
+                <li key={provider.id}>
+                  <RankingRow
+                    provider={provider}
+                    ratingLabel={getRatingLabel(provider)}
+                    isWinner={provider.sortPosition === 1}
+                  />
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
 
-        {/* Cards */}
-        {isLoading ? (
-          <RankingSkeleton />
-        ) : (
-          <ol className="flex flex-col md:flex-row md:items-end md:justify-center gap-6 md:gap-8 max-w-6xl mx-auto mb-12 list-none p-0 m-0" aria-label="Ranking de los mejores hostings en Chile 2026">
-            {sortedHostingData.slice(0, 3).map((provider) => (
-              <li key={provider.id} className={`w-full md:w-1/3 ${provider.sortPosition === 1 ? 'md:order-2 md:z-10' : provider.sortPosition === 2 ? 'md:order-1' : 'md:order-3'}`}>
-                <RankingCard
-                  provider={provider}
-                  ratingLabel={getRatingLabel(provider)}
-                  isWinner={provider.sortPosition === 1}
-                />
-              </li>
-            ))}
-          </ol>
-        )}
-
-
-        {/* Puestos 4 a 10 */}
         <RankingPositions4to10 />
 
-        {/* More Providers Link */}
-        <div className="text-center mt-10">
-          <div className="inline-block bg-card rounded-2xl p-6 md:p-8 shadow-lg border border-border">
-            <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3">
-              ¿Necesitas más opciones?
-            </h3>
-            <p className="text-muted-foreground mb-4 text-sm md:text-base">
-              Revisa nuestro ranking completo con 10 proveedores analizados
-            </p>
-            <Link
-              to="/ranking"
-              className="inline-flex items-center gap-2 text-brand hover:text-brand-ink font-semibold text-base md:text-lg transition-colors duration-300 group"
-              onClick={() => track('cta_ver_ranking', { location: 'home_more' })}
-            >
-              Ver ranking completo
-              <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </Link>
-          </div>
+        <div className="mt-10 flex flex-col items-start gap-2 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-ink-2">El ranking completo incluye fichas, comparativas y el detalle de cada nota.</p>
+          <Link
+            to="/ranking"
+            className="inline-flex min-h-[44px] items-center rounded-md border border-ink/25 px-4 font-semibold text-ink hover:border-ink"
+            onClick={() => track('cta_ver_ranking', { location: 'home_more' })}
+          >
+            Ver el ranking completo
+          </Link>
         </div>
       </div>
     </section>

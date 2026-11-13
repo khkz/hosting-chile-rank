@@ -1,75 +1,82 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { track } from '@/lib/track';
 import { useSiteStats, formatStatNumber } from '@/hooks/useSiteStats';
 import { useTopRankedProvider } from '@/hooks/useTopRankedProvider';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
+/** Portada de la edición Chile: titular, acciones y ficha de la edición. */
 const Hero = () => {
   const { domainCount, companyCount } = useSiteStats();
   const { data: topProvider } = useTopRankedProvider();
-  const topRating = topProvider?.overall_rating != null ? Number(topProvider.overall_rating).toFixed(1) : null;
-  const badgeText = topProvider ? `Mejor Hosting Chile 2026: ${topProvider.name}${topRating ? ` — ${topRating}/10` : ''}` : null;
+  const topRating =
+    topProvider?.overall_rating != null ? Number(topProvider.overall_rating).toFixed(1).replace('.', ',') : null;
+
   const scrollToRanking = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     track('cta_ver_ranking', { location: 'hero' });
-    const el = document.getElementById('ranking');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('ranking')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-warm-cream via-white to-warm-peach overflow-hidden">
-      {/* Contenido compacto */}
-      <div className="container mx-auto px-4 relative z-10 py-4 md:py-6">
-        <div className="max-w-2xl">
-          {/* Badge líder */}
-          {badgeText && (
+    <section className="border-b border-rule bg-paper">
+      <div className="container mx-auto grid gap-10 px-4 py-12 md:grid-cols-12 md:py-16">
+        <div className="md:col-span-7 lg:col-span-8">
+          <h1 className="type-display text-[2.4rem] text-ink sm:text-[3.25rem] lg:text-[3.6rem]">
+            El mejor hosting en Chile, comparado con datos.
+          </h1>
+          <p className="mt-5 max-w-[60ch] text-lg leading-relaxed text-ink-2">
+            Ranking editorial con metodología y pesos publicados. Cada cifra indica si la medimos nosotros, si la
+            declara el proveedor o si es criterio editorial.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
               href="#ranking"
               onClick={scrollToRanking}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-300 text-yellow-900 px-4 py-2 rounded-full text-xs md:text-sm font-semibold shadow-sm hover:shadow-md transition-all mb-3 min-h-[44px]"
-              aria-label={`Ir al ranking: ${badgeText}`}
+              className="inline-flex min-h-[48px] items-center justify-center rounded-md bg-brand px-6 text-base font-semibold text-white hover:bg-brand-ink"
             >
-              <Trophy className="h-4 w-4 text-yellow-600" aria-hidden />
-              <span>🏆 {badgeText}</span>
+              Ver el ranking 2026
             </a>
-          )}
-
-          <h1 className="font-poppins text-2xl md:text-3xl lg:text-4xl font-bold text-ink mb-2 leading-tight">
-            Encuentra el{' '}
-            <span className="text-brand-red">mejor hosting</span>
-            {' '}para tu proyecto
-          </h1>
-
-          <p className="text-sm md:text-base text-gray-600 mb-3 leading-relaxed">
-            Ranking editorial con metodología publicada.
-            {companyCount != null && domainCount != null && (
-              <span className="block text-xs text-gray-500 mt-0.5">
-                {companyCount} proveedores en el directorio · {formatStatNumber(domainCount)} dominios .CL analizados
-              </span>
-            )}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              asChild
-              className="cta-primary px-6 py-3 text-sm md:text-base rounded-xl font-poppins font-semibold shadow-lg hover:shadow-xl min-h-[44px] touch-manipulation"
+            <Link
+              to="/cotiza-hosting"
+              onClick={() => track('cta_cotizar', { location: 'hero' })}
+              className="inline-flex min-h-[48px] items-center justify-center rounded-md border border-ink/25 bg-white px-6 text-base font-semibold text-ink hover:border-ink"
             >
-              <a href="#ranking" onClick={scrollToRanking}>
-                Ver ranking 2026
-                <span className="ml-2">↓</span>
-              </a>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="px-5 py-3 text-sm md:text-base rounded-xl font-poppins font-semibold min-h-[44px] touch-manipulation"
-            >
-              <Link to="/cotiza-hosting" onClick={() => track('cta_cotizar', { location: 'hero' })}>Cotizar gratis</Link>
-            </Button>
+              Cotizar hosting
+            </Link>
           </div>
         </div>
+
+        <aside className="self-end md:col-span-5 lg:col-span-4" aria-label="Resumen de la edición Chile">
+          <dl className="divide-y divide-rule border-y border-ink/80 text-ink tabular">
+            {topProvider && (
+              <div className="flex items-baseline justify-between gap-4 py-3">
+                <dt className="flex items-center gap-2 text-sm text-ink-2">
+                  Primer lugar 2026 <ProvenanceTag kind="editorial" />
+                </dt>
+                <dd className="text-right font-semibold">
+                  <Link to={`/catalogo/${topProvider.slug}`} className="hover:underline underline-offset-4">
+                    {topProvider.name}
+                  </Link>
+                  {topRating && <span className="ml-2 text-ink-2">{topRating}</span>}
+                </dd>
+              </div>
+            )}
+            <div className="flex items-baseline justify-between py-3">
+              <dt className="text-sm text-ink-2">Proveedores en el directorio</dt>
+              <dd className="text-2xl font-bold">{companyCount != null ? companyCount : '…'}</dd>
+            </div>
+            <div className="flex items-baseline justify-between py-3">
+              <dt className="text-sm text-ink-2">Dominios .CL analizados</dt>
+              <dd className="text-2xl font-bold">{domainCount != null ? formatStatNumber(domainCount) : '…'}</dd>
+            </div>
+            <div className="flex items-baseline justify-between py-3">
+              <dt className="text-sm text-ink-2">Última revisión del ranking</dt>
+              <dd className="font-semibold">{VERIFICATION_DATE_HUMAN}</dd>
+            </div>
+          </dl>
+        </aside>
       </div>
     </section>
   );

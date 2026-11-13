@@ -14,7 +14,7 @@ const faqItems: { question: string; answer: React.ReactNode }[] = [
   },
   {
     question: "¿Influyen las comisiones en el ranking?",
-    answer: "No, los puntajes son objetivos e independientes de afiliaciones. Nuestra metodología se basa estrictamente en el rendimiento técnico y la experiencia del usuario."
+    answer: "El ranking es editorial y sus pesos están publicados en la metodología. Algunos enlaces son de afiliado y el editor mantiene relación comercial con algunos proveedores listados; por eso cada dato indica si es medido por nosotros, declarado por el proveedor o criterio editorial."
   },
   {
     question: "¿Por qué HostingPlus lidera el ranking?",

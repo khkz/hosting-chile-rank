@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
-import { Button } from '@/components/ui/button';
-import { ExternalLink, ArrowRight, Star } from 'lucide-react';
+import { ExternalLink, Star } from 'lucide-react';
+import { ProvenanceTag } from './data/Provenance';
 import { useReviewStats } from '@/hooks/useReviewStats';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
@@ -63,137 +63,104 @@ const RankingPositions4to10: React.FC = () => {
   const bySlug = new Map((data ?? []).map((d) => [d.slug, d]));
   const { data: reviewStats } = useReviewStats(slugs);
 
-  return (
-    <section
-      aria-label="Puestos 4 a 10 del ranking de hosting Chile 2026"
-      className="mt-10 max-w-5xl mx-auto"
-    >
-      <h3 className="text-xl md:text-2xl font-bold text-foreground text-center mb-2">
-        Puestos 4 a 10 del ranking
-      </h3>
-      <p className="text-sm text-muted-foreground text-center mb-6">
-        Resto de proveedores verificados con nota igual o inferior a 8.5
-      </p>
+  const visitLink = (slug: string, website: string | null | undefined, position: number, location: string, label: string) => {
+    if (!website) return null;
+    const link = getProviderLink(slug, website);
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel={link.rel}
+        onClick={() => track('click_visitar_sitio', { slug, location, position })}
+        className="inline-flex min-h-[40px] items-center gap-1 rounded-md bg-ink px-3 text-sm font-semibold text-white hover:bg-ink-soft"
+      >
+        {label}
+        <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+      </a>
+    );
+  };
 
-      {/* Tabla en desktop */}
-      <div className="hidden md:block bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-muted-foreground">
-            <tr>
-              <th className="text-left p-3 w-12">#</th>
-              <th className="text-left p-3">Proveedor</th>
-              <th className="text-left p-3 w-20">Nota</th>
-              <th className="text-left p-3 w-32">Desde</th>
-              <th className="text-left p-3">Característica clave</th>
-              <th className="text-right p-3 w-64">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {VISIBLE_RANKING.map((row) => {
-              const db = bySlug.get(row.slug);
-              return (
-                <tr key={row.slug} className="border-t border-border hover:bg-muted/30">
-                  <td className="p-3 font-bold text-foreground">{row.position}</td>
-                  <td className="p-3 font-semibold text-foreground">{row.displayName}</td>
-                  <td className="p-3">
-                    <span className="inline-block bg-primary/10 text-primary font-bold px-2 py-1 rounded">
-                      {row.rating.toFixed(1)}
-                    </span>
-                    {reviewStats?.[row.slug] && (
-                      <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
-                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                        {reviewStats[row.slug].avg.toFixed(1)} · {reviewStats[row.slug].count}
-                      </span>
-                    )}
-                  </td>
-                  <td className="p-3 text-foreground">{formatPrice(getMinPrice(db))}</td>
-                  <td className="p-3 text-muted-foreground">{row.keyFeature}</td>
-                  <td className="p-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button asChild variant="outline" size="sm" className="min-h-[44px]">
-                        <Link to={`/catalogo/${row.slug}`} onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10', position: row.position })}>Ver detalles</Link>
-                      </Button>
-                      {db?.website && (() => {
-                        const link = getProviderLink(row.slug, db.website);
-                        return (
-                          <Button asChild size="sm" className="min-h-[44px]">
-                            <a
-                              href={link.href}
-                              target="_blank"
-                              rel={link.rel}
-                              onClick={() => track('click_visitar_sitio', { slug: row.slug, location: 'ranking_4_10', position: row.position })}
-                            >
-                              Visitar sitio
-                              <ExternalLink className="ml-1 h-3 w-3" />
-                            </a>
-                          </Button>
-                        );
-                      })()}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+  return (
+    <section aria-labelledby="puestos-4-10" className="mt-12">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
+        <h3 id="puestos-4-10" className="type-wide text-xl font-bold text-ink">Puestos 4 a 10</h3>
+        <p className="flex items-center gap-2 text-sm text-ink-3">
+          Notas <ProvenanceTag kind="editorial" />
+        </p>
       </div>
 
-      {/* Cards en mobile */}
-      <div className="md:hidden space-y-3">
+      {/* Escritorio: tabla */}
+      <table className="hidden w-full border-collapse text-left text-[15px] md:table">
+        <thead>
+          <tr className="border-b-2 border-ink text-[13px] text-ink-2">
+            <th scope="col" className="w-14 py-2.5 pr-3 font-semibold">Puesto</th>
+            <th scope="col" className="py-2.5 pr-3 font-semibold">Proveedor</th>
+            <th scope="col" className="w-24 py-2.5 pr-3 text-right font-semibold">Nota</th>
+            <th scope="col" className="py-2.5 pr-3 font-semibold">Lo que lo distingue</th>
+            <th scope="col" className="py-2.5 text-right font-semibold"><span className="sr-only">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {VISIBLE_RANKING.map((row) => {
+            const db = bySlug.get(row.slug);
+            return (
+              <tr key={row.slug} className="border-b border-rule align-middle">
+                <td className="py-3 pr-3 text-xl font-bold text-ink/40 tabular">{row.position}</td>
+                <th scope="row" className="py-3 pr-3 font-semibold text-ink">
+                  {row.displayName}
+                  {reviewStats?.[row.slug] && (
+                    <span className="mt-0.5 flex items-center gap-1 text-xs font-normal text-ink-3 tabular">
+                      <Star className="h-3 w-3 fill-current" aria-hidden />
+                      {reviewStats[row.slug].avg.toFixed(1).replace('.', ',')} de 5 en {reviewStats[row.slug].count} reseña{reviewStats[row.slug].count === 1 ? '' : 's'}
+                    </span>
+                  )}
+                </th>
+                <td className="py-3 pr-3 text-right text-lg font-bold text-ink tabular">{row.rating.toFixed(1).replace('.', ',')}</td>
+                <td className="py-3 pr-3 text-ink-2">{row.keyFeature}</td>
+                <td className="py-3 text-right">
+                  <div className="flex justify-end gap-2">
+                    <Link
+                      to={`/catalogo/${row.slug}`}
+                      onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10', position: row.position })}
+                      className="inline-flex min-h-[40px] items-center rounded-md border border-ink/25 px-3 text-sm font-semibold text-ink hover:border-ink"
+                    >
+                      Ver ficha
+                    </Link>
+                    {visitLink(row.slug, db?.website, row.position, 'ranking_4_10', 'Visitar sitio')}
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {/* Móvil: filas apiladas */}
+      <ol className="divide-y divide-rule border-y-2 border-ink md:hidden">
         {VISIBLE_RANKING.map((row) => {
           const db = bySlug.get(row.slug);
           return (
-            <div
-              key={row.slug}
-              className="bg-card border border-border rounded-xl p-4 shadow-sm"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center w-9 h-9 bg-foreground text-background rounded-full font-bold text-sm">
-                    {row.position}
-                  </span>
-                  <h4 className="font-bold text-foreground">{row.displayName}</h4>
-                </div>
-                <span className="bg-primary/10 text-primary font-bold px-2 py-1 rounded text-sm">
-                  {row.rating.toFixed(1)}
-                </span>
+            <li key={row.slug} className="py-4">
+              <div className="flex items-baseline gap-3">
+                <span className="w-6 text-xl font-bold text-ink/40 tabular">{row.position}</span>
+                <span className="font-semibold text-ink">{row.displayName}</span>
+                <span className="ml-auto text-lg font-bold text-ink tabular">{row.rating.toFixed(1).replace('.', ',')}</span>
               </div>
-              {reviewStats?.[row.slug] && (
-                <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold text-foreground">{reviewStats[row.slug].avg.toFixed(1)}</span>
-                  · {reviewStats[row.slug].count} reseña{reviewStats[row.slug].count === 1 ? '' : 's'}
-                </p>
-              )}
-              <p className="text-sm text-muted-foreground mb-1">{row.keyFeature}</p>
-              <p className="text-sm text-foreground mb-3">
-                Desde <strong>{formatPrice(getMinPrice(db))}</strong>
-              </p>
-              <div className="flex gap-2">
-                <Button asChild variant="outline" size="sm" className="flex-1 min-h-[44px]">
-                  <Link to={`/catalogo/${row.slug}`} onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}>Ver detalles</Link>
-                </Button>
-                {db?.website && (() => {
-                  const link = getProviderLink(row.slug, db.website);
-                  return (
-                    <Button asChild size="sm" className="flex-1 min-h-[44px]">
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel={link.rel}
-                        onClick={() => track('click_visitar_sitio', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}
-                      >
-                        Visitar
-                        <ArrowRight className="ml-1 h-3 w-3" />
-                      </a>
-                    </Button>
-                  );
-                })()}
+              <p className="ml-9 mt-1 text-sm text-ink-2">{row.keyFeature}</p>
+              <div className="ml-9 mt-3 flex gap-2">
+                <Link
+                  to={`/catalogo/${row.slug}`}
+                  onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}
+                  className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-md border border-ink/25 px-3 text-sm font-semibold text-ink"
+                >
+                  Ver ficha
+                </Link>
+                {db?.website && <span className="flex flex-1 [&>a]:w-full [&>a]:justify-center [&>a]:min-h-[44px]">{visitLink(row.slug, db.website, row.position, 'ranking_4_10_mobile', 'Visitar')}</span>}
               </div>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ol>
     </section>
   );
 };

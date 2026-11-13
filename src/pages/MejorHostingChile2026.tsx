@@ -339,11 +339,8 @@ const MejorHostingChile2026 = () => {
               <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                 {getLastUpdatedText()}
               </Badge>
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                Análisis Independiente
-              </Badge>
-              <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
-                Datos Verificados
+              <Badge variant="outline" className="bg-white text-ink-2 border-rule">
+                Ranking editorial con pesos publicados
               </Badge>
             </div>
           </header>
@@ -433,7 +430,7 @@ const MejorHostingChile2026 = () => {
             <Card className="border">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-ink">Datos y fuentes</CardTitle>
-                <CardDescription>Transparencia y verificación independiente</CardDescription>
+                <CardDescription>De dónde sale cada dato del estudio</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 text-gray-700">
                 <p>

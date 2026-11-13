@@ -9,8 +9,9 @@
 //   - no entra a hreflang ni a los sitemaps.
 //
 // Chile vive en eligetuhosting.cl (raíz); el resto vive en
-// eligetuhosting.com/<slug>. La portada de eligetuhosting.com es el índice
-// regional (edición LATAM).
+// eligetuhosting.com/<slug>. La portada de eligetuhosting.com muestra el
+// índice regional (edición LATAM), cuya URL canónica es /latam: es la que
+// ya usan el hreflang x-default, los sitemaps y el HTML prerenderizado.
 
 export type EditionStatus = 'published' | 'verifying';
 
@@ -44,7 +45,8 @@ export interface Edition {
 
 export const CL_ORIGIN = 'https://eligetuhosting.cl';
 export const COM_ORIGIN = 'https://eligetuhosting.com';
-export const LATAM_HOME_URL = `${COM_ORIGIN}/`;
+/** URL canónica del índice regional (también x-default de hreflang). */
+export const LATAM_HOME_URL = `${COM_ORIGIN}/latam`;
 export const RANKING_YEAR = 2026;
 
 export const EDITIONS: readonly Edition[] = [
@@ -135,8 +137,7 @@ export const editionUrl = (e: Edition, path = homePath(e)): string => `${e.origi
  */
 export const editionHref = (key: EditionKey, path?: string, host?: string): string => {
   if (key === 'LATAM') {
-    if (isPreviewHost(host)) return '/latam';
-    return isComHost(host) ? '/' : LATAM_HOME_URL;
+    return isPreviewHost(host) || isComHost(host) ? '/latam' : LATAM_HOME_URL;
   }
   const e = getEdition(key);
   const target = path ?? homePath(e);

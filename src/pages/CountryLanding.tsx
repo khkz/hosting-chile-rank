@@ -23,6 +23,9 @@ import {
   
 } from 'lucide-react';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
+import { getEdition, hreflangAlternates, rankingPath } from '@/lib/countries';
+import Flag from '@/components/data/Flag';
+import { ProvenanceGlyph, ProvenanceTag } from '@/components/data/Provenance';
 import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
 import DirectoryFilterBar, { type SortMode } from '@/components/DirectoryFilterBar';
 import { hasLocalDatacenter, has247Support, type LatamDcSlug } from '@/lib/dcLocal';
@@ -36,6 +39,7 @@ import BuyerRoutes from '@/components/country/BuyerRoutes';
 const CountryLanding = () => {
   const location = useLocation();
   const info = getCountryFromPath(location.pathname) ?? COUNTRIES.PE;
+  const edition = getEdition(info.code);
 
   const { data: companies, isLoading } = useQuery({
     queryKey: ['country-directory', info.code],
@@ -58,6 +62,7 @@ const CountryLanding = () => {
   const [only247, setOnly247] = useState(false);
   const [sort, setSort] = useState<SortMode>('default');
   const dcSlug = info.slug as LatamDcSlug;
+  const localDcCount = (companies ?? []).filter((c: any) => hasLocalDatacenter(dcSlug, c.datacenter_location)).length;
   const filteredCompanies = useMemo(() => {
     const base = companies ?? [];
     let out = base.filter((c: any) => {
@@ -128,7 +133,7 @@ const CountryLanding = () => {
   const faqs = [
     {
       q: `¿Qué es este directorio de hosting en ${info.name}?`,
-      a: `Es un listado independiente de proveedores de hosting con presencia en ${info.name}, publicado por Elige Tu Hosting. Mostramos únicamente datos comprobables (razón social, contacto, datacenter, tecnología) sin puntajes inventados.`,
+      a: `Es un listado de proveedores de hosting con presencia en ${info.name}, publicado por Elige Tu Hosting. Mostramos únicamente datos comprobables (razón social, contacto, datacenter, tecnología) sin puntajes inventados.`,
     },
     {
       q: '¿Cómo se verifican los datos?',
@@ -170,12 +175,9 @@ const CountryLanding = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={`https://eligetuhosting.com/og/${info.slug}.png`} />
         <meta name="robots" content="index,follow" />
-        <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
-        <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
-        <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
-        <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
-        <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
-        <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/latam" />
+        {hreflangAlternates().map((a) => (
+          <link key={a.hrefLang} rel="alternate" hrefLang={a.hrefLang} href={a.href} />
+        ))}
         <link rel="alternate" type="text/markdown" href={`/${info.slug}.md`} title={`${info.name} — datos en Markdown (CC-BY-4.0)`} />
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
         <script type="application/ld+json">{JSON.stringify(collectionLd)}</script>
@@ -184,37 +186,56 @@ const CountryLanding = () => {
 
       <Navbar />
 
-      <main className="min-h-[60vh] container mx-auto px-4 py-12">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 text-brand text-sm font-medium mb-4">
-              <Globe className="h-4 w-4" />
-              {info.flag} Versión {info.name}
+      <main>
+        <section className="border-b border-rule bg-paper">
+          <div className="container mx-auto grid gap-8 px-4 py-12 md:grid-cols-12 md:py-16">
+            <div className="md:col-span-8">
+              <p className="flex items-center gap-2 text-sm font-medium text-ink-2">
+                <Flag code={info.code} size={22} />
+                Edición {info.name}
+              </p>
+              <h1 className="type-display mt-4 text-[2.5rem] text-ink sm:text-6xl">Hosting en {info.name}</h1>
+              <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-ink-2">
+                Directorio de proveedores con datos comprobables: razón social, datacenter, contacto y tecnología. No
+                publicamos notas hasta verificar reclamos, red y trayectoria con la misma metodología que en Chile.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  to={rankingPath(edition)}
+                  className="inline-flex min-h-[48px] items-center justify-center rounded-md bg-ink px-6 font-semibold text-white hover:bg-ink-soft"
+                >
+                  Mejor hosting en {info.name} 2026
+                </Link>
+                <Link
+                  to={`/${info.slug}/hosting-con-datacenter-local`}
+                  className="inline-flex min-h-[48px] items-center justify-center rounded-md border border-ink/25 bg-white px-6 font-semibold text-ink hover:border-ink"
+                >
+                  Con datacenter en {info.name}
+                </Link>
+              </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-ink mb-3">
-              Hosting en {info.name}
-            </h1>
-            <p className="text-base md:text-lg text-ink/70 max-w-2xl mx-auto">
-              Directorio independiente con datos comprobables (contacto, datacenter,
-              razón social, tecnología). No publicamos puntajes hasta verificar
-              reclamos, ASN y trayectoria con la misma metodología que en Chile.
-            </p>
-            <div className="flex flex-wrap justify-center gap-2 mt-5 text-sm">
-              <Link
-                to={`/${info.slug}/mejor-hosting-${({pe:'peru',mx:'mexico',co:'colombia',ar:'argentina'} as const)[info.slug as 'pe'|'mx'|'co'|'ar']}-2026`}
-                className="px-4 py-2 rounded-md bg-ink text-white hover:bg-ink/90"
-              >
-                🏆 Mejor hosting {info.name} 2026
-              </Link>
-              <Link
-                to={`/${info.slug}/hosting-con-datacenter-local`}
-                className="px-4 py-2 rounded-md bg-white border border-ink/15 text-ink hover:bg-muted"
-              >
-                🖥️ Datacenter local en {info.name}
-              </Link>
-            </div>
+            <aside className="self-end md:col-span-4" aria-label={`Resumen de ${info.name}`}>
+              <dl className="divide-y divide-rule border-y border-ink/80 text-ink tabular">
+                <div className="flex items-baseline justify-between py-3">
+                  <dt className="text-sm text-ink-2">Proveedores verificados</dt>
+                  <dd className="text-2xl font-bold">{companies ? companies.length : '…'}</dd>
+                </div>
+                <div className="flex items-baseline justify-between py-3">
+                  <dt className="flex items-center gap-2 text-sm text-ink-2">
+                    Datacenter en el país <ProvenanceTag kind="declared" />
+                  </dt>
+                  <dd className="text-2xl font-bold">{companies ? localDcCount : '…'}</dd>
+                </div>
+                <div className="flex items-baseline justify-between py-3">
+                  <dt className="text-sm text-ink-2">Datos actualizados</dt>
+                  <dd className="font-semibold">{lastUpdated}</dd>
+                </div>
+              </dl>
+            </aside>
           </div>
+        </section>
 
+        <div className="container mx-auto px-4 py-12">
           {hasRecommended && (
             <CountryReassurances
               country={info.slug as 'pe' | 'mx' | 'co' | 'ar'}
@@ -230,186 +251,167 @@ const CountryLanding = () => {
 
           <AdvisorEmbed />
 
-
-
-
-          {isLoading ? (
-            <p className="text-center text-muted-foreground py-10">
-              Cargando proveedores…
-            </p>
-          ) : (companies && companies.length > 0) ? (
-            <>
-              <DirectoryFilterBar
-                onlyDcLocal={onlyDcLocal}
-                only247={only247}
-                sort={sort}
-                countryName={info.name}
-                onOnlyDcLocalChange={setOnlyDcLocal}
-                onOnly247Change={setOnly247}
-                onSortChange={setSort}
-                totalCount={companies.length}
-                visibleCount={filteredCompanies.length}
-              />
-              {filteredCompanies.length === 0 ? (
-                <div className="bg-white border border-ink/10 rounded-xl p-6 text-center text-sm text-ink/70">
-                  Ningún proveedor cumple con esos filtros. Ajusta la selección arriba.
-                </div>
-              ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredCompanies.map((c: any) => {
-                const link = c.slug && c.website ? getProviderLink(c.slug, c.website) : null;
-                const techs: string[] = Array.isArray(c.technologies)
-                  ? c.technologies.filter((t: any) => typeof t === 'string')
-                  : [];
-                return (
-                  <Card key={c.id} className="flex flex-col hover:shadow-md transition-shadow">
-                    <CardContent className="pt-5 flex-grow space-y-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <h2 className="text-lg font-semibold leading-tight">
-                          {c.name}
-                        </h2>
-                        <Badge variant="outline" className="text-[10px] shrink-0">
-                          Datos verificables
-                        </Badge>
-                      </div>
-                      <ul className="text-sm text-muted-foreground space-y-1.5">
-                        {c.legal_name && (
-                          <li className="flex items-start gap-2">
-                            <FileText className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.legal_name}</span>
-                          </li>
-                        )}
-                        {c.corporate_group && (
-                          <li className="flex items-start gap-2">
-                            <Building2 className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{formatCorporateGroup(c.corporate_group)}</span>
-                          </li>
-                        )}
-                        {c.datacenter_location && (
-                          <li className="flex items-start gap-2">
-                            <Server className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.datacenter_location}</span>
-                          </li>
-                        )}
-                        {c.contact_phone && (
-                          <li className="flex items-start gap-2">
-                            <Phone className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.contact_phone}</span>
-                          </li>
-                        )}
-                        {c.contact_address && (
-                          <li className="flex items-start gap-2">
-                            <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.contact_address}</span>
-                          </li>
-                        )}
-                        {c.contact_hours && (
-                          <li className="flex items-start gap-2">
-                            <Clock className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.contact_hours}</span>
-                          </li>
-                        )}
-                        {techs.length > 0 && (
-                          <li className="flex items-start gap-2">
-                            <Cpu className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{techs.slice(0, 6).join(', ')}</span>
-                          </li>
-                        )}
-                      </ul>
-                    </CardContent>
-                    <div className="border-t bg-muted/40 p-3 flex flex-col sm:flex-row gap-2">
-                      {c.slug && (
-                        <Button asChild size="sm" variant="default" className="flex-1 gap-1">
-                          <Link to={`/${info.slug}/${c.slug}`}>
-                            Ver ficha <ArrowRight size={14} />
-                          </Link>
-                        </Button>
-                      )}
-                      {link && (
-                        <Button asChild size="sm" variant="outline" className="flex-1 gap-1">
-                          <a
-                            href={link.href}
-                            target="_blank"
-                            rel={link.rel}
-                            referrerPolicy="no-referrer"
-                          >
-                            Visitar sitio <ExternalLink size={14} />
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-                  </Card>
-                );
-              })}
-            </div>
-              )}
-            </>
-          ) : (
-            <div className="bg-white border border-ink/10 rounded-xl p-6 md:p-8 text-center">
-              <h2 className="text-xl font-semibold text-ink mb-2">
-                Próximamente: estamos verificando los proveedores de {info.name}
+          <section aria-labelledby="directorio-titulo" className="mt-12">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+              <h2 id="directorio-titulo" className="type-wide text-2xl font-bold text-ink md:text-3xl">
+                Proveedores de {info.name}
               </h2>
-              <p className="text-sm text-ink/70 mb-5 max-w-xl mx-auto">
-                No publicamos rankings sin datos verificables. Estamos auditando
-                ASN, datacenter, reclamos y trayectoria con la misma metodología
-                que aplicamos en Chile.
+              <p className="flex items-center gap-2 text-sm text-ink-3">
+                <ProvenanceGlyph kind="declared" />
+                El datacenter es el que declara cada proveedor.
               </p>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <Button asChild variant="outline">
-                  <a href="https://eligetuhosting.cl/ranking" className="flex items-center gap-2">
-                    Ver metodología (Chile) <ArrowRight className="h-4 w-4" />
-                  </a>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link to="/contacto">Sugerir un proveedor</Link>
-                </Button>
-              </div>
             </div>
-          )}
 
-          {/* Metodología y transparencia */}
-          <section className="mt-14 bg-white border border-ink/10 rounded-xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-ink mb-3">
-              Metodología y transparencia
-            </h2>
-            <p className="text-sm text-ink/75 leading-relaxed mb-3">
-              Este directorio de {info.name} está <strong>ordenado por calidad
-              certificada de la infraestructura del operador y transparencia
-              verificable</strong>, no por puntajes autoasignados. Priorizamos
-              en este orden: (1) calidad certificada del datacenter — Tier III
-              certificado con operador identificado, aunque esté en otro país
-              de la región cuando el grupo lo opera; (2) transparencia
-              verificable — entidad legal identificable, registros públicos de
-              reclamos (INDECOPI, Reclamos.cl), teléfono y soporte 24/7 en
-              español; (3) presencia y latencia al país (ASN/red); (4)
-              antigüedad. Datos públicos comprobables: razón social,
-              identificador fiscal, sitio oficial, datacenter declarado,
-              tecnología del stack y canales de contacto.
-            </p>
-            <p className="text-xs text-ink/60">
-              Última actualización de datos: <strong>{lastUpdated}</strong>. Los
-              datos se publican bajo licencia CC-BY-4.0 y son de acceso libre.
-            </p>
+            {isLoading ? (
+              <p className="border-y-2 border-ink py-10 text-center text-ink-2">Cargando proveedores…</p>
+            ) : companies && companies.length > 0 ? (
+              <>
+                <DirectoryFilterBar
+                  onlyDcLocal={onlyDcLocal}
+                  only247={only247}
+                  sort={sort}
+                  countryName={info.name}
+                  onOnlyDcLocalChange={setOnlyDcLocal}
+                  onOnly247Change={setOnly247}
+                  onSortChange={setSort}
+                  totalCount={companies.length}
+                  visibleCount={filteredCompanies.length}
+                />
+                {filteredCompanies.length === 0 ? (
+                  <p className="rounded-md border border-rule bg-paper p-6 text-center text-sm text-ink-2">
+                    Ningún proveedor cumple esos filtros. Quita alguno para ver más resultados.
+                  </p>
+                ) : (
+                  <ul className="divide-y divide-rule border-y-2 border-ink">
+                    {filteredCompanies.map((c: any) => {
+                      const link = c.slug && c.website ? getProviderLink(c.slug, c.website) : null;
+                      const techs: string[] = Array.isArray(c.technologies)
+                        ? c.technologies.filter((t: any) => typeof t === 'string')
+                        : [];
+                      const local = hasLocalDatacenter(dcSlug, c.datacenter_location);
+                      return (
+                        <li key={c.id} className="grid gap-4 py-5 md:grid-cols-12 md:gap-6">
+                          <div className="md:col-span-4">
+                            <h3 className="text-lg font-semibold text-ink">
+                              {c.slug ? (
+                                <Link to={`/${info.slug}/${c.slug}`} className="hover:underline underline-offset-4">
+                                  {c.name}
+                                </Link>
+                              ) : (
+                                c.name
+                              )}
+                            </h3>
+                            {c.legal_name && <p className="mt-0.5 text-sm text-ink-2">{c.legal_name}</p>}
+                            {c.corporate_group && <p className="text-sm text-ink-3">{formatCorporateGroup(c.corporate_group)}</p>}
+                          </div>
+                          <dl className="grid gap-x-6 gap-y-2 text-sm md:col-span-6 md:grid-cols-2">
+                            <div>
+                              <dt className="flex items-center gap-1.5 text-xs text-ink-3">
+                                <Server className="h-3.5 w-3.5" aria-hidden /> Datacenter
+                                <ProvenanceGlyph kind="declared" />
+                              </dt>
+                              <dd className="mt-0.5 text-ink">
+                                {c.datacenter_location || <span className="text-ink-3">No lo declara</span>}
+                                {local && (
+                                  <span className="ml-2 rounded bg-signal-declared-bg px-1.5 py-[1px] text-[11px] font-semibold text-signal-declared">
+                                    En {info.name}
+                                  </span>
+                                )}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt className="flex items-center gap-1.5 text-xs text-ink-3">
+                                <Phone className="h-3.5 w-3.5" aria-hidden /> Contacto
+                              </dt>
+                              <dd className="mt-0.5 text-ink">
+                                {c.contact_phone || <span className="text-ink-3">Sin teléfono publicado</span>}
+                                {c.contact_hours && <span className="block text-ink-2">{c.contact_hours}</span>}
+                              </dd>
+                            </div>
+                            {c.contact_address && (
+                              <div>
+                                <dt className="flex items-center gap-1.5 text-xs text-ink-3">
+                                  <MapPin className="h-3.5 w-3.5" aria-hidden /> Dirección
+                                </dt>
+                                <dd className="mt-0.5 text-ink">{c.contact_address}</dd>
+                              </div>
+                            )}
+                            {techs.length > 0 && (
+                              <div>
+                                <dt className="flex items-center gap-1.5 text-xs text-ink-3">
+                                  <Cpu className="h-3.5 w-3.5" aria-hidden /> Tecnología
+                                </dt>
+                                <dd className="mt-0.5 text-ink">{techs.slice(0, 6).join(', ')}</dd>
+                              </div>
+                            )}
+                          </dl>
+                          <div className="flex gap-2 md:col-span-2 md:flex-col md:items-stretch">
+                            {c.slug && (
+                              <Link
+                                to={`/${info.slug}/${c.slug}`}
+                                className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-md border border-ink/25 px-3 text-sm font-semibold text-ink hover:border-ink md:flex-none"
+                              >
+                                Ver ficha
+                              </Link>
+                            )}
+                            {link && (
+                              <a
+                                href={link.href}
+                                target="_blank"
+                                rel={link.rel}
+                                referrerPolicy="no-referrer"
+                                className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-md bg-ink px-3 text-sm font-semibold text-white hover:bg-ink-soft md:flex-none"
+                              >
+                                Visitar sitio <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                              </a>
+                            )}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </>
+            ) : (
+              <div className="rounded-md border border-rule bg-paper p-6 md:p-8">
+                <h3 className="text-xl font-semibold text-ink">
+                  Estamos verificando a los proveedores de {info.name}
+                </h3>
+                <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-2">
+                  No publicamos rankings sin datos comprobables. Estamos revisando red, datacenter, reclamos y
+                  trayectoria con la misma metodología que aplicamos en Chile.
+                </p>
+                <Link to="/contacto" className="mt-4 inline-flex min-h-[44px] items-center rounded-md bg-ink px-4 text-sm font-semibold text-white">
+                  Sugerir un proveedor
+                </Link>
+              </div>
+            )}
           </section>
 
-          {/* FAQ */}
-          <section className="mt-10">
-            <h2 className="text-2xl font-bold text-ink mb-4">
-              Preguntas frecuentes
-            </h2>
-            <Accordion type="single" collapsible className="space-y-3">
+          {/* Metodología y transparencia */}
+          <section className="mt-14 grid gap-6 border-t border-rule pt-10 md:grid-cols-12">
+            <h2 className="type-wide text-2xl font-bold text-ink md:col-span-4">Cómo ordenamos este directorio</h2>
+            <div className="space-y-3 text-[15px] leading-relaxed text-ink-2 md:col-span-8">
+              <p>
+                El directorio de {info.name} se ordena por la calidad comprobable de la infraestructura del operador y
+                por transparencia verificable, no por puntajes autoasignados. En este orden: (1) calidad certificada
+                del datacenter, con operador identificado; (2) entidad legal identificable, registros públicos de
+                reclamos, teléfono y soporte en español; (3) presencia y latencia al país (ASN y red); (4) antigüedad.
+              </p>
+              <p className="text-sm text-ink-3">
+                Última actualización de datos: {lastUpdated}. Datos bajo licencia CC-BY-4.0, de acceso libre.
+              </p>
+            </div>
+          </section>
+
+          {/* Preguntas frecuentes */}
+          <section className="mt-12 grid gap-6 border-t border-rule pt-10 md:grid-cols-12">
+            <h2 className="type-wide text-2xl font-bold text-ink md:col-span-4">Preguntas frecuentes</h2>
+            <Accordion type="single" collapsible className="md:col-span-8">
               {faqs.map((f, i) => (
-                <AccordionItem
-                  key={i}
-                  value={`faq-${i}`}
-                  className="bg-white border border-ink/10 rounded-lg px-4"
-                >
-                  <AccordionTrigger className="text-left font-medium">
-                    {f.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-ink/75">
-                    {f.a}
-                  </AccordionContent>
+                <AccordionItem key={i} value={`faq-${i}`} className="border-rule">
+                  <AccordionTrigger className="text-left font-semibold text-ink hover:no-underline">{f.q}</AccordionTrigger>
+                  <AccordionContent className="text-[15px] leading-relaxed text-ink-2">{f.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
