@@ -1,169 +1,128 @@
-import { useEffect, useRef, useState } from 'react';
-import { MessageCircle, Send, X, RotateCcw } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useHostingAdvisor, QUICK_CHIPS, MAX_MESSAGES } from './useHostingAdvisor';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { MessageCircle, X } from 'lucide-react';
+import AdvisorChat from './AdvisorChat';
+import { ADVISOR_OPEN_EVENT } from './events';
+import { useEdition } from '@/hooks/useEdition';
 
 /**
- * Asesor de hosting IA — botón flotante global (todo el sitio, .cl y .com).
- * Discreto, lazy, sin CLS. No modifica ningún otro layout.
+ * Asesor con IA: botón flotante global (.cl y .com) y su panel.
+ * - Se reduce al ícono al bajar y se aparta al llegar al pie, para no tapar enlaces.
+ * - En móvil, con la barra fija "Cotiza tu hosting" visible, se abre desde esa
+ *   barra (ver StickyCTA y la regla .advisor-fab en index.css).
+ * - Esc o un clic fuera lo cierran; la conversación se conserva.
  */
 const HostingAdvisorFab = () => {
   const [open, setOpen] = useState(false);
-  const [input, setInput] = useState('');
-  const { messages, send, streaming, error, reset, userTurns, atLimit, country } = useHostingAdvisor();
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [compact, setCompact] = useState(false);
+  const [overFooter, setOverFooter] = useState(false);
+  const fabRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const { pathname } = useLocation();
+  const { label } = useEdition();
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages, open]);
+    const onOpen = () => setOpen(true);
+    window.addEventListener(ADVISOR_OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(ADVISOR_OPEN_EVENT, onOpen);
+  }, []);
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    send(input);
-    setInput('');
-  };
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        setCompact(window.scrollY > 480);
+        const footer = document.querySelector('[data-site-footer]');
+        setOverFooter(!!footer && footer.getBoundingClientRect().top < window.innerHeight - 8);
+      });
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [pathname]);
 
-  const LONG: Record<string, string> = { pe: 'peru', mx: 'mexico', co: 'colombia', ar: 'argentina' };
-  const dirLink =
-    country === 'CL'
-      ? '/catalogo'
-      : `/${country.toLowerCase()}/mejor-hosting-${LONG[country.toLowerCase()] ?? country.toLowerCase()}-2026`;
+  const close = useCallback((returnFocus = true) => {
+    setOpen(false);
+    if (returnFocus) fabRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    // Teclado y mouse: foco al campo. Pantallas táctiles: al panel, sin abrir el teclado.
+    const fine = window.matchMedia?.('(pointer: fine)').matches;
+    const raf = requestAnimationFrame(() => (fine ? inputRef.current : panelRef.current)?.focus());
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+    const onPointer = (e: PointerEvent) => {
+      const t = e.target as Element | null;
+      if (!t || panelRef.current?.contains(t) || fabRef.current?.contains(t)) return;
+      if (t.closest?.('[data-advisor-open]')) return;
+      close(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointer);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointer);
+    };
+  }, [open, close]);
+
+  const hidden = overFooter && !open;
 
   return (
     <>
-      {/* Botón flotante */}
       <button
+        ref={fabRef}
         type="button"
-        aria-label="Abrir asesor de hosting"
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-4 right-4 z-[60] inline-flex items-center gap-2 rounded-full bg-ink text-white shadow-lg px-4 py-3 text-sm font-medium hover:bg-ink/90 transition print:hidden"
-        style={{ minHeight: 44 }}
+        aria-expanded={open}
+        aria-controls="asesor-hosting"
+        aria-label={open ? 'Cerrar el asesor con IA' : 'Abrir el asesor con IA'}
+        tabIndex={hidden ? -1 : undefined}
+        className={`advisor-fab fixed bottom-4 right-4 z-40 inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-full bg-ink px-3.5 text-sm font-medium text-white shadow-lg transition-[transform,opacity] duration-200 hover:bg-ink-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand print:hidden ${
+          hidden ? 'pointer-events-none translate-y-4 opacity-0' : ''
+        }`}
       >
-        <MessageCircle className="h-4 w-4" aria-hidden />
-        <span className="hidden sm:inline">Asesor de hosting</span>
-        <span className="sm:hidden">Asesor</span>
+        {open ? <X className="h-4 w-4" aria-hidden /> : <MessageCircle className="h-4 w-4" aria-hidden />}
+        <span className={compact || open ? 'sr-only' : 'max-sm:sr-only'}>Asesor con IA</span>
       </button>
 
-      {/* Panel */}
       {open && (
         <div
+          ref={panelRef}
+          id="asesor-hosting"
           role="dialog"
-          aria-label="Asesor de hosting"
-          className="fixed z-[70] bottom-20 right-4 w-[min(380px,calc(100vw-2rem))] max-h-[70vh] bg-white rounded-xl border border-ink/15 shadow-2xl flex flex-col overflow-hidden print:hidden"
+          aria-modal="false"
+          aria-labelledby="asesor-hosting-titulo"
+          tabIndex={-1}
+          className="fixed bottom-[4.5rem] right-4 z-[45] flex max-h-[min(70vh,560px)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-xl border border-ink/15 bg-white shadow-2xl focus:outline-none print:hidden"
         >
-          <div className="flex items-center justify-between px-4 py-2.5 border-b bg-ink text-white">
-            <div className="text-sm font-semibold">Asesor de hosting</div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={reset}
-                aria-label="Reiniciar conversación"
-                className="p-1.5 rounded hover:bg-white/10"
-                title="Reiniciar"
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-              </button>
-              <button
-                onClick={() => setOpen(false)}
-                aria-label="Cerrar"
-                className="p-1.5 rounded hover:bg-white/10"
-              >
-                <X className="h-4 w-4" />
-              </button>
+          <div className="flex items-start justify-between gap-3 bg-ink px-4 py-3 text-white">
+            <div>
+              <p id="asesor-hosting-titulo" className="text-sm font-semibold">
+                Asesor con IA
+              </p>
+              <p className="text-xs text-white/70">Edición {label}</p>
             </div>
-          </div>
-
-          <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 space-y-3 text-sm bg-paper">
-            {messages.length === 0 && (
-              <div className="space-y-3">
-                <p className="text-ink/80 leading-snug">
-                  Hola 👋 Cuéntame qué tipo de proyecto quieres alojar y en 3-4 preguntas te
-                  sugiero un hosting recomendado según datos verificables.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {QUICK_CHIPS.map((c) => (
-                    <button
-                      key={c.key}
-                      onClick={() => send(c.prompt)}
-                      className="text-xs px-3 py-1.5 rounded-full border border-ink/20 bg-white hover:bg-ink/5"
-                      disabled={streaming}
-                    >
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {messages.map((m, i) => (
-              <div
-                key={i}
-                className={
-                  m.role === 'user'
-                    ? 'ml-auto max-w-[85%] bg-brand text-white rounded-lg px-3 py-2 whitespace-pre-wrap'
-                    : 'mr-auto max-w-[92%] bg-white border border-ink/10 rounded-lg px-3 py-2 whitespace-pre-wrap text-ink'
-                }
-              >
-                {m.content || (streaming && i === messages.length - 1 ? '…' : '')}
-              </div>
-            ))}
-
-            {atLimit && (
-              <div className="text-xs text-ink/70 text-center py-2">
-                Alcanzaste el límite de {MAX_MESSAGES} mensajes. Si quieres asesoría personalizada,{' '}
-                <Link to="/contacto" className="underline font-medium">
-                  escríbenos aquí
-                </Link>.
-              </div>
-            )}
-
-            {error && !atLimit && (
-              <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
-                {error === 'rate_limited'
-                  ? 'Estás enviando muchas preguntas. Espera unos segundos.'
-                  : error === 'session_limit'
-                  ? 'Se alcanzó el límite de la sesión.'
-                  : 'No pude responder ahora. '}
-                {' '}
-                <Link to="/contacto" className="underline">Ir al formulario de cotización</Link>.
-              </div>
-            )}
-          </div>
-
-          <form onSubmit={onSubmit} className="border-t bg-white p-2 flex items-end gap-2">
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  onSubmit(e as any);
-                }
-              }}
-              disabled={streaming || atLimit}
-              rows={1}
-              placeholder="Cuéntame tu proyecto…"
-              className="flex-1 resize-none text-sm rounded-md border border-ink/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand/30 max-h-28"
-              aria-label="Escribe tu mensaje"
-            />
             <button
-              type="submit"
-              disabled={streaming || atLimit || !input.trim()}
-              aria-label="Enviar"
-              className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-brand text-white disabled:opacity-40"
+              type="button"
+              onClick={() => close()}
+              aria-label="Cerrar el asesor"
+              className="-mr-1.5 rounded p-1.5 hover:bg-white/10"
             >
-              <Send className="h-4 w-4" />
+              <X className="h-4 w-4" aria-hidden />
             </button>
-          </form>
-
-          <div className="px-3 py-2 bg-white text-[10px] text-ink/60 border-t leading-snug">
-            Divulgación: podemos recibir una comisión si contratas por los enlaces recomendados. La
-            recomendación se basa en datos verificables.{' '}
-            <Link to={dirLink} className="underline">Ver todas las alternativas</Link>.
-            <span className="ml-1">{userTurns}/{MAX_MESSAGES}</span>
           </div>
+          <AdvisorChat variant="panel" inputRef={inputRef} />
         </div>
       )}
     </>

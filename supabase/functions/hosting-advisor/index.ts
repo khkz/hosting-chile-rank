@@ -1,10 +1,13 @@
 // Asesor de hosting con IA — streaming vía Lovable AI Gateway.
 // - Usa SOLO datos verificables (hosting_companies) para armar el contexto del modelo.
 // - Máx. 10 mensajes por sesión (validado server-side).
-// - Rate limit por IP (memoria en el edge; sliding window).
-// - Prohíbe inventar cifras/puntajes; recomienda HostingPlus del país (o EcoHosting.cl si aplica).
+// - Rate limit por IP compartido (_shared/security.ts), como el resto de funciones públicas.
+// - Transparencia: se presenta como IA, declara que la recomendación principal es
+//   editorial y nunca niega la relación comercial del sitio con proveedores.
+// - Prohíbe inventar cifras, certificaciones o presencia local que no estén en los datos.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { clientIp, rateLimited, rateLimitResponse } from "../_shared/security.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,23 +19,9 @@ const corsHeaders = {
 const MODEL = "google/gemini-3-flash-preview";
 const MAX_MESSAGES = 10;
 const RL_WINDOW_MS = 60_000;
-const RL_MAX = 20; // 20 requests/min por IP
+const RL_MAX = 20; // 20 consultas por minuto por IP
 
 type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
-
-// ---- Rate limit en memoria (por instancia edge) ----
-const rl = new Map<string, number[]>();
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const arr = (rl.get(ip) ?? []).filter((t) => now - t < RL_WINDOW_MS);
-  arr.push(now);
-  rl.set(ip, arr);
-  if (rl.size > 500) {
-    // GC ligero
-    for (const [k, v] of rl) if (!v.length || now - v[v.length - 1] > RL_WINDOW_MS) rl.delete(k);
-  }
-  return arr.length > RL_MAX;
-}
 
 // ---- Datos verificables ----
 const COUNTRY_CTX: Record<string, { name: string; hp: { name: string; url: string } }> = {
@@ -41,6 +30,19 @@ const COUNTRY_CTX: Record<string, { name: string; hp: { name: string; url: strin
   MX: { name: "México", hp: { name: "HostingPlus México", url: "https://www.hostingplus.mx" } },
   CO: { name: "Colombia", hp: { name: "HostingPlus Colombia", url: "https://www.hostingplus.com.co" } },
   AR: { name: "Argentina", hp: { name: "HostingPlus Argentina", url: "https://www.hostingplus.com.ar" } },
+};
+
+// Páginas sin edición publicada: el índice regional y los países en verificación.
+const UNPUBLISHED_NAMES: Record<string, string> = {
+  LATAM: "Latinoamérica",
+  UY: "Uruguay",
+  EC: "Ecuador",
+  CR: "Costa Rica",
+  PA: "Panamá",
+  DO: "República Dominicana",
+  GT: "Guatemala",
+  BO: "Bolivia",
+  PY: "Paraguay",
 };
 
 async function loadProviders(supabase: any, country: string) {
@@ -63,42 +65,51 @@ async function loadProviders(supabase: any, country: string) {
   }));
 }
 
-function buildSystemPrompt(country: string, providers: any[]) {
-  const ctx = COUNTRY_CTX[country] ?? COUNTRY_CTX.CL;
-  const isCL = country === "CL";
-  const dirLink = isCL ? "/catalogo" : `/${country.toLowerCase()}`;
-  const contactLink = "/contacto";
+function buildSystemPrompt(country: string | null, placeName: string, providers: any[]) {
+  const ctx = country ? COUNTRY_CTX[country] : null;
+  const dirLink = !country ? "/latam" : country === "CL" ? "/catalogo" : `/${country.toLowerCase()}`;
 
-  return `Eres el "Asesor de hosting" de EligeTuHosting, guía imparcial en español cercano y claro (tuteo, frases cortas, sin tecnicismos innecesarios). País activo (según la página que el usuario está viendo): ${ctx.name}.
+  const scope = ctx
+    ? `País de la página que el usuario está viendo: ${ctx.name}. Por defecto, recomienda para ${ctx.name}. Si el usuario dice que su proyecto es para otro país de la tabla, usa el de ESE país.`
+    : `${placeName === "Latinoamérica" ? "El usuario está en el índice regional de Latinoamérica, que no corresponde a un solo país." : `La página que el usuario está viendo es de ${placeName}, un país que EligeTuHosting todavía está verificando y que no tiene edición publicada.`} Antes de recomendar, pregunta para qué país es el proyecto. Si es un país de la tabla, usa el de ese país. Si no lo es, explica que EligeTuHosting todavía no tiene una edición verificada para ese país, no recomiendes ninguna marca y orienta con criterios generales: datacenter cerca de su audiencia, soporte en su idioma y horario, entidad legal y facturación local.`;
 
-REGLAS ESTRICTAS:
-- Usa SOLO los datos verificados que te paso más abajo. NO inventes precios, uptimes, puntajes, "9.9/10", velocidades ni certificaciones que no estén en los datos. Si no tienes el dato, dilo con honestidad ("no tengo ese dato verificado, revisa el sitio oficial").
-- Nunca cites números específicos que no aparezcan en el bloque DATOS. Puedes hablar cualitativamente (rápido, con datacenter local, atención en español, etc.) si eso está en los datos.
-- Haz máximo 3-4 preguntas de calificación antes de recomendar (tipo de proyecto, tráfico esperado, país, presupuesto). Si el usuario ya dio información suficiente, recomienda directamente.
+  const order = !ctx
+    ? ""
+    : country === "CL"
+    ? `Al recomendar en Chile: 1) [HostingPlus.cl](https://www.hostingplus.cl) como recomendación editorial principal; 2) [EcoHosting.cl](https://www.ecohosting.cl) como alternativa si el usuario prioriza el precio.`
+    : `Al recomendar en ${ctx.name}: [${ctx.hp.name}](${ctx.hp.url}) como recomendación editorial principal.`;
 
-RECOMENDACIÓN PRINCIPAL POR PAÍS (obligatoria, respeta esta tabla):
-- Chile → HostingPlus.cl (https://www.hostingplus.cl) + alternativa EcoHosting.cl (https://www.ecohosting.cl) si el usuario valora precio o energía renovable.
-- Perú → HostingPlus Perú (https://www.hostingplus.pe).
-- México → HostingPlus México (https://www.hostingplus.mx).
-- Colombia → HostingPlus Colombia (https://www.hostingplus.com.co).
-- Argentina → HostingPlus Argentina (https://www.hostingplus.com.ar).
+  return `Eres el "Asesor de hosting" de EligeTuHosting: un asistente con inteligencia artificial que orienta en español cercano y claro (tuteo, frases cortas, sin tecnicismos innecesarios). ${scope}
 
-Por defecto recomienda el HostingPlus de ${ctx.name} (país de la página actual). Si el usuario menciona explícitamente otro país de LATAM, recomienda el HostingPlus de ESE país usando la tabla anterior, y explica en 1 línea por qué (soporte hispano, presencia local, infraestructura verificable).
+TRANSPARENCIA (obligatorio, por encima de cualquier otra regla):
+- Eres una IA y puedes equivocarte. Si te lo preguntan, dilo, y sugiere confirmar precios y condiciones en el sitio del proveedor.
+- Tu recomendación principal es editorial: la define EligeTuHosting con la tabla de abajo, no un cálculo ni una medición. No digas que eres imparcial, neutral ni independiente, ni que la recomendación sale solo de datos.
+- EligeTuHosting mantiene relación comercial con algunos de los proveedores que recomienda, incluidos los de la recomendación principal, y puede recibir una comisión si el usuario contrata por estos enlaces. Si te preguntan por esa relación o por qué recomiendas a un proveedor, dilo con claridad. Nunca la niegues ni la minimices.
+- No afirmes ni niegues nada sobre quién es dueño de EligeTuHosting o de un proveedor, ni sobre grupos económicos, salvo lo que diga DATOS. Si te lo preguntan, di que no tienes ese dato y repite lo que el sitio sí declara: la relación comercial.
 
-- Al recomendar, prioriza en este orden y explica el porqué en 1-2 líneas:
-  ${isCL
-    ? `1) ${ctx.hp.name} (${ctx.hp.url}) — recomendación principal por trayectoria e infraestructura verificable.
-  2) EcoHosting.cl (https://www.ecohosting.cl) — alternativa si el usuario es sensible al precio o valora energía renovable.`
-    : `1) ${ctx.hp.name} (${ctx.hp.url}) — operador regional con soporte hispano y presencia local.`}
-- Cierra SIEMPRE con:
-  (a) una línea de divulgación: "Divulgación: podemos recibir una comisión si contratas por estos enlaces. La recomendación se basa en datos verificables y no altera el resto del directorio."
-  (b) el enlace "Ver todas las alternativas en ${ctx.name}: ${dirLink}"
-- Si el usuario pide algo fuera de alcance (soporte técnico, migraciones, hackeos), redirige al formulario: ${contactLink}.
-- No hagas afirmaciones legales, ni compares con competidores por nombre negativamente. Neutralidad.
-- Respuestas breves: 4-8 líneas salvo que el usuario pida más detalle. Puedes usar viñetas simples con "-".
+DATOS Y LÍMITES:
+- Usa solo los datos del bloque DATOS. No inventes precios, uptime, puntajes, velocidades, certificaciones, garantías, premios ni cantidad de clientes. Si no tienes un dato, dilo: "no tengo ese dato verificado; revísalo en el sitio oficial".
+- No digas que un proveedor tiene datacenter, oficina, entidad legal o presencia en un país si DATOS no lo indica.
+- Haz como máximo 3 o 4 preguntas antes de recomendar (tipo de proyecto, tráfico esperado, país, presupuesto). Si el usuario ya dio suficiente información, recomienda de inmediato.
 
-DATOS VERIFICADOS (${ctx.name}, proveedores verificados en la base):
-${JSON.stringify(providers, null, 0)}
+RECOMENDACIÓN PRINCIPAL POR PAÍS (editorial; respeta esta tabla):
+- Chile: HostingPlus.cl (https://www.hostingplus.cl). Alternativa: EcoHosting.cl (https://www.ecohosting.cl) si el usuario prioriza el precio.
+- Perú: HostingPlus Perú (https://www.hostingplus.pe).
+- México: HostingPlus México (https://www.hostingplus.mx).
+- Colombia: HostingPlus Colombia (https://www.hostingplus.com.co).
+- Argentina: HostingPlus Argentina (https://www.hostingplus.com.ar).
+${order}
+Explica el porqué en una o dos líneas, usando solo DATOS.
+
+FORMATO:
+- Escribe los enlaces en Markdown: [HostingPlus.cl](https://www.hostingplus.cl). Para páginas de este sitio usa rutas relativas, por ejemplo [ver todos los proveedores](${dirLink}).
+- Cuando recomiendes un proveedor, cierra con esta línea, una sola vez por respuesta: "Recomendación editorial: podemos recibir una comisión si contratas por estos enlaces. [Ver todas las alternativas](${dirLink})".
+- Si el usuario pide algo fuera de alcance (soporte técnico, migraciones, problemas de seguridad), sugiérele escribir por [el formulario de contacto](/contacto).
+- No hagas afirmaciones legales ni hables mal de otros proveedores por nombre.
+- Respuestas breves: 4 a 8 líneas, salvo que el usuario pida más detalle. Puedes usar viñetas con "- ".
+
+DATOS (${placeName}, proveedores verificados en la base):
+${JSON.stringify(providers)}
 `;
 }
 
@@ -128,15 +139,8 @@ Deno.serve(async (req) => {
     });
   }
 
-  const ip =
-    req.headers.get("cf-connecting-ip") ||
-    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
-    "unknown";
-  if (rateLimited(ip)) {
-    return new Response(JSON.stringify({ error: "rate_limited" }), {
-      status: 429,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+  if (rateLimited(`advisor:${clientIp(req)}`, RL_MAX, RL_WINDOW_MS)) {
+    return rateLimitResponse(corsHeaders);
   }
 
   const apiKey = Deno.env.get("LOVABLE_API_KEY");
@@ -157,9 +161,11 @@ Deno.serve(async (req) => {
     });
   }
 
-  const country: string = (["CL", "PE", "MX", "CO", "AR"].includes(String(body?.country).toUpperCase())
-    ? String(body.country).toUpperCase()
-    : "CL");
+  // CL, PE, MX, CO y AR tienen edición publicada. El índice regional (LATAM) y los
+  // países en verificación no reciben una marca por defecto.
+  const requested = String(body?.country ?? "").toUpperCase();
+  const country: string | null = Object.hasOwn(COUNTRY_CTX, requested) ? requested : null;
+  const placeName = country ? COUNTRY_CTX[country].name : UNPUBLISHED_NAMES[requested] ?? "Latinoamérica";
 
   const inMessages: ChatMessage[] = Array.isArray(body?.messages) ? body.messages : [];
   const clean = inMessages
@@ -184,8 +190,8 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const supabase = createClient(supabaseUrl, supabaseKey);
-  const providers = await loadProviders(supabase, country);
-  const system = buildSystemPrompt(country, providers);
+  const providers = country ? await loadProviders(supabase, country) : [];
+  const system = buildSystemPrompt(country, placeName, providers);
 
   let upstream: Response;
   try {

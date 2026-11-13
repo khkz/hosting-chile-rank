@@ -393,6 +393,16 @@ html {
   }
 }
 
+/* En móvil, con la barra fija "Cotiza tu hosting" visible, el asesor se abre
+   desde esa barra: un solo elemento fijo que no tapa contenido. */
+@media (max-width: 767.98px) {
+  html[data-sticky-cta='on'] .advisor-fab {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(1rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
