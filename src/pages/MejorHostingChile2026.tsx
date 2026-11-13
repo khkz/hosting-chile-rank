@@ -15,6 +15,7 @@ import HowToSchema from '@/components/SEO/HowToSchema';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import { CURRENT_YEAR, getLastUpdatedText, getLastUpdatedDate, getYearStartDate } from '@/utils/dateHelpers';
+import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 const MejorHostingChile2026 = () => {
   const hostingProviders = [
@@ -547,7 +548,7 @@ const MejorHostingChile2026 = () => {
             </div>
             
             <div className="mt-4 text-sm text-gray-600 space-y-2">
-              <p>* <strong>Precios de renovación</strong> mostrados para transparencia total. Datos actualizados a {getLastUpdatedText().replace('Actualizado ', '')}.</p>
+              <p>* <strong>Precios de renovación</strong> mostrados para transparencia total. Datos verificados el {VERIFICATION_DATE_HUMAN}.</p>
               <p>* <strong>Precios promocionales iniciales:</strong> EcoHosting y HostGator usan promoción el primer periodo y suben el valor al renovar</p>
               <p>* <strong>Precios estables sin sorpresas:</strong> HostingPlus mantiene el mismo valor en la renovación de su plan de 36 meses</p>
               <p>* <strong>Precios:</strong> estamos reverificando el catálogo; consulta el valor vigente en el sitio oficial de cada proveedor</p>
