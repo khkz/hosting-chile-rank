@@ -8,7 +8,7 @@ const BeforeAfter = () => {
         
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-ink mb-4">
             De hosting <span className="text-gray-400 line-through">prometedor</span> → 
             <span className="text-brand-red"> Hosting que cumple</span>
           </h2>

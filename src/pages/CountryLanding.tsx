@@ -187,14 +187,14 @@ const CountryLanding = () => {
       <main className="min-h-[60vh] container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EF233C]/10 text-[#EF233C] text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 text-brand text-sm font-medium mb-4">
               <Globe className="h-4 w-4" />
               {info.flag} Versión {info.name}
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-3">
+            <h1 className="text-4xl md:text-5xl font-bold text-ink mb-3">
               Hosting en {info.name}
             </h1>
-            <p className="text-base md:text-lg text-[#2B2D42]/70 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-ink/70 max-w-2xl mx-auto">
               Directorio independiente con datos comprobables (contacto, datacenter,
               razón social, tecnología). No publicamos puntajes hasta verificar
               reclamos, ASN y trayectoria con la misma metodología que en Chile.
@@ -202,13 +202,13 @@ const CountryLanding = () => {
             <div className="flex flex-wrap justify-center gap-2 mt-5 text-sm">
               <Link
                 to={`/${info.slug}/mejor-hosting-${({pe:'peru',mx:'mexico',co:'colombia',ar:'argentina'} as const)[info.slug as 'pe'|'mx'|'co'|'ar']}-2026`}
-                className="px-4 py-2 rounded-md bg-[#2B2D42] text-white hover:bg-[#2B2D42]/90"
+                className="px-4 py-2 rounded-md bg-ink text-white hover:bg-ink/90"
               >
                 🏆 Mejor hosting {info.name} 2026
               </Link>
               <Link
                 to={`/${info.slug}/hosting-con-datacenter-local`}
-                className="px-4 py-2 rounded-md bg-white border border-[#2B2D42]/15 text-[#2B2D42] hover:bg-muted"
+                className="px-4 py-2 rounded-md bg-white border border-ink/15 text-ink hover:bg-muted"
               >
                 🖥️ Datacenter local en {info.name}
               </Link>
@@ -251,7 +251,7 @@ const CountryLanding = () => {
                 visibleCount={filteredCompanies.length}
               />
               {filteredCompanies.length === 0 ? (
-                <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-center text-sm text-[#2B2D42]/70">
+                <div className="bg-white border border-ink/10 rounded-xl p-6 text-center text-sm text-ink/70">
                   Ningún proveedor cumple con esos filtros. Ajusta la selección arriba.
                 </div>
               ) : (
@@ -345,11 +345,11 @@ const CountryLanding = () => {
               )}
             </>
           ) : (
-            <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 md:p-8 text-center">
-              <h2 className="text-xl font-semibold text-[#2B2D42] mb-2">
+            <div className="bg-white border border-ink/10 rounded-xl p-6 md:p-8 text-center">
+              <h2 className="text-xl font-semibold text-ink mb-2">
                 Próximamente: estamos verificando los proveedores de {info.name}
               </h2>
-              <p className="text-sm text-[#2B2D42]/70 mb-5 max-w-xl mx-auto">
+              <p className="text-sm text-ink/70 mb-5 max-w-xl mx-auto">
                 No publicamos rankings sin datos verificables. Estamos auditando
                 ASN, datacenter, reclamos y trayectoria con la misma metodología
                 que aplicamos en Chile.
@@ -368,11 +368,11 @@ const CountryLanding = () => {
           )}
 
           {/* Metodología y transparencia */}
-          <section className="mt-14 bg-white border border-[#2B2D42]/10 rounded-xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-3">
+          <section className="mt-14 bg-white border border-ink/10 rounded-xl p-6 md:p-8">
+            <h2 className="text-2xl font-bold text-ink mb-3">
               Metodología y transparencia
             </h2>
-            <p className="text-sm text-[#2B2D42]/75 leading-relaxed mb-3">
+            <p className="text-sm text-ink/75 leading-relaxed mb-3">
               Este directorio de {info.name} está <strong>ordenado por calidad
               certificada de la infraestructura del operador y transparencia
               verificable</strong>, no por puntajes autoasignados. Priorizamos
@@ -386,7 +386,7 @@ const CountryLanding = () => {
               identificador fiscal, sitio oficial, datacenter declarado,
               tecnología del stack y canales de contacto.
             </p>
-            <p className="text-xs text-[#2B2D42]/60">
+            <p className="text-xs text-ink/60">
               Última actualización de datos: <strong>{lastUpdated}</strong>. Los
               datos se publican bajo licencia CC-BY-4.0 y son de acceso libre.
             </p>
@@ -394,7 +394,7 @@ const CountryLanding = () => {
 
           {/* FAQ */}
           <section className="mt-10">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">
+            <h2 className="text-2xl font-bold text-ink mb-4">
               Preguntas frecuentes
             </h2>
             <Accordion type="single" collapsible className="space-y-3">
@@ -402,12 +402,12 @@ const CountryLanding = () => {
                 <AccordionItem
                   key={i}
                   value={`faq-${i}`}
-                  className="bg-white border border-[#2B2D42]/10 rounded-lg px-4"
+                  className="bg-white border border-ink/10 rounded-lg px-4"
                 >
                   <AccordionTrigger className="text-left font-medium">
                     {f.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm text-[#2B2D42]/75">
+                  <AccordionContent className="text-sm text-ink/75">
                     {f.a}
                   </AccordionContent>
                 </AccordionItem>

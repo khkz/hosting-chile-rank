@@ -124,13 +124,13 @@ const Benchmark: React.FC = () => {
 
       <Navbar />
 
-      <main className="bg-[#F7F9FC] min-h-screen">
+      <main className="bg-paper min-h-screen">
         {/* Hero */}
         <section className="py-12 md:py-16 bg-white border-b">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-3">
+                <h1 className="text-3xl md:text-4xl font-bold text-ink mb-3">
                   Benchmark de Hosting Chile
                 </h1>
                 <p className="text-base md:text-lg text-[#555] max-w-3xl">

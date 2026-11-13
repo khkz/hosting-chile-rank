@@ -71,12 +71,12 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
       : 'bg-gradient-to-br from-amber-600 to-amber-700';
 
   const badgeGradient = isWinner
-    ? 'from-[#EF233C] to-pink-500 text-white'
+    ? 'from-brand to-pink-500 text-white'
     : provider.sortPosition === 2
       ? 'from-gray-100 to-gray-200 text-gray-700'
       : 'from-amber-100 to-orange-200 text-amber-700';
 
-  const ratingColor = isWinner ? 'text-[#EF233C]' : provider.sortPosition === 2 ? 'text-gray-600' : 'text-amber-600';
+  const ratingColor = isWinner ? 'text-brand' : provider.sortPosition === 2 ? 'text-gray-600' : 'text-amber-600';
 
   return (
     <article
@@ -101,7 +101,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
         </div>
         {isWinner && provider.is_recommended && (
           <div className="mt-2 flex justify-center">
-            <span className="bg-gradient-to-r from-[#EF233C] to-pink-500 text-white text-xs md:text-sm px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
+            <span className="bg-gradient-to-r from-brand to-pink-500 text-white text-xs md:text-sm px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
               <Check size={14} /> Más Recomendado
             </span>
           </div>
@@ -110,7 +110,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
 
       {/* Card */}
       <div className={`relative bg-card ${borderClass} rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300`}>
-        {isWinner && <div className="absolute inset-0 bg-gradient-to-br from-[#EF233C]/5 to-transparent rounded-3xl pointer-events-none" />}
+        {isWinner && <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent rounded-3xl pointer-events-none" />}
 
         {/* Top badges */}
         <div className="absolute -top-3 left-3 flex flex-wrap gap-1.5 z-20">
@@ -182,7 +182,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ provider, ratingLabel, isWinn
           <ul className="space-y-2 mb-4 text-sm">
             {cleanFeatures(provider.ranking_features).map((feature, index) => (
               <li key={index} className="flex items-start gap-2">
-                <Check className={`w-4 h-4 ${isWinner ? 'text-[#EF233C]' : 'text-green-500'} mt-0.5 flex-shrink-0`} />
+                <Check className={`w-4 h-4 ${isWinner ? 'text-brand' : 'text-green-500'} mt-0.5 flex-shrink-0`} />
                 <span className="text-muted-foreground font-medium">{feature}</span>
               </li>
             ))}
@@ -360,7 +360,7 @@ const HostingRanking = () => {
             Última revisión del ranking: 28 de agosto de 2026
           </p>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-4 rounded-full" />
+          <div className="w-24 h-1 bg-gradient-to-r from-brand to-pink-400 mx-auto mt-4 rounded-full" />
         </div>
 
         {/* Authority signals + affiliate disclosure + "Why HostingPlus #1?" accordion */}
@@ -455,7 +455,7 @@ const HostingRanking = () => {
             </p>
             <Link
               to="/ranking"
-              className="inline-flex items-center gap-2 text-[#EF233C] hover:text-[#b3001b] font-semibold text-base md:text-lg transition-colors duration-300 group"
+              className="inline-flex items-center gap-2 text-brand hover:text-brand-ink font-semibold text-base md:text-lg transition-colors duration-300 group"
               onClick={() => track('cta_ver_ranking', { location: 'home_more' })}
             >
               Ver ranking completo

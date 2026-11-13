@@ -195,14 +195,14 @@ const ComparativaPage = () => {
       <HostingSectionsNav />
 
       {/* Hero */}
-      <section className="bg-[#F7F9FC] py-8 md:py-16 text-center">
+      <section className="bg-paper py-8 md:py-16 text-center">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#2B2D42]">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-ink">
             Comparativa Hosting Chile 2026
           </h1>
           <p className="mt-4 text-base md:text-lg text-[#555] max-w-2xl mx-auto">
             Orden y datos basados en el{' '}
-            <a href="/estudio-hosting-chile-2026" className="text-[#EF233C] underline">
+            <a href="/estudio-hosting-chile-2026" className="text-brand underline">
               Estudio Hosting Chile 2026
             </a>
             . Solo información verificable: ASN, datacenter, reclamos públicos y tecnologías.
@@ -218,7 +218,7 @@ const ComparativaPage = () => {
             <Button
               variant="outline"
               size="sm"
-              className={`md:hidden flex items-center gap-2 ${anyFilterActive ? 'bg-[#EDF2F4] border-[#EF233C] text-[#EF233C]' : ''}`}
+              className={`md:hidden flex items-center gap-2 ${anyFilterActive ? 'bg-paper-deep border-brand text-brand' : ''}`}
               onClick={() => setShowFilters(!showFilters)}
             >
               <Filter size={16} />
@@ -241,7 +241,7 @@ const ComparativaPage = () => {
                 <Label htmlFor="backups" className="cursor-pointer">Backups diarios</Label>
               </div>
               {anyFilterActive && (
-                <button onClick={resetFilters} className="text-[#EF233C] underline text-sm hover:text-red-700">
+                <button onClick={resetFilters} className="text-brand underline text-sm hover:text-red-700">
                   Quitar filtros
                 </button>
               )}
@@ -264,9 +264,9 @@ const ComparativaPage = () => {
                   />
                 ))
               ) : (
-                <div className="text-center p-8 bg-[#F7F9FC] rounded-lg shadow-sm">
+                <div className="text-center p-8 bg-paper rounded-lg shadow-sm">
                   <p className="mb-4">No hay resultados que coincidan con los filtros seleccionados.</p>
-                  <button onClick={resetFilters} className="text-[#EF233C] underline hover:text-red-700">
+                  <button onClick={resetFilters} className="text-brand underline hover:text-red-700">
                     Quitar todos los filtros
                   </button>
                 </div>
@@ -279,7 +279,7 @@ const ComparativaPage = () => {
                   Estudio Hosting Chile 2026 · datos revisados el {VERIFICATION_DATE_HUMAN}. {PRICING_FOOTNOTE}{' '}
                   {COMMERCIAL_DISCLOSURE}
                 </TableCaption>
-                <TableHeader className="bg-[#F7F9FC]">
+                <TableHeader className="bg-paper">
                   <TableRow className="border-b-2 border-gray-300">
                     <TableHead className="w-[200px] font-semibold">Proveedor</TableHead>
                     <TableHead className="w-[110px] font-semibold">ASN</TableHead>
@@ -297,8 +297,8 @@ const ComparativaPage = () => {
                       <TableRow
                         key={provider.id}
                         className={`
-                          ${provider.id === 'hostingplus' ? 'bg-[#EDF2F4] hover:bg-[#EDF2F4]' : ''}
-                          ${provider.id === 'hostingplus' ? 'border border-[#EF233C]' : ''}
+                          ${provider.id === 'hostingplus' ? 'bg-paper-deep hover:bg-paper-deep' : ''}
+                          ${provider.id === 'hostingplus' ? 'border border-brand' : ''}
                           ${index % 2 === 0 && provider.id !== 'hostingplus' ? 'bg-white' : ''}
                           ${index % 2 === 1 && provider.id !== 'hostingplus' ? 'bg-gray-50' : ''}
                         `}
@@ -358,7 +358,7 @@ const ComparativaPage = () => {
                         <TableCell className="text-center">
                           <a
                             href={provider.reseñaUrl}
-                            className="inline-block px-3 py-1 bg-white border border-[#EF233C] text-[#EF233C] rounded hover:bg-[#EF233C] hover:text-white transition-colors text-sm"
+                            className="inline-block px-3 py-1 bg-white border border-brand text-brand rounded hover:bg-brand hover:text-white transition-colors text-sm"
                           >
                             Ver ficha
                           </a>
@@ -370,7 +370,7 @@ const ComparativaPage = () => {
                       <TableCell colSpan={8} className="text-center py-8">
                         No hay resultados que coincidan con los filtros seleccionados.
                         <br />
-                        <button onClick={resetFilters} className="mt-2 text-[#EF233C] underline">
+                        <button onClick={resetFilters} className="mt-2 text-brand underline">
                           Quitar todos los filtros
                         </button>
                       </TableCell>
@@ -384,7 +384,7 @@ const ComparativaPage = () => {
       </section>
 
       {/* Recommendation */}
-      <section className="py-12 bg-[#F7F9FC]">
+      <section className="py-12 bg-paper">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl font-bold mb-4">¿Por qué HostingPlus encabeza el ranking?</h2>
           <p className="text-lg max-w-3xl mx-auto mb-8">
@@ -395,7 +395,7 @@ const ComparativaPage = () => {
           <div className="flex flex-wrap gap-4 justify-center">
             <a
               href="/estudio-hosting-chile-2026"
-              className="inline-block bg-white border border-[#EF233C] text-[#EF233C] px-6 py-3 rounded-lg hover:bg-[#EF233C] hover:text-white transition-colors"
+              className="inline-block bg-white border border-brand text-brand px-6 py-3 rounded-lg hover:bg-brand hover:text-white transition-colors"
             >
               Ver el estudio completo
             </a>
@@ -403,7 +403,7 @@ const ComparativaPage = () => {
               href="https://www.hostingplus.cl/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-[#EF233C] text-white px-6 py-3 rounded-lg hover:bg-red-700"
+              className="inline-block bg-brand text-white px-6 py-3 rounded-lg hover:bg-red-700"
             >
               Visitar HostingPlus
             </a>
@@ -414,7 +414,7 @@ const ComparativaPage = () => {
       {/* Comparativas de marcas (programmatic VS) — agrupadas */}
       <section className="py-12 bg-white border-t">
         <div className="container mx-auto px-4 max-w-5xl">
-          <h2 className="text-2xl font-bold text-[#2B2D42] mb-2">Comparativas 1-a-1</h2>
+          <h2 className="text-2xl font-bold text-ink mb-2">Comparativas 1-a-1</h2>
           <p className="text-sm text-gray-600 mb-6">Todas las parejas del catálogo, con datos verificables.</p>
 
           {(() => {
@@ -428,7 +428,7 @@ const ComparativaPage = () => {
               <Link
                 key={pair}
                 to={`/comparativa/${pair}`}
-                className="text-sm px-3 py-2 rounded border border-gray-200 hover:border-[#EF233C] hover:text-[#EF233C] transition truncate"
+                className="text-sm px-3 py-2 rounded border border-gray-200 hover:border-brand hover:text-brand transition truncate"
               >
                 {pair.replace('-vs-', ' vs ')}
               </Link>
@@ -437,23 +437,23 @@ const ComparativaPage = () => {
             return (
               <div className="space-y-8">
                 <div>
-                  <h3 className="font-semibold text-[#EF233C] mb-3">VS HostingPlus.cl (líder del ranking)</h3>
+                  <h3 className="font-semibold text-brand mb-3">VS HostingPlus.cl (líder del ranking)</h3>
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {vsHp.map(p => <PairLink key={p.pair} pair={p.pair} />)}
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[#EF233C] mb-3">VS EcoHosting.cl</h3>
+                  <h3 className="font-semibold text-brand mb-3">VS EcoHosting.cl</h3>
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {vsEh.map(p => <PairLink key={p.pair} pair={p.pair} />)}
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[#2B2D42] mb-3">Entre otros proveedores</h3>
+                  <h3 className="font-semibold text-ink mb-3">Entre otros proveedores</h3>
                   <div className="space-y-4">
                     {groupKeys.map(key => (
                       <details key={key} className="border rounded-lg bg-white p-3">
-                        <summary className="cursor-pointer font-medium text-[#2B2D42] capitalize">
+                        <summary className="cursor-pointer font-medium text-ink capitalize">
                           {key.replace(/-/g, ' ')} ({grouped[key].length})
                         </summary>
                         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 mt-3">

@@ -270,14 +270,14 @@ const CatalogoPage = () => {
       </section>
       
       {/* Related Content */}
-      <section className="py-12 bg-[#F7F9FC]">
+      <section className="py-12 bg-paper">
         <div className="container mx-auto px-4 max-w-4xl">
           <RelatedContent currentPage="general" />
         </div>
       </section>
       
       {/* Why choose section */}
-      <section className="py-12 bg-[#F7F9FC]">
+      <section className="py-12 bg-paper">
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-2xl font-bold mb-6 text-center">¿Por qué elegir un hosting chileno?</h2>
           

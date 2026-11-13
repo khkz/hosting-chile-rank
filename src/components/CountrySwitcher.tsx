@@ -49,8 +49,8 @@ const CountrySwitcher = ({ mobile = false }: { mobile?: boolean }) => {
         <button
           className={
             mobile
-              ? 'flex items-center gap-2 py-3 text-base font-medium text-[#2B2D42] hover:text-[#EF233C]'
-              : 'flex items-center gap-1 px-3 py-2 text-sm font-medium text-[#2B2D42] hover:text-[#EF233C] transition-colors'
+              ? 'flex items-center gap-2 py-3 text-base font-medium text-ink hover:text-brand'
+              : 'flex items-center gap-1 px-3 py-2 text-sm font-medium text-ink hover:text-brand transition-colors'
           }
           aria-label="Cambiar país"
         >

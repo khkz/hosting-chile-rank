@@ -54,7 +54,7 @@ const BuyerJourneys: React.FC = () => {
           <p className="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2">
             Elige por caso de uso
           </p>
-          <h2 id="journeys-title" className="font-poppins text-2xl md:text-3xl font-bold text-[#2B2D42] mb-3">
+          <h2 id="journeys-title" className="font-poppins text-2xl md:text-3xl font-bold text-ink mb-3">
             ¿Qué necesitas hostear?
           </h2>
           <p className="text-base text-gray-700 leading-relaxed">
@@ -70,10 +70,10 @@ const BuyerJourneys: React.FC = () => {
               className="bg-warm-cream/40 rounded-xl p-5 border border-border shadow-sm flex flex-col"
             >
               <Icon className="h-6 w-6 text-brand-red mb-3" aria-hidden />
-              <h3 className="font-semibold text-[#2B2D42] mb-1">{tag}</h3>
+              <h3 className="font-semibold text-ink mb-1">{tag}</h3>
               <p className="text-sm text-gray-700 mb-3 leading-relaxed">
                 <span className="block text-gray-600 italic mb-2">"{who}"</span>
-                <strong className="text-[#2B2D42]">Lo que importa:</strong> {need}
+                <strong className="text-ink">Lo que importa:</strong> {need}
               </p>
 
               <div className="mt-auto space-y-2">

@@ -120,7 +120,7 @@ const RankingPage = () => {
           onClick={() => setCurrentPage(i)}
           className={`px-3 py-1 mx-1 rounded ${
             currentPage === i 
-              ? 'bg-[#EF233C] text-white' 
+              ? 'bg-brand text-white' 
               : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
@@ -178,7 +178,7 @@ const RankingPage = () => {
 
       {/* Hero Section */}
       <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[40vh] md:min-h-[60vh]">
-        <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
+        <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold text-ink mb-4">
           Ranking Hosting Chile 2026
         </h1>
         <p className="text-sm md:text-base text-gray-600 max-w-lg mx-auto mb-8">
@@ -188,14 +188,14 @@ const RankingPage = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button 
             asChild 
-            className="bg-[#EF233C] hover:bg-[#d01d34] text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+            className="bg-brand hover:bg-[#d01d34] text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <a href="#ranking">Comparar ahora</a>
           </Button>
           <Button 
             asChild 
             variant="outline" 
-            className="border-2 border-[#2B2D42] text-[#2B2D42] hover:bg-[#2B2D42] hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+            className="border-2 border-ink text-ink hover:bg-ink hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300"
           >
             <a href="#methodology">Metodología</a>
           </Button>
@@ -206,7 +206,7 @@ const RankingPage = () => {
 
       {/* Top 3 Ranking */}
       <Section id="ranking">
-        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-4">
+        <h2 className="text-2xl font-bold text-center text-ink mb-4">
           Top 3 proveedores de hosting
         </h2>
         <p className="text-center text-sm text-gray-600 max-w-3xl mx-auto mb-4">
@@ -225,7 +225,7 @@ const RankingPage = () => {
 
       {/* Categories */}
       <Section id="categories">
-        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+        <h2 className="text-2xl font-bold text-center text-ink mb-8">
           Explora por tipo de servicio
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
@@ -241,7 +241,7 @@ const RankingPage = () => {
                 <div className="mb-4">
                   {category.icon}
                 </div>
-                <h3 className="font-medium text-[#2B2D42]">{category.title}</h3>
+                <h3 className="font-medium text-ink">{category.title}</h3>
               </Card>
             </a>
           ))}
@@ -252,7 +252,7 @@ const RankingPage = () => {
 
       {/* Testimonials */}
       <Section id="testimonials">
-        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+        <h2 className="text-2xl font-bold text-center text-ink mb-8">
           Lo que dicen nuestros usuarios
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -271,7 +271,7 @@ const RankingPage = () => {
 
       {/* Latest Domains */}
       <Section id="domains">
-        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-2">
+        <h2 className="text-2xl font-bold text-center text-ink mb-2">
           Últimos dominios .CL registrados
         </h2>
         <p className="text-center text-gray-600 mb-6">
@@ -281,7 +281,7 @@ const RankingPage = () => {
         <Card className="max-w-5xl mx-auto overflow-x-auto p-4 shadow-sm">
           {domainsLoading ? (
             <div className="flex justify-center items-center p-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#EF233C]"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand"></div>
               <span className="ml-2">Cargando dominios...</span>
             </div>
           ) : domainsError ? (
@@ -323,7 +323,7 @@ const RankingPage = () => {
       {/* FAQ Section */}
       <SEOFAQSchema faqs={faqItems} />
       <Section id="faq">
-        <h2 className="text-2xl font-bold text-center text-[#2B2D42] mb-8">
+        <h2 className="text-2xl font-bold text-center text-ink mb-8">
           Preguntas frecuentes
         </h2>
         <div className="max-w-3xl mx-auto space-y-3">
@@ -342,7 +342,7 @@ const RankingPage = () => {
 
       {/* Contact Section */}
       <Section id="contact" className="text-center">
-        <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">
+        <h2 className="text-2xl font-bold text-ink mb-4">
           ¿Necesitas ayuda para elegir?
         </h2>
         <p className="mb-6 max-w-lg mx-auto">
@@ -350,7 +350,7 @@ const RankingPage = () => {
         </p>
         <Button 
           asChild 
-          className="bg-[#EF233C] hover:bg-[#d01d34] text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          className="bg-brand hover:bg-[#d01d34] text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
         >
           <a href="mailto:contacto@eligetuhosting.cl">Contáctanos</a>
         </Button>

@@ -40,7 +40,7 @@ const Footer = () => {
     return (
       <>
       <SiteNotice />
-      <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">
+      <footer className="bg-gradient-to-b from-ink to-gray-900 text-paper-deep">
         <div className="container mx-auto px-4 py-8 md:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             <div>
@@ -103,7 +103,7 @@ const Footer = () => {
   return (
     <>
     <SiteNotice />
-    <footer className="bg-gradient-to-b from-[#2B2D42] to-gray-900 text-[#EDF2F4]">
+    <footer className="bg-gradient-to-b from-ink to-gray-900 text-paper-deep">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-8 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">

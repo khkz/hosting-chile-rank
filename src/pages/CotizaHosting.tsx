@@ -126,10 +126,10 @@ const CotizaHosting = () => {
       
       <Navbar />
       
-      <main className="bg-[#F7F9FC] py-12">
+      <main className="bg-paper py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-ink mb-4">
               Cotiza tu hosting ideal
             </h1>
             <p className="text-lg text-[#555] max-w-2xl mx-auto">
@@ -412,7 +412,7 @@ const CotizaHosting = () => {
                     
                     <Button 
                       type="submit" 
-                      className="w-full bg-[#EF233C]"
+                      className="w-full bg-brand"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? "Enviando solicitud..." : "Solicitar cotización"}
@@ -430,7 +430,7 @@ const CotizaHosting = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="bg-[#EF233C] p-2 rounded-full text-white">
+                    <div className="bg-brand p-2 rounded-full text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20 6 9 17l-5-5"/>
                       </svg>
@@ -442,7 +442,7 @@ const CotizaHosting = () => {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <div className="bg-[#EF233C] p-2 rounded-full text-white">
+                    <div className="bg-brand p-2 rounded-full text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20 6 9 17l-5-5"/>
                       </svg>
@@ -454,7 +454,7 @@ const CotizaHosting = () => {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <div className="bg-[#EF233C] p-2 rounded-full text-white">
+                    <div className="bg-brand p-2 rounded-full text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20 6 9 17l-5-5"/>
                       </svg>
@@ -466,7 +466,7 @@ const CotizaHosting = () => {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <div className="bg-[#EF233C] p-2 rounded-full text-white">
+                    <div className="bg-brand p-2 rounded-full text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20 6 9 17l-5-5"/>
                       </svg>
@@ -499,7 +499,7 @@ const CotizaHosting = () => {
                       <span className="font-medium">9.8/10</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-[#EF233C] h-2 rounded-full" style={{ width: '98%' }}></div>
+                      <div className="bg-brand h-2 rounded-full" style={{ width: '98%' }}></div>
                     </div>
                   </div>
                   
@@ -509,7 +509,7 @@ const CotizaHosting = () => {
                       <span className="font-medium">9.9/10</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-[#EF233C] h-2 rounded-full" style={{ width: '99%' }}></div>
+                      <div className="bg-brand h-2 rounded-full" style={{ width: '99%' }}></div>
                     </div>
                   </div>
                   
@@ -519,7 +519,7 @@ const CotizaHosting = () => {
                       <span className="font-medium">9.6/10</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-[#EF233C] h-2 rounded-full" style={{ width: '96%' }}></div>
+                      <div className="bg-brand h-2 rounded-full" style={{ width: '96%' }}></div>
                     </div>
                   </div>
                 </CardContent>
@@ -540,7 +540,7 @@ const CotizaHosting = () => {
           
           {/* Sección de testimonios */}
           <section className="mt-16 text-center">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-8">
+            <h2 className="text-2xl font-bold text-ink mb-8">
               Lo que dicen nuestros clientes
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
@@ -614,7 +614,7 @@ const CotizaHosting = () => {
           
           {/* Sección de proveedores destacados */}
           <section className="mt-16">
-            <h2 className="text-2xl font-bold text-[#2B2D42] text-center mb-8">
+            <h2 className="text-2xl font-bold text-ink text-center mb-8">
               Proveedores que recomendamos
             </h2>
             <div className="grid md:grid-cols-4 gap-6">
@@ -633,7 +633,7 @@ const CotizaHosting = () => {
                   <div className="text-sm">
                     <div className="flex justify-between mb-1">
                       <span>Puntuación:</span>
-                      <span className="font-bold text-[#EF233C]">9.8/10</span>
+                      <span className="font-bold text-brand">9.8/10</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Planes:</span>
@@ -658,7 +658,7 @@ const CotizaHosting = () => {
                   <div className="text-sm">
                     <div className="flex justify-between mb-1">
                       <span>Puntuación:</span>
-                      <span className="font-bold text-[#EF233C]">9.2/10</span>
+                      <span className="font-bold text-brand">9.2/10</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Planes:</span>
@@ -683,7 +683,7 @@ const CotizaHosting = () => {
                   <div className="text-sm">
                     <div className="flex justify-between mb-1">
                       <span>Puntuación:</span>
-                      <span className="font-bold text-[#EF233C]">9.0/10</span>
+                      <span className="font-bold text-brand">9.0/10</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Planes:</span>
@@ -708,7 +708,7 @@ const CotizaHosting = () => {
                   <div className="text-sm">
                     <div className="flex justify-between mb-1">
                       <span>Puntuación:</span>
-                      <span className="font-bold text-[#EF233C]">8.8/10</span>
+                      <span className="font-bold text-brand">8.8/10</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Planes:</span>
@@ -722,7 +722,7 @@ const CotizaHosting = () => {
           
           {/* FAQ Section */}
           <section className="mt-16">
-            <h2 className="text-2xl font-bold text-[#2B2D42] text-center mb-8">
+            <h2 className="text-2xl font-bold text-ink text-center mb-8">
               Preguntas frecuentes
             </h2>
             <div className="max-w-3xl mx-auto space-y-4">
@@ -778,7 +778,7 @@ const CotizaHosting = () => {
           
           {/* CTA final */}
           <section className="mt-16 text-center">
-            <Card className="bg-gradient-to-r from-[#EF233C] to-[#D90429] text-white">
+            <Card className="bg-gradient-to-r from-brand to-[#D90429] text-white">
               <CardContent className="py-12">
                 <h2 className="text-3xl font-bold mb-4">
                   ¿Listo para encontrar tu hosting ideal?

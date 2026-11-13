@@ -94,75 +94,75 @@ const Latam = () => {
       <main className="min-h-[70vh] container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EF233C]/10 text-[#EF233C] text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 text-brand text-sm font-medium mb-4">
               <Globe className="h-4 w-4" /> Hub LATAM
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-3">
+            <h1 className="text-4xl md:text-5xl font-bold text-ink mb-3">
               Hosting en Latinoamérica — directorios verificados por país
             </h1>
-            <p className="text-base md:text-lg text-[#2B2D42]/70 max-w-3xl mx-auto">
+            <p className="text-base md:text-lg text-ink/70 max-w-3xl mx-auto">
               Publicamos directorios independientes de hosting con datos comprobables
               (razón social, ID fiscal, datacenter, tecnología, teléfono, dirección).
               Misma metodología en cada país: WHOIS, ASN, registros mercantiles y respuesta de soporte.
             </p>
-            <p className="mt-3 inline-flex items-center gap-1 text-xs text-[#2B2D42]/60">
+            <p className="mt-3 inline-flex items-center gap-1 text-xs text-ink/60">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
               Datos verificados · Última actualización: <time dateTime={lastUpdated}>{lastUpdated}</time>
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-            <a href="https://eligetuhosting.cl/" className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 hover:border-[#EF233C] hover:shadow-md transition-all">
+            <a href="https://eligetuhosting.cl/" className="group bg-white border border-ink/10 rounded-xl p-6 hover:border-brand hover:shadow-md transition-all">
               <div className="text-3xl mb-2">🇨🇱</div>
-              <div className="font-semibold text-[#2B2D42] text-lg">Chile</div>
-              <div className="text-xs text-[#2B2D42]/60 mt-1">{chileTotal} proveedores verificados · Ranking completo</div>
-              <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
+              <div className="font-semibold text-ink text-lg">Chile</div>
+              <div className="text-xs text-ink/60 mt-1">{chileTotal} proveedores verificados · Ranking completo</div>
+              <div className="mt-3 inline-flex items-center gap-1 text-sm text-brand font-medium">
                 Ver ranking <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </a>
             {LATAM_STATIC.map(c => (
-              <div key={c.code} className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 hover:border-[#EF233C] hover:shadow-md transition-all">
+              <div key={c.code} className="group bg-white border border-ink/10 rounded-xl p-6 hover:border-brand hover:shadow-md transition-all">
                 <a href={`https://eligetuhosting.com/${c.slug}`} className="block">
                   <div className="text-3xl mb-2">{c.flag}</div>
-                  <div className="font-semibold text-[#2B2D42] text-lg">{c.name}</div>
-                  <div className="text-xs text-[#2B2D42]/60 mt-1">
+                  <div className="font-semibold text-ink text-lg">{c.name}</div>
+                  <div className="text-xs text-ink/60 mt-1">
                     {c.total} proveedores · {c.local} con datacenter local
                   </div>
-                  <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
+                  <div className="mt-3 inline-flex items-center gap-1 text-sm text-brand font-medium">
                     Ver directorio <ArrowRight className="h-3.5 w-3.5" />
                   </div>
                 </a>
-                <ul className="mt-3 pt-3 border-t border-[#2B2D42]/10 space-y-1.5 text-xs">
-                  <li><a href={`https://eligetuhosting.com/${c.slug}/mejor-hosting-${c.paisSlug}-2026`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Mejor hosting {c.name} 2026</a></li>
-                  <li><a href={`https://eligetuhosting.com/${c.slug}/hosting-con-datacenter-local`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Datacenter local</a></li>
-                  <li><a href={`https://eligetuhosting.com/${c.slug}/benchmark`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Benchmark uptime/TTFB</a></li>
+                <ul className="mt-3 pt-3 border-t border-ink/10 space-y-1.5 text-xs">
+                  <li><a href={`https://eligetuhosting.com/${c.slug}/mejor-hosting-${c.paisSlug}-2026`} className="text-ink/80 hover:text-brand">→ Mejor hosting {c.name} 2026</a></li>
+                  <li><a href={`https://eligetuhosting.com/${c.slug}/hosting-con-datacenter-local`} className="text-ink/80 hover:text-brand">→ Datacenter local</a></li>
+                  <li><a href={`https://eligetuhosting.com/${c.slug}/benchmark`} className="text-ink/80 hover:text-brand">→ Benchmark uptime/TTFB</a></li>
                 </ul>
               </div>
             ))}
           </div>
 
-          <section className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 mb-8">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-3">Metodología (misma en cada país)</h2>
-            <ul className="text-sm text-[#2B2D42]/80 space-y-2 list-disc pl-5">
+          <section className="bg-white border border-ink/10 rounded-xl p-6 mb-8">
+            <h2 className="text-2xl font-bold text-ink mb-3">Metodología (misma en cada país)</h2>
+            <ul className="text-sm text-ink/80 space-y-2 list-disc pl-5">
               <li>Verificación de razón social / ID fiscal contra registros mercantiles (SII, AFIP, SAT, DIAN, SUNAT).</li>
               <li>Datacenter declarado contrastado con ASN (BGPView) y ubicación real de IPs.</li>
               <li>Contacto (teléfono, dirección, sitio oficial) probado antes de publicar.</li>
               <li>No publicamos puntajes agregados hasta tener reclamos verificados, benchmarks y trayectoria mínima.</li>
             </ul>
-            <p className="text-xs text-[#2B2D42]/60 mt-3">
+            <p className="text-xs text-ink/60 mt-3">
               Licencia CC-BY-4.0. Fuente citable: <a href="/data/proveedores-latam.json" className="underline">/data/proveedores-latam.json</a>.
             </p>
           </section>
 
-          <section className="bg-[#EDF2F4] rounded-xl p-6">
-            <h2 className="text-xl font-bold text-[#2B2D42] mb-2">Datos abiertos por país</h2>
+          <section className="bg-paper-deep rounded-xl p-6">
+            <h2 className="text-xl font-bold text-ink mb-2">Datos abiertos por país</h2>
             <div className="flex flex-wrap gap-3 text-sm">
               <a href="/data/proveedores.json" className="px-3 py-1.5 rounded bg-white border">🇨🇱 proveedores.json</a>
               <a href="/data/proveedores-pe.json" className="px-3 py-1.5 rounded bg-white border">🇵🇪 proveedores-pe.json</a>
               <a href="/data/proveedores-mx.json" className="px-3 py-1.5 rounded bg-white border">🇲🇽 proveedores-mx.json</a>
               <a href="/data/proveedores-co.json" className="px-3 py-1.5 rounded bg-white border">🇨🇴 proveedores-co.json</a>
               <a href="/data/proveedores-ar.json" className="px-3 py-1.5 rounded bg-white border">🇦🇷 proveedores-ar.json</a>
-              <a href="/data/proveedores-latam.json" className="px-3 py-1.5 rounded bg-[#EF233C] text-white">🌎 proveedores-latam.json (unificado)</a>
+              <a href="/data/proveedores-latam.json" className="px-3 py-1.5 rounded bg-brand text-white">🌎 proveedores-latam.json (unificado)</a>
             </div>
           </section>
         </div>

@@ -97,12 +97,12 @@ const Blog = () => {
       
       <Navbar />
       
-      <main className="bg-[#F7F9FC]">
+      <main className="bg-paper">
         {/* Hero section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-6">
+              <h1 className="text-3xl md:text-4xl font-bold text-ink mb-6">
                 Blog de eligetuhosting.cl
               </h1>
               <p className="text-lg text-[#555]">
@@ -135,12 +135,12 @@ const Blog = () => {
                       <div className="md:w-2/3">
                         <CardHeader>
                           <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
-                            <span className="bg-[#EDF2F4] px-2 py-0.5 rounded">{post.category}</span>
+                            <span className="bg-paper-deep px-2 py-0.5 rounded">{post.category}</span>
                             <span>•</span>
                             <span>{post.date}</span>
                           </div>
                           <CardTitle className="text-xl">
-                            <Link to={`/blog/${post.slug}`} className="hover:text-[#EF233C]">
+                            <Link to={`/blog/${post.slug}`} className="hover:text-brand">
                               {post.title}
                             </Link>
                           </CardTitle>
@@ -154,7 +154,7 @@ const Blog = () => {
                           </div>
                           <Link
                             to={`/blog/${post.slug}`}
-                            className="text-[#EF233C] text-sm font-medium hover:underline"
+                            className="text-brand text-sm font-medium hover:underline"
                           >
                             Leer más →
                           </Link>
@@ -173,7 +173,7 @@ const Blog = () => {
                         <path d="m15 18-6-6 6-6"/>
                       </svg>
                     </button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-md border bg-[#EF233C] text-white">1</button>
+                    <button className="w-10 h-10 flex items-center justify-center rounded-md border bg-brand text-white">1</button>
                     <button className="w-10 h-10 flex items-center justify-center rounded-md border hover:bg-gray-100">2</button>
                     <button className="w-10 h-10 flex items-center justify-center rounded-md border hover:bg-gray-100">3</button>
                     <span className="w-10 h-10 flex items-center justify-center">...</span>
@@ -200,7 +200,7 @@ const Blog = () => {
                       <input
                         type="text"
                         placeholder="Buscar artículos..."
-                        className="w-full py-2 px-4 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#EF233C] focus:border-[#EF233C]"
+                        className="w-full py-2 px-4 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand"
                       />
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute right-3 top-2.5">
                         <circle cx="11" cy="11" r="8"/>
@@ -221,10 +221,10 @@ const Blog = () => {
                         <li key={index}>
                           <Link 
                             to={`/blog/categoria/${category.name.toLowerCase()}`}
-                            className="flex justify-between items-center py-1.5 hover:text-[#EF233C]"
+                            className="flex justify-between items-center py-1.5 hover:text-brand"
                           >
                             <span>{category.name}</span>
-                            <span className="bg-[#EDF2F4] text-gray-600 text-xs px-2 py-0.5 rounded-full">{category.count}</span>
+                            <span className="bg-paper-deep text-gray-600 text-xs px-2 py-0.5 rounded-full">{category.count}</span>
                           </Link>
                         </li>
                       ))}
@@ -250,7 +250,7 @@ const Blog = () => {
                         </div>
                         <div>
                           <h3 className="font-medium text-sm line-clamp-2">
-                            <Link to={`/blog/${post.slug}`} className="hover:text-[#EF233C]">
+                            <Link to={`/blog/${post.slug}`} className="hover:text-brand">
                               {post.title}
                             </Link>
                           </h3>
@@ -262,7 +262,7 @@ const Blog = () => {
                 </Card>
                 
                 {/* Newsletter */}
-                <Card className="bg-[#EDF2F4] border-0">
+                <Card className="bg-paper-deep border-0">
                   <CardHeader>
                     <CardTitle>¿Quieres recibir noticias?</CardTitle>
                     <CardDescription>
@@ -274,9 +274,9 @@ const Blog = () => {
                       <input
                         type="email"
                         placeholder="Tu correo electrónico"
-                        className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#EF233C] focus:border-[#EF233C]"
+                        className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand"
                       />
-                      <button className="w-full bg-[#EF233C] text-white py-2 rounded-md hover:bg-red-700 transition-colors">
+                      <button className="w-full bg-brand text-white py-2 rounded-md hover:bg-red-700 transition-colors">
                         Suscribirme
                       </button>
                     </div>

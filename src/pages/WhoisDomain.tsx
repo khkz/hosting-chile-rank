@@ -235,7 +235,7 @@ const WhoisDomain = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] font-montserrat text-[#333]">
+    <div className="min-h-screen bg-paper font-montserrat text-[#333]">
       <Helmet>
         <title>{capitalizedDomainName} - Análisis | EligeTuHosting.cl</title>
         <meta name="description" content={`Análisis técnico completo de ${domainName}: DNS, WHOIS, SSL, rendimiento, tecnología y más información para optimizar tu presencia en línea.`} />
@@ -399,7 +399,7 @@ const WhoisDomain = () => {
                     </li>
                   </ul>
                 </div>
-                <Button asChild className="bg-[#EF233C] hover:bg-[#b3001b] text-white px-6">
+                <Button asChild className="bg-brand hover:bg-brand-ink text-white px-6">
                   <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
                     Contratar
                   </a>

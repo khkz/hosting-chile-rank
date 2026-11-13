@@ -5,7 +5,7 @@ import BlogCard from './BlogCard';
 const BlogTeaser = () => {
   return (
     <section id="blog" className="container mx-auto py-16 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-8 text-[#2B2D42]">Últimos artículos</h2>
+      <h2 className="text-2xl font-semibold text-center mb-8 text-ink">Últimos artículos</h2>
       <div className="grid md:grid-cols-3 gap-6">
         <BlogCard 
           title="LiteSpeed vs Apache 2025" 

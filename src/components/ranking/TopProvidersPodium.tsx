@@ -34,7 +34,7 @@ const TopProvidersPodium: React.FC = () => {
             <div
               key={provider.slug}
               className={`bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 ${
-                index === 0 ? 'ring-2 ring-[#EF233C] transform md:scale-105' : 'hover:scale-105'
+                index === 0 ? 'ring-2 ring-brand transform md:scale-105' : 'hover:scale-105'
               }`}
             >
               <div className="p-6">
@@ -42,16 +42,16 @@ const TopProvidersPodium: React.FC = () => {
                   <div className="flex items-center gap-3 min-w-0">
                     <span
                       className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold flex-shrink-0 ${
-                        index === 0 ? 'bg-[#EF233C] text-white' : 'bg-gray-100 text-[#2B2D42]'
+                        index === 0 ? 'bg-brand text-white' : 'bg-gray-100 text-ink'
                       }`}
                     >
                       {index + 1}
                     </span>
-                    <h3 className="text-lg md:text-xl font-bold text-[#2B2D42] truncate">
+                    <h3 className="text-lg md:text-xl font-bold text-ink truncate">
                       {provider.name}
                     </h3>
                   </div>
-                  {index === 0 && <Badge className="bg-[#EF233C] text-white flex-shrink-0">Top</Badge>}
+                  {index === 0 && <Badge className="bg-brand text-white flex-shrink-0">Top</Badge>}
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-3 items-center">
@@ -90,8 +90,8 @@ const TopProvidersPodium: React.FC = () => {
                     asChild
                     className={`w-full font-semibold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 min-h-[44px] ${
                       index === 0
-                        ? 'bg-[#EF233C] hover:bg-[#d01d34] text-white'
-                        : 'bg-[#2B2D42] hover:bg-[#1a1c2e] text-white'
+                        ? 'bg-brand hover:bg-[#d01d34] text-white'
+                        : 'bg-ink hover:bg-[#1a1c2e] text-white'
                     }`}
                   >
                     <a href={link.href} target="_blank" rel={link.rel} className="flex items-center justify-center">

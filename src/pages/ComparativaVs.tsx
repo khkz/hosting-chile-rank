@@ -144,14 +144,14 @@ const ComparativaVs: React.FC = () => {
       </Helmet>
 
       <Navbar />
-      <main className="bg-gradient-to-b from-[#F7F9FC] to-white">
+      <main className="bg-gradient-to-b from-paper to-white">
         <section className="container mx-auto px-4 py-10 max-w-4xl">
           <nav aria-label="breadcrumbs" className="text-xs text-gray-500 mb-3">
             <Link to="/" className="hover:underline">Inicio</Link> /{' '}
             <Link to="/comparativa" className="hover:underline">Comparativa</Link> /{' '}
             <span>{a.name} vs {b.name}</span>
           </nav>
-          <h1 className="text-2xl md:text-4xl font-bold text-[#2B2D42]">{title}</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-ink">{title}</h1>
           <p className="mt-3 text-gray-600 text-base md:text-lg">{description}</p>
         </section>
 
@@ -159,15 +159,15 @@ const ComparativaVs: React.FC = () => {
           <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
             <table className="w-full">
               <thead>
-                <tr className="bg-[#F7F9FC]">
+                <tr className="bg-paper">
                   <th className="text-left py-3 px-3 text-xs uppercase text-gray-500">Característica</th>
                   <th className="text-left py-3 px-3">
-                    <div className={`font-bold ${winner.slug === a.slug ? 'text-[#EF233C] flex items-center gap-1' : 'text-[#2B2D42]'}`}>
+                    <div className={`font-bold ${winner.slug === a.slug ? 'text-brand flex items-center gap-1' : 'text-ink'}`}>
                       {winner.slug === a.slug && <Trophy className="h-4 w-4" />} {a.name}
                     </div>
                   </th>
                   <th className="text-left py-3 px-3">
-                    <div className={`font-bold ${winner.slug === b.slug ? 'text-[#EF233C] flex items-center gap-1' : 'text-[#2B2D42]'}`}>
+                    <div className={`font-bold ${winner.slug === b.slug ? 'text-brand flex items-center gap-1' : 'text-ink'}`}>
                       {winner.slug === b.slug && <Trophy className="h-4 w-4" />} {b.name}
                     </div>
                   </th>
@@ -190,7 +190,7 @@ const ComparativaVs: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Veredicto editorial</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Veredicto editorial</h2>
           <p className="text-gray-700 leading-relaxed">{verdict}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to={`/catalogo/${a.slug}`} className="px-4 py-2 rounded border border-gray-300 text-sm hover:bg-gray-50">Ver ficha {a.name}</Link>
@@ -201,63 +201,63 @@ const ComparativaVs: React.FC = () => {
         {/* Recomendación editorial */}
         {involvesAnchor ? (
           <section className="container mx-auto px-4 pb-8 max-w-3xl">
-            <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Nuestra recomendación</h2>
+            <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Nuestra recomendación</h2>
             <p className="text-gray-700">
               Si buscas equilibrio entre rendimiento, soporte y datacenter local, recomendamos{' '}
-              <Link to="/catalogo/hostingplus" className="text-[#EF233C] font-semibold hover:underline">HostingPlus.cl</Link>{' '}
+              <Link to="/catalogo/hostingplus" className="text-brand font-semibold hover:underline">HostingPlus.cl</Link>{' '}
               (9.9/10), líder verificado del ranking 2026.{' '}
-              <Link to="/catalogo/ecohosting" className="text-[#EF233C] font-semibold hover:underline">EcoHosting.cl</Link>{' '}
+              <Link to="/catalogo/ecohosting" className="text-brand font-semibold hover:underline">EcoHosting.cl</Link>{' '}
               (9.6/10) es la alternativa recomendada por relación precio-rendimiento.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700 flex items-center gap-1">
+              <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded bg-brand text-white text-sm hover:bg-red-700 flex items-center gap-1">
                 Visitar HostingPlus.cl <ExternalLink className="h-3 w-3" />
               </a>
-              <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded border border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white flex items-center gap-1">
+              <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded border border-brand text-brand text-sm hover:bg-brand hover:text-white flex items-center gap-1">
                 Visitar EcoHosting.cl <ExternalLink className="h-3 w-3" />
               </a>
             </div>
           </section>
         ) : (
           <section className="container mx-auto px-4 pb-8 max-w-3xl">
-            <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Nuestra recomendación</h2>
+            <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Nuestra recomendación</h2>
             <p className="text-gray-700">
               Ni {a.name} ni {b.name} alcanzan al líder del ranking en métricas medibles. Recomendamos{' '}
-              <Link to="/catalogo/hostingplus" className="text-[#EF233C] font-semibold hover:underline">HostingPlus.cl</Link>{' '}
+              <Link to="/catalogo/hostingplus" className="text-brand font-semibold hover:underline">HostingPlus.cl</Link>{' '}
               <strong>(9.9/10)</strong>: datacenter en Santiago, LiteSpeed Enterprise, soporte 24/7 y cero reclamos visibles.
               Para presupuestos ajustados,{' '}
-              <Link to="/catalogo/ecohosting" className="text-[#EF233C] font-semibold hover:underline">EcoHosting.cl</Link>{' '}
+              <Link to="/catalogo/ecohosting" className="text-brand font-semibold hover:underline">EcoHosting.cl</Link>{' '}
               <strong>(9.6/10)</strong> mantiene la mejor relación precio-rendimiento.
             </p>
             <div className="mt-4 grid sm:grid-cols-2 gap-3">
               {hostingplus && (
-                <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="rounded-xl border-2 border-[#EF233C] p-4 bg-white hover:bg-[#EF233C]/5 transition">
-                  <div className="font-bold text-[#EF233C]">🥇 HostingPlus.cl <span className="text-xs">9.9/10</span></div>
+                <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="rounded-xl border-2 border-brand p-4 bg-white hover:bg-brand/5 transition">
+                  <div className="font-bold text-brand">🥇 HostingPlus.cl <span className="text-xs">9.9/10</span></div>
                   <div className="text-xs text-gray-600 mt-1">Líder verificado · {hostingplus.datacenter_location || 'Datacenter Chile'}</div>
-                  <div className="text-sm text-[#2B2D42] mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
+                  <div className="text-sm text-ink mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
                 </a>
               )}
               {ecohosting && (
-                <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="rounded-xl border border-gray-300 p-4 bg-white hover:border-[#EF233C] transition">
-                  <div className="font-bold text-[#2B2D42]">🥈 EcoHosting.cl <span className="text-xs">9.6/10</span></div>
+                <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="rounded-xl border border-gray-300 p-4 bg-white hover:border-brand transition">
+                  <div className="font-bold text-ink">🥈 EcoHosting.cl <span className="text-xs">9.6/10</span></div>
                   <div className="text-xs text-gray-600 mt-1">Mejor precio-rendimiento</div>
-                  <div className="text-sm text-[#2B2D42] mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
+                  <div className="text-sm text-ink mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
                 </a>
               )}
             </div>
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
-              <Link to={`/alternativas-a/${a.slug}`} className="text-[#EF233C] hover:underline">Alternativas a {a.name} →</Link>
-              <Link to={`/alternativas-a/${b.slug}`} className="text-[#EF233C] hover:underline">Alternativas a {b.name} →</Link>
+              <Link to={`/alternativas-a/${a.slug}`} className="text-brand hover:underline">Alternativas a {a.name} →</Link>
+              <Link to={`/alternativas-a/${b.slug}`} className="text-brand hover:underline">Alternativas a {b.name} →</Link>
             </div>
           </section>
         )}
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Preguntas frecuentes</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Preguntas frecuentes</h2>
           <div className="space-y-3">
             {faqs.map((f, i) => (
               <details key={i} className="border rounded-lg p-4 bg-white">
-                <summary className="font-semibold cursor-pointer text-[#2B2D42]">{f.q}</summary>
+                <summary className="font-semibold cursor-pointer text-ink">{f.q}</summary>
                 <p className="mt-2 text-sm text-gray-700">{f.a}</p>
               </details>
             ))}

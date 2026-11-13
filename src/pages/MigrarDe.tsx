@@ -118,36 +118,36 @@ const MigrarDe: React.FC = () => {
       </Helmet>
 
       <Navbar />
-      <main className="bg-gradient-to-b from-[#F7F9FC] to-white">
+      <main className="bg-gradient-to-b from-paper to-white">
         <section className="container mx-auto px-4 py-10 max-w-4xl">
           <nav aria-label="breadcrumbs" className="text-xs text-gray-500 mb-3">
             <Link to="/" className="hover:underline">Inicio</Link> /{' '}
             <Link to="/guia-migrar-hosting" className="hover:underline">Migrar hosting</Link> /{' '}
             <span>Migrar de {target.name}</span>
           </nav>
-          <h1 className="text-2xl md:text-4xl font-bold text-[#2B2D42]">{title}</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-ink">{title}</h1>
           <p className="mt-4 text-gray-700 text-base md:text-lg leading-relaxed">
             Si tu sitio está en {target.name} y notas lentitud, soporte tardío o quieres datacenter local en Chile, esta guía te muestra cómo migrar sin downtime a un proveedor verificado del ranking: <strong>HostingPlus.cl (9.9/10)</strong> o <strong>EcoHosting.cl (9.6/10)</strong>. Ambos ofrecen migración gratuita asistida.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <a href="/ir/hostingplus" className="px-5 py-3 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700 flex items-center gap-1">
+            <a href="/ir/hostingplus" className="px-5 py-3 rounded bg-brand text-white text-sm hover:bg-red-700 flex items-center gap-1">
               Solicitar migración gratuita a HostingPlus <ExternalLink className="h-3 w-3" />
             </a>
-            <Link to="/cotiza-hosting" className="px-5 py-3 rounded border-2 border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white">
+            <Link to="/cotiza-hosting" className="px-5 py-3 rounded border-2 border-brand text-brand text-sm hover:bg-brand hover:text-white">
               Cotizar primero
             </Link>
           </div>
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-5">Checklist de migración en 4 pasos</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-5">Checklist de migración en 4 pasos</h2>
           <ol className="space-y-4">
             {checklist.map(s => (
               <li key={s.t} className="rounded-xl border bg-white p-5">
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-6 w-6 text-[#EF233C] mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-6 w-6 text-brand mt-0.5 flex-shrink-0" />
                   <div>
-                    <div className="font-semibold text-[#2B2D42]">{s.t}</div>
+                    <div className="font-semibold text-ink">{s.t}</div>
                     <p className="text-sm text-gray-700 mt-1">{s.d}</p>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ const MigrarDe: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Qué incluye la migración gratuita</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Qué incluye la migración gratuita</h2>
           <ul className="grid sm:grid-cols-2 gap-3 text-sm text-gray-700">
             {[
               'Traspaso completo de archivos y base de datos',
@@ -173,10 +173,10 @@ const MigrarDe: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Comparativa breve</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Comparativa breve</h2>
           <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
             <table className="w-full">
-              <thead className="bg-[#F7F9FC] text-xs uppercase text-gray-500">
+              <thead className="bg-paper text-xs uppercase text-gray-500">
                 <tr>
                   <th className="text-left py-3 px-3">Característica</th>
                   <th className="text-left py-3 px-3">{target.name}</th>
@@ -209,19 +209,19 @@ const MigrarDe: React.FC = () => {
             </table>
           </div>
           <div className="mt-3 text-sm">
-            <Link to={`/comparativa/${slug}-vs-hostingplus`} className="text-[#EF233C] hover:underline">Ver comparativa completa {target.name} vs HostingPlus →</Link>
+            <Link to={`/comparativa/${slug}-vs-hostingplus`} className="text-brand hover:underline">Ver comparativa completa {target.name} vs HostingPlus →</Link>
           </div>
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <div className="rounded-xl border-2 border-[#EF233C] bg-gradient-to-br from-[#EF233C]/5 to-white p-6 text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-[#2B2D42]">Solicita tu migración gratuita</h2>
+          <div className="rounded-xl border-2 border-brand bg-gradient-to-br from-brand/5 to-white p-6 text-center">
+            <h2 className="text-xl md:text-2xl font-bold text-ink">Solicita tu migración gratuita</h2>
             <p className="text-gray-700 mt-2">Sin downtime, 100% asistida por el equipo técnico.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <Link to="/cotiza-hosting" className="px-5 py-3 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700">
+              <Link to="/cotiza-hosting" className="px-5 py-3 rounded bg-brand text-white text-sm hover:bg-red-700">
                 Solicitar migración gratuita
               </Link>
-              <a href="/ir/hostingplus" className="px-5 py-3 rounded border-2 border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white flex items-center gap-1">
+              <a href="/ir/hostingplus" className="px-5 py-3 rounded border-2 border-brand text-brand text-sm hover:bg-brand hover:text-white flex items-center gap-1">
                 Ir a HostingPlus.cl <ExternalLink className="h-3 w-3" />
               </a>
             </div>
@@ -229,11 +229,11 @@ const MigrarDe: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Preguntas frecuentes</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Preguntas frecuentes</h2>
           <div className="space-y-3">
             {faqs.map((f, i) => (
               <details key={i} className="border rounded-lg p-4 bg-white">
-                <summary className="font-semibold cursor-pointer text-[#2B2D42]">{f.q}</summary>
+                <summary className="font-semibold cursor-pointer text-ink">{f.q}</summary>
                 <p className="mt-2 text-sm text-gray-700">{f.a}</p>
               </details>
             ))}

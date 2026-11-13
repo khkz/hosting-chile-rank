@@ -42,9 +42,9 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 
-const navLinkClasses = "text-sm font-medium flex items-center text-[#2B2D42] hover:text-[#EF233C] transition-all duration-300 hover:scale-105";
-const activeNavLinkClasses = "text-[#EF233C]";
-const mobileNavLinkClasses = "text-base font-medium py-3 flex items-center gap-2 text-[#2B2D42] hover:text-[#EF233C] transition-colors";
+const navLinkClasses = "text-sm font-medium flex items-center text-ink hover:text-brand transition-all duration-300 hover:scale-105";
+const activeNavLinkClasses = "text-brand";
+const mobileNavLinkClasses = "text-base font-medium py-3 flex items-center gap-2 text-ink hover:text-brand transition-colors";
 const iconClasses = "h-4 w-4 mr-1 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6";
 
 interface NavItem {
@@ -158,7 +158,7 @@ const Navbar = () => {
                   <DropdownMenuItem key={item.to} asChild>
                     <Link 
                       to={item.to} 
-                      className={`w-full px-2 py-2 flex items-center gap-2 ${isActive(item.to) ? 'text-[#EF233C]' : ''}`}
+                      className={`w-full px-2 py-2 flex items-center gap-2 ${isActive(item.to) ? 'text-brand' : ''}`}
                     >
                       <Icon className="h-4 w-4" />
                       {item.label}
@@ -191,7 +191,7 @@ const Navbar = () => {
                   <DropdownMenuItem key={item.to} asChild>
                     <Link 
                       to={item.to} 
-                      className={`w-full px-2 py-2 flex items-center gap-2 ${isActive(item.to) ? 'text-[#EF233C]' : ''}`}
+                      className={`w-full px-2 py-2 flex items-center gap-2 ${isActive(item.to) ? 'text-brand' : ''}`}
                     >
                       <Icon className="h-4 w-4" />
                       {item.label}
@@ -249,7 +249,7 @@ const Navbar = () => {
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-6 w-6 text-[#2B2D42]" />
+              <Menu className="h-6 w-6 text-ink" />
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-[80%] sm:max-w-sm animate-slide-in-right">
@@ -281,9 +281,9 @@ const Navbar = () => {
                 {user ? (
                   <div className="border-t pt-4 mt-4">
                     <div className="flex items-center gap-2 mb-3 px-1">
-                      <User className="h-5 w-5 text-[#2B2D42]" />
+                      <User className="h-5 w-5 text-ink" />
                       <div>
-                        <p className="text-sm font-medium text-[#2B2D42]">{user.email}</p>
+                        <p className="text-sm font-medium text-ink">{user.email}</p>
                         <p className="text-xs text-muted-foreground capitalize">{role || 'user'}</p>
                       </div>
                     </div>
@@ -321,7 +321,7 @@ const Navbar = () => {
                 {/* Accordion for Herramientas & Guías */}
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="herramientas" className="border-none">
-                    <AccordionTrigger className="py-3 text-base font-medium text-[#2B2D42] hover:text-[#EF233C] hover:no-underline">
+                    <AccordionTrigger className="py-3 text-base font-medium text-ink hover:text-brand hover:no-underline">
                       <div className="flex items-center gap-2">
                         <Wrench className="h-5 w-5" />
                         Herramientas
@@ -349,7 +349,7 @@ const Navbar = () => {
                   </AccordionItem>
                   
                   <AccordionItem value="guias" className="border-none">
-                    <AccordionTrigger className="py-3 text-base font-medium text-[#2B2D42] hover:text-[#EF233C] hover:no-underline">
+                    <AccordionTrigger className="py-3 text-base font-medium text-ink hover:text-brand hover:no-underline">
                       <div className="flex items-center gap-2">
                         <FileText className="h-5 w-5" />
                         Guías
@@ -381,7 +381,7 @@ const Navbar = () => {
               <div className="mt-auto pb-6">
                 <Button 
                   asChild 
-                  className="w-full bg-[#EF233C] hover:bg-[#EF233C]/90 text-white flex items-center justify-center gap-2"
+                  className="w-full bg-brand hover:bg-brand/90 text-white flex items-center justify-center gap-2"
                 >
                   <Link to="/ranking" className="flex items-center gap-2">
                     Compara ahora

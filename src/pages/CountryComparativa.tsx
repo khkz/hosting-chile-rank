@@ -100,10 +100,10 @@ const CountryComparativa = () => {
         </nav>
 
         <header className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#2B2D42]">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
             {p1.name} vs {p2.name}
           </h1>
-          <p className="mt-2 text-[#2B2D42]/75">
+          <p className="mt-2 text-ink/75">
             Comparativa lado a lado con datos verificables en {meta.name}. Sin puntajes inventados: solo lo que declara cada proveedor y se puede auditar.
           </p>
         </header>
@@ -125,7 +125,7 @@ const CountryComparativa = () => {
               <tbody>
                 {rows.map((r, i) => (
                   <tr key={i} className="border-b last:border-b-0">
-                    <td className="py-2 pr-3 font-medium text-[#2B2D42]/80">{r.label}</td>
+                    <td className="py-2 pr-3 font-medium text-ink/80">{r.label}</td>
                     <td className="py-2 px-3">{r.a}</td>
                     <td className="py-2 px-3">{r.b}</td>
                   </tr>

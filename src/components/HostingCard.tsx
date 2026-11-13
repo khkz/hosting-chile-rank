@@ -56,7 +56,7 @@ const HostingCard: React.FC<HostingCardProps> = ({
     switch (position) {
       case 1:
         positionColor = 'text-[#FFD700]'; // Gold
-        cardBg = 'bg-[#EDF2F4] border-2 border-[#EF233C]';
+        cardBg = 'bg-paper-deep border-2 border-brand';
         shadowClass = 'shadow-xl';
         break;
       case 2:
@@ -68,11 +68,11 @@ const HostingCard: React.FC<HostingCardProps> = ({
         cardBg = 'bg-white border border-[#CD7F32]';
         break;
       default:
-        positionColor = 'text-[#2B2D42]';
+        positionColor = 'text-ink';
         cardBg = 'bg-white';
     }
   } else {
-    positionColor = 'text-[#2B2D42]';
+    positionColor = 'text-ink';
     cardBg = 'bg-white';
   }
 
@@ -82,7 +82,7 @@ const HostingCard: React.FC<HostingCardProps> = ({
     >
       <div className="flex items-center mb-4">
         {!isPodium && (
-          <span className={`text-4xl font-black ${isTopRated ? 'text-[#EF233C]' : positionColor}`}>
+          <span className={`text-4xl font-black ${isTopRated ? 'text-brand' : positionColor}`}>
             {position}
           </span>
         )}

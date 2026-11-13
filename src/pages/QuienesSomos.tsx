@@ -30,7 +30,7 @@ const QuienesSomos: React.FC = () => {
       <Navbar />
       <main className="container mx-auto px-4 py-12 max-w-3xl">
         <header className="mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-ink mb-4">
             Quiénes somos
           </h1>
           <p className="text-lg text-gray-700 leading-relaxed">
@@ -42,7 +42,7 @@ const QuienesSomos: React.FC = () => {
         </header>
 
         <section className="mb-10" aria-labelledby="por-que">
-          <h2 id="por-que" className="text-2xl md:text-3xl font-semibold text-[#2B2D42] mb-4 inline-flex items-center gap-2">
+          <h2 id="por-que" className="text-2xl md:text-3xl font-semibold text-ink mb-4 inline-flex items-center gap-2">
             <HeartHandshake className="w-6 h-6 text-primary" aria-hidden="true" />
             Por qué existimos
           </h2>
@@ -61,7 +61,7 @@ const QuienesSomos: React.FC = () => {
         </section>
 
         <section className="mb-10" aria-labelledby="quien">
-          <h2 id="quien" className="text-2xl md:text-3xl font-semibold text-[#2B2D42] mb-4">
+          <h2 id="quien" className="text-2xl md:text-3xl font-semibold text-ink mb-4">
             Quién está detrás
           </h2>
           <p className="text-gray-700 leading-relaxed mb-3">
@@ -86,7 +86,7 @@ const QuienesSomos: React.FC = () => {
         </section>
 
         <section className="mb-10" aria-labelledby="financiamiento">
-          <h2 id="financiamiento" className="text-2xl md:text-3xl font-semibold text-[#2B2D42] mb-4 inline-flex items-center gap-2">
+          <h2 id="financiamiento" className="text-2xl md:text-3xl font-semibold text-ink mb-4 inline-flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-primary" aria-hidden="true" />
             Cómo nos financiamos
           </h2>
@@ -117,7 +117,7 @@ const QuienesSomos: React.FC = () => {
         </section>
 
         <section className="mb-10" aria-labelledby="verificamos">
-          <h2 id="verificamos" className="text-2xl md:text-3xl font-semibold text-[#2B2D42] mb-4 inline-flex items-center gap-2">
+          <h2 id="verificamos" className="text-2xl md:text-3xl font-semibold text-ink mb-4 inline-flex items-center gap-2">
             <Database className="w-6 h-6 text-primary" aria-hidden="true" />
             Cómo verificamos
           </h2>
@@ -154,7 +154,7 @@ const QuienesSomos: React.FC = () => {
         </section>
 
         <section aria-labelledby="contacto">
-          <h2 id="contacto" className="text-2xl md:text-3xl font-semibold text-[#2B2D42] mb-4 inline-flex items-center gap-2">
+          <h2 id="contacto" className="text-2xl md:text-3xl font-semibold text-ink mb-4 inline-flex items-center gap-2">
             <MessageSquare className="w-6 h-6 text-primary" aria-hidden="true" />
             Cómo contactarnos
           </h2>

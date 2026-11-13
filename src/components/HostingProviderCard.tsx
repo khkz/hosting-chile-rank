@@ -27,9 +27,9 @@ interface HostingProviderCardProps {
 
 const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isHighlighted = false }) => {
   return (
-    <Card className={`mb-4 overflow-hidden ${isHighlighted ? 'border-2 border-[#EF233C]' : ''}`}>
+    <Card className={`mb-4 overflow-hidden ${isHighlighted ? 'border-2 border-brand' : ''}`}>
       <CardContent className="p-0">
-        <div className={`p-4 ${isHighlighted ? 'bg-[#EDF2F4]' : ''}`}>
+        <div className={`p-4 ${isHighlighted ? 'bg-paper-deep' : ''}`}>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
               <div className="w-16 h-12 mr-3 flex items-center justify-center bg-white rounded p-1">
@@ -43,7 +43,7 @@ const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isH
               <h3 className="font-medium text-lg">{provider.name}</h3>
             </div>
             {isHighlighted && (
-              <Badge variant="outline" className="bg-[#EF233C] text-white border-0">
+              <Badge variant="outline" className="bg-brand text-white border-0">
                 Recomendado
               </Badge>
             )}
@@ -104,7 +104,7 @@ const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isH
           <Button 
             asChild
             variant="outline" 
-            className="w-full border-[#EF233C] text-[#EF233C] hover:bg-[#EF233C] hover:text-white"
+            className="w-full border-brand text-brand hover:bg-brand hover:text-white"
           >
             <a href={provider.reseñaUrl} onClick={() => track('click_ver_ficha', { slug: provider.id, location: 'provider_card' })}>Ver ficha completa</a>
           </Button>

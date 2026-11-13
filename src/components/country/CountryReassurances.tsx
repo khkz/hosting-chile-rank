@@ -120,24 +120,24 @@ export default function CountryReassurances({
   return (
     <section
       aria-labelledby={`${country}-curated-heading`}
-      className="mb-10 rounded-2xl border border-[#EF233C]/40 bg-gradient-to-br from-[#EF233C]/5 via-white to-[#EF233C]/10 shadow-sm overflow-hidden"
+      className="mb-10 rounded-2xl border border-brand/40 bg-gradient-to-br from-brand/5 via-white to-brand/10 shadow-sm overflow-hidden"
     >
       <div className="p-5 md:p-7">
         <div className="flex items-start gap-3 mb-4">
-          <div className="rounded-full bg-[#EF233C]/10 p-2 shrink-0">
-            <ShieldCheck className="h-5 w-5 text-[#EF233C]" aria-hidden />
+          <div className="rounded-full bg-brand/10 p-2 shrink-0">
+            <ShieldCheck className="h-5 w-5 text-brand" aria-hidden />
           </div>
           <div>
-            <div className="text-[11px] uppercase tracking-wider text-[#EF233C] font-semibold">
+            <div className="text-[11px] uppercase tracking-wider text-brand font-semibold">
               Recomendado editorial · {countryName}
             </div>
             <h2
               id={`${country}-curated-heading`}
-              className="text-xl md:text-2xl font-bold text-[#2B2D42] leading-tight"
+              className="text-xl md:text-2xl font-bold text-ink leading-tight"
             >
               {reco.provider}
             </h2>
-            <p className="text-sm text-[#2B2D42]/75 mt-1">{reco.headline}</p>
+            <p className="text-sm text-ink/75 mt-1">{reco.headline}</p>
           </div>
         </div>
 
@@ -147,12 +147,12 @@ export default function CountryReassurances({
             return (
               <li
                 key={b.label}
-                className="flex items-start gap-2.5 rounded-lg bg-white/70 border border-[#2B2D42]/10 p-3"
+                className="flex items-start gap-2.5 rounded-lg bg-white/70 border border-ink/10 p-3"
               >
-                <Icon className="h-4 w-4 text-[#2B2D42]/70 mt-0.5 shrink-0" aria-hidden />
+                <Icon className="h-4 w-4 text-ink/70 mt-0.5 shrink-0" aria-hidden />
                 <div className="text-xs leading-snug">
-                  <div className="text-[#2B2D42]/60">{b.label}</div>
-                  <div className="text-[#2B2D42] font-medium">{b.value}</div>
+                  <div className="text-ink/60">{b.label}</div>
+                  <div className="text-ink font-medium">{b.value}</div>
                 </div>
               </li>
             );
@@ -172,10 +172,10 @@ export default function CountryReassurances({
               Ver planes y precios <ExternalLink className="h-4 w-4" aria-hidden />
             </a>
           </Button>
-          <span className="text-xs text-[#2B2D42]/60">Sin compromiso · atención en español</span>
+          <span className="text-xs text-ink/60">Sin compromiso · atención en español</span>
         </div>
 
-        <p className="text-[11px] text-[#2B2D42]/60 mt-4 leading-snug">
+        <p className="text-[11px] text-ink/60 mt-4 leading-snug">
           <strong>Divulgación:</strong> podemos recibir una comisión si contratas por este
           enlace. La recomendación se basa en trayectoria verificable del grupo en LATAM y
           no altera el orden objetivo del directorio de más abajo. {reco.datacenterDisclosure}

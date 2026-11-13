@@ -270,23 +270,23 @@ const CatalogoDetalle = () => {
           <section className="mt-12 space-y-4">
             <a
               href={`/comparativa/${slug}-vs-hostingplus`}
-              className="block p-5 rounded-xl border-2 border-[#EF233C] bg-gradient-to-r from-[#EF233C]/5 to-white hover:from-[#EF233C]/10 transition"
+              className="block p-5 rounded-xl border-2 border-brand bg-gradient-to-r from-brand/5 to-white hover:from-brand/10 transition"
             >
-              <span className="text-sm uppercase tracking-wide text-[#EF233C] font-semibold">Comparativa</span>
-              <p className="text-lg md:text-xl font-bold text-[#2B2D42] mt-1">
+              <span className="text-sm uppercase tracking-wide text-brand font-semibold">Comparativa</span>
+              <p className="text-lg md:text-xl font-bold text-ink mt-1">
                 Compáralo con el #1: {company.name} vs HostingPlus.cl →
               </p>
               <p className="text-sm text-gray-600 mt-1">Tabla lado a lado con nota, precio, datacenter y reseñas verificadas.</p>
             </a>
             <div className="grid sm:grid-cols-2 gap-3">
-              <a href={`/alternativas-a/${slug}`} className="block p-4 rounded-xl border bg-white hover:border-[#EF233C] transition">
+              <a href={`/alternativas-a/${slug}`} className="block p-4 rounded-xl border bg-white hover:border-brand transition">
                 <span className="text-xs uppercase text-gray-500 font-semibold">Alternativas</span>
-                <p className="font-semibold text-[#2B2D42] mt-1">Mejores alternativas a {company.name} →</p>
+                <p className="font-semibold text-ink mt-1">Mejores alternativas a {company.name} →</p>
               </a>
               {(['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','webhosting'] as const).includes(slug as any) && (
-                <a href={`/migrar-de/${slug}`} className="block p-4 rounded-xl border bg-white hover:border-[#EF233C] transition">
+                <a href={`/migrar-de/${slug}`} className="block p-4 rounded-xl border bg-white hover:border-brand transition">
                   <span className="text-xs uppercase text-gray-500 font-semibold">Migración gratuita</span>
-                  <p className="font-semibold text-[#2B2D42] mt-1">Migrar de {company.name} sin downtime →</p>
+                  <p className="font-semibold text-ink mt-1">Migrar de {company.name} sin downtime →</p>
                 </a>
               )}
             </div>

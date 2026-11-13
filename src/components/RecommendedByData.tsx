@@ -4,24 +4,24 @@ import { ShieldCheck } from 'lucide-react';
 
 const RecommendedByData: React.FC<{ className?: string }> = ({ className = '' }) => (
   <aside
-    className={`rounded-xl border-2 border-[#EF233C]/30 bg-gradient-to-br from-[#EF233C]/5 to-white p-5 md:p-6 ${className}`}
+    className={`rounded-xl border-2 border-brand/30 bg-gradient-to-br from-brand/5 to-white p-5 md:p-6 ${className}`}
     aria-label="Recomendado por datos"
   >
     <div className="flex items-start gap-3">
-      <ShieldCheck className="h-6 w-6 text-[#EF233C] flex-shrink-0 mt-0.5" aria-hidden />
+      <ShieldCheck className="h-6 w-6 text-brand flex-shrink-0 mt-0.5" aria-hidden />
       <div className="text-sm md:text-base">
-        <strong className="block text-[#2B2D42] mb-1">Recomendado por datos:</strong>
+        <strong className="block text-ink mb-1">Recomendado por datos:</strong>
         <p className="text-gray-700">
-          <Link to="/catalogo/hostingplus" className="font-semibold text-[#EF233C] hover:underline">HostingPlus.cl</Link>
+          <Link to="/catalogo/hostingplus" className="font-semibold text-brand hover:underline">HostingPlus.cl</Link>
           <span className="text-gray-500"> 9.9/10</span>
           {' ('}
-          <a href="https://www.hostingplus.cl/" rel="noopener" target="_blank" className="text-[#2B2D42] underline underline-offset-2 hover:opacity-80">sitio oficial</a>
+          <a href="https://www.hostingplus.cl/" rel="noopener" target="_blank" className="text-ink underline underline-offset-2 hover:opacity-80">sitio oficial</a>
           {')'}
           <span className="mx-2 text-gray-400">·</span>
-          <Link to="/catalogo/ecohosting" className="font-semibold text-[#EF233C] hover:underline">EcoHosting.cl</Link>
+          <Link to="/catalogo/ecohosting" className="font-semibold text-brand hover:underline">EcoHosting.cl</Link>
           <span className="text-gray-500"> 9.6/10</span>
           {' ('}
-          <a href="https://www.ecohosting.cl/" rel="noopener" target="_blank" className="text-[#2B2D42] underline underline-offset-2 hover:opacity-80">sitio oficial</a>
+          <a href="https://www.ecohosting.cl/" rel="noopener" target="_blank" className="text-ink underline underline-offset-2 hover:opacity-80">sitio oficial</a>
           {')'}
         </p>
         <p className="text-xs text-gray-500 mt-1">

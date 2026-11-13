@@ -332,7 +332,7 @@ const Resena = () => {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">{hosting.name}</h1>
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl font-bold text-[#EF233C]">{hosting.rating}/10</span>
+                <span className="text-2xl font-bold text-brand">{hosting.rating}/10</span>
                 <span className="text-lg text-gray-600">- Nuestra calificación</span>
               </div>
               <p className="text-lg">{hosting.description}</p>
@@ -441,7 +441,7 @@ const Resena = () => {
                 href={link.href}
                 target="_blank"
                 rel={link.rel}
-                className="bg-[#EF233C] text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
+                className="bg-brand text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
               >
                 Visitar {hosting.name}
               </a>

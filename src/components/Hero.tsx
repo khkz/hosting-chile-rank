@@ -36,7 +36,7 @@ const Hero = () => {
             </a>
           )}
 
-          <h1 className="font-poppins text-2xl md:text-3xl lg:text-4xl font-bold text-[#2B2D42] mb-2 leading-tight">
+          <h1 className="font-poppins text-2xl md:text-3xl lg:text-4xl font-bold text-ink mb-2 leading-tight">
             Encuentra el{' '}
             <span className="text-brand-red">mejor hosting</span>
             {' '}para tu proyecto

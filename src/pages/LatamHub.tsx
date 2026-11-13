@@ -47,15 +47,15 @@ const LatamHub = () => {
 
       <main className="min-h-[70vh] container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EF233C]/10 text-[#EF233C] text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 text-brand text-sm font-medium mb-6">
             <Globe className="h-4 w-4" />
             Hub LATAM
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-ink mb-4">
             ¿Dónde vas a hospedar tu proyecto?
           </h1>
-          <p className="text-lg text-[#2B2D42]/70 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg text-ink/70 mb-10 max-w-2xl mx-auto">
             Elegí tu país y te mostramos qué proveedores son reales, qué datacenter
             usan y quién tiene mejor reputación. Nada inventado: solo datos que
             podés auditar.
@@ -65,16 +65,16 @@ const LatamHub = () => {
             {/* Chile vive en .cl */}
             <a
               href={COUNTRIES.CL.origin}
-              className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-left hover:border-[#EF233C] hover:shadow-md transition-all"
+              className="group bg-white border border-ink/10 rounded-xl p-6 text-left hover:border-brand hover:shadow-md transition-all"
             >
               <div className="text-3xl mb-2">{COUNTRIES.CL.flag}</div>
-              <div className="font-semibold text-[#2B2D42] text-lg">
+              <div className="font-semibold text-ink text-lg">
                 {COUNTRIES.CL.name}
               </div>
-              <div className="text-xs text-[#2B2D42]/60 mt-1">
+              <div className="text-xs text-ink/60 mt-1">
                 Ranking publicado · eligetuhosting.cl
               </div>
-              <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
+              <div className="mt-3 inline-flex items-center gap-1 text-sm text-brand font-medium">
                 Ver ranking <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </a>
@@ -85,25 +85,25 @@ const LatamHub = () => {
               return (
                 <div
                   key={c.code}
-                  className="group bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-left hover:border-[#EF233C] hover:shadow-md transition-all"
+                  className="group bg-white border border-ink/10 rounded-xl p-6 text-left hover:border-brand hover:shadow-md transition-all"
                 >
                   <a href={`https://eligetuhosting.com/${c.slug}`} className="block">
                     <div className="text-3xl mb-2">{c.flag}</div>
-                    <div className="font-semibold text-[#2B2D42] text-lg">
+                    <div className="font-semibold text-ink text-lg">
                       {c.name}
                     </div>
-                    <div className="text-xs text-[#2B2D42]/60 mt-1">
+                    <div className="text-xs text-ink/60 mt-1">
                       {isPublished ? 'Directorio publicado' : 'Próximamente · verificando proveedores'}
                     </div>
-                    <div className="mt-3 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium">
+                    <div className="mt-3 inline-flex items-center gap-1 text-sm text-brand font-medium">
                       {isPublished ? 'Ver directorio' : 'Ver estado'} <ArrowRight className="h-3.5 w-3.5" />
                     </div>
                   </a>
                   {isPublished && paisSlug && (
-                    <ul className="mt-3 pt-3 border-t border-[#2B2D42]/10 space-y-1.5 text-xs">
-                      <li><a href={`https://eligetuhosting.com/${c.slug}/mejor-hosting-${paisSlug}-2026`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Mejor hosting {c.name} 2026</a></li>
-                      <li><a href={`https://eligetuhosting.com/${c.slug}/hosting-con-datacenter-local`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Datacenter local</a></li>
-                      <li><a href={`https://eligetuhosting.com/${c.slug}/benchmark`} className="text-[#2B2D42]/80 hover:text-[#EF233C]">→ Benchmark uptime/TTFB</a></li>
+                    <ul className="mt-3 pt-3 border-t border-ink/10 space-y-1.5 text-xs">
+                      <li><a href={`https://eligetuhosting.com/${c.slug}/mejor-hosting-${paisSlug}-2026`} className="text-ink/80 hover:text-brand">→ Mejor hosting {c.name} 2026</a></li>
+                      <li><a href={`https://eligetuhosting.com/${c.slug}/hosting-con-datacenter-local`} className="text-ink/80 hover:text-brand">→ Datacenter local</a></li>
+                      <li><a href={`https://eligetuhosting.com/${c.slug}/benchmark`} className="text-ink/80 hover:text-brand">→ Benchmark uptime/TTFB</a></li>
                     </ul>
                   )}
                 </div>
@@ -117,7 +117,7 @@ const LatamHub = () => {
             <AdvisorEmbed />
           </div>
 
-          <div className="mt-12 text-xs text-[#2B2D42]/50">
+          <div className="mt-12 text-xs text-ink/50">
             No publicamos rankings sin datos verificables. Misma metodología en
             cada país: ASN, datacenter, reclamos, trayectoria.
           </div>

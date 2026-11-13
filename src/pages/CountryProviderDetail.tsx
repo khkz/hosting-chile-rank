@@ -268,7 +268,7 @@ const CountryProviderDetail = () => {
 
         <header className="mb-6">
           <div className="flex flex-wrap items-center gap-3 mb-2">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#2B2D42]">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
               {company.name}
             </h1>
             {isGlobal && (
@@ -283,7 +283,7 @@ const CountryProviderDetail = () => {
           <p className="text-muted-foreground">
             Hosting en {info.name} {info.flag} — datos verificables.
           </p>
-          <p className="mt-2 text-xs text-[#2B2D42]/60">
+          <p className="mt-2 text-xs text-ink/60">
             <span className="inline-flex items-center gap-1">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
               Datos verificados: <time dateTime={dateModified}>{dateModifiedDisplay}</time>
@@ -292,18 +292,18 @@ const CountryProviderDetail = () => {
         </header>
 
         {isCurated && (
-          <Card className="mb-6 border-[#EF233C]/40 bg-[#EF233C]/5">
+          <Card className="mb-6 border-brand/40 bg-brand/5">
             <CardContent className="pt-5">
               <div className="flex items-start gap-3">
-                <ShieldCheck className="h-6 w-6 text-[#EF233C] mt-0.5 shrink-0" />
+                <ShieldCheck className="h-6 w-6 text-brand mt-0.5 shrink-0" />
                 <div>
-                  <div className="text-xs uppercase tracking-wide text-[#EF233C] font-semibold mb-1">
+                  <div className="text-xs uppercase tracking-wide text-brand font-semibold mb-1">
                     Recomendado por EligeTuHosting
                   </div>
-                  <p className="text-sm text-[#2B2D42]/80">
+                  <p className="text-sm text-ink/80">
                     {company.name} es la recomendación editorial de EligeTuHosting en {info.name}: operador regional con infraestructura propia y soporte hispano.
                   </p>
-                  <p className="text-[11px] text-[#2B2D42]/60 mt-2 leading-snug">
+                  <p className="text-[11px] text-ink/60 mt-2 leading-snug">
                     <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el resto del directorio.
                   </p>
                 </div>
@@ -398,11 +398,11 @@ const CountryProviderDetail = () => {
         {/* Contexto editorial */}
         {editorialSummary && (
           <section className="mb-6">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#2B2D42]">
+            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-ink">
               <FileText className="h-5 w-5" /> Contexto
             </h2>
             <Card>
-              <CardContent className="pt-6 text-sm text-[#2B2D42]/90 whitespace-pre-line leading-relaxed">
+              <CardContent className="pt-6 text-sm text-ink/90 whitespace-pre-line leading-relaxed">
                 {editorialSummary}
               </CardContent>
             </Card>
@@ -412,7 +412,7 @@ const CountryProviderDetail = () => {
         {/* Verificación técnica */}
         {siteCheck && (
           <section className="mb-6">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#2B2D42]">
+            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-ink">
               <Activity className="h-5 w-5" /> Verificación técnica
             </h2>
             <Card>
@@ -445,7 +445,7 @@ const CountryProviderDetail = () => {
 
         {/* Reputación */}
         <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-[#2B2D42]">
+          <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-ink">
             <AlertTriangle className="h-5 w-5" /> Reputación
           </h2>
           <Card>
@@ -473,7 +473,7 @@ const CountryProviderDetail = () => {
 
         {/* FAQ */}
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 flex items-center gap-2 text-[#2B2D42]">
+          <h2 className="text-xl font-semibold mb-3 flex items-center gap-2 text-ink">
             <HelpCircle className="h-5 w-5" /> Preguntas frecuentes
           </h2>
           <div className="space-y-3">
@@ -481,7 +481,7 @@ const CountryProviderDetail = () => {
               <Card key={i}>
                 <CardContent className="pt-5 pb-5">
                   <h3 className="font-semibold text-sm mb-1">{f.q}</h3>
-                  <p className="text-sm text-[#2B2D42]/80">{f.a}</p>
+                  <p className="text-sm text-ink/80">{f.a}</p>
                 </CardContent>
               </Card>
             ))}
@@ -491,7 +491,7 @@ const CountryProviderDetail = () => {
         {/* Alternativas en {pais} */}
         {altsSorted.length > 0 && (
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3 text-[#2B2D42]">
+            <h2 className="text-xl font-semibold mb-3 text-ink">
               Alternativas en {info.name}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

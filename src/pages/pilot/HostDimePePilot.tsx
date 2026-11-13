@@ -199,13 +199,13 @@ const HostDimePePilot = () => {
             <Badge variant="outline" className="text-xs">Datacenter Tier IV en Lima 🇵🇪</Badge>
             <Badge variant="outline" className="text-xs">Razón social peruana</Badge>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#2B2D42] mb-3">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-ink mb-3">
             ¿Es bueno HostDime Perú?
           </h1>
-          <p className="text-base md:text-lg text-[#2B2D42]/90 leading-relaxed">
+          <p className="text-base md:text-lg text-ink/90 leading-relaxed">
             {heroAnswer}
           </p>
-          <p className="mt-3 text-xs text-[#2B2D42]/60">
+          <p className="mt-3 text-xs text-ink/60">
             <span className="inline-flex items-center gap-1">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
               Revisado por el equipo editorial: <time dateTime={REVIEWED_ON}>{REVIEWED_ON}</time>
@@ -219,22 +219,22 @@ const HostDimePePilot = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="p-3 rounded-lg border bg-emerald-50/50 text-center">
               <MapPin className="h-5 w-5 mx-auto text-emerald-700 mb-1" />
-              <div className="text-xs font-semibold text-[#2B2D42]">Datacenter local</div>
+              <div className="text-xs font-semibold text-ink">Datacenter local</div>
               <div className="text-[11px] text-muted-foreground">Lima, Tier IV</div>
             </div>
             <div className="p-3 rounded-lg border text-center">
-              <Server className="h-5 w-5 mx-auto text-[#2B2D42] mb-1" />
-              <div className="text-xs font-semibold text-[#2B2D42]">ASN propio</div>
+              <Server className="h-5 w-5 mx-auto text-ink mb-1" />
+              <div className="text-xs font-semibold text-ink">ASN propio</div>
               <div className="text-[11px] text-muted-foreground">AS33182</div>
             </div>
             <div className="p-3 rounded-lg border text-center">
-              <ShieldCheck className="h-5 w-5 mx-auto text-[#2B2D42] mb-1" />
-              <div className="text-xs font-semibold text-[#2B2D42]">SSL activo</div>
+              <ShieldCheck className="h-5 w-5 mx-auto text-ink mb-1" />
+              <div className="text-xs font-semibold text-ink">SSL activo</div>
               <div className="text-[11px] text-muted-foreground">HTTPS 200 OK</div>
             </div>
             <div className="p-3 rounded-lg border text-center">
-              <Activity className="h-5 w-5 mx-auto text-[#2B2D42] mb-1" />
-              <div className="text-xs font-semibold text-[#2B2D42]">TTFB medido</div>
+              <Activity className="h-5 w-5 mx-auto text-ink mb-1" />
+              <div className="text-xs font-semibold text-ink">TTFB medido</div>
               <div className="text-[11px] text-muted-foreground">
                 {siteCheck?.ttfb_ms ? `${siteCheck.ttfb_ms} ms` : '—'}
                 {siteCheck?.checked_at && ` · ${new Date(siteCheck.checked_at).toISOString().slice(0, 10)}`}
@@ -245,8 +245,8 @@ const HostDimePePilot = () => {
 
         {/* Historia real */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-3 text-[#2B2D42]">La historia detrás del proveedor</h2>
-          <div className="space-y-4 text-[15px] leading-relaxed text-[#2B2D42]/90">
+          <h2 className="text-2xl font-semibold mb-3 text-ink">La historia detrás del proveedor</h2>
+          <div className="space-y-4 text-[15px] leading-relaxed text-ink/90">
             <p>
               HostDime Perú abrió operaciones locales en <strong>{company.year_founded}</strong>, es decir hace <strong>{yearsOperating} años</strong>, como filial peruana del grupo <strong>HostDime Global</strong>, una compañía fundada en Orlando (EE.UU.) que expandió su modelo de datacenters propios a mercados latinoamericanos. La razón social registrada en Perú es <strong>HostDime.com.pe S.A.C.</strong>, con RUC <strong>20563098296</strong>, lo que significa que las facturas se emiten desde una entidad peruana legalmente constituida.
             </p>
@@ -261,14 +261,14 @@ const HostDimePePilot = () => {
 
         {/* Para quién sí / no */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-[#2B2D42]">Para quién sí, para quién no</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-ink">Para quién sí, para quién no</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card className="border-emerald-200 bg-emerald-50/30">
               <CardContent className="pt-5">
                 <div className="flex items-center gap-2 mb-3 text-emerald-800 font-semibold">
                   <CheckCircle2 className="h-5 w-5" /> Encaja bien si…
                 </div>
-                <ul className="space-y-2 text-sm text-[#2B2D42]/90">
+                <ul className="space-y-2 text-sm text-ink/90">
                   {forWho.map((it, i) => (
                     <li key={i} className="flex gap-2"><span className="text-emerald-600 mt-0.5">✓</span><span>{it}</span></li>
                   ))}
@@ -280,7 +280,7 @@ const HostDimePePilot = () => {
                 <div className="flex items-center gap-2 mb-3 text-amber-800 font-semibold">
                   <XCircle className="h-5 w-5" /> Probablemente no encaje si…
                 </div>
-                <ul className="space-y-2 text-sm text-[#2B2D42]/90">
+                <ul className="space-y-2 text-sm text-ink/90">
                   {notForWho.map((it, i) => (
                     <li key={i} className="flex gap-2"><span className="text-amber-600 mt-0.5">·</span><span>{it}</span></li>
                   ))}
@@ -293,7 +293,7 @@ const HostDimePePilot = () => {
         {/* Planes (solo si existen) */}
         {plans && plans.length > 0 && (
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-3 text-[#2B2D42]">Planes y precios</h2>
+            <h2 className="text-2xl font-semibold mb-3 text-ink">Planes y precios</h2>
             <Card>
               <CardContent className="pt-6 overflow-x-auto">
                 <table className="w-full text-sm">
@@ -323,7 +323,7 @@ const HostDimePePilot = () => {
 
         {/* Reputación */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-3 flex items-center gap-2 text-[#2B2D42]">
+          <h2 className="text-2xl font-semibold mb-3 flex items-center gap-2 text-ink">
             <AlertTriangle className="h-5 w-5" /> Reputación
           </h2>
           <Card>
@@ -349,7 +349,7 @@ const HostDimePePilot = () => {
 
         {/* CTAs */}
         <section className="mb-8">
-          <Card className="bg-[#2B2D42] text-white">
+          <Card className="bg-ink text-white">
             <CardContent className="pt-6 pb-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
@@ -359,7 +359,7 @@ const HostDimePePilot = () => {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <Button asChild className="bg-white text-[#2B2D42] hover:bg-white/90 gap-2">
+                  <Button asChild className="bg-white text-ink hover:bg-white/90 gap-2">
                     <a href={`/ir/${SLUG}`} target="_blank" rel="nofollow noopener sponsored">
                       Visitar sitio oficial <ExternalLink className="h-4 w-4" />
                     </a>
@@ -380,7 +380,7 @@ const HostDimePePilot = () => {
 
         {/* Datos rápidos */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-3 text-[#2B2D42]">Datos verificables</h2>
+          <h2 className="text-2xl font-semibold mb-3 text-ink">Datos verificables</h2>
           <Card>
             <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
               <div className="flex gap-2"><Building2 className="h-4 w-4 mt-0.5 text-muted-foreground" /><span><strong>Razón social:</strong> HostDime.com.pe S.A.C.</span></div>
@@ -395,15 +395,15 @@ const HostDimePePilot = () => {
 
         {/* FAQ */}
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-3 flex items-center gap-2 text-[#2B2D42]">
+          <h2 className="text-2xl font-semibold mb-3 flex items-center gap-2 text-ink">
             <HelpCircle className="h-5 w-5" /> Preguntas frecuentes
           </h2>
           <div className="space-y-3">
             {faq.map((f, i) => (
               <Card key={i}>
                 <CardContent className="pt-5 pb-5">
-                  <h3 className="font-semibold text-[15px] mb-2 text-[#2B2D42]">{f.q}</h3>
-                  <p className="text-sm text-[#2B2D42]/85 leading-relaxed">{f.a}</p>
+                  <h3 className="font-semibold text-[15px] mb-2 text-ink">{f.q}</h3>
+                  <p className="text-sm text-ink/85 leading-relaxed">{f.a}</p>
                 </CardContent>
               </Card>
             ))}

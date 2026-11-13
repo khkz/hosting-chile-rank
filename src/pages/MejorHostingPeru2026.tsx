@@ -281,17 +281,17 @@ const MejorHostingPeru2026: React.FC = () => {
 
           {/* Respuesta directa (AEO) */}
           <section className="mb-10">
-            <Card className="border-l-4 border-l-[#EF233C] shadow-lg">
+            <Card className="border-l-4 border-l-brand shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-[#2B2D42] flex items-center gap-2">
-                  <Star className="w-6 h-6 text-[#EF233C]" />
+                <CardTitle className="text-2xl font-bold text-ink flex items-center gap-2">
+                  <Star className="w-6 h-6 text-brand" />
                   Respuesta corta
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-gray-700 leading-relaxed">
                 <p>
                   El mejor hosting de Perú {CURRENT_YEAR} es{' '}
-                  <strong className="text-[#EF233C]">HostingPlus.pe (9,8/10)</strong>: es el{' '}
+                  <strong className="text-brand">HostingPlus.pe (9,8/10)</strong>: es el{' '}
                   <strong>único proveedor del directorio PE con datacenter local Tier III certificado</strong>{' '}
                   (<strong>GTD Lima, Perú</strong>), <strong>0 reclamos INDECOPI</strong> en «Mira a Quién le Compras»,
                   razón social peruana <strong>Hostingplus Datacenter S.A.C. (RUC 20611867108)</strong>, soporte 24/7 desde Lima{' '}
@@ -318,18 +318,18 @@ const MejorHostingPeru2026: React.FC = () => {
 
           {/* Ranking */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-[#2B2D42] mb-6">Ranking {CURRENT_YEAR}</h2>
+            <h2 className="text-3xl font-bold text-ink mb-6">Ranking {CURRENT_YEAR}</h2>
             <div className="space-y-4">
               {providers.map((p, i) => (
-                <Card key={p.name} className={p.destacado ? 'border-[#EF233C] border-2 shadow-md' : ''}>
+                <Card key={p.name} className={p.destacado ? 'border-brand border-2 shadow-md' : ''}>
                   <CardContent className="p-5">
                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                       <div className="flex items-center gap-3 md:w-2/3">
-                        <div className="w-10 h-10 rounded-full bg-[#EF233C] text-white flex items-center justify-center font-bold shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center font-bold shrink-0">
                           {i + 1}
                         </div>
                         <div>
-                          <div className="font-bold text-lg text-[#2B2D42] flex items-center gap-2 flex-wrap">
+                          <div className="font-bold text-lg text-ink flex items-center gap-2 flex-wrap">
                             {p.name}
                             {p.destacado && (
                               <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
@@ -346,11 +346,11 @@ const MejorHostingPeru2026: React.FC = () => {
                         </div>
                       </div>
                       <div className="md:w-1/3 flex flex-col items-start md:items-end gap-2">
-                        <div className="text-3xl font-bold text-[#EF233C]">{p.rating.toFixed(1)}/10</div>
+                        <div className="text-3xl font-bold text-brand">{p.rating.toFixed(1)}/10</div>
                         <Button
                           asChild
                           size="sm"
-                          className="bg-[#EF233C] hover:bg-[#c41e3a]"
+                          className="bg-brand hover:bg-[#c41e3a]"
                           onClick={() => track('click_visitar_sitio', { slug: p.slug || p.name.toLowerCase(), location: 'pe_ranking' })}
                         >
                           <a href={p.url} target="_blank" rel="nofollow sponsored noopener noreferrer">
@@ -386,7 +386,7 @@ const MejorHostingPeru2026: React.FC = () => {
 
           {/* Tabla comparativa */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">Tabla comparativa</h2>
+            <h2 className="text-2xl font-bold text-ink mb-4">Tabla comparativa</h2>
             <div className="overflow-x-auto border rounded-lg">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 text-left">
@@ -406,7 +406,7 @@ const MejorHostingPeru2026: React.FC = () => {
                     <tr key={p.name} className="border-t">
                       <td className="px-3 py-2 text-muted-foreground">{i + 1}</td>
                       <td className="px-3 py-2 font-medium">{p.name}</td>
-                      <td className="px-3 py-2 font-semibold text-[#EF233C]">{p.rating.toFixed(1)}</td>
+                      <td className="px-3 py-2 font-semibold text-brand">{p.rating.toFixed(1)}</td>
                       <td className="px-3 py-2">{p.precio}</td>
                       <td className="px-3 py-2">{p.moneda}</td>
                       <td className="px-3 py-2 text-xs">{p.datacenter}</td>
@@ -421,13 +421,13 @@ const MejorHostingPeru2026: React.FC = () => {
 
           {/* Casos de uso */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">¿Qué plan de HostingPlus.pe conviene según tu proyecto?</h2>
+            <h2 className="text-2xl font-bold text-ink mb-4">¿Qué plan de HostingPlus.pe conviene según tu proyecto?</h2>
             <div className="grid md:grid-cols-2 gap-3">
               {casosDeUso.map((c) => (
                 <Card key={c.need}>
                   <CardContent className="p-4">
                     <div className="text-sm text-gray-500">{c.need}</div>
-                    <div className="font-semibold text-[#2B2D42]">{c.pick}</div>
+                    <div className="font-semibold text-ink">{c.pick}</div>
                     <div className="text-sm text-gray-600 mt-1">{c.why}</div>
                   </CardContent>
                 </Card>
@@ -438,15 +438,15 @@ const MejorHostingPeru2026: React.FC = () => {
 
           {/* Metodología */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">Metodología (mismas 5 ponderaciones que Chile)</h2>
+            <h2 className="text-2xl font-bold text-ink mb-4">Metodología (mismas 5 ponderaciones que Chile)</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {criterios.map((c) => (
                 <Card key={c.title}>
                   <CardContent className="p-5">
                     <div className="flex items-start gap-3">
-                      <div className="text-[#EF233C]">{c.icon}</div>
+                      <div className="text-brand">{c.icon}</div>
                       <div>
-                        <div className="font-semibold text-[#2B2D42]">{c.title}</div>
+                        <div className="font-semibold text-ink">{c.title}</div>
                         <p className="text-sm text-gray-600 mt-1">{c.description}</p>
                       </div>
                     </div>
@@ -466,7 +466,7 @@ const MejorHostingPeru2026: React.FC = () => {
           <section className="mb-12">
             <Card className="border-l-4 border-l-emerald-600 bg-emerald-50/40">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-bold text-[#2B2D42] mb-3">
+                <h2 className="text-2xl font-bold text-ink mb-3">
                   ¿Datacenter certificado o solo «autodeclarado»? El test que ningún proveedor peruano quiere que hagas
                 </h2>
                 <p className="text-sm text-gray-700 mb-4">
@@ -492,7 +492,7 @@ const MejorHostingPeru2026: React.FC = () => {
                     },
                   ].map((row) => (
                     <div key={row.q} className="rounded-lg border border-emerald-200 bg-white p-3">
-                      <div className="text-sm font-semibold text-[#2B2D42] mb-1">{row.q}</div>
+                      <div className="text-sm font-semibold text-ink mb-1">{row.q}</div>
                       <div className="text-xs text-gray-500 mb-1 uppercase tracking-wide">HostingPlus responde</div>
                       <div className="text-sm text-gray-700">{row.hp}</div>
                     </div>
@@ -511,12 +511,12 @@ const MejorHostingPeru2026: React.FC = () => {
 
           {/* FAQ */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">Preguntas frecuentes</h2>
+            <h2 className="text-2xl font-bold text-ink mb-4">Preguntas frecuentes</h2>
             <div className="space-y-3">
               {faqs.map((f, i) => (
                 <Card key={i}>
                   <CardContent className="p-5">
-                    <h3 className="font-semibold text-[#2B2D42] mb-1">{f.q}</h3>
+                    <h3 className="font-semibold text-ink mb-1">{f.q}</h3>
                     <p className="text-sm text-gray-700">{f.a}</p>
                   </CardContent>
                 </Card>
@@ -529,7 +529,7 @@ const MejorHostingPeru2026: React.FC = () => {
             <Card className="bg-gray-50">
               <CardContent className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
-                  <div className="font-semibold text-[#2B2D42]">¿Buscas hosting en Chile?</div>
+                  <div className="font-semibold text-ink">¿Buscas hosting en Chile?</div>
                   <div className="text-sm text-gray-600">
                     Revisa nuestro ranking auditado para el mercado chileno.
                   </div>
@@ -545,7 +545,7 @@ const MejorHostingPeru2026: React.FC = () => {
 
           {/* CTA final */}
           <section className="text-center">
-            <Card className="bg-gradient-to-r from-[#EF233C] to-[#c41e3a] text-white shadow-xl">
+            <Card className="bg-gradient-to-r from-brand to-[#c41e3a] text-white shadow-xl">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-3 flex items-center justify-center gap-2">
                   <ShieldCheck className="w-6 h-6" /> Contrata HostingPlus.pe
@@ -556,7 +556,7 @@ const MejorHostingPeru2026: React.FC = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-white text-[#EF233C] hover:bg-gray-100 font-semibold px-8 py-3"
+                  className="bg-white text-brand hover:bg-gray-100 font-semibold px-8 py-3"
                   onClick={() => track('click_visitar_sitio', { slug: 'hostingplus-pe', location: 'pe_ranking_cta' })}
                 >
                   <a href={top.url} target="_blank" rel="nofollow sponsored noopener noreferrer">

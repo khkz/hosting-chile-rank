@@ -24,11 +24,11 @@ const GuiaElegirSSL = () => {
       
       <Navbar />
       
-      <main className="bg-[#F7F9FC]">
+      <main className="bg-paper">
         {/* Hero section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-ink mb-6">
               Guía para elegir el mejor certificado SSL (2025)
             </h1>
             <AuthorByline reviewedAt="2026-05-15" />
@@ -46,16 +46,16 @@ const GuiaElegirSSL = () => {
               <h2 className="text-xl font-semibold mb-4">Tabla de contenidos</h2>
               <ul className="space-y-2">
                 <li>
-                  <a href="#que-es-ssl" className="text-[#EF233C] hover:underline">1. ¿Qué es un certificado SSL?</a>
+                  <a href="#que-es-ssl" className="text-brand hover:underline">1. ¿Qué es un certificado SSL?</a>
                 </li>
                 <li>
-                  <a href="#tipos-ssl" className="text-[#EF233C] hover:underline">2. Tipos de certificados SSL</a>
+                  <a href="#tipos-ssl" className="text-brand hover:underline">2. Tipos de certificados SSL</a>
                 </li>
                 <li>
-                  <a href="#factores-clave" className="text-[#EF233C] hover:underline">3. Factores clave a considerar</a>
+                  <a href="#factores-clave" className="text-brand hover:underline">3. Factores clave a considerar</a>
                 </li>
                 <li>
-                  <a href="#recomendaciones" className="text-[#EF233C] hover:underline">4. Nuestras recomendaciones</a>
+                  <a href="#recomendaciones" className="text-brand hover:underline">4. Nuestras recomendaciones</a>
                 </li>
               </ul>
             </div>
@@ -191,11 +191,11 @@ const GuiaElegirSSL = () => {
               <h2 className="text-2xl font-bold mb-6">4. Nuestras recomendaciones</h2>
               
               <div className="space-y-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-[#EF233C]">
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-brand">
                   <div className="flex items-center gap-3 mb-3">
                     <img src="/logo-hostingplus.svg" alt="HostingPlus" className="h-10" loading="lazy" />
                     <h3 className="text-xl font-semibold">HostingPlus SSL</h3>
-                    <span className="bg-[#EF233C] text-white text-xs px-2 py-1 rounded">Mejor opción</span>
+                    <span className="bg-brand text-white text-xs px-2 py-1 rounded">Mejor opción</span>
                   </div>
                   <p className="mb-3">
                     Ofrece certificados SSL de diferentes niveles con excelente soporte para la instalación.
@@ -205,7 +205,7 @@ const GuiaElegirSSL = () => {
                     href="https://www.hostingplus.cl/blog/servicio/certificados-ssl-ip-fija/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
+                    className="text-brand hover:underline font-medium inline-flex items-center"
                   >
                     Ver certificados SSL <span className="ml-1">→</span>
                   </a>
@@ -225,7 +225,7 @@ const GuiaElegirSSL = () => {
                     href="https://www.hostgator.cl/ssl" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
+                    className="text-brand hover:underline font-medium inline-flex items-center"
                   >
                     Ver certificados <span className="ml-1">→</span>
                   </a>
@@ -245,7 +245,7 @@ const GuiaElegirSSL = () => {
                     href="https://www.cloudhosting.cl/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-[#EF233C] hover:underline font-medium inline-flex items-center"
+                    className="text-brand hover:underline font-medium inline-flex items-center"
                   >
                     Ver certificados <span className="ml-1">→</span>
                   </a>
@@ -253,7 +253,7 @@ const GuiaElegirSSL = () => {
               </div>
             </section>
             
-            <section className="bg-[#EDF2F4] p-6 rounded-lg">
+            <section className="bg-paper-deep p-6 rounded-lg">
               <h2 className="text-xl font-bold mb-3">Conclusión</h2>
               <p className="mb-4">
                 Actualmente, tener un certificado SSL no es opcional sino necesario para cualquier sitio web.

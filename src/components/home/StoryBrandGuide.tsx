@@ -17,7 +17,7 @@ const StoryBrandGuide: React.FC = () => {
           <p className="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2">
             Cómo te ayudamos a decidir
           </p>
-          <h2 id="storybrand-title" className="font-poppins text-2xl md:text-3xl font-bold text-[#2B2D42] mb-3">
+          <h2 id="storybrand-title" className="font-poppins text-2xl md:text-3xl font-bold text-ink mb-3">
             Tú tienes un proyecto que crecer. Nosotros hicimos la tarea aburrida.
           </h2>
           <p className="text-base md:text-lg text-gray-700 leading-relaxed">
@@ -31,7 +31,7 @@ const StoryBrandGuide: React.FC = () => {
         <div className="grid md:grid-cols-3 gap-5">
           <div className="bg-white rounded-xl p-5 border border-border shadow-sm">
             <Compass className="h-6 w-6 text-brand-red mb-3" aria-hidden />
-            <h3 className="font-semibold text-[#2B2D42] mb-2">1. Entiende tu caso</h3>
+            <h3 className="font-semibold text-ink mb-2">1. Entiende tu caso</h3>
             <p className="text-sm text-gray-600 leading-relaxed">
               Un blog personal necesita algo muy distinto a una tienda con carrito. Tenemos rutas
               claras para blog, pyme y e-commerce — sin venderte "el plan enterprise" si no lo necesitas.
@@ -40,7 +40,7 @@ const StoryBrandGuide: React.FC = () => {
 
           <div className="bg-white rounded-xl p-5 border border-border shadow-sm">
             <Target className="h-6 w-6 text-brand-red mb-3" aria-hidden />
-            <h3 className="font-semibold text-[#2B2D42] mb-2">2. Compara con datos reales</h3>
+            <h3 className="font-semibold text-ink mb-2">2. Compara con datos reales</h3>
             <p className="text-sm text-gray-600 leading-relaxed">
               Dominios .CL analizados, ping desde Santiago, uptime medido y reclamos verificados
               en Reclamos.cl. Toda la metodología está publicada en{' '}
@@ -52,7 +52,7 @@ const StoryBrandGuide: React.FC = () => {
 
           <div className="bg-white rounded-xl p-5 border border-border shadow-sm">
             <ShieldCheck className="h-6 w-6 text-brand-red mb-3" aria-hidden />
-            <h3 className="font-semibold text-[#2B2D42] mb-2">3. Decide sin arrepentirte</h3>
+            <h3 className="font-semibold text-ink mb-2">3. Decide sin arrepentirte</h3>
             <p className="text-sm text-gray-600 leading-relaxed">
               Cada ficha muestra precio real vigente, datacenter, antigüedad, ASN y reclamos.
               Si te equivocas, casi todos ofrecen migración gratis — mira nuestra{' '}

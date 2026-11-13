@@ -19,7 +19,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({
 }) => {
   const isExternal = buttonLink.startsWith('http');
   return (
-    <section className="bg-[#2B2D42] text-white text-center py-12">
+    <section className="bg-ink text-white text-center py-12">
       <div className="container mx-auto px-4 max-w-3xl">
         <h3 className="text-2xl font-semibold">{title}</h3>
         <p className="mt-2 text-white/85">{subtitle}</p>

@@ -208,7 +208,7 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                     </ul>
                     <Button 
                       asChild 
-                      className="bg-[#EF233C] hover:bg-[#b3001b] text-white"
+                      className="bg-brand hover:bg-brand-ink text-white"
                     >
                       <a 
                         href="https://www.hostingplus.cl/hosting/" 
@@ -587,7 +587,7 @@ const WhoisTabs: React.FC<WhoisTabsProps> = ({ data, isLoading }) => {
                     </ul>
                     <Button 
                       asChild 
-                      className="bg-[#EF233C] hover:bg-[#b3001b] text-white"
+                      className="bg-brand hover:bg-brand-ink text-white"
                     >
                       <a 
                         href="https://clientes.hostingplus.cl/cart.php?gid=7" 

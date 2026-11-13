@@ -123,18 +123,18 @@ const CountryBestHosting = () => {
         {slug === 'pe' && curated ? (
           <PeReassurances variant="best" />
         ) : curated && (
-          <Card className="mb-8 border-[#EF233C]/40 bg-[#EF233C]/5">
+          <Card className="mb-8 border-brand/40 bg-brand/5">
             <CardContent className="pt-5">
               <div className="flex items-start gap-3">
-                <ShieldCheck className="h-6 w-6 text-[#EF233C] mt-0.5 shrink-0" />
+                <ShieldCheck className="h-6 w-6 text-brand mt-0.5 shrink-0" />
                 <div className="flex-1">
-                  <div className="text-xs uppercase tracking-wide text-[#EF233C] font-semibold mb-1">Recomendado editorial</div>
-                  <div className="text-lg font-bold text-[#2B2D42] mb-1">{curated.name}</div>
-                  <p className="text-sm text-[#2B2D42]/80">
+                  <div className="text-xs uppercase tracking-wide text-brand font-semibold mb-1">Recomendado editorial</div>
+                  <div className="text-lg font-bold text-ink mb-1">{curated.name}</div>
+                  <p className="text-sm text-ink/80">
                     Operador regional con infraestructura propia y soporte hispano 24/7 en {meta.name}. Ver{' '}
                     <Link to={`/${slug}/${curated.slug}`} className="underline">ficha completa</Link>.
                   </p>
-                  <p className="text-[11px] text-[#2B2D42]/60 mt-2 leading-snug">
+                  <p className="text-[11px] text-ink/60 mt-2 leading-snug">
                     <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el orden objetivo del ranking.
                   </p>
                 </div>
@@ -144,7 +144,7 @@ const CountryBestHosting = () => {
         )}
 
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 text-[#2B2D42]">Tabla comparativa (datos verificables)</h2>
+          <h2 className="text-xl font-semibold mb-3 text-ink">Tabla comparativa (datos verificables)</h2>
           <div className="overflow-x-auto border rounded-lg">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
@@ -189,9 +189,9 @@ const CountryBestHosting = () => {
           </div>
         </section>
 
-        <section className="mb-8 bg-white border border-[#2B2D42]/10 rounded-xl p-5">
-          <h2 className="text-xl font-semibold mb-2 text-[#2B2D42]">Metodología y por qué aún no publicamos puntajes</h2>
-          <p className="text-sm text-[#2B2D42]/75 leading-relaxed">
+        <section className="mb-8 bg-white border border-ink/10 rounded-xl p-5">
+          <h2 className="text-xl font-semibold mb-2 text-ink">Metodología y por qué aún no publicamos puntajes</h2>
+          <p className="text-sm text-ink/75 leading-relaxed">
             En {meta.name} estamos en fase pre-benchmark. Publicar notas de 1–10 sin haber medido TTFB, uptime, tiempo real de soporte y reclamos verificados es exactamente lo que hacen los rankings falsos. Este directorio se ordena solo por datos objetivos declarados: presencia real de datacenter en el país (verificable con ASN + BGP), razón social local registrada, y años de operación declarados por el propio proveedor. Cuando completemos benchmarks propios reproducibles y un ciclo de reclamos verificados por email, publicaremos rankings numéricos con la misma metodología usada en Chile.
           </p>
           <div className="mt-3 flex flex-wrap gap-2 text-xs">
@@ -204,12 +204,12 @@ const CountryBestHosting = () => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 text-[#2B2D42]">Preguntas frecuentes</h2>
+          <h2 className="text-xl font-semibold mb-3 text-ink">Preguntas frecuentes</h2>
           <div className="space-y-3">
             {faqs.map((f, i) => (
               <Card key={i}><CardContent className="pt-5 pb-5">
                 <h3 className="font-semibold text-sm mb-1">{f.q}</h3>
-                <p className="text-sm text-[#2B2D42]/80">{f.a}</p>
+                <p className="text-sm text-ink/80">{f.a}</p>
               </CardContent></Card>
             ))}
           </div>

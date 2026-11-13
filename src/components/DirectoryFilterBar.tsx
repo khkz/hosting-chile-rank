@@ -33,39 +33,39 @@ const DirectoryFilterBar: React.FC<Props> = ({
     <div
       role="region"
       aria-label="Filtros del directorio"
-      className="mb-6 bg-white border border-[#2B2D42]/10 rounded-xl p-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-5"
+      className="mb-6 bg-white border border-ink/10 rounded-xl p-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-5"
     >
       <fieldset className="flex flex-wrap items-center gap-3 md:gap-4 flex-1">
         <legend className="sr-only">Filtros de proveedores</legend>
-        <label className="inline-flex items-center gap-2 text-sm text-[#2B2D42] cursor-pointer select-none">
+        <label className="inline-flex items-center gap-2 text-sm text-ink cursor-pointer select-none">
           <input
             type="checkbox"
             checked={onlyDcLocal}
             onChange={(e) => onOnlyDcLocalChange(e.target.checked)}
-            className="h-4 w-4 rounded border-[#2B2D42]/30 text-[#EF233C] focus:ring-2 focus:ring-[#EF233C]/40"
+            className="h-4 w-4 rounded border-ink/30 text-brand focus:ring-2 focus:ring-brand/40"
           />
           <span>Solo datacenter en {countryName}</span>
         </label>
-        <label className="inline-flex items-center gap-2 text-sm text-[#2B2D42] cursor-pointer select-none">
+        <label className="inline-flex items-center gap-2 text-sm text-ink cursor-pointer select-none">
           <input
             type="checkbox"
             checked={only247}
             onChange={(e) => onOnly247Change(e.target.checked)}
-            className="h-4 w-4 rounded border-[#2B2D42]/30 text-[#EF233C] focus:ring-2 focus:ring-[#EF233C]/40"
+            className="h-4 w-4 rounded border-ink/30 text-brand focus:ring-2 focus:ring-brand/40"
           />
           <span>Solo soporte 24/7</span>
         </label>
       </fieldset>
 
       <div className="flex items-center gap-2 text-sm">
-        <label htmlFor="dir-sort" className="text-[#2B2D42]/70">
+        <label htmlFor="dir-sort" className="text-ink/70">
           Ordenar:
         </label>
         <select
           id="dir-sort"
           value={sort}
           onChange={(e) => onSortChange(e.target.value as SortMode)}
-          className="rounded-md border border-[#2B2D42]/15 bg-white px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#EF233C]/40"
+          className="rounded-md border border-ink/15 bg-white px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand/40"
         >
           <option value="default">Por defecto</option>
           <option value="name">Nombre (A–Z)</option>
@@ -75,7 +75,7 @@ const DirectoryFilterBar: React.FC<Props> = ({
 
       <div
         aria-live="polite"
-        className="text-xs text-[#2B2D42]/60 md:ml-2 whitespace-nowrap"
+        className="text-xs text-ink/60 md:ml-2 whitespace-nowrap"
       >
         {visibleCount} de {totalCount} proveedores
       </div>

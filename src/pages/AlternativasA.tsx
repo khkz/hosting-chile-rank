@@ -140,14 +140,14 @@ const AlternativasA: React.FC = () => {
       </Helmet>
 
       <Navbar />
-      <main className="bg-gradient-to-b from-[#F7F9FC] to-white">
+      <main className="bg-gradient-to-b from-paper to-white">
         <section className="container mx-auto px-4 py-10 max-w-4xl">
           <nav aria-label="breadcrumbs" className="text-xs text-gray-500 mb-3">
             <Link to="/" className="hover:underline">Inicio</Link> /{' '}
             <Link to="/catalogo" className="hover:underline">Catálogo</Link> /{' '}
             <span>Alternativas a {target.name}</span>
           </nav>
-          <h1 className="text-2xl md:text-4xl font-bold text-[#2B2D42]">{title}</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-ink">{title}</h1>
           <p className="mt-4 text-gray-700 text-base md:text-lg leading-relaxed">
             {target.name}{target.foundation_year ? ` (opera desde ${target.foundation_year})` : ''}{target.datacenter_location ? `, datacenter ${target.datacenter_location}` : ''}{target.corporate_group ? `, parte del grupo ${target.corporate_group}` : ''}, obtiene una nota global de <strong>{Number(target.overall_rating ?? 0).toFixed(1)}/10</strong> en nuestro ranking verificable.
             {' '}Hay alternativas mejor evaluadas en el mercado chileno: si {reasonsToSwitch.join(', ')}, los proveedores listados abajo superan a {target.name} en métricas medibles (velocidad, soporte, reputación pública). Todos cuentan con datacenter local y migración gratuita asistida.
@@ -155,15 +155,15 @@ const AlternativasA: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-5">Top 3 alternativas a {target.name}</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-5">Top 3 alternativas a {target.name}</h2>
           <ol className="space-y-4">
             {top.map((p, i) => (
-              <li key={p.slug} className={`rounded-xl border p-4 md:p-5 bg-white shadow-sm ${i === 0 ? 'border-[#EF233C] border-2' : 'border-gray-200'}`}>
+              <li key={p.slug} className={`rounded-xl border p-4 md:p-5 bg-white shadow-sm ${i === 0 ? 'border-brand border-2' : 'border-gray-200'}`}>
                 <div className="flex flex-wrap items-center gap-4 justify-between">
                   <div className="flex items-center gap-3">
-                    <span className={`text-2xl font-bold ${i === 0 ? 'text-[#EF233C]' : 'text-gray-400'}`}>#{i + 1}</span>
+                    <span className={`text-2xl font-bold ${i === 0 ? 'text-brand' : 'text-gray-400'}`}>#{i + 1}</span>
                     <div>
-                      <div className="font-semibold text-[#2B2D42]">{p.name}</div>
+                      <div className="font-semibold text-ink">{p.name}</div>
                       <div className="text-xs text-gray-500">{p.datacenter_location || 'Chile'}</div>
                     </div>
                   </div>
@@ -174,9 +174,9 @@ const AlternativasA: React.FC = () => {
                     <div className="text-xs text-gray-500 mt-1">{fmtPrice(p.promo_price)}</div>
                   </div>
                   <div className="flex gap-2">
-                    <Link to={`/catalogo/${p.slug}`} className="text-sm px-3 py-2 rounded border border-[#EF233C] text-[#EF233C] hover:bg-[#EF233C] hover:text-white">Ver ficha</Link>
+                    <Link to={`/catalogo/${p.slug}`} className="text-sm px-3 py-2 rounded border border-brand text-brand hover:bg-brand hover:text-white">Ver ficha</Link>
                     {(() => { const link = getProviderLink(p.slug, p.website); return (
-                      <a href={link.href} target="_blank" rel={link.rel} className="text-sm px-3 py-2 rounded bg-[#EF233C] text-white hover:bg-red-700 flex items-center gap-1">Visitar <ExternalLink className="h-3 w-3" /></a>
+                      <a href={link.href} target="_blank" rel={link.rel} className="text-sm px-3 py-2 rounded bg-brand text-white hover:bg-red-700 flex items-center gap-1">Visitar <ExternalLink className="h-3 w-3" /></a>
                     ); })()}
                   </div>
                 </div>
@@ -186,10 +186,10 @@ const AlternativasA: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Comparativa vs {target.name}</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Comparativa vs {target.name}</h2>
           <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
             <table className="w-full">
-              <thead className="bg-[#F7F9FC] text-xs uppercase text-gray-500">
+              <thead className="bg-paper text-xs uppercase text-gray-500">
                 <tr>
                   <th className="text-left py-3 px-3">Característica</th>
                   <th className="text-left py-3 px-3">{target.name}</th>
@@ -219,16 +219,16 @@ const AlternativasA: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <div className="rounded-xl border-2 border-[#EF233C] bg-gradient-to-br from-[#EF233C]/5 to-white p-6 text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-[#2B2D42]">¿Quieres migrar desde {target.name}?</h2>
+          <div className="rounded-xl border-2 border-brand bg-gradient-to-br from-brand/5 to-white p-6 text-center">
+            <h2 className="text-xl md:text-2xl font-bold text-ink">¿Quieres migrar desde {target.name}?</h2>
             <p className="text-gray-700 mt-2">HostingPlus.cl y EcoHosting.cl te migran gratis y sin downtime.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
               {canMigrate && (
-                <Link to={`/migrar-de/${slug}`} className="px-5 py-3 rounded bg-[#EF233C] text-white text-sm hover:bg-red-700">
+                <Link to={`/migrar-de/${slug}`} className="px-5 py-3 rounded bg-brand text-white text-sm hover:bg-red-700">
                   Guía: Migrar de {target.name} →
                 </Link>
               )}
-              <Link to="/cotiza-hosting" className="px-5 py-3 rounded border-2 border-[#EF233C] text-[#EF233C] text-sm hover:bg-[#EF233C] hover:text-white">
+              <Link to="/cotiza-hosting" className="px-5 py-3 rounded border-2 border-brand text-brand text-sm hover:bg-brand hover:text-white">
                 Solicitar migración gratuita
               </Link>
             </div>
@@ -236,11 +236,11 @@ const AlternativasA: React.FC = () => {
         </section>
 
         <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-[#2B2D42] mb-3">Preguntas frecuentes</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Preguntas frecuentes</h2>
           <div className="space-y-3">
             {faqs.map((f, i) => (
               <details key={i} className="border rounded-lg p-4 bg-white">
-                <summary className="font-semibold cursor-pointer text-[#2B2D42]">{f.q}</summary>
+                <summary className="font-semibold cursor-pointer text-ink">{f.q}</summary>
                 <p className="mt-2 text-sm text-gray-700">{f.a}</p>
               </details>
             ))}

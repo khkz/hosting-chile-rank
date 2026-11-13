@@ -52,7 +52,7 @@ const RecentSearches = () => {
     <Card className="bg-white shadow-sm mt-4">
       <CardHeader className="pb-2 pt-4">
         <CardTitle className="text-xl font-semibold flex items-center">
-          <History className="h-5 w-5 mr-2 text-[#EF233C]" />
+          <History className="h-5 w-5 mr-2 text-brand" />
           Búsquedas recientes
         </CardTitle>
       </CardHeader>
@@ -62,7 +62,7 @@ const RecentSearches = () => {
             <Link 
               key={index} 
               to={`/domain/${domain.replace(/\./g, '-')}/`} 
-              className="text-sm px-3 py-1 bg-[#EDF2F4] hover:bg-gray-200 rounded-full text-[#2B2D42] transition-colors flex items-center"
+              className="text-sm px-3 py-1 bg-paper-deep hover:bg-gray-200 rounded-full text-ink transition-colors flex items-center"
             >
               <Search className="h-4 w-4 mr-1 text-gray-500" />
               {domain}

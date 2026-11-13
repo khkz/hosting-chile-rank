@@ -1,86 +1,158 @@
+/* Archivo (Omnibus-Type, Buenos Aires) — variable en ancho (62–125) y peso
+   (100–900). Autoalojada: sin dependencia de Google Fonts. Licencia OFL en
+   /fonts/archivo/OFL.txt. */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('/fonts/archivo/archivo-latin-wdth-normal.woff2') format('woff2-variations'),
+       url('/fonts/archivo/archivo-latin-wdth-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('/fonts/archivo/archivo-latin-ext-wdth-normal.woff2') format('woff2-variations'),
+       url('/fonts/archivo/archivo-latin-ext-wdth-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('/fonts/archivo/archivo-latin-wdth-italic.woff2') format('woff2-variations'),
+       url('/fonts/archivo/archivo-latin-wdth-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('/fonts/archivo/archivo-latin-ext-wdth-italic.woff2') format('woff2-variations'),
+       url('/fonts/archivo/archivo-latin-ext-wdth-italic.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  /* ── Sistema de diseño "Observatorio" ─────────────────────────────────
+     Una sola fuente para el color. Los valores RGB alimentan las clases de
+     Tailwind (ink, paper, rule, brand, signal-*) con soporte de opacidad;
+     los HSL alimentan los tokens de shadcn/ui. */
   :root {
+    /* Tinta y papel */
+    --ink: 15 34 56;            /* #0F2238 texto y superficies oscuras */
+    --ink-2: 68 84 106;         /* #44546A texto secundario */
+    --ink-3: 95 110 130;        /* #5F6E82 texto terciario, metadatos */
+    --ink-soft: 27 49 80;       /* #1B3150 superficies oscuras elevadas */
+    --paper: 244 246 249;       /* #F4F6F9 fondo de bandas */
+    --paper-deep: 233 237 242;  /* #E9EDF2 fondo de bandas profundas */
+    --rule: 216 222 230;        /* #D8DEE6 reglas y bordes */
+
+    /* Rojo EligeTuHosting: solo puesto 1, acción principal y edición activa */
+    --brand: 224 30 55;         /* #E01E37 */
+    --brand-ink: 195 24 46;     /* #C3182E rojo para texto pequeño */
+    --brand-on-dark: 255 90 110;/* #FF5A6E rojo sobre tinta */
+
+    /* Procedencia del dato */
+    --signal-measured: 8 117 110;      /* #08756E medido por nosotros */
+    --signal-measured-bg: 226 242 239;
+    --signal-declared: 140 90 0;       /* #8C5A00 declarado por el proveedor */
+    --signal-declared-bg: 251 239 217;
+    --signal-editorial: 94 68 174;     /* #5E44AE criterio editorial */
+    --signal-editorial-bg: 237 233 248;
+    --ok: 24 121 78;                   /* #18794E */
+
+    /* Tokens shadcn/ui */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 212.2 57.7% 13.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 212.2 57.7% 13.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 212.2 57.7% 13.9%;
 
-    --primary: 353 85% 55%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 212.2 57.7% 13.9%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 353 100% 65%;
-    --secondary-foreground: 347 77% 15%;
+    --secondary: 213.3 25.7% 93.1%;
+    --secondary-foreground: 212.2 57.7% 13.9%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 214.3 25.9% 94.7%;
+    --muted-foreground: 214.3 15.6% 44.1%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 214.3 25.9% 94.7%;
+    --accent-foreground: 212.2 57.7% 13.9%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 352.3 78.1% 42.9%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 214.3 21.9% 87.5%;
+    --input: 214.3 21.9% 87.5%;
+    --ring: 212.2 57.7% 13.9%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 216 29.4% 96.7%;
+    --sidebar-foreground: 214.7 21.8% 34.1%;
+    --sidebar-primary: 212.2 57.7% 13.9%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214.3 25.9% 94.7%;
+    --sidebar-accent-foreground: 212.2 57.7% 13.9%;
+    --sidebar-border: 214.3 21.9% 87.5%;
+    --sidebar-ring: 212.2 57.7% 13.9%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 212.2 57.7% 13.9%;
+    --foreground: 0 0% 100%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 215.1 49.5% 21%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 215.1 49.5% 21%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 347 77% 50%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 212.2 57.7% 13.9%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 215.1 49.5% 21%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 215.1 49.5% 21%;
+    --muted-foreground: 214.3 21.9% 76%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 215.1 49.5% 21%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 352.7 100% 67.6%;
+    --destructive-foreground: 212.2 57.7% 13.9%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 215.1 40% 28%;
+    --input: 215.1 40% 28%;
+    --ring: 352.7 100% 67.6%;
+
+    --sidebar-background: 212.2 57.7% 13.9%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 352.7 100% 67.6%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 215.1 49.5% 21%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 215.1 40% 28%;
+    --sidebar-ring: 352.7 100% 67.6%;
   }
 }
 
@@ -89,61 +161,74 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground font-montserrat antialiased;
-    line-height: 1.6;
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
   }
-  
-  /* Optimize for Core Web Vitals */
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    line-height: 1.55;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* Cifras alineadas en tablas y valores numéricos */
+  table, .tabular { font-variant-numeric: tabular-nums lining-nums; }
+
   img, video {
     @apply max-w-full h-auto;
   }
-  
-  /* Improve accessibility */
-  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-    @apply outline-none ring-2 ring-primary ring-offset-2;
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [role="tab"]:focus-visible {
+    @apply outline-none ring-2 ring-ink ring-offset-2 ring-offset-background;
   }
-  
-  /* Improve animations */
+
+  ::selection {
+    background: rgb(var(--brand) / 0.18);
+  }
+
   .transition-all {
-    @apply transition-[all] duration-300 ease-in-out;
+    @apply transition-[all] duration-200 ease-out;
   }
-  
-  /* Gradient utilities */
-  .gradient-text {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.7));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
+
+  /* Utilidades heredadas: ahora sólidas, sin degradados decorativos */
+  .gradient-text,
   .text-gradient {
-    @apply bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent bg-[length:200%_100%] animate-gradient;
+    color: rgb(var(--brand));
   }
-  
+
   .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105;
+    @apply transition-colors duration-200;
   }
-  
+
   .group-hover-icon {
-    @apply group-hover:scale-110 group-hover:rotate-6 transition-all duration-300;
+    @apply transition-colors duration-200;
   }
-  
-  /* Custom scrollbar */
+
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
+    height: 10px;
   }
-  
+
   ::-webkit-scrollbar-track {
-    @apply bg-gray-50;
+    background: rgb(var(--paper));
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded-lg;
+    background: rgb(var(--rule));
+    border-radius: 999px;
+    border: 2px solid rgb(var(--paper));
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400;
+    background: rgb(var(--ink-3));
   }
 }
 
@@ -199,12 +284,11 @@ html {
 
 /* Hover effects */
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.2s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-color: rgb(var(--ink) / 0.35);
 }
 
 /* Responsive Typography Utilities */
@@ -270,25 +354,50 @@ html {
 
   /* Sistema de jerarquía de CTAs */
   .cta-primary {
-    @apply bg-[#EF233C] hover:bg-[#d41f35] text-white 
-           px-6 py-3 rounded-lg font-medium shadow-sm hover:shadow-md 
-           transition-all duration-200;
+    @apply bg-brand hover:bg-brand-ink text-white
+           px-6 py-3 rounded-md font-semibold
+           transition-colors duration-200;
   }
 
   .cta-secondary {
-    @apply bg-gray-900 hover:bg-gray-800 text-white 
-           px-5 py-2.5 rounded-lg font-medium 
+    @apply bg-ink hover:bg-ink-soft text-white
+           px-5 py-2.5 rounded-md font-semibold
            transition-colors duration-200;
   }
 
   .cta-tertiary {
-    @apply border border-gray-300 hover:border-gray-400 
-           bg-white text-gray-700 px-4 py-2 rounded-lg font-medium
+    @apply border border-ink/25 hover:border-ink
+           bg-white text-ink px-4 py-2 rounded-md font-medium
            transition-colors duration-200;
+  }
+
+  /* Tipografía expandida para titulares (eje de ancho de Archivo) */
+  .type-display {
+    font-stretch: 118%;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+
+  .type-wide {
+    font-stretch: 112%;
+  }
+
+  .type-narrow {
+    font-stretch: 88%;
   }
 
   /* Separador de secciones */
   .section-separator {
-    @apply w-full h-px bg-gray-200 my-12;
+    @apply w-full h-px bg-rule my-12;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -24,11 +24,11 @@ const GuiaElegirVPS = () => {
       
       <Navbar />
       
-      <main className="bg-[#F7F9FC]">
+      <main className="bg-paper">
         {/* Hero section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-ink mb-6">
               VPS Chile 2025: Guía Completa Basada en 180 Migraciones Reales
             </h1>
             <AuthorByline reviewedAt="2026-05-15" />
@@ -49,16 +49,16 @@ const GuiaElegirVPS = () => {
               <h2 className="text-xl font-semibold mb-4">Tabla de contenidos</h2>
               <ul className="space-y-2">
                 <li>
-                  <a href="#senales-vps" className="text-[#EF233C] hover:underline">1. 5 Señales de que necesitas VPS</a>
+                  <a href="#senales-vps" className="text-brand hover:underline">1. 5 Señales de que necesitas VPS</a>
                 </li>
                 <li>
-                  <a href="#ranking-vps" className="text-[#EF233C] hover:underline">2. Ranking VPS Chile 2025</a>
+                  <a href="#ranking-vps" className="text-brand hover:underline">2. Ranking VPS Chile 2025</a>
                 </li>
                 <li>
-                  <a href="#errores-comunes" className="text-[#EF233C] hover:underline">3. Errores que debes evitar</a>
+                  <a href="#errores-comunes" className="text-brand hover:underline">3. Errores que debes evitar</a>
                 </li>
                 <li>
-                  <a href="#migracion-paso-a-paso" className="text-[#EF233C] hover:underline">4. Migración paso a paso</a>
+                  <a href="#migracion-paso-a-paso" className="text-brand hover:underline">4. Migración paso a paso</a>
                 </li>
               </ul>
             </div>
@@ -233,7 +233,7 @@ const GuiaElegirVPS = () => {
                     href="https://www.hostingplus.cl/servidores-vps.htm" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-[#EF233C] text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
+                    className="bg-brand text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
                   >
                     Ver planes HostingPlus <span className="ml-1">→</span>
                   </a>
@@ -260,7 +260,7 @@ const GuiaElegirVPS = () => {
                     href="https://ecohosting.cl/cloud-hosting-vps/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-[#EF233C] text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
+                    className="bg-brand text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
                   >
                     Ver planes EcoHosting <span className="ml-1">→</span>
                   </a>
@@ -287,7 +287,7 @@ const GuiaElegirVPS = () => {
                     href="https://hn.cl/vps/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-[#EF233C] text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
+                    className="bg-brand text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
                   >
                     Ver planes Hostname <span className="ml-1">→</span>
                   </a>
@@ -314,7 +314,7 @@ const GuiaElegirVPS = () => {
                     href="https://www.siteground.com/cloud-hosting-service/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-[#EF233C] text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
+                    className="bg-brand text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
                   >
                     Ver planes SiteGround <span className="ml-1">→</span>
                   </a>
@@ -341,7 +341,7 @@ const GuiaElegirVPS = () => {
                     href="https://www.1hosting.cl/vps-chile/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-[#EF233C] text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
+                    className="bg-brand text-white px-6 py-2 rounded hover:bg-red-600 font-medium inline-flex items-center"
                   >
                     Ver planes 1Hosting <span className="ml-1">→</span>
                   </a>

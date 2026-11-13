@@ -79,7 +79,7 @@ const Objections: React.FC = () => {
           <p className="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2">
             Lo que probablemente estás pensando
           </p>
-          <h2 id="objections-title" className="font-poppins text-2xl md:text-3xl font-bold text-[#2B2D42] mb-3">
+          <h2 id="objections-title" className="font-poppins text-2xl md:text-3xl font-bold text-ink mb-3">
             Objeciones legítimas, respuestas verificables
           </h2>
           <p className="text-base text-gray-700 leading-relaxed">
@@ -94,7 +94,7 @@ const Objections: React.FC = () => {
               key={i}
               className="bg-white rounded-xl p-5 border border-border shadow-sm"
             >
-              <p className="font-semibold text-[#2B2D42] mb-2">{o.q}</p>
+              <p className="font-semibold text-ink mb-2">{o.q}</p>
               <p className="text-sm md:text-base text-gray-700 leading-relaxed">{o.a}</p>
             </li>
           ))}

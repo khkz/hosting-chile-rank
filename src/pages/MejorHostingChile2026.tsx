@@ -329,8 +329,8 @@ const MejorHostingChile2026 = () => {
           
           {/* Header */}
           <header className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-6 leading-tight">
-              ¿Cuál es el <span className="text-[#EF233C]">mejor hosting en Chile</span> en {CURRENT_YEAR}?
+            <h1 className="text-4xl md:text-5xl font-bold text-ink mb-6 leading-tight">
+              ¿Cuál es el <span className="text-brand">mejor hosting en Chile</span> en {CURRENT_YEAR}?
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
               Guía definitiva y comparativa basada en pruebas reales de velocidad, uptime y precios
@@ -350,10 +350,10 @@ const MejorHostingChile2026 = () => {
 
           {/* Resumen Ejecutivo */}
           <section className="mb-12">
-            <Card className="border-l-4 border-l-[#EF233C] shadow-lg">
+            <Card className="border-l-4 border-l-brand shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-[#2B2D42] flex items-center gap-2">
-                  <Star className="w-6 h-6 text-[#EF233C]" />
+                <CardTitle className="text-2xl font-bold text-ink flex items-center gap-2">
+                  <Star className="w-6 h-6 text-brand" />
                   Resumen Ejecutivo
                 </CardTitle>
               </CardHeader>
@@ -361,7 +361,7 @@ const MejorHostingChile2026 = () => {
                 <p>
                   Después de analizar exhaustivamente <strong>más de 15 proveedores de hosting en Chile</strong> durante 2025-{CURRENT_YEAR}, 
                   evaluando criterios como uptime, velocidad de carga, calidad del soporte y <strong>transparencia en precios</strong>, 
-                  <strong className="text-[#EF233C]">HostingPlus.cl emerge como el mejor hosting Chile {CURRENT_YEAR}</strong>.
+                  <strong className="text-brand">HostingPlus.cl emerge como el mejor hosting Chile {CURRENT_YEAR}</strong>.
                 </p>
                 <p>
                   Con un impresionante <strong>99.98% de uptime verificado</strong>, tecnología LiteSpeed Enterprise, 
@@ -380,7 +380,7 @@ const MejorHostingChile2026 = () => {
 
           {/* Criterios de Evaluación */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-[#2B2D42] mb-8 text-center">
+            <h2 className="text-3xl font-bold text-ink mb-8 text-center">
               Criterios para Determinar el Mejor Hosting Chile
             </h2>
             
@@ -389,10 +389,10 @@ const MejorHostingChile2026 = () => {
                 <Card key={index} className="hover:shadow-lg transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 bg-[#EF233C]/10 rounded-lg text-[#EF233C]">
+                      <div className="p-2 bg-brand/10 rounded-lg text-brand">
                         {criterio.icon}
                       </div>
-                      <h3 className="font-semibold text-lg text-[#2B2D42]">{criterio.title}</h3>
+                      <h3 className="font-semibold text-lg text-ink">{criterio.title}</h3>
                     </div>
                     <p className="text-gray-600 text-sm leading-relaxed">{criterio.description}</p>
                   </CardContent>
@@ -402,23 +402,23 @@ const MejorHostingChile2026 = () => {
             
             {/* Enlaces internos a guías */}
             <div className="bg-blue-50 p-6 rounded-lg">
-              <h3 className="font-semibold text-lg text-[#2B2D42] mb-4">
+              <h3 className="font-semibold text-lg text-ink mb-4">
                 📚 Profundiza en nuestras guías especializadas
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Link to="/guia-elegir-hosting" className="text-[#EF233C] hover:underline font-medium block">
+                  <Link to="/guia-elegir-hosting" className="text-brand hover:underline font-medium block">
                     → Guía completa para elegir hosting web
                   </Link>
-                  <Link to="/guia-elegir-vps" className="text-[#EF233C] hover:underline font-medium block">
+                  <Link to="/guia-elegir-vps" className="text-brand hover:underline font-medium block">
                     → Cómo elegir el VPS perfecto
                   </Link>
                 </div>
                 <div className="space-y-2">
-                  <Link to="/guia-elegir-servidor-dedicado" className="text-[#EF233C] hover:underline font-medium block">
+                  <Link to="/guia-elegir-servidor-dedicado" className="text-brand hover:underline font-medium block">
                     → Guía para servidores dedicados
                   </Link>
-                  <Link to="/guia-elegir-ssl" className="text-[#EF233C] hover:underline font-medium block">
+                  <Link to="/guia-elegir-ssl" className="text-brand hover:underline font-medium block">
                     → Todo sobre certificados SSL
                   </Link>
                 </div>
@@ -432,16 +432,16 @@ const MejorHostingChile2026 = () => {
           <section className="mb-12">
             <Card className="border">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-[#2B2D42]">Datos y fuentes</CardTitle>
+                <CardTitle className="text-2xl font-bold text-ink">Datos y fuentes</CardTitle>
                 <CardDescription>Transparencia y verificación independiente</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 text-gray-700">
                 <p>
                   Consulta nuestro dataset público con los factores y pesos usados en el estudio:
-                  <a href="/data/estudio-2026.json" className="text-[#EF233C] hover:underline ml-1" target="_blank" rel="noopener noreferrer">estudio-2026.json</a>
+                  <a href="/data/estudio-2026.json" className="text-brand hover:underline ml-1" target="_blank" rel="noopener noreferrer">estudio-2026.json</a>
                 </p>
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Reclamos y reputación: <a href="https://www.reclamos.cl" className="text-[#EF233C] hover:underline" target="_blank" rel="noopener noreferrer">Reclamos.cl</a></li>
+                  <li>Reclamos y reputación: <a href="https://www.reclamos.cl" className="text-brand hover:underline" target="_blank" rel="noopener noreferrer">Reclamos.cl</a></li>
                   <li>Uptime y disponibilidad: UptimeRobot/Pingdom (paneles públicos cuando aplica)</li>
                   <li>Precios y condiciones: páginas oficiales de cada proveedor</li>
                 </ul>
@@ -452,13 +452,13 @@ const MejorHostingChile2026 = () => {
 
           {/* Tabla Comparativa */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-[#2B2D42] mb-8 text-center">
+            <h2 className="text-3xl font-bold text-ink mb-8 text-center">
               Comparativa: Top 5 Mejores Hosting Chile {CURRENT_YEAR}
             </h2>
             
             <div className="overflow-x-auto shadow-lg rounded-lg">
               <table className="w-full bg-white border border-gray-200">
-                <thead className="bg-[#2B2D42] text-white">
+                <thead className="bg-ink text-white">
                   <tr>
                     <th className="p-4 text-left font-semibold">Proveedor</th>
                     <th className="p-4 text-center font-semibold">Rating</th>
@@ -481,17 +481,17 @@ const MejorHostingChile2026 = () => {
                     };
                     
                     return (
-                      <tr key={index} className={`border-b hover:bg-gray-50 ${provider.destacado ? 'bg-[#EF233C]/5 border-[#EF233C]/20' : ''}`}>
+                      <tr key={index} className={`border-b hover:bg-gray-50 ${provider.destacado ? 'bg-brand/5 border-brand/20' : ''}`}>
                         <td className="p-4">
                           <div className="flex items-center gap-3">
                             {provider.destacado && (
-                              <Badge className="bg-[#EF233C] text-white text-xs">
+                              <Badge className="bg-brand text-white text-xs">
                                 Recomendado
                               </Badge>
                             )}
                             <img src={provider.logo} alt={provider.name} className="w-12 h-8 object-contain" />
                             <div>
-                              <div className="font-medium text-[#2B2D42]">{provider.name}</div>
+                              <div className="font-medium text-ink">{provider.name}</div>
                               <div className="text-xs text-gray-500">{provider.datacenter}</div>
                             </div>
                           </div>
@@ -499,7 +499,7 @@ const MejorHostingChile2026 = () => {
                         <td className="p-4 text-center">
                           <div className="flex items-center justify-center gap-1">
                             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-semibold text-[#2B2D42]">{provider.rating}</span>
+                            <span className="font-semibold text-ink">{provider.rating}</span>
                           </div>
                         </td>
                         <td className="p-4 text-center">
@@ -528,14 +528,14 @@ const MejorHostingChile2026 = () => {
                         </td>
                         <td className="p-4 text-center">
                           <div className="flex flex-col items-center gap-1">
-                            <span className="font-semibold text-[#EF233C]">{provider.precio}</span>
+                            <span className="font-semibold text-brand">{provider.precio}</span>
                             <Badge className={`text-xs border ${getPriceBadgeColor(provider.precioDestacado)}`}>
                               {provider.precioDestacado}
                             </Badge>
                           </div>
                         </td>
                         <td className="p-3 text-center">
-                          <Button asChild size="sm" className={`${provider.destacado ? "bg-[#EF233C] hover:bg-[#c41e3a] text-white" : "bg-gray-700 hover:bg-gray-800 text-white"} text-xs px-2 py-1 min-w-0`}>
+                          <Button asChild size="sm" className={`${provider.destacado ? "bg-brand hover:bg-[#c41e3a] text-white" : "bg-gray-700 hover:bg-gray-800 text-white"} text-xs px-2 py-1 min-w-0`}>
                             <a href={provider.url} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex items-center gap-1 whitespace-nowrap">
                               Ver
                               <ExternalLink className="w-3 h-3" />
@@ -554,23 +554,23 @@ const MejorHostingChile2026 = () => {
               <p>* <strong>Precios promocionales iniciales:</strong> EcoHosting y HostGator usan promoción el primer periodo y suben el valor al renovar</p>
               <p>* <strong>Precios estables sin sorpresas:</strong> HostingPlus mantiene el mismo valor en la renovación de su plan de 36 meses</p>
               <p>* <strong>Precios:</strong> estamos reverificando el catálogo; consulta el valor vigente en el sitio oficial de cada proveedor</p>
-              <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">Reclamos.cl</a> (últimos periodos disponibles)</p>
-              <p>* Fuentes: Datos de velocidad verificados con <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline">GTmetrix</a></p>
+              <p>* Reclamos verificados en <a href="https://reclamos.cl" target="_blank" rel="nofollow" className="text-brand hover:underline">Reclamos.cl</a> (últimos periodos disponibles)</p>
+              <p>* Fuentes: Datos de velocidad verificados con <a href="https://gtmetrix.com" target="_blank" rel="nofollow" className="text-brand hover:underline">GTmetrix</a></p>
             </div>
           </section>
 
           {/* Análisis Detallado del Ganador */}
           <section className="mb-12">
-            <Card className="border-l-4 border-l-[#EF233C] shadow-lg">
+            <Card className="border-l-4 border-l-brand shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-[#2B2D42]">
+                <CardTitle className="text-2xl font-bold text-ink">
                   ¿Por qué HostingPlus.cl es el Mejor Hosting Chile {CURRENT_YEAR}?
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold text-lg text-[#2B2D42] mb-3">Rendimiento Superior</h4>
+                    <h4 className="font-semibold text-lg text-ink mb-3">Rendimiento Superior</h4>
                     <ul className="space-y-2 text-gray-700">
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-green-500" />
@@ -591,7 +591,7 @@ const MejorHostingChile2026 = () => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg text-[#2B2D42] mb-3">Transparencia en Precios</h4>
+                    <h4 className="font-semibold text-lg text-ink mb-3">Transparencia en Precios</h4>
                     <ul className="space-y-2 text-gray-700">
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-green-500" />
@@ -613,7 +613,7 @@ const MejorHostingChile2026 = () => {
                   </div>
                 </div>
                 
-                <div className="bg-[#EF233C]/5 p-4 rounded-lg">
+                <div className="bg-brand/5 p-4 rounded-lg">
                   <p className="text-sm text-gray-700">
                     <strong>¿Por qué EcoHosting.cl es segundo lugar?</strong> Ofrece la mejor promoción de entrada, 
                     pero el precio sube en la renovación. Aún así, mantiene excelente calidad y 0 reclamos registrados. 
@@ -629,10 +629,10 @@ const MejorHostingChile2026 = () => {
                   </p>
                 </div>
                 
-                <div className="bg-[#EF233C]/5 p-4 rounded-lg">
+                <div className="bg-brand/5 p-4 rounded-lg">
                   <p className="text-sm text-gray-700">
                     <strong>Dato verificado:</strong> Según el monitoreo independiente realizado por 
-                    <a href="https://uptimerobot.com" target="_blank" rel="nofollow" className="text-[#EF233C] hover:underline"> UptimeRobot</a> 
+                    <a href="https://uptimerobot.com" target="_blank" rel="nofollow" className="text-brand hover:underline"> UptimeRobot</a> 
                     durante {CURRENT_YEAR - 1}, HostingPlus.cl registró solo 1.7 horas de downtime en todo el año,
                     estableciendo un nuevo récord para proveedores chilenos.
                   </p>
@@ -643,7 +643,7 @@ const MejorHostingChile2026 = () => {
 
           {/* Preguntas Frecuentes */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-[#2B2D42] mb-8 text-center">
+            <h2 className="text-3xl font-bold text-ink mb-8 text-center">
               Preguntas Frecuentes sobre el Mejor Hosting Chile
             </h2>
             
@@ -651,7 +651,7 @@ const MejorHostingChile2026 = () => {
               {faqs.map((faq, index) => (
                 <Card key={index} className="hover:shadow-md transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-lg font-semibold text-[#2B2D42] leading-relaxed">
+                    <CardTitle className="text-lg font-semibold text-ink leading-relaxed">
                       {faq.question}
                     </CardTitle>
                   </CardHeader>
@@ -665,7 +665,7 @@ const MejorHostingChile2026 = () => {
 
           {/* CTA Final */}
           <section className="text-center">
-            <Card className="bg-gradient-to-r from-[#EF233C] to-[#c41e3a] text-white shadow-xl">
+            <Card className="bg-gradient-to-r from-brand to-[#c41e3a] text-white shadow-xl">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-4">
                   ¿Listo para contratar el mejor hosting Chile {CURRENT_YEAR}?
@@ -679,7 +679,7 @@ const MejorHostingChile2026 = () => {
                   <Button 
                     asChild 
                     size="lg" 
-                    className="bg-white text-[#EF233C] hover:bg-gray-100 font-semibold px-8 py-3"
+                    className="bg-white text-brand hover:bg-gray-100 font-semibold px-8 py-3"
                   >
                     <a href="https://www.hostingplus.cl/" target="_blank" rel="nofollow sponsored noopener noreferrer">
                       Contratar HostingPlus Ahora
@@ -704,7 +704,7 @@ const MejorHostingChile2026 = () => {
             <Card className="bg-gray-50">
               <CardContent className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
-                  <div className="font-semibold text-[#2B2D42]">¿Buscas hosting en Perú?</div>
+                  <div className="font-semibold text-ink">¿Buscas hosting en Perú?</div>
                   <div className="text-sm text-gray-600">
                     Revisa nuestro ranking auditado para el mercado peruano (S/., factura local, LiteSpeed).
                   </div>

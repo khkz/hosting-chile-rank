@@ -102,19 +102,19 @@ const CountryDatacenterLocal = () => {
         </nav>
 
         <header className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#2B2D42]">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
             Hosting con datacenter local en {meta.name} {meta.flag}
           </h1>
-          <p className="mt-3 text-[#2B2D42]/75">
+          <p className="mt-3 text-ink/75">
             Únicamente proveedores cuyo datacenter está físicamente en {meta.name} y lo declaran públicamente. Este es nuestro diferenciador de datos: cruzamos declaraciones oficiales con verificación técnica (IP → ASN → BGP) por proveedor.
           </p>
         </header>
 
-        <section className="mb-6 bg-white border border-[#2B2D42]/10 rounded-xl p-5">
-          <h2 className="text-lg font-semibold mb-2 text-[#2B2D42] flex items-center gap-2">
+        <section className="mb-6 bg-white border border-ink/10 rounded-xl p-5">
+          <h2 className="text-lg font-semibold mb-2 text-ink flex items-center gap-2">
             <ShieldCheck className="h-5 w-5 text-emerald-600" /> Cómo verificamos "datacenter local"
           </h2>
-          <ul className="text-sm text-[#2B2D42]/80 space-y-1.5 list-disc pl-5">
+          <ul className="text-sm text-ink/80 space-y-1.5 list-disc pl-5">
             <li><strong>Declaración del proveedor</strong>: revisamos el sitio oficial (página de infraestructura, planes o TOS) buscando la ubicación física del datacenter.</li>
             <li><strong>ASN + BGP</strong>: resolvemos la IP del sitio oficial y consultamos el ASN dueño de esa IP. Si el ASN está anunciado desde {meta.name}, sube la confianza; si está en un ASN de Cloudflare/AWS/GCP, indicamos que la latencia depende del PoP más cercano.</li>
             <li><strong>Registro mercantil</strong>: verificamos que exista razón social local que respalde la operación declarada.</li>

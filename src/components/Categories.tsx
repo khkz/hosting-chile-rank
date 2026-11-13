@@ -40,19 +40,19 @@ const Categories = () => {
 
   return (
     <section className="container mx-auto py-16 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-8 text-[#2B2D42]">Explora por tipo de servicio</h2>
+      <h2 className="text-2xl font-semibold text-center mb-8 text-ink">Explora por tipo de servicio</h2>
       <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-6">
         {categoryData.map((category, index) => (
           <Link key={index} to={category.href}>
             <Card className={`p-6 text-center hover:shadow-lg transition-shadow min-h-[180px] ${
-              category.featured ? 'border-2 border-[#EF233C] bg-gradient-to-b from-[#EF233C]/5 to-white' : ''
+              category.featured ? 'border-2 border-brand bg-gradient-to-b from-brand/5 to-white' : ''
             }`}>
               <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                category.featured ? 'bg-[#EF233C]/10' : 'bg-[#F7F9FC]'
+                category.featured ? 'bg-brand/10' : 'bg-paper'
               }`}>
                 {category.icon}
               </div>
-              <h3 className={`font-semibold ${category.featured ? 'text-[#EF233C]' : 'text-[#2B2D42]'}`}>
+              <h3 className={`font-semibold ${category.featured ? 'text-brand' : 'text-ink'}`}>
                 {category.title}
               </h3>
               <p className="text-xs text-muted-foreground mt-1">{category.caption}</p>

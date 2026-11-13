@@ -178,10 +178,10 @@ const VotaHosting = () => {
       
       <Navbar />
       
-      <main className="bg-[#F7F9FC] py-12">
+      <main className="bg-paper py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-ink mb-4">
               Vota por tu hosting favorito
             </h1>
             <p className="text-lg text-[#555] max-w-2xl mx-auto">
@@ -263,7 +263,7 @@ const VotaHosting = () => {
                                     <FormControl>
                                       <RadioGroupItem value={String(value)} className="sr-only" />
                                     </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-[#EF233C] text-white border-[#EF233C]' : 'hover:bg-gray-100'}`}>
+                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
                                       {value}
                                     </FormLabel>
                                   </FormItem>
@@ -292,7 +292,7 @@ const VotaHosting = () => {
                                     <FormControl>
                                       <RadioGroupItem value={String(value)} className="sr-only" />
                                     </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-[#EF233C] text-white border-[#EF233C]' : 'hover:bg-gray-100'}`}>
+                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
                                       {value}
                                     </FormLabel>
                                   </FormItem>
@@ -321,7 +321,7 @@ const VotaHosting = () => {
                                     <FormControl>
                                       <RadioGroupItem value={String(value)} className="sr-only" />
                                     </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-[#EF233C] text-white border-[#EF233C]' : 'hover:bg-gray-100'}`}>
+                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
                                       {value}
                                     </FormLabel>
                                   </FormItem>
@@ -350,7 +350,7 @@ const VotaHosting = () => {
                                     <FormControl>
                                       <RadioGroupItem value={String(value)} className="sr-only" />
                                     </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-[#EF233C] text-white border-[#EF233C]' : 'hover:bg-gray-100'}`}>
+                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
                                       {value}
                                     </FormLabel>
                                   </FormItem>
@@ -431,7 +431,7 @@ const VotaHosting = () => {
                               type="checkbox"
                               checked={field.value}
                               onChange={field.onChange}
-                              className="w-4 h-4 mt-1 rounded border-gray-300 text-[#EF233C] focus:ring-[#EF233C]"
+                              className="w-4 h-4 mt-1 rounded border-gray-300 text-brand focus:ring-brand"
                             />
                           </FormControl>
                           <div className="space-y-1 leading-none">
@@ -448,7 +448,7 @@ const VotaHosting = () => {
                     
                     <Button 
                       type="submit" 
-                      className="w-full bg-[#EF233C]"
+                      className="w-full bg-brand"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? "Enviando..." : "Enviar mi valoración"}
@@ -476,7 +476,7 @@ const VotaHosting = () => {
                           <p className="text-sm text-gray-500">{reseña.nombre} • {reseña.fecha}</p>
                         </div>
                         <div className="flex items-center">
-                          <span className="bg-[#EF233C] text-white text-xs px-2 py-1 rounded font-medium">
+                          <span className="bg-brand text-white text-xs px-2 py-1 rounded font-medium">
                             {reseña.calificacion}/5
                           </span>
                         </div>

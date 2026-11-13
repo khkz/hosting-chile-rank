@@ -1,67 +1,71 @@
-// Country routing helpers for the multi-country (.com) shell.
-// IMPORTANT: This file is purely additive. The Chilean (.cl) site
-// always resolves to CL with no path prefix and is unaffected.
+// Helpers de país para consultas y rutas. Derivan del registro único
+// (src/lib/countries.ts); no declarar países aquí.
+//
+// Chile (.cl) resuelve siempre a CL sin prefijo de ruta.
 
-export type CountryCode = 'CL' | 'PE' | 'MX' | 'CO' | 'AR';
+import {
+  EDITIONS,
+  COM_PUBLISHED_EDITIONS,
+  editionFromPath,
+  isComHost,
+  type CountryCode,
+  type Edition,
+} from './countries';
+
+export type { CountryCode } from './countries';
 
 export interface CountryInfo {
   code: CountryCode;
-  /** Lowercase slug used in URLs on the .com domain ('' for Chile). */
+  /** Segmento de URL en el .com ('' para Chile). */
   slug: '' | 'pe' | 'mx' | 'co' | 'ar';
   name: string;
   flag: string;
   locale: string;
-  /** Absolute origin where this country lives. */
+  /** Origen absoluto donde vive este país. */
   origin: string;
 }
 
-export const COUNTRIES: Record<CountryCode, CountryInfo> = {
-  CL: { code: 'CL', slug: '',   name: 'Chile',     flag: '🇨🇱', locale: 'es-CL', origin: 'https://eligetuhosting.cl' },
-  PE: { code: 'PE', slug: 'pe', name: 'Perú',      flag: '🇵🇪', locale: 'es-PE', origin: 'https://eligetuhosting.com' },
-  MX: { code: 'MX', slug: 'mx', name: 'México',    flag: '🇲🇽', locale: 'es-MX', origin: 'https://eligetuhosting.com' },
-  CO: { code: 'CO', slug: 'co', name: 'Colombia',  flag: '🇨🇴', locale: 'es-CO', origin: 'https://eligetuhosting.com' },
-  AR: { code: 'AR', slug: 'ar', name: 'Argentina', flag: '🇦🇷', locale: 'es-AR', origin: 'https://eligetuhosting.com' },
-};
+const toInfo = (e: Edition): CountryInfo => ({
+  code: e.code as CountryCode,
+  slug: e.slug as CountryInfo['slug'],
+  name: e.name,
+  flag: e.flag,
+  locale: e.locale,
+  origin: e.origin,
+});
 
-export const DOT_COM_COUNTRIES: CountryInfo[] = [
-  COUNTRIES.PE,
-  COUNTRIES.MX,
-  COUNTRIES.CO,
-  COUNTRIES.AR,
-];
+export const COUNTRIES = Object.fromEntries(
+  EDITIONS.filter((e) => e.status === 'published').map((e) => [e.code, toInfo(e)])
+) as Record<CountryCode, CountryInfo>;
 
-const COUNTRY_SLUGS = ['pe', 'mx', 'co', 'ar'] as const;
+export const DOT_COM_COUNTRIES: CountryInfo[] = COM_PUBLISHED_EDITIONS.map(toInfo);
 
 export function isDotCom(host?: string): boolean {
   if (typeof window === 'undefined' && !host) return false;
-  const h = (host ?? window.location.hostname).toLowerCase();
-  return h.endsWith('.com') || h.endsWith('.com.');
+  return isComHost(host);
 }
 
+/** País publicado indicado por la ruta (/pe, /mx, /co, /ar). */
 export function getCountryFromPath(pathname: string): CountryInfo | null {
-  const first = pathname.split('/').filter(Boolean)[0]?.toLowerCase();
-  if (!first) return null;
-  const match = COUNTRY_SLUGS.find((s) => s === first);
-  if (!match) return null;
-  return COUNTRIES[match.toUpperCase() as CountryCode];
+  const e = editionFromPath(pathname);
+  if (!e || e.status !== 'published') return null;
+  return COUNTRIES[e.code as CountryCode] ?? null;
 }
 
-/** Strip the country prefix from a path. '/pe/catalogo' → '/catalogo'. */
+/** Quita el prefijo de país. '/pe/catalogo' → '/catalogo'. */
 export function stripCountryPrefix(pathname: string): string {
-  const country = getCountryFromPath(pathname);
-  if (!country) return pathname;
-  const rest = pathname.replace(new RegExp(`^/${country.slug}`), '');
+  const e = editionFromPath(pathname);
+  if (!e) return pathname;
+  const rest = pathname.replace(new RegExp(`^/${e.slug}`, 'i'), '');
   return rest || '/';
 }
 
 /**
- * Determines the active country to filter Supabase queries by.
- * - On `.cl` (or SSR/build) → always 'CL'.
- * - On `.com` → reads from the URL path (/pe, /mx, /co, /ar);
- *   defaults to 'CL' when no country prefix is present.
+ * País con el que se filtran las consultas a Supabase.
+ * - En .cl (o SSR/build) → siempre 'CL'.
+ * - En .com → el prefijo de la ruta (/pe, /mx, /co, /ar); sin prefijo, 'CL'.
  *
- * IMPORTANT: keep this side-effect-free and synchronous so it can be
- * called inside Supabase query chains.
+ * Síncrono y sin efectos: se llama dentro de las cadenas de consulta.
  */
 export function getActiveCountryCode(pathname?: string): CountryCode {
   if (typeof window === 'undefined') return 'CL';

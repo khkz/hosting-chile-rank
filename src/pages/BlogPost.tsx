@@ -404,13 +404,13 @@ const BlogPost = () => {
       
       <Navbar />
       
-      <main className="bg-[#F7F9FC] py-8">
+      <main className="bg-paper py-8">
         <div className="container mx-auto px-4">
           {/* Migas de pan */}
           <div className="text-sm mb-8">
-            <Link to="/" className="hover:text-[#EF233C]">Inicio</Link>
+            <Link to="/" className="hover:text-brand">Inicio</Link>
             <span className="mx-2">/</span>
-            <Link to="/blog" className="hover:text-[#EF233C]">Blog</Link>
+            <Link to="/blog" className="hover:text-brand">Blog</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-500">{post.title}</span>
           </div>
@@ -421,14 +421,14 @@ const BlogPost = () => {
               {/* Header del post */}
               <header className="mb-8">
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                  <span className="bg-[#EDF2F4] px-2 py-0.5 rounded">{post.category}</span>
+                  <span className="bg-paper-deep px-2 py-0.5 rounded">{post.category}</span>
                   <span>•</span>
                   <span>{post.date}</span>
                   <span>•</span>
                   <span>{post.readTime} de lectura</span>
                 </div>
                 
-                <h1 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold text-ink mb-4">
                   {post.title}
                 </h1>
                 
@@ -445,7 +445,7 @@ const BlogPost = () => {
                 />
                 
                 {/* Información del autor */}
-                <div className="flex items-center gap-4 p-4 bg-[#F7F9FC] rounded-lg">
+                <div className="flex items-center gap-4 p-4 bg-paper rounded-lg">
                   <img 
                     src={post.authorImage} 
                     alt={post.author}
@@ -463,14 +463,14 @@ const BlogPost = () => {
               <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
               
               {/* Call to Action al final del artículo */}
-              <div className="mt-10 p-6 bg-[#EDF2F4] rounded-lg text-center">
+              <div className="mt-10 p-6 bg-paper-deep rounded-lg text-center">
                 <h3 className="text-xl font-bold mb-3">¿Necesitas un hosting confiable?</h3>
                 <p className="mb-6">
                   Compara los mejores proveedores de hosting en Chile y encuentra el ideal para tu proyecto.
                 </p>
                 <Link 
                   to="/comparativa" 
-                  className="bg-[#EF233C] text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
+                  className="bg-brand text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
                 >
                   Ver comparativa de hosting
                 </Link>
@@ -535,7 +535,7 @@ const BlogPost = () => {
                       </div>
                       <div>
                         <h3 className="font-medium text-sm line-clamp-2">
-                          <Link to={`/blog/${post.slug}`} className="hover:text-[#EF233C]">
+                          <Link to={`/blog/${post.slug}`} className="hover:text-brand">
                             {post.title}
                           </Link>
                         </h3>
@@ -547,7 +547,7 @@ const BlogPost = () => {
               </Card>
               
               {/* CTA */}
-              <Card className="bg-[#EDF2F4] border-0">
+              <Card className="bg-paper-deep border-0">
                 <CardHeader>
                   <CardTitle>¿Buscas el mejor hosting?</CardTitle>
                 </CardHeader>
@@ -557,7 +557,7 @@ const BlogPost = () => {
                   </p>
                   <Link 
                     to="/comparativa" 
-                    className="block bg-[#EF233C] text-white text-center py-2 rounded-md hover:bg-red-700 transition-colors"
+                    className="block bg-brand text-white text-center py-2 rounded-md hover:bg-red-700 transition-colors"
                   >
                     Ver comparativa
                   </Link>
@@ -576,9 +576,9 @@ const BlogPost = () => {
                   <input
                     type="email"
                     placeholder="Tu email"
-                    className="w-full py-2 px-3 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-[#EF233C] focus:border-[#EF233C]"
+                    className="w-full py-2 px-3 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand"
                   />
-                  <button className="w-full bg-[#2B2D42] text-white py-2 rounded-md hover:bg-gray-800 transition-colors">
+                  <button className="w-full bg-ink text-white py-2 rounded-md hover:bg-gray-800 transition-colors">
                     Suscribirme
                   </button>
                 </CardContent>

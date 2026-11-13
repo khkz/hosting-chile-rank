@@ -78,13 +78,13 @@ const DatacenterBadge: React.FC<Props> = ({ providerName, variant = 'inline', cl
             {s.text}
           </span>
           {host.operador && (
-            <span className="text-xs text-[#2B2D42]/70">
+            <span className="text-xs text-ink/70">
               Operador: <span className="font-medium">{host.operador}</span>
             </span>
           )}
           <Link
             to="/latam#dc-education-heading"
-            className="text-xs text-[#EF233C] hover:underline"
+            className="text-xs text-brand hover:underline"
             aria-label="Ver metodología de certificación de datacenters"
           >
             ¿Cómo lo verificamos?
@@ -106,7 +106,7 @@ const DatacenterBadge: React.FC<Props> = ({ providerName, variant = 'inline', cl
       </span>
       <Link
         to="/latam#dc-education-heading"
-        className="text-[11px] text-[#EF233C] hover:underline"
+        className="text-[11px] text-brand hover:underline"
       >
         ¿Cómo lo verificamos?
       </Link>

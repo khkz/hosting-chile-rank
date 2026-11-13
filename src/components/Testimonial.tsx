@@ -91,22 +91,22 @@ const Testimonial = () => {
   });
 
   return (
-    <section className="bg-gradient-to-b from-[#F7F9FC] to-white py-20">
+    <section className="bg-gradient-to-b from-paper to-white py-20">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-[#EF233C]/10 text-[#EF233C] px-4 py-1.5 rounded-full text-xs font-semibold mb-4">
+          <div className="inline-flex items-center gap-2 bg-brand/10 text-brand px-4 py-1.5 rounded-full text-xs font-semibold mb-4">
             <ShieldCheck className="w-4 h-4" />
             Señales públicas verificables
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-ink mb-4">
             Reputación verificada de los proveedores
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Combinamos fuentes públicas y datos curados de cada proveedor: ubicación del datacenter,
             independencia corporativa y servicios incluidos. Sin estrellas inventadas.
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#EF233C] to-pink-400 mx-auto mt-6 rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-brand to-pink-400 mx-auto mt-6 rounded-full"></div>
         </div>
 
         {/* Trust cards for top 5 */}
@@ -126,10 +126,10 @@ const Testimonial = () => {
                 return (
                   <article
                     key={c.slug}
-                    className="group relative bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-[#EF233C]/30 transition-all duration-300 flex flex-col"
+                    className="group relative bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-brand/30 transition-all duration-300 flex flex-col"
                   >
                     {c.ranking_position && (
-                      <span className="absolute -top-2 -left-2 inline-flex items-center justify-center w-7 h-7 bg-[#2B2D42] text-white text-xs font-bold rounded-full shadow">
+                      <span className="absolute -top-2 -left-2 inline-flex items-center justify-center w-7 h-7 bg-ink text-white text-xs font-bold rounded-full shadow">
                         #{c.ranking_position}
                       </span>
                     )}
@@ -146,11 +146,11 @@ const Testimonial = () => {
                           }}
                         />
                       ) : (
-                        <h3 className="font-bold text-[#2B2D42] text-sm">{c.name}</h3>
+                        <h3 className="font-bold text-ink text-sm">{c.name}</h3>
                       )}
                     </div>
 
-                    <p className="text-xs font-semibold text-[#2B2D42] mb-2">{c.name}</p>
+                    <p className="text-xs font-semibold text-ink mb-2">{c.name}</p>
 
                     {signals.length > 0 ? (
                       <ul className="space-y-1.5 mb-4 flex-1">
@@ -169,7 +169,7 @@ const Testimonial = () => {
 
                     <Link
                       to={`/resenas/${c.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#EF233C] hover:text-[#b3001b] mt-auto group-hover:gap-2 transition-all"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:text-brand-ink mt-auto group-hover:gap-2 transition-all"
                     >
                       Ver análisis completo
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -182,10 +182,10 @@ const Testimonial = () => {
         {/* CTA: deja tu reseña */}
         <div className="text-center mb-16">
           <div className="inline-flex flex-col items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-5 shadow-sm max-w-xl">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#EDF2F4] to-gray-200 rounded-full flex items-center justify-center">
-              <MessageSquarePlus className="w-6 h-6 text-[#2B2D42]" />
+            <div className="w-12 h-12 bg-gradient-to-br from-paper-deep to-gray-200 rounded-full flex items-center justify-center">
+              <MessageSquarePlus className="w-6 h-6 text-ink" />
             </div>
-            <h3 className="text-lg font-semibold text-[#2B2D42]">
+            <h3 className="text-lg font-semibold text-ink">
               ¿Usaste alguno de estos hostings?
             </h3>
             <Button
@@ -206,7 +206,7 @@ const Testimonial = () => {
 
         {/* Partners Section */}
         <div className="text-center">
-          <h3 className="text-2xl font-semibold text-[#2B2D42] mb-8">
+          <h3 className="text-2xl font-semibold text-ink mb-8">
             Proveedores verificados en Chile
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6 items-center max-w-6xl mx-auto">

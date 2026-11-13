@@ -30,7 +30,7 @@ export const CountryHeroCopy: React.FC<Props> = ({ slug }) => {
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <a
             href="#tabla"
-            className="inline-flex items-center gap-2 bg-[#EF233C] hover:bg-[#c41e3a] text-white font-semibold px-4 py-2 rounded-md text-sm"
+            className="inline-flex items-center gap-2 bg-brand hover:bg-[#c41e3a] text-white font-semibold px-4 py-2 rounded-md text-sm"
           >
             Ver ranking ↓
           </a>
@@ -42,7 +42,7 @@ export const CountryHeroCopy: React.FC<Props> = ({ slug }) => {
 
       <section className="prose prose-slate max-w-none mb-6">
         {c.intro.map((p, i) => (
-          <p key={i} className="text-[#2B2D42]/85 leading-relaxed">{p}</p>
+          <p key={i} className="text-ink/85 leading-relaxed">{p}</p>
         ))}
       </section>
     </>
@@ -54,12 +54,12 @@ export const CountryFaqCopy: React.FC<Props> = ({ slug }) => {
   if (!c) return null;
   return (
     <section className="mb-8">
-      <h2 className="text-xl font-semibold mb-3 text-[#2B2D42]">Preguntas frecuentes</h2>
+      <h2 className="text-xl font-semibold mb-3 text-ink">Preguntas frecuentes</h2>
       <div className="space-y-3">
         {c.faq.map((f, i) => (
           <div key={i} className="border rounded-lg p-4 bg-white">
-            <h3 className="font-semibold text-[#2B2D42] mb-1">{f.q}</h3>
-            <p className="text-sm text-[#2B2D42]/80 leading-relaxed">{f.a}</p>
+            <h3 className="font-semibold text-ink mb-1">{f.q}</h3>
+            <p className="text-sm text-ink/80 leading-relaxed">{f.a}</p>
           </div>
         ))}
       </div>

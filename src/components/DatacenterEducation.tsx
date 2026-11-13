@@ -67,17 +67,17 @@ const DatacenterEducation: React.FC = () => {
     >
       <div className="max-w-5xl mx-auto">
         <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#2B2D42]/5 text-[#2B2D42] text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink/5 text-ink text-sm font-medium mb-4">
             <ShieldCheck className="h-4 w-4" />
             Infraestructura verificada
           </div>
           <h2
             id="dc-education-heading"
-            className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-3"
+            className="text-3xl md:text-4xl font-bold text-ink mb-3"
           >
             ¿Dónde vive realmente tu sitio?
           </h2>
-          <p className="text-[#2B2D42]/70 max-w-2xl mx-auto">
+          <p className="text-ink/70 max-w-2xl mx-auto">
             No todo lo que se llama "datacenter" lo es. La diferencia clave está en la
             construcción: un datacenter real se diseña desde los cimientos para alojar
             servidores; una oficina o casa adaptada conserva los riesgos de una vivienda u
@@ -92,7 +92,7 @@ const DatacenterEducation: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
                 <CheckCircle2 className="h-5 w-5 text-emerald-700" />
               </div>
-              <h3 className="font-semibold text-[#2B2D42]">Datacenter real</h3>
+              <h3 className="font-semibold text-ink">Datacenter real</h3>
             </div>
             <img
               src="/img/datacenter-real.jpg?v=ascenty2"
@@ -100,8 +100,8 @@ const DatacenterEducation: React.FC = () => {
               loading="lazy"
               className="aspect-video w-full rounded-lg object-cover mb-2"
             />
-            <p className="text-xs text-[#2B2D42]/50 mb-4">Ascenty SCL2 en Quilicura, Santiago, Chile</p>
-            <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
+            <p className="text-xs text-ink/50 mb-4">Ascenty SCL2 en Quilicura, Santiago, Chile</p>
+            <ul className="space-y-1.5 text-sm text-ink/80">
               <li>Edificio diseñado desde los cimientos para alojar servidores: pisos, paredes y techo con especificaciones técnicas.</li>
               <li>Estructura pensada para carga de racks, aislamiento acústico, rutas de cableado y acceso controlado.</li>
               <li>Redundancia N+1 en energía y enfriamiento, con certificaciones o auditorías de terceros publicadas por el operador.</li>
@@ -114,7 +114,7 @@ const DatacenterEducation: React.FC = () => {
               <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
                 <AlertTriangle className="h-5 w-5 text-amber-700" />
               </div>
-              <h3 className="font-semibold text-[#2B2D42]">"Datacenter propio"</h3>
+              <h3 className="font-semibold text-ink">"Datacenter propio"</h3>
             </div>
             <img
               src="/img/datacenter-propio.png?v=2"
@@ -122,8 +122,8 @@ const DatacenterEducation: React.FC = () => {
               loading="lazy"
               className="aspect-video w-full rounded-lg object-cover mb-2"
             />
-            <p className="text-xs text-[#2B2D42]/50 mb-4">Imagen ilustrativa</p>
-            <ul className="space-y-1.5 text-sm text-[#2B2D42]/80">
+            <p className="text-xs text-ink/50 mb-4">Imagen ilustrativa</p>
+            <ul className="space-y-1.5 text-sm text-ink/80">
               <li>Casa, oficina o bodega diseñada originalmente para personas, adaptada después para poner servidores.</li>
               <li>Pisos, paredes y techo no construidos para soportar racks, calor constante ni ruido industrial.</li>
               <li>Mayor exposición a riesgos locales: sismos, cortes de energía, humedad y refrigeración doméstica no redundante.</li>
@@ -134,35 +134,35 @@ const DatacenterEducation: React.FC = () => {
 
         {/* 2) Ranking de operadores por criterios objetivos */}
         <div className="mb-14">
-          <h3 className="text-2xl font-bold text-[#2B2D42] mb-2">
+          <h3 className="text-2xl font-bold text-ink mb-2">
             Operadores certificados en Chile
           </h3>
-          <p className="text-sm text-[#2B2D42]/60 mb-5">
+          <p className="text-sm text-ink/60 mb-5">
             Ordenados por criterios objetivos: nivel Tier declarado, evidencia de instalación
             construida ("Constructed Facility") y sustentabilidad Gold. Solo incluye operadores
             con certificación pública verificable.
           </p>
-          <div className="bg-white rounded-xl border border-[#2B2D42]/10 divide-y divide-[#2B2D42]/10">
+          <div className="bg-white rounded-xl border border-ink/10 divide-y divide-ink/10">
             {rankedOperators.map((op, i) => (
               <div key={op.nombre} className="p-4 flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-[#EF233C]/10 text-[#EF233C] font-semibold flex items-center justify-center text-sm shrink-0">
+                <div className="w-8 h-8 rounded-full bg-brand/10 text-brand font-semibold flex items-center justify-center text-sm shrink-0">
                   {i + 1}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-[#2B2D42]">{op.nombre}</h4>
+                    <h4 className="font-semibold text-ink">{op.nombre}</h4>
                     <span className="text-[11px] uppercase tracking-wide px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
                       {ORG_LABEL[op.organismo]}
                     </span>
                   </div>
-                  <p className="text-sm text-[#2B2D42]/80 leading-snug">{op.nivel}</p>
-                  <p className="text-xs text-[#2B2D42]/50 mt-1">{op.ubicacion}</p>
+                  <p className="text-sm text-ink/80 leading-snug">{op.nivel}</p>
+                  <p className="text-xs text-ink/50 mt-1">{op.ubicacion}</p>
                 </div>
                 <a
                   href={op.fuente_url}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="text-xs text-[#EF233C] hover:underline inline-flex items-center gap-1 shrink-0"
+                  className="text-xs text-brand hover:underline inline-flex items-center gap-1 shrink-0"
                   aria-label={`Fuente de la certificación de ${op.nombre}`}
                 >
                   Fuente <ExternalLink className="h-3 w-3" />
@@ -174,16 +174,16 @@ const DatacenterEducation: React.FC = () => {
 
         {/* 3) Tabla host -> datacenter */}
         <div className="mb-14">
-          <h3 className="text-2xl font-bold text-[#2B2D42] mb-2">
+          <h3 className="text-2xl font-bold text-ink mb-2">
             ¿Qué datacenter usa cada proveedor?
           </h3>
-          <p className="text-sm text-[#2B2D42]/60 mb-5">
+          <p className="text-sm text-ink/60 mb-5">
             Estado según fuentes públicas del propio proveedor. Cuando el proveedor no
             transparenta operador o certificación, lo marcamos como autodeclarado o "no divulga".
           </p>
-          <div className="overflow-x-auto bg-white rounded-xl border border-[#2B2D42]/10">
+          <div className="overflow-x-auto bg-white rounded-xl border border-ink/10">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-[#2B2D42]">
+              <thead className="bg-slate-50 text-ink">
                 <tr>
                   <th className="text-left px-4 py-3 font-semibold">Proveedor</th>
                   <th className="text-left px-4 py-3 font-semibold">Datacenter declarado</th>
@@ -192,19 +192,19 @@ const DatacenterEducation: React.FC = () => {
                   <th className="text-left px-4 py-3 font-semibold">Fuente</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#2B2D42]/10">
+              <tbody className="divide-y divide-ink/10">
                 {rankingHosts.map((h) => {
                   const s = STATUS_LABEL[h.estado];
                   return (
                     <tr key={h.nombre} className="hover:bg-slate-50/60">
-                      <td className="px-4 py-3 font-medium text-[#2B2D42] whitespace-nowrap">
+                      <td className="px-4 py-3 font-medium text-ink whitespace-nowrap">
                         {h.nombre}
                       </td>
-                      <td className="px-4 py-3 text-[#2B2D42]/80">
-                        {h.dc_declarado ?? <span className="text-[#2B2D42]/40">—</span>}
+                      <td className="px-4 py-3 text-ink/80">
+                        {h.dc_declarado ?? <span className="text-ink/40">—</span>}
                       </td>
-                      <td className="px-4 py-3 text-[#2B2D42]/80">
-                        {h.operador ?? <span className="text-[#2B2D42]/40">—</span>}
+                      <td className="px-4 py-3 text-ink/80">
+                        {h.operador ?? <span className="text-ink/40">—</span>}
                       </td>
                       <td className="px-4 py-3">
                         <span
@@ -219,7 +219,7 @@ const DatacenterEducation: React.FC = () => {
                           href={h.fuente_url}
                           target="_blank"
                           rel="noopener noreferrer nofollow"
-                          className="text-xs text-[#EF233C] hover:underline inline-flex items-center gap-1"
+                          className="text-xs text-brand hover:underline inline-flex items-center gap-1"
                           aria-label={`Fuente pública de ${h.nombre}`}
                         >
                           Ver <ExternalLink className="h-3 w-3" />
@@ -234,11 +234,11 @@ const DatacenterEducation: React.FC = () => {
         </div>
 
         {/* 4) Checklist del comprador */}
-        <div className="mb-14 bg-white border border-[#2B2D42]/10 rounded-xl p-6">
-          <h3 className="text-2xl font-bold text-[#2B2D42] mb-4">
+        <div className="mb-14 bg-white border border-ink/10 rounded-xl p-6">
+          <h3 className="text-2xl font-bold text-ink mb-4">
             Checklist antes de contratar
           </h3>
-          <ul className="grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm text-[#2B2D42]/85">
+          <ul className="grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm text-ink/85">
             {[
               '¿En qué datacenter físico está alojado? (nombre y ciudad)',
               '¿Quién opera ese datacenter y qué certificación tiene?',
@@ -259,12 +259,12 @@ const DatacenterEducation: React.FC = () => {
 
         {/* 5) Metodología + fuentes */}
         <div className="mb-10 bg-slate-50 border border-slate-200 rounded-xl p-6">
-          <h3 className="text-xl font-bold text-[#2B2D42] mb-3">Metodología y fuentes</h3>
-          <ul className="space-y-2 text-sm text-[#2B2D42]/80">
+          <h3 className="text-xl font-bold text-ink mb-3">Metodología y fuentes</h3>
+          <ul className="space-y-2 text-sm text-ink/80">
             <li>
               <strong>Certificaciones:</strong> Uptime Institute Awards Chile (
               <a
-                className="text-[#EF233C] hover:underline"
+                className="text-brand hover:underline"
                 href="https://uptimeinstitute.com/uptime-institute-awards/country/id/CL"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
@@ -294,8 +294,8 @@ const DatacenterEducation: React.FC = () => {
         </div>
 
         {/* 6) Divulgación de comisión */}
-        <div className="text-xs text-[#2B2D42]/60 border-t border-[#2B2D42]/10 pt-4">
-          <strong className="text-[#2B2D42]/80">Divulgación:</strong> algunos enlaces a
+        <div className="text-xs text-ink/60 border-t border-ink/10 pt-4">
+          <strong className="text-ink/80">Divulgación:</strong> algunos enlaces a
           proveedores pueden generar comisión si contratas por nuestra recomendación. Eso
           no cambia el estado de certificación declarado en esta tabla: el estado depende
           únicamente de fuentes públicas del operador o del proveedor, no de acuerdos

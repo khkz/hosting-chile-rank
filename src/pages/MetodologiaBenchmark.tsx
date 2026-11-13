@@ -37,7 +37,7 @@ const MetodologiaBenchmark: React.FC = () => {
 
       <Navbar />
 
-      <main className="bg-[#F7F9FC] min-h-screen py-10">
+      <main className="bg-paper min-h-screen py-10">
         <div className="container mx-auto px-4 max-w-3xl">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Metodología del Benchmark</h1>
           <p className="text-muted-foreground mb-6">

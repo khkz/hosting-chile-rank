@@ -19,7 +19,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ title, href, imageSrc }) => {
           </div>
         </div>
         <div className="p-4">
-          <h3 className="font-medium text-[#2B2D42] hover:text-[#EF233C]">{title}</h3>
+          <h3 className="font-medium text-ink hover:text-brand">{title}</h3>
           <p className="mt-2 text-sm text-[#555]">Leer más →</p>
         </div>
       </Card>

@@ -29,14 +29,14 @@ const AdvisorEmbed = () => {
     : `/${country.toLowerCase()}/mejor-hosting-${LONG[country.toLowerCase()] ?? country.toLowerCase()}-2026`;
 
   return (
-    <section className="my-10 bg-white border border-[#2B2D42]/10 rounded-xl overflow-hidden">
-      <div className="px-5 py-4 border-b bg-[#F7F9FC] flex items-center gap-2">
-        <Sparkles className="h-5 w-5 text-[#EF233C]" aria-hidden />
-        <h2 className="text-xl font-bold text-[#2B2D42]">Te ayudamos a elegir</h2>
+    <section className="my-10 bg-white border border-ink/10 rounded-xl overflow-hidden">
+      <div className="px-5 py-4 border-b bg-paper flex items-center gap-2">
+        <Sparkles className="h-5 w-5 text-brand" aria-hidden />
+        <h2 className="text-xl font-bold text-ink">Te ayudamos a elegir</h2>
       </div>
 
       <div className="p-5 space-y-4">
-        <p className="text-sm text-[#2B2D42]/80">
+        <p className="text-sm text-ink/80">
           Responde 3-4 preguntas y te recomendamos un hosting según datos verificables (proveedor,
           datacenter, entidad legal, stack técnico).
         </p>
@@ -49,7 +49,7 @@ const AdvisorEmbed = () => {
                   key={c.key}
                   onClick={() => send(c.prompt)}
                   disabled={streaming}
-                  className="text-xs px-3 py-1.5 rounded-full border border-[#2B2D42]/20 bg-white hover:bg-[#2B2D42]/5"
+                  className="text-xs px-3 py-1.5 rounded-full border border-ink/20 bg-white hover:bg-ink/5"
                 >
                   {c.label}
                 </button>
@@ -61,8 +61,8 @@ const AdvisorEmbed = () => {
               key={i}
               className={
                 m.role === 'user'
-                  ? 'ml-auto max-w-[85%] bg-[#EF233C] text-white rounded-lg px-3 py-2 whitespace-pre-wrap'
-                  : 'mr-auto max-w-[92%] bg-[#F7F9FC] border border-[#2B2D42]/10 rounded-lg px-3 py-2 whitespace-pre-wrap text-[#2B2D42]'
+                  ? 'ml-auto max-w-[85%] bg-brand text-white rounded-lg px-3 py-2 whitespace-pre-wrap'
+                  : 'mr-auto max-w-[92%] bg-paper border border-ink/10 rounded-lg px-3 py-2 whitespace-pre-wrap text-ink'
               }
             >
               {m.content || (streaming && i === messages.length - 1 ? '…' : '')}
@@ -70,7 +70,7 @@ const AdvisorEmbed = () => {
           ))}
 
           {atLimit && (
-            <div className="text-xs text-[#2B2D42]/70 text-center py-2">
+            <div className="text-xs text-ink/70 text-center py-2">
               Alcanzaste el límite de {MAX_MESSAGES} mensajes.{' '}
               <Link to="/contacto" className="underline font-medium">Ir al formulario</Link>.
             </div>
@@ -97,20 +97,20 @@ const AdvisorEmbed = () => {
             disabled={streaming || atLimit}
             rows={1}
             placeholder="Cuéntame tu proyecto…"
-            className="flex-1 resize-none text-sm rounded-md border border-[#2B2D42]/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#EF233C]/30 max-h-28"
+            className="flex-1 resize-none text-sm rounded-md border border-ink/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand/30 max-h-28"
             aria-label="Escribe tu mensaje"
           />
           <button
             type="submit"
             disabled={streaming || atLimit || !input.trim()}
             aria-label="Enviar"
-            className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-[#EF233C] text-white disabled:opacity-40"
+            className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-brand text-white disabled:opacity-40"
           >
             <Send className="h-4 w-4" />
           </button>
         </form>
 
-        <p className="text-[11px] text-[#2B2D42]/60 leading-snug">
+        <p className="text-[11px] text-ink/60 leading-snug">
           Divulgación: podemos recibir una comisión si contratas por los enlaces recomendados. La
           recomendación se basa en datos verificables y no altera el resto del directorio.{' '}
           <Link to={dirLink} className="underline">Ver todas las alternativas</Link>.

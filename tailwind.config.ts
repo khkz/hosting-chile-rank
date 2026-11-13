@@ -13,25 +13,59 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '1.25rem',
 			screens: {
-				'2xl': '1400px'
+				'2xl': '1280px'
 			}
 		},
 		extend: {
 			fontFamily: {
-				montserrat: ["Montserrat", "sans-serif"],
-				poppins: ["Poppins", "sans-serif"],
+				sans: ['Archivo', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+				display: ['Archivo', 'system-ui', 'sans-serif'],
+				// Alias heredados: las clases font-montserrat / font-poppins ya
+				// usadas en el sitio pasan a la tipografía del sistema.
+				montserrat: ['Archivo', 'system-ui', 'sans-serif'],
+				poppins: ['Archivo', 'system-ui', 'sans-serif'],
+			},
+			fontSize: {
+				// Escala tipográfica del sistema (≈ 1.25, Elements of Typographic Style)
+				'2xs': ['0.75rem', { lineHeight: '1.1rem' }],
 			},
 			colors: {
-      'brand-red': {
-        DEFAULT: '#EF233C',
-        light: '#FF4D61',
-        dark: '#D01F35',
-      },
-      'warm-cream': '#FFF8F0',
-      'warm-peach': '#FFE5D9',
-      'warm-yellow': '#FFC107',
+				ink: {
+					DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
+					2: 'rgb(var(--ink-2) / <alpha-value>)',
+					3: 'rgb(var(--ink-3) / <alpha-value>)',
+					soft: 'rgb(var(--ink-soft) / <alpha-value>)',
+				},
+				paper: {
+					DEFAULT: 'rgb(var(--paper) / <alpha-value>)',
+					deep: 'rgb(var(--paper-deep) / <alpha-value>)',
+				},
+				rule: 'rgb(var(--rule) / <alpha-value>)',
+				brand: {
+					DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
+					ink: 'rgb(var(--brand-ink) / <alpha-value>)',
+					'on-dark': 'rgb(var(--brand-on-dark) / <alpha-value>)',
+				},
+				signal: {
+					measured: 'rgb(var(--signal-measured) / <alpha-value>)',
+					'measured-bg': 'rgb(var(--signal-measured-bg) / <alpha-value>)',
+					declared: 'rgb(var(--signal-declared) / <alpha-value>)',
+					'declared-bg': 'rgb(var(--signal-declared-bg) / <alpha-value>)',
+					editorial: 'rgb(var(--signal-editorial) / <alpha-value>)',
+					'editorial-bg': 'rgb(var(--signal-editorial-bg) / <alpha-value>)',
+				},
+				ok: 'rgb(var(--ok) / <alpha-value>)',
+				// Alias heredados → tokens del sistema
+				'brand-red': {
+					DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
+					light: 'rgb(var(--brand-on-dark) / <alpha-value>)',
+					dark: 'rgb(var(--brand-ink) / <alpha-value>)',
+				},
+				'warm-cream': 'rgb(var(--paper) / <alpha-value>)',
+				'warm-peach': 'rgb(var(--paper-deep) / <alpha-value>)',
+				'warm-yellow': 'rgb(var(--signal-declared) / <alpha-value>)',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
