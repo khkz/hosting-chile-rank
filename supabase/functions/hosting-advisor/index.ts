@@ -45,15 +45,46 @@ const UNPUBLISHED_NAMES: Record<string, string> = {
   PY: "Paraguay",
 };
 
+// Recomendados de la tabla editorial: siempre entran en DATOS, para que el modelo
+// los describa con datos reales y no quede sin información sobre ellos.
+const RECOMMENDED_SLUGS: Record<string, string[]> = {
+  CL: ["hostingplus", "ecohosting"],
+  PE: ["hostingplus-pe"],
+  MX: ["hostingplus-mx"],
+  CO: ["hostingplus-co"],
+  AR: ["hostingplus-ar"],
+};
+const MAX_PROVIDERS = 60;
+const PROVIDER_FIELDS =
+  "slug,name,website,datacenter_location,legal_name,corporate_group,technologies,contact_hours,is_verified";
+
 async function loadProviders(supabase: any, country: string) {
-  const { data, error } = await supabase
-    .from("hosting_companies")
-    .select("slug,name,website,datacenter_location,legal_name,corporate_group,technologies,contact_hours,is_verified")
-    .eq("country", country)
-    .eq("is_verified", true)
-    .limit(60);
-  if (error) return [];
-  return (data ?? []).map((c: any) => ({
+  const featured = RECOMMENDED_SLUGS[country] ?? [];
+  const [top, rest] = await Promise.all([
+    featured.length
+      ? supabase.from("hosting_companies").select(PROVIDER_FIELDS).eq("country", country).eq("is_verified", true).in("slug", featured)
+      : Promise.resolve({ data: [], error: null }),
+    // Orden determinista: con más de 60 proveedores (Chile tiene más de 100), el
+    // corte siempre deja fuera a los mismos y nunca a los recomendados.
+    supabase
+      .from("hosting_companies")
+      .select(PROVIDER_FIELDS)
+      .eq("country", country)
+      .eq("is_verified", true)
+      .order("ranking_position", { ascending: true, nullsFirst: false })
+      .order("name", { ascending: true })
+      .limit(MAX_PROVIDERS),
+  ]);
+  if (top.error && rest.error) return [];
+  const bySlug = new Map<string, any>();
+  for (const c of [...(top.data ?? []), ...(rest.data ?? [])]) {
+    if (c?.slug && !bySlug.has(c.slug)) bySlug.set(c.slug, c);
+  }
+  const ordered = [
+    ...featured.map((slug) => bySlug.get(slug)).filter(Boolean),
+    ...[...bySlug.values()].filter((c) => !featured.includes(c.slug)),
+  ].slice(0, MAX_PROVIDERS);
+  return ordered.map((c: any) => ({
     slug: c.slug,
     name: c.name,
     website: c.website,
@@ -85,7 +116,7 @@ TRANSPARENCIA (obligatorio, por encima de cualquier otra regla):
 - Eres una IA y puedes equivocarte. Si te lo preguntan, dilo, y sugiere confirmar precios y condiciones en el sitio del proveedor.
 - Tu recomendación principal es editorial: la define EligeTuHosting con la tabla de abajo, no un cálculo ni una medición. No digas que eres imparcial, neutral ni independiente, ni que la recomendación sale solo de datos.
 - EligeTuHosting mantiene relación comercial con algunos de los proveedores que recomienda, incluidos los de la recomendación principal, y puede recibir una comisión si el usuario contrata por estos enlaces. Si te preguntan por esa relación o por qué recomiendas a un proveedor, dilo con claridad. Nunca la niegues ni la minimices.
-- No afirmes ni niegues nada sobre quién es dueño de EligeTuHosting o de un proveedor, ni sobre grupos económicos, salvo lo que diga DATOS. Si te lo preguntan, di que no tienes ese dato y repite lo que el sitio sí declara: la relación comercial.
+- No afirmes ni niegues nada sobre quién es dueño de EligeTuHosting o de un proveedor, ni sobre grupos económicos, salvo lo que diga DATOS. Si te lo preguntan, remite a [Quiénes somos](/quienes-somos) y repite lo que el sitio declara: el editor mantiene relación comercial con algunos de los proveedores listados.
 
 DATOS Y LÍMITES:
 - Usa solo los datos del bloque DATOS. No inventes precios, uptime, puntajes, velocidades, certificaciones, garantías, premios ni cantidad de clientes. Si no tienes un dato, dilo: "no tengo ese dato verificado; revísalo en el sitio oficial".

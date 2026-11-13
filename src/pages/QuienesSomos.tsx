@@ -70,14 +70,10 @@ const QuienesSomos: React.FC = () => {
             trabajo con WAFs (ModSecurity, BitNinja, Imunify360) y análisis OSINT. No
             vamos a inventar nombres ni fotos de "equipo" que no existe: preferimos
             mostrar la metodología y dejar que los datos hablen. Si necesitas hablar con
-            una persona real, escribinos.
+            una persona real, escríbenos.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            Ver también nuestra{' '}
-            <Link to="/sobre-nosotros" className="text-primary underline">
-              descripción técnica del equipo editorial
-            </Link>{' '}
-            y la{' '}
+            Ver también la{' '}
             <Link to="/metodologia" className="text-primary underline">
               metodología completa
             </Link>
@@ -91,15 +87,17 @@ const QuienesSomos: React.FC = () => {
             Cómo nos financiamos
           </h2>
           <p className="text-gray-700 leading-relaxed mb-3">
-            Con comisiones de afiliado. Si alguien contrata hosting a través de uno de
-            nuestros enlaces, el proveedor nos paga una comisión. Eso es todo. No
-            recibimos plata por "subir" empresas en el ranking y no borramos reclamos a
-            cambio de nada.
+            Con comisiones de afiliado: si alguien contrata hosting a través de uno de
+            nuestros enlaces, el proveedor nos paga una comisión. Además, el editor de
+            este sitio mantiene relación comercial con algunos de los proveedores
+            listados. No recibimos pagos por "subir" empresas en el ranking y no
+            borramos reclamos a cambio de nada.
           </p>
           <p className="text-gray-700 leading-relaxed mb-3">
             Para que sea obvio: los enlaces afiliados están marcados y aparecen también
             proveedores con los que <strong>no</strong> tenemos relación comercial. El
-            orden del ranking se calcula con los mismos pesos publicados en{' '}
+            orden del ranking es editorial; los criterios y pesos que usamos están
+            publicados en{' '}
             <Link to="/metodologia" className="text-primary underline">
               /metodologia
             </Link>{' '}
@@ -110,9 +108,9 @@ const QuienesSomos: React.FC = () => {
             .
           </p>
           <p className="text-gray-700 leading-relaxed">
-            Si un día un proveedor nos pidiera "arreglar" su posición, la respuesta
-            sería la misma que hoy: mejorá el uptime, mejorá el soporte, y el ranking se
-            va a mover solo.
+            Si un proveedor nos pidiera "arreglar" su posición, la respuesta sería la
+            misma que hoy: que mejore su uptime y su soporte, y eso se verá en los datos
+            que publicamos.
           </p>
         </section>
 
@@ -161,8 +159,8 @@ const QuienesSomos: React.FC = () => {
           <Card>
             <CardContent className="p-6 space-y-3 text-gray-700">
               <p>
-                Si encontraste un error, tenés evidencia que contradice algún dato o
-                querés proponer una corrección, escribinos. Publicamos actualizaciones
+                Si encontraste un error, tienes evidencia que contradice algún dato o
+                quieres proponer una corrección, escríbenos. Publicamos actualizaciones
                 con fecha cuando la evidencia lo justifica.
               </p>
               <p className="inline-flex items-center gap-2">

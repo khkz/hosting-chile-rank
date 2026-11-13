@@ -16,17 +16,11 @@ import {
 import { COUNTRIES, type CountryCode } from '@/lib/country';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
+import { isoDay } from '@/lib/dates';
 
 const COUNTRY_MAP: Record<string, CountryCode> = { pe: 'PE', mx: 'MX', co: 'CO', ar: 'AR' };
 const COUNTRY_FULLNAME: Record<CountryCode, string> = { PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina', CL: 'Chile' };
 
-
-/** "2026-08-28" si la fecha es válida; null si falta o no se puede leer (nunca lanza). */
-const isoDay = (value?: string | null): string | null => {
-  if (!value) return null;
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
-};
 
 const CountryProviderDetail = () => {
   const { slug } = useParams<{ slug: string }>();

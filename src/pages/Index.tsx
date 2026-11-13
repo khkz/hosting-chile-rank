@@ -20,9 +20,10 @@ const StickyCTA = React.lazy(() => import('@/components/StickyCTA'));
 const LatamEditions = React.lazy(() => import('@/components/home/LatamEditions'));
 
 const Index = () => {
-  // overflow-x-clip y no hidden: hidden crea un contenedor de scroll y anula la cabecera sticky.
+  // overflow-x-clip donde se admite: hidden crea un contenedor de scroll y anula la cabecera sticky.
+  // Safari < 16 no admite clip y se queda con hidden (recorte sin sticky).
   return (
-    <div className="min-h-screen bg-white text-ink overflow-x-clip">
+    <div className="min-h-screen bg-white text-ink overflow-x-hidden supports-[overflow:clip]:overflow-x-clip">
       <ScrollProgress />
 
       <DynamicMetaTags

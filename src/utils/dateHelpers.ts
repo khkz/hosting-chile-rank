@@ -3,7 +3,7 @@
  * Actualizar CURRENT_YEAR cada año nuevo
  */
 
-import { VERIFICATION_DATE_ISO } from '@/data/verified2026';
+import { VERIFICATION_DATE_ISO } from '../data/verified2026';
 
 export const CURRENT_YEAR = 2026;
 
