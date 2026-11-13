@@ -21,10 +21,20 @@ export interface NavLinkItem {
  * Enlace a una ruta que vive en el .cl. Desde eligetuhosting.com se vuelve
  * absoluto; en el .cl, la vista previa, localhost y el prerender queda relativo.
  */
-const link = (label: string, path: string, opts?: { cl?: boolean }): NavLinkItem =>
+export const link = (label: string, path: string, opts?: { cl?: boolean }): NavLinkItem =>
   opts?.cl && isComHost()
     ? { label, href: `${CL_ORIGIN}${path}`, external: true }
     : { label, href: path, external: /^https?:/.test(path) };
+
+/**
+ * La metodología publicada es la del ranking de Chile. Desde el .com el enlace
+ * cruza de edición, así que el rótulo lo dice.
+ */
+export const methodologyLink = (): NavLinkItem =>
+  link(isComHost() ? 'Metodología (Chile)' : 'Metodología', '/metodologia', { cl: true });
+
+/** true si el menú de guías lleva a otra edición (desde el .com, al .cl). */
+export const guidesCrossEdition = (): boolean => isComHost();
 
 /** Secciones principales del encabezado para cada edición. */
 export const sectionsFor = (key: EditionKey): NavLinkItem[] => {
@@ -32,7 +42,7 @@ export const sectionsFor = (key: EditionKey): NavLinkItem[] => {
     return [
       link('Índice por país', editionHref('LATAM')),
       link('Datos abiertos', '/datos'),
-      link('Metodología', '/metodologia', { cl: true }),
+      methodologyLink(),
       link('Cómo elegir hosting', '/guia-elegir-hosting', { cl: true }),
     ];
   }
@@ -47,14 +57,14 @@ export const sectionsFor = (key: EditionKey): NavLinkItem[] => {
   }
   const e = getEdition(key);
   if (e.status === 'verifying') {
-    return [link('Estado de verificación', `/${e.slug}`), link('Metodología', '/metodologia', { cl: true })];
+    return [link('Estado de verificación', `/${e.slug}`), methodologyLink()];
   }
   return [
     link('Ranking', rankingPath(e)),
     link('Proveedores', `/${e.slug}`),
     link('Datacenter local', `/${e.slug}/hosting-con-datacenter-local`),
     link('Reputación', `/${e.slug}/benchmark`),
-    link('Metodología', '/metodologia', { cl: true }),
+    methodologyLink(),
   ];
 };
 

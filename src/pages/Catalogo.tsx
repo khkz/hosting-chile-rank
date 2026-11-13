@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { formatCorporateGroup } from '@/lib/formatGroup';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Award, Star } from 'lucide-react';
+import { ExternalLink, Award, Search, Star } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
@@ -14,7 +14,6 @@ import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
-import HostingSectionsNav from '@/components/HostingSectionsNav';
 import TechnicalGlossary from '@/components/TechnicalGlossary';
 import RelatedContent from '@/components/RelatedContent';
 import LogoTile from '@/components/LogoTile';
@@ -24,7 +23,20 @@ import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 const CURRENT_YEAR = new Date().getFullYear();
 
 const CatalogoPage = () => {
-  const [sortBy, setSortBy] = useState<'rating' | 'price' | 'name'>('rating');
+  // Orden y búsqueda viven en la URL: se conservan al volver de una ficha y al compartir el enlace.
+  const [params, setParams] = useSearchParams();
+  const sortBy: 'rating' | 'name' = params.get('orden') === 'nombre' ? 'name' : 'rating';
+  const query = params.get('q') ?? '';
+  const updateParam = (key: string, value: string | null) =>
+    setParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (value) next.set(key, value);
+        else next.delete(key);
+        return next;
+      },
+      { replace: true }
+    );
 
   // Fetch all hosting companies from Supabase
   const { data: companies, isLoading } = useQuery({
@@ -45,36 +57,30 @@ const CatalogoPage = () => {
     },
   });
 
-  // Sort companies based on selected option — providers without rating always last
+  // Orden: por nota (sin nota, al final y de la A a la Z) o de la A a la Z sobre la lista completa.
+  const visibleCompanies = React.useMemo(() => (companies ? filterVisibleProviders([...companies]) : []), [companies]);
   const sortedCompanies = React.useMemo(() => {
-    if (!companies) return [];
-
-    const visible = filterVisibleProviders([...companies]);
+    const byName = (a: any, b: any) => a.name.localeCompare(b.name, 'es');
+    if (sortBy === 'name') return [...visibleCompanies].sort(byName);
     const hasRating = (c: any) => (c.overall_rating ?? 0) > 0;
-    const withRating = visible.filter(hasRating);
-    const withoutRating = visible.filter((c: any) => !hasRating(c));
-
-    const sortFn = (a: any, b: any) => {
-      switch (sortBy) {
-        case 'rating':
-          return (b.overall_rating || 0) - (a.overall_rating || 0);
-        case 'price': {
-          const minA = Math.min(...(a.hosting_plans?.map((p: any) => p.price_monthly) || [Infinity]));
-          const minB = Math.min(...(b.hosting_plans?.map((p: any) => p.price_monthly) || [Infinity]));
-          return minA - minB;
-        }
-        case 'name':
-          return a.name.localeCompare(b.name, 'es');
-        default:
-          return 0;
-      }
-    };
-
     return [
-      ...withRating.sort(sortFn),
-      ...withoutRating.sort((a: any, b: any) => a.name.localeCompare(b.name, 'es')),
+      ...visibleCompanies.filter(hasRating).sort((a: any, b: any) => (b.overall_rating || 0) - (a.overall_rating || 0)),
+      ...visibleCompanies.filter((c: any) => !hasRating(c)).sort(byName),
     ];
-  }, [companies, sortBy]);
+  }, [visibleCompanies, sortBy]);
+
+  const normalized = (v: unknown) =>
+    String(v ?? '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  const shownCompanies = React.useMemo(() => {
+    const q = normalized(query.trim());
+    if (!q) return sortedCompanies;
+    return sortedCompanies.filter((c: any) =>
+      [c.name, c.legal_name, c.slug, c.website].some((field) => normalized(field).includes(q))
+    );
+  }, [sortedCompanies, query]);
 
   const { data: reviewStats } = useReviewStats(sortedCompanies.map((c) => c.slug));
   
@@ -88,7 +94,6 @@ const CatalogoPage = () => {
       />
     
       <Navbar />
-      <HostingSectionsNav />
       
       <div className="container mx-auto px-4 pt-8">
         <SEOBreadcrumbs 
@@ -98,45 +103,58 @@ const CatalogoPage = () => {
         />
       </div>
       
-      {/* Hero section */}
-      <section className="bg-gradient-to-br from-primary/5 to-primary/10 py-16 text-center">
+      {/* Encabezado: nombre de la sección, búsqueda y orden */}
+      <section className="border-b border-rule bg-paper py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Mejor Hosting Chile {CURRENT_YEAR}
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Catálogo completo con {companies?.length || 0} proveedores verificados. 
-            Compara planes, precios y características actualizadas.
+          <h1 className="text-3xl font-bold text-ink md:text-5xl">Proveedores de hosting en Chile</h1>
+          <p className="mt-4 max-w-2xl text-lg text-ink-2">
+            {visibleCompanies.length ? `${visibleCompanies.length} proveedores verificados` : 'Proveedores verificados'},
+            con datacenter, antigüedad, tecnologías y reputación de cada uno.
           </p>
-          
-          {/* Sort options */}
-          <div className="mt-8 flex justify-center gap-3 flex-wrap">
-            <Button
-              variant={sortBy === 'rating' ? 'default' : 'outline'}
-              onClick={() => setSortBy('rating')}
-              size="sm"
-            >
-              <Star className="h-4 w-4 mr-2" />
-              Por Rating
-            </Button>
-            <Button
-              variant={sortBy === 'price' ? 'default' : 'outline'}
-              onClick={() => setSortBy('price')}
-              size="sm"
-            >
-              💰 Por Precio
-            </Button>
-            <Button
-              variant={sortBy === 'name' ? 'default' : 'outline'}
-              onClick={() => setSortBy('name')}
-              size="sm"
-            >
-              🔤 Alfabético
-            </Button>
+
+          <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="w-full max-w-md">
+              <label htmlFor="buscar-proveedor" className="mb-1.5 block text-sm font-medium text-ink">
+                Buscar proveedor
+              </label>
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-3" aria-hidden />
+                <input
+                  id="buscar-proveedor"
+                  type="search"
+                  value={query}
+                  onChange={(e) => updateParam('q', e.target.value || null)}
+                  placeholder="Nombre o razón social"
+                  className="h-11 w-full rounded-md border border-ink/25 bg-white pl-9 pr-3 text-base text-ink placeholder:text-ink-3 focus:outline-none focus:ring-2 focus:ring-ink/30"
+                />
+              </div>
+            </div>
+            <div role="group" aria-label="Ordenar proveedores" className="flex items-center gap-2">
+              <span className="text-sm text-ink-2">Ordenar:</span>
+              <Button
+                variant={sortBy === 'rating' ? 'default' : 'outline'}
+                onClick={() => updateParam('orden', null)}
+                size="sm"
+                aria-pressed={sortBy === 'rating'}
+              >
+                Por nota editorial
+              </Button>
+              <Button
+                variant={sortBy === 'name' ? 'default' : 'outline'}
+                onClick={() => updateParam('orden', 'nombre')}
+                size="sm"
+                aria-pressed={sortBy === 'name'}
+              >
+                De la A a la Z
+              </Button>
+            </div>
           </div>
+          <p className="mt-4 text-sm text-ink-3" aria-live="polite">
+            {isLoading ? 'Cargando…' : `Mostrando ${shownCompanies.length} de ${visibleCompanies.length}`}
+          </p>
         </div>
       </section>
-      
+
       {/* Catalog section */}
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
@@ -145,8 +163,20 @@ const CatalogoPage = () => {
               <p className="text-muted-foreground">Cargando empresas...</p>
             </div>
           ) : (
+            shownCompanies.length === 0 ? (
+              <div className="mx-auto max-w-md rounded-md border border-rule bg-paper p-6 text-center text-ink-2">
+                <p>Ningún proveedor coincide con «{query}».</p>
+                <button
+                  type="button"
+                  onClick={() => updateParam('q', null)}
+                  className="mt-3 inline-flex min-h-[40px] items-center rounded-md border border-ink/25 bg-white px-4 font-semibold text-ink hover:border-ink"
+                >
+                  Borrar búsqueda
+                </button>
+              </div>
+            ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {sortedCompanies.map((company: any) => {
+              {shownCompanies.map((company: any) => {
                 const minPrice = company.hosting_plans && company.hosting_plans.length > 0
                   ? Math.min(...company.hosting_plans.map((p: any) => p.price_monthly))
                   : null;
@@ -258,6 +288,7 @@ const CatalogoPage = () => {
                 );
               })}
             </div>
+            )
           )}
         </div>
       </section>

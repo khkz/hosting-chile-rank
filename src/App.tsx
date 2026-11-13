@@ -24,6 +24,7 @@ import DirectorioRedirect from './components/DirectorioRedirect';
 import SEOOrganization from './components/SEOOrganization';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomeDispatcher from './components/HomeDispatcher';
+import RouteErrorBoundary from './components/RouteErrorBoundary';
 import { COM_PUBLISHED_EDITIONS, VERIFYING_EDITIONS, RANKING_YEAR } from './lib/countries';
 
 const HostingAdvisorFab = React.lazy(() => import('./components/advisor/HostingAdvisorFab'));
@@ -127,9 +128,12 @@ function App() {
         <Toaster />
         <Sonner />
         <SEOOrganization />
-        <React.Suspense fallback={null}>
-          <HostingAdvisorFab />
-        </React.Suspense>
+        <RouteErrorBoundary silent>
+          <React.Suspense fallback={null}>
+            <HostingAdvisorFab />
+          </React.Suspense>
+        </RouteErrorBoundary>
+        <RouteErrorBoundary>
         <React.Suspense fallback={null}>
         <Routes>
         {/* Rutas para archivos estáticos */}
@@ -353,6 +357,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
       </Routes>
       </React.Suspense>
+      </RouteErrorBoundary>
     </Router>
     </AuthProvider>
   );

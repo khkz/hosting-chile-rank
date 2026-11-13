@@ -16,9 +16,11 @@ import {
   PUBLISHED_EDITIONS,
   VERIFYING_EDITIONS,
   editionHref,
+  getEdition,
+  rankingPath,
   type EditionKey,
 } from '@/lib/countries';
-import { guideGroups, sectionsFor, type NavLinkItem } from '@/lib/siteNav';
+import { guideGroups, guidesCrossEdition, sectionsFor, type NavLinkItem } from '@/lib/siteNav';
 
 /** Enlace que usa el router si es relativo y <a> si cruza de dominio. */
 const SmartLink: React.FC<{ item: NavLinkItem; className?: string; onClick?: () => void; children?: React.ReactNode; 'aria-current'?: 'page' | undefined }> = ({
@@ -40,47 +42,105 @@ const SmartLink: React.FC<{ item: NavLinkItem; className?: string; onClick?: () 
 
 const EDITION_ORDER: EditionKey[] = ['LATAM', ...PUBLISHED_EDITIONS.map((e) => e.code)];
 
-const editionName = (key: EditionKey) =>
-  key === 'LATAM' ? 'Latinoamérica' : PUBLISHED_EDITIONS.find((e) => e.code === key)?.name ?? key;
+const editionName = (key: EditionKey) => (key === 'LATAM' ? 'Latinoamérica' : getEdition(key).name);
+
+/**
+ * Página equivalente al cambiar de país: desde un ranking se va al ranking del
+ * otro país; en el resto de páginas, a su portada.
+ */
+const editionTarget = (target: EditionKey, current: EditionKey, pathname: string): string => {
+  if (target !== 'LATAM' && current !== 'LATAM') {
+    const from = getEdition(current);
+    const to = getEdition(target);
+    if (from.status === 'published' && to.status === 'published' && pathname === rankingPath(from)) {
+      return editionHref(target, rankingPath(to));
+    }
+  }
+  return editionHref(target);
+};
 
 /**
  * Barra de ediciones: el país es la primera dimensión del sitio. Siempre
- * visible en .cl y .com; la edición activa lleva el subrayado rojo.
+ * visible en .cl y .com; la edición activa lleva el subrayado rojo. En móvil
+ * se desplaza: la activa queda centrada y un degradado indica que hay más.
  */
-const EditionBar: React.FC<{ active: EditionKey }> = ({ active }) => (
-  <div className="bg-ink text-white/70">
-    <div className="container mx-auto px-4 flex h-9 items-center justify-between gap-6">
-      <nav aria-label="Ediciones por país" className="-mx-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <ul className="flex items-center gap-1 whitespace-nowrap text-[13px]">
-          {EDITION_ORDER.map((key) => {
-            const isActive = key === active;
-            return (
-              <li key={key}>
-                <a
-                  href={editionHref(key)}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`relative inline-flex h-9 items-center gap-1.5 px-2 transition-colors ${
-                    isActive ? 'font-semibold text-white' : 'hover:text-white'
-                  }`}
-                >
-                  {key === 'LATAM' ? <Globe className="h-3.5 w-3.5" aria-hidden /> : <Flag code={key} size={16} />}
-                  {editionName(key)}
-                  {isActive && <span className="absolute inset-x-2 bottom-0 h-[2px] bg-brand-on-dark" aria-hidden />}
+const EditionBar: React.FC<{ active: EditionKey; pathname: string }> = ({ active, pathname }) => {
+  const navRef = React.useRef<HTMLElement>(null);
+  const [moreRight, setMoreRight] = React.useState(false);
+  // Un país en verificación no está en la barra: se añade mientras se visita.
+  const keys = EDITION_ORDER.includes(active) ? EDITION_ORDER : [...EDITION_ORDER, active];
+
+  React.useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const current = nav.querySelector<HTMLElement>('[aria-current="page"]');
+    if (current && nav.scrollWidth > nav.clientWidth) {
+      nav.scrollLeft = Math.max(0, current.offsetLeft - (nav.clientWidth - current.offsetWidth) / 2);
+    }
+    const update = () => setMoreRight(nav.scrollLeft + nav.clientWidth < nav.scrollWidth - 4);
+    update();
+    nav.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      nav.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [active]);
+
+  return (
+    <div className="bg-ink text-white/70">
+      <div className="container mx-auto px-4 flex h-9 items-center justify-between gap-6">
+        <div className="relative min-w-0">
+          <nav
+            ref={navRef}
+            aria-label="Ediciones por país"
+            className="relative -mx-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            <ul className="flex items-center gap-1 whitespace-nowrap text-[13px]">
+              {keys.map((key) => {
+                const isActive = key === active;
+                const verifying = key !== 'LATAM' && getEdition(key).status === 'verifying';
+                return (
+                  <li key={key}>
+                    <a
+                      href={editionTarget(key, active, pathname)}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`relative inline-flex h-9 items-center gap-1.5 px-2 transition-colors ${
+                        isActive ? 'font-semibold text-white' : 'hover:text-white'
+                      }`}
+                    >
+                      {key === 'LATAM' ? <Globe className="h-3.5 w-3.5" aria-hidden /> : <Flag code={key} size={16} />}
+                      {editionName(key)}
+                      {verifying && <span className="font-normal text-white/60">(en verificación)</span>}
+                      {isActive && <span className="absolute inset-x-2 bottom-0 h-[2px] bg-brand-on-dark" aria-hidden />}
+                    </a>
+                  </li>
+                );
+              })}
+              <li className="lg:hidden">
+                <a href={`${editionHref('LATAM')}#cobertura`} className="inline-flex h-9 items-center px-2 text-white/60 hover:text-white">
+                  +{VERIFYING_EDITIONS.length} en verificación
                 </a>
               </li>
-            );
-          })}
-        </ul>
-      </nav>
-      <a
-        href={`${editionHref('LATAM')}#cobertura`}
-        className="hidden lg:inline text-[13px] text-white/60 hover:text-white whitespace-nowrap"
-      >
-        {VERIFYING_EDITIONS.length} países más en verificación
-      </a>
+            </ul>
+          </nav>
+          {moreRight && (
+            <span
+              className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-ink to-transparent"
+              aria-hidden
+            />
+          )}
+        </div>
+        <a
+          href={`${editionHref('LATAM')}#cobertura`}
+          className="hidden lg:inline text-[13px] text-white/60 hover:text-white whitespace-nowrap"
+        >
+          {VERIFYING_EDITIONS.length} países más en verificación
+        </a>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Navbar = () => {
   const location = useLocation();
@@ -89,6 +149,7 @@ const Navbar = () => {
   const { key, label } = useEdition();
   const sections = sectionsFor(key);
   const guides = guideGroups();
+  const crossGuides = guidesCrossEdition();
   const homeHref = editionHref(key);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -109,7 +170,7 @@ const Navbar = () => {
 
   return (
     <>
-      <EditionBar active={key} />
+      <EditionBar active={key} pathname={location.pathname} />
       <header className="sticky top-0 z-50 border-b border-rule bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
         <div className="container mx-auto px-4 flex h-16 items-center gap-6">
           <a href={homeHref} className="shrink-0" aria-label={`EligeTuHosting ${label}, portada`}>
@@ -145,6 +206,11 @@ const Navbar = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" sideOffset={8} className="w-[min(92vw,760px)] rounded-lg border-rule p-0 shadow-lg">
+                {crossGuides && (
+                  <p className="border-b border-rule px-4 py-2.5 text-xs text-ink-3">
+                    Guías y herramientas de la edición Chile: se abren en eligetuhosting.cl.
+                  </p>
+                )}
                 <div className="grid gap-0 sm:grid-cols-3 sm:divide-x sm:divide-rule">
                   {guides.map((group) => (
                     <div key={group.title} className="p-4">
@@ -226,7 +292,8 @@ const Navbar = () => {
                     {EDITION_ORDER.map((k) => (
                       <li key={k}>
                         <a
-                          href={editionHref(k)}
+                          href={editionTarget(k, key, location.pathname)}
+                          aria-current={k === key ? 'page' : undefined}
                           className={`flex min-h-[44px] items-center gap-2 text-[15px] ${k === key ? 'font-semibold text-ink' : 'text-ink-2'}`}
                         >
                           {k === 'LATAM' ? <Globe className="h-4 w-4" aria-hidden /> : <Flag code={k} size={18} />}
@@ -236,6 +303,9 @@ const Navbar = () => {
                     ))}
                   </ul>
 
+                  {crossGuides && (
+                    <p className="mb-3 text-xs text-ink-3">Guías y herramientas de la edición Chile (eligetuhosting.cl):</p>
+                  )}
                   {guides.map((group) => (
                     <div key={group.title} className="mb-5">
                       <p className="mb-1 text-xs font-semibold text-ink-3">{group.title}</p>

@@ -13,7 +13,7 @@ import {
   rankingPath,
   type Edition,
 } from '@/lib/countries';
-import { type NavLinkItem } from '@/lib/siteNav';
+import { link, methodologyLink, type NavLinkItem } from '@/lib/siteNav';
 import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 const FooterLink: React.FC<{ item: NavLinkItem }> = ({ item }) =>
@@ -60,6 +60,7 @@ const editionLinks = (edition: Edition | null): { title: string; items: NavLinkI
         { label: 'Catálogo de proveedores', href: '/catalogo' },
         { label: 'Comparativas', href: '/comparativa' },
         { label: 'Benchmark', href: '/benchmark' },
+        { label: 'Certificaciones', href: '/certificaciones' },
         { label: 'Mejor hosting WordPress', href: '/mejor-hosting-wordpress-chile' },
         { label: 'Mejor hosting para pymes', href: '/mejor-hosting-pymes-chile' },
         { label: 'Mejor VPS', href: '/mejor-vps-chile' },
@@ -118,12 +119,13 @@ const Footer = () => {
   const { key, edition } = useEdition();
   const own = editionLinks(edition);
 
+  // Mismo destino que el encabezado: la metodología vive en el .cl.
   const methodology: NavLinkItem[] = [
-    { label: 'Metodología', href: '/metodologia' },
-    { label: 'Cómo medimos (benchmark)', href: '/metodologia-benchmark' },
+    methodologyLink(),
+    link('Cómo medimos (benchmark)', '/metodologia-benchmark', { cl: true }),
     { label: 'Datos abiertos CC-BY', href: '/datos' },
     { label: 'llms.txt', href: '/llms.txt', external: true },
-    { label: 'Transparencia', href: '/transparencia-hosting-chile' },
+    link('Transparencia', '/transparencia-hosting-chile', { cl: true }),
   ];
   const site: NavLinkItem[] = [
     { label: 'Quiénes somos', href: '/quienes-somos' },
@@ -131,11 +133,11 @@ const Footer = () => {
     { label: 'Corregir un dato', href: '/contacto' },
     { label: 'Blog', href: '/blog' },
     { label: 'Wiki de hosting', href: '/wiki' },
-    { label: 'Acceso proveedores', href: '/auth' },
+    { label: 'Ingresar', href: '/auth' },
   ];
 
   return (
-    <footer className="bg-ink text-white">
+    <footer data-site-footer className="bg-ink text-white">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
@@ -183,8 +185,8 @@ const Footer = () => {
           </p>
           <p>
             <strong className="font-semibold text-white/80">Sobre estos datos.</strong> Reflejan lo publicado por cada
-            proveedor y nuestras mediciones a la fecha de revisión ({VERIFICATION_DATE_HUMAN}), y se corrigen de forma
-            continua. Si ves un dato incorrecto,{' '}
+            proveedor y nuestras mediciones, y se corrigen de forma continua. El ranking de Chile se revisó por última
+            vez el {VERIFICATION_DATE_HUMAN}; cada edición muestra la fecha de sus propios datos. Si ves un dato incorrecto,{' '}
             <Link to="/contacto" className="underline underline-offset-2 hover:text-white">
               avísanos
             </Link>{' '}

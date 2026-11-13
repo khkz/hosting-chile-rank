@@ -16,7 +16,6 @@ import { Star } from 'lucide-react';
 import { ReputationCard } from '@/components/reputation/ReputationCard';
 import { Card } from '@/components/ui/card';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
-import HostingSectionsNav from '@/components/HostingSectionsNav';
 import CompanyPresence from '@/components/CompanyPresence';
 import { AlertTriangle } from 'lucide-react';
 import BrandFAQ from '@/components/catalogo/BrandFAQ';
@@ -154,7 +153,6 @@ const CatalogoDetalle = () => {
       </Helmet>
 
       <Navbar />
-      <HostingSectionsNav />
 
       <main className="container mx-auto px-4 py-8 md:py-12">
         <SEOBreadcrumbs

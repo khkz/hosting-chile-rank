@@ -30,7 +30,8 @@ const Logo: React.FC<LogoProps> = ({ className = '', variant = 'full', darkBackg
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <LogoMark size={30} onDark={darkBackground} />
-      <span className="flex items-baseline gap-2.5 leading-none">
+      {/* En móvil la edición va bajo el nombre: siempre visible sin ensanchar la cabecera. */}
+      <span className="flex flex-col leading-none sm:flex-row sm:items-baseline sm:gap-2.5">
         <span
           className={`text-[19px] font-extrabold tracking-[-0.02em] ${darkBackground ? 'text-white' : 'text-ink'}`}
           style={{ fontStretch: '112%' }}
@@ -39,7 +40,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', variant = 'full', darkBackg
         </span>
         {edition && (
           <span
-            className={`hidden sm:inline border-l pl-2.5 text-sm font-medium ${
+            className={`mt-1 text-xs font-medium sm:mt-0 sm:border-l sm:pl-2.5 sm:text-sm ${
               darkBackground ? 'border-white/25 text-white/75' : 'border-rule text-ink-2'
             }`}
           >

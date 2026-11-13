@@ -4,10 +4,14 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { useEdition } from '@/hooks/useEdition';
+import { editionHref } from '@/lib/countries';
 
 const NotFound = () => {
+  const { key, label } = useEdition();
+  const home = editionHref(key);
   React.useEffect(() => {
-    document.title = "Página no encontrada | eligetuhosting.cl";
+    document.title = 'Página no encontrada | EligeTuHosting';
   }, []);
 
   return (
@@ -17,11 +21,15 @@ const NotFound = () => {
         <div className="text-center px-4">
           <h1 className="text-6xl font-bold text-ink">404</h1>
           <h2 className="text-2xl mt-4 text-ink">Página no encontrada</h2>
-          <p className="mt-4 text-lg text-[#555] max-w-md mx-auto">
+          <p className="mt-4 text-lg text-ink-2 max-w-md mx-auto">
             Lo sentimos, la página que estás buscando no existe o ha sido movida.
           </p>
           <Button asChild className="mt-8 bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link to="/">Volver al inicio</Link>
+            {home.startsWith('/') ? (
+              <Link to={home}>Ir a la portada de {label}</Link>
+            ) : (
+              <a href={home}>Ir a la portada de {label}</a>
+            )}
           </Button>
         </div>
       </main>

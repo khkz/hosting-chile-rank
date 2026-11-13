@@ -14,7 +14,6 @@ import {
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import StickyCTA from '../components/StickyCTA';
-import HostingSectionsNav from '../components/HostingSectionsNav';
 import { Helmet } from 'react-helmet-async';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
@@ -192,7 +191,6 @@ const ComparativaPage = () => {
       <BreadcrumbSchema items={[{ name: 'Comparativa', url: '/comparativa' }]} />
 
       <Navbar />
-      <HostingSectionsNav />
 
       {/* Hero */}
       <section className="bg-paper py-8 md:py-16 text-center">
@@ -324,10 +322,7 @@ const ComparativaPage = () => {
                                 }}
                               />
                             </div>
-                            <span>
-                              <span className="text-gray-400 mr-1">#{index + 1}</span>
-                              {provider.name}
-                            </span>
+                            <span>{provider.name}</span>
                           </div>
                         </TableCell>
                         <TableCell className="font-mono text-xs">{provider.asn}</TableCell>
@@ -356,12 +351,12 @@ const ComparativaPage = () => {
                           </div>
                         </TableCell>
                         <TableCell className="text-center">
-                          <a
-                            href={provider.reseñaUrl}
+                          <Link
+                            to={provider.reseñaUrl}
                             className="inline-block px-3 py-1 bg-white border border-brand text-brand rounded hover:bg-brand hover:text-white transition-colors text-sm"
                           >
                             Ver ficha
-                          </a>
+                          </Link>
                         </TableCell>
                       </TableRow>
                     ))

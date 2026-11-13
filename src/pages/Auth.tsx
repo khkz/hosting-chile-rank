@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
+import Logo from '@/components/Logo';
+import { useEdition } from '@/hooks/useEdition';
+import { editionHref } from '@/lib/countries';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
@@ -13,6 +18,8 @@ import { Loader2 } from 'lucide-react';
 export default function Auth() {
   const navigate = useNavigate();
   const { signIn, signUp, user, role } = useAuth();
+  const { key, label } = useEdition();
+  const homeHref = editionHref(key);
   
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -70,18 +77,43 @@ export default function Auth() {
     }
   };
 
+  // Salida siempre visible: volver a donde estaba la persona o a la portada de su edición.
+  const backHref = redirectPath && redirectPath.startsWith('/') && redirectPath !== '/' ? redirectPath : homeHref;
+  const backIsRoute = backHref.startsWith('/');
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 px-4 py-12">
+    <div className="min-h-screen bg-paper">
+      <Helmet>
+        <title>Ingresar | EligeTuHosting</title>
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
+      <header className="border-b border-rule bg-white">
+        <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
+          <a href={homeHref} aria-label={`EligeTuHosting ${label}, portada`}>
+            <Logo edition={label} />
+          </a>
+          {backIsRoute ? (
+            <Link to={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-2 hover:text-ink">
+              <ArrowLeft className="h-4 w-4" aria-hidden /> Volver
+            </Link>
+          ) : (
+            <a href={backHref} className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-2 hover:text-ink">
+              <ArrowLeft className="h-4 w-4" aria-hidden /> Volver
+            </a>
+          )}
+        </div>
+      </header>
+      <main className="flex items-center justify-center px-4 py-12">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Bienvenido</CardTitle>
-          <CardDescription>Accede o crea tu cuenta</CardDescription>
+          <h1 className="text-3xl font-bold text-ink">Ingresar</h1>
+          <CardDescription>Entra a tu cuenta o crea una nueva.</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
-              <TabsTrigger value="register">Registrarse</TabsTrigger>
+              <TabsTrigger value="login">Ingresar</TabsTrigger>
+              <TabsTrigger value="register">Crear cuenta</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
@@ -117,7 +149,7 @@ export default function Auth() {
                       Cargando...
                     </>
                   ) : (
-                    'Iniciar Sesión'
+                    'Ingresar'
                   )}
                 </Button>
               </form>
@@ -161,7 +193,7 @@ export default function Auth() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="user">Usuario</SelectItem>
-                      <SelectItem value="hosting_provider">Proveedor de Hosting</SelectItem>
+                      <SelectItem value="hosting_provider">Proveedor de hosting (administra la ficha de tu empresa)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -172,7 +204,7 @@ export default function Auth() {
                       Cargando...
                     </>
                   ) : (
-                    'Crear Cuenta'
+                    'Crear cuenta'
                   )}
                 </Button>
               </form>
@@ -180,6 +212,7 @@ export default function Auth() {
           </Tabs>
         </CardContent>
       </Card>
+      </main>
     </div>
   );
 }
