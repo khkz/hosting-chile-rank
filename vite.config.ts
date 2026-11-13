@@ -68,7 +68,10 @@ export default defineConfig(({ mode }) => ({
             moduleId.includes('/node_modules/react-style-singleton/') ||
             moduleId.includes('/node_modules/use-callback-ref/') ||
             moduleId.includes('/node_modules/use-sidecar/') ||
-            moduleId.includes('/node_modules/use-debounce/')
+            moduleId.includes('/node_modules/use-debounce/') ||
+            // clsx lo usan la interfaz y recharts: si cae en vendor-charts, ese
+            // paquete (~105 KB) se precarga en todas las rutas.
+            moduleId.includes('/node_modules/clsx/')
           ) {
             return 'vendor-react';
           }
