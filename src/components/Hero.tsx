@@ -8,7 +8,7 @@ import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
 /** Portada de la edición Chile: titular, acciones y ficha de la edición. */
 const Hero = () => {
-  const { domainCount, companyCount } = useSiteStats();
+  const { domainCount, companyCount, domainError, companyError } = useSiteStats();
   const { data: topProvider } = useTopRankedProvider();
   const topRating =
     topProvider?.overall_rating != null ? Number(topProvider.overall_rating).toFixed(1).replace('.', ',') : null;
@@ -65,11 +65,11 @@ const Hero = () => {
             )}
             <div className="flex items-baseline justify-between py-3">
               <dt className="text-sm text-ink-2">Proveedores en el directorio</dt>
-              <dd className="text-2xl font-bold">{companyCount != null ? companyCount : '…'}</dd>
+              <dd className="text-2xl font-bold">{companyCount != null ? companyCount : companyError ? '—' : '…'}</dd>
             </div>
             <div className="flex items-baseline justify-between py-3">
               <dt className="text-sm text-ink-2">Dominios .CL analizados</dt>
-              <dd className="text-2xl font-bold">{domainCount != null ? formatStatNumber(domainCount) : '…'}</dd>
+              <dd className="text-2xl font-bold">{domainCount != null ? formatStatNumber(domainCount) : domainError ? '—' : '…'}</dd>
             </div>
             <div className="flex items-baseline justify-between py-3">
               <dt className="text-sm text-ink-2">Última revisión del ranking</dt>

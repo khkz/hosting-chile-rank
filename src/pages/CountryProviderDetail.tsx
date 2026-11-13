@@ -20,6 +20,14 @@ import { formatCorporateGroup } from '@/lib/formatGroup';
 const COUNTRY_MAP: Record<string, CountryCode> = { pe: 'PE', mx: 'MX', co: 'CO', ar: 'AR' };
 const COUNTRY_FULLNAME: Record<CountryCode, string> = { PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina', CL: 'Chile' };
 
+
+/** "2026-08-28" si la fecha es válida; null si falta o no se puede leer (nunca lanza). */
+const isoDay = (value?: string | null): string | null => {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+};
+
 const CountryProviderDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const location = useLocation();
@@ -301,7 +309,7 @@ const CountryProviderDetail = () => {
                     Recomendado por EligeTuHosting
                   </div>
                   <p className="text-sm text-ink/80">
-                    {company.name} es la recomendación editorial de EligeTuHosting en {info.name}: operador regional con infraestructura propia y soporte hispano.
+                    {company.name} es la recomendación editorial de EligeTuHosting en {info.name}: operador regional con soporte en español. Más abajo están el datacenter que declara y la entidad que factura.
                   </p>
                   <p className="text-[11px] text-ink/60 mt-2 leading-snug">
                     <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el resto del directorio.
@@ -427,7 +435,7 @@ const CountryProviderDetail = () => {
                   <div><span className="font-medium">Certificado SSL:</span> emitido por {siteCheck.ssl_issuer}</div>
                 )}
                 {siteCheck.ssl_valid_to && (
-                  <div><span className="font-medium">SSL vigente hasta:</span> {new Date(siteCheck.ssl_valid_to).toISOString().slice(0, 10)}</div>
+                  <div><span className="font-medium">SSL vigente hasta:</span> {isoDay(siteCheck.ssl_valid_to) ?? '—'}</div>
                 )}
                 {typeof siteCheck.ttfb_ms === 'number' && (
                   <div><span className="font-medium">TTFB medido:</span> {siteCheck.ttfb_ms} ms</div>
@@ -436,7 +444,10 @@ const CountryProviderDetail = () => {
                   <div><span className="font-medium">Estado HTTP:</span> {siteCheck.http_status}</div>
                 )}
                 <div className="md:col-span-2 text-xs text-muted-foreground pt-2 border-t">
-                  Medición automática realizada el <time dateTime={siteCheck.checked_at}>{new Date(siteCheck.checked_at).toISOString().slice(0, 10)}</time>. Datos técnicos verificables desde el sitio oficial del proveedor.
+                  {isoDay(siteCheck.checked_at)
+                    ? <>Medición automática realizada el <time dateTime={siteCheck.checked_at}>{isoDay(siteCheck.checked_at)}</time>. </>
+                    : 'Medición automática. '}
+                  Datos técnicos verificables desde el sitio oficial del proveedor.
                 </div>
               </CardContent>
             </Card>

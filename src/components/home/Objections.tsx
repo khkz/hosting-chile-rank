@@ -77,7 +77,7 @@ const Objections: React.FC = () => {
     >
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2">
+          <p className="text-sm font-semibold text-brand-ink mb-2">
             Lo que probablemente estás pensando
           </p>
           <h2 id="objections-title" className="font-poppins text-2xl md:text-3xl font-bold text-ink mb-3">

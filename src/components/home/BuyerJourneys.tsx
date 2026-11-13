@@ -13,8 +13,8 @@ const journeys = [
     who: 'Escribo, público un portafolio o pruebo una idea. Tráfico bajo, presupuesto ajustado.',
     need: 'WordPress simple, SSL gratis, panel en español y precio predecible.',
     picks: [
-      { label: 'HostingPlus (9.9/10)', to: '/catalogo/hostingplus' },
-      { label: 'EcoHosting (9.6/10)', to: '/catalogo/ecohosting' },
+      { label: 'HostingPlus', to: '/catalogo/hostingplus' },
+      { label: 'EcoHosting', to: '/catalogo/ecohosting' },
     ],
     guide: { label: 'Guía: hosting WordPress para blog personal', to: '/hosting-wordpress-blog-personal-chile' },
   },
@@ -24,8 +24,8 @@ const journeys = [
     who: 'Necesito email profesional, factura electrónica y soporte que conteste en horario chileno.',
     need: 'Datacenter local, uptime medido, backups diarios y soporte 24/7 en español.',
     picks: [
-      { label: 'HostingPlus (9.9/10)', to: '/catalogo/hostingplus' },
-      { label: 'HN.cl (9.2/10)', to: '/catalogo/hn-cl' },
+      { label: 'HostingPlus', to: '/catalogo/hostingplus' },
+      { label: 'HN.cl', to: '/catalogo/hn-cl' },
     ],
     guide: { label: 'Hub: mejor hosting para pymes en Chile', to: '/mejor-hosting-pymes-chile' },
   },
@@ -35,8 +35,8 @@ const journeys = [
     who: 'Vendo online. Cada segundo de latencia me cuesta pedidos y CyberDay puede romperme el sitio.',
     need: 'LiteSpeed o similar, TTFB bajo desde Santiago, HTTPS y capacidad para peaks de tráfico.',
     picks: [
-      { label: 'HostingPlus (9.9/10)', to: '/catalogo/hostingplus' },
-      { label: 'EcoHosting (9.6/10)', to: '/catalogo/ecohosting' },
+      { label: 'HostingPlus', to: '/catalogo/hostingplus' },
+      { label: 'EcoHosting', to: '/catalogo/ecohosting' },
     ],
     guide: { label: 'Hub: mejor hosting e-commerce Chile', to: '/mejor-hosting-ecommerce-chile' },
   },
@@ -51,7 +51,7 @@ const BuyerJourneys: React.FC = () => {
     >
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="max-w-3xl mb-8">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2">
+          <p className="text-sm font-semibold text-brand-ink mb-2">
             Elige por caso de uso
           </p>
           <h2 id="journeys-title" className="font-poppins text-2xl md:text-3xl font-bold text-ink mb-3">
@@ -77,8 +77,11 @@ const BuyerJourneys: React.FC = () => {
               </p>
 
               <div className="mt-auto space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Recomendaciones verificadas
+                <p className="text-xs font-semibold text-ink-2">
+                  Recomendación editorial{' '}
+                  <Link to="/metodologia" className="font-normal text-ink-3 underline underline-offset-2 hover:text-ink">
+                    (cómo la hacemos)
+                  </Link>
                 </p>
                 <ul className="space-y-1">
                   {picks.map((p) => (

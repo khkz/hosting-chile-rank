@@ -1,11 +1,13 @@
 import React from 'react';
 import { COUNTRY_CONTENT, type CountryCopy } from '@/data/countryContent';
 
-const MES_ANIO = new Date().toLocaleDateString('es-CL', { month: 'long', year: 'numeric' });
+type Props = {
+  slug: 'pe' | 'mx' | 'co' | 'ar';
+  /** Fecha real de los datos del país, ya formateada. Sin ella no se muestra fecha. */
+  updated?: string | null;
+};
 
-type Props = { slug: 'pe' | 'mx' | 'co' | 'ar' };
-
-export const CountryHeroCopy: React.FC<Props> = ({ slug }) => {
+export const CountryHeroCopy: React.FC<Props> = ({ slug, updated }) => {
   const c: CountryCopy = COUNTRY_CONTENT[slug];
   if (!c) return null;
   return (
@@ -35,7 +37,8 @@ export const CountryHeroCopy: React.FC<Props> = ({ slug }) => {
             Ver ranking ↓
           </a>
           <span className="text-xs text-white/70">
-            Verificado por el equipo editorial de EligeTuHosting · Metodología pública · Actualizado {MES_ANIO}
+            Verificado por el equipo editorial de EligeTuHosting · Metodología pública
+            {updated ? ` · Datos actualizados el ${updated}` : ''}
           </span>
         </div>
       </section>

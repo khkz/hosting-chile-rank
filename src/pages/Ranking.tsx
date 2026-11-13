@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { 
@@ -10,7 +11,6 @@ import {
   Globe
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import HostingSectionsNav from '@/components/HostingSectionsNav';
 import RankingPositions4to10 from '@/components/RankingPositions4to10';
 import RankingAuthorityBlock from '@/components/RankingAuthorityBlock';
 import TopProvidersPodium from '@/components/ranking/TopProvidersPodium';
@@ -174,44 +174,39 @@ const RankingPage = () => {
       </Helmet>
 
       <Navbar />
-      <HostingSectionsNav />
 
-      {/* Hero Section */}
-      <Section id="hero" className="flex flex-col items-center justify-center text-center min-h-[40vh] md:min-h-[60vh]">
-        <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold text-ink mb-4">
-          Ranking Hosting Chile 2026
-        </h1>
-        <p className="text-sm md:text-base text-gray-600 max-w-lg mx-auto mb-8">
-          Analizamos los mejores proveedores de hosting en Chile según velocidad, 
-          soporte técnico, seguridad y soberanía digital.
+      {/* Encabezado compacto: el top 3 entra en la primera pantalla */}
+      <Section id="hero" className="pb-2 pt-10 md:pt-14">
+        <h1 className="mb-3 text-3xl font-bold text-ink md:text-4xl lg:text-5xl">Ranking Hosting Chile 2026</h1>
+        <p className="mb-6 max-w-2xl text-base text-ink-2">
+          Analizamos los proveedores de hosting en Chile según velocidad, soporte técnico, seguridad y soberanía
+          digital.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button 
-            asChild 
-            className="bg-brand hover:bg-[#d01d34] text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <a href="#ranking">Comparar ahora</a>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button asChild className="rounded-lg bg-brand px-6 py-3 font-semibold text-white hover:bg-brand-ink">
+            <Link to="/comparativa">Comparar proveedores</Link>
           </Button>
-          <Button 
-            asChild 
-            variant="outline" 
-            className="border-2 border-ink text-ink hover:bg-ink hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+          <Button
+            asChild
+            variant="outline"
+            className="rounded-lg border-2 border-ink px-6 py-3 font-semibold text-ink hover:bg-ink hover:text-white"
           >
-            <a href="#methodology">Metodología</a>
+            <Link to="/metodologia">Metodología</Link>
           </Button>
         </div>
       </Section>
-
-      <div className="h-0.5 bg-gray-200 w-full my-8" />
 
       {/* Top 3 Ranking */}
       <Section id="ranking">
         <h2 className="text-2xl font-bold text-center text-ink mb-4">
           Top 3 proveedores de hosting
         </h2>
-        <p className="text-center text-sm text-gray-600 max-w-3xl mx-auto mb-4">
-          El orden se calcula por fórmula sobre datos verificables. Divulgación: el editor de este sitio mantiene
-          relación comercial con algunos de los proveedores listados.
+        <p className="mx-auto mb-4 max-w-3xl text-center text-sm text-ink-2">
+          El orden es editorial. Los criterios que usamos están en la{' '}
+          <Link to="/metodologia" className="font-medium text-ink underline decoration-ink/30 underline-offset-2">
+            metodología
+          </Link>
+          .
         </p>
         <RankingAuthorityBlock className="mb-8" />
         <TopProvidersPodium />

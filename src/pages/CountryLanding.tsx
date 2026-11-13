@@ -41,7 +41,7 @@ const CountryLanding = () => {
   const info = getCountryFromPath(location.pathname) ?? COUNTRIES.PE;
   const edition = getEdition(info.code);
 
-  const { data: companies, isLoading } = useQuery({
+  const { data: companies, isLoading, isError, refetch } = useQuery({
     queryKey: ['country-directory', info.code],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -260,7 +260,7 @@ const CountryLanding = () => {
 
           <AdvisorEmbed />
 
-          <section aria-labelledby="directorio-titulo" className="mt-12">
+          <section id="directorio" aria-labelledby="directorio-titulo" className="mt-12 scroll-mt-24">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
               <h2 id="directorio-titulo" className="type-wide text-2xl font-bold text-ink md:text-3xl">
                 Proveedores de {info.name}
@@ -273,6 +273,15 @@ const CountryLanding = () => {
 
             {isLoading ? (
               <p className="border-y-2 border-ink py-10 text-center text-ink-2">Cargando proveedores…</p>
+            ) : isError ? (
+              // Un error de lectura no es una edición vacía: nunca mostrar "Estamos verificando" aquí.
+              <div role="alert" className="rounded-md border border-rule bg-paper p-6 text-sm text-ink-2">
+                No pudimos cargar el directorio de {info.name}. Los proveedores siguen publicados; es un problema de
+                conexión con nuestra base de datos.{' '}
+                <button type="button" onClick={() => refetch()} className="font-semibold text-ink underline underline-offset-2">
+                  Reintentar
+                </button>
+              </div>
             ) : companies && companies.length > 0 ? (
               <>
                 <DirectoryFilterBar
@@ -287,9 +296,19 @@ const CountryLanding = () => {
                   visibleCount={filteredCompanies.length}
                 />
                 {filteredCompanies.length === 0 ? (
-                  <p className="rounded-md border border-rule bg-paper p-6 text-center text-sm text-ink-2">
-                    Ningún proveedor cumple esos filtros. Quita alguno para ver más resultados.
-                  </p>
+                  <div className="rounded-md border border-rule bg-paper p-6 text-center text-sm text-ink-2">
+                    <p>Ningún proveedor cumple esos filtros.</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOnlyDcLocal(false);
+                        setOnly247(false);
+                      }}
+                      className="mt-3 inline-flex min-h-[40px] items-center rounded-md border border-ink/25 bg-white px-4 font-semibold text-ink hover:border-ink"
+                    >
+                      Quitar filtros
+                    </button>
+                  </div>
                 ) : (
                   <ul className="divide-y divide-rule border-y-2 border-ink">
                     {filteredCompanies.map((c: any) => {

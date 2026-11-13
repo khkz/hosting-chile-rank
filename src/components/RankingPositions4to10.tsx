@@ -83,7 +83,9 @@ const RankingPositions4to10: React.FC = () => {
   return (
     <section aria-labelledby="puestos-4-10" className="mt-12">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
-        <h3 id="puestos-4-10" className="type-wide text-xl font-bold text-ink">Puestos 4 a 10</h3>
+        <h3 id="puestos-4-10" className="type-wide text-xl font-bold text-ink">
+          Puestos 4 a {3 + VISIBLE_RANKING.length}
+        </h3>
         <p className="flex items-center gap-2 text-sm text-ink-3">
           Notas <ProvenanceTag kind="editorial" />
         </p>
@@ -105,7 +107,7 @@ const RankingPositions4to10: React.FC = () => {
             const db = bySlug.get(row.slug);
             return (
               <tr key={row.slug} className="border-b border-rule align-middle">
-                <td className="py-3 pr-3 text-xl font-bold text-ink/40 tabular">{row.position}</td>
+                <td className="py-3 pr-3 text-xl font-bold text-ink-3 tabular">{row.position}</td>
                 <th scope="row" className="py-3 pr-3 font-semibold text-ink">
                   {row.displayName}
                   {reviewStats?.[row.slug] && (
@@ -142,7 +144,7 @@ const RankingPositions4to10: React.FC = () => {
           return (
             <li key={row.slug} className="py-4">
               <div className="flex items-baseline gap-3">
-                <span className="w-6 text-xl font-bold text-ink/40 tabular">{row.position}</span>
+                <span className="w-6 text-xl font-bold text-ink-3 tabular">{row.position}</span>
                 <span className="font-semibold text-ink">{row.displayName}</span>
                 <span className="ml-auto text-lg font-bold text-ink tabular">{row.rating.toFixed(1).replace('.', ',')}</span>
               </div>

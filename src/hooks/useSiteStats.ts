@@ -8,30 +8,33 @@ import { getActiveCountryCode } from '@/lib/country';
  * números escritos a mano.
  */
 export const useSiteStats = () => {
-  const { data: domainCount } = useQuery({
+  // Un error de lectura no es un cero: se lanza para que la vista muestre "—", nunca "0".
+  const { data: domainCount, isError: domainError } = useQuery({
     queryKey: ['stats-domain-count'],
     queryFn: async () => {
-      const { count } = await supabase
+      const { count, error } = await supabase
         .from('domains')
         .select('*', { count: 'exact', head: true });
-      return count ?? 0;
+      if (error || count == null) throw error ?? new Error('sin conteo');
+      return count;
     },
     staleTime: 1000 * 60 * 30,
   });
 
-  const { data: companyCount } = useQuery({
+  const { data: companyCount, isError: companyError } = useQuery({
     queryKey: ['stats-company-count', getActiveCountryCode()],
     queryFn: async () => {
-      const { count } = await supabase
+      const { count, error } = await supabase
         .from('hosting_companies')
         .select('*', { count: 'exact', head: true })
         .eq('country', getActiveCountryCode());
-      return count ?? 0;
+      if (error || count == null) throw error ?? new Error('sin conteo');
+      return count;
     },
     staleTime: 1000 * 60 * 30,
   });
 
-  return { domainCount, companyCount };
+  return { domainCount, companyCount, domainError, companyError };
 };
 
 export const formatStatNumber = (n: number) => {

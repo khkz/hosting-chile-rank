@@ -3,6 +3,8 @@
  * Actualizar CURRENT_YEAR cada año nuevo
  */
 
+import { VERIFICATION_DATE_ISO } from '@/data/verified2026';
+
 export const CURRENT_YEAR = 2026;
 
 const MONTHS_ES = [
@@ -15,9 +17,9 @@ const MONTHS_ES = [
  * Ejemplo: "Actualizado Enero 2026"
  */
 export function getLastUpdatedText(): string {
-  const now = new Date();
-  const month = MONTHS_ES[now.getMonth()];
-  return `Actualizado en ${month.toLowerCase()} de ${CURRENT_YEAR}`;
+  // Mes de la última verificación de los datos, nunca el mes en curso del visitante.
+  const d = new Date(`${VERIFICATION_DATE_ISO}T12:00:00Z`);
+  return `Actualizado en ${MONTHS_ES[d.getUTCMonth()].toLowerCase()} de ${d.getUTCFullYear()}`;
 }
 
 /**
@@ -32,7 +34,7 @@ export function getCurrentYear(): number {
  * Ejemplo: "2026-01-07"
  */
 export function getLastUpdatedDate(): string {
-  return new Date().toISOString().slice(0, 10);
+  return VERIFICATION_DATE_ISO;
 }
 
 /**

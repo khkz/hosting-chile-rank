@@ -66,15 +66,17 @@ const Reclamos = () => {
   }, {} as any);
   const COUNTRY_LABELS: Record<string, string> = { CL: 'Chile', PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina' };
 
-  const { data: complaints, refetch } = useQuery({
+  const { data: complaints, refetch, isError: complaintsError } = useQuery({
     queryKey: ['public-complaints'],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('public_complaints_public' as any)
         .select('*, hosting_companies(name, slug)')
         .in('status', ['verified', 'resolved'])
         .order('created_at', { ascending: false })
         .limit(50);
+      // Un error de lectura no es "no hay reclamos": se lanza para mostrar el aviso de error.
+      if (error) throw error;
       return (data ?? []) as any[];
     },
   });
@@ -224,20 +226,30 @@ const Reclamos = () => {
         </Card>
 
         <section className="mb-6 flex items-center justify-between flex-wrap gap-4">
-          <h2 className="text-2xl font-bold">Reclamos verificados ({complaints?.length ?? 0})</h2>
+          <h2 className="text-2xl font-bold">Reclamos verificados{complaints ? ` (${complaints.length})` : ''}</h2>
           <Button variant="outline" size="sm" onClick={exportJson} className="gap-2">
             <Download className="w-4 h-4" /> Exportar JSON
           </Button>
         </section>
 
         <div className="space-y-4">
+          {complaintsError && !complaints && (
+            <Card role="alert" className="p-8 text-center">
+              <p className="mb-2 text-lg font-medium">No pudimos cargar los reclamos</p>
+              <p className="text-sm text-muted-foreground">
+                Es un problema de conexión con nuestra base de datos, no significa que no haya reclamos.{' '}
+                <button type="button" onClick={() => refetch()} className="font-semibold text-ink underline underline-offset-2">
+                  Reintentar
+                </button>
+              </p>
+            </Card>
+          )}
           {complaints?.length === 0 && (
             <Card className="p-8 text-center">
-              <p className="text-lg font-medium mb-2">Todavía nadie ha compartido un reclamo verificado 🕊️</p>
+              <p className="mb-2 text-lg font-medium">Todavía no hay reclamos verificados publicados</p>
               <p className="text-sm text-muted-foreground">
-                Buenas noticias: no hay reportes públicos por ahora. Si tuviste una mala experiencia con un
-                proveedor y podés adjuntar evidencia (correo, ticket, captura), tu reclamo ayuda a otras
-                personas a decidir mejor.
+                Si tuviste una mala experiencia con un proveedor y puedes adjuntar evidencia (correo, ticket,
+                captura), tu reclamo ayuda a otras personas a decidir mejor.
               </p>
             </Card>
           )}

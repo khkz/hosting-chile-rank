@@ -13,6 +13,7 @@ import { classifyDc } from '@/lib/dcTier';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import PeReassurances from '@/components/country/PeReassurances';
 import { CountryHeroCopy, CountryFaqCopy } from '@/components/country/CountryHeroCopy';
+import { getEdition } from '@/lib/countries';
 import { COUNTRY_CONTENT } from '@/data/countryContent';
 
 const CountryBestHosting = () => {
@@ -27,7 +28,7 @@ const CountryBestHosting = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from('hosting_companies')
-        .select('id, slug, name, website, legal_name, corporate_group, datacenter_location, year_founded, technologies, is_curated')
+        .select('id, slug, name, website, legal_name, corporate_group, datacenter_location, year_founded, technologies, is_curated, updated_at')
         .eq('country', meta.code)
         .eq('is_verified', true)
         .range(0, 999);
@@ -37,6 +38,14 @@ const CountryBestHosting = () => {
 
   const c = COUNTRY_CONTENT[slug];
   const list = rankProviders(providers ?? [], slug);
+  // Fecha de los datos: la última actualización de un proveedor del país, no el reloj del visitante.
+  const latestIso = (providers ?? []).reduce<string | null>(
+    (max, p: any) => (p.updated_at && (!max || p.updated_at > max) ? p.updated_at : max),
+    null
+  );
+  const updatedHuman = latestIso
+    ? new Date(latestIso).toLocaleDateString(getEdition(meta.code).locale, { day: 'numeric', month: 'long', year: 'numeric' })
+    : null;
   const canonical = `https://eligetuhosting.com/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`;
   const title = `${c.title} | EligeTuHosting`;
   const description = c.subtitle;
@@ -114,7 +123,7 @@ const CountryBestHosting = () => {
           <span className="text-foreground font-medium">Mejor hosting {meta.name} 2026</span>
         </nav>
 
-        <CountryHeroCopy slug={slug} />
+        <CountryHeroCopy slug={slug} updated={updatedHuman} />
         <p className="mt-2 mb-6 text-xs text-muted-foreground">
           Última actualización de datos: <time dateTime={lastUpdated}>{lastUpdated}</time> · {list.length} proveedores verificados
         </p>
@@ -131,8 +140,8 @@ const CountryBestHosting = () => {
                   <div className="text-xs uppercase tracking-wide text-brand font-semibold mb-1">Recomendado editorial</div>
                   <div className="text-lg font-bold text-ink mb-1">{curated.name}</div>
                   <p className="text-sm text-ink/80">
-                    Operador regional con infraestructura propia y soporte hispano 24/7 en {meta.name}. Ver{' '}
-                    <Link to={`/${slug}/${curated.slug}`} className="underline">ficha completa</Link>.
+                    Operador regional con soporte en español en {meta.name}. Dónde están sus servidores y qué entidad factura, en su{' '}
+                    <Link to={`/${slug}/${curated.slug}`} className="underline">ficha</Link>.
                   </p>
                   <p className="text-[11px] text-ink/60 mt-2 leading-snug">
                     <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el orden objetivo del ranking.
@@ -161,7 +170,7 @@ const CountryBestHosting = () => {
                 {list.map((p: any, i: number) => {
                   const dc = classifyDc(p, slug);
                   const tone =
-                    dc.quality === 'tier_certified' ? 'bg-emerald-100 text-emerald-800' :
+                    dc.quality === 'tier_certified' ? 'bg-signal-declared-bg text-signal-declared ring-1 ring-inset ring-signal-declared/40' :
                     dc.quality === 'self_declared' ? 'bg-amber-100 text-amber-800' :
                     dc.quality === 'foreign_infra' ? 'bg-red-50 text-red-700' :
                     'bg-muted text-muted-foreground';

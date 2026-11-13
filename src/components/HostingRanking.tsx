@@ -12,7 +12,7 @@ import RankingAuthorityBlock from './RankingAuthorityBlock';
 import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
 import { lookupHostDc } from './DatacenterBadge';
-import { ProvenanceTag } from './data/Provenance';
+import { ProvenanceLegend, ProvenanceTag } from './data/Provenance';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 import { useReviewStatsForSlug } from '@/hooks/useReviewStats';
@@ -55,6 +55,8 @@ interface RankingCompany {
 interface RankingRowProps {
   provider: RankingCompany;
   ratingLabel: string;
+  /** Qué nota muestra la cifra: general, velocidad o precio y valor. */
+  metricLabel: string;
   isWinner: boolean;
 }
 
@@ -65,7 +67,7 @@ const DC_TEXT: Record<string, string> = {
   no_divulga: 'No divulga datacenter',
 };
 
-const RankingRow: React.FC<RankingRowProps> = ({ provider, ratingLabel, isWinner }) => {
+const RankingRow: React.FC<RankingRowProps> = ({ provider, ratingLabel, metricLabel, isWinner }) => {
   const { data: userStats } = useReviewStatsForSlug(provider.slug);
   const dc = lookupHostDc(provider.name);
   const features = cleanFeatures(provider.ranking_features);
@@ -89,7 +91,7 @@ const RankingRow: React.FC<RankingRowProps> = ({ provider, ratingLabel, isWinner
 
       <div className="flex items-center gap-4 md:block">
         <span
-          className={`type-display block text-5xl tabular md:text-6xl ${isWinner ? 'text-brand' : 'text-ink/30'}`}
+          className={`type-display block text-5xl tabular md:text-6xl ${isWinner ? 'text-brand' : 'text-ink-3'}`}
           aria-hidden
         >
           {provider.sortPosition}
@@ -160,7 +162,8 @@ const RankingRow: React.FC<RankingRowProps> = ({ provider, ratingLabel, isWinner
             </span>
             <span className="text-ink-3">/10</span>
           </p>
-          <p className="mt-1 flex md:justify-end">
+          <p className="mt-1 flex items-center gap-2 text-xs text-ink-2 md:justify-end">
+            {metricLabel}
             <ProvenanceTag kind="editorial" />
           </p>
           {userStats && userStats.count > 0 && (
@@ -184,9 +187,7 @@ const RankingRow: React.FC<RankingRowProps> = ({ provider, ratingLabel, isWinner
             {cleanCtaText(provider.cta_text)}
           </a>
         )}
-        <p className="text-xs text-ink-3">
-          {provider.cta_micro_copy || 'Sin compromiso. Revisa el plan antes de contratar.'}
-        </p>
+        {provider.cta_micro_copy && <p className="text-xs text-ink-3">{provider.cta_micro_copy}</p>}
         {provider.slug && (
           <Link
             to={`/catalogo/${provider.slug}`}
@@ -304,8 +305,10 @@ const HostingRanking = () => {
   const sortOptions: { value: string; label: string }[] = [
     { value: 'overall', label: 'General' },
     { value: 'speed', label: 'Velocidad' },
-    { value: 'price', label: 'Precio' },
+    { value: 'price', label: 'Precio y valor' },
   ];
+  const metricLabel =
+    sortCriteria === 'speed' ? 'Nota de velocidad' : sortCriteria === 'price' ? 'Nota de precio y valor' : 'Nota general';
 
   return (
     <section id="ranking" className="scroll-mt-20 bg-white">
@@ -344,6 +347,14 @@ const HostingRanking = () => {
           className="mt-6"
         />
 
+        {/* Las etiquetas solo se explicaban al pasar el mouse: aquí, también al tocar. */}
+        <details className="mt-4 rounded-lg border border-rule bg-white px-4 py-3 text-sm">
+          <summary className="cursor-pointer font-semibold text-ink">
+            Qué significan las etiquetas Medido, Declarado y Editorial
+          </summary>
+          <ProvenanceLegend compact className="mt-4" />
+        </details>
+
         {!isLoading && sortedHostingData.length > 0 && (
           <ItemListSchema
             name="Ranking Mejores Hosting Chile 2026"
@@ -363,6 +374,7 @@ const HostingRanking = () => {
                   <RankingRow
                     provider={provider}
                     ratingLabel={getRatingLabel(provider)}
+                    metricLabel={metricLabel}
                     isWinner={provider.sortPosition === 1}
                   />
                 </li>
@@ -371,6 +383,12 @@ const HostingRanking = () => {
           )}
         </div>
 
+        {sortCriteria !== 'overall' && (
+          <p className="mt-6 text-sm text-ink-2">
+            El orden por {sortCriteria === 'speed' ? 'velocidad' : 'precio y valor'} se aplica a los tres primeros. Los
+            puestos siguientes mantienen el orden general.
+          </p>
+        )}
         <RankingPositions4to10 />
 
         <div className="mt-10 flex flex-col items-start gap-2 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between">

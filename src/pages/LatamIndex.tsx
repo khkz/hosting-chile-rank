@@ -12,7 +12,6 @@ import {
   PUBLISHED_EDITIONS,
   VERIFYING_EDITIONS,
   editionHref,
-  editionMonthLabel,
   hreflangAlternates,
   rankingPath,
 } from '@/lib/countries';
@@ -204,9 +203,18 @@ const TopByCountry: React.FC<{ rows: LatamIndexRow[] }> = ({ rows }) => (
 );
 
 const LatamIndex = () => {
-  const { data, isLoading, isError } = useLatamIndex();
-  const month = editionMonthLabel();
+  const { data, isLoading, isError, refetch } = useLatamIndex();
   const totalProviders = data?.totals.providers;
+  // Fecha de los datos más recientes del índice, no la del reloj del visitante.
+  const latestIso = (data?.rows ?? []).reduce<string | null>(
+    (max, r) => (r.updatedAt && (!max || r.updatedAt > max) ? r.updatedAt : max),
+    null
+  );
+  const latestHuman = latestIso
+    ? new Date(latestIso).toLocaleDateString('es-CL', { day: 'numeric', month: 'long', year: 'numeric' })
+    : isLoading
+    ? '…'
+    : '—';
 
   const title = 'Hosting en Latinoamérica 2026: ranking y datos por país | EligeTuHosting';
   const description = `Índice de hosting en Latinoamérica: ${totalProviders ? `${nf(totalProviders)} proveedores verificados` : 'proveedores verificados'} en ${PUBLISHED_EDITIONS.map((e) => e.name).join(', ')}. Cada dato indica si es medido, declarado por el proveedor o editorial.`;
@@ -277,8 +285,8 @@ const LatamIndex = () => {
             <aside className="self-end md:col-span-4" aria-label="Resumen de la edición">
               <dl className="divide-y divide-rule border-y border-ink/80 text-ink tabular">
                 <div className="flex items-baseline justify-between py-3">
-                  <dt className="text-sm text-ink-2">Edición</dt>
-                  <dd className="font-semibold first-letter:uppercase">{month}</dd>
+                  <dt className="text-sm text-ink-2">Datos al</dt>
+                  <dd className="font-semibold">{latestHuman}</dd>
                 </div>
                 <div className="flex items-baseline justify-between py-3">
                   <dt className="text-sm text-ink-2">Proveedores verificados</dt>
@@ -307,9 +315,12 @@ const LatamIndex = () => {
 
           {isLoading && <IndexSkeleton />}
           {isError && (
-            <p className="rounded-md border border-rule bg-paper p-4 text-sm text-ink-2">
-              No pudimos leer el índice. Recarga la página; si el error sigue, escríbenos desde Contacto.
-            </p>
+            <div role="alert" className="rounded-md border border-rule bg-paper p-4 text-sm text-ink-2">
+              No pudimos leer el índice. Las cifras de esta página no se cargaron; no significa que no haya proveedores.{' '}
+              <button type="button" onClick={() => refetch()} className="font-semibold text-ink underline underline-offset-2">
+                Reintentar
+              </button>
+            </div>
           )}
           {data && <IndexTable rows={data.rows} />}
 
@@ -349,7 +360,13 @@ const LatamIndex = () => {
                 el orden sale de la infraestructura comprobable mientras completamos las mediciones.
               </p>
             </div>
-            {data ? <TopByCountry rows={data.rows} /> : <div className="h-40 animate-pulse rounded-md bg-paper" />}
+            {data ? (
+              <TopByCountry rows={data.rows} />
+            ) : isError ? (
+              <p className="text-sm text-ink-2">No pudimos leer los primeros puestos por país.</p>
+            ) : (
+              <div className="h-40 animate-pulse rounded-md bg-paper" />
+            )}
           </div>
         </section>
 
