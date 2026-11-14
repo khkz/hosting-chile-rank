@@ -9,6 +9,7 @@ import ProductSchema from '@/components/SEO/ProductSchema';
 import RelatedArticles from '@/components/RelatedArticles';
 import Section from '@/components/system/Section';
 import RankingHeader from '@/components/hubs/RankingHeader';
+import EditorialImage from '@/components/media/EditorialImage';
 import ProviderPickCard from '@/components/hubs/ProviderPickCard';
 import { ProvenanceTag } from '@/components/data/Provenance';
 import { Button } from '@/components/ui/button';
@@ -200,6 +201,7 @@ const MejorHostingWordPressChile = () => {
           title="Mejor Hosting para WordPress Chile"
           lead="Comparativa de hosting con infraestructura optimizada específicamente para WordPress."
           reviewedAt={null}
+          aside={<EditorialImage name="wordpress" className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />}
           undatedNote="Actualizado en enero de 2025"
           meta={<span>Tests de velocidad incluidos</span>}
         />

@@ -32,22 +32,23 @@ export default function Certificaciones() {
     }
   };
 
-  const { data: categories, isLoading: categoriesLoading } = useQuery({
+  const { data: categories, isLoading: categoriesLoading, isError: categoriesError } = useQuery({
     queryKey: ['certification-categories-public'],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('certification_categories')
         .select('*')
         .eq('is_active', true)
         .order('display_order');
+      if (error) throw error;
       return data;
     },
   });
 
-  const { data: activeCertifications } = useQuery({
+  const { data: activeCertifications, isError: certsError } = useQuery({
     queryKey: ['active-certifications'],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('company_certifications')
         .select(`
           *,
@@ -56,6 +57,7 @@ export default function Certificaciones() {
         `)
         .eq('status', 'active')
         .order('position', { ascending: true });
+      if (error) throw error;
       return data;
     },
   });
@@ -89,7 +91,13 @@ export default function Certificaciones() {
           lead="Reconocemos a proveedores de hosting en Chile por categoría. Cada distinción enlaza a la ficha del proveedor para que revises sus datos."
           reviewedAt={latestGranted}
           reviewedLabel="Última distinción otorgada el"
-          undatedNote={activeCertifications ? 'Todavía no hay distinciones publicadas' : 'Cargando las distinciones…'}
+          undatedNote={
+            certsError
+              ? 'No pudimos cargar las distinciones'
+              : activeCertifications
+                ? 'Todavía no hay distinciones publicadas'
+                : 'Cargando las distinciones…'
+          }
           legend={false}
         />
 
@@ -100,6 +108,11 @@ export default function Certificaciones() {
                 <div key={i} className="h-48 rounded-xl border border-rule bg-paper" />
               ))}
             </div>
+          ) : categoriesError ? (
+            <p role="alert" className="max-w-[62ch] rounded-xl border border-rule bg-paper p-5 text-ink-2">
+              No pudimos cargar las categorías: la consulta a nuestra base no respondió. Recarga la página en unos
+              minutos.
+            </p>
           ) : !categories || categories.length === 0 ? (
             <div className="max-w-[62ch] rounded-xl border border-rule bg-paper p-5 text-ink-2">
               <p className="font-semibold text-ink">Todavía no hay categorías de certificación publicadas.</p>
@@ -116,7 +129,7 @@ export default function Certificaciones() {
               {categories.map((category) => {
                 const certs = (activeCertifications ?? []).filter((cert) => cert.category_id === category.id);
                 return (
-                  <li key={category.id} className="flex flex-col rounded-xl border border-rule bg-white p-5">
+                  <li key={category.id} className="flex min-w-0 flex-col rounded-xl border border-rule bg-white p-5">
                     <div className="flex items-start gap-3">
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-paper">
                         <Award className="h-5 w-5 text-ink-2" aria-hidden />

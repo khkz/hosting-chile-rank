@@ -10,7 +10,8 @@ import { cn } from '@/lib/utils';
 /**
  * Top de cada hub por segmento con el patrón de RankingPositions4to10: tabla
  * desde 1024 px y lista debajo, sin columnas escondidas. El orden llega fijo
- * desde segmentHubs (decisión pendiente 3): aquí no se reordena.
+ * desde segmentHubs (decisión pendiente 3): aquí no se reordena. El precio va
+ * en una sola nota bajo la tabla (IntentHub), no repetido en cada fila.
  */
 export interface HubProvider {
   slug: string;
@@ -28,8 +29,6 @@ interface HubTopListProps {
   status: 'loading' | 'ready' | 'error';
 }
 
-const PRICE_TEXT = 'En el sitio oficial';
-
 const Rank: React.FC<{ n: number; className?: string }> = ({ n, className }) => (
   <span className={cn('text-xl font-bold tabular', n === 1 ? 'text-brand-ink' : 'text-ink-3', className)}>
     <span className="sr-only">Puesto </span>
@@ -37,14 +36,15 @@ const Rank: React.FC<{ n: number; className?: string }> = ({ n, className }) => 
   </span>
 );
 
-const Datacenter: React.FC<{ value: string | null }> = ({ value }) =>
+/** Valor declarado con su símbolo pegado a la última palabra (no flota a la derecha). */
+const Datacenter: React.FC<{ value: string | null; withLabel?: boolean }> = ({ value, withLabel = true }) =>
   value ? (
-    <span className="inline-flex items-center gap-1.5">
-      <span>{value}</span>
-      <ProvenanceTag kind="declared" variant="glyph" />
+    <span>
+      {value}
+      <ProvenanceTag kind="declared" variant="glyph" className="ml-1.5 align-middle" />
     </span>
   ) : (
-    <span>Datacenter: no lo declara</span>
+    <span>{withLabel ? 'Datacenter: no lo declara' : 'No lo declara'}</span>
   );
 
 const Actions: React.FC<{ provider: HubProvider; stretch?: boolean }> = ({ provider, stretch }) => {
@@ -123,7 +123,6 @@ const HubTopList: React.FC<HubTopListProps> = ({ providers, status }) => {
                 Nota general <ProvenanceTag kind="editorial" />
               </span>
             </TableHead>
-            <TableHead className="w-44">Precio</TableHead>
             <TableHead className="text-right">
               <span className="sr-only">Acciones</span>
             </TableHead>
@@ -145,7 +144,6 @@ const HubTopList: React.FC<HubTopListProps> = ({ providers, status }) => {
               <TableCell>
                 <ScoreValue value={p.overall_rating} glyph />
               </TableCell>
-              <TableCell className="text-ink-2">{PRICE_TEXT}</TableCell>
               <TableCell>
                 <Actions provider={p} />
               </TableCell>
@@ -164,17 +162,11 @@ const HubTopList: React.FC<HubTopListProps> = ({ providers, status }) => {
               <h3 className="min-w-0 flex-1 font-semibold text-ink">{p.name}</h3>
               <ScoreValue value={p.overall_rating} glyph />
             </div>
-            <dl className="ml-12 mt-3 grid gap-y-2 text-[15px]">
-              <div className="flex flex-wrap gap-x-2">
-                <dt className="t-meta">Datacenter</dt>
-                <dd className="text-ink">
-                  {p.datacenter_location ? <Datacenter value={p.datacenter_location} /> : 'No lo declara'}
-                </dd>
-              </div>
-              <div className="flex flex-wrap gap-x-2">
-                <dt className="t-meta">Precio</dt>
-                <dd className="text-ink">{PRICE_TEXT}</dd>
-              </div>
+            <dl className="ml-12 mt-3 text-[15px]">
+              <dt className="t-meta">Datacenter</dt>
+              <dd className="mt-0.5 text-ink">
+                <Datacenter value={p.datacenter_location} withLabel={false} />
+              </dd>
             </dl>
             <div className="ml-12 mt-4">
               <Actions provider={p} stretch />

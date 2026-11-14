@@ -28,11 +28,11 @@ const ORIGIN = 'https://eligetuhosting.cl';
 const SEGMENT: Record<HubKey, { top: string; image?: EditorialImageKey }> = {
   wordpress: { top: 'hosting para WordPress', image: 'wordpress' },
   ecommerce: { top: 'hosting para tiendas online', image: 'ecommerce' },
-  pymes: { top: 'hosting para pymes' },
+  pymes: { top: 'hosting para pymes', image: 'soporte' },
   vps: { top: 'VPS', image: 'vps' },
 };
 
-const linkClass = 'font-semibold text-ink-2 underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
+const linkClass = 'inline-flex min-h-[44px] items-center font-semibold text-ink-2 underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
 const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
   const [providers, setProviders] = useState<HubProvider[]>([]);
@@ -186,8 +186,9 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
             </ul>
           </div>
           <HubTopList providers={providers} status={status} />
-          <p className="t-small mt-4 max-w-[78ch] text-ink-3">
-            Precio: en el sitio oficial de cada proveedor. Estamos reverificando el catálogo y no publicamos cifras.
+          <p className="t-small mt-4 max-w-[78ch] text-ink-2">
+            <strong className="font-semibold text-ink">Precio:</strong> en el sitio oficial de cada proveedor. Estamos
+            reverificando el catálogo y no publicamos cifras.
           </p>
         </Section>
 

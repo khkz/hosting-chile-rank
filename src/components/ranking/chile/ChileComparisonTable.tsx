@@ -49,7 +49,8 @@ const complaintsFor = (p: ChileGuideProvider): ComplaintInfo | null => {
 const linkClass = 'font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 const SITE_REL = 'nofollow sponsored noopener noreferrer';
 
-const Complaints: React.FC<{ provider: ChileGuideProvider }> = ({ provider }) => {
+/** touch: en la lista móvil el enlace mide 44 px de alto. */
+const Complaints: React.FC<{ provider: ChileGuideProvider; touch?: boolean }> = ({ provider, touch }) => {
   const c = complaintsFor(provider);
   if (!c) return <span className="text-ink-3">Sin dato</span>;
   return (
@@ -57,7 +58,12 @@ const Complaints: React.FC<{ provider: ChileGuideProvider }> = ({ provider }) =>
       <span className="font-semibold tabular text-ink">
         {formatInteger(c.count)} {c.count === 1 ? 'reclamo' : 'reclamos'}
       </span>
-      <a href={c.reclamosUrl} target="_blank" rel="nofollow" className={cn(linkClass, 'text-sm')}>
+      <a
+        href={c.reclamosUrl}
+        target="_blank"
+        rel="nofollow"
+        className={cn(linkClass, 'text-sm', touch && 'inline-flex min-h-[44px] items-center')}
+      >
         Ver en Reclamos.cl<span className="sr-only"> ({provider.name})</span>
       </a>
     </span>
@@ -200,7 +206,7 @@ const ChileComparisonTable: React.FC<ChileComparisonTableProps> = ({ providers, 
             <div>
               <dt className="t-meta">Reclamos</dt>
               <dd className="mt-0.5">
-                <Complaints provider={provider} />
+                <Complaints provider={provider} touch />
               </dd>
             </div>
             <div className="col-span-2">

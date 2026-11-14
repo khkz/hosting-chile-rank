@@ -9,6 +9,7 @@ import RelatedArticles from '@/components/RelatedArticles';
 import Section from '@/components/system/Section';
 import Callout from '@/components/system/Callout';
 import RankingHeader from '@/components/hubs/RankingHeader';
+import EditorialImage from '@/components/media/EditorialImage';
 import ProviderPickCard from '@/components/hubs/ProviderPickCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -162,6 +163,7 @@ const MejorHostingEcommerceChile = () => {
           title="Mejor Hosting para E-Commerce Chile"
           lead="Hosting con alta disponibilidad, seguridad PCI y soporte prioritario para tiendas online."
           reviewedAt={null}
+          aside={<EditorialImage name="ecommerce" className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />}
         />
 
         <Section id="alerta" title="Un e-commerce no es un sitio web común">

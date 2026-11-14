@@ -10,6 +10,7 @@ import HowToSchema from '@/components/SEO/HowToSchema';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import SEOReviewSchema from '@/components/SEO/SEOReviewSchema';
 import RankingHeader from '@/components/hubs/RankingHeader';
+import EditorialImage from '@/components/media/EditorialImage';
 import RankingFaq from '@/components/hubs/RankingFaq';
 import ChileComparisonTable from '@/components/ranking/chile/ChileComparisonTable';
 import { ChileCriteria, ChileSources, ChileSummary } from '@/components/ranking/chile/ChileIntroSections';
@@ -164,8 +165,9 @@ const MejorHostingChile2026 = () => {
           title={`¿Cuál es el mejor hosting en Chile en ${CURRENT_YEAR}?`}
           lead="Comparamos a los cinco proveedores mejor evaluados de Chile: nota, velocidad, reclamos públicos y dónde están sus servidores. Cada dato dice de dónde sale."
           reviewedAt={VERIFICATION_DATE_ISO}
+          aside={<EditorialImage name="cl-edition" className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />}
           meta={
-            <Link to="/metodologia" className="font-semibold text-ink-2 underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+            <Link to="/metodologia" className="inline-flex min-h-[44px] items-center font-semibold text-ink-2 underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
               Ranking editorial con pesos publicados
             </Link>
           }
