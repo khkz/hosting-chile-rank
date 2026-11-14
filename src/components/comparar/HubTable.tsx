@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
 import { ProvenanceTag, type Provenance } from '@/components/data/Provenance';
 import type { HubProvider } from './hubTypes';
 import { BackupValue, DatacenterValue, NotaValue, PriceValue, ReclamosValue, TechValue } from './hubCells';
@@ -26,8 +25,8 @@ const Head: React.FC<{ children: React.ReactNode; kind?: Provenance; unit?: stri
 
 /**
  * Tabla del hub desde 1024 px. Una unidad por columna; la procedencia va en
- * el encabezado. La fila destacada (decisión pendiente 3) usa fondo papel y
- * una etiqueta neutra, sin borde rojo.
+ * el encabezado. La fila destacada (decisión pendiente 3) se mantiene con
+ * fondo papel, sin borde rojo ni etiquetas nuevas.
  */
 const HubTable: React.FC<{ rows: HubRowData[]; highlightId: string; notaLoading?: boolean }> = ({
   rows, highlightId, notaLoading,
@@ -47,7 +46,7 @@ const HubTable: React.FC<{ rows: HubRowData[]; highlightId: string; notaLoading?
     </colgroup>
     <thead>
       <tr className="border-b-2 border-ink">
-        <Head>Proveedor</Head>
+        <Head className="pl-3">Proveedor</Head>
         <Head kind="editorial" unit="sobre 10">Nota</Head>
         <Head kind="measured">ASN</Head>
         <Head kind="declared">Datacenter</Head>
@@ -64,9 +63,8 @@ const HubTable: React.FC<{ rows: HubRowData[]; highlightId: string; notaLoading?
           const highlighted = provider.id === highlightId;
           return (
             <tr key={provider.id} className={cn('border-b border-rule align-top', highlighted && 'bg-paper-deep')}>
-              <th scope="row" className={cn('py-3.5 pr-4 font-semibold text-ink', highlighted && 'pl-3')}>
+              <th scope="row" className="py-3.5 pl-3 pr-4 font-semibold text-ink">
                 {provider.name}
-                {highlighted && <Badge variant="ink" className="mt-1.5 block w-fit">Recomendado</Badge>}
               </th>
               <td className="py-3.5 pr-4"><NotaValue nota={nota} loading={notaLoading} /></td>
               <td className="tabular py-3.5 pr-4 text-ink">{provider.asn}</td>

@@ -29,7 +29,7 @@ const INCLUYE = [
   'Soporte 24/7 en español durante el traspaso',
 ];
 
-/** «1. Respaldo completo» → «Respaldo completo» (el número lo dibuja la lista). */
+/** Quita el número inicial («1. Respaldo completo» queda «Respaldo completo»): lo dibuja la lista. */
 const stepTitle = (t: string) => t.replace(/^\d+\.\s*/, '');
 const scoreText = (c: CompareCompany) => (c.overall_rating != null ? `${formatScore(c.overall_rating)}/10` : null);
 
@@ -148,7 +148,7 @@ const MigrarDe: React.FC = () => {
           }
           actions={
             <>
-              <Button asChild variant="brand" size="lg">
+              <Button asChild variant="brand" size="lg" className="h-auto min-h-12 whitespace-normal py-3 text-left">
                 <a href="/ir/hostingplus">Solicitar migración gratuita a HostingPlus <ExternalLink aria-hidden /></a>
               </Button>
               <Button asChild variant="outline" size="lg">
@@ -214,7 +214,7 @@ const MigrarDe: React.FC = () => {
         <Section id="solicitar" title="Solicita tu migración gratuita" tone="paper" density="tight">
           <p className="t-body measure text-ink-2">Sin downtime, 100% asistida por el equipo técnico.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Button asChild variant="brand">
+            <Button asChild variant="default">
               <Link to="/cotiza-hosting">Solicitar migración gratuita</Link>
             </Button>
             <Button asChild variant="outline">

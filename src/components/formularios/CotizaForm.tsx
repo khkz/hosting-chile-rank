@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import emailjs from '@emailjs/browser';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,15 +11,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { formatMoney } from '@/lib/format';
-import { functionErrorText } from '@/lib/functionError';
 import { CharCount, FormAlert, FormSuccess, Optional, RequiredNote } from './campos';
 import { CONTACT_EMAIL } from './contacto';
+import { cotizacionErrorText, enviarCotizacion } from './envios';
 import { asSentence, choiceControl, choiceLabel, choiceRow, fieldLabel, selectTrigger } from './formStyles';
-
-// EmailJS configuration
-const SERVICE_ID = "service_rlq4gaf";
-const TEMPLATE_ID = "template_uzxrs2d";
-const PUBLIC_KEY = "9wS_UPfV9q3-ZJeBZ";
 
 const DESCRIPCION_MIN = 10;
 const DESCRIPCION_MAX = 500;
@@ -121,26 +115,21 @@ const CotizaForm: React.FC = () => {
   const onSubmit = async (data: FormValues) => {
     setStatus('sending');
     try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          ...data,
-          caracteristicas: (data.caracteristicas || []).join(", "),
-          // Include UTM and ASN tracking data
-          utm_source: urlParams.get('utm_source') || '',
-          utm_campaign: urlParams.get('utm_campaign') || '',
-          provider: urlParams.get('provider') || '',
-          referral_page: window.location.href,
-        },
-        PUBLIC_KEY
-      );
+      await enviarCotizacion({
+        ...data,
+        caracteristicas: (data.caracteristicas || []).join(", "),
+        // Include UTM and ASN tracking data
+        utm_source: urlParams.get('utm_source') || '',
+        utm_campaign: urlParams.get('utm_campaign') || '',
+        provider: urlParams.get('provider') || '',
+        referral_page: window.location.href,
+      });
       setSentTo(data.email);
       form.reset(DEFAULTS);
       setStatus('sent');
     } catch (err) {
       console.error(err);
-      setErrorText(asSentence(await functionErrorText(err)));
+      setErrorText(asSentence(await cotizacionErrorText(err)));
       setStatus('error');
     }
   };

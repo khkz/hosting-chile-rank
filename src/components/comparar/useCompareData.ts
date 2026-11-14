@@ -124,3 +124,36 @@ export const useProviderHasFicha = (slug: string | null) =>
       return !!data;
     },
   });
+
+/** Proveedor de una edición LATAM en /:pais/comparativa/a-vs-b (solo datos declarados). */
+export interface CountryPairCompany {
+  slug: string;
+  name: string;
+  legal_name: string | null;
+  datacenter_location: string | null;
+  year_founded: number | null;
+  corporate_group: string | null;
+  contact_phone: string | null;
+  contact_address: string | null;
+  technologies: string[] | null;
+  updated_at: string | null;
+}
+
+/** Dos proveedores de una edición por slug (antes, consulta directa en CountryComparativa). */
+export const useCountryPair = (countryCode: string | null, a: string, b: string) =>
+  useQuery({
+    queryKey: ['country-comparativa', countryCode, a, b],
+    enabled: !!countryCode && !!a && !!b,
+    staleTime: 15 * 60 * 1000,
+    queryFn: async (): Promise<CountryPairCompany[]> => {
+      const { data } = await supabase
+        .from('hosting_companies')
+        .select('slug,name,legal_name,datacenter_location,year_founded,corporate_group,contact_phone,contact_address,technologies,updated_at')
+        .eq('country', countryCode as string)
+        .in('slug', [a, b]);
+      return ((data ?? []) as unknown as CountryPairCompany[]).map((c) => ({
+        ...c,
+        technologies: Array.isArray(c.technologies) ? c.technologies : null,
+      }));
+    },
+  });

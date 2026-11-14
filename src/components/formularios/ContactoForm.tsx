@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { supabase } from '@/integrations/supabase/client';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,6 +11,7 @@ import { functionErrorText } from '@/lib/functionError';
 import { CharCount, FormAlert, FormSuccess, RequiredNote } from './campos';
 import { asSentence, fieldLabel, selectTrigger } from './formStyles';
 import { CONTACT_EMAIL, CONTACT_RESPONSE_TIME } from './contacto';
+import { enviarContacto } from './envios';
 
 const ASUNTO_MIN = 5;
 const ASUNTO_MAX = 200;
@@ -71,9 +71,7 @@ const ContactoForm: React.FC = () => {
   const onSubmit = async (data: FormValues) => {
     setStatus('sending');
     try {
-      const { data: result, error } = await supabase.functions.invoke('submit-contact', { body: data });
-      if (error) throw error;
-      if (result?.error) throw new Error(result.error);
+      await enviarContacto(data);
       setSentTo(data.email);
       form.reset(DEFAULTS);
       setStatus('sent');
@@ -88,10 +86,10 @@ const ContactoForm: React.FC = () => {
     return (
       <FormSuccess title="Recibimos tu mensaje" resetLabel="Enviar otro mensaje" onReset={() => { refocus.current = true; setStatus('idle'); }}>
         <p>
-          Te responderemos en un plazo de {CONTACT_RESPONSE_TIME}. Te enviamos una confirmación a{' '}
-          <strong className="font-semibold text-ink">{sentTo}</strong>.
+          Te responderemos en un plazo de {CONTACT_RESPONSE_TIME}. En unos minutos debería llegarte una
+          confirmación a <strong className="font-semibold text-ink">{sentTo}</strong>.
         </p>
-        <p>Si no la ves, revisa la carpeta de spam o promociones.</p>
+        <p>Si no la ves, revisa la carpeta de spam o promociones. Tu mensaje quedó registrado igual.</p>
       </FormSuccess>
     );
   }

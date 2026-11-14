@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Mail, Twitter } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -66,7 +67,13 @@ const Contacto = () => (
         <div className="container grid gap-8 py-10 md:py-14 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-10">
           <section aria-labelledby="contacto-mensaje" className={`${panel} min-w-0 md:p-8`}>
             <h2 id="contacto-mensaje" className="t-h3 text-ink">Envíanos un mensaje</h2>
-            <p className="t-small mt-1 text-ink-2">Te respondemos en un plazo de {CONTACT_RESPONSE_TIME}.</p>
+            <p className="t-small mt-1 text-ink-2">
+              ¿Buscas un plan para tu sitio?{' '}
+              <Link to="/cotiza-hosting" className="font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+                Cotizar hosting
+              </Link>{' '}
+              es más directo.
+            </p>
             <div className="mt-6">
               <ContactoForm />
             </div>

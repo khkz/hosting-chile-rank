@@ -23,6 +23,7 @@ import { getProviderLink } from '@/lib/providerLinks';
 const ORIGIN = 'https://eligetuhosting.cl';
 
 const scoreText = (c: CompareCompany) => (c.overall_rating != null ? `${formatScore(c.overall_rating)}/10` : null);
+const migracion = (c: CompareCompany) => (c.has_migration_free == null ? 'Consultar' : c.has_migration_free ? 'Sí' : 'No');
 
 const LoadingShell = () => (
   <>
@@ -120,7 +121,8 @@ const AlternativasA: React.FC = () => {
     { id: 'nota', label: 'Nota editorial', kind: 'editorial', empty: 'Sin nota', cells: [target, ...top].map((c) => ({ value: scoreText(c), raw: c.overall_rating })) },
     { id: 'precio', label: 'Precio desde', note: 'En reverificación: consulta el valor vigente en su sitio.', cells: [target, ...top].map(() => ({ value: 'Consultar', raw: null })) },
     { id: 'datacenter', label: 'Datacenter', kind: 'declared', cells: [target, ...top].map((c) => ({ value: c.datacenter_location, raw: c.datacenter_location })) },
-    { id: 'migracion', label: 'Migración gratuita', cells: [{ value: 'Consultar', raw: null }, ...top.map(() => ({ value: 'Sí, asistida', raw: null }))] },
+    // «Sí, asistida» es lo que la página afirma de HostingPlus y EcoHosting; para el resto, el dato declarado.
+    { id: 'migracion', label: 'Migración gratuita', cells: [target, ...top].map((c) => ({ value: isAnchorSlug(c.slug) ? 'Sí, asistida' : migracion(c), raw: null })) },
   ];
 
   const datosTarget = [
@@ -157,8 +159,8 @@ const AlternativasA: React.FC = () => {
                 <>tiene una nota editorial de <strong className="tabular font-semibold text-ink">{scoreText(target)}</strong> en nuestro ranking.</>
               ) : (
                 'aún no tiene nota editorial en nuestro ranking.'
-              )}{' '}
-              Los proveedores de abajo lo superan en métricas medibles (velocidad, soporte, reputación pública). Todos cuentan con datacenter local y migración gratuita asistida.
+              )}
+              {top.length > 0 && ' Los proveedores de abajo lo superan en métricas medibles (velocidad, soporte, reputación pública). Todos cuentan con datacenter local y migración gratuita asistida.'}
             </>
           }
         />
@@ -186,23 +188,30 @@ const AlternativasA: React.FC = () => {
               {top.map((p, i) => {
                 const link = getProviderLink(p.slug, p.website);
                 return (
-                  <li key={p.slug} className="flex flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 md:px-5">
-                    <span className="tabular w-6 text-xl font-bold text-ink-3"><span className="sr-only">Puesto </span>{i + 1}</span>
+                  <li key={p.slug} className="flex flex-wrap items-start gap-x-4 gap-y-3 px-4 py-4 md:flex-nowrap md:items-center md:gap-x-6 md:px-5">
+                    <span className="tabular w-6 shrink-0 text-xl font-bold text-ink-3"><span className="sr-only">Puesto </span>{i + 1}</span>
                     <div className="min-w-0 flex-1">
                       <p className="t-h3 text-ink">{p.name}</p>
-                      <p className="t-meta flex items-center gap-1.5">
-                        <ProvenanceTag kind="declared" variant="glyph" />
+                      <p className="t-meta mt-0.5 flex items-start gap-1.5">
+                        <ProvenanceTag kind="declared" variant="glyph" className="mt-1" />
                         {p.datacenter_location || 'Datacenter sin dato'}
                       </p>
+                      <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 md:hidden">
+                        <span className="flex items-center gap-1.5">
+                          <span className="tabular text-lg font-bold text-ink">{scoreText(p) ?? 'Sin nota'}</span>
+                          <ProvenanceTag kind="editorial" variant="glyph" />
+                        </span>
+                        <span className="t-meta">Precio: consultar</span>
+                      </p>
                     </div>
-                    <div className="text-right">
+                    <div className="hidden shrink-0 text-right md:block">
                       <p className="flex items-center justify-end gap-1.5">
                         <span className="tabular text-lg font-bold text-ink">{scoreText(p) ?? 'Sin nota'}</span>
                         <ProvenanceTag kind="editorial" variant="glyph" />
                       </p>
                       <p className="t-meta">Precio: consultar</p>
                     </div>
-                    <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+                    <div className="flex w-full flex-wrap gap-2 pl-10 md:w-auto md:shrink-0 md:pl-0 lg:w-[25rem] lg:flex-nowrap lg:justify-end">
                       <Button asChild variant="outline"><Link to={`/catalogo/${p.slug}`}>Ver ficha</Link></Button>
                       <Button asChild variant="ghost">
                         <a href={link.href} target="_blank" rel={link.rel}>Ir al sitio de {p.name} <ExternalLink aria-hidden /></a>
@@ -215,10 +224,12 @@ const AlternativasA: React.FC = () => {
           )}
         </Section>
 
-        <Section id="comparativa" title={`Comparativa vs ${target.name}`} density="tight">
-          <CompareTable caption={`${target.name} frente a sus alternativas`} columns={columns} rows={rows} />
-          <ProvenanceLegend compact className="mt-8 max-w-4xl" />
-        </Section>
+        {top.length > 0 && (
+          <Section id="comparativa" title={`Comparativa vs ${target.name}`} density="tight">
+            <CompareTable caption={`${target.name} frente a sus alternativas`} columns={columns} rows={rows} />
+            <ProvenanceLegend compact className="mt-8 max-w-4xl" />
+          </Section>
+        )}
 
         <Section id="migrar" tone="paper" density="tight" title={`¿Quieres migrar desde ${target.name}?`}>
           <p className="t-body measure text-ink-2">HostingPlus.cl y EcoHosting.cl te migran gratis y sin downtime.</p>

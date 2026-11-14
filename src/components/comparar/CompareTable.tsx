@@ -114,7 +114,7 @@ const CompareTable: React.FC<CompareTableProps> = ({ columns, rows, caption, lab
         </colgroup>
         <thead>
           <tr className="border-b-2 border-ink">
-            <th scope="col" className="py-3 pr-4 align-bottom text-[13px] font-semibold text-ink-2">
+            <th scope="col" className="border-l-[3px] border-l-transparent py-3 pl-3 pr-4 align-bottom text-[13px] font-semibold text-ink-2">
               {labelHeader}
             </th>
             {columns.map((c) => (
@@ -131,7 +131,7 @@ const CompareTable: React.FC<CompareTableProps> = ({ columns, rows, caption, lab
               <tr key={row.id} className={cn('border-b border-rule align-top', differs && 'bg-paper')}>
                 <th
                   scope="row"
-                  className={cn('py-3 pr-4 text-left font-normal', differs ? 'border-l-[3px] border-l-ink pl-3' : 'pl-0')}
+                  className={cn('border-l-[3px] py-3 pl-3 pr-4 text-left font-normal', differs ? 'border-l-ink' : 'border-l-transparent')}
                 >
                   <RowLabel row={row} differs={differs} />
                 </th>
@@ -152,7 +152,7 @@ const CompareTable: React.FC<CompareTableProps> = ({ columns, rows, caption, lab
           return (
             <div
               key={row.id}
-              className={cn('border-b border-rule py-3', differs && 'border-l-[3px] border-l-ink bg-paper pl-3 pr-2')}
+              className={cn('border-b border-l-[3px] border-rule py-3 pl-3 pr-2', differs ? 'border-l-ink bg-paper' : 'border-l-transparent')}
             >
               <dt className="text-[15px]">
                 <RowLabel row={row} differs={differs} />

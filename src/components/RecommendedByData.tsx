@@ -19,7 +19,7 @@ const link = 'underline decoration-ink/30 underline-offset-4 hover:decoration-in
 
 const RecommendedByData: React.FC<{ className?: string }> = ({ className = '' }) => (
   <aside
-    className={`rounded-xl border border-rule bg-paper p-5 md:p-6 ${className}`}
+    className={`not-prose rounded-xl border border-rule bg-paper p-5 md:p-6 ${className}`}
     aria-label="Recomendado por datos"
   >
     <div className="flex items-start gap-3">
