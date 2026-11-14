@@ -38,7 +38,7 @@ interface Item {
 const HERRAMIENTAS: (Item & { icon: React.ElementType })[] = [
   { title: 'Calculadora TCO', description: 'Calcula el costo total de propiedad de tu hosting', path: '/calculadora-tco', icon: Calculator },
   { title: 'Comparador de hosting', description: 'Compara características y precios lado a lado', path: '/comparativa', icon: GitCompare },
-  { title: 'Benchmark de hosting', description: 'Velocidad y disponibilidad medidas en cada proveedor', path: '/benchmark', icon: Activity },
+  { title: 'Benchmark de hosting', description: 'TTFB, Lighthouse y uptime medidos en los principales proveedores de Chile', path: '/benchmark', icon: Activity },
 ];
 
 const CATEGORIAS: { id: string; nombre: string; items: Item[] }[] = [
@@ -181,6 +181,7 @@ const RecursosHosting = () => {
         title="Centro de Recursos de Hosting Chile"
         lead="Guías completas, herramientas gratuitas y datos verificables para tomar la mejor decisión de hosting"
         toc={TOC}
+        stickyCta={false}
         prose={false}
       >
         <section aria-labelledby="herramientas" className="max-w-[46rem]">

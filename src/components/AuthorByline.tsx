@@ -31,7 +31,7 @@ const AuthorByline: React.FC<AuthorBylineProps> = ({ reviewedAt, inline = false,
           Por{' '}
           <Link
             to="/sobre-nosotros"
-            className="font-semibold text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
+            className="-my-[15px] inline-block py-[15px] font-semibold text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
           >
             Equipo Editorial de EligeTuHosting
           </Link>

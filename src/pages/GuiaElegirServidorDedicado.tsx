@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
-import EditorialImage from '@/components/media/EditorialImage';
 import GuidePage from '@/components/guias/GuidePage';
 import GuideBreadcrumbs from '@/components/guias/GuideBreadcrumbs';
 import GuideFooter from '@/components/guias/GuideFooter';
@@ -86,9 +85,7 @@ const GuiaElegirServidorDedicado = () => {
         title="Guía para elegir el mejor servidor dedicado en Chile"
         lead="Todo lo que necesitas saber para seleccionar el servidor dedicado ideal para tus proyectos de alto rendimiento o grandes aplicaciones."
         reviewedAt={REVIEWED_AT}
-        image={
-          <EditorialImage name="datacenter" className="aspect-[16/9] md:aspect-[2/1]" sizes="(min-width: 1024px) 64rem, 100vw" priority />
-        }
+        image="datacenter"
         toc={TOC}
         footer={<GuideFooter reviewedAt={REVIEWED_AT} />}
       >

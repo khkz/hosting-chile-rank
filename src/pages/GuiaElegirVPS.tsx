@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { ClipboardCheck } from 'lucide-react';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import RecommendedByData from '@/components/RecommendedByData';
-import EditorialImage from '@/components/media/EditorialImage';
 import GuidePage from '@/components/guias/GuidePage';
 import GuideBreadcrumbs from '@/components/guias/GuideBreadcrumbs';
 import GuideFooter from '@/components/guias/GuideFooter';
@@ -50,9 +49,7 @@ const GuiaElegirVPS = () => {
             Basado en 180 migraciones exitosas
           </span>
         }
-        image={
-          <EditorialImage name="vps" className="aspect-[16/9] md:aspect-[2/1]" sizes="(min-width: 1024px) 64rem, 100vw" priority />
-        }
+        image="vps"
         toc={TOC}
         footer={<GuideFooter reviewedAt={REVIEWED_AT} extra={<RecommendedByData />} />}
       >

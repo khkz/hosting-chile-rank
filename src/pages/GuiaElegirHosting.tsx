@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import RecommendedByData from '@/components/RecommendedByData';
-import EditorialImage from '@/components/media/EditorialImage';
 import GuidePage from '@/components/guias/GuidePage';
 import GuideBreadcrumbs from '@/components/guias/GuideBreadcrumbs';
 import GuideFooter from '@/components/guias/GuideFooter';
@@ -59,14 +58,7 @@ const GuiaElegirHosting = () => {
         title="¿Hosting en Chile? Te enseño cómo elegir el mejor"
         lead="Después de 8 años ayudando a empresas chilenas a encontrar su hosting ideal, te voy a contar todo lo que necesitas saber para no meter la pata (como me pasó con mi primer sitio)."
         reviewedAt={REVIEWED_AT}
-        image={
-          <EditorialImage
-            name="guias"
-            className="aspect-[16/9] md:aspect-[2/1]"
-            sizes="(min-width: 1024px) 64rem, 100vw"
-            priority
-          />
-        }
+        image="guias"
         toc={TOC}
         footer={<GuideFooter reviewedAt={REVIEWED_AT} extra={<RecommendedByData />} />}
       >

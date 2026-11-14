@@ -1,6 +1,7 @@
 import React from 'react';
 import { H2 } from '../GuideBlocks';
 import GuideTable from '../GuideTable';
+import { cifrasES } from '../cifras';
 
 interface Faq {
   question: string;
@@ -17,8 +18,8 @@ export const Preguntas: React.FC<{ faqs: Faq[] }> = ({ faqs }) => (
     <H2 id="preguntas">3. Preguntas que debes hacerte</H2>
     {faqs.map((f) => (
       <React.Fragment key={f.question}>
-        <h3>{f.question}</h3>
-        <p>{f.answer}</p>
+        <h3>{cifrasES(f.question)}</h3>
+        <p>{cifrasES(f.answer)}</p>
       </React.Fragment>
     ))}
   </>

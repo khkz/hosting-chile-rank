@@ -34,7 +34,7 @@ const GuideBreadcrumbs: React.FC<GuideBreadcrumbsProps> = ({ items }) => {
                 <>
                   <Link
                     to={c.url}
-                    className="rounded-sm text-ink-3 underline decoration-ink/20 underline-offset-2 hover:text-ink hover:decoration-ink"
+                    className="-my-[13px] inline-flex items-center rounded-sm py-[13px] text-ink-3 underline decoration-ink/20 underline-offset-2 hover:text-ink hover:decoration-ink"
                   >
                     {c.name}
                   </Link>

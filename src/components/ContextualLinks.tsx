@@ -11,6 +11,7 @@ interface ContextualLinksProps {
   showWordPress?: boolean;
 }
 
+/** Enlaces de contexto bajo una ficha de proveedor, con los rótulos únicos del sitio. */
 const ContextualLinks: React.FC<ContextualLinksProps> = ({
   companySlug,
   companyName,
@@ -19,44 +20,29 @@ const ContextualLinks: React.FC<ContextualLinksProps> = ({
   showWordPress = true,
 }) => {
   return (
-    <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-border/40">
+    <div className="mt-3 flex flex-wrap gap-2 border-t border-rule pt-3">
       {showComparison && (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="h-8 text-xs hover:bg-primary/10 hover:text-primary"
-        >
-          <Link to="/comparativa" className="flex items-center gap-1">
-            <GitCompare className="h-3 w-3" />
-            Comparar con otros
+        <Button asChild variant="ghost" size="sm">
+          <Link to="/comparativa">
+            <GitCompare aria-hidden />
+            Comparar
           </Link>
         </Button>
       )}
-      
+
       {showReview && (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="h-8 text-xs hover:bg-primary/10 hover:text-primary"
-        >
-          <Link to={`/catalogo/${companySlug}`} className="flex items-center gap-1">
-            <FileText className="h-3 w-3" />
-            Review completa
+        <Button asChild variant="ghost" size="sm">
+          <Link to={`/catalogo/${companySlug}`} aria-label={`Ver ficha de ${companyName}`}>
+            <FileText aria-hidden />
+            Ver ficha
           </Link>
         </Button>
       )}
-      
+
       {showWordPress && (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="h-8 text-xs hover:bg-primary/10 hover:text-primary"
-        >
-          <Link to="/mejor-hosting-wordpress-chile" className="flex items-center gap-1">
-            <ArrowRight className="h-3 w-3" />
+        <Button asChild variant="ghost" size="sm">
+          <Link to="/mejor-hosting-wordpress-chile">
+            <ArrowRight aria-hidden />
             Mejor para WordPress
           </Link>
         </Button>

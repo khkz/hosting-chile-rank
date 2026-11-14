@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, BookOpen } from 'lucide-react';
 
 interface RelatedArticle {
@@ -22,19 +21,19 @@ const defaultArticles: Record<string, RelatedArticle[]> = {
       description: 'Guía completa para tomar la decisión correcta'
     },
     {
-      title: 'Comparativa de Hosting',
+      title: 'Comparativa de hosting',
       url: '/comparativa',
       description: 'Compara proveedores lado a lado'
     },
     {
-      title: 'Mejor Hosting WordPress Chile',
+      title: 'Mejor hosting WordPress en Chile',
       url: '/mejor-hosting-wordpress-chile',
       description: 'Hosting optimizado para WordPress'
     }
   ],
   'wordpress': [
     {
-      title: 'Guía Hosting WordPress',
+      title: 'Guía de hosting WordPress',
       url: '/guia-hosting-wordpress',
       description: 'Todo sobre hosting para WordPress'
     },
@@ -44,7 +43,7 @@ const defaultArticles: Record<string, RelatedArticle[]> = {
       description: 'Mejora el rendimiento de tu WP'
     },
     {
-      title: 'Ranking General',
+      title: 'Ranking general',
       url: '/ranking',
       description: 'Ve todos los proveedores evaluados'
     }
@@ -56,76 +55,69 @@ const defaultArticles: Record<string, RelatedArticle[]> = {
       description: 'Cómo elegir tu servidor VPS'
     },
     {
-      title: 'Servidor Dedicado',
+      title: 'Servidor dedicado',
       url: '/guia-elegir-servidor-dedicado',
       description: 'Cuándo necesitas un dedicado'
     },
     {
-      title: 'Comparativa de Hosting',
+      title: 'Comparativa de hosting',
       url: '/comparativa',
-      description: 'Compara VPS vs Shared vs Cloud'
+      description: 'Compara VPS, compartido y cloud'
     }
   ],
   'general': [
     {
-      title: 'Ranking de Hosting',
+      title: 'Ranking de hosting',
       url: '/ranking',
       description: 'Los mejores hostings de Chile 2026'
     },
     {
-      title: 'Guía de Migración',
+      title: 'Guía de migración',
       url: '/guia-migrar-hosting',
       description: 'Cambia de hosting sin perder SEO'
     },
     {
-      title: 'Wiki de Hosting',
+      title: 'Wiki de hosting',
       url: '/wiki',
       description: 'Aprende conceptos clave de hosting'
     }
   ]
 };
 
-const RelatedContent: React.FC<RelatedContentProps> = ({ 
+/** «Lee también»: lista corta de lecturas relacionadas, con borde y sin sombra. */
+const RelatedContent: React.FC<RelatedContentProps> = ({
   articles,
-  currentPage = 'general' 
+  currentPage = 'general'
 }) => {
+  const headingId = useId();
   const displayArticles = articles || defaultArticles[currentPage] || defaultArticles['general'];
 
   return (
-    <Card className="bg-muted/30 border-primary/20">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-primary" />
-          Lee también
-        </CardTitle>
-        <CardDescription>
-          Artículos relacionados que te pueden interesar
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {displayArticles.map((article, index) => (
+    <section aria-labelledby={headingId} className="rounded-xl border border-rule bg-white p-5 md:p-6">
+      <h2 id={headingId} className="t-h3 flex items-center gap-2 text-ink">
+        <BookOpen aria-hidden className="h-5 w-5 text-ink-2" />
+        Lee también
+      </h2>
+      <p className="t-small mt-1 text-ink-2">Artículos relacionados que te pueden interesar</p>
+      <ul className="mt-4 divide-y divide-rule border-t border-rule">
+        {displayArticles.map((article, index) => (
+          <li key={`${article.url}-${index}`}>
             <Link
-              key={index}
               to={article.url}
-              className="group block p-3 rounded-lg bg-background hover:bg-primary/5 transition-colors border border-transparent hover:border-primary/20"
+              className="group flex min-h-11 items-start justify-between gap-3 py-3"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {article.title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {article.description}
-                  </p>
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0 mt-1" />
-              </div>
+              <span className="min-w-0">
+                <span className="block font-semibold text-ink decoration-ink/30 underline-offset-2 group-hover:underline">
+                  {article.title}
+                </span>
+                <span className="t-small mt-0.5 block text-ink-2">{article.description}</span>
+              </span>
+              <ArrowRight aria-hidden className="mt-1 h-4 w-4 shrink-0 text-ink-3" />
             </Link>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 };
 

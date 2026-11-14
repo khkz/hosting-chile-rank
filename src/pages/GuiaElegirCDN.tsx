@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
-import EditorialImage from '@/components/media/EditorialImage';
 import GuidePage from '@/components/guias/GuidePage';
 import GuideBreadcrumbs from '@/components/guias/GuideBreadcrumbs';
 import GuideFooter from '@/components/guias/GuideFooter';
@@ -39,9 +38,6 @@ const GuiaElegirCDN = () => {
         title="CDN en Chile: La diferencia entre cargar en 1 segundo vs 8 segundos"
         lead="Te voy a contar cómo un CDN transformó el sitio de mi cliente más exigente: de perder ventas por lentitud a ser el e-commerce más rápido de su rubro. Y lo mejor: sin gastar una fortuna."
         reviewedAt={REVIEWED_AT}
-        image={
-          <EditorialImage name="datacenter" className="aspect-[16/9] md:aspect-[2/1]" sizes="(min-width: 1024px) 64rem, 100vw" priority />
-        }
         toc={TOC}
         footer={<GuideFooter reviewedAt={REVIEWED_AT} />}
       >

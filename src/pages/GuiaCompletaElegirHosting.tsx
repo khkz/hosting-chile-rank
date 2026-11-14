@@ -7,11 +7,11 @@ import HowToSchema from '@/components/SEO/HowToSchema';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import RelatedArticles from '@/components/RelatedArticles';
-import EditorialImage from '@/components/media/EditorialImage';
 import { Button } from '@/components/ui/button';
 import GuidePage from '@/components/guias/GuidePage';
 import GuideFooter from '@/components/guias/GuideFooter';
 import { H2, MarkList, MarkItem } from '@/components/guias/GuideBlocks';
+import { cifrasES } from '@/components/guias/cifras';
 
 const GuiaCompletaElegirHosting = () => {
   // Alimenta el JSON-LD de las migas (SEOBreadcrumbs): no cambiar.
@@ -159,10 +159,8 @@ const GuiaCompletaElegirHosting = () => {
             Lectura: 20 min
           </span>
         }
-        image={
-          <EditorialImage name="guias" className="aspect-[16/9] md:aspect-[2/1]" sizes="(min-width: 1024px) 64rem, 100vw" priority />
-        }
         toc={toc}
+        stickyCta={false}
         footer={
           <GuideFooter reviewedAt="2026-05-15" related={<RelatedArticles articles={relatedArticles} embedded />} />
         }
@@ -183,7 +181,7 @@ const GuiaCompletaElegirHosting = () => {
             <h3>
               Paso {index + 1}: {step.name}
             </h3>
-            <p>{step.text}</p>
+            <p>{cifrasES(step.text)}</p>
           </React.Fragment>
         ))}
 
@@ -205,8 +203,8 @@ const GuiaCompletaElegirHosting = () => {
         <H2 id="preguntas-frecuentes">Preguntas frecuentes</H2>
         {faqs.map((faq) => (
           <React.Fragment key={faq.question}>
-            <h3>{faq.question}</h3>
-            <p>{faq.answer}</p>
+            <h3>{cifrasES(faq.question)}</h3>
+            <p>{cifrasES(faq.answer)}</p>
           </React.Fragment>
         ))}
 

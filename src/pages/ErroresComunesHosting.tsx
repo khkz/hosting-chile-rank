@@ -173,6 +173,7 @@ const ErroresComunesHosting = () => {
           </span>
         }
         toc={TOC}
+        stickyCta={false}
         footer={<GuideFooter related={<RelatedArticles articles={relatedArticles} embedded />} />}
       >
         <H2 id="por-que">Por qué leer esta guía</H2>

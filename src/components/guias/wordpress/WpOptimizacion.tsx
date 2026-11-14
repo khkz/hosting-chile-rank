@@ -38,8 +38,8 @@ const WpOptimizacion: React.FC = () => (
     <ul>
       <li><strong>PHP 8.1+:</strong> 20&nbsp;% más rápido que 7.4</li>
       <li><strong>OPcache habilitado:</strong> caché código PHP</li>
-      <li><strong>Memory limit 512MB+:</strong> para plugins pesados</li>
-      <li><strong>Max execution time 300s:</strong> para imports grandes</li>
+      <li><strong>Memory limit 512&nbsp;MB+:</strong> para plugins pesados</li>
+      <li><strong>Max execution time 300&nbsp;s:</strong> para imports grandes</li>
     </ul>
     <h4>Database optimization</h4>
     <ul>
@@ -94,8 +94,8 @@ const WpOptimizacion: React.FC = () => (
       titulo="Problema #2: «Error 500 Internal Server»"
       historia="Blog perdió 3 días de tráfico por error intermitente."
       causaLabel="Causa típica"
-      causa="Memory limit insuficiente (128MB) con plugins pesados."
-      solucion="Subir memory_limit a 512MB + auditoría plugins + hosting con más recursos."
+      causa="Memory limit insuficiente (128 MB) con plugins pesados."
+      solucion="Subir memory_limit a 512 MB + auditoría plugins + hosting con más recursos."
     />
     <Problema
       titulo="Problema #3: «WordPress se hackea constantemente»"

@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { ShieldCheck } from 'lucide-react';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
 import RecommendedByData from '@/components/RecommendedByData';
-import EditorialImage from '@/components/media/EditorialImage';
 import GuidePage from '@/components/guias/GuidePage';
 import GuideBreadcrumbs from '@/components/guias/GuideBreadcrumbs';
 import GuideFooter from '@/components/guias/GuideFooter';
@@ -68,9 +67,7 @@ const GuiaMigrarHosting = () => {
             Proceso 100&nbsp;% seguro con 0&nbsp;% pérdida de datos
           </span>
         }
-        image={
-          <EditorialImage name="migracion" className="aspect-[16/9] md:aspect-[2/1]" sizes="(min-width: 1024px) 64rem, 100vw" priority />
-        }
+        image="migracion"
         toc={TOC}
         footer={<GuideFooter reviewedAt={REVIEWED_AT} extra={<RecommendedByData />} />}
       >
