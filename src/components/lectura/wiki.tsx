@@ -9,9 +9,6 @@ import {
   Server,
   ShieldCheck,
   ShoppingCart,
-  SignalHigh,
-  SignalLow,
-  SignalMedium,
   TrendingUp,
   Wrench,
   Zap,
@@ -42,25 +39,35 @@ export const WikiCategoryIcon: React.FC<{ name: WikiCategoryIconName; className?
   return <Icon aria-hidden className={cn('h-5 w-5 shrink-0 text-ink-2', className)} />;
 };
 
-const LEVEL_ICON: Record<WikiTerm['level'], LucideIcon> = {
-  basico: SignalLow,
-  medio: SignalMedium,
-  avanzado: SignalHigh,
-};
+const LEVEL_STEP: Record<WikiTerm['level'], number> = { basico: 1, medio: 2, avanzado: 3 };
 
-const tag = 'inline-flex items-center gap-1 rounded-sm border border-rule bg-white px-2 py-0.5 text-xs font-semibold leading-5 text-ink-2';
+/** Tres barras de alto creciente; se rellenan tantas como el nivel. Decorativas: el nivel va en texto. */
+const LevelBars: React.FC<{ step: number }> = ({ step }) => (
+  <svg viewBox="0 0 11 10" width={11} height={10} aria-hidden className="shrink-0">
+    {[0, 1, 2].map((i) => (
+      <rect
+        key={i}
+        x={i * 4}
+        y={6 - i * 3}
+        width={3}
+        height={4 + i * 3}
+        rx={0.5}
+        className={i < step ? 'fill-ink-2' : 'fill-rule'}
+      />
+    ))}
+  </svg>
+);
+
+const tag = 'inline-flex items-center gap-1.5 rounded-sm border border-rule bg-white px-2 py-0.5 text-xs font-semibold leading-5 text-ink-2';
 
 /** Nivel del término: etiqueta neutra con barras (sin color de alerta). */
-export const LevelTag: React.FC<{ level: WikiTerm['level']; className?: string }> = ({ level, className }) => {
-  const Icon = LEVEL_ICON[level] ?? SignalLow;
-  return (
-    <span className={cn(tag, className)}>
-      <Icon aria-hidden className="h-3.5 w-3.5 text-ink-3" />
-      <span className="sr-only">Nivel </span>
-      {LEVEL_LABEL[level] ?? level}
-    </span>
-  );
-};
+export const LevelTag: React.FC<{ level: WikiTerm['level']; className?: string }> = ({ level, className }) => (
+  <span className={cn(tag, className)}>
+    <LevelBars step={LEVEL_STEP[level] ?? 1} />
+    <span className="sr-only">Nivel </span>
+    {LEVEL_LABEL[level] ?? level}
+  </span>
+);
 
 /** CMS o plataforma del término, con su nombre bien escrito. */
 export const CmsTag: React.FC<{ cms: WikiTerm['cms']; className?: string }> = ({ cms, className }) => (

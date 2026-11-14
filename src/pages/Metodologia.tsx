@@ -117,8 +117,8 @@ const Metodologia: React.FC = () => {
           image={
             <EditorialImage
               name="metodologia"
-              className="aspect-[16/9] md:aspect-[21/9]"
-              sizes="(min-width: 1024px) 1024px, 100vw"
+              className="aspect-[16/9] max-w-[46rem]"
+              sizes="(min-width: 800px) 736px, 100vw"
             />
           }
           toc={SECTIONS}
@@ -131,14 +131,14 @@ const Metodologia: React.FC = () => {
                 Usa nuestros datos citando la fuente: <strong className="text-ink">EligeTuHosting.cl</strong> (licencia
                 CC-BY-4.0, atribución con enlace activo requerida).
               </p>
-              <ul className="mt-2">
+              <ul className="mt-1 flex flex-wrap gap-x-4">
                 {OPEN_DATA.map(({ href, label, Icon }) => (
                   <li key={href}>
                     <a
                       href={href}
                       target="_blank"
                       rel="noopener"
-                      className="flex min-h-11 items-center gap-2 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-[3px] hover:decoration-ink"
+                      className="flex min-h-11 items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-[3px] hover:decoration-ink"
                     >
                       <Icon className="h-4 w-4 shrink-0 text-ink-2" aria-hidden />
                       {label}

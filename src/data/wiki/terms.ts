@@ -8909,7 +8909,7 @@ v=spf1 a mx include:_spf.hostingprovider.cl ~all
 ];
 
 // Helper functions
-export const searchTerms = (query: string, filters?: Record<string, any>): WikiTerm[] => {
+export const searchTerms = (query: string, filters?: Record<string, string>): WikiTerm[] => {
   let results = wikiTerms;
   
   if (query) {

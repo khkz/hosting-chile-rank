@@ -11,6 +11,7 @@ import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import PageHeader from '@/components/system/PageHeader';
 import { WikiCategoryIcon } from '@/components/lectura/wiki';
 import { wikiTerms, wikiCategories } from '@/data/wiki/terms';
+import { termsInCategory, uniqueBySlug } from '@/components/lectura/wikiData';
 import { formatInteger } from '@/lib/format';
 
 const WikiCategory: React.FC = () => {
@@ -26,9 +27,11 @@ const WikiCategory: React.FC = () => {
     return <Navigate to="/wiki" replace />;
   }
 
+  // categoryTerms alimenta el SEO (sin cambios); lo que se ve y se cuenta va sin slugs repetidos.
   const categoryTerms = wikiTerms.filter(term => term.category === categoryId);
-  const basic = categoryTerms.filter((t) => t.level === 'basico').length;
-  const advanced = categoryTerms.filter((t) => t.level === 'avanzado').length;
+  const shownTerms = uniqueBySlug(categoryTerms);
+  const basic = shownTerms.filter((t) => t.level === 'basico').length;
+  const advanced = shownTerms.filter((t) => t.level === 'avanzado').length;
   const others = wikiCategories.filter((c) => c.id !== categoryId).slice(0, 6);
 
   const breadcrumbItems = [
@@ -86,7 +89,7 @@ const WikiCategory: React.FC = () => {
             <>
               <span className="inline-flex items-center gap-1.5">
                 <WikiCategoryIcon name={category.icon} className="h-4 w-4 text-ink-3" />
-                {formatInteger(categoryTerms.length)} {categoryTerms.length === 1 ? 'término' : 'términos'}
+                {formatInteger(shownTerms.length)} {shownTerms.length === 1 ? 'término' : 'términos'}
               </span>
               <span>{formatInteger(basic)} de nivel básico</span>
               <span>{formatInteger(advanced)} de nivel avanzado</span>
@@ -97,7 +100,7 @@ const WikiCategory: React.FC = () => {
         <div className="container py-10 md:py-14">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14">
             <div className="min-w-0 space-y-14">
-              {categoryTerms.length === 0 ? (
+              {shownTerms.length === 0 ? (
                 <div className="rounded-xl border border-rule bg-paper p-6 md:p-8">
                   <h2 className="t-h3 text-ink">Esta categoría todavía no tiene términos</h2>
                   <p className="t-body mt-2 text-ink-2">Mientras la completamos, revisa las otras categorías de la wiki.</p>
@@ -111,8 +114,8 @@ const WikiCategory: React.FC = () => {
                     Todos los términos de {category.name}
                   </h2>
                   <div className="grid gap-4 md:grid-cols-2">
-                    {categoryTerms.map((term, i) => (
-                      <TermCard key={`${term.id}-${i}`} term={term} />
+                    {shownTerms.map((term) => (
+                      <TermCard key={term.slug} term={term} />
                     ))}
                   </div>
                 </section>
@@ -133,7 +136,7 @@ const WikiCategory: React.FC = () => {
                         <span className="min-w-0">
                           <span className="block font-semibold text-ink">{c.name}</span>
                           <span className="t-meta mt-1 block tabular">
-                            {formatInteger(wikiTerms.filter((t) => t.category === c.id).length)} términos
+                            {formatInteger(termsInCategory(c.id).length)} términos
                           </span>
                         </span>
                       </Link>

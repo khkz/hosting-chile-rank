@@ -63,3 +63,31 @@ export function withHeadingIds(html: string): { html: string; toc: TocItem[] } {
   });
   return { html: out, toc };
 }
+
+/** Ids que ya usa el marco del sitio (destino de «Saltar al contenido»). */
+const RESERVED_IDS = ['contenido'];
+
+/**
+ * Numera las anclas repetidas de un Markdown («base-de-datos», «base-de-datos-2»…)
+ * agregando «{#ancla}» a la línea del encabezado. Es una función pura, así que el
+ * cuerpo y el índice (markdownToc) ven las mismas anclas en cada render.
+ */
+export function dedupeHeadingIds(markdown: string, reserved: string[] = RESERVED_IDS): string {
+  const used = new Map<string, number>(reserved.map((id) => [id, 1]));
+  let inFence = false;
+  return markdown
+    .split('\n')
+    .map((line) => {
+      if (/^\s*```/.test(line)) inFence = !inFence;
+      if (inFence) return line;
+      const m = /^(#{1,6})\s+(.+?)\s*$/.exec(line);
+      if (!m) return line;
+      const { clean, id } = splitHeading(m[2].replace(/\*\*|__|`/g, ''));
+      if (!clean || !id) return line;
+      const n = (used.get(id) ?? 0) + 1;
+      used.set(id, n);
+      if (n === 1) return line;
+      return `${line.replace(/\s*\{#[^}]+\}\s*$/, '')} {#${id}-${n}}`;
+    })
+    .join('\n');
+}

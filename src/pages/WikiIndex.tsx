@@ -11,19 +11,20 @@ import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import PageHeader from '@/components/system/PageHeader';
 import { WikiCategoryIcon } from '@/components/lectura/wiki';
 import { wikiTerms, wikiCategories, WikiTerm } from '@/data/wiki/terms';
+import { WIKI_TERMS, termsInCategory } from '@/components/lectura/wikiData';
 import { formatInteger } from '@/lib/format';
 
 const FEATURED = ['wordpress', 'elementor', 'woocommerce', 'litespeed-cache', 'moodle', 'ai-wordpress', 'http3-quic'];
 
-const countIn = (categoryId: string) => wikiTerms.filter((t) => t.category === categoryId).length;
+const countIn = (categoryId: string) => termsInCategory(categoryId).length;
 
 const WikiIndex: React.FC = () => {
-  const [searchResults, setSearchResults] = useState<WikiTerm[]>(wikiTerms);
+  const [searchResults, setSearchResults] = useState<WikiTerm[]>(WIKI_TERMS);
   const handleSearchResults = useCallback((results: WikiTerm[]) => setSearchResults(results), []);
 
-  const featuredTerms = wikiTerms.filter((term) => FEATURED.includes(term.slug)).slice(0, 6);
-  const trendingTerms = wikiTerms.filter((term) => term.category === 'trends-2026').slice(0, 4);
-  const filtering = searchResults.length !== wikiTerms.length;
+  const featuredTerms = WIKI_TERMS.filter((term) => FEATURED.includes(term.slug)).slice(0, 6);
+  const trendingTerms = WIKI_TERMS.filter((term) => term.category === 'trends-2026').slice(0, 4);
+  const filtering = searchResults.length !== WIKI_TERMS.length;
 
   const breadcrumbItems = [{ name: 'Inicio', href: '/' }];
 
@@ -86,7 +87,7 @@ const WikiIndex: React.FC = () => {
           lead="Términos de hosting, WordPress, Moodle, Joomla, Elementor y WooCommerce explicados en simple: qué son, cuándo te sirven y qué pedirle a tu hosting."
           meta={
             <span>
-              {formatInteger(wikiTerms.length)} términos en {formatInteger(wikiCategories.length)} categorías
+              {formatInteger(WIKI_TERMS.length)} términos en {formatInteger(wikiCategories.length)} categorías
             </span>
           }
         />
@@ -107,8 +108,8 @@ const WikiIndex: React.FC = () => {
                     Términos destacados
                   </h2>
                   <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                    {featuredTerms.map((term, i) => (
-                      <TermCard key={`${term.id}-${i}`} term={term} variant="compact" />
+                    {featuredTerms.map((term) => (
+                      <TermCard key={term.slug} term={term} variant="compact" />
                     ))}
                   </div>
                 </section>
@@ -145,8 +146,8 @@ const WikiIndex: React.FC = () => {
                     Tendencias 2026
                   </h2>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {trendingTerms.map((term, i) => (
-                      <TermCard key={`${term.id}-${i}`} term={term} variant="compact" />
+                    {trendingTerms.map((term) => (
+                      <TermCard key={term.slug} term={term} variant="compact" />
                     ))}
                   </div>
                 </section>
@@ -161,13 +162,13 @@ const WikiIndex: React.FC = () => {
                     <p className="t-h3 text-ink">No encontramos términos con esa búsqueda</p>
                     <p className="t-body mt-2 max-w-[62ch] text-ink-2">
                       Prueba con otra palabra, revisa la ortografía o usa «Limpiar filtros» para volver a ver los{' '}
-                      {formatInteger(wikiTerms.length)} términos.
+                      {formatInteger(WIKI_TERMS.length)} términos.
                     </p>
                   </div>
                 ) : (
                   <div className="grid gap-4 md:grid-cols-2">
-                    {searchResults.map((term, i) => (
-                      <TermCard key={`${term.id}-${i}`} term={term} />
+                    {searchResults.map((term) => (
+                      <TermCard key={term.slug} term={term} />
                     ))}
                   </div>
                 )}

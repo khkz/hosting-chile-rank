@@ -18,8 +18,8 @@ import ReadingLayout, { type TocItem } from '@/components/reading/ReadingLayout'
 import Callout from '@/components/system/Callout';
 import { CmsTag, LevelTag, WikiCategoryIcon } from '@/components/lectura/wiki';
 import { WIKI_MD_COMPONENTS } from '@/components/lectura/wikiMarkdown';
-import { markdownToc } from '@/components/lectura/headings';
-import TocInline from '@/components/lectura/TocInline';
+import { dedupeHeadingIds, markdownToc } from '@/components/lectura/headings';
+import { uniqueBySlug } from '@/components/lectura/wikiData';
 import { wikiTerms, getRelatedTerms, wikiCategories } from '@/data/wiki/terms';
 import { formatDataDate, isoDate } from '@/lib/format';
 
@@ -36,7 +36,9 @@ const WikiTerm: React.FC = () => {
     return <Navigate to="/wiki" replace />;
   }
 
-  const relatedTerms = getRelatedTerms(term.slug);
+  const relatedTerms = uniqueBySlug(getRelatedTerms(term.slug));
+  // Anclas únicas: los encabezados repetidos del contenido se numeran («-2», «-3»).
+  const markdown = term.longDefinition ? dedupeHeadingIds(term.longDefinition) : undefined;
   const category = wikiCategories.find(c => c.id === term.category);
   const reqs = term.hostingRequirements ?? [];
   const faqs = term.faq ?? [];
@@ -45,12 +47,12 @@ const WikiTerm: React.FC = () => {
 
   // Índice desde los encabezados que de verdad se dibujan (mismas anclas).
   const toc: TocItem[] = [
-    { id: 'que-es-termino', label: `¿Qué es ${term.title}?` },
-    ...markdownToc(term.longDefinition),
-    ...(reqs.length > 0 ? [{ id: 'requisitos-hosting', label: 'Requisitos de hosting' }] : []),
-    ...(faqs.length > 0 ? [{ id: 'preguntas-frecuentes', label: 'Preguntas frecuentes' }] : []),
-    ...(errors.length > 0 ? [{ id: 'errores-comunes', label: 'Errores comunes' }] : []),
-    ...(links.length > 0 ? [{ id: 'enlaces-oficiales', label: 'Enlaces oficiales' }] : []),
+    { id: 'termino-que-es', label: `¿Qué es ${term.title}?` },
+    ...markdownToc(markdown),
+    ...(reqs.length > 0 ? [{ id: 'termino-requisitos', label: 'Requisitos de hosting' }] : []),
+    ...(faqs.length > 0 ? [{ id: 'termino-preguntas', label: 'Preguntas frecuentes' }] : []),
+    ...(errors.length > 0 ? [{ id: 'termino-errores', label: 'Errores comunes' }] : []),
+    ...(links.length > 0 ? [{ id: 'termino-enlaces', label: 'Enlaces oficiales' }] : []),
   ];
 
   const breadcrumbItems = [
@@ -139,23 +141,18 @@ const WikiTerm: React.FC = () => {
               )}
             </>
           }
-          aside={
-            // La oferta ocupa la columna fija (como antes, solo en escritorio); el índice va plegable en el cuerpo
-            // para que índice y oferta no compitan por el alto de la pantalla.
-            <div className="hidden lg:block">
-              <RightRailOffer termSlug={term.slug} />
-            </div>
-          }
+          toc={toc}
+          prose={false}
           footer={
             <div className="space-y-12">
               {relatedTerms.length > 0 && (
-                <section aria-labelledby="relacionados">
-                  <h2 id="relacionados" className="t-h3 mb-4 text-ink">
+                <section aria-labelledby="termino-relacionados">
+                  <h2 id="termino-relacionados" className="t-h3 mb-4 text-ink">
                     Términos relacionados
                   </h2>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {relatedTerms.map((rt, i) => (
-                      <TermCard key={`${rt.id}-${i}`} term={rt} variant="compact" />
+                    {relatedTerms.map((rt) => (
+                      <TermCard key={rt.slug} term={rt} variant="compact" />
                     ))}
                   </div>
                 </section>
@@ -174,89 +171,97 @@ const WikiTerm: React.FC = () => {
             </div>
           }
         >
-          {term.tldr && (
-            <div className="not-prose mb-10">
-              <TLDRSummary data={term.tldr} />
-            </div>
-          )}
+          {/* Cuerpo a la izquierda; la oferta va en la columna derecha, como antes y solo en escritorio. */}
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_17rem] xl:gap-12">
+            <div className="prose min-w-0">
+              {term.tldr && (
+                <div className="not-prose mb-10">
+                  <TLDRSummary data={term.tldr} />
+                </div>
+              )}
 
-          <TocInline items={toc} />
+              <h2 id="termino-que-es" className="scroll-mt-24">¿Qué es {term.title}?</h2>
+              {markdown ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={WIKI_MD_COMPONENTS}>
+                  {markdown}
+                </ReactMarkdown>
+              ) : (
+                <p>{term.shortDefinition}</p>
+              )}
 
-          <h2 id="que-es-termino" className="scroll-mt-24">¿Qué es {term.title}?</h2>
-          {term.longDefinition ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]} components={WIKI_MD_COMPONENTS}>
-              {term.longDefinition}
-            </ReactMarkdown>
-          ) : (
-            <p>{term.shortDefinition}</p>
-          )}
+              {term.whenToUse && (
+                <div className="not-prose">
+                  <Callout tone="tip" title={`Cuándo usar ${term.title}`}>
+                    <p>{term.whenToUse}</p>
+                  </Callout>
+                </div>
+              )}
 
-          {term.whenToUse && (
-            <div className="not-prose">
-              <Callout tone="tip" title={`Cuándo usar ${term.title}`}>
-                <p>{term.whenToUse}</p>
-              </Callout>
-            </div>
-          )}
+              {reqs.length > 0 && (
+                <>
+                  <h2 id="termino-requisitos" className="scroll-mt-24">Requisitos de hosting</h2>
+                  <ul>
+                    {reqs.map((req, i) => (
+                      <li key={`${i}-${req}`}>{req}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
 
-          {reqs.length > 0 && (
-            <>
-              <h2 id="requisitos-hosting" className="scroll-mt-24">Requisitos de hosting</h2>
-              <ul>
-                {reqs.map((req, i) => (
-                  <li key={`${i}-${req}`}>{req}</li>
-                ))}
-              </ul>
-            </>
-          )}
+              {faqs.length > 0 && (
+                <>
+                  <h2 id="termino-preguntas" className="scroll-mt-24">Preguntas frecuentes</h2>
+                  <div className="not-prose">
+                    <SimpleFAQ faqs={faqs} termSlug={term.slug} termTitle={term.title} />
+                  </div>
+                </>
+              )}
 
-          {faqs.length > 0 && (
-            <>
-              <h2 id="preguntas-frecuentes" className="scroll-mt-24">Preguntas frecuentes</h2>
-              <div className="not-prose">
-                <SimpleFAQ faqs={faqs} termSlug={term.slug} termTitle={term.title} />
+              {errors.length > 0 && (
+                <>
+                  <h2 id="termino-errores" className="scroll-mt-24">Errores comunes</h2>
+                  <ul>
+                    {errors.map((e, i) => (
+                      <li key={`${i}-${e.error}`}>
+                        <strong>{e.error}</strong> {e.solution}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              {links.length > 0 && (
+                <>
+                  <h2 id="termino-enlaces" className="scroll-mt-24">Enlaces oficiales y descargas</h2>
+                  <ul>
+                    {links.map((link, i) => (
+                      <li key={`${i}-${link.url}`}>
+                        <a href={link.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">
+                          {link.title}
+                          <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              <div className="not-prose mt-12">
+                <HostingPlusCTA
+                  termSlug={term.slug}
+                  termTitle={term.title}
+                  plan={term.cta.plan}
+                  copy={term.cta.copy}
+                  url={term.cta.url}
+                  proofPoints={term.proofPoints}
+                />
               </div>
-            </>
-          )}
-
-          {errors.length > 0 && (
-            <>
-              <h2 id="errores-comunes" className="scroll-mt-24">Errores comunes</h2>
-              <ul>
-                {errors.map((e, i) => (
-                  <li key={`${i}-${e.error}`}>
-                    <strong>{e.error}</strong> {e.solution}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          {links.length > 0 && (
-            <>
-              <h2 id="enlaces-oficiales" className="scroll-mt-24">Enlaces oficiales y descargas</h2>
-              <ul>
-                {links.map((link, i) => (
-                  <li key={`${i}-${link.url}`}>
-                    <a href={link.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">
-                      {link.title}
-                      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-
-          <div className="not-prose mt-12">
-            <HostingPlusCTA
-              termSlug={term.slug}
-              termTitle={term.title}
-              plan={term.cta.plan}
-              copy={term.cta.copy}
-              url={term.cta.url}
-              proofPoints={term.proofPoints}
-            />
+            </div>
+            <div className="hidden lg:block">
+              <div className="lg:sticky lg:top-24">
+                <RightRailOffer termSlug={term.slug} />
+              </div>
+            </div>
           </div>
         </ReadingLayout>
       </main>

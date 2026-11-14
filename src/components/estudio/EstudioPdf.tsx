@@ -33,25 +33,17 @@ const EstudioPdf: React.FC<Props> = ({ url, pageProviders }) => (
     <h2 id="pdf-titulo" className="text-base font-semibold text-ink">
       Informe en PDF
     </h2>
-    <dl className="t-small mt-3 space-y-2">
-      <div>
-        <dt className="t-meta">Versión</dt>
-        <dd className="tabular font-semibold text-ink">{PDF_INFO.version}</dd>
-      </div>
-      <div>
-        <dt className="t-meta">Fecha de cálculo</dt>
-        <dd className="font-semibold text-ink">
-          <time dateTime={isoDate(PDF_INFO.date)}>{formatDataDate(PDF_INFO.date)}</time>
-        </dd>
-      </div>
-      <div>
-        <dt className="t-meta">Extensión</dt>
-        <dd className="tabular font-semibold text-ink">{formatInteger(PDF_INFO.pages)} páginas</dd>
-      </div>
-      <div>
-        <dt className="t-meta">Cobertura</dt>
-        <dd className="tabular font-semibold text-ink">{formatInteger(PDF_INFO.providers)} proveedores</dd>
-      </div>
+    <dl className="t-small mt-3 grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1.5">
+      <dt className="t-meta">Versión</dt>
+      <dd className="tabular font-semibold text-ink">{PDF_INFO.version}</dd>
+      <dt className="t-meta">Calculado el</dt>
+      <dd className="font-semibold text-ink">
+        <time dateTime={isoDate(PDF_INFO.date)}>{formatDataDate(PDF_INFO.date)}</time>
+      </dd>
+      <dt className="t-meta">Páginas</dt>
+      <dd className="tabular font-semibold text-ink">{formatInteger(PDF_INFO.pages)}</dd>
+      <dt className="t-meta">Proveedores</dt>
+      <dd className="tabular font-semibold text-ink">{formatInteger(PDF_INFO.providers)}</dd>
     </dl>
     <p className="t-meta mt-3">
       Es otra edición: esta página resume {formatInteger(pageProviders)} proveedores y el PDF evalúa{' '}

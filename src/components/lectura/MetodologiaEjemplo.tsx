@@ -75,7 +75,10 @@ const MetodologiaEjemplo: React.FC<Props> = ({ data, isLoading, exportUrl }) => 
   }
 
   // El benchmark guarda el compuesto en escala 0-100; las notas por factor van de 0 a 10.
-  const rawComposite = num(data.benchmark?.composite_score ?? data.company.overall_rating);
+  // Procedencia según la fuente: compuesto del benchmark = Medido; nota general de respaldo = Editorial.
+  const benchComposite = num(data.benchmark?.composite_score);
+  const fromBenchmark = benchComposite != null;
+  const rawComposite = fromBenchmark ? benchComposite : num(data.company.overall_rating);
   const composite = rawComposite == null ? null : rawComposite > 10 ? rawComposite / 10 : rawComposite;
 
   const rows: EvidenceRow[] = RANKING_FACTORS.map((f) => ({
@@ -91,10 +94,13 @@ const MetodologiaEjemplo: React.FC<Props> = ({ data, isLoading, exportUrl }) => 
         title={data.company.name}
         subtitle="Primer lugar actual. Datos vivos desde la base de datos pública."
         score={composite ?? undefined}
-        scoreKind="editorial"
+        scoreKind={fromBenchmark ? 'measured' : 'editorial'}
         rows={rows}
       />
       <p className="t-meta">
+        {fromBenchmark
+          ? 'El puntaje compuesto sale del último benchmark medido.'
+          : 'Sin benchmark para este proveedor: el puntaje grande es su nota general editorial.'}{' '}
         Todas las notas por factor y el puntaje compuesto van en escala de 0 a 10. Cuando el benchmark guarda el
         compuesto en escala de 0 a 100, lo dividimos por 10.
       </p>

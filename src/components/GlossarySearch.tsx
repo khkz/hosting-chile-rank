@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/select';
 import { searchTerms, wikiCategories, WikiTerm } from '@/data/wiki/terms.ts';
 import { CMS_LABEL, LEVEL_LABEL } from '@/components/lectura/wikiLabels';
+import { uniqueBySlug } from '@/components/lectura/wikiData';
 import { formatInteger } from '@/lib/format';
 
 interface GlossarySearchProps {
@@ -47,7 +48,7 @@ const GlossarySearch: React.FC<GlossarySearchProps> = ({ onResults, initialQuery
     if (cmsFilter !== 'all') filters.cms = cmsFilter;
     if (levelFilter !== 'all') filters.level = levelFilter;
 
-    const results = [...searchTerms(debouncedQuery, filters)];
+    const results = uniqueBySlug(searchTerms(debouncedQuery, filters));
     if (sortBy === 'alphabetical') results.sort((a, b) => a.title.localeCompare(b.title, 'es'));
     if (sortBy === 'level') results.sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level]);
     // «Más recientes» ordena por la fecha de actualización que trae cada término.
@@ -88,7 +89,7 @@ const GlossarySearch: React.FC<GlossarySearchProps> = ({ onResults, initialQuery
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
           <SelectTrigger className={trigger} aria-label="Filtrar por categoría">
             <SelectValue placeholder="Categoría" />
