@@ -1,67 +1,33 @@
 import React from 'react';
-import { House, ShoppingBag, Building2, Cpu, Star } from 'lucide-react';
+import { Award, Building2, Cpu, House, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
+import Section from '@/components/system/Section';
 
-const Categories = () => {
-  const categoryData = [
-    {
-      title: 'Mejor Hosting 2026',
-      icon: <Star className="h-8 w-8 text-yellow-600" />,
-      href: '/mejor-hosting-chile-2026',
-      featured: true,
-      caption: 'Ranking general',
-    },
-    {
-      title: 'Hosting WordPress',
-      icon: <House className="h-8 w-8 text-blue-600" />,
-      href: '/mejor-hosting-wordpress-chile',
-      caption: 'Mejor hosting WP',
-    },
-    {
-      title: 'Hosting Ecommerce',
-      icon: <ShoppingBag className="h-8 w-8 text-green-600" />,
-      href: '/mejor-hosting-ecommerce-chile',
-      caption: 'WooCommerce y tienda',
-    },
-    {
-      title: 'Hosting PYMES',
-      icon: <Building2 className="h-8 w-8 text-red-600" />,
-      href: '/mejor-hosting-pymes-chile',
-      caption: 'Email + sitio empresa',
-    },
-    {
-      title: 'VPS Chile',
-      icon: <Cpu className="h-8 w-8 text-purple-600" />,
-      href: '/mejor-vps-chile',
-      caption: 'KVM + NVMe + root',
-    },
-  ];
+const CATEGORIES: { title: string; caption: string; href: string; Icon: React.ComponentType<{ className?: string }> }[] = [
+  { title: 'Mejor hosting 2026', caption: 'Ranking general', href: '/mejor-hosting-chile-2026', Icon: Award },
+  { title: 'Hosting WordPress', caption: 'Para sitios WordPress', href: '/mejor-hosting-wordpress-chile', Icon: House },
+  { title: 'Hosting e-commerce', caption: 'WooCommerce y tiendas', href: '/mejor-hosting-ecommerce-chile', Icon: ShoppingBag },
+  { title: 'Hosting para pymes', caption: 'Correo y sitio de empresa', href: '/mejor-hosting-pymes-chile', Icon: Building2 },
+  { title: 'VPS en Chile', caption: 'KVM, NVMe y acceso root', href: '/mejor-vps-chile', Icon: Cpu },
+];
 
-  return (
-    <section className="container mx-auto py-16 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-8 text-ink">Explora por tipo de servicio</h2>
-      <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-6">
-        {categoryData.map((category, index) => (
-          <Link key={index} to={category.href}>
-            <Card className={`p-6 text-center hover:shadow-lg transition-shadow min-h-[180px] ${
-              category.featured ? 'border-2 border-brand bg-gradient-to-b from-brand/5 to-white' : ''
-            }`}>
-              <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                category.featured ? 'bg-brand/10' : 'bg-paper'
-              }`}>
-                {category.icon}
-              </div>
-              <h3 className={`font-semibold ${category.featured ? 'text-brand' : 'text-ink'}`}>
-                {category.title}
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1">{category.caption}</p>
-            </Card>
+/** Accesos por tipo de servicio: celdas con reglas, íconos en tinta, sin tarjetas con sombra. */
+const Categories = () => (
+  <Section id="por-tipo" tone="paper" title="Explora por tipo de servicio" density="tight">
+    <ul className="grid gap-px overflow-hidden rounded-xl border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-5">
+      {CATEGORIES.map(({ title, caption, href, Icon }) => (
+        <li key={href} className="bg-white">
+          <Link to={href} className="group flex h-full min-h-[44px] flex-col gap-2 p-5 hover:bg-paper">
+            <Icon className="h-5 w-5 text-ink-2" aria-hidden />
+            <span className="font-semibold text-ink underline decoration-transparent underline-offset-4 group-hover:decoration-ink">
+              {title}
+            </span>
+            <span className="t-small text-ink-2">{caption}</span>
           </Link>
-        ))}
-      </div>
-    </section>
-  );
-};
+        </li>
+      ))}
+    </ul>
+  </Section>
+);
 
 export default Categories;

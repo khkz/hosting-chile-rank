@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, AlertTriangle } from 'lucide-react';
+import { CalendarCheck, MessageSquareWarning } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,9 +11,10 @@ interface TrustSignalBadgeProps {
 }
 
 /**
- * Reemplaza el badge de escasez ficticia por señales reales:
- *  - Fecha de última verificación (mes/año, centralizada).
- *  - Reclamos verificados (count real desde public_complaints_public).
+ * Señales reales del proveedor, en tinta (el verde y el ámbar son solo de procedencia):
+ *  - Mes de la última verificación de los datos (centralizada).
+ *  - Reclamos verificados del registro público, solo si hay alguno. Si la consulta
+ *    falla no se muestra nada: un error de lectura no es un cero.
  */
 const TrustSignalBadge: React.FC<TrustSignalBadgeProps> = ({ companyId, className = '' }) => {
   const { data: complaints } = useQuery({
@@ -21,28 +22,28 @@ const TrustSignalBadge: React.FC<TrustSignalBadgeProps> = ({ companyId, classNam
     enabled: !!companyId,
     staleTime: 5 * 60 * 1000,
     queryFn: async () => {
-      const { count } = await supabase
+      const { count, error } = await supabase
         .from('public_complaints_public')
         .select('id', { count: 'exact', head: true })
         .eq('company_id', companyId!)
         .in('status', ['verified', 'resolved']);
-      return count ?? 0;
+      if (error || count == null) throw error ?? new Error('sin conteo');
+      return count;
     },
   });
 
   return (
-    <span className={`inline-flex flex-wrap items-center gap-x-3 gap-y-1 ${className}`}>
-      <span className="inline-flex items-center gap-1">
-        <ShieldCheck className="h-3.5 w-3.5 text-ok" aria-hidden />
+    <span className={`inline-flex flex-wrap items-center gap-x-4 gap-y-1 ${className}`}>
+      <span className="inline-flex items-center gap-1.5">
+        <CalendarCheck className="h-4 w-4 text-ink-3" aria-hidden />
         {getLastUpdatedText()}
       </span>
       {typeof complaints === 'number' && complaints > 0 && (
         <Link
           to="/reclamos"
-          className="inline-flex items-center gap-1 text-signal-declared underline-offset-4 hover:underline"
-          aria-label={`${complaints} reclamos verificados`}
+          className="inline-flex items-center gap-1.5 font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
         >
-          <AlertTriangle className="h-3.5 w-3.5" aria-hidden />
+          <MessageSquareWarning className="h-4 w-4 text-ink-2" aria-hidden />
           {complaints} {complaints === 1 ? 'reclamo verificado' : 'reclamos verificados'}
         </Link>
       )}

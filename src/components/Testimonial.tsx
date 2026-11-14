@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { formatCorporateGroup } from '@/lib/formatGroup';
-import { ShieldCheck, MapPin, Building2, CheckCircle2, ArrowRight, MessageSquarePlus } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import Section from '@/components/system/Section';
+import { ProvenanceTag, type Provenance } from '@/components/data/Provenance';
 import { ReviewModal } from '@/components/reviews/ReviewModal';
 
 interface CompanyRow {
@@ -27,32 +28,47 @@ interface CompanyRow {
   technologies: string[] | null;
 }
 
+interface Signal {
+  label: string;
+  /** Procedencia del campo, cuando se conoce. */
+  kind?: Provenance;
+}
+
 // Build trust signals from REAL data only. Never invent — if the field is missing, the signal is skipped.
-const buildSignals = (c: CompanyRow): { icon: React.ReactNode; label: string }[] => {
-  const signals: { icon: React.ReactNode; label: string }[] = [];
+const buildSignals = (c: CompanyRow): Signal[] => {
+  const signals: Signal[] = [];
 
   if (c.datacenter_location && /chile|santiago|providencia/i.test(c.datacenter_location)) {
-    signals.push({ icon: <MapPin className="w-3.5 h-3.5" />, label: 'Datacenter en Chile' });
+    signals.push({ label: 'Datacenter en Chile', kind: 'declared' });
   }
 
   if (c.is_independent === true) {
-    signals.push({ icon: <Building2 className="w-3.5 h-3.5" />, label: 'Empresa independiente' });
+    signals.push({ label: 'Empresa independiente' });
   } else if (c.is_independent === false && c.corporate_group) {
-    signals.push({ icon: <Building2 className="w-3.5 h-3.5" />, label: formatCorporateGroup(c.corporate_group) });
+    signals.push({ label: formatCorporateGroup(c.corporate_group) });
   }
 
   if (c.has_migration_free) {
-    signals.push({ icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: 'Migración gratuita' });
+    signals.push({ label: 'Migración gratuita', kind: 'declared' });
   }
 
   // Pull up to 2 verified facts from curated ranking_features that aren't already covered
   const extra = (c.ranking_features ?? []).filter(Boolean).slice(0, 2);
   for (const f of extra) {
     if (signals.length >= 5) break;
-    signals.push({ icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: f });
+    signals.push({ label: f });
   }
 
   return signals.slice(0, 5);
+};
+
+const textLink = 'font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
+
+/** Logo del proveedor; si no hay o no carga, su nombre (nunca un recuadro vacío). */
+const LogoOrName: React.FC<{ name: string; logo: string | null }> = ({ name, logo }) => {
+  const [failed, setFailed] = useState(false);
+  if (!logo || failed) return <>{name}</>;
+  return <img src={logo} alt="" loading="lazy" className="max-h-9 max-w-full object-contain" onError={() => setFailed(true)} />;
 };
 
 const Testimonial = () => {
@@ -91,154 +107,109 @@ const Testimonial = () => {
   });
 
   return (
-    <section className="bg-gradient-to-b from-paper to-white py-20">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-brand/10 text-brand px-4 py-1.5 rounded-full text-xs font-semibold mb-4">
-            <ShieldCheck className="w-4 h-4" />
-            Señales públicas verificables
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-ink mb-4">
-            Reputación verificada de los proveedores
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Combinamos fuentes públicas y datos curados de cada proveedor: ubicación del datacenter,
-            independencia corporativa y servicios incluidos. Sin estrellas inventadas.
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-brand to-pink-400 mx-auto mt-6 rounded-full"></div>
+    <Section
+      id="reputacion"
+      title="Reputación verificada de los proveedores"
+      lead="Combinamos fuentes públicas y datos curados de cada proveedor: ubicación del datacenter, independencia corporativa y servicios incluidos. Sin estrellas inventadas."
+    >
+      {/* Señales de los primeros puestos curados: filas con reglas */}
+      {isLoading ? (
+        <div aria-busy="true" aria-label="Cargando proveedores" className="space-y-3 border-t-2 border-ink pt-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-10 rounded-sm bg-paper-deep" />
+          ))}
         </div>
-
-        {/* Trust cards for top 5 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5 mb-12 max-w-6xl mx-auto">
-          {isLoading
-            ? Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                  <Skeleton className="h-10 w-10 rounded mb-3" />
-                  <Skeleton className="h-4 w-3/4 mb-2" />
-                  <Skeleton className="h-3 w-full mb-1.5" />
-                  <Skeleton className="h-3 w-full mb-1.5" />
-                  <Skeleton className="h-3 w-2/3" />
-                </div>
-              ))
-            : (top5 ?? []).map((c) => {
-                const signals = buildSignals(c);
-                return (
-                  <article
-                    key={c.slug}
-                    className="group relative bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-brand/30 transition-all duration-300 flex flex-col"
-                  >
-                    {c.ranking_position && (
-                      <span className="absolute -top-2 -left-2 inline-flex items-center justify-center w-7 h-7 bg-ink text-white text-xs font-bold rounded-full shadow">
-                        #{c.ranking_position}
-                      </span>
-                    )}
-
-                    <div className="flex items-center gap-3 mb-3 min-h-[40px]">
-                      {c.logo_url ? (
-                        <img
-                          src={c.logo_url}
-                          alt={`Logo ${c.name}`}
-                          className="h-8 max-w-[110px] object-contain"
-                          loading="lazy"
-                          onError={(e) => {
-                            (e.currentTarget as HTMLImageElement).style.display = 'none';
-                          }}
-                        />
-                      ) : (
-                        <h3 className="font-bold text-ink text-sm">{c.name}</h3>
-                      )}
-                    </div>
-
-                    <p className="text-xs font-semibold text-ink mb-2">{c.name}</p>
-
-                    {signals.length > 0 ? (
-                      <ul className="space-y-1.5 mb-4 flex-1">
-                        {signals.map((s, idx) => (
-                          <li key={idx} className="flex items-start gap-1.5 text-xs text-gray-700">
-                            <span className="text-green-600 mt-0.5 flex-shrink-0">{s.icon}</span>
-                            <span className="leading-snug">{s.label}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-xs text-gray-500 italic mb-4 flex-1">
-                        Datos en proceso de verificación.
-                      </p>
-                    )}
-
-                    <Link
-                      to={`/resenas/${c.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:text-brand-ink mt-auto group-hover:gap-2 transition-all"
-                    >
-                      Ver análisis completo
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </article>
-                );
-              })}
-        </div>
-
-        {/* CTA: deja tu reseña */}
-        <div className="text-center mb-16">
-          <div className="inline-flex flex-col items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-5 shadow-sm max-w-xl">
-            <div className="w-12 h-12 bg-gradient-to-br from-paper-deep to-gray-200 rounded-full flex items-center justify-center">
-              <MessageSquarePlus className="w-6 h-6 text-ink" />
-            </div>
-            <h3 className="text-lg font-semibold text-ink">
-              ¿Usaste alguno de estos hostings?
-            </h3>
-            <Button
-              asChild
-              className="cta-primary px-6 py-3 rounded-xl font-semibold"
-            >
-              <Link to="/vota-hosting">
-                Deja tu reseña
-                <span className="ml-2">→</span>
-              </Link>
-            </Button>
-            <p className="text-xs text-gray-500 inline-flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Las opiniones se verifican antes de publicarse.
-            </p>
-          </div>
-        </div>
-
-        {/* Partners Section */}
-        <div className="text-center">
-          <h3 className="text-2xl font-semibold text-ink mb-8">
-            Proveedores verificados en Chile
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6 items-center max-w-6xl mx-auto">
-            {loadingCompanies ? (
-              Array.from({ length: 8 }).map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full rounded" />
-              ))
-            ) : (
-              companies?.map((company) => (
+      ) : top5 && top5.length > 0 ? (
+        <ol className="divide-y divide-rule border-y-2 border-ink">
+          {top5.map((c) => {
+            const signals = buildSignals(c);
+            return (
+              <li key={c.slug} className="grid gap-3 py-5 md:grid-cols-12 md:gap-8">
+                <p className="flex items-baseline gap-3 md:col-span-3">
+                  {c.ranking_position && (
+                    <span className="w-6 shrink-0 text-lg font-bold text-ink-3 tabular">
+                      <span className="sr-only">Puesto </span>
+                      {c.ranking_position}
+                    </span>
+                  )}
+                  <span className="font-semibold text-ink">{c.name}</span>
+                </p>
+                {signals.length > 0 ? (
+                  <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-base text-ink-2 md:col-span-7 md:text-[15px]">
+                    {signals.map((s) => (
+                      <li key={s.label} className="inline-flex items-center gap-1.5">
+                        {s.kind ? (
+                          <ProvenanceTag kind={s.kind} variant="glyph" />
+                        ) : (
+                          <span aria-hidden className="h-1 w-1 shrink-0 rounded-sm bg-ink-3" />
+                        )}
+                        {s.label}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-base text-ink-3 md:col-span-7 md:text-[15px]">Datos en proceso de verificación.</p>
+                )}
                 <Link
-                  key={company.slug}
-                  to={`/catalogo/${company.slug}`}
-                  className="group flex items-center justify-center h-12 w-full"
-                  title={`Ver ficha de ${company.name}`}
+                  to={`/resenas/${c.slug}`}
+                  aria-label={`Ver análisis completo de ${c.name}`}
+                  className={`inline-flex min-h-[44px] items-center text-[15px] md:col-span-2 md:min-h-0 md:justify-end ${textLink}`}
                 >
-                  <img
-                    src={company.logo_url || '/placeholder.svg'}
-                    className="max-h-10 max-w-full object-contain grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all duration-300"
-                    alt={`Logo de ${company.name} - Hosting verificado en Chile`}
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = '/placeholder.svg';
-                    }}
-                  />
+                  Ver análisis completo
                 </Link>
-              ))
-            )}
-          </div>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <p className="measure border-t-2 border-ink pt-4 text-base text-ink-2">
+          Todavía no publicamos señales curadas para esta edición. Mientras tanto, revisa los{' '}
+          <Link to="/reclamos" className={textLink}>
+            reclamos verificados
+          </Link>{' '}
+          y las fichas del{' '}
+          <Link to="/catalogo" className={textLink}>
+            catálogo
+          </Link>
+          .
+        </p>
+      )}
+
+      {/* Reseñas de usuarios */}
+      <div className="mt-10 flex flex-col gap-4 border-t border-rule pt-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h3 className="t-h3 text-ink">¿Usaste alguno de estos hostings?</h3>
+          <p className="t-meta mt-1 flex items-center gap-1.5">
+            <ShieldCheck className="h-4 w-4 text-ink-3" aria-hidden />
+            Las opiniones se verifican antes de publicarse.
+          </p>
         </div>
+        <Button asChild variant="outline">
+          <Link to="/vota-hosting">Deja tu reseña</Link>
+        </Button>
+      </div>
+
+      {/* Proveedores verificados: logo si existe; si no, el nombre */}
+      <div className="mt-10">
+        <h3 className="t-h3 text-ink">Proveedores verificados en Chile</h3>
+        <ul className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-rule bg-rule sm:grid-cols-4 lg:grid-cols-8">
+          {loadingCompanies
+            ? Array.from({ length: 8 }).map((_, i) => <li key={i} aria-hidden className="h-16 bg-white" />)
+            : companies?.map((company) => (
+                <li key={company.slug} className="bg-white">
+                  <Link
+                    to={`/catalogo/${company.slug}`}
+                    className="flex h-16 items-center px-4 text-sm font-semibold text-ink hover:bg-paper"
+                    aria-label={`Ver ficha de ${company.name}`}
+                  >
+                    <LogoOrName name={company.name} logo={company.logo_url} />
+                  </Link>
+                </li>
+              ))}
+        </ul>
       </div>
       <ReviewModal open={reviewOpen} onOpenChange={setReviewOpen} />
-    </section>
+    </Section>
   );
 };
 

@@ -6,34 +6,56 @@ import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import RankingPositions4to10 from './RankingPositions4to10';
-import RankingAuthorityBlock from './RankingAuthorityBlock';
+import { RankingDisclosure, WhyFirstAccordion } from './RankingAuthorityBlock';
 import { filterVisibleProviders } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
-import { ProvenanceLegend } from './data/Provenance';
+import { PROVENANCE, ProvenanceTag, type Provenance } from './data/Provenance';
+import { Button } from '@/components/ui/button';
 import RankingRow, { type RankingCompany } from './ranking/RankingRow';
 import { cleanFeatures } from './ranking/rankingText';
-import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
-// ── Esqueleto de carga ──────────────────────────────────────────
+// ── Esqueleto de carga (sin animación) ──────────────────────────
 const RankingSkeleton = () => (
   <div aria-busy="true" aria-label="Cargando el ranking">
     {[1, 2, 3].map((i) => (
-      <div key={i} className="grid gap-8 border-b border-rule py-8 md:grid-cols-[88px_minmax(0,1fr)_240px]">
+      <div key={i} className="grid gap-8 border-b border-rule py-8 lg:grid-cols-[88px_minmax(0,1fr)_248px]">
         <span className="type-display text-6xl text-ink/15">{i}</span>
         <div className="space-y-3">
-          <div className="h-7 w-1/3 animate-pulse rounded bg-paper-deep" />
-          <div className="h-4 w-2/3 animate-pulse rounded bg-paper-deep" />
-          <div className="h-4 w-1/2 animate-pulse rounded bg-paper-deep" />
+          <div className="h-7 w-1/3 rounded-sm bg-paper-deep" />
+          <div className="h-4 w-2/3 rounded-sm bg-paper-deep" />
+          <div className="h-4 w-1/2 rounded-sm bg-paper-deep" />
         </div>
-        <div className="h-12 animate-pulse rounded bg-paper-deep" />
+        <div className="h-12 rounded-lg bg-paper-deep" />
       </div>
     ))}
   </div>
 );
 
+/** Leyenda de procedencia en una fila: etiqueta y lectura breve (la descripción completa va en el title). */
+const ProvenanceKey = () => (
+  <dl className="flex flex-wrap items-center gap-x-5 gap-y-2">
+    {(['measured', 'declared', 'editorial'] as Provenance[]).map((k) => (
+      <div key={k} className="flex items-center gap-2">
+        <dt>
+          <ProvenanceTag kind={k} />
+        </dt>
+        <dd className="t-meta">{PROVENANCE[k].spoken}</dd>
+      </div>
+    ))}
+  </dl>
+);
+
+type SortKey = 'overall' | 'speed' | 'price';
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: 'overall', label: 'General' },
+  { value: 'speed', label: 'Velocidad' },
+  { value: 'price', label: 'Precio y valor' },
+];
+
 // ── Main Ranking Component ──────────────────────────────────────
 const HostingRanking = () => {
-  const [sortCriteria, setSortCriteria] = useState('overall');
+  const [sortCriteria, setSortCriteria] = useState<SortKey>('overall');
 
   const { data: companies, isLoading } = useQuery({
     queryKey: ['ranking-companies'],
@@ -64,7 +86,7 @@ const HostingRanking = () => {
         sorted.sort((a, b) => (b.price_rating ?? 0) - (a.price_rating ?? 0));
         break;
       default:
-        // Orden editorial: ranking_position (DB) primero; empate → overall_rating desc
+        // Orden editorial: ranking_position (DB) primero; en empate, overall_rating descendente
         sorted.sort((a, b) => {
           const ap = a.ranking_position ?? 9999;
           const bp = b.ranking_position ?? 9999;
@@ -77,15 +99,11 @@ const HostingRanking = () => {
     return sorted.map((c, index) => ({ ...c, sortPosition: index + 1 }));
   }, [companies, sortCriteria]);
 
+  // Sin nota en la base se muestra «—», nunca un cero de relleno.
   const getRatingLabel = (provider: Omit<RankingCompany, 'sortPosition'>) => {
-    switch (sortCriteria) {
-      case 'speed':
-        return `${provider.speed_rating ?? 0}/10`;
-      case 'price':
-        return `${provider.price_rating ?? 0}/10`;
-      default:
-        return `${provider.overall_rating ?? 0}/10`;
-    }
+    const value =
+      sortCriteria === 'speed' ? provider.speed_rating : sortCriteria === 'price' ? provider.price_rating : provider.overall_rating;
+    return value != null ? `${value}/10` : '—';
   };
 
   const getSchemaItems = () =>
@@ -99,37 +117,32 @@ const HostingRanking = () => {
       reviewCount: 1,
     }));
 
-  const sortOptions: { value: string; label: string }[] = [
-    { value: 'overall', label: 'General' },
-    { value: 'speed', label: 'Velocidad' },
-    { value: 'price', label: 'Precio y valor' },
-  ];
   const metricLabel =
     sortCriteria === 'speed' ? 'Nota de velocidad' : sortCriteria === 'price' ? 'Nota de precio y valor' : 'Nota general';
 
   return (
-    <section id="ranking" className="scroll-mt-20 bg-white">
-      <div className="container mx-auto px-4 py-14">
-        <div className="grid gap-6 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-7">
-            <h2 className="type-wide text-3xl font-bold text-ink md:text-4xl">Ranking de hosting en Chile 2026</h2>
-            <p className="mt-2 max-w-[60ch] text-ink-2">
-              Ranking editorial con pesos publicados: velocidad, uptime, soporte y reputación. Última revisión:{' '}
-              {VERIFICATION_DATE_HUMAN}.
+    <section id="ranking" aria-labelledby="ranking-titulo" className="bg-white">
+      <div className="container pb-14 pt-8 md:pb-20">
+        <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8">
+          {/* tabIndex -1: «Ver el ranking» del hero deja aquí el foco. */}
+          <h2 id="ranking-titulo" tabIndex={-1} className="t-h2 text-ink focus:outline-none">
+            Ranking de hosting en Chile 2026
+          </h2>
+          <div className="flex shrink-0 flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
+            <p id="ranking-orden" className="t-meta">
+              Ordenar los 3 primeros por
             </p>
-          </div>
-          <div className="md:col-span-5 md:flex md:justify-end">
-            <div role="tablist" aria-label="Ordenar el ranking por" className="inline-flex rounded-md border border-ink/20 bg-white p-1">
-              {sortOptions.map((opt) => {
+            <div role="group" aria-labelledby="ranking-orden" className="inline-flex w-full rounded-lg border border-rule bg-white p-1 sm:w-auto">
+              {SORT_OPTIONS.map((opt) => {
                 const active = sortCriteria === opt.value;
                 return (
                   <button
                     key={opt.value}
-                    role="tab"
-                    aria-selected={active}
+                    type="button"
+                    aria-pressed={active}
                     onClick={() => setSortCriteria(opt.value)}
-                    className={`min-h-[40px] rounded px-4 text-sm font-semibold transition-colors ${
-                      active ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink'
+                    className={`min-h-[44px] flex-1 whitespace-nowrap rounded-sm px-2 text-sm font-semibold transition-colors sm:flex-none sm:px-3.5 md:min-h-[36px] ${
+                      active ? 'bg-ink text-white' : 'text-ink-2 hover:bg-paper hover:text-ink'
                     }`}
                   >
                     {opt.label}
@@ -138,19 +151,13 @@ const HostingRanking = () => {
               })}
             </div>
           </div>
+        </header>
+
+        <RankingDisclosure className="mt-3" />
+        <div className="mt-3 flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <p className="text-base text-ink-2 md:text-sm">Criterios: velocidad, uptime, soporte y reputación.</p>
+          <ProvenanceKey />
         </div>
-
-        <RankingAuthorityBlock
-          className="mt-6"
-        />
-
-        {/* Las etiquetas solo se explicaban al pasar el mouse: aquí, también al tocar. */}
-        <details className="mt-4 rounded-lg border border-rule bg-white px-4 py-3 text-sm">
-          <summary className="cursor-pointer font-semibold text-ink">
-            Qué significan las etiquetas Medido, Declarado y Editorial
-          </summary>
-          <ProvenanceLegend compact className="mt-4" />
-        </details>
 
         {!isLoading && sortedHostingData.length > 0 && (
           <ItemListSchema
@@ -161,7 +168,7 @@ const HostingRanking = () => {
           />
         )}
 
-        <div className="mt-6 border-t-2 border-ink">
+        <div className="mt-4 border-t-2 border-ink">
           {isLoading ? (
             <RankingSkeleton />
           ) : (
@@ -181,22 +188,23 @@ const HostingRanking = () => {
         </div>
 
         {sortCriteria !== 'overall' && (
-          <p className="mt-6 text-sm text-ink-2">
+          <p className="mt-4 text-base text-ink-2 md:text-sm">
             El orden por {sortCriteria === 'speed' ? 'velocidad' : 'precio y valor'} se aplica a los tres primeros. Los
             puestos siguientes mantienen el orden general.
           </p>
         )}
+
+        <WhyFirstAccordion className="mt-6" />
+
         <RankingPositions4to10 />
 
-        <div className="mt-10 flex flex-col items-start gap-2 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-ink-2">El ranking completo incluye fichas, comparativas y el detalle de cada nota.</p>
-          <Link
-            to="/ranking"
-            className="inline-flex min-h-[44px] items-center rounded-md border border-ink/25 px-4 font-semibold text-ink hover:border-ink"
-            onClick={() => track('cta_ver_ranking', { location: 'home_more' })}
-          >
-            Ver el ranking completo
-          </Link>
+        <div className="mt-10 flex flex-col items-start gap-3 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-base text-ink-2">El ranking completo incluye fichas, comparativas y el detalle de cada nota.</p>
+          <Button asChild variant="outline">
+            <Link to="/ranking" onClick={() => track('cta_ver_ranking', { location: 'home_more' })}>
+              Ver el ranking completo
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
