@@ -196,7 +196,7 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-              <p className="t-meta mt-3 text-white/75">
+              <p className="mt-3 text-[13px] leading-relaxed text-white/75">
                 En verificación: {VERIFYING_EDITIONS.map((e) => e.name).join(', ')}.
               </p>
             </div>

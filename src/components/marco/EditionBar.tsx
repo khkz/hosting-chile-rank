@@ -76,11 +76,7 @@ const EditionBar: React.FC<{ active: EditionKey; pathname: string }> = ({ active
                 );
               })}
               <li className="lg:hidden">
-                <a
-                  href={coverageHref}
-                  aria-label={othersLabel}
-                  className={`inline-flex h-11 items-center rounded-sm px-2 hover:text-white ${FOCUS_ON_INK}`}
-                >
+                <a href={coverageHref} className={`inline-flex h-11 items-center rounded-sm px-2 hover:text-white ${FOCUS_ON_INK}`}>
                   +{others} en verificación
                 </a>
               </li>

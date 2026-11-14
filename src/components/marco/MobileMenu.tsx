@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, LayoutDashboard, LogOut, Menu } from 'lucide-react';
+import { Globe, LayoutDashboard, LogOut, Menu, MessageCircle } from 'lucide-react';
 import Logo from '@/components/Logo';
 import Flag from '@/components/data/Flag';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { openAdvisor } from '@/components/advisor/events';
 import type { EditionKey } from '@/lib/countries';
 import { editionSwitchHref, type NavGroup, type NavLinkItem } from '@/lib/siteNav';
 import { EDITION_ORDER, editionName } from './editions';
@@ -24,7 +25,11 @@ interface MobileMenuProps {
 
 const groupTitle = 't-label mb-1 text-ink-3';
 
-/** Menú lateral bajo 1280 px: secciones de la edición, ediciones, guías y cuenta. Objetivos de 44 px. */
+/**
+ * Menú lateral bajo 1280 px: secciones de la edición, el asesor con IA,
+ * ediciones, guías y cuenta. Objetivos de 44 px. El asesor se abre cuando el
+ * menú termina de cerrarse, para que el foco quede en su campo.
+ */
 const MobileMenu: React.FC<MobileMenuProps> = ({
   editionKey,
   label,
@@ -39,6 +44,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 }) => {
   const [open, setOpen] = React.useState(false);
   const close = () => setOpen(false);
+  const advisorAfterClose = React.useRef(false);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -51,7 +57,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           <Menu className="h-6 w-6" aria-hidden />
         </button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[88%] max-w-sm overflow-y-auto p-0">
+      <SheetContent
+        side="right"
+        className="w-[88%] max-w-sm overflow-y-auto p-0"
+        onCloseAutoFocus={(e) => {
+          if (!advisorAfterClose.current) return;
+          advisorAfterClose.current = false;
+          e.preventDefault();
+          openAdvisor();
+        }}
+      >
         <SheetTitle className="sr-only">Menú de EligeTuHosting</SheetTitle>
         <div className="flex min-h-16 items-center border-b border-rule py-3 pl-5 pr-14">
           <Logo edition={label} />
@@ -76,6 +91,17 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 );
               })}
             </ul>
+            <button
+              type="button"
+              onClick={() => {
+                advisorAfterClose.current = true;
+                close();
+              }}
+              className="flex min-h-11 w-full items-center gap-2 border-b border-rule text-left text-base font-medium text-ink-2 hover:text-ink"
+            >
+              <MessageCircle className="h-4 w-4" aria-hidden />
+              Asesor con IA
+            </button>
           </section>
 
           <section>

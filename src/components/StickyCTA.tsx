@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { track } from '@/lib/track';
-import { MOBILE_FIXED_UI_OFFSET, openAdvisor } from '@/components/advisor/events';
+import { MOBILE_FIXED_UI_OFFSET, STICKY_PAGE_ATTR, openAdvisor } from '@/components/advisor/events';
 
 /**
  * Barra fija móvil (bajo 768 px), visible después de la primera pantalla.
@@ -15,6 +15,13 @@ import { MOBILE_FIXED_UI_OFFSET, openAdvisor } from '@/components/advisor/events
  */
 const StickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
+
+  // Avisa al asesor flotante que esta página tiene barra, aunque todavía no se vea.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.setAttribute(STICKY_PAGE_ATTR, 'on');
+    return () => root.removeAttribute(STICKY_PAGE_ATTR);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsVisible(window.scrollY > MOBILE_FIXED_UI_OFFSET);

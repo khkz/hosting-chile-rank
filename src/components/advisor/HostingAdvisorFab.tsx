@@ -2,40 +2,116 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MessageCircle, X } from 'lucide-react';
 import AdvisorChat from './AdvisorChat';
-import { ADVISOR_OPEN_EVENT, MOBILE_FIXED_UI_OFFSET, MOBILE_QUERY } from './events';
+import { ADVISOR_OPEN_EVENT, MOBILE_QUERY, STICKY_PAGE_ATTR } from './events';
 import { useEdition } from '@/hooks/useEdition';
 
 const isNarrow = () => typeof window !== 'undefined' && !!window.matchMedia?.(MOBILE_QUERY).matches;
-const isPastFirstScreen = () => typeof window !== 'undefined' && window.scrollY > MOBILE_FIXED_UI_OFFSET;
 const isStickyBarOn = () => typeof document !== 'undefined' && document.documentElement.dataset.stickyCta === 'on';
+const isStickyBarPage = () => typeof document !== 'undefined' && document.documentElement.hasAttribute(STICKY_PAGE_ATTR);
+
+/** Espera tras cada cambio de ruta: la barra fija y el contenido de algunas páginas cargan diferidos. */
+const SETTLE_MS = 1000;
+/** Pausa que se considera «terminó de desplazar». */
+const SCROLL_END_MS = 160;
+/** Ancho del botón compacto (solo el ícono). */
+const COMPACT_WIDTH = 44;
+
+const INTERACTIVE = 'a[href], button, input, select, textarea, label, [role="button"], [role="link"], [tabindex]:not([tabindex="-1"])';
+
+type Zone = { left: number; top: number; right: number; bottom: number };
+
+/**
+ * Zona de reposo del botón, sin la animación de salida (para que no parpadee).
+ * clientWidth/clientHeight descuentan la barra de desplazamiento.
+ */
+const restZone = (fab: HTMLElement, width = fab.offsetWidth): Zone => {
+  const cs = getComputedStyle(fab);
+  const right = document.documentElement.clientWidth - (parseFloat(cs.right) || 16);
+  const bottom = document.documentElement.clientHeight - (parseFloat(cs.bottom) || 16);
+  return { left: right - width, top: bottom - fab.offsetHeight, right, bottom };
+};
+
+const intersects = (r: DOMRect | Zone, z: Zone) =>
+  r.right - r.left > 1 && r.bottom - r.top > 1 && r.left < z.right && r.right > z.left && r.top < z.bottom && r.bottom > z.top;
+
+/** true si algún renglón de texto propio del elemento cae dentro de la zona (ignora textos ocultos de 1 px). */
+const textInZone = (el: Element, z: Zone): boolean =>
+  Array.from(el.childNodes).some((node) => {
+    if (node.nodeType !== Node.TEXT_NODE || !node.textContent?.trim()) return false;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return Array.from(range.getClientRects()).some((r) => intersects(r, z));
+  });
+
+/**
+ * true si en la zona del botón (con el ancho dado) hay texto o un control de
+ * la página: el botón no debe tapar datos como la nota de un puesto del ranking.
+ * Una grilla de 10 px encuentra los elementos bajo la zona; luego se cruza el
+ * rectángulo exacto de su texto o del control con la zona.
+ */
+const coversContent = (fab: HTMLElement, width?: number): boolean => {
+  const z = restZone(fab, width);
+  const found = new Set<Element>();
+  for (let x = z.left + 1; x < z.right; x += 10) {
+    for (let y = z.top + 1; y < z.bottom; y += 10) {
+      document.elementsFromPoint(x, y).slice(0, 8).forEach((el) => found.add(el));
+    }
+  }
+  return Array.from(found).some(
+    (el) =>
+      el !== fab &&
+      !fab.contains(el) &&
+      !el.closest('#asesor-hosting') &&
+      ((el.matches(INTERACTIVE) && intersects(el.getBoundingClientRect(), z)) || textInZone(el, z))
+  );
+};
+
+/** true si la zona del botón cae sobre un bloque marcado con `data-fab-avoid`. */
+const overAvoidZone = (fab: HTMLElement): boolean => {
+  const z = restZone(fab);
+  return Array.from(document.querySelectorAll('[data-fab-avoid]')).some((el) => {
+    const r = el.getBoundingClientRect();
+    return r.top < z.bottom && r.bottom > z.top && r.left < z.right && r.right > z.left;
+  });
+};
 
 /** Anillo de foco blanco hacia adentro, para botones sobre tinta. */
 const FOCUS_ON_INK =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white focus-visible:ring-offset-0';
 
+/** Cómo cabe en su esquina: con rótulo, solo el ícono o no cabe (se aparta). */
+type Fit = 'label' | 'icon' | 'none';
+
 /**
  * Asesor con IA: botón flotante global (.cl y .com) y su panel.
  * - Va al final del documento: es la última parada de Tab (ver App.tsx).
- * - En móvil no tapa la primera pantalla: aparece después de bajar
- *   MOBILE_FIXED_UI_OFFSET px; si la página tiene la barra fija «Cotizar hosting»,
- *   el asesor se abre desde esa barra (ver StickyCTA y .advisor-fab en index.css).
- * - Se reduce al ícono al bajar y se aparta al llegar al pie, para no tapar enlaces.
- * - Cuando no se ve, sale del orden de Tab y de los lectores de pantalla.
+ * - No tapa contenido: se aparta al llegar al pie, sobre bloques con
+ *   `data-fab-avoid` y si en su esquina hay texto o un control (por ejemplo,
+ *   la nota del puesto 1 en la portada); si cabe como ícono, se compacta en vez
+ *   de apartarse. Se evalúa al terminar de desplazar. En móvil, solo el ícono.
+ * - Apartado sigue en el orden de Tab: al recibir el foco vuelve a verse.
+ * - En móvil, en las páginas con la barra fija «Cotizar hosting» no se muestra
+ *   (la primera pantalla queda libre) y el asesor se abre desde esa barra.
  * - Esc o un clic fuera lo cierran; la conversación se conserva y el foco
  *   vuelve al botón que lo abrió.
  */
 const HostingAdvisorFab = () => {
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
-  const [overFooter, setOverFooter] = useState(false);
-  // Estado inicial calculado al montar: en móvil empieza oculto, sin parpadear sobre el hero.
+  const [stepAside, setStepAside] = useState(false);
+  const [fit, setFit] = useState<Fit>('label');
+  // Empieza apartado y espera un instante: así no aparece sobre un hero que
+  // todavía se está cargando ni antes de saber si la página tiene barra fija.
+  const [settled, setSettled] = useState(false);
   const [narrow, setNarrow] = useState(isNarrow);
-  const [pastFirstScreen, setPastFirstScreen] = useState(isPastFirstScreen);
   const [barOn, setBarOn] = useState(isStickyBarOn);
+  const [barPage, setBarPage] = useState(isStickyBarPage);
   const fabRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
+  /** Ancho con rótulo, medido cuando se ve (para no oscilar entre rótulo e ícono). */
+  const labelWidthRef = useRef(140);
   const { pathname } = useLocation();
   const { label } = useEdition();
 
@@ -48,13 +124,16 @@ const HostingAdvisorFab = () => {
     return () => window.removeEventListener(ADVISOR_OPEN_EVENT, onOpen);
   }, []);
 
-  // Ancho de pantalla y barra fija (StickyCTA marca <html data-sticky-cta="on">).
+  // Ancho de pantalla y barra fija (StickyCTA marca <html data-sticky-cta…>).
   useEffect(() => {
     const mq = window.matchMedia?.(MOBILE_QUERY);
     const onMq = () => setNarrow(!!mq?.matches);
     mq?.addEventListener?.('change', onMq);
-    const mo = new MutationObserver(() => setBarOn(isStickyBarOn()));
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-sticky-cta'] });
+    const mo = new MutationObserver(() => {
+      setBarOn(isStickyBarOn());
+      setBarPage(isStickyBarPage());
+    });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-sticky-cta', STICKY_PAGE_ATTR] });
     return () => {
       mq?.removeEventListener?.('change', onMq);
       mo.disconnect();
@@ -63,22 +142,53 @@ const HostingAdvisorFab = () => {
 
   useEffect(() => {
     let raf = 0;
-    const update = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        setCompact(window.scrollY > 480);
-        setPastFirstScreen(isPastFirstScreen());
-        const footer = document.querySelector('[data-site-footer]');
-        setOverFooter(!!footer && footer.getBoundingClientRect().top < window.innerHeight - 8);
-      });
+    let endTimer = 0;
+    // ¿Cabe en su esquina sin tapar contenido? Primero con rótulo, luego como ícono.
+    const measureFit = () => {
+      const fab = fabRef.current;
+      if (!fab) return;
+      if (fab.offsetWidth > COMPACT_WIDTH) labelWidthRef.current = fab.offsetWidth;
+      // En móvil y al bajar ya se muestra solo el ícono.
+      const iconAnyway = isNarrow() || window.scrollY > 480;
+      if (!iconAnyway && !coversContent(fab, labelWidthRef.current)) return setFit('label');
+      setFit(coversContent(fab, COMPACT_WIDTH) ? 'none' : iconAnyway ? 'label' : 'icon');
     };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+    const measurePosition = () => {
+      setCompact(window.scrollY > 480);
+      const fab = fabRef.current;
+      const footer = document.querySelector('[data-site-footer]');
+      const overFooter = !!footer && footer.getBoundingClientRect().top < window.innerHeight - 8;
+      setStepAside(overFooter || (!!fab && overAvoidZone(fab)));
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measurePosition);
+      window.clearTimeout(endTimer);
+      endTimer = window.setTimeout(measureFit, SCROLL_END_MS);
+    };
+    setSettled(false);
+    onScroll();
+    // Al asentarse, mide en el mismo instante en que se deja ver: sin parpadeo.
+    const settle = window.setTimeout(() => {
+      measurePosition();
+      measureFit();
+      setSettled(true);
+    }, SETTLE_MS);
+    // El contenido que llega tarde cambia lo que hay bajo el botón.
+    const ro = new ResizeObserver(() => {
+      window.clearTimeout(endTimer);
+      endTimer = window.setTimeout(measureFit, SCROLL_END_MS);
+    });
+    ro.observe(document.body);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
+      window.clearTimeout(endTimer);
+      window.clearTimeout(settle);
+      ro.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, [pathname]);
 
@@ -114,8 +224,11 @@ const HostingAdvisorFab = () => {
     };
   }, [open, close]);
 
-  // Con la barra fija visible en móvil, el asesor vive en la barra (incluso abierto).
-  const hidden = (narrow && barOn) || (!open && (overFooter || (narrow && !pastFirstScreen)));
+  // En móvil, con barra fija en la página, el asesor vive en la barra (incluso abierto): sin botón.
+  const gone = narrow && (barOn || barPage);
+  // Apartado: invisible pero enfocable; con el foco del teclado vuelve a verse.
+  const tucked = !gone && !open && (!settled || stepAside || fit === 'none');
+  const iconOnly = narrow || compact || open || fit === 'icon';
 
   return (
     <>
@@ -129,14 +242,18 @@ const HostingAdvisorFab = () => {
         aria-expanded={open}
         aria-controls="asesor-hosting"
         aria-label={open ? 'Cerrar el asesor con IA' : 'Abrir el asesor con IA'}
-        aria-hidden={hidden || undefined}
-        tabIndex={hidden ? -1 : undefined}
+        aria-hidden={gone || undefined}
+        tabIndex={gone ? -1 : undefined}
         className={`advisor-fab fixed bottom-4 right-4 z-40 inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-lg bg-ink px-3.5 text-sm font-medium text-white shadow-overlay transition-[transform,opacity] duration-200 hover:bg-ink-soft print:hidden ${
-          hidden ? 'pointer-events-none translate-y-4 opacity-0' : ''
+          gone ? 'pointer-events-none translate-y-4 opacity-0' : ''
+        } ${
+          tucked
+            ? 'pointer-events-none translate-y-4 opacity-0 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100'
+            : ''
         }`}
       >
         {open ? <X className="h-4 w-4" aria-hidden /> : <MessageCircle className="h-4 w-4" aria-hidden />}
-        <span className={compact || open ? 'sr-only' : 'max-sm:sr-only'}>Asesor con IA</span>
+        <span className={iconOnly ? 'sr-only' : undefined}>Asesor con IA</span>
       </button>
 
       {open && (

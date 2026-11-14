@@ -9,11 +9,15 @@ export const openAdvisor = () => {
 };
 
 /**
- * En móvil (< 768 px) nada fijo tapa la primera pantalla: la barra «Cotizar
- * hosting / Asesor con IA» y el botón flotante del asesor aparecen recién
- * después de bajar esta distancia (px).
+ * En móvil (< 768 px), la barra fija «Cotizar hosting / Asesor con IA»
+ * aparece después de bajar esta distancia (px). En las páginas que la montan,
+ * el botón flotante no se muestra: nada fijo tapa la primera pantalla y,
+ * después, el asesor se abre desde la barra.
  */
 export const MOBILE_FIXED_UI_OFFSET = 600;
+
+/** <html data-sticky-cta-page="on">: la página monta la barra fija (visible o no). */
+export const STICKY_PAGE_ATTR = 'data-sticky-cta-page';
 
 /** Mismo corte que index.css (`max-width: 767.98px`) para la barra fija y el asesor. */
 export const MOBILE_QUERY = '(max-width: 767.98px)';
