@@ -2,17 +2,22 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import HostingSectionsNav from '@/components/HostingSectionsNav';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Link, useNavigate } from 'react-router-dom';
-import { Award, ArrowRight } from 'lucide-react';
+import { Award, ArrowRight, ChevronRight } from 'lucide-react';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
-import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import { Button } from '@/components/ui/button';
+import Section from '@/components/system/Section';
+import RankingHeader from '@/components/hubs/RankingHeader';
 import { useAuth } from '@/providers/AuthProvider';
+import { formatInteger } from '@/lib/format';
 import { toast } from 'sonner';
 
+/**
+ * /certificaciones con la cabecera de la familia «ranking». Sin el menú de
+ * tarjetas antiguo ni degradados; el ícono de cada categoría que trae la base
+ * (suele ser un emoji) no se dibuja: se usa un ícono lucide en tinta.
+ * La fecha es la de la última distinción otorgada (granted_at), si existe.
+ */
 export default function Certificaciones() {
   const { user, role } = useAuth();
   const navigate = useNavigate();
@@ -27,7 +32,7 @@ export default function Certificaciones() {
     }
   };
 
-  const { data: categories } = useQuery({
+  const { data: categories, isLoading: categoriesLoading } = useQuery({
     queryKey: ['certification-categories-public'],
     queryFn: async () => {
       const { data } = await supabase
@@ -55,6 +60,18 @@ export default function Certificaciones() {
     },
   });
 
+  const grantedDates = (activeCertifications ?? [])
+    .map((cert) => cert.granted_at)
+    .filter((d): d is string => Boolean(d))
+    .sort();
+  const latestGranted = grantedDates.length > 0 ? grantedDates[grantedDates.length - 1] : null;
+
+  const requestLabel = !user
+    ? 'Inicia sesión para certificar'
+    : role !== 'hosting_provider'
+      ? 'Solo para proveedores'
+      : 'Solicitar certificación';
+
   return (
     <>
       <DynamicMetaTags
@@ -64,107 +81,98 @@ export default function Certificaciones() {
       />
 
       <Navbar />
-      <HostingSectionsNav />
-      
-      <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-r from-primary/10 via-purple-500/10 to-pink-500/10 py-16">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <SEOBreadcrumbs
-              items={[
-                { name: 'Certificaciones', href: '/certificaciones' }
-              ]}
-            />
-            
-            <div className="text-center max-w-3xl mx-auto mt-8">
-              <Award className="w-16 h-16 mx-auto mb-6 text-primary" />
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Certificaciones de Hosting Chile 2026
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Reconocemos la excelencia de los mejores proveedores de hosting en Chile
+
+      <main className="bg-white">
+        <RankingHeader
+          crumbs={[{ name: 'Certificaciones', href: '/certificaciones' }]}
+          title="Certificaciones de Hosting Chile 2026"
+          lead="Reconocemos a proveedores de hosting en Chile por categoría. Cada distinción enlaza a la ficha del proveedor para que revises sus datos."
+          reviewedAt={latestGranted}
+          reviewedLabel="Última distinción otorgada el"
+          undatedNote={activeCertifications ? 'Todavía no hay distinciones publicadas' : 'Cargando las distinciones…'}
+          legend={false}
+        />
+
+        <Section id="categorias" title="Categorías de certificación">
+          {categoriesLoading ? (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Cargando categorías">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-48 rounded-xl border border-rule bg-paper" />
+              ))}
+            </div>
+          ) : !categories || categories.length === 0 ? (
+            <div className="max-w-[62ch] rounded-xl border border-rule bg-paper p-5 text-ink-2">
+              <p className="font-semibold text-ink">Todavía no hay categorías de certificación publicadas.</p>
+              <p className="mt-1">
+                Mientras tanto, compara proveedores con datos en el{' '}
+                <Link to="/ranking" className="font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+                  ranking
+                </Link>
+                .
               </p>
             </div>
-          </div>
-        </section>
-
-        {/* Categories Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <h2 className="text-3xl font-bold mb-8 text-center">Categorías de Certificación</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-              {categories?.map((category) => {
-                const categoryCerts = activeCertifications?.filter(
-                  cert => cert.category_id === category.id
-                );
-                
+          ) : (
+            <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {categories.map((category) => {
+                const certs = (activeCertifications ?? []).filter((cert) => cert.category_id === category.id);
                 return (
-                  <Card key={category.id} className="p-6 hover:shadow-xl transition-shadow">
-                    <div className="text-center mb-4">
-                      <span className="text-5xl mb-3 block">{category.icon}</span>
-                      <h3 className="text-xl font-bold mb-2">{category.name}</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        {category.description}
-                      </p>
-                      <Badge variant="secondary">
-                        {categoryCerts?.length || 0} empresas certificadas
-                      </Badge>
-                    </div>
-
-                    {/* Top 3 Companies */}
-                    {categoryCerts && categoryCerts.length > 0 && (
-                      <div className="mt-6 space-y-2">
-                        {categoryCerts.slice(0, 3).map((cert) => (
-                          <Link
-                            key={cert.id}
-                            to={`/catalogo/${cert.hosting_companies?.slug}`}
-                            className="flex items-center gap-2 p-2 rounded hover:bg-secondary/50 transition-colors"
-                          >
-                            <span className="font-bold text-primary">#{cert.position}</span>
-                            <img
-                              src={cert.hosting_companies?.logo_url || '/placeholder.svg'}
-                              alt={cert.hosting_companies?.name}
-                              className="w-8 h-8 object-contain"
-                            />
-                            <span className="text-sm font-medium flex-1 truncate">
-                              {cert.hosting_companies?.name}
-                            </span>
-                            <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                          </Link>
-                        ))}
+                  <li key={category.id} className="flex flex-col rounded-xl border border-rule bg-white p-5">
+                    <div className="flex items-start gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-paper">
+                        <Award className="h-5 w-5 text-ink-2" aria-hidden />
+                      </span>
+                      <div className="min-w-0">
+                        <h3 className="t-h3 text-ink">{category.name}</h3>
+                        <p className="t-meta mt-0.5 tabular">
+                          {formatInteger(certs.length)} {certs.length === 1 ? 'empresa certificada' : 'empresas certificadas'}
+                        </p>
                       </div>
+                    </div>
+                    {category.description && <p className="t-small mt-3 text-ink-2">{category.description}</p>}
+
+                    {certs.length > 0 && (
+                      <ol className="mt-4 divide-y divide-rule border-t border-rule">
+                        {certs.slice(0, 3).map((cert) => (
+                          <li key={cert.id}>
+                            <Link
+                              to={`/catalogo/${cert.hosting_companies?.slug}`}
+                              className="flex min-h-[44px] items-center gap-3 py-2 text-ink hover:underline"
+                            >
+                              {cert.position != null && (
+                                <span className="w-8 shrink-0 font-semibold tabular text-ink-3">#{cert.position}</span>
+                              )}
+                              <span className="min-w-0 flex-1 truncate font-medium">{cert.hosting_companies?.name}</span>
+                              <ChevronRight className="h-4 w-4 shrink-0 text-ink-3" aria-hidden />
+                            </Link>
+                          </li>
+                        ))}
+                      </ol>
                     )}
-                  </Card>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
+          )}
+        </Section>
 
-            {/* CTA for Providers */}
-            <Card className="p-8 text-center bg-gradient-to-r from-primary/10 to-purple-500/10">
-              <Award className="w-12 h-12 mx-auto mb-4 text-primary" />
-              <h3 className="text-2xl font-bold mb-3">¿Eres proveedor de hosting?</h3>
-              <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Solicita certificaciones para destacar tu empresa y demostrar tu excelencia en el mercado chileno
-              </p>
-              <div className="flex gap-4 justify-center flex-wrap">
-                <Button size="lg" className="gap-2" onClick={handleCertificationRequest}>
-                  {!user ? 'Iniciar Sesión para Certificar' : 
-                   role !== 'hosting_provider' ? 'Solo para Proveedores' : 
-                   'Solicitar Certificación'}
-                  <ArrowRight className="h-5 w-5" />
-                </Button>
-                <Link to="/directorio-hosting-chile">
-                  <Button size="lg" variant="outline">
-                    Ver Directorio Completo
-                  </Button>
-                </Link>
-              </div>
-            </Card>
+        <Section
+          id="proveedores"
+          tone="paper"
+          title="¿Eres proveedor de hosting?"
+          lead="Solicita certificaciones para destacar tu empresa y demostrar tu excelencia en el mercado chileno."
+        >
+          <div className="flex flex-wrap gap-3">
+            <Button size="lg" onClick={handleCertificationRequest}>
+              {requestLabel}
+              <ArrowRight aria-hidden />
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/directorio-hosting-chile">Ver el directorio</Link>
+            </Button>
           </div>
-        </section>
-      </div>
-      
+        </Section>
+      </main>
+
       <Footer />
     </>
   );

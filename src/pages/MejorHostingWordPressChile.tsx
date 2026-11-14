@@ -6,10 +6,39 @@ import Footer from '@/components/Footer';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
 import ProductSchema from '@/components/SEO/ProductSchema';
-import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import RelatedArticles from '@/components/RelatedArticles';
-import { Card } from '@/components/ui/card';
-import { CheckCircle2, Zap, Shield, TrendingUp, DollarSign, Clock, Rocket } from 'lucide-react';
+import Section from '@/components/system/Section';
+import RankingHeader from '@/components/hubs/RankingHeader';
+import ProviderPickCard from '@/components/hubs/ProviderPickCard';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { formatMoney } from '@/lib/format';
+import { Zap, Shield, TrendingUp, Rocket } from 'lucide-react';
+
+/**
+ * /mejor-hosting-wordpress-chile-2026 con la plantilla de la familia «ranking».
+ * Notas, precios y características siguen escritos a mano en esta página
+ * (decisión pendiente 10): se muestran con su procedencia, sin cambiar valores.
+ */
+
+// Comparativa técnica (mismos valores que antes, sin emojis ni banderas emoji).
+const TECH_PROVIDERS = ['HostingPlus', 'SiteGround', 'Webempresa'];
+const TECH_ROWS: { label: string; values: string[] }[] = [
+  { label: 'Servidor web', values: ['LiteSpeed', 'NGINX', 'LiteSpeed'] },
+  { label: 'Caché incluida', values: ['Sí (LSCache)', 'Sí (SuperCacher)', 'Sí (LiteSpeed)'] },
+  { label: 'PHP 8.2+', values: ['Sí', 'Sí', 'Sí'] },
+  { label: 'Staging', values: ['Sí, gratis', 'Sí, gratis', 'No'] },
+  { label: 'CDN incluida', values: ['No', 'Sí (Cloudflare)', 'No'] },
+  { label: 'Backups', values: ['Diarios (7 días)', 'Diarios (30 días)', 'Diarios (14 días)'] },
+  { label: 'Datacenter', values: ['Chile', 'EE. UU.', 'España'] },
+];
+
+const WHY_STATS = [
+  { value: '3,2x', label: 'Más rápido con LiteSpeed vs Apache' },
+  { value: '60 %', label: 'Reducción tiempo carga con cache' },
+  { value: '99,9 %', label: 'Uptime con infraestructura dedicada' },
+];
 
 const MejorHostingWordPressChile = () => {
   const breadcrumbItems = [
@@ -20,17 +49,17 @@ const MejorHostingWordPressChile = () => {
 
   const relatedArticles = [
     {
-      title: 'Guía Hosting WordPress',
+      title: 'Guía de hosting WordPress',
       description: 'Optimización completa para WordPress',
       path: '/guia-hosting-wordpress-chile'
     },
     {
-      title: 'Guía de Seguridad Web',
+      title: 'Guía de seguridad web',
       description: 'Protege tu sitio WordPress',
       path: '/guia-seguridad-web-chile'
     },
     {
-      title: 'Guía para Elegir CDN',
+      title: 'Guía para elegir CDN',
       description: 'Acelera tu WordPress globalmente',
       path: '/guia-elegir-cdn-chile'
     }
@@ -163,267 +192,157 @@ const MejorHostingWordPressChile = () => {
         category="Hosting WordPress"
       />
 
-      <div className="min-h-screen bg-background">
       <Navbar />
-      <SEOBreadcrumbs items={breadcrumbItems} />
-        
-        <main className="container mx-auto px-4 py-12">
-          {/* Header */}
-          <header className="max-w-4xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-6">
-              <Rocket className="w-5 h-5" />
-              <span className="font-semibold">WordPress Optimizado</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Mejor Hosting para WordPress Chile 2025
-            </h1>
-            <p className="text-xl text-muted-foreground mb-4">
-              Comparativa de hosting con infraestructura optimizada específicamente para WordPress
-            </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                Actualizado: Enero 2025
-              </span>
-              <span>•</span>
-              <span>Tests de velocidad incluidos</span>
-            </div>
-          </header>
 
-          {/* Por qué hosting específico para WP */}
-          <section className="max-w-4xl mx-auto mb-16">
-            <Card className="p-8 bg-primary/5 border-primary/20">
-              <h2 className="text-2xl font-semibold mb-4">¿Por qué necesitas hosting específico para WordPress?</h2>
-              <div className="space-y-4 text-muted-foreground">
-                <p className="text-lg leading-relaxed">
-                  WordPress representa el 43% de todos los sitios web del mundo, pero requiere configuraciones 
-                  específicas para funcionar óptimamente. Un hosting genérico puede hacer que tu WordPress sea 
-                  hasta 5x más lento que uno optimizado.
-                </p>
-                <div className="grid md:grid-cols-3 gap-4 mt-6">
-                  <div className="bg-background p-4 rounded-lg border">
-                    <div className="text-3xl font-bold text-primary mb-2">3.2x</div>
-                    <div className="text-sm">Más rápido con LiteSpeed vs Apache</div>
-                  </div>
-                  <div className="bg-background p-4 rounded-lg border">
-                    <div className="text-3xl font-bold text-primary mb-2">60%</div>
-                    <div className="text-sm">Reducción tiempo carga con cache</div>
-                  </div>
-                  <div className="bg-background p-4 rounded-lg border">
-                    <div className="text-3xl font-bold text-primary mb-2">99.9%</div>
-                    <div className="text-sm">Uptime con infraestructura dedicada</div>
-                  </div>
-                </div>
+      <main className="bg-white">
+        <RankingHeader
+          crumbs={breadcrumbItems}
+          title="Mejor Hosting para WordPress Chile"
+          lead="Comparativa de hosting con infraestructura optimizada específicamente para WordPress."
+          reviewedAt={null}
+          undatedNote="Actualizado en enero de 2025"
+          meta={<span>Tests de velocidad incluidos</span>}
+        />
+
+        <Section id="por-que" title="¿Por qué necesitas hosting específico para WordPress?">
+          <p className="t-body measure text-ink-2">
+            WordPress representa el 43% de todos los sitios web del mundo, pero requiere configuraciones específicas para
+            funcionar óptimamente. Un hosting genérico puede hacer que tu WordPress sea hasta 5x más lento que uno
+            optimizado.
+          </p>
+          <dl className="mt-8 grid gap-4 sm:grid-cols-3">
+            {WHY_STATS.map((stat) => (
+              <div key={stat.label} className="flex flex-col rounded-xl border border-rule bg-white p-5">
+                <dt className="t-small order-2 mt-1 text-ink-2">{stat.label}</dt>
+                <dd className="text-3xl font-bold tabular text-ink">{stat.value}</dd>
               </div>
-            </Card>
-          </section>
+            ))}
+          </dl>
+        </Section>
 
-          {/* Ranking */}
-          <section className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-8">Top 3 Hosting WordPress Chile 2025</h2>
-            <div className="space-y-6">
-              {topProviders.map((provider, index) => (
-                <Card key={index} className="p-8 hover:shadow-xl transition-shadow">
-                  <div className="flex flex-col md:flex-row gap-6">
-                    <div className="flex-shrink-0 text-center md:text-left">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary font-bold text-2xl mb-4">
-                        #{index + 1}
-                      </div>
-                      <img 
-                        src={provider.logo} 
-                        alt={`${provider.name} logo`}
-                        className="h-12 mx-auto md:mx-0 object-contain mb-4"
-                      />
-                      <div className="text-3xl font-bold text-foreground mb-1">
-                        {provider.score}/10
-                      </div>
-                      <div className="text-sm text-muted-foreground mb-4">
-                        Score WordPress
-                      </div>
-                      <div className="text-2xl font-bold text-primary mb-1">
-                        ${provider.price.toLocaleString('es-CL')}
-                      </div>
-                      <div className="text-xs text-muted-foreground">CLP/mes</div>
-                    </div>
+        <Section
+          id="ranking"
+          tone="paper"
+          title="Los 3 mejores hosting para WordPress"
+          lead="Notas editoriales; precios declarados por cada proveedor. Confirma el valor vigente en su sitio antes de contratar."
+        >
+          <ol className="space-y-4">
+            {topProviders.map((provider, index) => (
+              <li key={provider.name}>
+                <ProviderPickCard
+                  rank={index + 1}
+                  name={provider.name}
+                  score={provider.score}
+                  scoreLabel="Nota WordPress"
+                  rows={[{ label: 'Precio', value: `${formatMoney(provider.price, 'CLP')} al mes`, kind: 'declared' }]}
+                  featuresTitle="Características WordPress"
+                  features={provider.features}
+                  pros={provider.pros}
+                  cons={provider.cons}
+                  site={{
+                    href: provider.url,
+                    rel: provider.affiliate ? "nofollow sponsored" : "nofollow",
+                    label: `Ir al sitio de ${provider.name}`,
+                  }}
+                  secondary={{
+                    to: `/resenas/${provider.name.toLowerCase().replace(/\s/g, '-')}`,
+                    label: 'Ver el análisis completo',
+                  }}
+                />
+              </li>
+            ))}
+          </ol>
+        </Section>
 
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-foreground mb-4">
-                        {provider.name}
-                      </h3>
-                      
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                          <h4 className="font-semibold text-sm text-muted-foreground mb-2">
-                            Características WordPress
-                          </h4>
-                          <ul className="space-y-1.5">
-                            {provider.features.map((feature, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm">
-                                <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                                <span>{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div>
-                          <div className="mb-4">
-                            <h4 className="font-semibold text-sm text-green-700 mb-2">✅ Ventajas</h4>
-                            <p className="text-sm text-muted-foreground">{provider.pros}</p>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-sm text-yellow-700 mb-2">⚠️ Consideraciones</h4>
-                            <p className="text-sm text-muted-foreground">{provider.cons}</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-3">
-                        <a 
-                          href={provider.url}
-                          target="_blank"
-                          rel={provider.affiliate ? "nofollow sponsored" : "nofollow"}
-                          className="inline-flex items-center px-6 py-2.5 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
-                        >
-                          Ver {provider.name}
-                        </a>
-                        <Link
-                          to={`/resenas/${provider.name.toLowerCase().replace(/\s/g, '-')}`}
-                          className="inline-flex items-center px-6 py-2.5 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-colors"
-                        >
-                          Ver Análisis Completo
-                        </Link>
-                      </div>
-                    </div>
+        <Section id="optimizar" title="Cómo optimizar tu WordPress (independiente del hosting)">
+          <ul className="grid gap-4 md:grid-cols-2">
+            {optimizationTips.map((tip) => {
+              const Icon = tip.icon;
+              return (
+                <li key={tip.title} className="flex gap-4 rounded-xl border border-rule bg-white p-5">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-paper">
+                    <Icon className="h-5 w-5 text-ink-2" aria-hidden />
+                  </span>
+                  <div>
+                    <h3 className="t-h3 text-ink">{tip.title}</h3>
+                    <p className="t-small mt-1 text-ink-2">{tip.description}</p>
                   </div>
-                </Card>
+                </li>
+              );
+            })}
+          </ul>
+        </Section>
+
+        <Section
+          id="comparativa-tecnica"
+          tone="paper"
+          title="Comparativa técnica"
+          lead={
+            <span className="inline-flex flex-wrap items-center gap-2">
+              Lo que declara cada proveedor en su sitio. <ProvenanceTag kind="declared" />
+            </span>
+          }
+        >
+          <Table className="hidden text-[15px] md:table">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Característica</TableHead>
+                {TECH_PROVIDERS.map((name) => (
+                  <TableHead key={name}>{name}</TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {TECH_ROWS.map((row) => (
+                <TableRow key={row.label} className="hover:bg-transparent">
+                  <th scope="row" className="px-3 py-3 text-left font-semibold text-ink">{row.label}</th>
+                  {row.values.map((value, i) => (
+                    <TableCell key={TECH_PROVIDERS[i]}>{value}</TableCell>
+                  ))}
+                </TableRow>
               ))}
-            </div>
-          </section>
+            </TableBody>
+          </Table>
 
-          {/* Tips de Optimización */}
-          <section className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-8">
-              Cómo Optimizar tu WordPress (independiente del hosting)
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {optimizationTips.map((tip, index) => {
-                const Icon = tip.icon;
-                return (
-                  <Card key={index} className="p-6">
-                    <div className="flex gap-4 mb-3">
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-primary" />
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-foreground mb-2">
-                          {tip.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {tip.description}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Tabla Comparativa */}
-          <section className="max-w-4xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-8">Comparativa Técnica</h2>
-            <Card className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-4 font-semibold">Característica</th>
-                    <th className="text-center p-4 font-semibold">HostingPlus</th>
-                    <th className="text-center p-4 font-semibold">SiteGround</th>
-                    <th className="text-center p-4 font-semibold">Webempresa</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  <tr>
-                    <td className="p-4">Servidor Web</td>
-                    <td className="p-4 text-center">LiteSpeed</td>
-                    <td className="p-4 text-center">NGINX</td>
-                    <td className="p-4 text-center">LiteSpeed</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Cache Incluido</td>
-                    <td className="p-4 text-center">✅ LSCache</td>
-                    <td className="p-4 text-center">✅ SuperCacher</td>
-                    <td className="p-4 text-center">✅ LiteSpeed</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">PHP 8.2+</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">✅</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Staging</td>
-                    <td className="p-4 text-center">✅ Gratis</td>
-                    <td className="p-4 text-center">✅ Gratis</td>
-                    <td className="p-4 text-center">❌</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">CDN Incluido</td>
-                    <td className="p-4 text-center">❌</td>
-                    <td className="p-4 text-center">✅ Cloudflare</td>
-                    <td className="p-4 text-center">❌</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Backups</td>
-                    <td className="p-4 text-center">Diarios (7d)</td>
-                    <td className="p-4 text-center">Diarios (30d)</td>
-                    <td className="p-4 text-center">Diarios (14d)</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Datacenter</td>
-                    <td className="p-4 text-center">🇨🇱 Chile</td>
-                    <td className="p-4 text-center">🇺🇸 USA</td>
-                    <td className="p-4 text-center">🇪🇸 España</td>
-                  </tr>
-                </tbody>
-              </table>
-            </Card>
-          </section>
-
-          {/* CTA */}
-          <section className="max-w-4xl mx-auto text-center">
-            <Card className="p-8 bg-primary text-primary-foreground">
-              <h2 className="text-2xl font-bold mb-4">
-                ¿Necesitas más opciones de hosting?
-              </h2>
-              <p className="text-lg mb-6 opacity-90">
-                Consulta nuestro ranking completo con todos los proveedores de Chile
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link 
-                  to="/mejor-hosting-chile-2025"
-                  className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                >
-                  Ver Ranking Completo 2025
-                </Link>
-                <Link 
-                  to="/comparativa"
-                  className="inline-flex items-center justify-center px-8 py-3 bg-primary-foreground/10 text-primary-foreground rounded-lg font-semibold hover:bg-primary-foreground/20 transition-colors"
-                >
-                  Comparar Todos los Hosting
-                </Link>
+          {/* Móvil: cada característica con los tres valores, sin columnas escondidas */}
+          <dl className="divide-y divide-rule border-y-2 border-ink md:hidden">
+            {TECH_ROWS.map((row) => (
+              <div key={row.label} className="py-4">
+                <dt className="font-semibold text-ink">{row.label}</dt>
+                <dd className="mt-2 grid grid-cols-3 gap-3 text-[15px]">
+                  {row.values.map((value, i) => (
+                    <span key={TECH_PROVIDERS[i]} className="min-w-0">
+                      <span className="t-meta block">{TECH_PROVIDERS[i]}</span>
+                      <span className="text-ink">{value}</span>
+                    </span>
+                  ))}
+                </dd>
               </div>
-            </Card>
-        </section>
+            ))}
+          </dl>
+        </Section>
 
-        <RelatedArticles articles={relatedArticles} />
+        <Section
+          id="mas-opciones"
+          title="¿Necesitas más opciones de hosting?"
+          lead="Consulta nuestro ranking completo con todos los proveedores de Chile."
+        >
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button asChild>
+              <Link to="/mejor-hosting-chile-2026">Ver el ranking</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/comparativa">Comparar proveedores</Link>
+            </Button>
+          </div>
+        </Section>
+
+        <div className="container pb-16">
+          <RelatedArticles articles={relatedArticles} title="Artículos relacionados" />
+        </div>
       </main>
 
       <Footer />
-      </div>
     </>
   );
 };

@@ -4,45 +4,64 @@ import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
-import { Star, ExternalLink, Check } from 'lucide-react';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
+import EditorialImage from '@/components/media/EditorialImage';
+import RankingHeader from '@/components/hubs/RankingHeader';
+import RankingFaq from '@/components/hubs/RankingFaq';
+import HubTopList, { type HubProvider } from '@/components/hubs/HubTopList';
+import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
-import type { HubConfig } from '@/lib/segmentHubs';
-import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
+import type { HubConfig, HubKey } from '@/lib/segmentHubs';
+import { HUB_DEEP } from '@/lib/hubDeepContent';
+import { isHiddenProvider } from '@/lib/providerLinks';
+import { VERIFICATION_DATE_ISO } from '@/data/verified2026';
+import { formatDataDate, isoDate } from '@/lib/format';
+import type { EditorialImageKey } from '@/lib/editorialImages';
 
 const HubDeepSections = React.lazy(() => import('@/components/hubs/HubDeepSections'));
 
-interface Provider {
-  slug: string;
-  name: string;
-  logo_url: string | null;
-  overall_rating: number | null;
-  promo_price: number | null;
-  datacenter_location: string | null;
-  total_reviews: number | null;
-  website: string | null;
-}
-
 const ORIGIN = 'https://eligetuhosting.cl';
 
+/** Rótulos de la interfaz por segmento (no son datos). */
+const SEGMENT: Record<HubKey, { top: string; image?: EditorialImageKey }> = {
+  wordpress: { top: 'hosting para WordPress', image: 'wordpress' },
+  ecommerce: { top: 'hosting para tiendas online', image: 'ecommerce' },
+  pymes: { top: 'hosting para pymes' },
+  vps: { top: 'VPS', image: 'vps' },
+};
+
+const linkClass = 'font-semibold text-ink-2 underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
+
 const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
-  const [providers, setProviders] = useState<Provider[]>([]);
+  const [providers, setProviders] = useState<HubProvider[]>([]);
+  const [names, setNames] = useState<Record<string, { name: string; website: string | null }>>({});
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
 
   useEffect(() => {
     let mounted = true;
+    setStatus('loading');
     (async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('hosting_companies')
         .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,total_reviews,website')
         .eq('country', getActiveCountryCode())
         .in('slug', config.providerSlugs);
-      if (!mounted || !data) return;
-      // preserve config order
-      const ordered = config.providerSlugs
-        .map(s => data.find(d => d.slug === s))
-        .filter(Boolean)
-        .filter((p: any) => !isHiddenProvider(p.slug, null)) as Provider[];
+      if (!mounted) return;
+      if (error || !data) {
+        setStatus('error');
+        return;
+      }
+      // preserve config order (decisión pendiente 3: no se reordena)
+      const ordered: HubProvider[] = [];
+      for (const s of config.providerSlugs) {
+        const row = data.find((d) => d.slug === s);
+        if (row && !isHiddenProvider(row.slug, null)) ordered.push(row as HubProvider);
+      }
       setProviders(ordered);
+      setNames(Object.fromEntries(data.map((d) => [d.slug, { name: d.name, website: d.website }])));
+      setStatus('ready');
     })();
     return () => { mounted = false; };
   }, [config]);
@@ -83,6 +102,14 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
     ],
   };
 
+  const segment = SEGMENT[config.key];
+  const expected = config.providerSlugs.filter((s) => !isHiddenProvider(s, null)).length;
+  const topCount = status === 'ready' ? providers.length : expected;
+  const leader = names.hostingplus?.name;
+  const rivals = config.providerSlugs
+    .filter((s) => s !== 'hostingplus')
+    .filter((s) => names[s] && !isHiddenProvider(s, names[s].website));
+
   return (
     <>
       <Helmet>
@@ -99,110 +126,103 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
       </Helmet>
 
       <Navbar />
-      <main className="bg-gradient-to-b from-paper to-white">
-        <section className="container mx-auto px-4 py-10 md:py-14 max-w-5xl">
-          <nav aria-label="breadcrumbs" className="text-xs text-gray-500 mb-3">
-            <Link to="/" className="hover:underline">Inicio</Link> / <span>{config.h1}</span>
-          </nav>
-          <h1 className="text-3xl md:text-4xl font-bold text-ink mb-4">{config.h1}</h1>
-          <p className="text-base md:text-lg text-[#444] leading-relaxed">{config.intro}</p>
-        </section>
+      <main className="bg-white">
+        <RankingHeader
+          crumbs={[{ name: 'Guías', href: '/guia-elegir-hosting' }]}
+          pageName={config.h1}
+          title={config.h1}
+          lead={HUB_DEEP[config.key]?.protagonist}
+          reviewedAt={VERIFICATION_DATE_ISO}
+          meta={
+            <Link to="/metodologia" className={linkClass}>
+              Cómo evaluamos
+            </Link>
+          }
+          aside={
+            segment.image ? (
+              <EditorialImage name={segment.image} className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />
+            ) : undefined
+          }
+        />
+
+        <Section id="introduccion" density="tight">
+          <p className="t-body measure text-ink-2">{config.intro}</p>
+          <Callout className="max-w-[78ch]">
+            <p>
+              <strong className="font-semibold text-ink">Divulgación:</strong> algunos enlaces "Visitar sitio" son de
+              afiliados; la comisión no afecta el orden del ranking. El orden depende únicamente de datos verificables
+              (ASN, TTFB medido, uptime, reclamos, reputación).
+            </p>
+          </Callout>
+        </Section>
 
         <React.Suspense fallback={null}>
           <HubDeepSections hubKey={config.key} />
         </React.Suspense>
 
-        <section className="container mx-auto px-4 pb-10 max-w-5xl">
-
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-5">Top 5 — {config.h1}</h2>
-          <ol className="space-y-4">
-            {providers.map((p, i) => (
-              <li key={p.slug} className={`rounded-xl border p-4 md:p-5 bg-white shadow-sm ${i === 0 ? 'border-brand border-2' : 'border-gray-200'}`}>
-                <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <div className="flex items-center gap-3 md:w-1/3">
-                    <span className={`text-2xl font-bold ${i === 0 ? 'text-brand' : 'text-gray-400'}`}>#{i + 1}</span>
-                    {p.logo_url ? (
-                      <img src={p.logo_url} alt={`Logo ${p.name}`} className="h-10 w-auto" loading="lazy" />
-                    ) : null}
-                    <div>
-                      <div className="font-semibold text-ink">{p.name}</div>
-                      <div className="text-xs text-gray-500">{p.datacenter_location || 'Chile'}</div>
-                    </div>
-                  </div>
-                  <div className="md:w-1/4 text-sm">
-                    <div className="flex items-center gap-1 text-amber-500 font-semibold">
-                      <Star className="h-4 w-4 fill-amber-500" />
-                      {Number(p.overall_rating ?? 0).toFixed(1)}/10
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      {config.priceLabel}: Consultar
-                    </div>
-                  </div>
-                  <ul className="md:w-1/4 text-xs text-gray-600 space-y-1">
-                    {config.features.map(f => (
-                      <li key={f} className="flex items-center gap-1"><Check className="h-3 w-3 text-green-600" />{f}</li>
-                    ))}
-                  </ul>
-                  <div className="md:w-1/6 flex flex-col gap-2 min-w-[150px]">
-                    <Link
-                      to={`/catalogo/${p.slug}`}
-                      className="text-center text-sm px-3 py-2 rounded border border-brand text-brand hover:bg-brand hover:text-white transition min-h-[44px] flex items-center justify-center"
-                    >
-                      Ver review
-                    </Link>
-                    {(() => {
-                      const link = getProviderLink(p.slug, p.website);
-                      return (
-                        <a
-                          href={link.href}
-                          rel={link.rel}
-                          target="_blank"
-                          className="text-center text-sm px-3 py-2 rounded bg-brand text-white hover:bg-red-700 transition min-h-[44px] flex items-center justify-center gap-1"
-                        >
-                          Visitar sitio <ExternalLink className="h-3 w-3" />
-                        </a>
-                      );
-                    })()}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="container mx-auto px-4 pb-10 max-w-5xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Comparativas 1-a-1 del segmento</h2>
-          <p className="text-sm text-gray-600 mb-4">Compara cada proveedor de este top contra el líder del ranking.</p>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
-            {config.providerSlugs
-              .filter(s => s !== 'hostingplus')
-              .map(s => (
-                <Link
-                  key={s}
-                  to={`/comparativa/${s}-vs-hostingplus`}
-                  className="text-sm px-3 py-2 rounded border border-gray-200 hover:border-brand hover:text-brand transition truncate"
-                >
-                  {s} vs hostingplus
-                </Link>
+        <Section
+          id="top"
+          title={`Top ${topCount} de ${segment.top} en Chile`}
+          lead={
+            <>
+              Nota general del ranking, revisada el{' '}
+              <time dateTime={isoDate(VERIFICATION_DATE_ISO)} className="font-semibold text-ink">
+                {formatDataDate(VERIFICATION_DATE_ISO)}
+              </time>
+              .
+            </>
+          }
+        >
+          <div className="mb-6">
+            <p className="t-label">Lo que buscamos en este segmento</p>
+            <ul className="mt-2 flex flex-wrap gap-2">
+              {config.features.map((f) => (
+                <li key={f}>
+                  <Badge variant="outline" className="text-[13px] font-medium">
+                    {f}
+                  </Badge>
+                </li>
               ))}
+            </ul>
           </div>
-        </section>
+          <HubTopList providers={providers} status={status} />
+          <p className="t-small mt-4 max-w-[78ch] text-ink-3">
+            Precio: en el sitio oficial de cada proveedor. Estamos reverificando el catálogo y no publicamos cifras.
+          </p>
+        </Section>
 
-        <section className="container mx-auto px-4 pb-12 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-5">Preguntas frecuentes — {config.keyword}</h2>
-          <div className="space-y-4">
-            {config.faqs.map((f, i) => (
-              <details key={i} className="border rounded-lg p-4 bg-white">
-                <summary className="font-semibold cursor-pointer text-ink">{f.q}</summary>
-                <p className="mt-2 text-sm text-gray-700 leading-relaxed">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
+        {leader && rivals.length > 0 && (
+          <Section
+            id="comparativas"
+            tone="paper"
+            density="tight"
+            title={'Comparativas 1\u00a0a\u00a01 del segmento'}
+            lead="Compara cada proveedor de este top contra el líder del ranking."
+          >
+            <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {rivals.map((s) => (
+                <li key={s}>
+                  <Link
+                    to={`/comparativa/${s}-vs-hostingplus`}
+                    className="flex min-h-[48px] items-center rounded-lg border border-rule bg-white px-4 py-2 font-medium text-ink transition-colors hover:border-ink"
+                  >
+                    {names[s].name} vs {leader}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
 
-        <section className="container mx-auto px-4 pb-12 max-w-3xl">
-          <RecommendedByData />
-        </section>
+        <RankingFaq
+          id="preguntas-frecuentes"
+          title={`Preguntas frecuentes: ${config.keyword}`}
+          items={config.faqs.map((f) => ({ question: f.q, answer: f.a }))}
+        />
+
+        <Section density="tight" tone="paper" aria-label="Recomendado por datos">
+          <RecommendedByData className="max-w-3xl" />
+        </Section>
       </main>
       <Footer />
     </>

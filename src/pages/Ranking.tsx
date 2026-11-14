@@ -1,154 +1,110 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { 
-  Server, 
-  Package, 
-  ShoppingCart, 
-  Layers, 
-  Cloud, 
-  Cpu, 
-  Globe
+import {
+  Server,
+  Package,
+  ShoppingCart,
+  Layers,
+  Cloud,
+  Cpu,
+  Globe,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+  Mail,
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import RankingPositions4to10 from '@/components/RankingPositions4to10';
 import RankingAuthorityBlock from '@/components/RankingAuthorityBlock';
 import TopProvidersPodium from '@/components/ranking/TopProvidersPodium';
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import Section from '@/components/system/Section';
+import RankingHeader from '@/components/hubs/RankingHeader';
+import RankingFaq from '@/components/hubs/RankingFaq';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import Footer from '@/components/Footer';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import { useLatestDomains } from '@/features/ranking';
 import { RANKING_TESTIMONIALS as testimonials, RANKING_FAQ as faqItems } from '@/data/rankingContent';
+import { VERIFICATION_DATE_ISO } from '@/data/verified2026';
+import { formatDataDate, formatInteger, formatShortDate, isoDate, parseDataDate } from '@/lib/format';
+import { cn } from '@/lib/utils';
 
 // El Top 3 se construye desde `hosting_companies` (ver TopProvidersPodium):
 // el orden lo determina el dato, no un array escrito a mano.
 
-
-// Categories data
+// Planes por tipo de servicio (enlaces existentes, sin cambios de destino ni rel).
 const categories = [
-  {
-    title: "Web Hosting SSD",
-    icon: <Server className="h-8 w-8 text-blue-600" />,
-    bgColor: "bg-blue-50",
-    url: "https://clientes.hostingplus.cl/cart.php?gid=13"
-  },
-  {
-    title: "WordPress Turbo",
-    icon: <Package className="h-8 w-8 text-indigo-600" />,
-    bgColor: "bg-indigo-50",
-    url: "https://clientes.hostingplus.cl/cart.php?gid=14"
-  },
-  {
-    title: "e-Commerce",
-    icon: <ShoppingCart className="h-8 w-8 text-emerald-600" />,
-    bgColor: "bg-emerald-50",
-    url: "https://clientes.hostingplus.cl/cart.php?gid=15"
-  },
-  {
-    title: "Reseller",
-    icon: <Layers className="h-8 w-8 text-teal-600" />,
-    bgColor: "bg-teal-50",
-    url: "https://clientes.hostingplus.cl/cart.php?gid=16"
-  },
-  {
-    title: "VPS Cloud",
-    icon: <Cloud className="h-8 w-8 text-orange-600" />,
-    bgColor: "bg-orange-50",
-    url: "https://clientes.hostingplus.cl/cart.php?gid=17"
-  },
-  {
-    title: "Servidor Dedicado",
-    icon: <Cpu className="h-8 w-8 text-yellow-600" />,
-    bgColor: "bg-yellow-50",
-    url: "https://clientes.hostingplus.cl/cart.php?gid=18"
-  },
-  {
-    title: "Dominios .CL/.COM",
-    icon: <Globe className="h-8 w-8 text-pink-600" />,
-    bgColor: "bg-pink-50",
-    url: "https://clientes.hostingplus.cl/cart.php?a=add&domain=register"
-  }
+  { title: 'Web hosting SSD', icon: Server, url: 'https://clientes.hostingplus.cl/cart.php?gid=13' },
+  { title: 'WordPress Turbo', icon: Package, url: 'https://clientes.hostingplus.cl/cart.php?gid=14' },
+  { title: 'E-commerce', icon: ShoppingCart, url: 'https://clientes.hostingplus.cl/cart.php?gid=15' },
+  { title: 'Reseller', icon: Layers, url: 'https://clientes.hostingplus.cl/cart.php?gid=16' },
+  { title: 'VPS cloud', icon: Cloud, url: 'https://clientes.hostingplus.cl/cart.php?gid=17' },
+  { title: 'Servidor dedicado', icon: Cpu, url: 'https://clientes.hostingplus.cl/cart.php?gid=18' },
+  { title: 'Dominios .cl y .com', icon: Globe, url: 'https://clientes.hostingplus.cl/cart.php?a=add&domain=register' },
 ];
 
-const Section = ({ children, id, className = "" }) => (
-  <section id={id} className={`py-8 lg:py-12 max-w-6xl mx-auto px-4 ${className}`}>
-    {children}
-  </section>
-);
+const DOMAINS_PER_PAGE = 10;
+
+const timeOf = (value: string) =>
+  parseDataDate(value)?.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }) ?? '';
+
+const linkClass = 'font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
 const RankingPage = () => {
   const { domains: latestDomains, updatedAt: domainUpdateTime, isLoading: domainsLoading, error: domainsError } = useLatestDomains(200);
   const [currentPage, setCurrentPage] = useState(1);
-  const domainsPerPage = 10;
 
-
-  // Pagination logic
-  const indexOfLastDomain = currentPage * domainsPerPage;
-  const indexOfFirstDomain = indexOfLastDomain - domainsPerPage;
+  const indexOfLastDomain = currentPage * DOMAINS_PER_PAGE;
+  const indexOfFirstDomain = indexOfLastDomain - DOMAINS_PER_PAGE;
   const currentDomains = latestDomains.slice(indexOfFirstDomain, indexOfLastDomain);
-  const totalPages = Math.ceil(latestDomains.length / domainsPerPage);
+  const totalPages = Math.ceil(latestDomains.length / DOMAINS_PER_PAGE);
 
-  // Render pagination controls
+  // Paginación: cinco números alrededor de la página actual.
   const renderPagination = () => {
-    const pageNumbers = [];
-    
-    // Only show 5 page numbers around current page
+    if (totalPages <= 1) return null;
     const startPage = Math.max(1, currentPage - 2);
     const endPage = Math.min(totalPages, startPage + 4);
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(
-        <button
-          key={i}
-          onClick={() => setCurrentPage(i)}
-          className={`px-3 py-1 mx-1 rounded ${
-            currentPage === i 
-              ? 'bg-brand text-white' 
-              : 'bg-gray-100 hover:bg-gray-200'
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-    
+    const pages: number[] = [];
+    for (let i = startPage; i <= endPage; i++) pages.push(i);
+    const base = 'inline-flex h-11 min-w-11 items-center justify-center rounded-lg px-3 text-sm font-semibold tabular';
     return (
-      <div className="flex justify-center items-center mt-4">
+      <nav aria-label="Páginas de dominios" className="mt-6 flex flex-wrap items-center gap-2">
         <button
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          type="button"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-3 py-1 bg-gray-100 rounded mr-2 disabled:opacity-50"
+          aria-label="Página anterior"
+          className={cn(base, 'border border-rule bg-white text-ink hover:border-ink disabled:opacity-40')}
         >
-          &laquo;
+          <ChevronLeft className="h-4 w-4" aria-hidden />
         </button>
-        
-        {pageNumbers}
-        
+        {pages.map((n) => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => setCurrentPage(n)}
+            aria-current={currentPage === n ? 'page' : undefined}
+            aria-label={`Página ${n}`}
+            className={cn(base, currentPage === n ? 'bg-ink text-white' : 'border border-rule bg-white text-ink hover:border-ink')}
+          >
+            {n}
+          </button>
+        ))}
         <button
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          type="button"
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 bg-gray-100 rounded ml-2 disabled:opacity-50"
+          aria-label="Página siguiente"
+          className={cn(base, 'border border-rule bg-white text-ink hover:border-ink disabled:opacity-40')}
         >
-          &raquo;
+          <ChevronRight className="h-4 w-4" aria-hidden />
         </button>
-      </div>
+        <span className="t-meta ml-1">
+          Página {currentPage} de {totalPages}
+        </span>
+      </nav>
     );
   };
 
@@ -175,181 +131,163 @@ const RankingPage = () => {
 
       <Navbar />
 
-      {/* Encabezado compacto: el top 3 entra en la primera pantalla */}
-      <Section id="hero" className="pb-2 pt-10 md:pt-14">
-        <h1 className="mb-3 text-3xl font-bold text-ink md:text-4xl lg:text-5xl">Ranking Hosting Chile 2026</h1>
-        <p className="mb-6 max-w-2xl text-base text-ink-2">
-          Analizamos los proveedores de hosting en Chile según velocidad, soporte técnico, seguridad y soberanía
-          digital.
-        </p>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Button asChild className="rounded-lg bg-brand px-6 py-3 font-semibold text-white hover:bg-brand-ink">
-            <Link to="/comparativa">Comparar proveedores</Link>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            className="rounded-lg border-2 border-ink px-6 py-3 font-semibold text-ink hover:bg-ink hover:text-white"
-          >
-            <Link to="/metodologia">Metodología</Link>
-          </Button>
-        </div>
-      </Section>
-
-      {/* Top 3 Ranking */}
-      <Section id="ranking">
-        <h2 className="text-2xl font-bold text-center text-ink mb-4">
-          Top 3 proveedores de hosting
-        </h2>
-        <p className="mx-auto mb-4 max-w-3xl text-center text-sm text-ink-2">
-          El orden es editorial. Los criterios que usamos están en la{' '}
-          <Link to="/metodologia" className="font-medium text-ink underline decoration-ink/30 underline-offset-2">
-            metodología
-          </Link>
-          .
-        </p>
-        <RankingAuthorityBlock className="mb-8" />
-        <TopProvidersPodium />
-
-
-        {/* Puestos 4-10 */}
-        <RankingPositions4to10 />
-      </Section>
-
-      <div className="h-0.5 bg-gray-200 w-full my-8" />
-
-      {/* Categories */}
-      <Section id="categories">
-        <h2 className="text-2xl font-bold text-center text-ink mb-8">
-          Explora por tipo de servicio
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {categories.map((category, index) => (
-            <a 
-              key={index} 
-              href={category.url} 
-              target="_blank" 
-              rel="nofollow sponsored noopener noreferrer"
-              className="block hover:shadow-lg transition-all duration-300 rounded-lg overflow-hidden transform hover:scale-105"
-            >
-              <Card className={`${category.bgColor} h-full flex flex-col items-center justify-center p-6 text-center hover:shadow-xl transition-all duration-300`}>
-                <div className="mb-4">
-                  {category.icon}
-                </div>
-                <h3 className="font-medium text-ink">{category.title}</h3>
-              </Card>
-            </a>
-          ))}
-        </div>
-      </Section>
-
-      <div className="h-0.5 bg-gray-200 w-full my-8" />
-
-      {/* Testimonials */}
-      <Section id="testimonials">
-        <h2 className="text-2xl font-bold text-center text-ink mb-8">
-          Lo que dicen nuestros usuarios
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="p-4 shadow-sm hover:shadow transition-shadow">
-              <blockquote className="italic text-gray-600 mb-4">
-                "{testimonial.quote}"
-              </blockquote>
-              <footer className="text-sm font-medium">— {testimonial.author}</footer>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      <div className="h-0.5 bg-gray-200 w-full my-8" />
-
-      {/* Latest Domains */}
-      <Section id="domains">
-        <h2 className="text-2xl font-bold text-center text-ink mb-2">
-          Últimos dominios .CL registrados
-        </h2>
-        <p className="text-center text-gray-600 mb-6">
-          Datos actualizados: {domainUpdateTime ? new Date(domainUpdateTime).toLocaleString() : 'Cargando...'} UTC
-        </p>
-        
-        <Card className="max-w-5xl mx-auto overflow-x-auto p-4 shadow-sm">
-          {domainsLoading ? (
-            <div className="flex justify-center items-center p-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand"></div>
-              <span className="ml-2">Cargando dominios...</span>
-            </div>
-          ) : domainsError ? (
-            <div className="text-center p-8 text-red-500">
-              <p>Error al cargar los dominios: {domainsError}</p>
-              <p className="mt-2 text-sm">Por favor, intenta recargar la página</p>
-            </div>
-          ) : (
+      <main>
+        <RankingHeader
+          crumbs={[]}
+          pageName="Ranking"
+          title="Ranking Hosting Chile 2026"
+          lead="Ordenamos los proveedores de hosting de Chile por velocidad, soporte, seguridad y dónde guardan tus datos. Cada nota dice de dónde sale y cuándo la revisamos."
+          reviewedAt={VERIFICATION_DATE_ISO}
+          actions={
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-16">N°</TableHead>
-                    <TableHead>Dominio</TableHead>
-                    <TableHead className="text-right">Fecha</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentDomains.map((item, index) => (
-                    <TableRow key={indexOfFirstDomain + index}>
-                      <TableCell className="font-medium">{indexOfFirstDomain + index + 1}</TableCell>
-                      <TableCell>{item.d}</TableCell>
-                      <TableCell className="text-right">{new Date(item.date).toLocaleString()}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-                <TableCaption>
-                  Listado de dominios .CL recientemente registrados
-                </TableCaption>
-              </Table>
-              {renderPagination()}
+              <Button asChild>
+                <Link to="/comparativa">Comparar proveedores</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link to="/metodologia">Ver la metodología</Link>
+              </Button>
             </>
-          )}
-        </Card>
-      </Section>
+          }
+        />
 
-      <div className="h-0.5 bg-gray-200 w-full my-8" />
-
-      {/* FAQ Section */}
-      <SEOFAQSchema faqs={faqItems} />
-      <Section id="faq">
-        <h2 className="text-2xl font-bold text-center text-ink mb-8">
-          Preguntas frecuentes
-        </h2>
-        <div className="max-w-3xl mx-auto space-y-3">
-          <Accordion type="single" collapsible>
-            {faqItems.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left font-medium">{item.question}</AccordionTrigger>
-                <AccordionContent>{item.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </Section>
-
-      <div className="h-0.5 bg-gray-200 w-full my-8" />
-
-      {/* Contact Section */}
-      <Section id="contact" className="text-center">
-        <h2 className="text-2xl font-bold text-ink mb-4">
-          ¿Necesitas ayuda para elegir?
-        </h2>
-        <p className="mb-6 max-w-lg mx-auto">
-          Nuestro equipo de expertos puede ayudarte a encontrar la solución perfecta para tu proyecto.
-        </p>
-        <Button 
-          asChild 
-          className="bg-brand hover:bg-[#d01d34] text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+        <Section
+          id="ranking"
+          title="Top 3 proveedores de hosting"
+          lead={
+            <>
+              El orden es editorial. Los criterios que usamos están en la{' '}
+              <Link to="/metodologia" className={linkClass}>
+                metodología
+              </Link>
+              .
+            </>
+          }
         >
-          <a href="mailto:contacto@eligetuhosting.cl">Contáctanos</a>
-        </Button>
-      </Section>
+          <RankingAuthorityBlock className="mb-8" />
+          <TopProvidersPodium />
+          <RankingPositions4to10 />
+        </Section>
+
+        <Section
+          id="categories"
+          tone="paper"
+          title="Explora por tipo de servicio"
+          lead="Elige el tipo de servicio y revisa sus planes."
+        >
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {categories.map((category) => {
+              const Icon = category.icon;
+              return (
+                <li key={category.title}>
+                  <a
+                    href={category.url}
+                    target="_blank"
+                    rel="nofollow sponsored noopener noreferrer"
+                    className="flex min-h-[64px] items-center gap-3 rounded-xl border border-rule bg-white p-4 text-ink transition-colors hover:border-ink"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-paper">
+                      <Icon className="h-5 w-5 text-ink-2" aria-hidden />
+                    </span>
+                    <span className="flex-1 font-semibold">{category.title}</span>
+                    <ExternalLink className="h-4 w-4 shrink-0 text-ink-3" aria-hidden />
+                    <span className="sr-only">(abre otro sitio)</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </Section>
+
+        <Section id="testimonials" title="Lo que dicen nuestros usuarios">
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {testimonials.map((testimonial) => (
+              <li key={testimonial.author}>
+                <figure className="flex h-full flex-col rounded-xl border border-rule bg-white p-5">
+                  <blockquote className="flex-1 text-ink">«{testimonial.quote}»</blockquote>
+                  <figcaption className="t-meta mt-4">{testimonial.author}</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section
+          id="domains"
+          tone="paper"
+          title="Últimos dominios .cl registrados"
+          lead={
+            domainUpdateTime ? (
+              <>
+                Datos actualizados el{' '}
+                <time dateTime={isoDate(domainUpdateTime)} className="font-semibold text-ink">
+                  {formatDataDate(domainUpdateTime)}
+                </time>
+                . Mostramos los {formatInteger(latestDomains.length)} registros más recientes.
+              </>
+            ) : domainsLoading ? (
+              'Cargando la fecha de los datos…'
+            ) : undefined
+          }
+        >
+          <div className="max-w-3xl">
+            {domainsLoading ? (
+              <p className="rounded-xl border border-rule bg-white p-4 text-ink-2" aria-busy="true">
+                Cargando los dominios…
+              </p>
+            ) : domainsError ? (
+              <p role="alert" className="rounded-xl border border-rule bg-white p-4 text-ink-2">
+                No pudimos cargar los dominios: la consulta a nuestra base falló. Recarga la página; si sigue igual, vuelve
+                en unos minutos.
+              </p>
+            ) : latestDomains.length === 0 ? (
+              <p className="rounded-xl border border-rule bg-white p-4 text-ink-2">
+                Todavía no hay dominios registrados para mostrar. Vuelve más tarde.
+              </p>
+            ) : (
+              <>
+                <Table className="text-[15px]">
+                  <TableCaption>Dominios .cl más recientes, del más nuevo al más antiguo. Hora local.</TableCaption>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-12 px-2 sm:w-16 sm:px-3">N°</TableHead>
+                      <TableHead className="px-2 sm:px-3">Dominio</TableHead>
+                      <TableHead className="px-2 text-right sm:px-3">Fecha</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {currentDomains.map((item, index) => (
+                      <TableRow key={indexOfFirstDomain + index}>
+                        <TableCell className="px-2 text-ink-3 sm:px-3">{indexOfFirstDomain + index + 1}</TableCell>
+                        <TableCell className="break-all px-2 font-medium sm:px-3">{item.d}</TableCell>
+                        <TableCell className="px-2 text-right text-ink-2 sm:px-3">
+                          <time dateTime={item.date} className="flex flex-col items-end sm:flex-row sm:justify-end sm:gap-2">
+                            <span className="whitespace-nowrap">{formatShortDate(item.date)}</span>
+                            <span className="whitespace-nowrap text-ink-3">{timeOf(item.date)}</span>
+                          </time>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                {renderPagination()}
+              </>
+            )}
+          </div>
+        </Section>
+
+        <SEOFAQSchema faqs={faqItems} />
+        <RankingFaq id="faq" items={faqItems.map((item) => ({ question: item.question, answer: item.answer }))} />
+
+        <Section id="contact" tone="paper" title="¿Necesitas ayuda para elegir?">
+          <p className="t-lead">Escríbenos y nuestro equipo te ayuda a encontrar el hosting que calza con tu proyecto.</p>
+          <Button asChild className="mt-6">
+            <a href="mailto:contacto@eligetuhosting.cl">
+              <Mail aria-hidden />
+              Escríbenos
+            </a>
+          </Button>
+        </Section>
+      </main>
 
       <Footer />
     </>
