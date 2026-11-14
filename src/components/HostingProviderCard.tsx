@@ -33,7 +33,7 @@ const Row: React.FC<{ label: string; kind?: Provenance; children: React.ReactNod
 
 /** Tarjeta del hub /comparativa bajo 1024 px: mismas columnas que la tabla. */
 const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, nota, companyId, notaLoading, isHighlighted = false }) => (
-  <article className={`rounded-xl border border-rule p-5 ${isHighlighted ? 'bg-paper-deep' : 'bg-white'}`}>
+  <article className={`rounded-xl border border-rule p-5 ${isHighlighted ? 'bg-paper' : 'bg-white'}`}>
     <header className="flex items-start justify-between gap-3">
       <div className="min-w-0">
         <h3 className="t-h3 text-ink">{provider.name}</h3>
