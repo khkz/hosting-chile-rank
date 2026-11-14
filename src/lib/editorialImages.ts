@@ -54,15 +54,15 @@ export const EDITORIAL_IMAGES: Record<EditorialImageKey, EditorialImageMeta> = {
     ratio: 16 / 9, widths: W, available: true,
   },
   'pe-edition': {
-    alt: 'Café de barrio en Barranco, Lima, con la dueña ordenando tazas junto a un notebook.',
+    alt: 'Café de barrio en Barranco, Lima, con la dueña ordenando tazas junto a una laptop.',
     ratio: 16 / 9, widths: W, available: true,
   },
   'mx-edition': {
-    alt: 'Papelería en Coyoacán, Ciudad de México, con un notebook sobre el mesón de corte.',
+    alt: 'Papelería en Coyoacán, Ciudad de México, con una laptop sobre la mesa de corte.',
     ratio: 16 / 9, widths: W, available: true,
   },
   'co-edition': {
-    alt: 'Taller de un tostador de café en Bogotá: manos pesando granos junto a un notebook con gráficos.',
+    alt: 'Tostadora de café en su taller de Bogotá pesa granos recién tostados junto a un portátil con gráficos.',
     ratio: 16 / 9, widths: W, available: true,
   },
   'ar-edition': {
@@ -70,7 +70,7 @@ export const EDITORIAL_IMAGES: Record<EditorialImageKey, EditorialImageMeta> = {
     ratio: 16 / 9, widths: W, available: true,
   },
   datacenter: {
-    alt: 'Pasillo de un datacenter con racks de servidores y un técnico revisando una tablet.',
+    alt: 'Pasillo de un datacenter con racks de servidores y una técnica revisando una tablet.',
     ratio: 16 / 9, widths: W, available: true,
   },
   soporte: {
