@@ -64,7 +64,7 @@ export const ProvenanceTag: React.FC<ProvenanceTagProps> = ({ kind, variant = 't
   }
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-xs font-semibold leading-4 ${p.text} ${p.bg} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-sm px-1.5 py-0.5 text-xs font-semibold leading-4 ${p.text} ${p.bg} ${className}`}
       title={p.description}
     >
       <ProvenanceGlyph kind={kind} size={8} />

@@ -5,8 +5,8 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  // Etiqueta del sistema: radio 6 px, 12 px, sin animaciones ni degradados.
-  "inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-semibold leading-5 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  // Etiqueta del sistema: radio 6 px (rounded-sm), 12 px, sin animaciones ni degradados.
+  "inline-flex items-center gap-1 rounded-sm border px-2 py-0.5 text-xs font-semibold leading-5 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {

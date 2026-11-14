@@ -19,10 +19,24 @@ interface EditorialImageProps {
 }
 
 /**
+ * Solo en desarrollo: con `?img-demo` en la URL, las imágenes no publicadas se
+ * dibujan como un bloque gris con su proporción, para revisar el diseño con imagen.
+ */
+const demoMode = (): boolean =>
+  import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('img-demo');
+
+/** true si `node` es un <EditorialImage> que hoy no dibujaría nada. */
+export function isEmptyEditorial(node: React.ReactNode): boolean {
+  if (!React.isValidElement(node) || node.type !== EditorialImage) return false;
+  const props = node.props as EditorialImageProps;
+  return !EDITORIAL_IMAGES[props.name]?.available && !demoMode() && (props.fallback == null || props.fallback === false);
+}
+
+/**
  * Imagen editorial con srcset WebP. Si la imagen no está publicada
  * (`available: false` en el manifiesto), muestra `fallback` y no rompe el diseño.
  */
-const EditorialImage: React.FC<EditorialImageProps> = ({
+function EditorialImage({
   name,
   className,
   imgClassName,
@@ -30,9 +44,23 @@ const EditorialImage: React.FC<EditorialImageProps> = ({
   priority = false,
   fallback = null,
   alt,
-}) => {
+}: EditorialImageProps) {
   const meta = EDITORIAL_IMAGES[name];
-  if (!meta?.available) return <>{fallback}</>;
+  if (!meta?.available) {
+    if (demoMode()) {
+      return (
+        <div
+          className={cn('flex items-end overflow-hidden rounded-xl bg-paper-deep p-4', className)}
+          style={{ aspectRatio: String(meta?.ratio ?? 16 / 9) }}
+          role="img"
+          aria-label={`Imagen pendiente: ${name}`}
+        >
+          <span className="t-meta">Imagen: {name}</span>
+        </div>
+      );
+    }
+    return <>{fallback}</>;
+  }
   const largest = meta.widths[meta.widths.length - 1];
   return (
     <div className={cn('overflow-hidden rounded-xl bg-paper-deep', className)}>
@@ -52,6 +80,6 @@ const EditorialImage: React.FC<EditorialImageProps> = ({
       />
     </div>
   );
-};
+}
 
 export default EditorialImage;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { isEmptyEditorial } from '@/components/media/EditorialImage';
 
 export interface TocItem {
   id: string;
@@ -59,7 +60,7 @@ const ReadingLayout: React.FC<ReadingLayoutProps> = ({
             {lead && <p className="t-lead mt-5">{lead}</p>}
             {meta && <div className="t-meta mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">{meta}</div>}
           </div>
-          {image && <div className="mt-8 max-w-5xl">{image}</div>}
+          {image && !isEmptyEditorial(image) && <div className="mt-8 max-w-5xl">{image}</div>}
         </div>
       </header>
 

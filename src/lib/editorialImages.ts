@@ -113,5 +113,8 @@ export const EDITORIAL_IMAGES: Record<EditorialImageKey, EditorialImageMeta> = {
 
 export const editorialSrc = (key: EditorialImageKey, width: number) => `/img/editorial/${key}-${width}.webp`;
 
+/** true si la imagen está publicada en public/img/editorial. */
+export const isEditorialAvailable = (key: EditorialImageKey): boolean => Boolean(EDITORIAL_IMAGES[key]?.available);
+
 /** true si al menos una imagen editorial está publicada (para la nota del pie). */
 export const hasEditorialImages = (): boolean => Object.values(EDITORIAL_IMAGES).some((i) => i.available);
