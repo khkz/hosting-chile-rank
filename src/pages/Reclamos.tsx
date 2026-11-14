@@ -1,45 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
+import { functionErrorText } from '@/lib/functionError';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
-import { Card } from '@/components/ui/card';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, ShieldCheck, ThumbsUp, MessageSquare, Download } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from '@/hooks/use-toast';
+import { Download, MessageSquare, ShieldCheck } from 'lucide-react';
+import ReclamoForm, { type CompanyOption, type ComplaintPayload } from '@/components/marco/reclamos/ReclamoForm';
+import ReclamoCard, { type PublicComplaint } from '@/components/marco/reclamos/ReclamoCard';
 
-const CATEGORIES: { value: string; label: string }[] = [
-  { value: 'service_quality', label: 'Calidad del servicio' },
-  { value: 'support', label: 'Soporte técnico' },
-  { value: 'billing', label: 'Facturación / cobros' },
-  { value: 'downtime', label: 'Caídas / downtime' },
-  { value: 'cancellation', label: 'Problemas de cancelación' },
-  { value: 'misleading_advertising', label: 'Publicidad engañosa' },
-  { value: 'other', label: 'Otro' },
-];
+/** Identificador aleatorio del voto (sin Math.random). La deduplicación real debe hacerla el servidor. */
+const voteToken = (): string =>
+  typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, '0')).join('');
 
 const Reclamos = () => {
-  const [form, setForm] = useState({
-    company_id: '',
-    reporter_email: '',
-    reporter_name: '',
-    title: '',
-    description: '',
-    category: 'service_quality',
-    severity: 3,
-    evidence_url: '',
-    incident_date: '',
-  });
-  const [submitting, setSubmitting] = useState(false);
-
   const activeCountry = getActiveCountryCode();
   // En Chile mostramos solo Chile (comportamiento actual, no cambia lo visible).
   // Desde cualquier otro dominio LATAM incluimos los 55 proveedores LATAM
@@ -60,16 +42,12 @@ const Reclamos = () => {
       return (data ?? []) as Array<{ id: string; name: string; slug: string; country: string }>;
     },
   });
-  const groupedCompanies = (companies ?? []).reduce<Record<string, typeof companies>>((acc, c: any) => {
-    (acc[c.country] ??= [] as any).push(c);
-    return acc;
-  }, {} as any);
-  const COUNTRY_LABELS: Record<string, string> = { CL: 'Chile', PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina' };
 
   const { data: complaints, refetch, isError: complaintsError } = useQuery({
     queryKey: ['public-complaints'],
     queryFn: async () => {
       const { data, error } = await supabase
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- vista sin tipos generados (igual que antes)
         .from('public_complaints_public' as any)
         .select('*, hosting_companies(name, slug)')
         .in('status', ['verified', 'resolved'])
@@ -77,34 +55,32 @@ const Reclamos = () => {
         .limit(50);
       // Un error de lectura no es "no hay reclamos": se lanza para mostrar el aviso de error.
       if (error) throw error;
-      return (data ?? []) as any[];
+      return (data ?? []) as unknown as PublicComplaint[];
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('submit-complaint', { body: form });
-      if (error) throw error;
-      if ((data as any).error) throw new Error((data as any).error);
-      toast.success('Reclamo recibido. Revisa tu email para verificarlo.');
-      setForm({ ...form, title: '', description: '', evidence_url: '', reporter_email: '', reporter_name: '' });
-      refetch();
-    } catch (err: any) {
-      toast.error(err.message ?? 'Error al enviar reclamo');
-    } finally {
-      setSubmitting(false);
-    }
+  const submitComplaint = async (payload: ComplaintPayload) => {
+    const { data, error } = await supabase.functions.invoke('submit-complaint', { body: payload });
+    if (error) throw error;
+    const fnError = (data as { error?: string } | null)?.error;
+    if (fnError) throw new Error(fnError);
+    refetch();
   };
 
   const handleVote = async (complaintId: string) => {
     const { error } = await supabase.from('complaint_votes').insert({
       complaint_id: complaintId,
-      ip_hash: 'client-' + Math.random().toString(36).slice(2),
+      ip_hash: 'client-' + voteToken(),
     });
-    if (error) toast.error('Ya votaste este reclamo');
-    else { toast.success('Voto registrado'); refetch(); }
+    if (!error) {
+      toast({ title: 'Voto registrado. Gracias por sumar tu experiencia.' });
+      refetch();
+    } else if ((error as { code?: string }).code === '23505') {
+      // Solo la restricción única (complaint_id, ip_hash) significa que ya votaste.
+      toast({ title: 'Ya habías marcado este reclamo.' });
+    } else {
+      toast({ title: 'No pudimos registrar tu voto', description: await functionErrorText(error), variant: 'destructive' });
+    }
   };
 
   const exportJson = () => {
@@ -124,193 +100,80 @@ const Reclamos = () => {
         canonical="https://eligetuhosting.cl/reclamos"
       />
       <Navbar />
-      <main className="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
-        <SEOBreadcrumbs items={[{ name: 'Reclamos', href: '/reclamos' }]} />
+      <main>
+        <PageHeader
+          breadcrumbs={<SEOBreadcrumbs items={[{ name: 'Reclamos', href: '/reclamos' }]} />}
+          title="Reclamos Públicos de Hosting"
+          lead="Sistema abierto, verificado por email y con datos públicos. Cualquier persona puede reportar problemas con proveedores de hosting en Chile."
+          meta={
+            <>
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-ink-2" aria-hidden /> Verificación por email
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <MessageSquare className="h-4 w-4 text-ink-2" aria-hidden /> Respuesta del proveedor
+              </span>
+            </>
+          }
+        />
 
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-3">Reclamos Públicos de Hosting</h1>
-          <p className="text-muted-foreground text-lg">
-            Sistema abierto, verificado por email y con datos públicos. Cualquier persona puede reportar problemas con proveedores de hosting en Chile.
-          </p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            <Badge variant="outline" className="gap-1"><ShieldCheck className="w-3 h-3" /> Verificación por email</Badge>
-            <Badge variant="outline" className="gap-1"><MessageSquare className="w-3 h-3" /> Respuesta del proveedor</Badge>
-            <Badge variant="outline">Verificación por email</Badge>
+        <Section id="enviar-reclamo" tone="paper" title="Enviar un reclamo">
+          <div className="max-w-3xl">
+            <ReclamoForm companies={(companies ?? []) as CompanyOption[]} onSubmit={submitComplaint} />
           </div>
-        </header>
+        </Section>
 
-        <Card className="p-6 mb-8 border-primary/30">
-          <h2 className="text-2xl font-bold mb-4">Enviar un reclamo</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="company">Proveedor *</Label>
-                <Select value={form.company_id} onValueChange={(v) => setForm({ ...form, company_id: v })}>
-                  <SelectTrigger id="company"><SelectValue placeholder="Selecciona un proveedor" /></SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(groupedCompanies).map(([cc, list]: any) => (
-                      <div key={cc}>
-                        {Object.keys(groupedCompanies).length > 1 && (
-                          <div className="px-2 py-1 text-[10px] uppercase tracking-wide text-muted-foreground">{COUNTRY_LABELS[cc] || cc}</div>
-                        )}
-                        {list.map((c: any) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
-                      </div>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="category">Categoría *</Label>
-                <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
-                  <SelectTrigger id="category"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map(c => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="email">Email (para verificar) *</Label>
-                <Input id="email" type="email" required value={form.reporter_email} onChange={e => setForm({ ...form, reporter_email: e.target.value })} />
-              </div>
-              <div>
-                <Label htmlFor="name">Tu nombre (opcional)</Label>
-                <Input id="name" value={form.reporter_name} onChange={e => setForm({ ...form, reporter_name: e.target.value })} maxLength={100} />
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="title">Título del reclamo * <span className="text-xs text-muted-foreground">(10-200 caracteres)</span></Label>
-              <Input id="title" required minLength={10} maxLength={200} value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
-            </div>
-
-            <div>
-              <Label htmlFor="desc">Descripción detallada * <span className="text-xs text-muted-foreground">(50-5000 caracteres)</span></Label>
-              <Textarea id="desc" required minLength={50} maxLength={5000} rows={6} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor="severity">Severidad (1-5) *</Label>
-                <Select value={String(form.severity)} onValueChange={(v) => setForm({ ...form, severity: parseInt(v) })}>
-                  <SelectTrigger id="severity"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1 - Menor</SelectItem>
-                    <SelectItem value="2">2 - Leve</SelectItem>
-                    <SelectItem value="3">3 - Moderado</SelectItem>
-                    <SelectItem value="4">4 - Grave</SelectItem>
-                    <SelectItem value="5">5 - Crítico</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="incident">Fecha del incidente</Label>
-                <Input id="incident" type="date" value={form.incident_date} onChange={e => setForm({ ...form, incident_date: e.target.value })} />
-              </div>
-              <div>
-                <Label htmlFor="evidence">URL de evidencia (opcional)</Label>
-                <Input id="evidence" type="url" placeholder="https://..." value={form.evidence_url} onChange={e => setForm({ ...form, evidence_url: e.target.value })} />
-              </div>
-            </div>
-
-            <div className="bg-muted/50 p-3 rounded text-xs text-muted-foreground">
-              Al enviar, recibirás un email para verificar tu reclamo. Solo se publican reclamos verificados. Datos personales no se exponen públicamente.
-            </div>
-
-            <Button type="submit" disabled={submitting || !form.company_id} className="w-full md:w-auto">
-              {submitting ? 'Enviando...' : 'Enviar reclamo'}
+        <Section
+          id="reclamos-verificados"
+          title={`Reclamos verificados${complaints ? ` (${complaints.length})` : ''}`}
+          action={
+            <Button variant="outline" onClick={exportJson}>
+              <Download aria-hidden /> Exportar JSON
             </Button>
-          </form>
-        </Card>
-
-        <section className="mb-6 flex items-center justify-between flex-wrap gap-4">
-          <h2 className="text-2xl font-bold">Reclamos verificados{complaints ? ` (${complaints.length})` : ''}</h2>
-          <Button variant="outline" size="sm" onClick={exportJson} className="gap-2">
-            <Download className="w-4 h-4" /> Exportar JSON
-          </Button>
-        </section>
-
-        <div className="space-y-4">
-          {complaintsError && !complaints && (
-            <Card role="alert" className="p-8 text-center">
-              <p className="mb-2 text-lg font-medium">No pudimos cargar los reclamos</p>
-              <p className="text-sm text-muted-foreground">
-                Es un problema de conexión con nuestra base de datos, no significa que no haya reclamos.{' '}
-                <button type="button" onClick={() => refetch()} className="font-semibold text-ink underline underline-offset-2">
-                  Reintentar
-                </button>
-              </p>
-            </Card>
-          )}
-          {complaints?.length === 0 && (
-            <Card className="p-8 text-center">
-              <p className="mb-2 text-lg font-medium">Todavía no hay reclamos verificados publicados</p>
-              <p className="text-sm text-muted-foreground">
-                Si tuviste una mala experiencia con un proveedor y puedes adjuntar evidencia (correo, ticket,
-                captura), tu reclamo ayuda a otras personas a decidir mejor.
-              </p>
-            </Card>
-          )}
-          {complaints?.map((c: any) => (
-            <Card key={c.id} className="p-5">
-              <div className="flex items-start justify-between gap-3 mb-2 flex-wrap">
-                <div>
-                  <h3 className="font-bold text-lg">{c.title}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Sobre <strong>{c.hosting_companies?.name}</strong> · {new Date(c.created_at).toLocaleDateString('es-CL')}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Badge variant={c.severity >= 4 ? 'destructive' : 'secondary'}>
-                    Severidad {c.severity}/5
-                  </Badge>
-                  <Badge variant="outline">{CATEGORIES.find(x => x.value === c.category)?.label}</Badge>
-                  {c.status === 'resolved' && <Badge className="bg-green-600">Resuelto</Badge>}
-                </div>
+          }
+        >
+          <div className="max-w-3xl space-y-4">
+            {complaintsError && !complaints && (
+              <div role="alert" className="rounded-xl border border-rule border-l-4 border-l-ink bg-paper p-5">
+                <p className="t-h3 text-ink">No pudimos cargar los reclamos</p>
+                <p className="t-small mt-1 text-ink-2">
+                  Es un problema de conexión con nuestra base de datos, no significa que no haya reclamos.{' '}
+                  <button type="button" onClick={() => refetch()} className="rounded-sm font-semibold text-ink underline underline-offset-2">
+                    Reintentar
+                  </button>
+                </p>
               </div>
-              <p className="text-sm whitespace-pre-wrap mb-3">{c.description}</p>
-              {c.evidence_url && (
-                <a href={c.evidence_url} target="_blank" rel="nofollow noopener" className="text-xs text-primary underline block mb-3">
-                  Ver evidencia →
+            )}
+            {complaints?.length === 0 && (
+              <div className="rounded-xl border border-rule bg-white p-5 md:p-6">
+                <p className="t-h3 text-ink">Todavía no hay reclamos verificados publicados</p>
+                <p className="t-small mt-1 text-ink-2">
+                  Si tuviste una mala experiencia con un proveedor y puedes adjuntar evidencia (correo, ticket,
+                  captura), tu reclamo ayuda a otras personas a decidir mejor.
+                </p>
+                <a
+                  href="#enviar-reclamo"
+                  className="mt-3 inline-flex min-h-11 items-center rounded-sm text-[15px] font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+                >
+                  Enviar un reclamo
                 </a>
-              )}
-              {c.provider_response && (
-                <div className="bg-muted/50 p-3 rounded mb-3 border-l-2 border-primary">
-                  <p className="text-xs font-semibold mb-1">Respuesta del proveedor:</p>
-                  <p className="text-sm">{c.provider_response}</p>
-                </div>
-              )}
-              <div className="flex items-center gap-3 pt-2 border-t">
-                <Button variant="ghost" size="sm" onClick={() => handleVote(c.id)} className="gap-1">
-                  <ThumbsUp className="w-4 h-4" /> Me pasó lo mismo ({c.votes_count})
-                </Button>
               </div>
-              {/* Schema.org Review */}
-              <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'Review',
-                'itemReviewed': { '@type': 'Organization', 'name': c.hosting_companies?.name },
-                'reviewBody': c.description,
-                'reviewRating': { '@type': 'Rating', 'ratingValue': 6 - c.severity, 'bestRating': 5, 'worstRating': 1 },
-                'datePublished': c.created_at,
-                'name': c.title,
-              })}} />
-            </Card>
-          ))}
-        </div>
+            )}
+            {complaints?.map((c) => (
+              <ReclamoCard key={c.id} c={c} onVote={handleVote} />
+            ))}
+          </div>
+        </Section>
 
-        <Card className="mt-12 p-6 bg-muted/30">
-          <h3 className="font-bold mb-2 flex items-center gap-2"><AlertTriangle className="w-5 h-5" /> Política de moderación</h3>
-          <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
+        <Section tone="paper" density="tight" title="Política de moderación">
+          <ul className="t-body measure list-disc space-y-1.5 pl-5 text-ink-2">
             <li>Verificación obligatoria por email (token mágico, expira en 48h).</li>
             <li>Anti-spam: máximo 3 reclamos por IP/empresa cada 24h.</li>
             <li>Los proveedores pueden responder a reclamos sobre su empresa.</li>
             <li>Reclamos con datos sensibles, ofensas o falsos son rechazados.</li>
             <li>Datos abiertos: descarga JSON disponible para investigación.</li>
           </ul>
-        </Card>
+        </Section>
       </main>
       <Footer />
     </>

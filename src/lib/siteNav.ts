@@ -6,6 +6,7 @@ import {
   editionHref,
   getEdition,
   isComHost,
+  isPublished,
   rankingPath,
   type EditionKey,
 } from './countries';
@@ -26,25 +27,38 @@ export const link = (label: string, path: string, opts?: { cl?: boolean }): NavL
     ? { label, href: `${CL_ORIGIN}${path}`, external: true }
     : { label, href: path, external: /^https?:/.test(path) };
 
+/** Ancla de la sección «Cómo ordenamos» en la portada de cada país (CountryLanding). */
+export const HOW_WE_RANK_ID = 'como-ordenamos';
+
 /**
- * La metodología publicada es la del ranking de Chile. Desde el .com el enlace
- * cruza de edición, así que el rótulo lo dice.
+ * Metodología según la edición (se decide por la edición, no por el dominio):
+ * - Chile: la página publicada /metodologia.
+ * - Perú, México, Colombia y Argentina: la sección «Cómo ordenamos» de su propia portada.
+ * - Latinoamérica: la de Chile, y el rótulo lo dice.
+ * - Países en verificación: no tienen ranking todavía, así que no hay enlace.
  */
-export const methodologyLink = (): NavLinkItem =>
-  link(isComHost() ? 'Metodología (Chile)' : 'Metodología', '/metodologia', { cl: true });
+export const methodologyLink = (key: EditionKey = 'CL'): NavLinkItem | null => {
+  if (key === 'CL') return link('Metodología', '/metodologia');
+  if (key === 'LATAM') return link('Metodología (Chile)', '/metodologia', { cl: true });
+  const e = getEdition(key);
+  if (!isPublished(e)) return null;
+  return link('Metodología', `/${e.slug}#${HOW_WE_RANK_ID}`);
+};
 
 /** true si el menú de guías lleva a otra edición (desde el .com, al .cl). */
 export const guidesCrossEdition = (): boolean => isComHost();
 
+const compact = (items: (NavLinkItem | null)[]): NavLinkItem[] => items.filter((i): i is NavLinkItem => i !== null);
+
 /** Secciones principales del encabezado para cada edición. */
 export const sectionsFor = (key: EditionKey): NavLinkItem[] => {
   if (key === 'LATAM') {
-    return [
+    return compact([
       link('Índice por país', editionHref('LATAM')),
       link('Datos abiertos', '/datos'),
-      methodologyLink(),
+      methodologyLink('LATAM'),
       link('Cómo elegir hosting', '/guia-elegir-hosting', { cl: true }),
-    ];
+    ]);
   }
   if (key === 'CL') {
     return [
@@ -56,16 +70,41 @@ export const sectionsFor = (key: EditionKey): NavLinkItem[] => {
     ];
   }
   const e = getEdition(key);
-  if (e.status === 'verifying') {
-    return [link('Estado de verificación', `/${e.slug}`), methodologyLink()];
+  if (!isPublished(e)) {
+    return [link('En verificación', `/${e.slug}`), link('Índice por país', editionHref('LATAM'))];
   }
-  return [
+  return compact([
     link('Ranking', rankingPath(e)),
     link('Proveedores', `/${e.slug}`),
     link('Datacenter local', `/${e.slug}/hosting-con-datacenter-local`),
     link('Reputación', `/${e.slug}/benchmark`),
-    methodologyLink(),
-  ];
+    methodologyLink(key),
+  ]);
+};
+
+/** Secciones que existen con la misma ruta en cada país publicado del .com. */
+const SHARED_COUNTRY_SECTIONS = ['hosting-con-datacenter-local', 'benchmark'] as const;
+
+/**
+ * Enlace al cambiar de país en la barra de ediciones: si la página actual
+ * existe en el país de destino (ranking, datacenter local, reputación), se va
+ * a esa misma página; si no, a la portada de la edición.
+ * El /benchmark de Chile es otra sección (rendimiento medido), así que no se cruza.
+ */
+export const editionSwitchHref = (target: EditionKey, current: EditionKey, pathname: string): string => {
+  if (target === 'LATAM' || current === 'LATAM') return editionHref(target);
+  const from = getEdition(current);
+  const to = getEdition(target);
+  if (!isPublished(from) || !isPublished(to)) return editionHref(target);
+  if (pathname === rankingPath(from)) return editionHref(target, rankingPath(to));
+  if (from.slug && to.slug) {
+    const section = pathname.replace(/\/+$/, '').split('/')[2];
+    const isShared = (SHARED_COUNTRY_SECTIONS as readonly string[]).includes(section ?? '');
+    if (isShared && pathname.startsWith(`/${from.slug}/`)) {
+      return editionHref(target, `/${to.slug}/${section}`);
+    }
+  }
+  return editionHref(target);
 };
 
 export interface NavGroup {

@@ -39,15 +39,20 @@ class Boundary extends React.Component<BoundaryProps, { error: Error | null }> {
   }
 }
 
-/** Aviso mínimo: no depende de datos ni del encabezado, que también podrían fallar. */
+/**
+ * Aviso mínimo: no depende de datos ni del encabezado, que también podrían
+ * fallar. Su <main> es el destino de «Saltar al contenido» (#contenido),
+ * porque aquí no se monta Navbar.
+ */
 const RouteErrorFallback: React.FC = () => {
   const { pathname } = useLocation();
   const home = editionHref(resolveEditionKey(pathname));
+  const action = 'inline-flex min-h-11 items-center rounded-lg px-4 text-[15px] font-semibold';
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-rule bg-white">
-        <div className="container mx-auto flex h-16 items-center px-4">
-          <a href={home} className="inline-flex items-center gap-2.5" aria-label="EligeTuHosting, portada">
+        <div className="container flex h-16 items-center">
+          <a href={home} className="inline-flex items-center gap-2.5 rounded-sm" aria-label="EligeTuHosting, portada">
             <LogoMark size={30} />
             <span className="text-[19px] font-extrabold tracking-[-0.02em] text-ink" style={{ fontStretch: '112%' }}>
               EligeTuHosting
@@ -55,33 +60,32 @@ const RouteErrorFallback: React.FC = () => {
           </a>
         </div>
       </header>
-      <main className="container mx-auto max-w-xl px-4 py-16">
-        <h1 className="text-2xl font-bold text-ink md:text-3xl">No pudimos mostrar esta página</h1>
-        <p className="mt-3 leading-relaxed text-ink-2">
-          Algo falló al cargarla. El resto del sitio funciona: puedes volver, ir a la portada o recargar para intentarlo
-          de nuevo.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => window.history.back()}
-            className="inline-flex min-h-[44px] items-center rounded-md border border-ink/25 bg-white px-4 font-semibold text-ink hover:border-ink"
-          >
-            Volver
-          </button>
-          <a
-            href={home}
-            className="inline-flex min-h-[44px] items-center rounded-md border border-ink/25 bg-white px-4 font-semibold text-ink hover:border-ink"
-          >
-            Ir a la portada
-          </a>
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="inline-flex min-h-[44px] items-center rounded-md bg-ink px-4 font-semibold text-white hover:bg-ink-2"
-          >
-            Recargar
-          </button>
+      <main id="contenido" tabIndex={-1} className="container py-12 focus:outline-none md:py-16">
+        <div className="max-w-xl">
+          <h1 className="t-h1 text-ink">No pudimos mostrar esta página</h1>
+          <p className="t-lead mt-4">
+            Algo falló al cargarla. El resto del sitio funciona: puedes volver, ir a la portada o recargar para
+            intentarlo de nuevo.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className={`${action} bg-ink text-white hover:bg-ink-soft`}
+            >
+              Recargar
+            </button>
+            <button
+              type="button"
+              onClick={() => window.history.back()}
+              className={`${action} border border-ink/25 bg-white text-ink hover:border-ink hover:bg-paper`}
+            >
+              Volver
+            </button>
+            <a href={home} className={`${action} border border-ink/25 bg-white text-ink hover:border-ink hover:bg-paper`}>
+              Ir a la portada
+            </a>
+          </div>
         </div>
       </main>
     </div>

@@ -1,15 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
-import { ChevronRight, Home, BarChart2, GitCompare, Award, BookOpen } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 interface BreadcrumbItemType {
   name: string;
@@ -21,6 +13,16 @@ interface SEOBreadcrumbsProps {
   pageName?: string;
 }
 
+const linkClass =
+  'inline-flex min-h-11 items-center rounded-sm text-ink-2 underline decoration-transparent underline-offset-4 transition-colors hover:text-ink hover:decoration-ink/40 md:min-h-0';
+
+const Separator = () => <ChevronRight className="h-3.5 w-3.5 shrink-0 text-ink-3" aria-hidden />;
+
+/**
+ * Migas de pan: texto de 13–14 px alineado a la izquierda, sin caja ni íconos.
+ * La página actual va en tinta y con aria-current. Emite el JSON-LD
+ * BreadcrumbList (sin cambios respecto de la versión anterior).
+ */
 const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
   const location = useLocation();
 
@@ -42,16 +44,6 @@ const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
     breadcrumbs.push({ name: pageName, href: window.location.pathname });
   }
 
-  // Get icon for breadcrumb based on href
-  const getIcon = (href: string) => {
-    if (href === '/') return <Home className="h-4 w-4 mr-1" />;
-    if (href === '/ranking') return <BarChart2 className="h-4 w-4 mr-1" />;
-    if (href === '/comparativa') return <GitCompare className="h-4 w-4 mr-1" />;
-    if (href === '/certificaciones') return <Award className="h-4 w-4 mr-1" />;
-    if (href === '/wiki') return <BookOpen className="h-4 w-4 mr-1" />;
-    return null;
-  };
-
   const isCurrentPage = (href: string) => location.pathname === href;
 
   return (
@@ -70,70 +62,42 @@ const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
         })}
       </script>
 
-      <Breadcrumb className="mb-6 bg-muted/30 p-3 rounded-lg">
-        <BreadcrumbList className="flex-wrap">
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link 
-                to="/" 
-                className={`flex items-center font-medium transition-colors ${
-                  isCurrentPage('/') 
-                    ? 'text-primary font-semibold' 
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {getIcon('/')}
-                Inicio
-              </Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          
-          <BreadcrumbSeparator>
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-          </BreadcrumbSeparator>
-          
-          {normalizedItems.map((item, index) => (
-            <span key={index} className="contents">
-              <BreadcrumbItem>
-                {index === normalizedItems.length - 1 && !pageName ? (
-                  <BreadcrumbPage className="flex items-center font-semibold text-primary">
-                    {getIcon(item.href)}
+      <nav aria-label="Ruta de navegación" className="mb-6">
+        <ol className="flex flex-wrap items-center gap-x-1.5 text-[13px] md:text-sm">
+          <li className="inline-flex items-center gap-1.5">
+            <Link to="/" aria-current={isCurrentPage('/') ? 'page' : undefined} className={linkClass}>
+              Inicio
+            </Link>
+            <Separator />
+          </li>
+
+          {normalizedItems.map((item, index) => {
+            const isLast = index === normalizedItems.length - 1 && !pageName;
+            return (
+              <li key={index} className="inline-flex min-w-0 items-center gap-1.5">
+                {isLast ? (
+                  <span aria-current="page" className="inline-flex min-h-11 items-center font-medium text-ink md:min-h-0">
                     {item.name}
-                  </BreadcrumbPage>
+                  </span>
                 ) : (
-                  <BreadcrumbLink asChild>
-                    <Link 
-                      to={item.href}
-                      className={`flex items-center font-medium transition-colors ${
-                        isCurrentPage(item.href)
-                          ? 'text-primary font-semibold'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {getIcon(item.href)}
-                      {item.name}
-                    </Link>
-                  </BreadcrumbLink>
+                  <Link to={item.href} aria-current={isCurrentPage(item.href) ? 'page' : undefined} className={linkClass}>
+                    {item.name}
+                  </Link>
                 )}
-              </BreadcrumbItem>
-              
-              {(index < normalizedItems.length - 1 || pageName) && (
-                <BreadcrumbSeparator>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                </BreadcrumbSeparator>
-              )}
-            </span>
-          ))}
+                {!isLast && <Separator />}
+              </li>
+            );
+          })}
 
           {pageName && (
-            <BreadcrumbItem>
-              <BreadcrumbPage className="font-semibold text-primary">
+            <li className="inline-flex min-w-0 items-center">
+              <span aria-current="page" className="inline-flex min-h-11 items-center font-medium text-ink md:min-h-0">
                 {pageName}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
+              </span>
+            </li>
           )}
-        </BreadcrumbList>
-      </Breadcrumb>
+        </ol>
+      </nav>
     </>
   );
 };

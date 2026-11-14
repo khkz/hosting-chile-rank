@@ -25,6 +25,7 @@ import SEOOrganization from './components/SEOOrganization';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomeDispatcher from './components/HomeDispatcher';
 import RouteErrorBoundary from './components/RouteErrorBoundary';
+import SkipLink from './components/marco/SkipLink';
 import { COM_PUBLISHED_EDITIONS, VERIFYING_EDITIONS, RANKING_YEAR } from './lib/countries';
 
 const HostingAdvisorFab = React.lazy(() => import('./components/advisor/HostingAdvisorFab'));
@@ -122,17 +123,14 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        {/* Primera parada de Tab en todo el sitio. */}
+        <SkipLink />
         <DomainRedirect />
         <CanonicalRedirect />
         <ScrollToTop />
         <Toaster />
         <Sonner />
         <SEOOrganization />
-        <RouteErrorBoundary silent>
-          <React.Suspense fallback={null}>
-            <HostingAdvisorFab />
-          </React.Suspense>
-        </RouteErrorBoundary>
         <RouteErrorBoundary>
         <React.Suspense fallback={null}>
         <Routes>
@@ -358,6 +356,12 @@ function App() {
       </Routes>
       </React.Suspense>
       </RouteErrorBoundary>
+        {/* El asesor flotante va después de la página: es la última parada de Tab, no la primera. */}
+        <RouteErrorBoundary silent>
+          <React.Suspense fallback={null}>
+            <HostingAdvisorFab />
+          </React.Suspense>
+        </RouteErrorBoundary>
     </Router>
     </AuthProvider>
   );

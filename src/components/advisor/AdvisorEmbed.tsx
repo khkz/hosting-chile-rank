@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import AdvisorChat from './AdvisorChat';
 import { useEdition } from '@/hooks/useEdition';
 
@@ -11,15 +11,15 @@ const AdvisorEmbed = () => {
   return (
     <section
       aria-labelledby="asesor-incrustado"
-      className="my-10 overflow-hidden rounded-xl border border-ink/10 bg-white"
+      className="my-10 overflow-hidden rounded-xl border border-rule bg-white"
     >
       <div className="flex items-start gap-3 border-b border-rule bg-paper px-5 py-4">
-        <Sparkles className="mt-1 h-5 w-5 shrink-0 text-brand" aria-hidden />
+        <MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-ink-2" aria-hidden />
         <div>
-          <h2 id="asesor-incrustado" className="text-xl font-bold text-ink">
+          <h2 id="asesor-incrustado" className="t-h3 text-ink">
             Asesor con IA
           </h2>
-          <p className="text-sm text-ink-2">Te ayuda a elegir hosting en {label} en 3 o 4 preguntas.</p>
+          <p className="t-small mt-0.5 text-ink-2">Te ayuda a elegir hosting en {label} en 3 o 4 preguntas.</p>
         </div>
       </div>
       <div className="p-5">

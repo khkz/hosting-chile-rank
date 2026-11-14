@@ -1,55 +1,48 @@
-
-import React, { useState, useEffect } from 'react';
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useEffect } from 'react';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet-async';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import PageHeader from '@/components/system/PageHeader';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { functionErrorText } from '@/lib/functionError';
+import RatingField from '@/components/marco/votacion/RatingField';
+import VotaAside from '@/components/marco/votacion/VotaAside';
 
 // Esquema de validación para el formulario
-const formSchema = z.object({
-  nombreProveedor: z.string({
-    required_error: "Por favor selecciona un proveedor o ingresa uno nuevo",
-  }),
-  otroProveedor: z.string().optional(),
-  calificacionGeneral: z.string().min(1, {
-    message: "Por favor califica tu experiencia general",
-  }),
-  calificacionSoporte: z.string().min(1, {
-    message: "Por favor califica el soporte técnico",
-  }),
-  calificacionVelocidad: z.string().min(1, {
-    message: "Por favor califica la velocidad",
-  }),
-  calificacionPrecio: z.string().min(1, {
-    message: "Por favor califica la relación precio/calidad",
-  }),
-  comentario: z.string().min(10, {
-    message: "Por favor escribe un comentario de al menos 10 caracteres",
-  }).max(500),
-  email: z.string().email({
-    message: "Por favor ingresa un email válido",
-  }),
-  nombre: z.string().min(2, {
-    message: "Por favor ingresa tu nombre",
-  }),
-  autorizacion: z.boolean().refine(val => val === true, {
-    message: "Debes autorizar la publicación de tu reseña",
-  }),
-});
+const formSchema = z
+  .object({
+    nombreProveedor: z.string().min(1, { message: 'Elige tu proveedor de la lista o «Otro».' }),
+    otroProveedor: z.string().optional(),
+    calificacionGeneral: z.string().min(1, { message: 'Califica tu experiencia general, de 1 a 5.' }),
+    calificacionSoporte: z.string().min(1, { message: 'Califica el soporte técnico, de 1 a 5.' }),
+    calificacionVelocidad: z.string().min(1, { message: 'Califica la velocidad, de 1 a 5.' }),
+    calificacionPrecio: z.string().min(1, { message: 'Califica la relación precio/calidad, de 1 a 5.' }),
+    comentario: z
+      .string()
+      .min(10, { message: 'Escribe al menos 10 caracteres sobre tu experiencia.' })
+      .max(500, { message: 'El comentario puede tener hasta 500 caracteres.' }),
+    email: z.string().email({ message: 'Escribe un email válido (ejemplo: nombre@dominio.cl).' }),
+    nombre: z.string().min(2, { message: 'Escribe tu nombre o un apodo.' }),
+    autorizacion: z.boolean().refine((val) => val === true, {
+      message: 'Para enviarla, autoriza la publicación de tu reseña.',
+    }),
+  })
+  .superRefine((data, ctx) => {
+    if (data.nombreProveedor === 'Otro' && (data.otroProveedor ?? '').trim().length < 2) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['otroProveedor'], message: 'Escribe el nombre del proveedor.' });
+    }
+  });
 
-// Lista de proveedores de hosting
+// Lista de proveedores de hosting (escrita a mano; ver informe: debería venir de la base).
 const proveedoresHosting = [
   "HostingPlus",
   "EcoHosting",
@@ -66,35 +59,15 @@ const proveedoresHosting = [
   "Otro"
 ];
 
+const RATINGS = [
+  { name: 'calificacionGeneral', label: 'Experiencia general' },
+  { name: 'calificacionSoporte', label: 'Soporte técnico' },
+  { name: 'calificacionVelocidad', label: 'Velocidad del servicio' },
+  { name: 'calificacionPrecio', label: 'Relación precio/calidad' },
+] as const;
+
 const VotaHosting = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [otroProveedorVisible, setOtroProveedorVisible] = useState(false);
-  const [reseñasRecientes, setReseñasRecientes] = useState([
-    {
-      id: 1,
-      proveedor: "HostingPlus",
-      nombre: "Carlos Muñoz",
-      calificacion: "5",
-      comentario: "Increíble servicio. El soporte técnico respondió en menos de 5 minutos a mi consulta y logré solucionar un problema que tenía hace días. La velocidad de carga de mi sitio mejoró notablemente al migrar a ellos.",
-      fecha: "Enero 7, 2026"
-    },
-    {
-      id: 2,
-      proveedor: "EcoHosting",
-      nombre: "Daniela Vargas",
-      calificacion: "4",
-      comentario: "Me encanta que usen energías renovables. El panel de control es muy intuitivo y todo funciona muy bien. El único inconveniente es que a veces el soporte tarda en responder los fines de semana.",
-      fecha: "Enero 5, 2026"
-    },
-    {
-      id: 3,
-      proveedor: "1Hosting",
-      nombre: "Felipe Araya",
-      calificacion: "5",
-      comentario: "Relación precio/calidad inmejorable. Tengo mi tienda online con ellos y nunca he tenido problemas de disponibilidad. El servidor es rápido y tienen un excelente plan de precios.",
-      fecha: "Enero 3, 2026"
-    }
-  ]);
 
   // Configuración del formulario con React Hook Form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -117,20 +90,14 @@ const VotaHosting = () => {
     document.title = "Vota por tu Hosting | EligeTuHosting.cl";
   }, []);
 
-  const watchProveedor = form.watch("nombreProveedor");
-
-  useEffect(() => {
-    setOtroProveedorVisible(watchProveedor === "Otro");
-  }, [watchProveedor]);
+  const otroProveedorVisible = form.watch("nombreProveedor") === "Otro";
+  const comentarioLength = form.watch("comentario").length;
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
 
     try {
       const proveedor = data.nombreProveedor === "Otro" ? (data.otroProveedor ?? "").trim() : data.nombreProveedor;
-      if (!proveedor || proveedor.length < 2) {
-        throw new Error("Por favor indica el nombre del proveedor");
-      }
 
       const { data: result, error } = await supabase.functions.invoke('submit-review', {
         body: {
@@ -157,8 +124,8 @@ const VotaHosting = () => {
     } catch (error) {
       console.error("Error al enviar reseña:", error);
       toast({
-        title: "Error al enviar la reseña",
-        description: error instanceof Error ? error.message : "Por favor intenta nuevamente más tarde.",
+        title: "No pudimos enviar tu reseña",
+        description: await functionErrorText(error),
         variant: "destructive"
       });
     } finally {
@@ -170,370 +137,178 @@ const VotaHosting = () => {
     <>
       <Helmet>
         <title>Vota por tu Hosting | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content="Comparte tu experiencia con tu proveedor de hosting y ayuda a otros usuarios a tomar mejores decisiones. Tu opinión es importante." 
+        <meta
+          name="description"
+          content="Comparte tu experiencia con tu proveedor de hosting y ayuda a otros usuarios a tomar mejores decisiones. Tu opinión es importante."
         />
       </Helmet>
-      
+
       <Navbar />
-      
-      <main className="bg-paper py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-ink mb-4">
-              Vota por tu hosting favorito
-            </h1>
-            <p className="text-lg text-[#555] max-w-2xl mx-auto">
-              Comparte tu experiencia y ayuda a otros usuarios a elegir el mejor servicio de hosting.
-              Tu opinión es muy valiosa para la comunidad.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+      <main>
+        <PageHeader
+          title="Vota por tu hosting favorito"
+          lead="Cuéntanos cómo te ha ido con tu proveedor de hosting. Tu experiencia ayuda a otras personas a elegir mejor."
+        />
+
+        <div className="bg-paper">
+          <div className="container grid gap-8 py-12 md:py-16 lg:grid-cols-12">
             {/* Formulario de votación */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Comparte tu experiencia</CardTitle>
-                <CardDescription>
-                  Evalúa a tu proveedor de hosting actual
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <section aria-labelledby="comparte-experiencia" className="rounded-xl border border-rule bg-white p-5 md:p-8 lg:col-span-7">
+              <h2 id="comparte-experiencia" className="t-h2 text-ink">Comparte tu experiencia</h2>
+              <p className="t-small mt-2 text-ink-2">Evalúa a tu proveedor de hosting actual. Todos los campos son obligatorios.</p>
+
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} noValidate className="mt-6 space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="nombreProveedor"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Proveedor de hosting</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger aria-required className="h-11 rounded-lg border-input">
+                              <SelectValue placeholder="Elige tu proveedor" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {proveedoresHosting.map((proveedor) => (
+                              <SelectItem key={proveedor} value={proveedor}>
+                                {proveedor}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {otroProveedorVisible && (
                     <FormField
                       control={form.control}
-                      name="nombreProveedor"
+                      name="otroProveedor"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Proveedor de hosting</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Selecciona tu proveedor" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {proveedoresHosting.map((proveedor) => (
-                                <SelectItem key={proveedor} value={proveedor}>
-                                  {proveedor}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormLabel>Nombre del proveedor</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Por ejemplo, el nombre que aparece en tu factura" aria-required {...field} />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
-                    {otroProveedorVisible && (
-                      <FormField
-                        control={form.control}
-                        name="otroProveedor"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Nombre del proveedor</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Ingresa el nombre del proveedor" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    )}
-                    
-                    <div className="space-y-4">
-                      <h3 className="font-medium">Calificaciones</h3>
-                      
-                      <FormField
-                        control={form.control}
-                        name="calificacionGeneral"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1">
-                            <FormLabel>Experiencia general</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex space-x-2"
-                              >
-                                {[1, 2, 3, 4, 5].map((value) => (
-                                  <FormItem key={value} className="flex flex-col items-center space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value={String(value)} className="sr-only" />
-                                    </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
-                                      {value}
-                                    </FormLabel>
-                                  </FormItem>
-                                ))}
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="calificacionSoporte"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1">
-                            <FormLabel>Soporte técnico</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex space-x-2"
-                              >
-                                {[1, 2, 3, 4, 5].map((value) => (
-                                  <FormItem key={value} className="flex flex-col items-center space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value={String(value)} className="sr-only" />
-                                    </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
-                                      {value}
-                                    </FormLabel>
-                                  </FormItem>
-                                ))}
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="calificacionVelocidad"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1">
-                            <FormLabel>Velocidad del servicio</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex space-x-2"
-                              >
-                                {[1, 2, 3, 4, 5].map((value) => (
-                                  <FormItem key={value} className="flex flex-col items-center space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value={String(value)} className="sr-only" />
-                                    </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
-                                      {value}
-                                    </FormLabel>
-                                  </FormItem>
-                                ))}
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="calificacionPrecio"
-                        render={({ field }) => (
-                          <FormItem className="space-y-1">
-                            <FormLabel>Relación precio/calidad</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex space-x-2"
-                              >
-                                {[1, 2, 3, 4, 5].map((value) => (
-                                  <FormItem key={value} className="flex flex-col items-center space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value={String(value)} className="sr-only" />
-                                    </FormControl>
-                                    <FormLabel className={`w-10 h-10 flex items-center justify-center rounded-full border-2 cursor-pointer ${field.value === String(value) ? 'bg-brand text-white border-brand' : 'hover:bg-gray-100'}`}>
-                                      {value}
-                                    </FormLabel>
-                                  </FormItem>
-                                ))}
-                              </RadioGroup>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                  )}
+
+                  <div role="group" aria-labelledby="calificaciones-titulo" className="space-y-5 border-t border-rule pt-6">
+                    <div>
+                      <h3 id="calificaciones-titulo" className="t-h3 text-ink">Calificaciones</h3>
+                      <p id="ayuda-escala" className="t-meta mt-1">
+                        1 es muy malo y 5, excelente.
+                      </p>
                     </div>
-                    
+                    {RATINGS.map((r) => (
+                      <RatingField key={r.name} control={form.control} name={r.name} label={r.label} helpId="ayuda-escala" />
+                    ))}
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="comentario"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tu comentario</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="¿Qué te gustó y qué no? Soporte, velocidad, precio…"
+                            className="resize-none"
+                            maxLength={500}
+                            aria-required
+                            {...field}
+                            rows={4}
+                          />
+                        </FormControl>
+                        <FormDescription className="t-meta flex justify-between gap-3">
+                          <span>De 10 a 500 caracteres.</span>
+                          <span className="tabular" aria-hidden>{comentarioLength} / 500</span>
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid gap-6 border-t border-rule pt-6 md:grid-cols-2">
                     <FormField
                       control={form.control}
-                      name="comentario"
+                      name="nombre"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Tu comentario</FormLabel>
+                          <FormLabel>Nombre</FormLabel>
                           <FormControl>
-                            <Textarea 
-                              placeholder="Comparte tu experiencia con este proveedor" 
-                              className="resize-none" 
-                              {...field} 
-                              rows={4}
-                            />
+                            <Input placeholder="Tu nombre o apodo" autoComplete="name" aria-required {...field} />
                           </FormControl>
-                          <FormDescription>
-                            Entre 10 y 500 caracteres
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="tu@email.com" type="email" autoComplete="email" aria-required {...field} />
+                          </FormControl>
+                          <FormDescription className="t-meta">No se publica.</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="autorizacion"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start gap-3 space-y-0">
+                        <FormControl>
+                          <input
+                            type="checkbox"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            aria-required
+                            className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded-sm border-input accent-ink"
+                          />
+                        </FormControl>
+                        <div className="space-y-1">
+                          <FormLabel className="cursor-pointer leading-snug">Autorizo la publicación de mi reseña</FormLabel>
+                          <FormDescription className="t-meta">
+                            Tu email no se publicará. Nos reservamos el derecho de editar contenido inapropiado.
                           </FormDescription>
                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <Separator />
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="nombre"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Nombre</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Tu nombre o nickname" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input 
-                                placeholder="Tu email (no se publicará)" 
-                                type="email" 
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <FormField
-                      control={form.control}
-                      name="autorizacion"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <input
-                              type="checkbox"
-                              checked={field.value}
-                              onChange={field.onChange}
-                              className="w-4 h-4 mt-1 rounded border-gray-300 text-brand focus:ring-brand"
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel>
-                              Autorizo la publicación de mi reseña
-                            </FormLabel>
-                            <FormDescription>
-                              Tu email no se publicará. Nos reservamos el derecho de editar contenido inapropiado.
-                            </FormDescription>
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-brand"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Enviando..." : "Enviar mi valoración"}
-                    </Button>
-                  </form>
-                </Form>
-              </CardContent>
-            </Card>
-            
-            {/* Reseñas recientes */}
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Reseñas recientes</CardTitle>
-                  <CardDescription>
-                    Opiniones de otros usuarios
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {reseñasRecientes.map((reseña) => (
-                    <div key={reseña.id} className="space-y-3 pb-4 border-b last:border-b-0 last:pb-0">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h3 className="font-medium">{reseña.proveedor}</h3>
-                          <p className="text-sm text-gray-500">{reseña.nombre} • {reseña.fecha}</p>
                         </div>
-                        <div className="flex items-center">
-                          <span className="bg-brand text-white text-xs px-2 py-1 rounded font-medium">
-                            {reseña.calificacion}/5
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-sm">{reseña.comentario}</p>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>¿Por qué votar?</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm">
-                    Tu opinión es muy valiosa para otros usuarios que están buscando un proveedor de hosting confiable. 
-                    Al compartir tu experiencia:
-                  </p>
-                  
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF233C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="m9 12 2 2 4-4"></path>
-                      </svg>
-                      <span className="text-sm">Ayudas a otros a tomar mejores decisiones</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF233C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="m9 12 2 2 4-4"></path>
-                      </svg>
-                      <span className="text-sm">Contribuyes a mejorar la calidad del servicio</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF233C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="m9 12 2 2 4-4"></path>
-                      </svg>
-                      <span className="text-sm">Generas transparencia en el mercado de hosting</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF233C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="m9 12 2 2 4-4"></path>
-                      </svg>
-                      <span className="text-sm">Recibes descuentos exclusivos en futuras contrataciones</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button type="submit" variant="brand" className="w-full md:w-auto" disabled={isSubmitting}>
+                    {isSubmitting ? "Enviando…" : "Enviar mi valoración"}
+                  </Button>
+                </form>
+              </Form>
+            </section>
+
+            {/* Reseñas recientes y por qué votar */}
+            <div className="lg:col-span-5">
+              <VotaAside />
             </div>
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </>
   );
