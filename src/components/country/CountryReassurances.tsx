@@ -1,21 +1,25 @@
 import { Button } from '@/components/ui/button';
 import { ProvenanceTag } from '@/components/data/Provenance';
-import { ShieldCheck, FileText, Phone, Headphones, Building2, ExternalLink, Server } from 'lucide-react';
+import { FileText, Phone, Headphones, Building2, ExternalLink, Server } from 'lucide-react';
 import { track } from '@/lib/track';
+import { cn } from '@/lib/utils';
 import type { LatamDcSlug } from '@/lib/dcLocal';
 
 /**
- * Bloque "Recomendado editorial" por país con reaseguros SOLO verificables desde
- * la base de datos (proveedores-{pais}.json). NADA inventado:
+ * Bloque "Recomendación editorial" por país (decisión pendiente 9: su contenido
+ * no cambia; solo se dibuja con el sistema). NADA inventado:
  * - Si el proveedor tiene razón social local, se muestra; si no, se muestra la
  *   entidad del grupo con la etiqueta honesta correspondiente.
- * - El datacenter se declara textualmente como lo publica el proveedor; NUNCA
- *   afirmamos "infraestructura propia en {país}" cuando no lo hay.
+ * - El datacenter se declara textualmente como lo publica el proveedor (glifo
+ *   «Declarado»); NUNCA afirmamos "infraestructura propia en {país}" cuando no lo hay.
  * - CTA "Ver planes y precios" con rel="sponsored" y trackEvent.
  * - Divulgación de comisión visible.
+ *
+ * Cada valor se guarda como lista de partes: se muestran en líneas separadas
+ * en vez de unirlas con un punto medio.
  */
 
-type Bullet = { icon: 'legal' | 'phone' | 'support' | 'group' | 'dc'; label: string; value: string };
+type Bullet = { icon: 'legal' | 'phone' | 'support' | 'group' | 'dc'; label: string; value: string[] };
 
 type CountryReco = {
   provider: string;
@@ -35,11 +39,11 @@ const RECOS: Record<LatamComSlug, CountryReco> = {
     headline:
       'Único proveedor del directorio PE con datacenter local Tier III certificado (GTD Lima). Razón social peruana con RUC y teléfono en Lima. Datos verificables por WHOIS, SUNAT e INDECOPI.',
     bullets: [
-      { icon: 'legal',   label: 'Razón social peruana registrada', value: 'Hostingplus Datacenter S.A.C. · RUC 20611867108' },
-      { icon: 'phone',   label: 'Teléfono local en Lima',          value: '(01) 640 9409' },
-      { icon: 'support', label: 'Soporte en español',              value: 'Ticket 24/7 · Lun–Vie 9:00–17:00 hora Lima' },
-      { icon: 'group',   label: 'Grupo regional',                  value: 'HostingPlus (opera en CL, PE, MX, CO, AR) · 0 reclamos INDECOPI' },
-      { icon: 'dc',      label: 'Datacenter (declarado)',             value: 'GTD Lima, Perú — Tier III certificado (NVMe RAID 10 + LiteSpeed Enterprise)' },
+      { icon: 'legal',   label: 'Razón social peruana registrada', value: ['Hostingplus Datacenter S.A.C.', 'RUC 20611867108'] },
+      { icon: 'phone',   label: 'Teléfono local en Lima',          value: ['(01) 640 9409'] },
+      { icon: 'support', label: 'Soporte en español',              value: ['Ticket 24/7', 'Lun–Vie 9:00–17:00 hora Lima'] },
+      { icon: 'group',   label: 'Grupo regional',                  value: ['HostingPlus (opera en CL, PE, MX, CO, AR)', '0 reclamos INDECOPI'] },
+      { icon: 'dc',      label: 'Datacenter',                      value: ['GTD Lima, Perú — Tier III certificado (NVMe RAID 10 + LiteSpeed Enterprise)'] },
     ],
     datacenterDisclosure:
       'Hosting web alojado en el datacenter GTD (Lima, Perú), Tier III certificado. Para servidores dedicados opcionales, HostingPlus declara datacenter Hivelocity en Tampa, FL (EE.UU.). El grupo opera además Ascenty Santiago (Tier III) como respaldo regional y es Google Cloud Partner con instancias en São Paulo.',
@@ -51,11 +55,11 @@ const RECOS: Record<LatamComSlug, CountryReco> = {
     headline:
       'Grupo regional con infraestructura Tier III certificada en LATAM (GTD Lima + Ascenty Santiago) y partner Google Cloud São Paulo. Soporte hispano y teléfono local en México. No opera entidad legal ni datacenter propio dentro de MX.',
     bullets: [
-      { icon: 'legal',   label: 'Entidad que factura',    value: 'Grupo HostingPlus · PlusChile Internet Ltda. (Chile) — sin entidad legal mexicana' },
-      { icon: 'phone',   label: 'Teléfono local en México', value: '+52 55 4161 6883' },
-      { icon: 'support', label: 'Soporte en español',       value: 'Ticket 24/7 · atención hispana' },
-      { icon: 'group',   label: 'Grupo regional',           value: 'HostingPlus · 0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)' },
-      { icon: 'dc',      label: 'Infraestructura del grupo', value: 'GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo · NVMe' },
+      { icon: 'legal',   label: 'Entidad que factura',       value: ['Grupo HostingPlus', 'PlusChile Internet Ltda. (Chile) — sin entidad legal mexicana'] },
+      { icon: 'phone',   label: 'Teléfono local en México',  value: ['+52 55 4161 6883'] },
+      { icon: 'support', label: 'Soporte en español',        value: ['Ticket 24/7', 'atención hispana'] },
+      { icon: 'group',   label: 'Grupo regional',            value: ['HostingPlus', '0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)'] },
+      { icon: 'dc',      label: 'Infraestructura del grupo', value: ['GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo', 'NVMe'] },
     ],
     datacenterDisclosure:
       'HostingPlus México no opera datacenter propio dentro de México. La infraestructura del grupo incluye GTD Lima (Tier III certificado), Ascenty Santiago (Tier III certificado), Hivelocity Tampa (FL, EE.UU.) y Google Cloud Partner con instancias en São Paulo. Si necesitas datacenter físicamente dentro del país, revisa el directorio (Artehosting, Neubox, HostDime MX declaran DC en MX).',
@@ -67,11 +71,11 @@ const RECOS: Record<LatamComSlug, CountryReco> = {
     headline:
       'Grupo regional con infraestructura Tier III certificada en LATAM (GTD Lima + Ascenty Santiago) y partner Google Cloud São Paulo. Soporte hispano y teléfono local en Colombia. No opera entidad legal ni datacenter propio dentro de CO.',
     bullets: [
-      { icon: 'legal',   label: 'Entidad que factura',      value: 'HostingPlus LLC (Florida, EE.UU.) — sin entidad legal colombiana' },
-      { icon: 'phone',   label: 'Teléfono local en Colombia', value: '+57 601 3819361' },
-      { icon: 'support', label: 'Soporte en español',         value: 'Ticket 24/7 · atención hispana' },
-      { icon: 'group',   label: 'Grupo regional',             value: 'HostingPlus · 0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)' },
-      { icon: 'dc',      label: 'Infraestructura del grupo',  value: 'GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo · NVMe' },
+      { icon: 'legal',   label: 'Entidad que factura',        value: ['HostingPlus LLC (Florida, EE.UU.) — sin entidad legal colombiana'] },
+      { icon: 'phone',   label: 'Teléfono local en Colombia', value: ['+57 601 3819361'] },
+      { icon: 'support', label: 'Soporte en español',         value: ['Ticket 24/7', 'atención hispana'] },
+      { icon: 'group',   label: 'Grupo regional',             value: ['HostingPlus', '0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)'] },
+      { icon: 'dc',      label: 'Infraestructura del grupo',  value: ['GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo', 'NVMe'] },
     ],
     datacenterDisclosure:
       'HostingPlus Colombia no opera datacenter propio dentro de Colombia. La infraestructura del grupo incluye GTD Lima (Tier III certificado), Ascenty Santiago (Tier III certificado), Hivelocity Tampa (FL, EE.UU.) y Google Cloud Partner con instancias en São Paulo. Si necesitas datacenter físicamente dentro del país, revisa el directorio (HostDime, IPXON, Conexcol declaran DC en Colombia).',
@@ -83,11 +87,11 @@ const RECOS: Record<LatamComSlug, CountryReco> = {
     headline:
       'Grupo regional con infraestructura Tier III certificada en LATAM (GTD Lima + Ascenty Santiago) y partner Google Cloud São Paulo. Soporte hispano y teléfono local en Argentina. No opera entidad legal ni datacenter propio dentro de AR.',
     bullets: [
-      { icon: 'legal',   label: 'Entidad que factura',       value: 'Pluschile Internet Ltda. (Chile, RUT 76.636.640-6) — sin entidad legal argentina' },
-      { icon: 'phone',   label: 'Teléfono local en Argentina', value: '+54 11 5168 5786' },
-      { icon: 'support', label: 'Soporte en español',          value: 'Ticket 24/7 · atención hispana' },
-      { icon: 'group',   label: 'Grupo regional',              value: 'HostingPlus · 0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)' },
-      { icon: 'dc',      label: 'Infraestructura del grupo',   value: 'GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo · NVMe' },
+      { icon: 'legal',   label: 'Entidad que factura',         value: ['Pluschile Internet Ltda. (Chile, RUT 76.636.640-6) — sin entidad legal argentina'] },
+      { icon: 'phone',   label: 'Teléfono local en Argentina', value: ['+54 11 5168 5786'] },
+      { icon: 'support', label: 'Soporte en español',          value: ['Ticket 24/7', 'atención hispana'] },
+      { icon: 'group',   label: 'Grupo regional',              value: ['HostingPlus', '0 reclamos INDECOPI (PE) y 0 en Reclamos.cl (CL)'] },
+      { icon: 'dc',      label: 'Infraestructura del grupo',   value: ['GTD Lima Tier III + Ascenty Santiago Tier III + Google Cloud São Paulo', 'NVMe'] },
     ],
     datacenterDisclosure:
       'HostingPlus Argentina no opera datacenter propio dentro de Argentina. La infraestructura del grupo incluye GTD Lima (Tier III certificado), Ascenty Santiago (Tier III certificado), Hivelocity Tampa (FL, EE.UU.) y Google Cloud Partner con instancias en São Paulo. Si necesitas datacenter físicamente dentro del país, revisa el directorio (BAEHOST, DonWeb, Ferozo declaran DC en Argentina).',
@@ -107,10 +111,12 @@ export default function CountryReassurances({
   country,
   countryName,
   variant = 'landing',
+  className,
 }: {
   country: LatamComSlug;
   countryName: string;
   variant?: 'landing' | 'best';
+  className?: string;
 }) {
   const reco = RECOS[country];
   if (!reco) return null;
@@ -121,67 +127,52 @@ export default function CountryReassurances({
   return (
     <section
       aria-labelledby={`${country}-curated-heading`}
-      className="mb-10 overflow-hidden rounded-lg border border-signal-editorial/30 bg-white"
+      className={cn('rounded-xl border border-rule bg-white p-5 md:p-7', className)}
     >
-      <div className="p-5 md:p-7">
-        <div className="flex items-start gap-3 mb-4">
-          <div className="shrink-0 rounded-md bg-signal-editorial-bg p-2">
-            <ShieldCheck className="h-5 w-5 text-signal-editorial" aria-hidden />
-          </div>
-          <div>
-            <div className="flex items-center gap-2 text-sm font-semibold text-signal-editorial">
-              Recomendación editorial en {countryName} <ProvenanceTag kind="editorial" />
+      <p className="t-label flex flex-wrap items-center gap-2">
+        Recomendación editorial en {countryName} <ProvenanceTag kind="editorial" />
+      </p>
+      <h2 id={`${country}-curated-heading`} className="type-wide mt-2 text-xl font-bold leading-tight text-ink md:text-2xl">
+        {reco.provider}
+      </h2>
+      <p className="t-small mt-2 max-w-[62ch] text-ink-2">{reco.headline}</p>
+
+      <dl className="mt-5 grid border-t border-rule md:grid-cols-2 md:gap-x-10">
+        {reco.bullets.map((b) => {
+          const Icon = ICONS[b.icon];
+          return (
+            <div key={b.label} className="border-b border-rule py-3">
+              <dt className="t-meta flex items-center gap-2">
+                <Icon className="h-4 w-4 shrink-0 text-ink-2" aria-hidden />
+                {b.label}
+                {b.icon === 'dc' && <ProvenanceTag kind="declared" variant="glyph" />}
+              </dt>
+              <dd className="t-small mt-1 pl-6 font-medium text-ink">
+                {b.value.map((part) => (
+                  <span key={part} className="block">
+                    {part}
+                  </span>
+                ))}
+              </dd>
             </div>
-            <h2
-              id={`${country}-curated-heading`}
-              className="text-xl md:text-2xl font-bold text-ink leading-tight"
-            >
-              {reco.provider}
-            </h2>
-            <p className="text-sm text-ink/75 mt-1">{reco.headline}</p>
-          </div>
-        </div>
+          );
+        })}
+      </dl>
 
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
-          {reco.bullets.map((b) => {
-            const Icon = ICONS[b.icon];
-            return (
-              <li
-                key={b.label}
-                className="flex items-start gap-2.5 rounded-md border border-rule bg-paper p-3"
-              >
-                <Icon className="h-4 w-4 text-ink/70 mt-0.5 shrink-0" aria-hidden />
-                <div className="text-xs leading-snug">
-                  <div className="text-ink/60">{b.label}</div>
-                  <div className="text-ink font-medium">{b.value}</div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <Button asChild size="lg" className="cta-primary">
-            <a
-              href={reco.url}
-              target="_blank"
-              rel="sponsored noopener"
-              referrerPolicy="no-referrer"
-              onClick={onCta}
-              className="inline-flex items-center gap-2"
-            >
-              Ver planes y precios <ExternalLink className="h-4 w-4" aria-hidden />
-            </a>
-          </Button>
-          <span className="text-xs text-ink-3">Sin compromiso. Atención en español.</span>
-        </div>
-
-        <p className="text-[11px] text-ink/60 mt-4 leading-snug">
-          <strong>Divulgación:</strong> podemos recibir una comisión si contratas por este
-          enlace. La recomendación se basa en trayectoria verificable del grupo en LATAM y
-          no altera el orden objetivo del directorio de más abajo. {reco.datacenterDisclosure}
-        </p>
+      <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+        <Button asChild size="lg" variant="brand">
+          <a href={reco.url} target="_blank" rel="sponsored noopener" referrerPolicy="no-referrer" onClick={onCta}>
+            Ver planes y precios <ExternalLink aria-hidden />
+          </a>
+        </Button>
+        <span className="t-meta">Sin compromiso. Atención en español.</span>
       </div>
+
+      <p className="t-meta mt-5 max-w-[62ch]">
+        <strong className="font-semibold text-ink-2">Divulgación:</strong> podemos recibir una comisión si contratas por
+        este enlace. La recomendación se basa en trayectoria verificable del grupo en LATAM y no altera el orden
+        objetivo del directorio de más abajo. {reco.datacenterDisclosure}
+      </p>
     </section>
   );
 }

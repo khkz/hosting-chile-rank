@@ -1,41 +1,22 @@
-import { useLocation, Link, Navigate } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
+import { ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ShieldCheck, Star, ExternalLink, MessageSquare, Flag } from 'lucide-react';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
 import { LATAM_META, LATAM_OG_IMAGE, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { isHiddenProvider } from '@/lib/providerLinks';
+import EditionCrumbs from '@/components/country/edicion/EditionCrumbs';
+import ReputationList, { type ReputationRow } from '@/components/country/edicion/ReputationList';
+import { firstReviewLabel, registryName, voiceFor } from '@/components/country/edicion/editionVoice';
 
-interface Row {
-  id: string;
-  slug: string;
-  name: string;
-  website: string | null;
-  avg: number | null;
-  count: number;
-}
+type Row = ReputationRow;
 
-const OFFICIAL_REGISTRY: Record<LatamSlug, { label: string; url: string }> = {
-  pe: { label: 'INDECOPI · Mira a Quién le Compras', url: 'https://www.gob.pe/10285-buscar-empresas-sancionadas-por-indecopi' },
-  mx: { label: 'PROFECO · Buró Comercial', url: 'https://burocomercial.profeco.gob.mx/' },
-  co: { label: 'SIC · Defensa del Consumidor', url: 'https://www.sic.gov.co/grupo-de-defensa-del-consumidor' },
-  ar: { label: 'Defensa del Consumidor', url: 'https://www.argentina.gob.ar/produccion/defensadelconsumidor/hacer-un-reclamo' },
-};
-
-const Stars = ({ value }: { value: number }) => {
-  const full = Math.round(value);
-  return (
-    <span className="inline-flex items-center gap-0.5" aria-label={`${value.toFixed(1)} de 5 estrellas`}>
-      {[1, 2, 3, 4, 5].map((n) => (
-        <Star key={n} className={`w-4 h-4 ${n <= full ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />
-      ))}
-    </span>
-  );
-};
+const linkCls = 'font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
 const CountryBenchmark = () => {
   const location = useLocation();
@@ -43,7 +24,7 @@ const CountryBenchmark = () => {
   if (!isLatamSlug(first)) return <Navigate to="/latam" replace />;
   const slug = first as LatamSlug;
   const meta = LATAM_META[slug];
-  const registry = OFFICIAL_REGISTRY[slug];
+  const { registry, vos } = voiceFor(slug);
 
   const { data: rows, isLoading } = useQuery({
     queryKey: ['country-reputation', slug],
@@ -121,6 +102,13 @@ const CountryBenchmark = () => {
     },
   }));
 
+  const registryLink = (
+    <a href={registry.url} target="_blank" rel="noopener nofollow" className={`inline-flex items-center gap-1 ${linkCls}`}>
+      {registryName(registry)}
+      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+    </a>
+  );
+
   return (
     <>
       <Helmet>
@@ -141,119 +129,68 @@ const CountryBenchmark = () => {
         ))}
       </Helmet>
       <Navbar />
-      <main className="min-h-screen bg-gray-50">
-        <section className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-14">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center gap-3 mb-3">
-              <ShieldCheck className="w-6 h-6" />
-              <Badge className="bg-white/20 text-white border-white/30">Reputación {meta.flag} {meta.name}</Badge>
-            </div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-3">
-              Reputación de hosting en {meta.name} 2026
-            </h1>
-            <p className="text-lg text-white/90 max-w-3xl">
-              No publicamos benchmarks de velocidad de la web del proveedor. Medir el TTFB del sitio de marketing
-              —que casi siempre está detrás de Cloudflare u otro CDN— no dice nada del servicio de hosting real que
-              recibe el cliente. En su lugar mostramos reputación verificable: reseñas de usuarios y reclamos en
-              registros oficiales de {meta.name}.
+      <main>
+        <PageHeader
+          breadcrumbs={
+            <EditionCrumbs
+              code={meta.code}
+              items={[{ label: 'Inicio', to: '/' }, { label: `Hosting en ${meta.name}`, to: `/${slug}` }, { label: 'Reputación' }]}
+            />
+          }
+          title={`Reputación de hosting en ${meta.name} 2026`}
+          lead={`Lo que dicen los usuarios de cada proveedor, en reseñas que modera nuestro equipo, y el enlace al registro oficial de consumo de ${meta.name}.`}
+          meta={<span>Registro oficial de consumo: {registryLink}</span>}
+        />
+
+        <Section
+          id="proveedores"
+          title={`Proveedores de ${meta.name}`}
+          lead="Ordenados por reseñas de usuarios. Quienes aún no tienen van después, en orden alfabético."
+          density="tight"
+        >
+          {isLoading ? (
+            <p className="t-body border-y-2 border-ink py-10 text-ink-2">Cargando proveedores…</p>
+          ) : list.length === 0 ? (
+            <p className="t-body max-w-[62ch] rounded-xl border border-rule bg-paper p-5 text-ink-2">
+              Aún no hay proveedores verificados de {meta.name} en el directorio.
             </p>
-          </div>
-        </section>
+          ) : (
+            <ReputationList rows={list} countrySlug={slug} reviewLabel={firstReviewLabel(slug)} />
+          )}
+          <Callout tone="note" title="Por qué aquí no hay velocidad ni uptime" className="mt-10 max-w-3xl">
+            <p>
+              No publicamos benchmarks de velocidad de la web del proveedor. Medir el TTFB del sitio de marketing —que
+              casi siempre está detrás de Cloudflare u otro CDN— no dice nada del servicio de hosting real que recibe el
+              cliente. En su lugar mostramos reputación verificable: reseñas de usuarios y reclamos en registros oficiales
+              de {meta.name}.
+            </p>
+          </Callout>
+        </Section>
 
-        <section className="container mx-auto px-4 py-10">
-          <div className="grid gap-4">
-            {isLoading && <p className="text-gray-500">Cargando…</p>}
-            {!isLoading && list.map((r) => {
-              const trustpilot = `https://www.trustpilot.com/search?query=${encodeURIComponent(r.name)}`;
-              return (
-                <Card key={r.id}>
-                  <CardContent className="p-5">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div>
-                        <Link to={`/${slug}/${r.slug}`} className="text-lg font-semibold text-blue-700 hover:underline">
-                          {r.name}
-                        </Link>
-                        <div className="mt-2">
-                          {r.count > 0 && r.avg != null ? (
-                            <div className="flex items-center gap-2 text-sm">
-                              <Stars value={r.avg} />
-                              <span className="font-medium">{r.avg.toFixed(1)}</span>
-                              <span className="text-gray-500">· {r.count} reseña{r.count === 1 ? '' : 's'} verificada{r.count === 1 ? '' : 's'}</span>
-                            </div>
-                          ) : (
-                            <div className="text-sm text-gray-600 flex items-center gap-2">
-                              <MessageSquare className="w-4 h-4" />
-                              Aún sin reseñas verificadas — sé el primero
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2 text-sm">
-                        {r.count === 0 && (
-                          <Link
-                            to={`/${slug}/${r.slug}#dejar-resena`}
-                            className="inline-flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700"
-                          >
-                            <Star className="w-4 h-4" /> Dejar reseña
-                          </Link>
-                        )}
-                        <a
-                          href={registry.url}
-                          target="_blank"
-                          rel="noopener nofollow"
-                          className="inline-flex items-center gap-1 border border-gray-300 px-3 py-1.5 rounded hover:bg-gray-100"
-                        >
-                          <Flag className="w-4 h-4" /> Consultar reclamos oficiales
-                        </a>
-                        <a
-                          href={trustpilot}
-                          target="_blank"
-                          rel="noopener nofollow"
-                          className="inline-flex items-center gap-1 border border-gray-300 px-3 py-1.5 rounded hover:bg-gray-100"
-                        >
-                          <ExternalLink className="w-4 h-4" /> Reseñas en Trustpilot
-                        </a>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          <div className="mt-8 grid md:grid-cols-2 gap-4 text-sm text-gray-700">
-            <Card><CardContent className="p-4">
-              <h2 className="font-semibold mb-2">Metodología</h2>
+        <Section id="metodologia" tone="paper" title="Metodología" density="tight">
+          <div className="grid gap-10 md:grid-cols-2">
+            <div className="t-body space-y-3 text-ink-2">
               <p>
-                La reputación se basa en dos fuentes verificables: (1) reseñas de usuarios aprobadas por nuestro
-                equipo de moderación y (2) registros oficiales de reclamos del país. No hacemos benchmark de la web
-                del proveedor porque su sitio de marketing suele estar detrás de un CDN (Cloudflare, Akamai) y no
-                refleja el rendimiento del hosting real que recibe el cliente.
+                La reputación se basa en dos fuentes verificables: (1) reseñas de usuarios aprobadas por nuestro equipo
+                de moderación y (2) registros oficiales de reclamos del país. No hacemos benchmark de la web del
+                proveedor porque su sitio de marketing suele estar detrás de un CDN (Cloudflare, Akamai) y no refleja el
+                rendimiento del hosting real que recibe el cliente.
               </p>
-              <p className="mt-2">
+              <p>
                 Orden: primero proveedores con reseñas (promedio y luego número), después los que aún no tienen
                 reseñas verificadas, en orden alfabético.
               </p>
-            </CardContent></Card>
-            <Card><CardContent className="p-4">
-              <h2 className="font-semibold mb-2">Registros oficiales de {meta.name}</h2>
-              <p>
-                Antes de contratar, revisa si el proveedor aparece con sanciones o reclamos formales en el
-                registro público:
+            </div>
+            <div>
+              <h3 className="t-h3 text-ink">Registros oficiales de {meta.name}</h3>
+              <p className="t-body mt-2 text-ink-2">
+                Antes de contratar, {vos ? 'revisá' : 'revisa'} si el proveedor aparece con sanciones o reclamos formales
+                en el registro público:
               </p>
-              <p className="mt-2">
-                <a
-                  href={registry.url}
-                  target="_blank"
-                  rel="noopener nofollow"
-                  className="text-blue-700 hover:underline inline-flex items-center gap-1"
-                >
-                  {registry.label} <ExternalLink className="w-4 h-4" />
-                </a>
-              </p>
-            </CardContent></Card>
+              <p className="t-body mt-3">{registryLink}</p>
+            </div>
           </div>
-        </section>
+        </Section>
       </main>
       <Footer />
     </>

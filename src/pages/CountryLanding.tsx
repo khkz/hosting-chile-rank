@@ -6,41 +6,27 @@ import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import {
-  ArrowRight,
-  Globe,
-  ExternalLink,
-  Phone,
-  MapPin,
-  Clock,
-  Server,
-  Building2,
-  FileText,
-  Cpu,
-  
-} from 'lucide-react';
+import Section from '@/components/system/Section';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
 import { getEdition, hreflangAlternates, rankingPath } from '@/lib/countries';
-import Flag from '@/components/data/Flag';
-import { ProvenanceGlyph, ProvenanceTag } from '@/components/data/Provenance';
+import { formatDataDate } from '@/lib/format';
+import { ProvenanceTag } from '@/components/data/Provenance';
 import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
 import DirectoryFilterBar, { type SortMode } from '@/components/DirectoryFilterBar';
 import { hasLocalDatacenter, has247Support, type LatamDcSlug } from '@/lib/dcLocal';
-
-
-import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
-import { formatCorporateGroup } from '@/lib/formatGroup';
+import { isHiddenProvider } from '@/lib/providerLinks';
 import CountryReassurances from '@/components/country/CountryReassurances';
 import BuyerRoutes from '@/components/country/BuyerRoutes';
 import DirectoryRow from '@/components/country/DirectoryRow';
+import EditionHeader from '@/components/country/edicion/EditionHeader';
+import { fewerFiltersHint, isComSlug, sameMethodLine, type ComSlug } from '@/components/country/edicion/editionVoice';
 
 const CountryLanding = () => {
   const location = useLocation();
   const info = getCountryFromPath(location.pathname) ?? COUNTRIES.PE;
   const edition = getEdition(info.code);
+  const slug: ComSlug = isComSlug(info.slug) ? info.slug : 'pe';
 
   const { data: companies, isLoading, isError, refetch } = useQuery({
     queryKey: ['country-directory', info.code],
@@ -91,16 +77,13 @@ const CountryLanding = () => {
   const curatedCompany = (companies || []).find((c: any) => c.is_curated === true) || null;
   const hasRecommended = !!curatedCompany;
 
-  // Fecha real de los datos: la última modificación de un proveedor del país
-  // (antes se mostraba la fecha de hoy en cada visita).
+  // Fecha real de los datos: la última modificación de un proveedor del país.
+  // Sin datos no se publica fecha (nunca la del reloj del visitante).
   const latestIso = (companies || []).reduce<string | null>(
     (max, c: any) => (c.updated_at && (!max || c.updated_at > max) ? c.updated_at : max),
     null
   );
-  const lastUpdated = (latestIso ? new Date(latestIso) : new Date()).toISOString().slice(0, 10);
-  const lastUpdatedHuman = latestIso
-    ? new Date(latestIso).toLocaleDateString(info.locale, { day: 'numeric', month: 'long', year: 'numeric' })
-    : '…';
+  const lastUpdated = latestIso ? new Date(latestIso).toISOString().slice(0, 10) : undefined;
 
   // JSON-LD: BreadcrumbList
   const breadcrumbLd = {
@@ -147,7 +130,7 @@ const CountryLanding = () => {
     },
     {
       q: '¿Cómo se verifican los datos?',
-      a: 'Contrastamos WHOIS, ASN, registros mercantiles, sitios oficiales y respuestas de soporte. No publicamos ranking hasta tener reclamos, benchmarks y trayectoria confirmados con la misma metodología usada en Chile.',
+      a: `Contrastamos WHOIS, ASN, registros mercantiles, sitios oficiales y respuestas de soporte. No publicamos ranking hasta tener reclamos, benchmarks y trayectoria confirmados ${sameMethodLine()}.`,
     },
     {
       q: `¿Por qué HostingPlus aparece como recomendado en ${info.name}?`,
@@ -166,6 +149,11 @@ const CountryLanding = () => {
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
     })),
+  };
+
+  const clearFilters = () => {
+    setOnlyDcLocal(false);
+    setOnly247(false);
   };
 
   return (
@@ -197,172 +185,123 @@ const CountryLanding = () => {
       <Navbar />
 
       <main>
-        <section className="border-b border-rule bg-paper">
-          <div className="container mx-auto grid gap-8 px-4 py-12 md:grid-cols-12 md:py-16">
-            <div className="md:col-span-8">
-              <p className="flex items-center gap-2 text-sm font-medium text-ink-2">
-                <Flag code={info.code} size={22} />
-                Edición {info.name}
-              </p>
-              <h1 className="type-display mt-4 text-[2.5rem] text-ink sm:text-6xl">Hosting en {info.name}</h1>
-              <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-ink-2">
-                Directorio de proveedores con datos comprobables: razón social, datacenter, contacto y tecnología. No
-                publicamos notas hasta verificar reclamos, red y trayectoria con la misma metodología que en Chile.
-              </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  to={rankingPath(edition)}
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-md bg-ink px-6 font-semibold text-white hover:bg-ink-soft"
-                >
-                  Mejor hosting en {info.name} 2026
-                </Link>
-                <Link
-                  to={`/${info.slug}/hosting-con-datacenter-local`}
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-md border border-ink/25 bg-white px-6 font-semibold text-ink hover:border-ink"
-                >
-                  Con datacenter en {info.name}
-                </Link>
-              </div>
-            </div>
-            <aside className="self-end md:col-span-4" aria-label={`Resumen de ${info.name}`}>
-              <dl className="divide-y divide-rule border-y border-ink/80 text-ink tabular">
-                <div className="flex items-baseline justify-between py-3">
-                  <dt className="text-sm text-ink-2">Proveedores verificados</dt>
-                  <dd className="text-2xl font-bold">{companies ? companies.length : '…'}</dd>
-                </div>
-                <div className="flex items-baseline justify-between py-3">
-                  <dt className="flex items-center gap-2 text-sm text-ink-2">
-                    Datacenter en el país <ProvenanceTag kind="declared" />
-                  </dt>
-                  <dd className="text-2xl font-bold">{companies ? localDcCount : '…'}</dd>
-                </div>
-                <div className="flex items-baseline justify-between py-3">
-                  <dt className="text-sm text-ink-2">Datos actualizados</dt>
-                  <dd className="font-semibold">{lastUpdatedHuman}</dd>
-                </div>
-              </dl>
-            </aside>
+        <EditionHeader
+          code={info.code}
+          slug={slug}
+          name={info.name}
+          rankingTo={rankingPath(edition)}
+          loading={isLoading}
+          total={companies ? companies.length : null}
+          localDc={companies ? localDcCount : null}
+          latestIso={latestIso}
+        />
+
+        {hasRecommended && (
+          <div className="container pt-10 md:pt-14">
+            <CountryReassurances country={slug} countryName={info.name} variant="landing" />
           </div>
-        </section>
+        )}
 
-        <div className="container mx-auto px-4 py-12">
-          {hasRecommended && (
-            <CountryReassurances
-              country={info.slug as 'pe' | 'mx' | 'co' | 'ar'}
-              countryName={info.name}
-              variant="landing"
-            />
-          )}
+        <BuyerRoutes country={slug} countryName={info.name} />
 
-          <BuyerRoutes
-            country={info.slug as 'pe' | 'mx' | 'co' | 'ar'}
-            countryName={info.name}
-          />
-
+        <div className="container">
           <AdvisorEmbed />
-
-          <section id="directorio" aria-labelledby="directorio-titulo" className="mt-12 scroll-mt-24">
-            <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-              <h2 id="directorio-titulo" className="type-wide text-2xl font-bold text-ink md:text-3xl">
-                Proveedores de {info.name}
-              </h2>
-              <p className="flex items-center gap-2 text-sm text-ink-3">
-                <ProvenanceGlyph kind="declared" />
-                El datacenter es el que declara cada proveedor.
-              </p>
-            </div>
-
-            {isLoading ? (
-              <p className="border-y-2 border-ink py-10 text-center text-ink-2">Cargando proveedores…</p>
-            ) : isError ? (
-              // Un error de lectura no es una edición vacía: nunca mostrar "Estamos verificando" aquí.
-              <div role="alert" className="rounded-md border border-rule bg-paper p-6 text-sm text-ink-2">
-                No pudimos cargar el directorio de {info.name}. Los proveedores siguen publicados; es un problema de
-                conexión con nuestra base de datos.{' '}
-                <button type="button" onClick={() => refetch()} className="font-semibold text-ink underline underline-offset-2">
-                  Reintentar
-                </button>
-              </div>
-            ) : companies && companies.length > 0 ? (
-              <>
-                <DirectoryFilterBar
-                  onlyDcLocal={onlyDcLocal}
-                  only247={only247}
-                  sort={sort}
-                  countryName={info.name}
-                  onOnlyDcLocalChange={setOnlyDcLocal}
-                  onOnly247Change={setOnly247}
-                  onSortChange={setSort}
-                  totalCount={companies.length}
-                  visibleCount={filteredCompanies.length}
-                />
-                {filteredCompanies.length === 0 ? (
-                  <div className="rounded-md border border-rule bg-paper p-6 text-center text-sm text-ink-2">
-                    <p>Ningún proveedor cumple esos filtros.</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setOnlyDcLocal(false);
-                        setOnly247(false);
-                      }}
-                      className="mt-3 inline-flex min-h-[40px] items-center rounded-md border border-ink/25 bg-white px-4 font-semibold text-ink hover:border-ink"
-                    >
-                      Quitar filtros
-                    </button>
-                  </div>
-                ) : (
-                  <ul className="divide-y divide-rule border-y-2 border-ink">
-                    {filteredCompanies.map((c: any) => (
-                      <DirectoryRow key={c.id} company={c} countrySlug={info.slug} countryName={info.name} dcSlug={dcSlug} />
-                    ))}
-                  </ul>
-                )}
-              </>
-            ) : (
-              <div className="rounded-md border border-rule bg-paper p-6 md:p-8">
-                <h3 className="text-xl font-semibold text-ink">
-                  Estamos verificando a los proveedores de {info.name}
-                </h3>
-                <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-2">
-                  No publicamos rankings sin datos comprobables. Estamos revisando red, datacenter, reclamos y
-                  trayectoria con la misma metodología que aplicamos en Chile.
-                </p>
-                <Link to="/contacto" className="mt-4 inline-flex min-h-[44px] items-center rounded-md bg-ink px-4 text-sm font-semibold text-white">
-                  Sugerir un proveedor
-                </Link>
-              </div>
-            )}
-          </section>
-
-          {/* Metodología y transparencia */}
-          <section className="mt-14 grid gap-6 border-t border-rule pt-10 md:grid-cols-12">
-            <h2 className="type-wide text-2xl font-bold text-ink md:col-span-4">Cómo ordenamos este directorio</h2>
-            <div className="space-y-3 text-[15px] leading-relaxed text-ink-2 md:col-span-8">
-              <p>
-                El directorio de {info.name} se ordena por la calidad comprobable de la infraestructura del operador y
-                por transparencia verificable, no por puntajes autoasignados. En este orden: (1) calidad certificada
-                del datacenter, con operador identificado; (2) entidad legal identificable, registros públicos de
-                reclamos, teléfono y soporte en español; (3) presencia y latencia al país (ASN y red); (4) antigüedad.
-              </p>
-              <p className="text-sm text-ink-3">
-                Última actualización de datos: {lastUpdatedHuman}. Datos bajo licencia CC-BY-4.0, de acceso libre.
-              </p>
-            </div>
-          </section>
-
-          {/* Preguntas frecuentes */}
-          <section className="mt-12 grid gap-6 border-t border-rule pt-10 md:grid-cols-12">
-            <h2 className="type-wide text-2xl font-bold text-ink md:col-span-4">Preguntas frecuentes</h2>
-            <Accordion type="single" collapsible className="md:col-span-8">
-              {faqs.map((f, i) => (
-                <AccordionItem key={i} value={`faq-${i}`} className="border-rule">
-                  <AccordionTrigger className="text-left font-semibold text-ink hover:no-underline">{f.q}</AccordionTrigger>
-                  <AccordionContent className="text-[15px] leading-relaxed text-ink-2">{f.a}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </section>
         </div>
+
+        <Section
+          id="directorio"
+          title={`Proveedores de ${info.name}`}
+          density="tight"
+          action={
+            <p className="t-small flex flex-wrap items-center gap-2 text-ink-2">
+              <ProvenanceTag kind="declared" />
+              El datacenter es el que declara cada proveedor.
+            </p>
+          }
+        >
+          {isLoading ? (
+            <p className="border-y-2 border-ink py-10 t-body text-ink-2">Cargando proveedores…</p>
+          ) : isError ? (
+            // Un error de lectura no es una edición vacía: nunca mostrar "Estamos verificando" aquí.
+            <div role="alert" className="t-small rounded-xl border border-rule bg-paper p-5 text-ink-2 md:p-6">
+              <p className="max-w-[62ch]">
+                No pudimos cargar el directorio de {info.name}. Los proveedores siguen publicados; es un problema de
+                conexión con nuestra base de datos.
+              </p>
+              <Button type="button" variant="outline" size="sm" className="mt-3" onClick={() => refetch()}>
+                Reintentar
+              </Button>
+            </div>
+          ) : companies && companies.length > 0 ? (
+            <>
+              <DirectoryFilterBar
+                onlyDcLocal={onlyDcLocal}
+                only247={only247}
+                sort={sort}
+                countryName={info.name}
+                onOnlyDcLocalChange={setOnlyDcLocal}
+                onOnly247Change={setOnly247}
+                onSortChange={setSort}
+                totalCount={companies.length}
+                visibleCount={filteredCompanies.length}
+              />
+              {filteredCompanies.length === 0 ? (
+                <div className="rounded-xl border border-rule bg-paper p-5 md:p-6">
+                  <p className="t-body text-ink">Ningún proveedor cumple esos filtros.</p>
+                  <p className="t-small text-ink-2">{fewerFiltersHint(slug)}</p>
+                  <Button type="button" variant="outline" className="mt-4" onClick={clearFilters}>
+                    Quitar filtros
+                  </Button>
+                </div>
+              ) : (
+                <ul className="divide-y divide-rule border-y-2 border-ink">
+                  {filteredCompanies.map((c: any) => (
+                    <DirectoryRow key={c.id} company={c} countrySlug={info.slug} countryName={info.name} dcSlug={dcSlug} />
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : (
+            <div className="rounded-xl border border-rule bg-paper p-6 md:p-8">
+              <h3 className="t-h3 text-ink">Estamos verificando a los proveedores de {info.name}</h3>
+              <p className="t-small mt-2 max-w-[62ch] text-ink-2">
+                No publicamos rankings sin datos comprobables. Estamos revisando red, datacenter, reclamos y
+                trayectoria {sameMethodLine()}.
+              </p>
+              <Button asChild className="mt-4">
+                <Link to="/contacto">Sugerir un proveedor</Link>
+              </Button>
+            </div>
+          )}
+        </Section>
+
+        <Section id="como-ordenamos" tone="paper" title="Cómo ordenamos este directorio" density="tight">
+          <div className="t-body measure space-y-4 text-ink-2">
+            <p>
+              El directorio de {info.name} se ordena por la calidad comprobable de la infraestructura del operador y
+              por transparencia verificable, no por puntajes autoasignados. En este orden: (1) calidad certificada
+              del datacenter, con operador identificado; (2) entidad legal identificable, registros públicos de
+              reclamos, teléfono y soporte en español; (3) presencia y latencia al país (ASN y red); (4) antigüedad.
+            </p>
+            <p className="t-meta">
+              Última edición de los datos de {info.name}: {latestIso ? formatDataDate(latestIso) : isLoading ? '…' : 'sin dato'}.
+              Datos bajo licencia CC-BY-4.0, de acceso libre.
+            </p>
+          </div>
+        </Section>
+
+        <Section id="preguntas" title="Preguntas frecuentes" density="tight">
+          <Accordion type="single" collapsible className="max-w-3xl border-t border-rule">
+            {faqs.map((f, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="border-rule">
+                <AccordionTrigger className="min-h-[44px] text-left font-semibold text-ink hover:no-underline">
+                  {f.q}
+                </AccordionTrigger>
+                <AccordionContent className="t-body measure text-ink-2">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Section>
       </main>
 
       <Footer />

@@ -1,14 +1,22 @@
 import { useLocation, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
+import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Server, ShieldCheck, ArrowRight } from 'lucide-react';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import EditorialImage, { isEmptyEditorial } from '@/components/media/EditorialImage';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import { formatInteger, formatShortDate, isoDate } from '@/lib/format';
 import { LATAM_META, LATAM_OG_IMAGE, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { isHiddenProvider } from '@/lib/providerLinks';
+import EditionCrumbs from '@/components/country/edicion/EditionCrumbs';
+import SummaryCard, { type SummaryItem } from '@/components/country/edicion/SummaryCard';
+import DcLocalList, { type DcProvider, type SiteCheck } from '@/components/country/edicion/DcLocalList';
+
+const linkCls = 'font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
 const CountryDatacenterLocal = () => {
   const location = useLocation();
@@ -17,7 +25,7 @@ const CountryDatacenterLocal = () => {
   const slug = first as LatamSlug;
   const meta = LATAM_META[slug];
 
-  const { data: providers } = useQuery({
+  const { data: providers, isLoading } = useQuery({
     queryKey: ['country-datacenter-local', slug],
     queryFn: async () => {
       const { data } = await supabase
@@ -73,6 +81,31 @@ const CountryDatacenterLocal = () => {
     ],
   };
 
+  // Resumen: lo declarado, lo medido y la fecha de la medición más reciente.
+  const checks = siteChecks as Map<string, SiteCheck> | undefined;
+  const dcList = list as DcProvider[];
+  const withAsn = dcList.filter((p) => checks?.get(p.id)?.asn).length;
+  const lastCheck = dcList.reduce<string | null>((max, p) => {
+    const at = checks?.get(p.id)?.checked_at ?? null;
+    return at && (!max || at > max) ? at : max;
+  }, null);
+  const pending = isLoading ? '…' : 'sin dato';
+  const summary: SummaryItem[] = [
+    {
+      label: `Declaran datacenter en ${meta.name}`,
+      kind: 'declared',
+      value: providers ? formatInteger(list.length) : pending,
+      emphasis: 'figure',
+    },
+    { label: 'Con ASN medido', kind: 'measured', value: providers ? formatInteger(withAsn) : pending, emphasis: 'figure' },
+    {
+      label: 'Última medición',
+      value: lastCheck ? <time dateTime={isoDate(lastCheck)}>{formatShortDate(lastCheck)}</time> : providers ? 'sin medir' : pending,
+    },
+  ];
+  const image = <EditorialImage name="datacenter" className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />;
+  const hasImage = !isEmptyEditorial(image);
+
   return (
     <>
       <Helmet>
@@ -94,80 +127,95 @@ const CountryDatacenterLocal = () => {
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
       </Helmet>
       <Navbar />
-      <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
-        <nav className="text-sm text-muted-foreground mb-4" aria-label="breadcrumb">
-          <Link to="/" className="hover:underline">Inicio</Link><span className="mx-2">/</span>
-          <Link to={`/${slug}`} className="hover:underline">Hosting en {meta.name}</Link><span className="mx-2">/</span>
-          <span className="text-foreground font-medium">Datacenter local</span>
-        </nav>
-
-        <header className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
-            Hosting con datacenter local en {meta.name} {meta.flag}
-          </h1>
-          <p className="mt-3 text-ink/75">
-            Únicamente proveedores cuyo datacenter está físicamente en {meta.name} y lo declaran públicamente. Este es nuestro diferenciador de datos: cruzamos declaraciones oficiales con verificación técnica (IP → ASN → BGP) por proveedor.
-          </p>
-        </header>
-
-        <section className="mb-6 bg-white border border-ink/10 rounded-xl p-5">
-          <h2 className="text-lg font-semibold mb-2 text-ink flex items-center gap-2">
-            <ShieldCheck className="h-5 w-5 text-emerald-600" /> Cómo verificamos "datacenter local"
-          </h2>
-          <ul className="text-sm text-ink/80 space-y-1.5 list-disc pl-5">
-            <li><strong>Declaración del proveedor</strong>: revisamos el sitio oficial (página de infraestructura, planes o TOS) buscando la ubicación física del datacenter.</li>
-            <li><strong>ASN + BGP</strong>: resolvemos la IP del sitio oficial y consultamos el ASN dueño de esa IP. Si el ASN está anunciado desde {meta.name}, sube la confianza; si está en un ASN de Cloudflare/AWS/GCP, indicamos que la latencia depende del PoP más cercano.</li>
-            <li><strong>Registro mercantil</strong>: verificamos que exista razón social local que respalde la operación declarada.</li>
-          </ul>
-          <p className="mt-3 text-xs text-muted-foreground">
-            Ver <Link to="/metodologia" className="underline">metodología completa</Link> · Datos abiertos en <a className="underline" href={`/data/proveedores-${slug}.json`} target="_blank" rel="noopener">proveedores-{slug}.json</a>
-          </p>
-        </section>
-
-        {list.length === 0 ? (
-          <Card><CardContent className="pt-6 text-sm text-muted-foreground text-center">
-            Aún no hay proveedores con datacenter local <em>declarado y verificable</em> en {meta.name} dentro del directorio. Estamos ampliando la lista.
-          </CardContent></Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {list.map((p: any) => {
-              const check = siteChecks?.get(p.id);
-              return (
-                <Card key={p.id}>
-                  <CardContent className="pt-5 pb-5">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="font-semibold text-lg">{p.name}</h3>
-                      <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 text-[10px]">
-                        <Server className="h-3 w-3 mr-1" /> DC local
-                      </Badge>
-                    </div>
-                    <div className="text-sm text-muted-foreground space-y-1">
-                      <div><span className="font-medium text-foreground">Datacenter declarado:</span> {p.datacenter_location}</div>
-                      {p.legal_name && <div><span className="font-medium text-foreground">Razón social:</span> {p.legal_name}</div>}
-                      {p.year_founded && <div><span className="font-medium text-foreground">Antigüedad:</span> desde {p.year_founded}</div>}
-                      {check?.asn && (
-                        <div className="text-xs">
-                          <span className="font-medium text-foreground">ASN detectado:</span> {check.asn}
-                          {check.asn_org ? ` · ${check.asn_org}` : ''}
-                          {check.resolved_ip ? ` · IP ${check.resolved_ip}` : ''}
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-3">
-                      <Link to={`/${slug}/${p.slug}`} className="text-sm text-primary hover:underline inline-flex items-center gap-1">
-                        Ver ficha completa <ArrowRight className="h-3 w-3" />
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+      <main>
+        <PageHeader
+          breadcrumbs={
+            <EditionCrumbs
+              code={meta.code}
+              items={[{ label: 'Inicio', to: '/' }, { label: `Hosting en ${meta.name}`, to: `/${slug}` }, { label: 'Datacenter local' }]}
+            />
+          }
+          title={`Hosting con datacenter local en ${meta.name}`}
+          lead={`Proveedores que declaran tener su datacenter en ${meta.name}. Si medimos la IP de su sitio oficial, también te mostramos el ASN dueño de esa IP y la fecha de la medición.`}
+          aside={
+            <EditorialImage
+              name="datacenter"
+              className="aspect-[16/9]"
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              priority
+              fallback={<SummaryCard label="La lista en cifras" items={summary} className="lg:ml-auto lg:max-w-[26rem]" />}
+            />
+          }
+        />
+        {hasImage && (
+          <div className="border-b border-rule bg-white">
+            <div className="container py-6 md:py-8">
+              <SummaryCard label="La lista en cifras" items={summary} layout="strip" />
+            </div>
           </div>
         )}
 
-        <div className="mt-8 text-sm">
-          <Link to={`/${slug}`} className="text-primary hover:underline">← Volver al directorio de {meta.name}</Link>
-        </div>
+        <Section id="proveedores" title={`Proveedores que declaran datacenter en ${meta.name}`} density="tight">
+          {isLoading ? (
+            <p className="t-body border-y-2 border-ink py-10 text-ink-2">Cargando proveedores…</p>
+          ) : list.length === 0 ? (
+            <div className="max-w-[62ch] rounded-xl border border-rule bg-paper p-5 md:p-6">
+              <p className="t-body text-ink">
+                Aún no hay proveedores que declaren datacenter en {meta.name} dentro del directorio. Estamos ampliando la
+                lista.
+              </p>
+              <Link to={`/${slug}#directorio`} className={`t-small mt-3 inline-flex min-h-[44px] items-center ${linkCls}`}>
+                Ver todos los proveedores de {meta.name}
+              </Link>
+            </div>
+          ) : (
+            <DcLocalList providers={dcList} checks={checks} countrySlug={slug} />
+          )}
+          <Link to={`/${slug}`} className={`t-small mt-8 inline-flex min-h-[44px] items-center gap-2 ${linkCls}`}>
+            <ArrowLeft className="h-4 w-4" aria-hidden />
+            Volver al directorio de {meta.name}
+          </Link>
+        </Section>
+
+        <Section id="como-armamos" tone="paper" title="Cómo armamos esta lista" density="tight">
+          <ul className="t-body max-w-3xl space-y-5 text-ink-2">
+            <li className="flex flex-col gap-1.5 sm:flex-row sm:gap-4">
+              <span className="shrink-0 sm:w-28">
+                <ProvenanceTag kind="declared" />
+              </span>
+              <span>
+                <strong className="font-semibold text-ink">Declaración del proveedor.</strong> Revisamos el sitio oficial
+                (página de infraestructura, planes o términos) buscando la ubicación física del datacenter. Entra a la
+                lista quien declara que está en {meta.name}; no lo hemos comprobado en terreno.
+              </span>
+            </li>
+            <li className="flex flex-col gap-1.5 sm:flex-row sm:gap-4">
+              <span className="shrink-0 sm:w-28">
+                <ProvenanceTag kind="measured" />
+              </span>
+              <span>
+                <strong className="font-semibold text-ink">ASN de su sitio.</strong> Resolvemos la IP del sitio oficial y
+                consultamos el ASN dueño de esa IP; lo mostramos con su fecha. Si el ASN es de Cloudflare, AWS o GCP, no
+                confirma dónde está el hosting: la latencia depende del punto de presencia más cercano.
+              </span>
+            </li>
+            <li className="flex flex-col gap-1.5 sm:flex-row sm:gap-4">
+              <span className="t-label shrink-0 sm:w-28">Razón social</span>
+              <span>
+                <strong className="font-semibold text-ink">Registro mercantil.</strong> Verificamos que exista razón
+                social local que respalde la operación declarada.
+              </span>
+            </li>
+          </ul>
+          <p className="t-small mt-8 flex flex-wrap gap-x-6 gap-y-2">
+            <Link to={`/${slug}#como-ordenamos`} className={`inline-flex min-h-[44px] items-center ${linkCls}`}>
+              Cómo ordenamos el directorio de {meta.name}
+            </Link>
+            <a href={`/data/proveedores-${slug}.json`} className={`inline-flex min-h-[44px] items-center ${linkCls}`}>
+              Datos abiertos (proveedores-{slug}.json)
+            </a>
+          </p>
+        </Section>
       </main>
       <Footer />
     </>
