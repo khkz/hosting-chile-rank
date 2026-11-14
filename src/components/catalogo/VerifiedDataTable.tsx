@@ -6,6 +6,7 @@ import { track } from '@/lib/track';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 import { formatDataDate, isoDate } from '@/lib/format';
 import Callout from '@/components/system/Callout';
+import { lookupHostDc } from '@/components/DatacenterBadge';
 
 interface VerifiedDataTableProps {
   yearFounded?: number | null;
@@ -82,8 +83,11 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
           ))}
         </span>
       </>
+    ) : lookupHostDc(props.name)?.estado === 'certificado' ? (
+      // Evita la contradicción aparente con el sello «Certificado por terceros» que va bajo la tabla.
+      'No las publica en su sitio; el operador de su datacenter sí (detalle bajo esta tabla)'
     ) : (
-      'No publicada en su sitio'
+      'No las publica en su sitio'
     );
 
   const rows: Array<[string, React.ReactNode]> = [

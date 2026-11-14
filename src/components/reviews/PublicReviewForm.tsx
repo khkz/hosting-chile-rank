@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
-import { supabase } from '@/integrations/supabase/client';
+import { insertPublicReview } from '@/components/ficha/providerQueries';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -47,13 +47,12 @@ export function PublicReviewForm({ providerSlug, providerName, onSuccess }: Publ
       if (!parsed.success) {
         throw new ReviewFormError(parsed.error.errors[0]?.message ?? 'Revisa los datos del formulario y vuelve a intentarlo.');
       }
-      const { error } = await supabase.from('reviews').insert({
+      const { error } = await insertPublicReview({
         provider_slug: providerSlug,
         author_name: parsed.data.author_name,
         author_email: parsed.data.author_email.toLowerCase(),
         rating: parsed.data.rating,
         comment: parsed.data.comment,
-        status: 'pending',
       });
       if (error) {
         if (error.code === '23505') {

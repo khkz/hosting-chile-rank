@@ -3,6 +3,7 @@ import { Check, X } from 'lucide-react';
 import Section from '@/components/system/Section';
 import LogoTile from '@/components/LogoTile';
 import SiteLink from '@/components/ficha/SiteLink';
+import { ProvenanceTag } from '@/components/data/Provenance';
 
 interface ContactInfo {
   phone: string;
@@ -104,7 +105,9 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company, tone =
           </div>
           {contactItems.length > 0 && (
             <div className="min-w-0">
-              <h3 className="t-h3 text-ink">Contacto</h3>
+              <h3 className="flex items-center gap-2 t-h3 text-ink">
+                Contacto <ProvenanceTag kind="declared" />
+              </h3>
               <dl className="mt-3 divide-y divide-rule border-y border-rule t-small">
                 {contactItems.map(([label, value]) => (
                   <div key={label} className="grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)] gap-4 py-2.5">
@@ -120,7 +123,9 @@ const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company, tone =
 
       {company.plans.length > 0 && (
         <div className={hasAbout || contactItems.length > 0 ? 'mt-12' : undefined}>
-          <h3 className="t-h3 text-ink">Planes de hosting</h3>
+          <h3 className="flex items-center gap-2 t-h3 text-ink">
+            Planes de hosting <ProvenanceTag kind="declared" />
+          </h3>
           <ul className="mt-4 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {company.plans.map((plan) => (
               <li key={plan.name} className="flex flex-col rounded-xl border border-rule bg-white p-5">

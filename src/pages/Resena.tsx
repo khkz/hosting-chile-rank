@@ -16,7 +16,7 @@ import FichaBreadcrumbs from '@/components/ficha/FichaBreadcrumbs';
 import ProviderEvidence from '@/components/ficha/ProviderEvidence';
 import SiteLink from '@/components/ficha/SiteLink';
 import { benchmarkRows, declaredRows } from '@/components/ficha/evidenceRows';
-import { useCatalogCompany } from '@/components/ficha/useCatalogCompany';
+import { useCatalogCompany } from '@/components/ficha/providerQueries';
 import { hostingData, RESENA_TO_CATALOG } from '@/components/ficha/resenaData';
 import { useLatestBenchmarkForCompany } from '@/hooks/useProviderScore';
 import { formatDataDate, isoDate } from '@/lib/format';
@@ -138,7 +138,9 @@ const Resena = () => {
           lead={`Nuestra nota de ${hosting.name}, lo que declara sobre su servicio y lo que hemos medido. Cada dato dice de dónde sale y de cuándo es.`}
           actions={
             <>
-              <SiteLink slug={slug} website={hosting.url} name={hosting.name} location="resena_cabecera" />
+              {/* /ir/:slug busca el slug del catálogo: con el de la reseña, «bluehost» llevaba a BlueHosting.cl.
+                  Sin ficha equivalente, va directo al sitio con el mismo rel. */}
+              <SiteLink slug={catalogSlug} website={hosting.url} name={hosting.name} location="resena_cabecera" />
               {fichaHref && (
                 <Button asChild variant="outline">
                   <Link to={fichaHref}>Ver ficha</Link>

@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { useApprovedReviews } from '@/components/ficha/providerQueries';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatShortDate, isoDate } from '@/lib/format';
@@ -9,20 +8,7 @@ interface ApprovedReviewsListProps {
 }
 
 export function ApprovedReviewsList({ providerSlug }: ApprovedReviewsListProps) {
-  const { data, isLoading } = useQuery({
-    queryKey: ['public-reviews-v2', providerSlug],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('id, author_name, rating, comment, created_at')
-        .eq('provider_slug', providerSlug)
-        .eq('status', 'approved')
-        .order('created_at', { ascending: false })
-        .limit(50);
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
+  const { data, isLoading } = useApprovedReviews(providerSlug);
 
   if (isLoading) return <p className="t-small text-ink-3">Cargando reseñas…</p>;
   if (!data || data.length === 0) {

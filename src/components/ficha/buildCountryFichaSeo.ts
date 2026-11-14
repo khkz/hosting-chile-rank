@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- código heredado movido tal cual desde CountryProviderDetail */
 import type { CountryCode, CountryInfo } from '@/lib/country';
+import type { Tables } from '@/integrations/supabase/types';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 
 const COUNTRY_FULLNAME: Record<CountryCode, string> = { PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina', CL: 'Chile' };
@@ -9,19 +9,19 @@ const COUNTRY_FULLNAME: Record<CountryCode, string> = { PE: 'Perú', MX: 'Méxic
  * Movido sin cambios desde CountryProviderDetail para dejar la página bajo
  * 400 líneas: lo que se publica en SEO no cambia.
  */
-export function buildCountryFichaSeo(company: any, info: CountryInfo, code: CountryCode, idFiscal: string | null, isGlobal: boolean) {
+export function buildCountryFichaSeo(company: Tables<'hosting_companies'>, info: CountryInfo, code: CountryCode, idFiscal: string | null, isGlobal: boolean) {
   const canonical = `https://eligetuhosting.com/${info.slug}/${company.slug}`;
   const title = `${company.name} — Hosting en ${info.name} | EligeTuHosting`;
   const descParts = [
     company.name,
-    (company as any).legal_name ? `(${(company as any).legal_name})` : null,
+    company.legal_name ? `(${company.legal_name})` : null,
     `— hosting en ${info.name}.`,
-    (company as any).datacenter_location ? `Datacenter: ${(company as any).datacenter_location}.` : null,
-    (company as any).year_founded ? `Opera desde ${(company as any).year_founded}.` : null,
+    company.datacenter_location ? `Datacenter: ${company.datacenter_location}.` : null,
+    company.year_founded ? `Opera desde ${company.year_founded}.` : null,
     idFiscal ? `ID fiscal: ${idFiscal}.` : null,
   ].filter(Boolean).join(' ').slice(0, 158);
 
-  const orgLd: any = {
+  const orgLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: company.name,
@@ -36,12 +36,12 @@ export function buildCountryFichaSeo(company: any, info: CountryInfo, code: Coun
       addressCountry: info.code,
     };
   }
-  if ((company as any).year_founded) orgLd.foundingDate = String((company as any).year_founded);
+  if (company.year_founded) orgLd.foundingDate = String(company.year_founded);
   if (company.corporate_group) {
     const g = String(company.corporate_group).trim();
     orgLd.parentOrganization = { '@type': 'Organization', name: /^grupo\s/i.test(g) ? g : `Grupo ${g}` };
   }
-  if ((company as any).legal_name) orgLd.legalName = (company as any).legal_name;
+  if (company.legal_name) orgLd.legalName = company.legal_name;
   if (idFiscal) orgLd.taxID = idFiscal;
 
   const breadcrumbLd = {
@@ -54,38 +54,38 @@ export function buildCountryFichaSeo(company: any, info: CountryInfo, code: Coun
     ],
   };
 
-  const rawUpdated = (company as any).updated_at || (company as any).created_at || null;
+  const rawUpdated = company.updated_at || company.created_at || null;
   const dateModified = rawUpdated ? new Date(rawUpdated).toISOString() : new Date().toISOString();
   orgLd.dateModified = dateModified;
-  (breadcrumbLd as any).dateModified = dateModified;
+  (breadcrumbLd as Record<string, unknown>).dateModified = dateModified;
 
-  const techs: string[] = Array.isArray((company as any).technologies)
-    ? (company as any).technologies.filter((t: any) => typeof t === 'string') : [];
+  const techs: string[] = Array.isArray(company.technologies)
+    ? company.technologies.filter((t: unknown) => typeof t === 'string') : [];
 
   const ogLocale = info.locale.replace('-', '_');
   const countryName = COUNTRY_FULLNAME[code!];
-  const editorialSummary: string | null = (company as any).editorial_summary || null;
+  const editorialSummary: string | null = company.editorial_summary || null;
 
   // FAQ dinámico desde datos verificables
-  const hasLocalDc = (company as any).datacenter_location && (
-    (code === 'PE' && /per[uú]/i.test((company as any).datacenter_location)) ||
-    (code === 'MX' && /m[eé]xico/i.test((company as any).datacenter_location)) ||
-    (code === 'CO' && /colombia/i.test((company as any).datacenter_location)) ||
-    (code === 'AR' && /argentina/i.test((company as any).datacenter_location))
+  const hasLocalDc = company.datacenter_location && (
+    (code === 'PE' && /per[uú]/i.test(company.datacenter_location)) ||
+    (code === 'MX' && /m[eé]xico/i.test(company.datacenter_location)) ||
+    (code === 'CO' && /colombia/i.test(company.datacenter_location)) ||
+    (code === 'AR' && /argentina/i.test(company.datacenter_location))
   );
   const faq: Array<{ q: string; a: string }> = [
     {
       q: `¿${company.name} tiene datacenter en ${countryName}?`,
       a: hasLocalDc
-        ? `Sí, declara datacenter en ${countryName} (${(company as any).datacenter_location}), lo que reduce latencia para audiencias locales.`
-        : (company as any).datacenter_location
-          ? `No. Su datacenter declarado está en ${(company as any).datacenter_location}, es decir opera como revendedor internacional para clientes locales.`
+        ? `Sí, declara datacenter en ${countryName} (${company.datacenter_location}), lo que reduce latencia para audiencias locales.`
+        : company.datacenter_location
+          ? `No. Su datacenter declarado está en ${company.datacenter_location}, es decir opera como revendedor internacional para clientes locales.`
           : `${company.name} no publica ubicación de datacenter en su sitio oficial. La latencia y jurisdicción de los datos deben verificarse antes de contratar.`,
     },
     {
       q: `¿Cuál es la razón social e ID fiscal de ${company.name}?`,
       a: [
-        (company as any).legal_name ? `Razón social registrada: ${(company as any).legal_name}.` : `${company.name} no publica razón social en su sitio oficial.`,
+        company.legal_name ? `Razón social registrada: ${company.legal_name}.` : `${company.name} no publica razón social en su sitio oficial.`,
         idFiscal ? `Identificador fiscal declarado: ${idFiscal}.` : null,
       ].filter(Boolean).join(' '),
     },
@@ -99,8 +99,8 @@ export function buildCountryFichaSeo(company: any, info: CountryInfo, code: Coun
       q: `¿${company.name} es una marca global o regional?`,
       a: isGlobal
         ? `Es una marca global con presencia comercial en ${countryName}.`
-        : (company as any).corporate_group
-          ? `Forma parte del grupo ${formatCorporateGroup((company as any).corporate_group)}, con operación regional.`
+        : company.corporate_group
+          ? `Forma parte del grupo ${formatCorporateGroup(company.corporate_group)}, con operación regional.`
           : `Opera principalmente en ${countryName} según los datos declarados.`,
     },
   ];

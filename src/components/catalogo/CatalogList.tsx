@@ -21,14 +21,14 @@ export const CatalogLegend: React.FC<{ className?: string }> = ({ className = ''
 );
 
 /**
- * Lista de proveedores en filas densas: en escritorio, con encabezados de
+ * Lista de proveedores en filas densas: desde 1024 px, con encabezados de
  * columna (solo visuales; cada celda lleva su rótulo para lectores de pantalla).
  */
 const CatalogList: React.FC<CatalogListProps> = ({ label, children }) => (
   <div>
     <div
       aria-hidden
-      className={`hidden border-b-2 border-ink pb-2.5 text-[13px] font-semibold text-ink-2 md:grid md:gap-x-5 ${CATALOG_GRID}`}
+      className={`hidden border-b-2 border-ink pb-2.5 text-[13px] font-semibold text-ink-2 lg:grid lg:gap-x-5 ${CATALOG_GRID}`}
     >
       <span className="[grid-area:name]">Proveedor</span>
       <span className="[grid-area:nota]">Nota</span>
@@ -37,7 +37,7 @@ const CatalogList: React.FC<CatalogListProps> = ({ label, children }) => (
       <span className="[grid-area:year]">Opera desde</span>
       <span className="[grid-area:actions]" />
     </div>
-    <ul aria-label={label} className="divide-y divide-rule border-y-2 border-ink md:border-t-0 md:border-b md:border-b-rule">
+    <ul aria-label={label} className="divide-y divide-rule border-y-2 border-ink lg:border-t-0 lg:border-b lg:border-b-rule">
       {children}
     </ul>
   </div>

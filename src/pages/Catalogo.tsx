@@ -1,9 +1,6 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { getActiveCountryCode } from '@/lib/country';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
@@ -13,9 +10,12 @@ import TechnicalGlossary from '@/components/TechnicalGlossary';
 import RelatedContent from '@/components/RelatedContent';
 import PageHeader from '@/components/system/PageHeader';
 import Section from '@/components/system/Section';
+import EditorialImage from '@/components/media/EditorialImage';
+import { isEditorialAvailable } from '@/lib/editorialImages';
 import { Button } from '@/components/ui/button';
 import CatalogList, { CatalogLegend } from '@/components/catalogo/CatalogList';
 import CatalogRow from '@/components/catalogo/CatalogRow';
+import { useCatalogCompanies } from '@/components/ficha/providerQueries';
 import { useReviewStats } from '@/hooks/useReviewStats';
 import { filterVisibleProviders } from '@/lib/providerLinks';
 import type { Tables } from '@/integrations/supabase/types';
@@ -65,23 +65,7 @@ const CatalogoPage = () => {
       { replace: true }
     );
 
-  const { data: companies, isLoading } = useQuery({
-    queryKey: ['hosting-companies'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('hosting_companies')
-        .select(`
-          *,
-          hosting_plans(*)
-        `)
-        .eq('country', getActiveCountryCode())
-        .eq('is_verified', true)
-        .order('overall_rating', { ascending: false });
-
-      if (error) throw error;
-      return data;
-    },
-  });
+  const { data: companies, isLoading } = useCatalogCompanies();
 
   // Orden: por nota (sin nota, al final y de la A a la Z) o de la A a la Z sobre la lista completa.
   const visibleCompanies = React.useMemo<Company[]>(
@@ -108,6 +92,7 @@ const CatalogoPage = () => {
 
   const { data: reviewStats } = useReviewStats(sortedCompanies.map((c) => c.slug));
   const total = visibleCompanies.length;
+  const withImage = isEditorialAvailable('datacenter');
 
   return (
     <>
@@ -224,19 +209,27 @@ const CatalogoPage = () => {
         </Section>
 
         <section className="border-t border-rule bg-white py-10 md:py-14">
-          <div className="container max-w-4xl">
-            <RelatedContent currentPage="general" />
+          <div className="container">
+            <div className="max-w-3xl">
+              <RelatedContent currentPage="general" />
+            </div>
           </div>
         </section>
 
         <Section id="por-que-chile" tone="paper" density="tight" className="border-t border-rule" title="¿Por qué elegir un hosting chileno?">
-          <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
-            {REASONS.map((r) => (
-              <div key={r.title} className="max-w-[62ch]">
-                <h3 className="t-h3 text-ink">{r.title}</h3>
-                <p className="t-body mt-2 text-ink-2">{r.text}</p>
-              </div>
-            ))}
+          {/* Una sola imagen en la página, en esta sección general y lejos de los nombres de proveedores. */}
+          <div className={withImage ? 'grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-start lg:gap-14' : undefined}>
+            {withImage && (
+              <EditorialImage name="datacenter" className="aspect-[4/3]" sizes="(min-width: 1024px) 38vw, 100vw" />
+            )}
+            <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
+              {REASONS.map((r) => (
+                <div key={r.title} className="max-w-[62ch]">
+                  <h3 className="t-h3 text-ink">{r.title}</h3>
+                  <p className="t-body mt-2 text-ink-2">{r.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </Section>
       </main>

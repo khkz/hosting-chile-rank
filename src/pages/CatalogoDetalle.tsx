@@ -28,7 +28,7 @@ import CompareLinks from '@/components/catalogo/CompareLinks';
 import ProviderEvidence from '@/components/ficha/ProviderEvidence';
 import SiteLink from '@/components/ficha/SiteLink';
 import { benchmarkRows, declaredRows } from '@/components/ficha/evidenceRows';
-import { useCatalogCompany } from '@/components/ficha/useCatalogCompany';
+import { useCatalogCompany } from '@/components/ficha/providerQueries';
 import { useReviewStatsForSlug } from '@/hooks/useReviewStats';
 import { useLatestBenchmarkForCompany } from '@/hooks/useProviderScore';
 import { isHiddenProvider } from '@/lib/providerLinks';

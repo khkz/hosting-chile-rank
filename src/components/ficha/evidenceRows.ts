@@ -3,16 +3,16 @@ import type { LatestBenchmarkRow } from '@/hooks/useProviderScore';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 import { formatMs, formatPercent } from '@/lib/format';
 
-/** Filas de medición propia (sonda en EE. UU.): con fecha, o «sin medir». */
+/** Filas de medición propia (sonda en EE. UU.): valor medido con su fecha, o «sin medir». */
 export function benchmarkRows(bench: LatestBenchmarkRow | null | undefined): EvidenceRow[] {
   const date = bench?.measured_at ?? null;
   const ttfb = bench?.ttfb_median_ms;
   const uptime = bench?.uptime_30d_pct;
   return [
-    ttfb != null && date
+    ttfb != null
       ? { label: 'TTFB desde EE. UU.', value: formatMs(ttfb), kind: 'measured', date }
       : { label: 'TTFB desde EE. UU.', value: 'sin medir' },
-    uptime != null && date
+    uptime != null
       ? { label: 'Uptime en 30 días', value: formatPercent(uptime, 2), kind: 'measured', date }
       : { label: 'Uptime en 30 días', value: 'sin medir' },
   ];

@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, Globe } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageHeader from '@/components/system/PageHeader';
@@ -17,6 +15,12 @@ import FichaBreadcrumbs from '@/components/ficha/FichaBreadcrumbs';
 import ProviderEvidence from '@/components/ficha/ProviderEvidence';
 import SiteLink from '@/components/ficha/SiteLink';
 import { Alternatives, Complaints, DeclaredData, FaqList, TechnicalCheck } from '@/components/ficha/CountryFichaParts';
+import {
+  useCompanyComplaintsCount,
+  useCountryAlternatives,
+  useCountryCompany,
+  useLatamSiteCheck,
+} from '@/components/ficha/providerQueries';
 import type { EvidenceRow } from '@/components/system/EvidenceCard';
 import { COUNTRIES, type CountryCode } from '@/lib/country';
 import { isHiddenProvider } from '@/lib/providerLinks';
@@ -35,66 +39,13 @@ const CountryProviderDetail = () => {
   const code = country ? COUNTRY_MAP[country] : undefined;
   const info = code ? COUNTRIES[code] : null;
 
-  const { data: company, isLoading } = useQuery({
-    queryKey: ['country-provider-detail', code, slug],
-    enabled: !!code && !!slug,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('hosting_companies')
-        .select('*')
-        .eq('country', code!)
-        .eq('slug', slug!)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  // Última verificación técnica (latam_site_checks)
-  const { data: siteCheck } = useQuery({
-    queryKey: ['latam-site-check', company?.id],
-    enabled: !!company?.id,
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('latam_site_checks' as any)
-        .select('*')
-        .eq('company_id', company!.id)
-        .order('checked_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      return data as any;
-    },
-  });
-
+  const { data: company, isLoading } = useCountryCompany(code, slug);
+  // Última verificación técnica medida (latam_site_checks)
+  const { data: siteCheck } = useLatamSiteCheck(company?.id);
   // Alternativas del mismo país (excluyendo esta ficha)
-  const { data: alternatives } = useQuery({
-    queryKey: ['country-alternatives', code, company?.slug],
-    enabled: !!code && !!company?.slug,
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('hosting_companies')
-        .select('slug, name, datacenter_location, corporate_group')
-        .eq('country', code!)
-        .eq('is_verified', true)
-        .neq('slug', company!.slug)
-        .limit(20);
-      return data ?? [];
-    },
-  });
-
+  const { data: alternatives } = useCountryAlternatives(code, company?.slug);
   // Reclamos verificados sobre el proveedor
-  const { data: complaintsStats } = useQuery({
-    queryKey: ['company-complaints-count', company?.id],
-    enabled: !!company?.id,
-    queryFn: async () => {
-      const { count } = await supabase
-        .from('public_complaints_public' as any)
-        .select('*', { count: 'exact', head: true })
-        .eq('company_id', company!.id)
-        .in('status', ['verified', 'resolved']);
-      return { count: count ?? 0 };
-    },
-  });
+  const { data: complaintsStats } = useCompanyComplaintsCount(company?.id);
 
   useEffect(() => {
     if (!code) { navigate('/', { replace: true }); return; }
@@ -118,10 +69,12 @@ const CountryProviderDetail = () => {
 
   if (!company) return null;
 
-  const dc = (company as any).data_confidence || {};
-  const idFiscal: string | null = dc?.id_fiscal || null;
-  const isGlobal: boolean = String(dc?.global || '').toLowerCase() === 'true';
-  const estado: string | null = dc?.estado || null;
+  // data_confidence es JSON libre: se leen solo las tres claves que usa la ficha.
+  const rawDc = company.data_confidence;
+  const dc: Record<string, unknown> = rawDc && typeof rawDc === 'object' && !Array.isArray(rawDc) ? rawDc : {};
+  const idFiscal: string | null = dc.id_fiscal ? String(dc.id_fiscal) : null;
+  const isGlobal: boolean = String(dc.global || '').toLowerCase() === 'true';
+  const estado: string | null = dc.estado ? String(dc.estado) : null;
   const isCurated: boolean = company.is_curated === true;
 
   const { canonical, title, descParts, orgLd, breadcrumbLd, rawUpdated, techs, ogLocale, countryName, editorialSummary, faq, faqLd } =
@@ -134,7 +87,8 @@ const CountryProviderDetail = () => {
     .sort((a, b) => (isLocalDc(b.datacenter_location) ? 1 : 0) - (isLocalDc(a.datacenter_location) ? 1 : 0))
     .slice(0, 4);
 
-  const complaintsCount = complaintsStats?.count ?? 0;
+  // Sin dato (consulta fallida o en curso) no es lo mismo que 0 reclamos.
+  const complaintsCount: number | null = complaintsStats?.count ?? null;
   const startDateDisplay = '2025-01-01'; // fecha de inicio de registro público
 
   // Fecha visible: solo la que trae la base (nunca la de hoy).
@@ -148,10 +102,12 @@ const CountryProviderDetail = () => {
     company.year_founded
       ? { label: 'Opera desde', value: String(company.year_founded), kind: 'declared', date: dataDate }
       : { label: 'Opera desde', value: 'No lo declara' },
-    typeof siteCheck?.ttfb_ms === 'number' && siteCheck?.checked_at
-      ? { label: 'TTFB medido', value: formatMs(siteCheck.ttfb_ms), kind: 'measured', date: siteCheck.checked_at }
+    typeof siteCheck?.ttfb_ms === 'number'
+      ? { label: 'TTFB medido', value: formatMs(siteCheck.ttfb_ms), kind: 'measured', date: siteCheck.checked_at ?? null }
       : { label: 'TTFB medido', value: 'sin medir' },
-    { label: 'Reclamos verificados', value: formatInteger(complaintsCount) },
+    complaintsCount != null
+      ? { label: 'Reclamos verificados', value: formatInteger(complaintsCount) }
+      : { label: 'Reclamos verificados', value: 'sin dato' },
   ];
 
   return (
@@ -186,16 +142,19 @@ const CountryProviderDetail = () => {
           title={company.name}
           lead={
             <>
-              <span className="inline-flex items-center gap-2 align-baseline">
-                <Flag code={code!} size={20} />
-                Hosting en {info.name}.
-              </span>{' '}
+              <Flag code={code!} size={20} className="mr-2 align-[-0.1em]" />
+              Hosting en {info.name}.{' '}
               Lo que declara {company.name} y lo que hemos medido, cada dato con su fuente y su fecha.
             </>
           }
           actions={<SiteLink slug={company.slug} website={company.website} name={company.name} location="ficha_pais_cabecera" />}
           meta={
             <>
+              {isCurated && (
+                <p className="basis-full max-w-[62ch] text-ink-2">
+                  <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el resto del directorio.
+                </p>
+              )}
               {dataDate && (
                 <span>
                   Datos actualizados el <time dateTime={isoDate(dataDate)}>{formatDataDate(dataDate)}</time>
@@ -226,9 +185,6 @@ const CountryProviderDetail = () => {
               <Callout tone="note" title="Recomendado por EligeTuHosting" className="mt-0 max-w-[72ch]">
                 <p>
                   {company.name} es la recomendación editorial de EligeTuHosting en {info.name}: operador regional con soporte en español. Más abajo están el datacenter que declara y la entidad que factura.
-                </p>
-                <p>
-                  <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el resto del directorio.
                 </p>
               </Callout>
             )}

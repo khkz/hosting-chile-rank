@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import MedalBadge from '@/components/MedalBadge';
 import { Badge } from '@/components/ui/badge';
+import { useCompanyCertifications } from '@/components/ficha/providerQueries';
 
 interface CertificationBadgesProps {
   companySlug: string;
@@ -9,42 +8,8 @@ interface CertificationBadgesProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-interface CertificationRow {
-  id: string;
-  position: number;
-  tier: string | null;
-  certification_categories: { name: string; icon: string | null; slug: string } | null;
-}
-
 export default function CertificationBadges({ companySlug, size = 'small' }: CertificationBadgesProps) {
-  const { data: certifications, isLoading } = useQuery({
-    queryKey: ['company-certifications', companySlug],
-    queryFn: async () => {
-      // Primero la empresa por slug
-      const { data: company } = await supabase
-        .from('hosting_companies')
-        .select('id')
-        .eq('slug', companySlug)
-        .single();
-
-      if (!company) return [];
-
-      // Luego sus certificaciones vigentes
-      const { data } = await supabase
-        .from('company_certifications')
-        .select(`
-          id,
-          position,
-          tier,
-          certification_categories (name, icon, slug)
-        `)
-        .eq('company_id', company.id)
-        .eq('status', 'active')
-        .order('position');
-
-      return (data || []) as unknown as CertificationRow[];
-    },
-  });
+  const { data: certifications, isLoading } = useCompanyCertifications(companySlug);
 
   if (isLoading || !certifications || certifications.length === 0) {
     return null;

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
 import { ProvenanceTag } from '@/components/data/Provenance';
 import { getOperatorByName, rankingHosts, type RankingHostDc } from '@/data/datacenters';
+import { isDotCom } from '@/lib/country';
 
 /**
  * Datacenter de un proveedor con la gramática de procedencia del sitio:
@@ -31,6 +32,23 @@ export function lookupHostDc(name: string | null | undefined): RankingHostDc | u
   if (!name) return undefined;
   return INDEX.get(norm(name));
 }
+
+// La explicación de cómo se verifican los datacenters está en la portada de Chile
+// (DatacenterEducation, id «dc-education-heading»). En el .com la portada es el
+// índice regional, así que ahí se enlaza a la del .cl.
+const HOW_ANCHOR = '/#dc-education-heading';
+const HOW_LINK_CLASS = 't-meta underline decoration-ink/30 underline-offset-2 hover:text-ink hover:decoration-ink';
+
+const HowWeVerify: React.FC = () =>
+  isDotCom() ? (
+    <a href={`https://eligetuhosting.cl${HOW_ANCHOR}`} className={HOW_LINK_CLASS}>
+      ¿Cómo lo verificamos?
+    </a>
+  ) : (
+    <Link to={HOW_ANCHOR} className={HOW_LINK_CLASS}>
+      ¿Cómo lo verificamos?
+    </Link>
+  );
 
 const domain = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
 
@@ -90,14 +108,7 @@ const DatacenterBadge: React.FC<Props> = ({ providerName, variant = 'inline', cl
   const host = lookupHostDc(providerName);
   if (!host) return null;
 
-  const how = (
-    <Link
-      to="/latam#dc-education-heading"
-      className="t-meta underline decoration-ink/30 underline-offset-2 hover:text-ink hover:decoration-ink"
-    >
-      ¿Cómo lo verificamos?
-    </Link>
-  );
+  const how = <HowWeVerify />;
 
   if (variant === 'row') {
     return (

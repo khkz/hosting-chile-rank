@@ -1,8 +1,5 @@
 import React, { useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { MapPin, Phone, Clock, Cpu } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { getActiveCountryCode } from '@/lib/country';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
@@ -11,26 +8,9 @@ import PageHeader from '@/components/system/PageHeader';
 import CatalogList, { CatalogLegend } from '@/components/catalogo/CatalogList';
 import CatalogRow from '@/components/catalogo/CatalogRow';
 import { isHiddenProvider } from '@/lib/providerLinks';
+import { useDirectoryCompanies, type DirectoryCompany } from '@/components/ficha/providerQueries';
 
 const CURRENT_YEAR = new Date().getFullYear();
-
-interface DirectoryCompany {
-  id: string;
-  slug: string;
-  name: string;
-  website: string | null;
-  overall_rating: number | null;
-  is_curated: boolean | null;
-  is_verified: boolean | null;
-  contact_phone: string | null;
-  contact_address: string | null;
-  contact_hours: string | null;
-  datacenter_location: string | null;
-  corporate_group: string | null;
-  legal_name: string | null;
-  technologies: string[] | null;
-  year_founded: number | null;
-}
 
 const hasEditorialRating = (c: DirectoryCompany) => c.is_curated === true && (c.overall_rating ?? 0) > 0;
 
@@ -62,18 +42,7 @@ const Details: React.FC<{ c: DirectoryCompany }> = ({ c }) => {
 };
 
 const Directorio: React.FC = () => {
-  const { data: companies, isLoading } = useQuery({
-    queryKey: ['directorio-completo-all'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('hosting_companies')
-        .select('id, slug, name, website, overall_rating, is_curated, is_verified, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, year_founded')
-        .eq('country', getActiveCountryCode())
-        .range(0, 999);
-      if (error) throw error;
-      return (data || []) as DirectoryCompany[];
-    },
-  });
+  const { data: companies, isLoading } = useDirectoryCompanies();
 
   const sorted = useMemo(() => {
     const list = (companies || []).filter((c) => !isHiddenProvider(c.slug, c.website));

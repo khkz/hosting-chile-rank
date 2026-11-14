@@ -4,6 +4,7 @@ import { ArrowRight, ExternalLink } from 'lucide-react';
 import { getProviderLink } from '@/lib/providerLinks';
 import { formatCorporateGroup } from '@/lib/formatGroup';
 import { formatDataDate, formatInteger, formatMs, isoDate } from '@/lib/format';
+import type { SiteCheck } from '@/components/ficha/providerQueries';
 
 /**
  * Bloques de la ficha de proveedor por país (/pe/:slug y demás ediciones).
@@ -75,17 +76,6 @@ export const DeclaredData: React.FC<{ company: CountryCompany; idFiscal: string 
   return <KeyValueTable caption={`Datos que declara ${company.name}`} rows={rows} />;
 };
 
-export interface SiteCheck {
-  resolved_ip?: string | null;
-  asn?: string | number | null;
-  asn_org?: string | null;
-  ssl_issuer?: string | null;
-  ssl_valid_to?: string | null;
-  ttfb_ms?: number | null;
-  http_status?: number | null;
-  checked_at?: string | null;
-}
-
 /** «Verificación técnica»: lo que medimos nosotros desde el sitio oficial. */
 export const TechnicalCheck: React.FC<{ check: SiteCheck }> = ({ check }) => {
   const rows: Array<[string, React.ReactNode]> = [];
@@ -118,13 +108,19 @@ export const TechnicalCheck: React.FC<{ check: SiteCheck }> = ({ check }) => {
 };
 
 /** Reclamos verificados desde la fecha de inicio del registro público. */
-export const Complaints: React.FC<{ name: string; count: number; since: string }> = ({ name, count, since }) => (
+export const Complaints: React.FC<{ name: string; count: number | null; since: string }> = ({ name, count, since }) => (
   <div className="max-w-[62ch]">
-    <p className="t-body text-ink">
-      <strong className="tabular font-semibold">{formatInteger(count)}</strong>{' '}
-      {count === 1 ? 'reclamo verificado' : 'reclamos verificados'} sobre {name} desde el{' '}
-      <time dateTime={isoDate(since)}>{formatDataDate(since)}</time>.
-    </p>
+    {count == null ? (
+      <p className="t-body text-ink">
+        Todavía no tenemos el conteo de reclamos verificados sobre {name}. Vuelve a cargar la página en unos minutos.
+      </p>
+    ) : (
+      <p className="t-body text-ink">
+        <strong className="tabular font-semibold">{formatInteger(count)}</strong>{' '}
+        {count === 1 ? 'reclamo verificado' : 'reclamos verificados'} sobre {name} desde el{' '}
+        <time dateTime={isoDate(since)}>{formatDataDate(since)}</time>.
+      </p>
+    )}
     <p className="mt-2 t-small text-ink-2">
       Los reclamos se verifican por correo antes de publicarse.{' '}
       <Link to="/reclamos" className={linkClass}>

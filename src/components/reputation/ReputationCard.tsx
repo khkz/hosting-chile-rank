@@ -57,7 +57,8 @@ export function ReputationCard({ companyId, companyName, showTitle = true }: Rep
         )}
       </div>
 
-      {!hasSnapshot && data && reviewsCount === 0 && data.internal_complaints_12m === 0 ? (
+      {/* Sin fila de reputación no hay dato: se dice, nunca se muestra un 0 de relleno. */}
+      {!data || (!hasSnapshot && reviewsCount === 0 && data.internal_complaints_12m === 0) ? (
         <div className="mt-5 flex items-start gap-3 rounded-xl bg-paper p-4 t-small text-ink-2">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-ink-2" aria-hidden />
           <div>
@@ -77,18 +78,18 @@ export function ReputationCard({ companyId, companyName, showTitle = true }: Rep
           {hasSnapshot && (
             <Stat
               label="Reclamos.cl"
-              value={data?.sentiment_score ? `${formatScore(Number(data.sentiment_score))}/10` : 'sin dato'}
+              value={data.sentiment_score ? `${formatScore(Number(data.sentiment_score))}/10` : 'sin dato'}
               note="Análisis automático"
             />
           )}
           <Stat
             label="Reclamos verificados"
-            value={formatInteger(data?.internal_complaints_12m ?? 0)}
-            note={`Últimos 12 meses; ${formatInteger(data?.internal_complaints_high ?? 0)} graves`}
+            value={formatInteger(data.internal_complaints_12m)}
+            note={`Últimos 12 meses; ${formatInteger(data.internal_complaints_high)} graves`}
           />
           <Stat
             label="Reseñas verificadas"
-            value={data?.verified_reviews_avg ? `${formatScore(Number(data.verified_reviews_avg))}/10` : 'sin dato'}
+            value={data.verified_reviews_avg ? `${formatScore(Number(data.verified_reviews_avg))}/10` : 'sin dato'}
             note={`${formatInteger(reviewsCount)} ${reviewsCount === 1 ? 'cliente confirmado' : 'clientes confirmados'}`}
           />
         </dl>

@@ -43,7 +43,7 @@ const SiteLink: React.FC<SiteLinkProps> = ({ slug, website, name, location, vari
         referrerPolicy="no-referrer"
         onClick={onClick}
         className={cn(
-          'inline-flex min-h-[44px] items-center gap-1.5 t-small font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink md:min-h-0',
+          'inline-flex min-h-[44px] items-center gap-1.5 t-small font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink',
           className,
         )}
       >
