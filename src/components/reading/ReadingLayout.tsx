@@ -73,7 +73,7 @@ const ReadingLayout: React.FC<ReadingLayoutProps> = ({
         <div className={cn(hasSide && 'grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-14')}>
           {hasSide && (
             <aside aria-label="Índice de la página" className="min-w-0">
-              <div className="lg:sticky lg:top-24">
+              <div className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pb-4">
                 {toc && toc.length > 0 && (
                   <>
                     <details className="rounded-xl border border-rule p-4 lg:hidden">
