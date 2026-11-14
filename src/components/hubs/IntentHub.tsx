@@ -128,6 +128,7 @@ const IntentHub: React.FC<{ config: HubConfig }> = ({ config }) => {
       <Navbar />
       <main className="bg-white">
         <RankingHeader
+          breadcrumbSchema={false}
           crumbs={[{ name: 'Guías', href: '/guia-elegir-hosting' }]}
           pageName={config.h1}
           title={config.h1}

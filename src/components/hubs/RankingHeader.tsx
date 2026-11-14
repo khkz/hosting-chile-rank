@@ -33,6 +33,8 @@ interface RankingHeaderProps {
   meta?: React.ReactNode;
   /** Leyenda Medido / Declarado / Editorial (por defecto, sí). */
   legend?: boolean;
+  /** false si la página ya publica su propio BreadcrumbList. */
+  breadcrumbSchema?: boolean;
   actions?: React.ReactNode;
   aside?: React.ReactNode;
 }
@@ -47,11 +49,12 @@ const RankingHeader: React.FC<RankingHeaderProps> = ({
   undatedNote = 'Sin fecha de revisión publicada',
   meta,
   legend = true,
+  breadcrumbSchema = true,
   actions,
   aside,
 }) => (
   <PageHeader
-    breadcrumbs={<SEOBreadcrumbs items={crumbs} pageName={pageName} />}
+    breadcrumbs={<SEOBreadcrumbs items={crumbs} pageName={pageName} schema={breadcrumbSchema} />}
     title={title}
     lead={lead}
     actions={actions}

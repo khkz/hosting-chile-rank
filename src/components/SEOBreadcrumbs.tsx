@@ -11,6 +11,8 @@ interface BreadcrumbItemType {
 interface SEOBreadcrumbsProps {
   items: BreadcrumbItemType[];
   pageName?: string;
+  /** false si la página ya publica su propio BreadcrumbList (evita duplicarlo). */
+  schema?: boolean;
 }
 
 const linkClass =
@@ -23,7 +25,7 @@ const Separator = () => <ChevronRight className="h-3.5 w-3.5 shrink-0 text-ink-3
  * La página actual va en tinta y con aria-current. Emite el JSON-LD
  * BreadcrumbList (sin cambios respecto de la versión anterior).
  */
-const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
+const SEOBreadcrumbs = ({ items, pageName, schema = true }: SEOBreadcrumbsProps) => {
   const location = useLocation();
 
   // Drop a leading "Inicio" / "/" item if the caller included it — el
@@ -49,18 +51,20 @@ const SEOBreadcrumbs = ({ items, pageName }: SEOBreadcrumbsProps) => {
   return (
     <>
       {/* BreadcrumbList Schema */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": breadcrumbs.map((item, index) => ({
-            "@type": "ListItem",
-            "position": index + 1,
-            "name": item.name,
-            "item": `${window.location.origin}${item.href}`
-          }))
-        })}
-      </script>
+      {schema && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": breadcrumbs.map((item, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "name": item.name,
+              "item": `${window.location.origin}${item.href}`
+            }))
+          })}
+        </script>
+      )}
 
       <nav aria-label="Ruta de navegación" className="mb-6">
         <ol className="flex flex-wrap items-center gap-x-1.5 text-[13px] md:text-sm">
