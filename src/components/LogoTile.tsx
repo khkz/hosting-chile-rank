@@ -26,7 +26,7 @@ const LogoTile: React.FC<LogoTileProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-center bg-white rounded-md px-4 ${className}`}
+      className={`flex items-center justify-center rounded-lg bg-white px-4 ${className}`}
     >
       {showText ? (
         <span className="text-base md:text-lg font-semibold text-ink text-center leading-tight">

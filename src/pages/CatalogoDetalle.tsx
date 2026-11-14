@@ -1,57 +1,59 @@
 import React, { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { getActiveCountryCode } from '@/lib/country';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Star } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
-import HostingCompanyInfo from '@/components/HostingCompanyInfo';
+import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import { Button } from '@/components/ui/button';
+import HostingCompanyInfo, { type HostingCompanyData } from '@/components/HostingCompanyInfo';
 import CertificationBadges from '@/components/CertificationBadges';
+import CompanyPresence from '@/components/CompanyPresence';
+import DatacenterBadge from '@/components/DatacenterBadge';
 import { ApprovedReviewsList } from '@/components/reviews/ApprovedReviewsList';
 import { PublicReviewForm } from '@/components/reviews/PublicReviewForm';
-import { useReviewStatsForSlug } from '@/hooks/useReviewStats';
-import { Star } from 'lucide-react';
 import { ReputationCard } from '@/components/reputation/ReputationCard';
-import { Card } from '@/components/ui/card';
-import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
-import CompanyPresence from '@/components/CompanyPresence';
-import { AlertTriangle } from 'lucide-react';
+import ScoreBreakdown from '@/components/ranking/ScoreBreakdown';
 import BrandFAQ from '@/components/catalogo/BrandFAQ';
 import { buildCatalogoSeo } from '@/components/catalogo/buildCatalogoSeo';
 import VerifiedDataTable from '@/components/catalogo/VerifiedDataTable';
 import SourcesConsulted from '@/components/catalogo/SourcesConsulted';
-import ScoreBreakdown from '@/components/ranking/ScoreBreakdown';
-
 import Veredicto from '@/components/catalogo/Veredicto';
-import DatacenterBadge from '@/components/DatacenterBadge';
+import CompareLinks from '@/components/catalogo/CompareLinks';
+import ProviderEvidence from '@/components/ficha/ProviderEvidence';
+import SiteLink from '@/components/ficha/SiteLink';
+import { benchmarkRows, declaredRows } from '@/components/ficha/evidenceRows';
+import { useCatalogCompany } from '@/components/ficha/useCatalogCompany';
+import { useReviewStatsForSlug } from '@/hooks/useReviewStats';
+import { useLatestBenchmarkForCompany } from '@/hooks/useProviderScore';
 import { isHiddenProvider } from '@/lib/providerLinks';
+import { formatDataDate, formatScore, isoDate } from '@/lib/format';
 
-const SITE = 'https://eligetuhosting.cl';
+type PlanFeatures = HostingCompanyData['plans'][number]['features'];
+
+/** Las características del plan llegan como JSON: texto suelto o { name, included }. */
+const toFeatures = (raw: unknown): PlanFeatures =>
+  (Array.isArray(raw) ? raw : []).flatMap((f): PlanFeatures => {
+    if (typeof f === 'string' && f.trim()) return [{ name: f.trim(), included: true }];
+    if (f && typeof f === 'object' && typeof (f as { name?: unknown }).name === 'string') {
+      const o = f as { name: string; included?: unknown };
+      return [{ name: o.name, included: o.included !== false }];
+    }
+    return [];
+  });
 
 const CatalogoDetalle = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
-  const { data: company, isLoading } = useQuery({
-    queryKey: ['hosting-company', slug],
-    queryFn: async () => {
-      if (!slug) return null;
-      const { data, error } = await supabase
-        .from('hosting_companies')
-        .select(`*, hosting_plans(*)`)
-        .eq('country', getActiveCountryCode())
-        .eq('slug', slug)
-        .eq('is_verified', true)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!slug,
-  });
-
+  const { data: company, isLoading } = useCatalogCompany(slug);
   const { data: userReviews } = useReviewStatsForSlug(slug || '');
+  const { data: bench } = useLatestBenchmarkForCompany(company?.id);
 
   useEffect(() => {
     if (slug && isHiddenProvider(slug, null)) { navigate('/catalogo', { replace: true }); return; }
@@ -61,7 +63,7 @@ const CatalogoDetalle = () => {
   // --- Memos y derivados (HOOKS ANTES de cualquier return condicional) ---
   const minPrice = useMemo(() => {
     if (!company?.hosting_plans?.length) return 0;
-    return Math.min(...company.hosting_plans.map((p: any) => p.price_monthly).filter((n: number) => n > 0));
+    return Math.min(...company.hosting_plans.map((p) => p.price_monthly).filter((n: number) => n > 0));
   }, [company]);
 
   const seoData = useMemo(
@@ -73,9 +75,9 @@ const CatalogoDetalle = () => {
     return (
       <>
         <Navbar />
-        <div className="container mx-auto px-4 py-12 text-center">
-          <p className="text-muted-foreground">Cargando información...</p>
-        </div>
+        <main className="container py-16">
+          <p className="t-body text-ink-2">Cargando la ficha del proveedor…</p>
+        </main>
         <Footer />
       </>
     );
@@ -83,12 +85,12 @@ const CatalogoDetalle = () => {
 
   if (!company || !seoData) return null;
 
-  const companyData = {
+  const companyData: HostingCompanyData = {
     id: company.slug,
     name: company.name,
     logo: company.logo_url || '',
     description: company.description || '',
-    descriptionEditorial: (company as any).description_editorial || '',
+    descriptionEditorial: company.description_editorial || '',
     rating: company.overall_rating || 0,
     yearFounded: company.year_founded ?? null,
     datacenterLocation: company.datacenter_location || '',
@@ -99,25 +101,36 @@ const CatalogoDetalle = () => {
       address: company.contact_address || '',
       hours: company.contact_hours || '',
     },
-    plans: (company.hosting_plans || []).map((plan: any) => ({
+    plans: (company.hosting_plans || []).map((plan) => ({
       name: plan.name,
       price: plan.price_monthly,
       storage: plan.storage_gb ? `${plan.storage_gb} GB SSD` : 'No declarado',
-      bandwidth: plan.bandwidth && String(plan.bandwidth).trim() ? plan.bandwidth : 'No declarado',
+      bandwidth: plan.bandwidth && String(plan.bandwidth).trim() ? String(plan.bandwidth) : 'No declarado',
       domains: plan.domains_allowed ?? 'No declarado',
-      features: plan.features || [],
+      features: toFeatures(plan.features),
     })),
     technologies: company.technologies || [],
-    uptimeGuarantee: (company as any).uptime_guarantee || undefined,
-    hasSslFree: (company as any).has_ssl_free ?? undefined,
-    hasMigrationFree: (company as any).has_migration_free ?? undefined,
-    paymentMethods: (company as any).payment_methods || undefined,
-    pros: (company as any).pros || undefined,
-    cons: (company as any).cons || undefined,
-    uniqueSellingPoint: (company as any).unique_selling_point || undefined,
+    uptimeGuarantee: company.uptime_guarantee || undefined,
+    hasSslFree: company.has_ssl_free ?? undefined,
+    hasMigrationFree: company.has_migration_free ?? undefined,
+    paymentMethods: company.payment_methods || undefined,
+    pros: company.pros || undefined,
+    cons: company.cons || undefined,
+    uniqueSellingPoint: company.unique_selling_point || undefined,
     corporateGroup: company.corporate_group || undefined,
-    lastScrapedAt: (company as any).last_scraped_at || undefined,
+    lastScrapedAt: company.last_scraped_at || undefined,
   };
+
+  const dataDate = company.updated_at;
+  const evidenceRows = [
+    ...declaredRows({
+      datacenter: company.datacenter_location,
+      yearFounded: company.year_founded,
+      corporateGroup: company.corporate_group,
+      date: dataDate,
+    }),
+    ...benchmarkRows(bench),
+  ];
 
   return (
     <>
@@ -154,159 +167,154 @@ const CatalogoDetalle = () => {
 
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8 md:py-12">
-        <SEOBreadcrumbs
-          items={[
-            { name: 'Catálogo', href: '/catalogo' },
-            { name: company.name, href: `/catalogo/${slug}` },
-          ]}
+      <main>
+        <PageHeader
+          breadcrumbs={
+            <SEOBreadcrumbs
+              items={[
+                { name: 'Catálogo', href: '/catalogo' },
+                { name: company.name, href: `/catalogo/${slug}` },
+              ]}
+            />
+          }
+          title={`${company.name} — Review y Opiniones 2026`}
+          lead={`Nuestra nota, lo que ${company.name} declara sobre su servicio y lo que hemos medido. Cada dato dice de dónde sale y de cuándo es.`}
+          actions={
+            <>
+              <SiteLink slug={company.slug} website={company.website} name={company.name} location="ficha_cabecera" />
+              <Button asChild variant="outline">
+                <Link to="/comparativa">Comparar</Link>
+              </Button>
+            </>
+          }
+          meta={
+            dataDate ? (
+              <span>
+                Datos actualizados el <time dateTime={isoDate(dataDate)}>{formatDataDate(dataDate)}</time>
+              </span>
+            ) : undefined
+          }
+          aside={
+            <ProviderEvidence
+              name={company.name}
+              subtitle={company.legal_name || 'Hosting en Chile'}
+              rating={company.overall_rating}
+              rows={evidenceRows}
+              footer={
+                <a href="#subpuntajes" className="t-small font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+                  Cómo se calcula la nota
+                </a>
+              }
+            />
+          }
         />
 
-        {/* H1 SEO de marca */}
-        <header className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-            {company.name} — Review y Opiniones 2026
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Nota editorial <strong>{seoData.rating.toFixed(1)}/10</strong>
-            {company.year_founded ? ` · Opera desde ${company.year_founded}` : ''}
-            {company.corporate_group ? ` · ${company.corporate_group}` : ''}
-          </p>
-          {(company as any).updated_at && (
-            <p className="text-xs text-muted-foreground mt-1">
-              Última actualización de datos: {new Date((company as any).updated_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' })}
-            </p>
-          )}
-        </header>
-
-
-        {(company as any).is_fake_comparison && (
-          <div className="mb-6 p-4 bg-destructive/10 rounded-lg border border-destructive/30 flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-destructive mt-0.5 shrink-0" />
-            <div>
-              <p className="text-sm font-semibold text-destructive">⚠️ Sitio de comparación no independiente</p>
-              <p className="text-xs text-muted-foreground">
+        <Section id="veredicto" density="tight" title="Veredicto">
+          {company.is_fake_comparison && (
+            <Callout tone="caution" title="Sitio de comparación no independiente" className="mt-0 mb-8 max-w-[72ch]">
+              <p>
                 Este sitio se presenta como comparador, pero pertenece al grupo empresarial <strong>{company.corporate_group}</strong>, que opera sus propias marcas de hosting.
               </p>
-            </div>
-          </div>
-        )}
-
-        {company.corporate_group && !(company as any).is_fake_comparison && (
-          <div className="mb-6 p-4 bg-muted/50 rounded-lg border flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
-            <div>
-              <p className="text-sm font-medium">Transparencia corporativa</p>
-              <p className="text-xs text-muted-foreground">
+            </Callout>
+          )}
+          {company.corporate_group && !company.is_fake_comparison && (
+            <Callout tone="note" title="Transparencia corporativa" className="mt-0 mb-8 max-w-[72ch]">
+              <p>
                 {company.name} pertenece al grupo empresarial <strong>{company.corporate_group}</strong>. Otras marcas del mismo grupo pueden compartir infraestructura y soporte técnico.
               </p>
+            </Callout>
+          )}
+          <Veredicto
+            name={company.name}
+            editorial={company.description_editorial}
+            pros={company.pros}
+            cons={company.cons}
+          />
+        </Section>
+
+        <Section
+          id="datos-declarados"
+          tone="paper"
+          density="tight"
+          className="border-t border-rule"
+          title="Datos declarados por el proveedor"
+          lead={`Lo que ${company.name} publica sobre su servicio. No lo hemos comprobado: por eso lleva la marca Declarado.`}
+          action={<ProvenanceTag kind="declared" />}
+        >
+          <VerifiedDataTable
+            name={company.name}
+            yearFounded={company.year_founded}
+            corporateGroup={company.corporate_group}
+            datacenter={company.datacenter_location}
+            minPrice={minPrice > 0 ? minPrice : null}
+            technologies={company.technologies}
+            uptimeGuarantee={company.uptime_guarantee}
+            hasSslFree={company.has_ssl_free}
+            hasMigrationFree={company.has_migration_free}
+            officialWebsite={company.website}
+            slug={company.slug}
+            datacenterCertifications={company.datacenter_certifications}
+            datacenterCertificationsSources={company.datacenter_certifications_sources}
+            correctionNote={company.correction_note}
+            correctionDate={company.correction_date}
+          />
+          <DatacenterBadge providerName={company.name} variant="row" className="mt-5" />
+          <SourcesConsulted fuentes={company.fuentes} fechaVerificacion={company.fecha_verificacion} />
+        </Section>
+
+        <Section
+          id="subpuntajes"
+          density="tight"
+          className="border-t border-rule"
+          title={`Cómo se calcula la nota de ${company.name}`}
+          lead="Cinco subcriterios con pesos publicados. Lo que todavía no medimos dice «sin medir»: nunca lo rellenamos."
+        >
+          <ScoreBreakdown
+            companyId={company.id}
+            companyName={company.name}
+            supportRating={company.support_rating ?? null}
+            priceRating={company.price_rating ?? null}
+            publishedRating={company.overall_rating ?? null}
+          />
+        </Section>
+
+        <Section id="reputacion" tone="paper" density="tight" className="border-t border-rule" title="Reputación">
+          <ReputationCard companyId={company.id} companyName={company.name} showTitle={false} />
+          <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="min-w-0">
+              <h3 className="t-h3 text-ink">Opiniones de clientes de {company.name}</h3>
+              <ReviewsSummary slug={slug!} />
+            </div>
+            <div className="min-w-0 rounded-xl border border-rule bg-white p-5 md:p-6">
+              <h3 className="t-h3 text-ink">Comparte tu experiencia con {company.name}</h3>
+              <div className="mt-4">
+                <PublicReviewForm providerSlug={slug!} providerName={company.name} />
+              </div>
             </div>
           </div>
-        )}
-
-        <CertificationBadges companySlug={slug || ''} variant="horizontal" size="medium" />
-
-        <div className="my-8">
-          <CompanyPresence
-            companySlug={slug || ''}
-            companyName={company.name}
-            rankingPosition={undefined}
-            hasCertifications={true}
-            inComparison={true}
-          />
-        </div>
+        </Section>
 
         <HostingCompanyInfo company={companyData} />
 
-        <DatacenterBadge providerName={company.name} variant="row" className="my-4" />
+        <Section id="preguntas" tone="paper" density="tight" className="border-t border-rule" title={`Preguntas frecuentes sobre ${company.name}`}>
+          <BrandFAQ companyName={company.name} items={seoData.faqItems} />
+        </Section>
 
-        <VerifiedDataTable
-          yearFounded={company.year_founded}
-          corporateGroup={company.corporate_group}
-          datacenter={company.datacenter_location}
-          minPrice={minPrice > 0 ? minPrice : null}
-          technologies={company.technologies}
-          uptimeGuarantee={(company as any).uptime_guarantee}
-          hasSslFree={(company as any).has_ssl_free}
-          hasMigrationFree={(company as any).has_migration_free}
-          officialWebsite={company.website}
-          slug={company.slug}
-          datacenterCertifications={(company as any).datacenter_certifications}
-          datacenterCertificationsSources={(company as any).datacenter_certifications_sources}
-          correctionNote={(company as any).correction_note}
-          correctionDate={(company as any).correction_date}
-        />
-
-        <SourcesConsulted
-          fuentes={(company as any).fuentes}
-          fechaVerificacion={(company as any).fecha_verificacion}
-        />
-
-        <ScoreBreakdown
-          companyId={company.id}
-          companyName={company.name}
-          supportRating={company.support_rating ?? null}
-          priceRating={company.price_rating ?? null}
-          publishedRating={company.overall_rating ?? null}
-        />
-
-
-
-
-
-        <Veredicto
-          name={company.name}
-          rating={seoData.rating}
-          editorial={(company as any).description_editorial}
-          pros={(company as any).pros}
-          cons={(company as any).cons}
-        />
-
-        <BrandFAQ companyName={company.name} items={seoData.faqItems} />
-
-        {slug && slug !== 'hostingplus' && slug !== 'ecohosting' && (
-          <section className="mt-12 space-y-4">
-            <a
-              href={`/comparativa/${slug}-vs-hostingplus`}
-              className="block p-5 rounded-xl border-2 border-brand bg-gradient-to-r from-brand/5 to-white hover:from-brand/10 transition"
-            >
-              <span className="text-sm uppercase tracking-wide text-brand font-semibold">Comparativa</span>
-              <p className="text-lg md:text-xl font-bold text-ink mt-1">
-                Compáralo con el #1: {company.name} vs HostingPlus.cl →
-              </p>
-              <p className="text-sm text-gray-600 mt-1">Tabla lado a lado con nota, precio, datacenter y reseñas verificadas.</p>
-            </a>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <a href={`/alternativas-a/${slug}`} className="block p-4 rounded-xl border bg-white hover:border-brand transition">
-                <span className="text-xs uppercase text-gray-500 font-semibold">Alternativas</span>
-                <p className="font-semibold text-ink mt-1">Mejores alternativas a {company.name} →</p>
-              </a>
-              {(['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','webhosting'] as const).includes(slug as any) && (
-                <a href={`/migrar-de/${slug}`} className="block p-4 rounded-xl border bg-white hover:border-brand transition">
-                  <span className="text-xs uppercase text-gray-500 font-semibold">Migración gratuita</span>
-                  <p className="font-semibold text-ink mt-1">Migrar de {company.name} sin downtime →</p>
-                </a>
-              )}
+        <Section id="sigue-comparando" density="tight" className="border-t border-rule" title="Sigue comparando">
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+            <CompareLinks slug={company.slug} name={company.name} />
+            <div className="min-w-0 space-y-8">
+              <CompanyPresence
+                companySlug={company.slug}
+                companyName={company.name}
+                rankingPosition={undefined}
+                hasCertifications={true}
+                inComparison={true}
+              />
+              <CertificationBadges companySlug={company.slug} />
             </div>
-          </section>
-        )}
-
-
-        <section className="mt-12">
-          <ReputationCard companyId={company.id} companyName={company.name} />
-        </section>
-
-        <section className="mt-12">
-          <h2 className="text-3xl font-bold mb-6">Opiniones de clientes de {company.name}</h2>
-          <ReviewsSection slug={slug!} />
-        </section>
-
-        <section className="mt-12">
-          <Card className="p-8">
-            <h2 className="text-2xl font-bold mb-6">Comparte tu experiencia con {company.name}</h2>
-            <PublicReviewForm providerSlug={slug!} providerName={company.name} />
-          </Card>
-        </section>
+          </div>
+        </Section>
       </main>
 
       <StickyCTA />
@@ -315,16 +323,18 @@ const CatalogoDetalle = () => {
   );
 };
 
-function ReviewsSection({ slug }: { slug: string }) {
+function ReviewsSummary({ slug }: { slug: string }) {
   const { data } = useReviewStatsForSlug(slug);
   return (
-    <div>
+    <div className="mt-3">
       {data && data.count > 0 && (
-        <div className="mb-4 flex items-center gap-2 text-sm">
-          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-          <span className="font-semibold">{data.avg.toFixed(1)}</span>
-          <span className="text-muted-foreground">· {data.count} reseña{data.count === 1 ? '' : 's'} de usuarios</span>
-        </div>
+        <p className="mb-4 flex items-center gap-2 t-small text-ink-2">
+          <Star className="h-4 w-4 fill-ink text-ink" aria-hidden />
+          <span className="tabular font-semibold text-ink">{formatScore(data.avg)} de 5</span>
+          <span>
+            en {data.count} reseña{data.count === 1 ? '' : 's'} de usuarios
+          </span>
+        </p>
       )}
       <ApprovedReviewsList providerSlug={slug} />
     </div>

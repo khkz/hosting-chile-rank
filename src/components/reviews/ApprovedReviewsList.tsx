@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Star } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { es } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
+import { formatShortDate, isoDate } from '@/lib/format';
 
 interface ApprovedReviewsListProps {
   providerSlug: string;
@@ -25,35 +24,38 @@ export function ApprovedReviewsList({ providerSlug }: ApprovedReviewsListProps) 
     },
   });
 
-  if (isLoading) return <p className="text-muted-foreground text-sm">Cargando reseñas...</p>;
+  if (isLoading) return <p className="t-small text-ink-3">Cargando reseñas…</p>;
   if (!data || data.length === 0) {
-    return <p className="text-muted-foreground text-sm">Aún no hay reseñas aprobadas. ¡Sé el primero!</p>;
+    return (
+      <p className="t-small text-ink-2">
+        Todavía no hay reseñas publicadas de este proveedor. Si lo usas, cuéntanos cómo te ha ido: tu reseña ayuda a quien está
+        por decidir.
+      </p>
+    );
   }
 
   return (
-    <ul className="space-y-4">
+    <ul className="divide-y divide-rule border-y border-rule">
       {data.map((r) => (
-        <li key={r.id} className="rounded-lg border bg-card p-4">
-          <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <li key={r.id} className="py-4">
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <div className="flex" aria-label={`${r.rating} de 5 estrellas`}>
+              <span className="flex" role="img" aria-label={`${r.rating} de 5 estrellas`}>
                 {[1, 2, 3, 4, 5].map((n) => (
                   <Star
                     key={n}
-                    className={cn(
-                      'w-4 h-4',
-                      n <= r.rating ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground/40'
-                    )}
+                    aria-hidden
+                    className={cn('h-4 w-4', n <= r.rating ? 'fill-ink text-ink' : 'text-rule')}
                   />
                 ))}
-              </div>
-              <span className="font-semibold text-sm">{r.author_name}</span>
+              </span>
+              <span className="t-small font-semibold text-ink">{r.author_name}</span>
             </div>
-            <time className="text-xs text-muted-foreground">
-              {formatDistanceToNow(new Date(r.created_at), { addSuffix: true, locale: es })}
+            <time dateTime={isoDate(r.created_at)} className="t-meta">
+              {formatShortDate(r.created_at)}
             </time>
           </div>
-          <p className="text-sm text-foreground/90 whitespace-pre-wrap">{r.comment}</p>
+          <p className="whitespace-pre-wrap t-small text-ink">{r.comment}</p>
         </li>
       ))}
     </ul>

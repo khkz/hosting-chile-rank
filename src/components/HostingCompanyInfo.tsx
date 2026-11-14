@@ -1,13 +1,8 @@
-
 import React from 'react';
-import { formatCorporateGroup } from '@/lib/formatGroup';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ExternalLink, CheckCircle, XCircle, Shield, CreditCard, Clock } from 'lucide-react';
-import { formatUptime } from '@/lib/uptime';
-import { getProviderLink } from '@/lib/providerLinks';
+import { Check, X } from 'lucide-react';
+import Section from '@/components/system/Section';
+import LogoTile from '@/components/LogoTile';
+import SiteLink from '@/components/ficha/SiteLink';
 
 interface ContactInfo {
   phone: string;
@@ -66,279 +61,120 @@ export interface HostingCompanyData {
 
 interface HostingCompanyInfoProps {
   company: HostingCompanyData;
+  tone?: 'white' | 'paper';
 }
 
-const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company }) => {
-  const displayDescription = company.descriptionEditorial || company.description;
+/**
+ * «Sobre {marca}»: descripción, contacto, medios de pago y planes.
+ * La nota, el datacenter y los pros y contras viven en la cabecera, la tabla de
+ * datos declarados y el veredicto: aquí no se repiten. Sin contenido, no se dibuja.
+ */
+const HostingCompanyInfo: React.FC<HostingCompanyInfoProps> = ({ company, tone = 'white' }) => {
+  // El texto editorial va en el veredicto; aquí, la descripción general (si es otra).
+  const description =
+    company.description && company.description.trim() !== (company.descriptionEditorial ?? '').trim()
+      ? company.description.trim()
+      : '';
+  const contact = company.contactInfo;
+  const contactItems: Array<[string, React.ReactNode]> = [];
+  if (contact.phone)
+    contactItems.push(['Teléfono', <a href={`tel:${contact.phone}`} className="underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{contact.phone}</a>]);
+  if (contact.email)
+    contactItems.push(['Correo', <a href={`mailto:${contact.email}`} className="break-all underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{contact.email}</a>]);
+  if (contact.address) contactItems.push(['Dirección', contact.address]);
+  if (contact.hours) contactItems.push(['Horario de atención', contact.hours]);
+  if (company.paymentMethods && company.paymentMethods.length > 0)
+    contactItems.push(['Medios de pago', company.paymentMethods.join(', ')]);
+
+  const hasAbout = !!description || !!company.uniqueSellingPoint || !!company.logo;
+  if (!hasAbout && contactItems.length === 0 && company.plans.length === 0) return null;
 
   return (
-    <div className="space-y-8">
-      {/* Company Header */}
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
-        <div className="w-40 h-32 flex items-center justify-center bg-white p-4 rounded-lg shadow-sm">
-          <img 
-            src={company.logo} 
-            alt={`Logo de ${company.name}`}
-            className="max-w-full max-h-full object-contain"
-            loading="lazy" 
-          />
-        </div>
-        
-        <div className="flex-1">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-3xl font-bold text-foreground">{company.name}</h1>
-            <div className="bg-muted text-foreground px-3 py-1 rounded-full text-sm font-medium">
-              {company.rating}/10 puntos
-            </div>
-            {company.corporateGroup && (
-              <Badge variant="outline" className="text-xs">{formatCorporateGroup(company.corporateGroup)}</Badge>
+    <Section id="sobre" tone={tone} density="tight" title={`Sobre ${company.name}`}>
+      {(hasAbout || contactItems.length > 0) && (
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-14">
+          <div className="min-w-0">
+            {company.logo && (
+              <LogoTile name={company.name} logoUrl={company.logo} className="mb-5 h-16 w-40 justify-start border border-rule px-3" maxLogoHeight={40} />
+            )}
+            {description && <p className="t-body max-w-[62ch] whitespace-pre-line text-ink">{description}</p>}
+            {company.uniqueSellingPoint && (
+              <p className="t-body mt-4 max-w-[62ch] font-semibold text-ink">{company.uniqueSellingPoint}</p>
             )}
           </div>
-          
-          <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-sm text-muted-foreground">
-            {!!company.yearFounded && company.yearFounded > 0 && <div>Fundado en {company.yearFounded}</div>}
-            {company.datacenterLocation && <div>Datacenter en {company.datacenterLocation}</div>}
-          </div>
-          
-          <p className="mt-3 text-muted-foreground">{displayDescription}</p>
-
-          {company.uniqueSellingPoint && (
-            <div className="mt-3 p-3 bg-primary/5 rounded-lg border border-primary/20">
-              <p className="text-sm font-medium text-primary">💡 {company.uniqueSellingPoint}</p>
+          {contactItems.length > 0 && (
+            <div className="min-w-0">
+              <h3 className="t-h3 text-ink">Contacto</h3>
+              <dl className="mt-3 divide-y divide-rule border-y border-rule t-small">
+                {contactItems.map(([label, value]) => (
+                  <div key={label} className="grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)] gap-4 py-2.5">
+                    <dt className="text-ink-2">{label}</dt>
+                    <dd className="text-ink [overflow-wrap:anywhere]">{value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           )}
-          
-          <div className="mt-4 flex flex-wrap gap-2">
-            {(() => { const link = getProviderLink(company.id, company.website); return (
-              <Button asChild variant="outline" className="gap-2">
-                <a href={link.href} target="_blank" rel={link.rel}>
-                  Visitar Sitio Web <ExternalLink size={16} />
-                </a>
-              </Button>
-            ); })()}
-            {company.hasSslFree && (
-              <Badge className="bg-green-100 text-green-800"><Shield className="w-3 h-3 mr-1" />SSL Gratis</Badge>
-            )}
-            {company.hasMigrationFree && (
-              <Badge className="bg-blue-100 text-blue-800">Migración Gratis</Badge>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Pros / Cons */}
-      {(company.pros?.length || company.cons?.length) ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {company.pros && company.pros.length > 0 && (
-            <Card className="border-green-200">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600" /> Ventajas
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {company.pros.map((pro, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      <span className="text-green-500 mt-0.5">✓</span>
-                      <span>{pro}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
-          {company.cons && company.cons.length > 0 && (
-            <Card className="border-red-200">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <XCircle className="w-5 h-5 text-red-500" /> Desventajas
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {company.cons.map((con, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      <span className="text-red-500 mt-0.5">✗</span>
-                      <span>{con}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      ) : null}
-      
-      {/* Contact Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Información de Contacto</CardTitle>
-          <CardDescription>Detalles para contactar a {company.name}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {company.contactInfo.phone && (
-              <div>
-                <h3 className="font-medium mb-1">Teléfono</h3>
-                <p><a href={`tel:${company.contactInfo.phone}`} className="text-primary hover:underline">{company.contactInfo.phone}</a></p>
-              </div>
-            )}
-            {company.contactInfo.email && (
-              <div>
-                <h3 className="font-medium mb-1">Email</h3>
-                <p><a href={`mailto:${company.contactInfo.email}`} className="text-primary hover:underline">{company.contactInfo.email}</a></p>
-              </div>
-            )}
-            {company.contactInfo.address && (
-              <div>
-                <h3 className="font-medium mb-1">Dirección</h3>
-                <p>{company.contactInfo.address}</p>
-              </div>
-            )}
-            {company.contactInfo.hours && (
-              <div>
-                <h3 className="font-medium mb-1">Horario de Atención</h3>
-                <p>{company.contactInfo.hours}</p>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-      
-      {/* Plans */}
-      {company.plans.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Planes de Hosting</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {company.plans.map((plan) => (
-              <Card key={plan.name} className="overflow-hidden">
-                <CardHeader className="bg-muted">
-                  <CardTitle>{plan.name}</CardTitle>
-                  <div className="mt-2 text-2xl font-bold text-foreground">
-                    Consultar en el sitio oficial
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-4">
-                    <div>
-                      <div className="text-sm font-medium text-muted-foreground">Almacenamiento</div>
-                      <div className="font-medium">{plan.storage}</div>
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-muted-foreground">Transferencia</div>
-                      <div className="font-medium">{plan.bandwidth}</div>
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-muted-foreground">Dominios</div>
-                      <div className="font-medium">{plan.domains}</div>
-                    </div>
-                    
-                    {plan.features?.length > 0 && (
-                      <div className="pt-2 border-t">
-                        <div className="text-sm font-medium text-muted-foreground mb-2">Características</div>
-                        <ul className="space-y-1">
-                          {plan.features.map((feature, index) => (
-                            <li key={index} className="flex items-center gap-2 text-sm">
-                              {feature.included ? (
-                                <span className="text-green-500">✓</span>
-                              ) : (
-                                <span className="text-red-500">✗</span>
-                              )}
-                              {feature.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <Button className="w-full mt-6" asChild>
-                    <a href={getProviderLink(company.id, company.website).href} target="_blank" rel={getProviderLink(company.id, company.website).rel}>
-                      Ver plan en {company.name}
-                    </a>
-                  </Button>
-                  <p className="mt-2 text-[11px] text-muted-foreground text-center leading-snug">
-                    Enlace de afiliado · Sin costo extra para ti
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
         </div>
       )}
-      
-      {/* Technical Details - Dynamic from DB data */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Detalles Técnicos</CardTitle>
-          <CardDescription>Especificaciones técnicas de {company.name}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Característica</TableHead>
-                <TableHead>Detalles</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {company.technologies && company.technologies.length > 0 && (
-                <TableRow>
-                  <TableCell className="font-medium">Tecnologías</TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-1">
-                      {company.technologies.map((tech, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">{tech}</Badge>
-                      ))}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )}
-              {formatUptime(company.uptimeGuarantee) && (
-                <TableRow>
-                  <TableCell className="font-medium">Uptime garantizado</TableCell>
-                  <TableCell>{formatUptime(company.uptimeGuarantee)}</TableCell>
-                </TableRow>
-              )}
-              {company.datacenterLocation && (
-                <TableRow>
-                  <TableCell className="font-medium">Ubicación Datacenter</TableCell>
-                  <TableCell>{company.datacenterLocation}</TableCell>
-                </TableRow>
-              )}
-              {company.paymentMethods && company.paymentMethods.length > 0 && (
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <span className="flex items-center gap-1"><CreditCard className="w-4 h-4" /> Medios de Pago</span>
-                  </TableCell>
-                  <TableCell>{company.paymentMethods.join(', ')}</TableCell>
-                </TableRow>
-              )}
-              {typeof company.hasSslFree === 'boolean' && (
-                <TableRow>
-                  <TableCell className="font-medium">SSL Gratuito</TableCell>
-                  <TableCell>{company.hasSslFree ? '✅ Incluido' : '❌ No incluido'}</TableCell>
-                </TableRow>
-              )}
-              {typeof company.hasMigrationFree === 'boolean' && (
-                <TableRow>
-                  <TableCell className="font-medium">Migración Gratuita</TableCell>
-                  <TableCell>{company.hasMigrationFree ? '✅ Incluida' : '❌ No incluida'}</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
 
-          {company.lastScrapedAt && (
-            <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              Datos actualizados: {new Date(company.lastScrapedAt).toLocaleDateString('es-CL', { month: 'long', year: 'numeric' })}
-            </p>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+      {company.plans.length > 0 && (
+        <div className={hasAbout || contactItems.length > 0 ? 'mt-12' : undefined}>
+          <h3 className="t-h3 text-ink">Planes de hosting</h3>
+          <ul className="mt-4 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {company.plans.map((plan) => (
+              <li key={plan.name} className="flex flex-col rounded-xl border border-rule bg-white p-5">
+                <h4 className="font-semibold text-ink">{plan.name}</h4>
+                <p className="mt-1 t-small text-ink-2">Precio: consultar en el sitio oficial</p>
+                <dl className="mt-4 space-y-2 t-small">
+                  {([
+                    ['Almacenamiento', plan.storage],
+                    ['Transferencia', plan.bandwidth],
+                    ['Dominios', plan.domains],
+                  ] as Array<[string, React.ReactNode]>).map(([label, value]) => (
+                    <div key={label} className="flex justify-between gap-4">
+                      <dt className="text-ink-2">{label}</dt>
+                      <dd className="text-right tabular text-ink">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {plan.features?.length > 0 && (
+                  <ul className="mt-4 space-y-1.5 border-t border-rule pt-4 t-small">
+                    {plan.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-2 text-ink">
+                        {feature.included ? (
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-ink-2" aria-hidden />
+                        ) : (
+                          <X className="mt-0.5 h-4 w-4 shrink-0 text-ink-3" aria-hidden />
+                        )}
+                        <span className={feature.included ? undefined : 'text-ink-3'}>
+                          {feature.name}
+                          <span className="sr-only">{feature.included ? ' (incluido)' : ' (no incluido)'}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="mt-auto pt-5">
+                  <SiteLink
+                    slug={company.id}
+                    website={company.website}
+                    name={company.name}
+                    location="ficha_plan"
+                    variant="outline"
+                    className="w-full"
+                  />
+                  <p className="mt-2 t-meta">
+                    <span className="block">Enlace de afiliado</span>
+                    <span className="block">Sin costo extra para ti</span>
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </Section>
   );
 };
 

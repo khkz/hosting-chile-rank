@@ -1,26 +1,31 @@
-import SourcesConsulted from '@/components/catalogo/SourcesConsulted';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { ChevronLeft, Globe } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card, CardContent } from '@/components/ui/card';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import Flag from '@/components/data/Flag';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  ExternalLink, Phone, Mail, MapPin, Clock, Server, Building2,
-  FileText, Cpu, Globe, ShieldCheck, Calendar, Hash, Activity, HelpCircle, AlertTriangle,
-} from 'lucide-react';
+import SourcesConsulted from '@/components/catalogo/SourcesConsulted';
+import FichaBreadcrumbs from '@/components/ficha/FichaBreadcrumbs';
+import ProviderEvidence from '@/components/ficha/ProviderEvidence';
+import SiteLink from '@/components/ficha/SiteLink';
+import { Alternatives, Complaints, DeclaredData, FaqList, TechnicalCheck } from '@/components/ficha/CountryFichaParts';
+import type { EvidenceRow } from '@/components/system/EvidenceCard';
 import { COUNTRIES, type CountryCode } from '@/lib/country';
-import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
-import { formatCorporateGroup } from '@/lib/formatGroup';
-import { isoDay } from '@/lib/dates';
+import { isHiddenProvider } from '@/lib/providerLinks';
+import { buildCountryFichaSeo } from '@/components/ficha/buildCountryFichaSeo';
+import { formatDataDate, formatInteger, formatMs, isoDate } from '@/lib/format';
 
 const COUNTRY_MAP: Record<string, CountryCode> = { pe: 'PE', mx: 'MX', co: 'CO', ar: 'AR' };
-const COUNTRY_FULLNAME: Record<CountryCode, string> = { PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina', CL: 'Chile' };
 
+const linkClass = 'font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
 const CountryProviderDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -117,125 +122,37 @@ const CountryProviderDetail = () => {
   const idFiscal: string | null = dc?.id_fiscal || null;
   const isGlobal: boolean = String(dc?.global || '').toLowerCase() === 'true';
   const estado: string | null = dc?.estado || null;
-  const isCurated: boolean = (company as any).is_curated === true;
+  const isCurated: boolean = company.is_curated === true;
 
-  const link = getProviderLink(company.slug, company.website);
-  const canonical = `https://eligetuhosting.com/${info.slug}/${company.slug}`;
-  const title = `${company.name} — Hosting en ${info.name} | EligeTuHosting`;
-  const descParts = [
-    company.name,
-    (company as any).legal_name ? `(${(company as any).legal_name})` : null,
-    `— hosting en ${info.name}.`,
-    (company as any).datacenter_location ? `Datacenter: ${(company as any).datacenter_location}.` : null,
-    (company as any).year_founded ? `Opera desde ${(company as any).year_founded}.` : null,
-    idFiscal ? `ID fiscal: ${idFiscal}.` : null,
-  ].filter(Boolean).join(' ').slice(0, 158);
-
-  const orgLd: any = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: company.name,
-    url: canonical,
-  };
-  if (company.contact_phone) orgLd.telephone = company.contact_phone;
-  if (company.contact_email) orgLd.email = company.contact_email;
-  if (company.contact_address) {
-    orgLd.address = {
-      '@type': 'PostalAddress',
-      streetAddress: company.contact_address,
-      addressCountry: info.code,
-    };
-  }
-  if ((company as any).year_founded) orgLd.foundingDate = String((company as any).year_founded);
-  if (company.corporate_group) {
-    const g = String(company.corporate_group).trim();
-    orgLd.parentOrganization = { '@type': 'Organization', name: /^grupo\s/i.test(g) ? g : `Grupo ${g}` };
-  }
-  if ((company as any).legal_name) orgLd.legalName = (company as any).legal_name;
-  if (idFiscal) orgLd.taxID = idFiscal;
-
-  const breadcrumbLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://eligetuhosting.com/' },
-      { '@type': 'ListItem', position: 2, name: `Hosting en ${info.name}`, item: `https://eligetuhosting.com/${info.slug}` },
-      { '@type': 'ListItem', position: 3, name: company.name, item: canonical },
-    ],
-  };
-
-  const rawUpdated = (company as any).updated_at || (company as any).created_at || null;
-  const dateModified = rawUpdated ? new Date(rawUpdated).toISOString() : new Date().toISOString();
-  const dateModifiedDisplay = dateModified.slice(0, 10);
-  orgLd.dateModified = dateModified;
-  (breadcrumbLd as any).dateModified = dateModified;
-
-  const techs: string[] = Array.isArray((company as any).technologies)
-    ? (company as any).technologies.filter((t: any) => typeof t === 'string') : [];
-
-  const ogLocale = info.locale.replace('-', '_');
-  const countryName = COUNTRY_FULLNAME[code!];
-  const editorialSummary: string | null = (company as any).editorial_summary || null;
-
-  // FAQ dinámico desde datos verificables
-  const hasLocalDc = (company as any).datacenter_location && (
-    (code === 'PE' && /per[uú]/i.test((company as any).datacenter_location)) ||
-    (code === 'MX' && /m[eé]xico/i.test((company as any).datacenter_location)) ||
-    (code === 'CO' && /colombia/i.test((company as any).datacenter_location)) ||
-    (code === 'AR' && /argentina/i.test((company as any).datacenter_location))
-  );
-  const faq: Array<{ q: string; a: string }> = [
-    {
-      q: `¿${company.name} tiene datacenter en ${countryName}?`,
-      a: hasLocalDc
-        ? `Sí, declara datacenter en ${countryName} (${(company as any).datacenter_location}), lo que reduce latencia para audiencias locales.`
-        : (company as any).datacenter_location
-          ? `No. Su datacenter declarado está en ${(company as any).datacenter_location}, es decir opera como revendedor internacional para clientes locales.`
-          : `${company.name} no publica ubicación de datacenter en su sitio oficial. La latencia y jurisdicción de los datos deben verificarse antes de contratar.`,
-    },
-    {
-      q: `¿Cuál es la razón social e ID fiscal de ${company.name}?`,
-      a: [
-        (company as any).legal_name ? `Razón social registrada: ${(company as any).legal_name}.` : `${company.name} no publica razón social en su sitio oficial.`,
-        idFiscal ? `Identificador fiscal declarado: ${idFiscal}.` : null,
-      ].filter(Boolean).join(' '),
-    },
-    {
-      q: `¿Qué tecnologías declara ${company.name}?`,
-      a: techs.length > 0
-        ? `Tecnologías declaradas por el proveedor: ${techs.join(', ')}.`
-        : `${company.name} no publica un stack técnico detallado en su sitio oficial.`,
-    },
-    {
-      q: `¿${company.name} es una marca global o regional?`,
-      a: isGlobal
-        ? `Es una marca global con presencia comercial en ${countryName}.`
-        : (company as any).corporate_group
-          ? `Forma parte del grupo ${formatCorporateGroup((company as any).corporate_group)}, con operación regional.`
-          : `Opera principalmente en ${countryName} según los datos declarados.`,
-    },
-  ];
-
-  const faqLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    dateModified,
-    mainEntity: faq.map(f => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
+  const { canonical, title, descParts, orgLd, breadcrumbLd, rawUpdated, techs, ogLocale, countryName, editorialSummary, faq, faqLd } =
+    buildCountryFichaSeo(company, info, code!, idFiscal, isGlobal);
 
   // Ordenar alternativas: datacenter local primero
   const isLocalDc = (loc?: string | null) => !!loc && new RegExp(countryName, 'i').test(loc);
   const altsSorted = (alternatives ?? [])
     .slice()
-    .sort((a: any, b: any) => (isLocalDc(b.datacenter_location) ? 1 : 0) - (isLocalDc(a.datacenter_location) ? 1 : 0))
+    .sort((a, b) => (isLocalDc(b.datacenter_location) ? 1 : 0) - (isLocalDc(a.datacenter_location) ? 1 : 0))
     .slice(0, 4);
 
   const complaintsCount = complaintsStats?.count ?? 0;
   const startDateDisplay = '2025-01-01'; // fecha de inicio de registro público
+
+  // Fecha visible: solo la que trae la base (nunca la de hoy).
+  const dataDate: string | null = rawUpdated;
+  const dcShort = company.datacenter_location?.split(/\s+—\s+|\.\s/)[0] ?? null;
+  const evidenceRows: EvidenceRow[] = [
+    dcShort
+      ? { label: 'Datacenter', value: dcShort, kind: 'declared', date: dataDate }
+      : { label: 'Datacenter', value: 'No lo declara' },
+    ...(idFiscal ? [{ label: 'ID fiscal', value: idFiscal, kind: 'declared' as const, date: dataDate }] : []),
+    company.year_founded
+      ? { label: 'Opera desde', value: String(company.year_founded), kind: 'declared', date: dataDate }
+      : { label: 'Opera desde', value: 'No lo declara' },
+    typeof siteCheck?.ttfb_ms === 'number' && siteCheck?.checked_at
+      ? { label: 'TTFB medido', value: formatMs(siteCheck.ttfb_ms), kind: 'measured', date: siteCheck.checked_at }
+      : { label: 'TTFB medido', value: 'sin medir' },
+    { label: 'Reclamos verificados', value: formatInteger(complaintsCount) },
+  ];
 
   return (
     <>
@@ -259,289 +176,131 @@ const CountryProviderDetail = () => {
 
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
-        <nav className="text-sm text-muted-foreground mb-4" aria-label="breadcrumb">
-          <Link to="/" className="hover:underline">Inicio</Link>
-          <span className="mx-2">/</span>
-          <Link to={`/${info.slug}`} className="hover:underline">Hosting en {info.name}</Link>
-          <span className="mx-2">/</span>
-          <span className="text-foreground font-medium">{company.name}</span>
-        </nav>
-
-        <header className="mb-6">
-          <div className="flex flex-wrap items-center gap-3 mb-2">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
-              {company.name}
-            </h1>
-            {isGlobal && (
-              <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
-                <Globe className="h-3 w-3 mr-1" /> Marca global
-              </Badge>
-            )}
-            {estado && (
-              <Badge variant="outline" className="text-xs">{estado}</Badge>
-            )}
-          </div>
-          <p className="text-muted-foreground">
-            Hosting en {info.name} {info.flag} — datos verificables.
-          </p>
-          <p className="mt-2 text-xs text-ink/60">
-            <span className="inline-flex items-center gap-1">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-              Datos verificados: <time dateTime={dateModified}>{dateModifiedDisplay}</time>
-            </span>
-          </p>
-        </header>
-
-        {isCurated && (
-          <Card className="mb-6 border-brand/40 bg-brand/5">
-            <CardContent className="pt-5">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="h-6 w-6 text-brand mt-0.5 shrink-0" />
-                <div>
-                  <div className="text-xs uppercase tracking-wide text-brand font-semibold mb-1">
-                    Recomendado por EligeTuHosting
-                  </div>
-                  <p className="text-sm text-ink/80">
-                    {company.name} es la recomendación editorial de EligeTuHosting en {info.name}: operador regional con soporte en español. Más abajo están el datacenter que declara y la entidad que factura.
-                  </p>
-                  <p className="text-[11px] text-ink/60 mt-2 leading-snug">
-                    <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el resto del directorio.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        <Card className="mb-6">
-          <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            {(company as any).legal_name && (
-              <div className="flex items-start gap-2">
-                <FileText className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Razón social:</span> {(company as any).legal_name}</div>
-              </div>
-            )}
-            {idFiscal && (
-              <div className="flex items-start gap-2">
-                <Hash className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Identificador fiscal:</span> {idFiscal}</div>
-              </div>
-            )}
-            {company.website && (
-              <div className="flex items-start gap-2">
-                <Globe className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div>
-                  <span className="font-medium">Sitio web:</span>{' '}
-                  <a href={link.href} target="_blank" rel={link.rel} referrerPolicy="no-referrer" className="text-primary hover:underline inline-flex items-center gap-1">
-                    {company.website.replace(/^https?:\/\//, '')} <ExternalLink className="h-3 w-3" />
-                  </a>
-                </div>
-              </div>
-            )}
-            {company.contact_phone && (
-              <div className="flex items-start gap-2">
-                <Phone className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Teléfono:</span> <a className="text-primary hover:underline" href={`tel:${company.contact_phone}`}>{company.contact_phone}</a></div>
-              </div>
-            )}
-            {company.contact_email && (
-              <div className="flex items-start gap-2">
-                <Mail className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Email:</span> <a className="text-primary hover:underline" href={`mailto:${company.contact_email}`}>{company.contact_email}</a></div>
-              </div>
-            )}
-            {company.contact_address && (
-              <div className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Dirección:</span> {company.contact_address}</div>
-              </div>
-            )}
-            {company.contact_hours && (
-              <div className="flex items-start gap-2">
-                <Clock className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Horario:</span> {company.contact_hours}</div>
-              </div>
-            )}
-            {(company as any).datacenter_location && (
-              <div className="flex items-start gap-2">
-                <Server className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Datacenter:</span> {(company as any).datacenter_location}</div>
-              </div>
-            )}
-            {(company as any).year_founded && (
-              <div className="flex items-start gap-2">
-                <Calendar className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Año de fundación:</span> {(company as any).year_founded}</div>
-              </div>
-            )}
-            {company.corporate_group && (
-              <div className="flex items-start gap-2 md:col-span-2">
-                <Building2 className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div><span className="font-medium">Grupo corporativo:</span> {formatCorporateGroup(company.corporate_group)}</div>
-              </div>
-            )}
-            {techs.length > 0 && (
-              <div className="flex items-start gap-2 md:col-span-2">
-                <Cpu className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div>
-                  <span className="font-medium">Tecnologías:</span>{' '}
-                  <span className="inline-flex flex-wrap gap-1 align-middle">
-                    {techs.map((t, i) => (
-                      <Badge key={i} variant="secondary" className="text-xs">{t}</Badge>
-                    ))}
-                  </span>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Contexto editorial */}
-        {editorialSummary && (
-          <section className="mb-6">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-ink">
-              <FileText className="h-5 w-5" /> Contexto
-            </h2>
-            <Card>
-              <CardContent className="pt-6 text-sm text-ink/90 whitespace-pre-line leading-relaxed">
-                {editorialSummary}
-              </CardContent>
-            </Card>
-          </section>
-        )}
-
-        {/* Verificación técnica */}
-        {siteCheck && (
-          <section className="mb-6">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-ink">
-              <Activity className="h-5 w-5" /> Verificación técnica
-            </h2>
-            <Card>
-              <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                {siteCheck.resolved_ip && (
-                  <div><span className="font-medium">IP del sitio:</span> <code className="text-xs">{siteCheck.resolved_ip}</code></div>
-                )}
-                {siteCheck.asn && (
-                  <div><span className="font-medium">ASN:</span> {siteCheck.asn}{siteCheck.asn_org ? ` — ${siteCheck.asn_org}` : ''}</div>
-                )}
-                {siteCheck.ssl_issuer && (
-                  <div><span className="font-medium">Certificado SSL:</span> emitido por {siteCheck.ssl_issuer}</div>
-                )}
-                {siteCheck.ssl_valid_to && (
-                  <div><span className="font-medium">SSL vigente hasta:</span> {isoDay(siteCheck.ssl_valid_to) ?? '—'}</div>
-                )}
-                {typeof siteCheck.ttfb_ms === 'number' && (
-                  <div><span className="font-medium">TTFB medido:</span> {siteCheck.ttfb_ms} ms</div>
-                )}
-                {typeof siteCheck.http_status === 'number' && (
-                  <div><span className="font-medium">Estado HTTP:</span> {siteCheck.http_status}</div>
-                )}
-                <div className="md:col-span-2 text-xs text-muted-foreground pt-2 border-t">
-                  {isoDay(siteCheck.checked_at)
-                    ? <>Medición automática realizada el <time dateTime={siteCheck.checked_at}>{isoDay(siteCheck.checked_at)}</time>. </>
-                    : 'Medición automática. '}
-                  Datos técnicos verificables desde el sitio oficial del proveedor.
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-        )}
-
-        {/* Reputación */}
-        <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-ink">
-            <AlertTriangle className="h-5 w-5" /> Reputación
-          </h2>
-          <Card>
-            <CardContent className="pt-6 text-sm">
-              <p>
-                <strong>{complaintsCount}</strong>{' '}
-                {complaintsCount === 1 ? 'reclamo verificado' : 'reclamos verificados'} sobre {company.name} desde el <time dateTime={startDateDisplay}>{startDateDisplay}</time>.
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                Los reclamos se verifican por email antes de publicarse. <Link to="/reclamos" className="text-primary hover:underline">Reportar un problema</Link>.
-              </p>
-            </CardContent>
-          </Card>
-        </section>
-
-        {company.website && (
-          <div className="mb-8">
-            <Button asChild className="cta-primary gap-2">
-              <a href={link.href} target="_blank" rel={link.rel} referrerPolicy="no-referrer">
-                Visitar sitio oficial <ExternalLink className="h-4 w-4" />
-              </a>
-            </Button>
-          </div>
-        )}
-
-        {/* FAQ */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 flex items-center gap-2 text-ink">
-            <HelpCircle className="h-5 w-5" /> Preguntas frecuentes
-          </h2>
-          <div className="space-y-3">
-            {faq.map((f, i) => (
-              <Card key={i}>
-                <CardContent className="pt-5 pb-5">
-                  <h3 className="font-semibold text-sm mb-1">{f.q}</h3>
-                  <p className="text-sm text-ink/80">{f.a}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Alternativas en {pais} */}
-        {altsSorted.length > 0 && (
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3 text-ink">
-              Alternativas en {info.name}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {altsSorted.map((a: any) => {
-                const pair = company.slug < a.slug ? `${company.slug}-vs-${a.slug}` : `${a.slug}-vs-${company.slug}`;
-                return (
-                  <div key={a.slug} className="p-4 border rounded-md hover:bg-muted/50 transition">
-                    <Link to={`/${info.slug}/${a.slug}`} className="block">
-                      <div className="font-medium">{a.name}</div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {isLocalDc(a.datacenter_location) ? `Datacenter local (${a.datacenter_location})` : (a.datacenter_location || 'Datacenter no publicado')}
-                      </div>
-                    </Link>
-                    <Link
-                      to={`/${info.slug}/comparativa/${pair}`}
-                      className="text-xs text-primary hover:underline inline-block mt-2"
-                    >
-                      Comparar {company.name} vs {a.name} →
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="mt-4 text-sm">
-              <Link to={`/${info.slug}`} className="text-primary hover:underline">
-                Ver todo el directorio de {info.name}
-              </Link>
-              <span className="mx-2 text-muted-foreground">·</span>
-              <Link to="/latam" className="text-primary hover:underline">
-                Hosting en Latinoamérica
-              </Link>
-            </div>
-          </section>
-        )}
-
-        <SourcesConsulted
-          fuentes={(company as any).fuentes}
-          fechaVerificacion={(company as any).fecha_verificacion}
+      <main>
+        <PageHeader
+          breadcrumbs={
+            <FichaBreadcrumbs
+              items={[{ name: 'Inicio', href: '/' }, { name: `Hosting en ${info.name}`, href: `/${info.slug}` }, { name: company.name }]}
+            />
+          }
+          title={company.name}
+          lead={
+            <>
+              <span className="inline-flex items-center gap-2 align-baseline">
+                <Flag code={code!} size={20} />
+                Hosting en {info.name}.
+              </span>{' '}
+              Lo que declara {company.name} y lo que hemos medido, cada dato con su fuente y su fecha.
+            </>
+          }
+          actions={<SiteLink slug={company.slug} website={company.website} name={company.name} location="ficha_pais_cabecera" />}
+          meta={
+            <>
+              {dataDate && (
+                <span>
+                  Datos actualizados el <time dateTime={isoDate(dataDate)}>{formatDataDate(dataDate)}</time>
+                </span>
+              )}
+              {isGlobal && (
+                <Badge variant="outline">
+                  <Globe className="h-3.5 w-3.5" aria-hidden /> Marca global
+                </Badge>
+              )}
+              {estado && <Badge variant="outline">{estado}</Badge>}
+            </>
+          }
+          aside={
+            <ProviderEvidence
+              name={company.name}
+              subtitle={company.legal_name || `Hosting en ${info.name}`}
+              rating={null}
+              showRating={false}
+              rows={evidenceRows}
+            />
+          }
         />
 
-        <div className="text-sm">
-          <Link to={`/${info.slug}`} className="text-primary hover:underline">
-            ← Volver al directorio de {info.name}
+        {(isCurated || editorialSummary) && (
+          <Section id="contexto" density="tight" title="Contexto">
+            {isCurated && (
+              <Callout tone="note" title="Recomendado por EligeTuHosting" className="mt-0 max-w-[72ch]">
+                <p>
+                  {company.name} es la recomendación editorial de EligeTuHosting en {info.name}: operador regional con soporte en español. Más abajo están el datacenter que declara y la entidad que factura.
+                </p>
+                <p>
+                  <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el resto del directorio.
+                </p>
+              </Callout>
+            )}
+            {editorialSummary && (
+              <div className={isCurated ? 'mt-8' : undefined}>
+                <p className="flex items-center gap-2 t-meta">
+                  <ProvenanceTag kind="editorial" />
+                  Criterio del equipo editorial
+                </p>
+                <p className="t-body mt-3 max-w-[62ch] whitespace-pre-line text-ink">{editorialSummary}</p>
+              </div>
+            )}
+          </Section>
+        )}
+
+        <Section
+          id="datos-declarados"
+          tone="paper"
+          density="tight"
+          className="border-t border-rule"
+          title="Datos declarados por el proveedor"
+          lead={`Lo que ${company.name} publica sobre sí mismo. No lo hemos comprobado: por eso lleva la marca Declarado.`}
+          action={<ProvenanceTag kind="declared" />}
+        >
+          <DeclaredData company={company} idFiscal={idFiscal} techs={techs} />
+          <SourcesConsulted fuentes={company.fuentes} fechaVerificacion={company.fecha_verificacion} />
+        </Section>
+
+        {siteCheck && (
+          <Section
+            id="verificacion-tecnica"
+            density="tight"
+            className="border-t border-rule"
+            title="Verificación técnica"
+            lead="Lo medimos nosotros desde el sitio oficial del proveedor: IP, ASN, certificado SSL y tiempo de respuesta."
+            action={<ProvenanceTag kind="measured" />}
+          >
+            <TechnicalCheck check={siteCheck} />
+          </Section>
+        )}
+
+        <Section id="reputacion" tone="paper" density="tight" className="border-t border-rule" title="Reputación">
+          <Complaints name={company.name} count={complaintsCount} since={startDateDisplay} />
+        </Section>
+
+        <Section id="preguntas" density="tight" className="border-t border-rule" title="Preguntas frecuentes">
+          <FaqList items={faq} />
+        </Section>
+
+        <Section
+          id="alternativas"
+          tone="paper"
+          density="tight"
+          className="border-t border-rule"
+          title={altsSorted.length > 0 ? `Alternativas en ${info.name}` : 'Sigue comparando'}
+        >
+          {altsSorted.length > 0 && (
+            <Alternatives company={company} items={altsSorted} countrySlug={info.slug} isLocalDc={isLocalDc} />
+          )}
+          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 t-small">
+            <Link to={`/${info.slug}`} className={linkClass}>
+              Ver todo el directorio de {info.name}
+            </Link>
+            <Link to="/latam" className={linkClass}>
+              Hosting en Latinoamérica
+            </Link>
+          </div>
+          <Link to={`/${info.slug}`} className="mt-8 inline-flex min-h-[44px] items-center gap-1.5 t-small font-semibold text-ink-2 hover:text-ink">
+            <ChevronLeft className="h-4 w-4" aria-hidden />
+            Volver al directorio de {info.name}
           </Link>
-        </div>
+        </Section>
       </main>
 
       <Footer />

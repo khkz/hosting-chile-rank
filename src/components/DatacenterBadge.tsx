@@ -1,41 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, AlertTriangle, HelpCircle, Globe2 } from 'lucide-react';
-import { rankingHosts, type RankingHostDc, type DcStatus } from '@/data/datacenters';
+import { ExternalLink } from 'lucide-react';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import { getOperatorByName, rankingHosts, type RankingHostDc } from '@/data/datacenters';
 
 /**
- * P4-DC3: badge "Datacenter" for provider cards and ficha pages.
- * Reads from src/data/datacenters.ts and links to the LATAM Hub education block.
- * Nothing invented: if the provider is not in the registry, renders null.
+ * Datacenter de un proveedor con la gramática de procedencia del sitio:
+ * - autodeclarado: lo publica el proveedor, o sea «Declarado», con su fuente.
+ * - certificado: certificación publicada por un tercero (el operador), con su fuente.
+ * - extranjero / no divulga: se dice tal cual, con la fuente consultada.
+ * Lee src/data/datacenters.ts. Si el proveedor no está en el registro, no dibuja nada.
  */
 
-const STATUS: Record<
-  DcStatus,
-  { text: string; className: string; Icon: React.ComponentType<{ className?: string }> }
-> = {
-  certificado: {
-    text: 'Datacenter certificado',
-    className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    Icon: CheckCircle2,
-  },
-  autodeclarado: {
-    text: 'Datacenter autodeclarado',
-    className: 'bg-amber-50 text-amber-700 border-amber-200',
-    Icon: AlertTriangle,
-  },
-  extranjero: {
-    text: 'Infraestructura extranjera',
-    className: 'bg-slate-50 text-slate-700 border-slate-200',
-    Icon: Globe2,
-  },
-  no_divulga: {
-    text: 'No divulga datacenter',
-    className: 'bg-slate-50 text-slate-500 border-slate-200',
-    Icon: HelpCircle,
-  },
-};
-
-// Loose name matching: strip domain/spaces/case so "HostingPlus" matches "HostingPlus.cl".
+// Coincidencia flexible: sin dominio, espacios ni mayúsculas («HostingPlus» = «HostingPlus.cl»).
 function norm(s: string): string {
   return s
     .toLowerCase()
@@ -55,6 +32,54 @@ export function lookupHostDc(name: string | null | undefined): RankingHostDc | u
   return INDEX.get(norm(name));
 }
 
+const domain = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
+
+const SourceLink: React.FC<{ url: string }> = ({ url }) => (
+  <a
+    href={url}
+    target="_blank"
+    rel="nofollow noopener noreferrer"
+    className="inline-flex items-center gap-1 t-meta underline decoration-ink/30 underline-offset-2 hover:text-ink hover:decoration-ink"
+  >
+    Fuente: {domain(url)}
+    <ExternalLink className="h-3 w-3 shrink-0" aria-hidden />
+  </a>
+);
+
+const Status: React.FC<{ host: RankingHostDc }> = ({ host }) => {
+  if (host.estado === 'certificado') {
+    const op = host.operador ? getOperatorByName(host.operador) : undefined;
+    return (
+      <>
+        <span className="font-semibold text-ink">{host.operador ?? host.dc_declarado}</span>
+        <span className="rounded-sm border border-rule bg-white px-1.5 py-0.5 text-xs font-semibold leading-4 text-ink-2">
+          Certificado por terceros
+        </span>
+        {op?.nivel && <span className="t-meta">{op.nivel}</span>}
+        {op?.fuente_url ? <SourceLink url={op.fuente_url} /> : <SourceLink url={host.fuente_url} />}
+      </>
+    );
+  }
+  if (host.estado === 'autodeclarado') {
+    return (
+      <>
+        <span className="font-semibold text-ink">{host.dc_declarado ?? 'Datacenter propio'}</span>
+        <ProvenanceTag kind="declared" />
+        <span className="t-meta">Sin certificación de terceros publicada</span>
+        <SourceLink url={host.fuente_url} />
+      </>
+    );
+  }
+  return (
+    <>
+      <span className="font-semibold text-ink">
+        {host.estado === 'extranjero' ? 'Infraestructura extranjera' : 'No publica qué datacenter usa'}
+      </span>
+      <SourceLink url={host.fuente_url} />
+    </>
+  );
+};
+
 interface Props {
   providerName: string;
   variant?: 'inline' | 'row';
@@ -64,53 +89,31 @@ interface Props {
 const DatacenterBadge: React.FC<Props> = ({ providerName, variant = 'inline', className = '' }) => {
   const host = lookupHostDc(providerName);
   if (!host) return null;
-  const s = STATUS[host.estado];
+
+  const how = (
+    <Link
+      to="/latam#dc-education-heading"
+      className="t-meta underline decoration-ink/30 underline-offset-2 hover:text-ink hover:decoration-ink"
+    >
+      ¿Cómo lo verificamos?
+    </Link>
+  );
 
   if (variant === 'row') {
     return (
-      <div className={`flex items-start gap-2 text-sm ${className}`}>
-        <span className="text-gray-500 shrink-0">Datacenter:</span>
-        <div className="flex flex-wrap items-center gap-2">
-          <span
-            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-xs font-medium ${s.className}`}
-          >
-            <s.Icon className="h-3 w-3" />
-            {s.text}
-          </span>
-          {host.operador && (
-            <span className="text-xs text-ink/70">
-              Operador: <span className="font-medium">{host.operador}</span>
-            </span>
-          )}
-          <Link
-            to="/latam#dc-education-heading"
-            className="text-xs text-brand hover:underline"
-            aria-label="Ver metodología de certificación de datacenters"
-          >
-            ¿Cómo lo verificamos?
-          </Link>
-        </div>
+      <div className={`flex flex-wrap items-center gap-x-3 gap-y-1.5 t-small ${className}`}>
+        <span className="text-ink-2">Datacenter</span>
+        <Status host={host} />
+        {how}
       </div>
     );
   }
 
   return (
-    <div className={`inline-flex flex-wrap items-center gap-2 ${className}`}>
-      <span
-        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-xs font-medium ${s.className}`}
-        title={host.dc_declarado ?? undefined}
-      >
-        <s.Icon className="h-3 w-3" />
-        {s.text}
-        {host.operador ? ` · ${host.operador}` : ''}
-      </span>
-      <Link
-        to="/latam#dc-education-heading"
-        className="text-[11px] text-brand hover:underline"
-      >
-        ¿Cómo lo verificamos?
-      </Link>
-    </div>
+    <span className={`inline-flex flex-wrap items-center gap-x-2 gap-y-1 t-small ${className}`}>
+      <Status host={host} />
+      {how}
+    </span>
   );
 };
 

@@ -1,71 +1,85 @@
 import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Sparkles, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Minus, Plus } from 'lucide-react';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import Callout from '@/components/system/Callout';
 
 interface VeredictoProps {
   name: string;
-  rating: number;
+  /** Se conserva por compatibilidad: el veredicto no repite la nota (ya está en la cabecera). */
+  rating?: number;
   editorial?: string | null;
   pros?: string[] | null;
   cons?: string[] | null;
 }
 
-/** Genera pros/contras fallback cuando la DB no los trae. */
-function fallbackPros(name: string): string[] {
-  return [
-    `${name} aparece en el catálogo verificado de EligeTuHosting.cl 2026.`,
-    'Datos de contacto y operación contrastables públicamente.',
-    'Cubre planes estándar de hosting compartido para usuarios chilenos.',
-  ];
-}
-function fallbackCons(name: string): string[] {
-  return [
-    `${name} no publica algunos datos técnicos (SLA, datacenter exacto) en su web.`,
-    'Catálogo de planes y precios sujeto a cambios sin aviso por parte del proveedor.',
-  ];
-}
+const clean = (list?: string[] | null) =>
+  (list ?? []).filter((s): s is string => typeof s === 'string' && s.trim().length > 0);
 
-const Veredicto: React.FC<VeredictoProps> = ({ name, rating, editorial, pros, cons }) => {
-  const finalPros = (pros && pros.length >= 3 ? pros.slice(0, 3) : fallbackPros(name));
-  const finalCons = (cons && cons.length >= 2 ? cons.slice(0, 2) : fallbackCons(name));
+/**
+ * Veredicto editorial: el texto del equipo y los pros y contras que trae la
+ * base, desde uno. Si no hay nada escrito, lo dice; nunca rellena con frases fijas.
+ */
+const Veredicto: React.FC<VeredictoProps> = ({ name, editorial, pros, cons }) => {
+  const text = editorial?.trim() ?? '';
+  const prosList = clean(pros);
+  const consList = clean(cons);
+  const hasLists = prosList.length > 0 || consList.length > 0;
 
-  const veredictoText = editorial && editorial.trim().length > 0
-    ? editorial
-    : `${name} obtiene una nota editorial de ${rating.toFixed(1)}/10 en nuestra evaluación 2026. La nota refleja el balance entre transparencia, infraestructura declarada y posicionamiento dentro del mercado chileno de hosting.`;
+  if (!text && !hasLists) {
+    return (
+      <Callout tone="note" title={`Todavía no escribimos el veredicto de ${name}`} className="my-0 max-w-[62ch]">
+        <p>Mientras tanto, revisa abajo lo que declara el proveedor y cómo se calcula su nota.</p>
+      </Callout>
+    );
+  }
 
   return (
-    <section className="mt-10">
-      <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-3 flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-primary" />
-          Veredicto editorial
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-6">{veredictoText}</p>
+    <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-14">
+      <div className="min-w-0">
+        <p className="flex items-center gap-2 t-meta">
+          <ProvenanceTag kind="editorial" />
+          Criterio del equipo editorial
+        </p>
+        {text ? (
+          <p className="t-body mt-4 max-w-[62ch] whitespace-pre-line text-ink">{text}</p>
+        ) : (
+          <p className="t-body mt-4 max-w-[62ch] text-ink-2">
+            Aún no hay un texto de veredicto para {name}. Estos son los puntos a favor y en contra que registramos.
+          </p>
+        )}
+      </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="font-semibold mb-3 flex items-center gap-2 text-green-700">
-              <ThumbsUp className="w-4 h-4" /> A favor
-            </h3>
-            <ul className="space-y-2 text-sm">
-              {finalPros.map((p, i) => (
-                <li key={i} className="flex gap-2"><span className="text-green-600">+</span>{p}</li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-3 flex items-center gap-2 text-red-700">
-              <ThumbsDown className="w-4 h-4" /> En contra
-            </h3>
-            <ul className="space-y-2 text-sm">
-              {finalCons.map((c, i) => (
-                <li key={i} className="flex gap-2"><span className="text-red-600">−</span>{c}</li>
-              ))}
-            </ul>
-          </div>
+      {hasLists && (
+        <div className="grid min-w-0 gap-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          {prosList.length > 0 && (
+            <div>
+              <h3 className="t-h3 text-ink">A favor</h3>
+              <ul className="mt-3 space-y-2.5">
+                {prosList.map((p, i) => (
+                  <li key={i} className="flex gap-2.5 t-small text-ink">
+                    <Plus className="mt-0.5 h-4 w-4 shrink-0 text-ink-2" aria-hidden />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {consList.length > 0 && (
+            <div>
+              <h3 className="t-h3 text-ink">En contra</h3>
+              <ul className="mt-3 space-y-2.5">
+                {consList.map((c, i) => (
+                  <li key={i} className="flex gap-2.5 t-small text-ink">
+                    <Minus className="mt-0.5 h-4 w-4 shrink-0 text-ink-2" aria-hidden />
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-      </Card>
-    </section>
+      )}
+    </div>
   );
 };
 

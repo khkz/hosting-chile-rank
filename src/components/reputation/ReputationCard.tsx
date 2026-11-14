@@ -1,106 +1,103 @@
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ShieldCheck, ShieldAlert, ShieldX, ExternalLink, Star, MessageSquare, AlertTriangle, Info } from 'lucide-react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { ShieldCheck, ShieldAlert, ShieldX, ExternalLink, Info } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { useCompanyReputation } from '@/hooks/useCompanyReputation';
-import { formatDistanceToNow } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { formatDataDate, formatInteger, formatScore, isoDate } from '@/lib/format';
 
 interface ReputationCardProps {
   companyId: string;
   companyName: string;
+  /** false cuando la sección que lo contiene ya tiene título. */
+  showTitle?: boolean;
 }
 
-const severityStyles: Record<string, { icon: typeof ShieldCheck; cls: string; label: string }> = {
-  Baja: { icon: ShieldCheck, cls: 'bg-green-100 text-green-800 border-green-300 dark:bg-green-950 dark:text-green-200', label: 'Reputación sólida' },
-  Media: { icon: ShieldAlert, cls: 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-200', label: 'Reclamos moderados' },
-  Alta: { icon: ShieldX, cls: 'bg-red-100 text-red-800 border-red-300 dark:bg-red-950 dark:text-red-200', label: 'Alerta reputacional' },
+const severityStyles: Record<string, { icon: typeof ShieldCheck; variant: 'outline' | 'ink'; label: string }> = {
+  Baja: { icon: ShieldCheck, variant: 'outline', label: 'Reputación sólida' },
+  Media: { icon: ShieldAlert, variant: 'outline', label: 'Reclamos moderados' },
+  Alta: { icon: ShieldX, variant: 'ink', label: 'Alerta reputacional' },
 };
 
-export function ReputationCard({ companyId, companyName }: ReputationCardProps) {
+const Stat: React.FC<{ label: string; value: string; note: string }> = ({ label, value, note }) => (
+  <div className="min-w-0 py-4 sm:px-5 sm:first:pl-0">
+    <dt className="t-label">{label}</dt>
+    <dd className="mt-1">
+      <span className="tabular text-2xl font-bold text-ink">{value}</span>
+      <span className="mt-0.5 block t-meta">{note}</span>
+    </dd>
+  </div>
+);
+
+export function ReputationCard({ companyId, companyName, showTitle = true }: ReputationCardProps) {
   const { data, isLoading } = useCompanyReputation(companyId);
 
   if (isLoading) {
-    return <Card className="p-6 animate-pulse h-48 bg-muted/30" />;
+    return <p className="t-small text-ink-3">Cargando la reputación de {companyName}…</p>;
   }
 
   const hasSnapshot = !!data?.last_synced_at;
   const severityInfo = data?.severity ? severityStyles[data.severity] : null;
   const SeverityIcon = severityInfo?.icon ?? Info;
+  const reviewsCount = data?.verified_reviews_count ?? 0;
 
   return (
-    <Card className="p-6 border-primary/20">
-      <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
-        <div>
-          <h3 className="text-2xl font-bold mb-1">Reputación verificada</h3>
-          <p className="text-sm text-muted-foreground">
-            Cómo perciben los usuarios reales a {companyName}
+    <div className="rounded-xl border border-rule bg-white p-5 md:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0">
+          {showTitle && <h3 className="t-h3 text-ink">Reputación</h3>}
+          <p className={showTitle ? 'mt-1 t-small text-ink-2' : 't-small text-ink-2'}>
+            Qué dicen de {companyName} quienes lo usan: reclamos y reseñas con su fuente.
           </p>
         </div>
         {hasSnapshot && severityInfo && (
-          <Badge variant="outline" className={`${severityInfo.cls} gap-1 text-sm py-1.5 px-3`}>
-            <SeverityIcon className="w-4 h-4" />
+          <Badge variant={severityInfo.variant} className="gap-1.5 px-2.5 py-1 text-sm">
+            <SeverityIcon className="h-4 w-4" aria-hidden />
             {severityInfo.label}
           </Badge>
         )}
       </div>
 
-      {!hasSnapshot && data && data.verified_reviews_count === 0 && data.internal_complaints_12m === 0 ? (
-        <div className="rounded-md bg-muted/40 p-4 text-sm">
-          <div className="flex gap-2 items-start">
-            <Info className="w-4 h-4 mt-0.5 text-muted-foreground" />
-            <div>
-              <p className="font-medium">Pendiente de auditoría externa</p>
-              <p className="text-muted-foreground">
-                Aún no hemos sincronizado el análisis automático de Reclamos.cl para este proveedor. Mostraremos los datos en cuanto estén disponibles. Mientras tanto puedes consultar nuestra{' '}
-                <Link to="/metodologia#reputacion" className="underline">metodología</Link>.
-              </p>
-            </div>
+      {!hasSnapshot && data && reviewsCount === 0 && data.internal_complaints_12m === 0 ? (
+        <div className="mt-5 flex items-start gap-3 rounded-xl bg-paper p-4 t-small text-ink-2">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-ink-2" aria-hidden />
+          <div>
+            <p className="font-semibold text-ink">Pendiente de auditoría externa</p>
+            <p className="mt-1">
+              Aún no sincronizamos el análisis automático de Reclamos.cl para este proveedor. Lo mostraremos apenas esté
+              disponible. Mientras tanto, puedes revisar nuestra{' '}
+              <Link to="/metodologia#reputacion" className="font-semibold text-ink underline underline-offset-4">
+                metodología
+              </Link>
+              .
+            </p>
           </div>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-3 gap-4 mb-4">
+        <dl className={`mt-4 grid divide-y divide-rule border-t border-rule sm:divide-x sm:divide-y-0 ${hasSnapshot ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
           {hasSnapshot && (
-            <div className="rounded-md border p-3">
-              <div className="text-xs uppercase text-muted-foreground mb-1 flex items-center gap-1">
-                <ExternalLink className="w-3 h-3" /> Reclamos.cl
-              </div>
-              <div className="text-2xl font-bold">
-                {data?.sentiment_score ? `${Number(data.sentiment_score).toFixed(1)}/10` : '—'}
-              </div>
-              <div className="text-xs text-muted-foreground">Análisis automático</div>
-            </div>
+            <Stat
+              label="Reclamos.cl"
+              value={data?.sentiment_score ? `${formatScore(Number(data.sentiment_score))}/10` : 'sin dato'}
+              note="Análisis automático"
+            />
           )}
-          <div className="rounded-md border p-3">
-            <div className="text-xs uppercase text-muted-foreground mb-1 flex items-center gap-1">
-              <AlertTriangle className="w-3 h-3" /> Reclamos verificados
-            </div>
-            <div className="text-2xl font-bold">{data?.internal_complaints_12m ?? 0}</div>
-            <div className="text-xs text-muted-foreground">
-              Últimos 12 meses · {data?.internal_complaints_high ?? 0} graves
-            </div>
-          </div>
-          <div className="rounded-md border p-3">
-            <div className="text-xs uppercase text-muted-foreground mb-1 flex items-center gap-1">
-              <Star className="w-3 h-3" /> Reseñas verificadas
-            </div>
-            <div className="text-2xl font-bold">
-              {data?.verified_reviews_avg ? `${Number(data.verified_reviews_avg).toFixed(1)}/10` : '—'}
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {data?.verified_reviews_count ?? 0} clientes confirmados
-            </div>
-          </div>
-        </div>
+          <Stat
+            label="Reclamos verificados"
+            value={formatInteger(data?.internal_complaints_12m ?? 0)}
+            note={`Últimos 12 meses; ${formatInteger(data?.internal_complaints_high ?? 0)} graves`}
+          />
+          <Stat
+            label="Reseñas verificadas"
+            value={data?.verified_reviews_avg ? `${formatScore(Number(data.verified_reviews_avg))}/10` : 'sin dato'}
+            note={`${formatInteger(reviewsCount)} ${reviewsCount === 1 ? 'cliente confirmado' : 'clientes confirmados'}`}
+          />
+        </dl>
       )}
 
       {data && data.main_complaints.length > 0 && (
-        <div className="mb-4">
-          <p className="text-sm font-semibold mb-2 flex items-center gap-1">
-            <MessageSquare className="w-4 h-4" /> Quejas más frecuentes
-          </p>
-          <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+        <div className="mt-5">
+          <p className="t-label text-ink">Quejas más frecuentes</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 t-small text-ink-2">
             {data.main_complaints.slice(0, 5).map((c, i) => (
               <li key={i}>{c}</li>
             ))}
@@ -109,18 +106,18 @@ export function ReputationCard({ companyId, companyName }: ReputationCardProps) 
       )}
 
       {data && data.sources.length > 0 && (
-        <div className="mb-4">
-          <p className="text-xs font-semibold mb-2 uppercase text-muted-foreground">Fuentes citadas</p>
-          <ul className="text-sm space-y-1">
+        <div className="mt-5">
+          <p className="t-label text-ink">Fuentes citadas</p>
+          <ul className="mt-2 space-y-1 t-small">
             {data.sources.slice(0, 3).map((url) => (
               <li key={url}>
                 <a
                   href={url}
                   target="_blank"
                   rel="nofollow noopener noreferrer"
-                  className="text-primary underline break-all inline-flex items-center gap-1 min-h-[24px]"
+                  className="inline-flex min-h-[24px] items-center gap-1 break-all text-ink underline decoration-ink/30 underline-offset-2 hover:decoration-ink"
                 >
-                  <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0 text-ink-2" aria-hidden />
                   {url}
                 </a>
               </li>
@@ -129,18 +126,20 @@ export function ReputationCard({ companyId, companyName }: ReputationCardProps) 
         </div>
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground border-t pt-3">
-        <div>
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-3 t-meta">
+        <p>
           {data?.last_synced_at ? (
-            <>Actualizado {formatDistanceToNow(new Date(data.last_synced_at), { addSuffix: true, locale: es })}</>
+            <>
+              Sincronizado el <time dateTime={isoDate(data.last_synced_at)}>{formatDataDate(data.last_synced_at)}</time>
+            </>
           ) : (
-            <>Sin snapshot externo todavía</>
+            'Sin captura externa todavía'
           )}
-        </div>
-        <Button asChild variant="link" size="sm" className="h-auto p-0 text-xs">
-          <Link to="/metodologia#reputacion">Ver criterios de verificación</Link>
-        </Button>
+        </p>
+        <Link to="/metodologia#reputacion" className="font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+          Ver criterios de verificación
+        </Link>
       </div>
-    </Card>
+    </div>
   );
 }

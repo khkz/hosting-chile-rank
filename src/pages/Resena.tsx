@@ -1,234 +1,36 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Helmet } from 'react-helmet-async';
-import { ReputationBySlug } from '@/components/reputation/ReputationBySlug';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
-import { getProviderLink } from '@/lib/providerLinks';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
+import { Button } from '@/components/ui/button';
+import Veredicto from '@/components/catalogo/Veredicto';
+import ScoreBreakdown from '@/components/ranking/ScoreBreakdown';
+import { ReputationCard } from '@/components/reputation/ReputationCard';
+import FichaBreadcrumbs from '@/components/ficha/FichaBreadcrumbs';
+import ProviderEvidence from '@/components/ficha/ProviderEvidence';
+import SiteLink from '@/components/ficha/SiteLink';
+import { benchmarkRows, declaredRows } from '@/components/ficha/evidenceRows';
+import { useCatalogCompany } from '@/components/ficha/useCatalogCompany';
+import { hostingData, RESENA_TO_CATALOG } from '@/components/ficha/resenaData';
+import { useLatestBenchmarkForCompany } from '@/hooks/useProviderScore';
+import { formatDataDate, isoDate } from '@/lib/format';
 
-// Datos completos para reseñas de hosting
-const hostingData = {
-  'hostingplus': {
-    name: 'HostingPlus',
-    logo: '/logo-hostingplus-official.png',
-    rating: 9.8,
-    description: 'HostingPlus ofrece una combinación única de rendimiento, seguridad y soporte técnico que lo posiciona como nuestra principal recomendación en el mercado chileno.',
-    pros: [
-      'Servidor LiteSpeed de alto rendimiento',
-      'Backups diarios automatizados',
-      'Firewall WAF avanzado',
-      'Soporte técnico 24/7 en español',
-      'Datacenter en Santiago para mejor latencia'
-    ],
-    cons: [
-      'Precio ligeramente superior a algunas alternativas',
-      'Panel de control personalizado que requiere aprendizaje'
-    ],
-    url: 'https://www.hostingplus.cl/'
-  },
-  'ecohosting': {
-    name: 'EcoHosting',
-    logo: '/logo-ecohosting-new.svg',
-    rating: 9.3,
-    description: 'EcoHosting destaca por su compromiso con el medio ambiente y su excelente rendimiento técnico, ofreciendo una alternativa confiable y responsable.',
-    pros: [
-      'Servidores con energía 100% renovable',
-      'Excelente velocidad de carga',
-      'Servicio de migración gratuito',
-      'Backups diarios incluidos',
-      'Buen soporte técnico'
-    ],
-    cons: [
-      'Precio superior a la media',
-      'Menos opciones de personalización avanzada'
-    ],
-    url: 'https://www.ecohosting.cl/'
-  },
-  '1hosting': {
-    name: '1Hosting',
-    logo: '/logo-1hosting.svg',
-    rating: 8.8,
-    description: '1Hosting ofrece planes accesibles con buen rendimiento, siendo una opción muy recomendable para proyectos pequeños y medianos.',
-    pros: [
-      'Precios muy competitivos',
-      'Uptime monitoreado (ver /benchmark)',
-      'Panel cPanel intuitivo',
-      'Soporte técnico eficiente',
-      'Buenos recursos en planes básicos'
-    ],
-    cons: [
-      'No incluye LiteSpeed',
-      'Backups menos frecuentes',
-      'Soporte no 24/7'
-    ],
-    url: 'https://www.1hosting.cl/'
-  },
-  'hostgator': {
-    name: 'HostGator',
-    logo: 'https://logo.clearbit.com/hostgator.cl',
-    rating: 9.2,
-    description: 'HostGator es un proveedor internacional con presencia en Chile que ofrece soluciones de hosting de buena calidad y precios competitivos.',
-    pros: [
-      'Planes económicos con buen rendimiento',
-      'Garantía de devolución de dinero de 45 días',
-      'Panel de control cPanel fácil de usar',
-      'Soporte técnico en español',
-      'Uptime monitoreado (ver /benchmark)'
-    ],
-    cons: [
-      'Datacenter principal fuera de Chile',
-      'Costos de renovación más altos',
-      'Tiempos de respuesta variables en soporte'
-    ],
-    url: 'https://www.hostgator.cl/'
-  },
-  'hostname': {
-    name: 'HN.cl',
-    logo: '/logo-hostname.png',
-    rating: 9.2,
-    description: 'HN.cl (Hostname) es un proveedor chileno de hosting que destaca por su excelente soporte técnico 24/7 y su compromiso con el rendimiento optimizado para el mercado local.',
-    pros: [
-      'Soporte técnico excepcional 24/7 en español',
-      'Servidores LiteSpeed de alto rendimiento',
-      'Datacenter en Santiago con baja latencia',
-      'Backups diarios automatizados',
-      'Firewall WAF avanzado incluido',
-      'Panel cPanel fácil de usar'
-    ],
-    cons: [
-      'Precio ligeramente superior a competidores básicos',
-      'Planes de entrada con recursos limitados'
-    ],
-    url: 'https://hn.cl/'
-  },
-  'bluehost': {
-    name: 'BlueHost',
-    logo: '/logo-bluehost.svg',
-    rating: 9.0,
-    description: 'BlueHost es reconocido internacionalmente y recomendado por WordPress.org, ofrece un buen servicio para sitios web personales y empresariales.',
-    pros: [
-      'Optimizado para WordPress',
-      'Dominio gratis incluido el primer año',
-      'Interfaz muy intuitiva',
-      'SSL gratuito',
-      'Instalación automática de aplicaciones'
-    ],
-    cons: [
-      'Precios de renovación elevados',
-      'Datacenter fuera de Chile (mayor latencia)',
-      'Opciones de personalización limitadas'
-    ],
-    url: 'https://www.bluehost.cl/'
-  },
-  'donweb': {
-    name: 'DonWeb',
-    logo: 'https://logo.clearbit.com/donweb.cl',
-    rating: 8.7,
-    description: 'DonWeb es un proveedor de hosting latinoamericano con presencia en varios países, incluido Chile, que ofrece soluciones económicas con buen rendimiento.',
-    pros: [
-      'Precios muy accesibles',
-      'Datacenter en Argentina (buena latencia para Chile)',
-      'Múltiples planes adaptados a diferentes necesidades',
-      'Constructor de sitios web incluido',
-      'Buen servicio al cliente en español'
-    ],
-    cons: [
-      'Algunos problemas de rendimiento en horas pico',
-      'Reportes de caídas ocasionales según Reclamos.cl',
-      'Panel de control ligeramente anticuado'
-    ],
-    url: 'https://www.donweb.cl/'
-  },
-  'godaddy': {
-    name: 'GoDaddy',
-    logo: '/logo-godaddy.svg',
-    rating: 8.3,
-    description: 'GoDaddy es uno de los registradores de dominios y proveedores de hosting más grandes del mundo, con una interfaz amigable pero rendimiento variable.',
-    pros: [
-      'Interfaz de usuario muy intuitiva',
-      'Buen para principiantes',
-      'Integración perfecta entre dominios y hosting',
-      'Amplia variedad de productos adicionales',
-      'Soporte básico en español'
-    ],
-    cons: [
-      'Precios de renovación muy elevados',
-      'Múltiples quejas en Reclamos.cl sobre cobros automáticos',
-      'Opciones de hosting básicas comparadas con competidores',
-      'Datacenter lejos de Chile (mayor latencia)'
-    ],
-    url: 'https://cl.godaddy.com/'
-  },
-  'powerhost': {
-    name: 'PowerHost / IxMetro',
-    logo: 'https://logo.clearbit.com/powerhost.cl',
-    rating: 8.5,
-    description: 'PowerHost (IxMetro) opera como datacenter e infraestructura de red con ASN propio AS263237. Actualmente su oferta está enfocada en servicios de datacenter para empresas —VPS SSD, servidores dedicados (baremetal), housing/colocation, datacenter virtual, cross connect e IXP content vía AmericaIX— y no comercializa hosting compartido tradicional para usuarios finales. Es una alternativa para empresas que necesitan infraestructura, no para quien busca un plan de hosting clásico.',
-    pros: [
-      'ASN propio AS263237 con anuncios BGP verificables',
-      'Datacenters propios en Santiago y presencia internacional (NY, MOW, AMS) según el proveedor',
-      'Infraestructura propia declarada por el proveedor',
-      'Servicios de housing, colocation y cross connect para empresas',
-      'Conexión directa a AmericaIX (IXP) para reducir latencia internacional'
-    ],
-    cons: [
-      'No vende hosting compartido tradicional: enfoque actual es datacenter e infraestructura',
-      'Planes orientados a empresas: VPS SSD desde $43.000 + IVA/mes y dedicados desde 10,5 UF + IVA/mes',
-      'Curva de entrada más técnica que un hosting compartido convencional',
-      'Certificación Tier III declarada por el proveedor, sin verificación independiente del Uptime Institute'
-    ],
-    url: 'https://www.powerhost.cl/'
-  },
-
-  'hostingcl': {
-    name: 'Hosting.cl',
-    logo: 'https://logo.clearbit.com/hosting.cl',
-    rating: 8.4,
-    description: 'Hosting.cl es un proveedor chileno con datacenter propio en Santiago y ASN AS265839. Arrastra reclamos públicos repetidos entre 2012 y 2025 que se deben considerar. Nota editorial: Hosting.cl publicita "100% uptime", una garantía técnicamente imposible de cumplir; los SLA serios del sector rondan el 99,9%.',
-    pros: [
-      'Datacenter propio en Santiago (baja latencia local)',
-      'ASN propio AS265839 verificable',
-      'Servidores con LiteSpeed y WAF incluidos',
-      'Backups diarios y dominio .CL en planes anuales'
-    ],
-    cons: [
-      'Publicita "100% uptime", garantía técnicamente imposible de cumplir (SLA realista del sector: 99,9%)',
-      'Reclamos públicos recurrentes entre 2012 y 2025 en Reclamos.cl',
-      'Planes PYME desde $159.900 + IVA/año',
-      'Tiempos de respuesta de soporte variables según horario'
-    ],
-    url: 'https://www.hosting.cl/'
-  },
-  'bluehosting': {
-    name: 'BlueHosting.cl',
-    logo: 'https://logo.clearbit.com/bluehosting.cl',
-    rating: 8.2,
-    description: 'BlueHosting.cl es un proveedor chileno que opera sobre infraestructura de Haulmer en Curicó (ASN AS64111). Su sitio web y estrategia de marketing sugieren una orientación mayor hacia la captación de tráfico y posicionamiento SEO que hacia la especialización técnica en hosting puro. Ofrece planes anuales con precios visibles y un perfil de reclamos mixto que conviene revisar antes de contratar.',
-    pros: [
-      'Publica precios anuales en su sitio',
-      'Infraestructura en datacenter Haulmer (Curicó, Chile)',
-      'Firewall WAF y backups diarios incluidos',
-      'Dominio .CL gratis el primer año',
-      'Panel cPanel familiar para usuarios técnicos'
-    ],
-    cons: [
-      'No utiliza servidores LiteSpeed (Apache/Nginx estándar)',
-      'Perfil de reclamos mixto en redes y foros locales',
-      'Soporte 24/7 sólo en planes superiores',
-      'Depende de infraestructura de terceros (Haulmer)',
-      'Estrategia de marketing orientada a tráfico/SEO más que a especialización técnica en hosting'
-    ],
-    url: 'https://www.bluehosting.cl/'
-  }
-};
+const linkClass = 'font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
 const Resena = () => {
   const { slug } = useParams();
   const hosting = slug && hostingData[slug] ? hostingData[slug] : null;
-  
+  // Solo pares reseña-ficha comprobados; sin par seguro no se cuelga el desglose de otra empresa.
+  const catalogSlug = slug ? RESENA_TO_CATALOG[slug] ?? null : null;
+  const { data: company, isLoading } = useCatalogCompany(hosting ? catalogSlug : null);
+  const { data: bench } = useLatestBenchmarkForCompany(company?.id);
+
   useEffect(() => {
     if (hosting) {
       document.title = `Reseña de ${hosting.name} | eligetuhosting.cl`;
@@ -241,9 +43,12 @@ const Resena = () => {
     return (
       <>
         <Navbar />
-        <main className="container mx-auto px-4 py-16">
-          <h1 className="text-3xl font-bold mb-4">Reseña no encontrada</h1>
-          <p>Lo sentimos, la reseña que estás buscando no existe o ha sido movida.</p>
+        <main className="container py-16">
+          <h1 className="t-h1 text-ink">Reseña no encontrada</h1>
+          <p className="t-lead mt-4">Lo sentimos, la reseña que estás buscando no existe o ha sido movida.</p>
+          <Button asChild variant="outline" className="mt-6">
+            <Link to="/catalogo">Ver el catálogo de proveedores</Link>
+          </Button>
         </main>
         <Footer />
       </>
@@ -286,6 +91,20 @@ const Resena = () => {
     },
   };
 
+  const fichaHref = company ? `/catalogo/${company.slug}` : null;
+  const dataDate = company?.updated_at ?? null;
+  const rows = [
+    ...(company
+      ? declaredRows({
+          datacenter: company.datacenter_location,
+          yearFounded: company.year_founded,
+          corporateGroup: company.corporate_group,
+          date: dataDate,
+        })
+      : []),
+    ...benchmarkRows(bench),
+  ];
+
   return (
     <>
       <Helmet>
@@ -306,150 +125,135 @@ const Resena = () => {
         ]}
       />
 
-      
       <Navbar />
-      
-      <main className="container mx-auto px-4 py-8 md:py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Header de la reseña */}
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
-            <img
-              src={hosting.logo}
-              alt={`Logo de ${hosting.name}`}
-              className="w-32 h-32 object-contain"
-              loading="lazy"
-              onError={(e) => {
-                const img = e.currentTarget;
-                if (img.dataset.fallback) return;
-                img.dataset.fallback = '1';
-                img.src =
-                  'data:image/svg+xml;utf8,' +
-                  encodeURIComponent(
-                    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="16" fill="#e5e7eb"/><text x="50%" y="55%" font-family="sans-serif" font-size="40" font-weight="700" fill="#374151" text-anchor="middle">${(hosting.name || '?').slice(0, 2).toUpperCase()}</text></svg>`
-                  );
-              }}
+
+      <main>
+        <PageHeader
+          breadcrumbs={
+            <FichaBreadcrumbs
+              items={[{ name: 'Inicio', href: '/' }, { name: 'Reseñas', href: '/catalogo' }, { name: hosting.name }]}
             />
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">{hosting.name}</h1>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl font-bold text-brand">{hosting.rating}/10</span>
-                <span className="text-lg text-gray-600">- Nuestra calificación</span>
-              </div>
-              <p className="text-lg">{hosting.description}</p>
-            </div>
+          }
+          title={hosting.name}
+          lead={`Nuestra nota de ${hosting.name}, lo que declara sobre su servicio y lo que hemos medido. Cada dato dice de dónde sale y de cuándo es.`}
+          actions={
+            <>
+              <SiteLink slug={slug} website={hosting.url} name={hosting.name} location="resena_cabecera" />
+              {fichaHref && (
+                <Button asChild variant="outline">
+                  <Link to={fichaHref}>Ver ficha</Link>
+                </Button>
+              )}
+            </>
+          }
+          meta={
+            dataDate ? (
+              <span>
+                Datos de la ficha actualizados el <time dateTime={isoDate(dataDate)}>{formatDataDate(dataDate)}</time>
+              </span>
+            ) : undefined
+          }
+          aside={
+            <ProviderEvidence
+              name={hosting.name}
+              subtitle="Reseña editorial"
+              rating={hosting.rating}
+              rows={rows}
+              footer={
+                <a href="#subpuntajes" className={`t-small ${linkClass}`}>
+                  Cómo se calcula la nota
+                </a>
+              }
+            />
+          }
+        />
+
+        <Section id="veredicto" density="tight" title="Veredicto">
+          <Veredicto name={hosting.name} editorial={hosting.description} pros={hosting.pros} cons={hosting.cons} />
+        </Section>
+
+        <Section
+          id="subpuntajes"
+          tone="paper"
+          density="tight"
+          className="border-t border-rule"
+          title={`Cómo se calcula la nota de ${hosting.name}`}
+          lead={
+            company ? (
+              <>
+                Cinco subcriterios con pesos publicados, con los datos de la{' '}
+                <Link to={fichaHref!} className={linkClass}>
+                  ficha de {company.name}
+                </Link>
+                . Lo que todavía no medimos dice «sin medir»: nunca lo rellenamos.
+              </>
+            ) : undefined
+          }
+        >
+          {company ? (
+            <ScoreBreakdown
+              companyId={company.id}
+              companyName={company.name}
+              supportRating={company.support_rating ?? null}
+              priceRating={company.price_rating ?? null}
+              publishedRating={null}
+            />
+          ) : (
+            <Callout tone="note" title={isLoading ? 'Cargando el desglose…' : `Todavía no hay desglose de la nota de ${hosting.name}`} className="my-0 max-w-[62ch]">
+              {!isLoading && (
+                <p>
+                  Este proveedor aún no tiene una ficha con mediciones en nuestro catálogo.{' '}
+                  <Link to="/catalogo" className={linkClass}>
+                    Ver el catálogo de proveedores
+                  </Link>
+                </p>
+              )}
+            </Callout>
+          )}
+        </Section>
+
+        <Section
+          id="reputacion"
+          density="tight"
+          className="border-t border-rule"
+          title="Reputación"
+          lead={
+            <>
+              Análisis automático de Reclamos.cl, reclamos de usuarios verificados por correo y reseñas de clientes confirmados.
+              Los criterios están en nuestra{' '}
+              <Link to="/metodologia#reputacion" className={linkClass}>
+                metodología
+              </Link>
+              .
+            </>
+          }
+        >
+          {company ? (
+            <ReputationCard companyId={company.id} companyName={company.name} showTitle={false} />
+          ) : (
+            !isLoading && (
+              <p className="t-small text-ink-2">Todavía no tenemos datos de reputación de {hosting.name} en el catálogo.</p>
+            )
+          )}
+        </Section>
+
+        <Section id="sigue-comparando" tone="paper" density="tight" className="border-t border-rule" title="Sigue comparando">
+          <div className="flex flex-wrap gap-3">
+            {fichaHref && (
+              <Button asChild variant="default">
+                <Link to={fichaHref}>Ver ficha</Link>
+              </Button>
+            )}
+            <Button asChild variant="outline">
+              <Link to="/comparativa">Comparar</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/ranking">Ver el ranking</Link>
+            </Button>
           </div>
-          
-          {/* Pros y Contras */}
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-green-600">Pros</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {hosting.pros.map((pro, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
-                      <span>{pro}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-red-600">Contras</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {hosting.cons.map((con, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-red-500 mt-1">✗</span>
-                      <span>{con}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* Contenido principal de la reseña */}
-          <div className="prose max-w-none">
-            <h2>Análisis detallado de {hosting.name}</h2>
-            <p>
-              En nuestra evaluación exhaustiva de {hosting.name}, analizamos múltiples factores como velocidad, 
-              seguridad, soporte técnico, precios y características para determinar si es una buena opción para diferentes 
-              tipos de proyectos web. A continuación presentamos nuestros hallazgos detallados.
-            </p>
-            
-            <h3>Velocidad y rendimiento</h3>
-            <p>
-              En nuestras pruebas de rendimiento realizadas durante un periodo de 30 días, {hosting.name} mostró 
-              excelentes tiempos de carga con un promedio de {(Math.random() * 0.5 + 0.2).toFixed(2)} segundos para 
-              páginas estándar. Las pruebas se realizaron desde múltiples ubicaciones en Chile para asegurar resultados 
-              precisos y relevantes para usuarios locales.
-            </p>
-            
-            <h3>Seguridad y confiabilidad</h3>
-            <p>
-              La seguridad es un aspecto en el que {hosting.name} {hosting.rating > 9.5 ? "sobresale notablemente" : "ofrece buenos estándares"}. 
-              Con medidas como protección DDoS, certificados SSL gratuitos, y monitoreo constante, brindan un entorno 
-              seguro para sitios web de todo tipo, desde blogs personales hasta tiendas en línea.
-            </p>
-            
-            <h3>Soporte técnico</h3>
-            <p>
-              El soporte técnico es {hosting.rating > 9 ? "excepcional" : "adecuado"}, con tiempos de respuesta promedio de 
-              {Math.floor(Math.random() * 10 + 5)} minutos para consultas vía chat y hasta {Math.floor(Math.random() * 4 + 1)} 
-              horas para tickets más complejos. El personal de soporte demuestra un alto nivel de conocimiento técnico y 
-              disposición para resolver problemas.
-            </p>
-            
-            <h3>Relación calidad-precio</h3>
-            <p>
-              Con planes que comienzan desde los ${Math.floor(Math.random() * 2000 + 2000)} mensuales, {hosting.name} 
-              ofrece una {hosting.rating > 9 ? "excelente" : "buena"} relación calidad-precio considerando todas las 
-              características incluidas y el rendimiento ofrecido.
-            </p>
-            
-            <h3>Reputación verificada</h3>
-            <p>
-              Mostramos a continuación los datos reales de reputación: análisis automatizado de Reclamos.cl,
-              reclamos enviados por usuarios y verificados por email, y reseñas de clientes confirmados.
-              Los criterios completos están en nuestra <a href="/metodologia#reputacion">metodología</a>.
-            </p>
-            <div className="not-prose my-6">
-              <ReputationBySlug slug={slug ?? ''} fallbackName={hosting.name} />
-            </div>
-            
-            <h3>Conclusión</h3>
-            <p>
-              {hosting.name} {hosting.rating > 9.5 ? "se posiciona como una de las mejores opciones" : "representa una opción sólida"} 
-              de hosting en Chile, especialmente para {hosting.rating > 9 ? "todo tipo de proyectos" : "proyectos pequeños y medianos"}. 
-              Su combinación de rendimiento, seguridad y soporte técnico lo convierten en una elección recomendable 
-              para la mayoría de los usuarios.
-            </p>
-          </div>
-          
-          {/* CTA */}
-          <div className="mt-10 p-6 bg-gray-100 rounded-lg text-center">
-            <h3 className="text-2xl font-bold mb-4">¿Listo para probar {hosting.name}?</h3>
-            <p className="mb-6">Obtén los mejores precios y un servicio de calidad para tu sitio web.</p>
-            {(() => { const link = getProviderLink(slug, hosting.url); return (
-              <a
-                href={link.href}
-                target="_blank"
-                rel={link.rel}
-                className="bg-brand text-white px-6 py-3 rounded-lg hover:bg-red-700 inline-block"
-              >
-                Visitar {hosting.name}
-              </a>
-            ); })()}
-          </div>
-        </div>
+        </Section>
       </main>
-      
+
       <StickyCTA />
       <Footer />
     </>

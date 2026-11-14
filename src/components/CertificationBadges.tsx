@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Award } from 'lucide-react';
 import MedalBadge from '@/components/MedalBadge';
+import { Badge } from '@/components/ui/badge';
 
 interface CertificationBadgesProps {
   companySlug: string;
@@ -9,15 +9,18 @@ interface CertificationBadgesProps {
   size?: 'small' | 'medium' | 'large';
 }
 
-export default function CertificationBadges({ 
-  companySlug, 
-  variant = 'horizontal',
-  size = 'medium' 
-}: CertificationBadgesProps) {
+interface CertificationRow {
+  id: string;
+  position: number;
+  tier: string | null;
+  certification_categories: { name: string; icon: string | null; slug: string } | null;
+}
+
+export default function CertificationBadges({ companySlug, size = 'small' }: CertificationBadgesProps) {
   const { data: certifications, isLoading } = useQuery({
     queryKey: ['company-certifications', companySlug],
     queryFn: async () => {
-      // First get company by slug
+      // Primero la empresa por slug
       const { data: company } = await supabase
         .from('hosting_companies')
         .select('id')
@@ -26,7 +29,7 @@ export default function CertificationBadges({
 
       if (!company) return [];
 
-      // Then get certifications
+      // Luego sus certificaciones vigentes
       const { data } = await supabase
         .from('company_certifications')
         .select(`
@@ -39,7 +42,7 @@ export default function CertificationBadges({
         .eq('status', 'active')
         .order('position');
 
-      return data || [];
+      return (data || []) as unknown as CertificationRow[];
     },
   });
 
@@ -48,35 +51,18 @@ export default function CertificationBadges({
   }
 
   return (
-    <div className="my-3">
-      <div className="flex items-center gap-1.5 mb-2">
-        <Award className="w-4 h-4 text-primary" />
-        <h3 className="font-semibold text-sm text-primary">Certificaciones 2025</h3>
-      </div>
-      
-      <div className="flex flex-wrap gap-2 md:gap-3">
-        {certifications.map((cert: any) => {
-          return (
-            <div
-              key={cert.id}
-              className="flex flex-col items-center gap-1 hover:scale-105 hover:opacity-90 transition-all duration-200"
-            >
-              <MedalBadge
-                position={cert.position}
-                categoryName={cert.certification_categories.name}
-                size="small"
-                className="flex-shrink-0"
-              />
-              
-              {cert.tier === 'premium' && (
-                <span className="inline-block text-[8px] bg-purple-600 text-white px-1.5 py-0.5 rounded font-medium">
-                  Premium
-                </span>
-              )}
-            </div>
-          );
-        })}
-      </div>
+    <div>
+      <h3 className="t-h3 text-ink">Certificaciones</h3>
+      <ul className="mt-3 flex flex-wrap gap-2.5">
+        {certifications.map((cert) =>
+          cert.certification_categories ? (
+            <li key={cert.id} className="flex items-center gap-2">
+              <MedalBadge position={cert.position} categoryName={cert.certification_categories.name} size={size === 'large' ? 'medium' : 'small'} />
+              {cert.tier === 'premium' && <Badge variant="outline">Premium</Badge>}
+            </li>
+          ) : null,
+        )}
+      </ul>
     </div>
   );
 }

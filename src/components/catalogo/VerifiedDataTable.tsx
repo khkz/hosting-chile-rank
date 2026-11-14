@@ -1,7 +1,11 @@
 import React from 'react';
+import { ExternalLink } from 'lucide-react';
 import { formatUptime } from '@/lib/uptime';
 import { getProviderLink } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
+import { formatCorporateGroup } from '@/lib/formatGroup';
+import { formatDataDate, isoDate } from '@/lib/format';
+import Callout from '@/components/system/Callout';
 
 interface VerifiedDataTableProps {
   yearFounded?: number | null;
@@ -14,56 +18,64 @@ interface VerifiedDataTableProps {
   hasMigrationFree?: boolean | null;
   officialWebsite?: string | null;
   slug?: string;
+  /** Nombre del proveedor para el enlace «Ir al sitio de…». */
+  name?: string;
   datacenterCertifications?: string | null;
   datacenterCertificationsSources?: string[] | null;
   correctionNote?: string | null;
   correctionDate?: string | null;
 }
 
-const formatOfficialUrl = (raw: string) => {
+const hostLabel = (raw: string) => {
   try {
-    const u = new URL(raw);
-    return { href: `${u.protocol}//${u.host}/`, label: u.host.replace(/^www\./, '') };
+    return new URL(raw).host.replace(/^www\./, '');
   } catch {
-    const cleaned = raw.replace(/^https?:\/\//, '').replace(/\/$/, '');
-    return { href: `https://${cleaned}/`, label: cleaned.replace(/^www\./, '') };
+    return raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace(/^www\./, '');
   }
-}
+};
 
-const fmtPrice = (_p?: number | null) => 'Consultar en el sitio oficial';
+// El precio no se publica en la ficha: la base no lo trae verificado.
+const PRICE_TEXT = 'Consultar en el sitio oficial';
+const NOT_DECLARED = 'No declarado';
 
+/**
+ * Tabla «Datos declarados»: lo que el proveedor publica sobre su servicio.
+ * La sección que la contiene lleva la etiqueta de procedencia Declarado.
+ */
 const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
   const officialLink = props.officialWebsite
     ? (() => {
-        const { label } = formatOfficialUrl(props.officialWebsite!);
         const link = getProviderLink(props.slug, props.officialWebsite);
         return (
           <a
             href={link.href}
             target="_blank"
             rel={link.rel}
+            referrerPolicy="no-referrer"
             onClick={() => track('click_visitar_sitio', { slug: props.slug, location: 'ficha_verified_table' })}
-            className="text-primary underline underline-offset-2 hover:opacity-80 break-all"
+            className="inline-flex items-center gap-1 break-all font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
           >
-            {label}
+            {hostLabel(props.officialWebsite)}
+            <ExternalLink className="h-3.5 w-3.5 shrink-0 text-ink-2" aria-hidden />
+            <span className="sr-only">(ir al sitio de {props.name ?? 'este proveedor'})</span>
           </a>
         );
       })()
-    : '—';
+    : NOT_DECLARED;
 
-  const triState = (v?: boolean | null) => (v === true ? 'Sí' : v === false ? 'No' : 'No declarado');
+  const triState = (v?: boolean | null) => (v === true ? 'Sí' : v === false ? 'No' : NOT_DECLARED);
 
   const certSources = (props.datacenterCertificationsSources ?? []).filter(Boolean);
   const certCell: React.ReactNode =
     props.datacenterCertifications && certSources.length > 0 ? (
       <>
         {props.datacenterCertifications}
-        <span className="block text-xs mt-1">
+        <span className="mt-1 block t-meta">
           Fuente:{' '}
           {certSources.map((u, i) => (
             <React.Fragment key={u}>
-              {i > 0 && ' · '}
-              <a href={u} target="_blank" rel="nofollow noopener" className="underline underline-offset-2 break-all">
+              {i > 0 && ', '}
+              <a href={u} target="_blank" rel="nofollow noopener" className="break-all underline underline-offset-2">
                 {u.replace(/^https?:\/\/(www\.)?/, '')}
               </a>
             </React.Fragment>
@@ -76,50 +88,48 @@ const VerifiedDataTable: React.FC<VerifiedDataTableProps> = (props) => {
 
   const rows: Array<[string, React.ReactNode]> = [
     ['Sitio oficial', officialLink],
-    ['Año de fundación', props.yearFounded ?? 'No declarado'],
-    ['Grupo corporativo', props.corporateGroup ?? 'No declarado'],
-    ['Ubicación datacenter', props.datacenter && props.datacenter.trim() ? props.datacenter : 'No declarado'],
+    ['Año de fundación', props.yearFounded ?? NOT_DECLARED],
+    ['Grupo corporativo', props.corporateGroup ? formatCorporateGroup(props.corporateGroup) : NOT_DECLARED],
+    ['Ubicación del datacenter', props.datacenter && props.datacenter.trim() ? props.datacenter : NOT_DECLARED],
     ['Certificaciones del datacenter', certCell],
-    ['Precio desde', fmtPrice(props.minPrice)],
+    ['Precio desde', PRICE_TEXT],
     [
       'Tecnologías declaradas',
-      props.technologies && props.technologies.length > 0 ? props.technologies.join(', ') : 'No declarado',
+      props.technologies && props.technologies.length > 0 ? props.technologies.join(', ') : NOT_DECLARED,
     ],
-    ['Garantía de uptime', formatUptime(props.uptimeGuarantee) ?? 'No declarado'],
+    ['Garantía de uptime', formatUptime(props.uptimeGuarantee) ?? NOT_DECLARED],
     ['SSL gratis', triState(props.hasSslFree)],
     ['Migración gratis', triState(props.hasMigrationFree)],
   ];
 
   return (
-    <section className="mt-10">
-      <h2 className="text-2xl font-bold mb-4">
-        Datos declarados por el proveedor
-      </h2>
+    <div>
       {props.correctionNote && (
-        <p className="mb-4 text-sm border rounded-lg bg-muted/30 px-4 py-3">
-          <strong>
-            Nota de corrección
-            {props.correctionDate ? ` (${props.correctionDate.slice(0, 10).split('-').reverse().join('-')})` : ''}:
-          </strong>{' '}
-          {props.correctionNote}
-        </p>
+        <Callout tone="caution" title="Nota de corrección" className="mt-0">
+          <p>
+            {props.correctionDate && (
+              <>
+                <time dateTime={isoDate(props.correctionDate)}>{formatDataDate(props.correctionDate)}</time>.{' '}
+              </>
+            )}
+            {props.correctionNote}
+          </p>
+        </Callout>
       )}
-      <div className="overflow-x-auto border rounded-lg">
-        <table className="w-full text-sm">
-          <tbody>
-            {rows.map(([label, value]) => (
-              <tr key={label} className="border-b last:border-0 odd:bg-muted/30">
-                <th className="text-left font-medium px-4 py-3 w-1/2 md:w-1/3 align-top">{label}</th>
-                <td className="px-4 py-3 text-muted-foreground align-top">{value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p className="text-xs text-muted-foreground mt-2">
-        Datos declarados por el proveedor en su sitio oficial. Las fuentes concretas de cada ficha están al final de esta página.
-      </p>
-    </section>
+      <table className="w-full border-t-2 border-ink text-left t-small">
+        <caption className="sr-only">Datos que declara el proveedor</caption>
+        <tbody>
+          {rows.map(([label, value]) => (
+            <tr key={label} className="border-b border-rule align-top">
+              <th scope="row" className="w-[42%] py-3 pr-4 font-normal text-ink-2 md:w-1/3">
+                {label}
+              </th>
+              <td className="py-3 text-ink [overflow-wrap:anywhere]">{value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
