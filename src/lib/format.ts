@@ -44,13 +44,17 @@ const CURRENCY_BY_CODE: Record<string, { currency: string; locale: string }> = {
 export function formatMoney(value: number | null | undefined, code = 'CLP'): string {
   if (value == null || !Number.isFinite(Number(value))) return '—';
   const cfg = CURRENCY_BY_CODE[code] ?? CURRENCY_BY_CODE.CLP;
-  const decimals = code === 'CLP' || code === 'COP' ? 0 : 2;
-  return Number(value).toLocaleString(cfg.locale, {
+  const n = Number(value);
+  // Montos enteros sin decimales («S/ 70», no «S/ 70.00»).
+  const decimals = code === 'CLP' || code === 'COP' || Number.isInteger(n) ? 0 : 2;
+  const s = n.toLocaleString(cfg.locale, {
     style: 'currency',
     currency: cfg.currency,
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });
+  // Símbolo y monto separados por un espacio que no se corta («US$ 2,99», «S/ 70»).
+  return s.replace(/^(US\$|S\/)\s?(?=\d)/, '$1 ');
 }
 
 /**
