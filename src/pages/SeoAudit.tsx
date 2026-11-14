@@ -28,10 +28,10 @@ interface MiniAuditResult {
 
 const SEVERITY_COLORS: Record<string, string> = {
   critical: "bg-destructive text-destructive-foreground",
-  high: "bg-orange-500 text-white",
-  medium: "bg-yellow-500 text-black",
-  low: "bg-blue-500 text-white",
-  info: "bg-muted text-muted-foreground",
+  high: "border border-ink bg-white text-ink",
+  medium: "bg-paper-deep text-ink",
+  low: "bg-paper text-ink-2",
+  info: "bg-paper text-ink-3",
 };
 
 const PLANS = [
@@ -146,8 +146,8 @@ export default function SeoAudit() {
     }
   };
 
-  const scoreColor = (s: number) =>
-    s >= 80 ? "text-green-600" : s >= 60 ? "text-yellow-600" : s >= 40 ? "text-orange-600" : "text-red-600";
+  // Puntaje en tinta: el verde/ámbar es solo de la procedencia.
+  const scoreColor = (_s: number) => "text-ink";
 
   const productSchema = {
     "@context": "https://schema.org",
@@ -190,22 +190,22 @@ export default function SeoAudit() {
       <Navbar />
 
       {/* HERO */}
-      <section className="relative bg-gradient-to-b from-primary/5 via-background to-background pt-20 pb-12 lg:pt-28 lg:pb-20">
+      <section className="relative bg-white pt-20 pb-12 lg:pt-28 lg:pb-20">
         <div className="container max-w-5xl mx-auto px-4 text-center">
           <Badge variant="secondary" className="mb-4 px-4 py-1.5">
-            <Sparkles className="w-3 h-3 mr-1" /> Datos reales de Google Chile · DataForSEO
+            <Sparkles aria-hidden className="w-3 h-3 mr-1" /> Datos reales de Google Chile vía DataForSEO
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
             Auditoría SEO Profesional
-            <span className="block text-primary mt-2">con datos verificables</span>
+            <span className="block mt-2">con datos verificables</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          <p className="text-lg md:text-xl text-ink-3 max-w-3xl mx-auto mb-8">
             Descubre por qué tu sitio no rankea. Reporte completo con 40+ checks técnicos,
             keywords reales, backlinks y comparativa con competidores. Mini-audit gratis en 30 segundos.
           </p>
 
           <div className="max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-2 p-2 bg-card border-2 border-border rounded-2xl shadow-xl">
+            <div className="flex flex-col sm:flex-row gap-2 p-2 bg-white border border-rule rounded-xl">
               <Input
                 placeholder="tudominio.cl"
                 value={domain}
@@ -219,8 +219,8 @@ export default function SeoAudit() {
                 <span className="ml-2">Auditar GRATIS</span>
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground mt-3">
-              Sin registro · 10 análisis gratis por día · Tu dominio queda confidencial
+            <p className="text-xs text-ink-3 mt-3">
+              Sin registro, 10 análisis gratis por día y tu dominio queda confidencial.
             </p>
           </div>
         </div>
@@ -229,17 +229,17 @@ export default function SeoAudit() {
       {/* RESULTADO DEL MINI-AUDIT */}
       {result && (
         <section className="container max-w-6xl mx-auto px-4 -mt-6 mb-16 relative z-10">
-          <Card className="border-2 shadow-2xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 border-b">
+          <Card className="border overflow-hidden">
+            <CardHeader className="bg-paper border-b border-rule">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">Mini-audit de</p>
+                  <p className="text-sm text-ink-3 mb-1">Mini-audit de</p>
                   <CardTitle className="text-2xl">{result.domain}</CardTitle>
                 </div>
                 <div className="flex items-center gap-6">
                   <div className="text-center">
                     <div className={`text-5xl font-bold ${scoreColor(result.scores.total)}`}>{result.scores.total}</div>
-                    <div className="text-xs text-muted-foreground uppercase tracking-wide">Score SEO</div>
+                    <div className="text-xs text-ink-3">Score SEO</div>
                   </div>
                 </div>
               </div>
@@ -256,8 +256,8 @@ export default function SeoAudit() {
                 ].map((s) => (
                   <div key={s.label} className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">{s.label}</span>
-                      <span className={`font-bold ${s.locked ? "text-muted-foreground" : scoreColor(s.value)}`}>
+                      <span className="text-ink-3">{s.label}</span>
+                      <span className={`font-bold ${s.locked ? "text-ink-3" : scoreColor(s.value)}`}>
                         {s.locked ? <Lock className="w-3 h-3 inline" /> : s.value}
                       </span>
                     </div>
@@ -268,21 +268,21 @@ export default function SeoAudit() {
 
               {/* Performance card */}
               {result.performance && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-muted/40 rounded-xl">
-                  <div><div className="text-xs text-muted-foreground">Performance</div><div className={`text-2xl font-bold ${scoreColor(result.performance.performance)}`}>{result.performance.performance}</div></div>
-                  <div><div className="text-xs text-muted-foreground">LCP</div><div className="text-2xl font-bold">{(result.performance.lcp_ms / 1000).toFixed(1)}s</div></div>
-                  <div><div className="text-xs text-muted-foreground">CLS</div><div className="text-2xl font-bold">{result.performance.cls}</div></div>
-                  <div><div className="text-xs text-muted-foreground">SEO Lighthouse</div><div className={`text-2xl font-bold ${scoreColor(result.performance.seo)}`}>{result.performance.seo}</div></div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-paper/40 rounded-xl">
+                  <div><div className="text-xs text-ink-3">Performance</div><div className={`text-2xl font-bold ${scoreColor(result.performance.performance)}`}>{result.performance.performance}</div></div>
+                  <div><div className="text-xs text-ink-3">LCP</div><div className="text-2xl font-bold">{(result.performance.lcp_ms / 1000).toFixed(1)}s</div></div>
+                  <div><div className="text-xs text-ink-3">CLS</div><div className="text-2xl font-bold">{result.performance.cls}</div></div>
+                  <div><div className="text-xs text-ink-3">SEO Lighthouse</div><div className={`text-2xl font-bold ${scoreColor(result.performance.seo)}`}>{result.performance.seo}</div></div>
                 </div>
               )}
 
               {/* Keywords */}
               {result.keywords && result.keywords.top?.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-3 flex items-center gap-2"><Target className="w-4 h-4 text-primary" /> Top keywords en Google Chile</h3>
+                  <h3 className="font-semibold mb-3 flex items-center gap-2"><Target className="w-4 h-4 text-ink-2" /> Top keywords en Google Chile</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                      <thead className="text-left text-xs text-muted-foreground border-b">
+                      <thead className="text-left text-xs text-ink-3 border-b">
                         <tr><th className="py-2 pr-4">Keyword</th><th className="py-2 pr-4">Posición</th><th className="py-2 pr-4">Volumen</th><th className="py-2 pr-4">CPC</th><th className="py-2">Dificultad</th></tr>
                       </thead>
                       <tbody>
@@ -299,7 +299,7 @@ export default function SeoAudit() {
                     </table>
                   </div>
                   {result.keywords.total_keywords > 5 && (
-                    <p className="text-xs text-muted-foreground mt-2">
+                    <p className="text-xs text-ink-3 mt-2">
                       Mostrando 5 de {result.keywords.total_keywords.toLocaleString()} keywords totales. Suscríbete para ver todas.
                     </p>
                   )}
@@ -308,22 +308,22 @@ export default function SeoAudit() {
 
               {/* Issues */}
               <div>
-                <h3 className="font-semibold mb-3 flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-primary" /> Problemas detectados ({result.issues.length})</h3>
+                <h3 className="font-semibold mb-3 flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-ink-2" /> Problemas detectados ({result.issues.length})</h3>
                 <div className="space-y-2">
                   {result.issues.slice(0, 5).map((issue, i) => (
                     <div key={i} className="flex items-start gap-3 p-3 border rounded-lg">
                       <Badge className={SEVERITY_COLORS[issue.severity]}>{issue.severity}</Badge>
                       <div className="flex-1">
                         <div className="font-medium text-sm">{issue.title}</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">{issue.recommendation}</div>
+                        <div className="text-xs text-ink-3 mt-0.5">{issue.recommendation}</div>
                       </div>
                     </div>
                   ))}
                   {result.issues.length > 5 && (
-                    <div className="relative p-4 border-2 border-dashed rounded-lg bg-muted/30 text-center">
-                      <Lock className="w-5 h-5 mx-auto mb-2 text-muted-foreground" />
+                    <div className="relative p-4 border-2 border-dashed rounded-lg bg-paper/30 text-center">
+                      <Lock className="w-5 h-5 mx-auto mb-2 text-ink-3" />
                       <p className="text-sm font-medium">+{result.issues.length - 5} problemas adicionales</p>
-                      <p className="text-xs text-muted-foreground mb-3">Más backlinks, competidores y plan de acción priorizado</p>
+                      <p className="text-xs text-ink-3 mb-3">Más backlinks, competidores y plan de acción priorizado</p>
                       <Button asChild size="sm"><a href="#planes">Ver informe completo</a></Button>
                     </div>
                   )}
@@ -331,7 +331,7 @@ export default function SeoAudit() {
               </div>
 
               {!result.data_sources.dataforseo && (
-                <div className="text-xs text-muted-foreground p-3 border rounded-lg bg-yellow-500/5">
+                <div className="text-xs text-ink-3 p-3 border border-rule rounded-lg bg-paper">
                   ⓘ Mini-audit corriendo sin datos SERP en vivo. El informe completo tras suscripción incluye keywords y backlinks reales de DataForSEO.
                 </div>
               )}
@@ -344,16 +344,16 @@ export default function SeoAudit() {
       <section className="container max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">40+ checks en cada auditoría</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-ink-3 max-w-2xl mx-auto">
             Todo lo que tu sitio necesita para rankear en Google, en un solo informe accionable.
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {CHECKS.map((c) => (
-            <Card key={c.title} className="border-2 hover:border-primary/50 transition-colors">
+            <Card key={c.title} className="border transition-colors hover:border-ink/30">
               <CardHeader>
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                  <c.icon className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-paper flex items-center justify-center mb-3">
+                  <c.icon className="w-6 h-6 text-ink-2" />
                 </div>
                 <CardTitle className="text-xl">{c.title}</CardTitle>
               </CardHeader>
@@ -361,7 +361,7 @@ export default function SeoAudit() {
                 <ul className="space-y-2">
                   {c.items.map((item) => (
                     <li key={item} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <CheckCircle2 aria-hidden className="w-4 h-4 text-ink-2 flex-shrink-0" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -373,33 +373,33 @@ export default function SeoAudit() {
       </section>
 
       {/* PLANES */}
-      <section id="planes" className="bg-muted/30 py-16">
+      <section id="planes" className="bg-paper/30 py-16">
         <div className="container max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Planes de suscripción</h2>
-            <p className="text-lg text-muted-foreground">Cancela cuando quieras · Garantía 14 días · Sin permanencia</p>
+            <p className="text-lg text-ink-3">Cancela cuando quieras, garantía de 14 días y sin permanencia.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {PLANS.map((plan) => (
-              <Card key={plan.id} className={`relative ${plan.highlight ? "border-2 border-primary shadow-2xl scale-105" : "border"}`}>
+              <Card key={plan.id} className={`relative ${plan.highlight ? "border-2 border-ink" : "border"}`}>
                 {plan.highlight && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground px-3 py-1"><Crown className="w-3 h-3 mr-1" /> Más popular</Badge>
+                    <Badge className="bg-ink text-white px-3 py-1"><Crown className="w-3 h-3 mr-1" /> Más popular</Badge>
                   </div>
                 )}
                 <CardHeader>
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{plan.description}</p>
+                  <p className="text-sm text-ink-3">{plan.description}</p>
                   <div className="mt-4">
                     <span className="text-4xl font-bold">${plan.price}</span>
-                    <span className="text-muted-foreground"> CLP/mes</span>
+                    <span className="text-ink-3"> CLP/mes</span>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <ul className="space-y-2">
                     {plan.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 aria-hidden className="w-4 h-4 text-ink-2 flex-shrink-0 mt-0.5" />
                         <span>{f}</span>
                       </li>
                     ))}
@@ -418,28 +418,28 @@ export default function SeoAudit() {
       <section className="container max-w-4xl mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Cómo calculamos tu score?</h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-ink-3">
             Metodología transparente y pública. Sin cajas negras.
           </p>
         </div>
         <Card>
           <CardContent className="p-6 md:p-8">
-            <div className="font-mono text-sm md:text-base bg-muted/50 p-4 rounded-lg mb-6 text-center">
-              Score Total = 0.30·Técnico + 0.25·Contenido + 0.20·Backlinks + 0.15·UX + 0.10·SERP
+            <div className="tabular text-sm md:text-base bg-paper border border-rule p-4 rounded-xl mb-6">
+              Score total = 0,30 × Técnico + 0,25 × Contenido + 0,20 × Backlinks + 0,15 × UX + 0,10 × SERP
             </div>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
-              <div className="flex gap-3"><Shield className="w-5 h-5 text-primary flex-shrink-0" /><div><b>Técnico (30%)</b><p className="text-muted-foreground">HTTPS, canonical, schema, viewport, indexabilidad</p></div></div>
-              <div className="flex gap-3"><FileText className="w-5 h-5 text-primary flex-shrink-0" /><div><b>Contenido (25%)</b><p className="text-muted-foreground">Titles, descriptions, H1-H6, alt text, longitud</p></div></div>
-              <div className="flex gap-3"><Link2 className="w-5 h-5 text-primary flex-shrink-0" /><div><b>Backlinks (20%)</b><p className="text-muted-foreground">Total links, referring domains, autoridad, spam score</p></div></div>
-              <div className="flex gap-3"><Zap className="w-5 h-5 text-primary flex-shrink-0" /><div><b>UX (15%)</b><p className="text-muted-foreground">Core Web Vitals, performance, accesibilidad</p></div></div>
-              <div className="flex gap-3 md:col-span-2"><BarChart3 className="w-5 h-5 text-primary flex-shrink-0" /><div><b>SERP (10%)</b><p className="text-muted-foreground">Keywords rankeando, posiciones, traffic share, featured snippets</p></div></div>
+              <div className="flex gap-3"><Shield className="w-5 h-5 text-ink-2 flex-shrink-0" /><div><b>Técnico (30%)</b><p className="text-ink-3">HTTPS, canonical, schema, viewport, indexabilidad</p></div></div>
+              <div className="flex gap-3"><FileText className="w-5 h-5 text-ink-2 flex-shrink-0" /><div><b>Contenido (25%)</b><p className="text-ink-3">Titles, descriptions, H1-H6, alt text, longitud</p></div></div>
+              <div className="flex gap-3"><Link2 className="w-5 h-5 text-ink-2 flex-shrink-0" /><div><b>Backlinks (20%)</b><p className="text-ink-3">Total links, referring domains, autoridad, spam score</p></div></div>
+              <div className="flex gap-3"><Zap className="w-5 h-5 text-ink-2 flex-shrink-0" /><div><b>UX (15%)</b><p className="text-ink-3">Core Web Vitals, performance, accesibilidad</p></div></div>
+              <div className="flex gap-3 md:col-span-2"><BarChart3 className="w-5 h-5 text-ink-2 flex-shrink-0" /><div><b>SERP (10%)</b><p className="text-ink-3">Keywords rankeando, posiciones, traffic share, featured snippets</p></div></div>
             </div>
           </CardContent>
         </Card>
       </section>
 
       {/* FAQ */}
-      <section className="bg-muted/30 py-16">
+      <section className="bg-paper/30 py-16">
         <div className="container max-w-3xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Preguntas frecuentes</h2>
@@ -449,7 +449,7 @@ export default function SeoAudit() {
               <Card key={f.q}>
                 <CardContent className="p-5">
                   <h3 className="font-semibold mb-2">{f.q}</h3>
-                  <p className="text-sm text-muted-foreground">{f.a}</p>
+                  <p className="text-sm text-ink-3">{f.a}</p>
                 </CardContent>
               </Card>
             ))}
@@ -459,9 +459,9 @@ export default function SeoAudit() {
 
       {/* CTA FINAL */}
       <section className="container max-w-4xl mx-auto px-4 py-16 text-center">
-        <Globe className="w-12 h-12 text-primary mx-auto mb-4" />
+        <Globe className="w-12 h-12 text-ink-2 mx-auto mb-4" />
         <h2 className="text-3xl md:text-4xl font-bold mb-4">¿Listo para subir en Google?</h2>
-        <p className="text-lg text-muted-foreground mb-6">Empieza con un mini-audit gratis o suscríbete y recibe tu primer informe completo en 5 minutos.</p>
+        <p className="text-lg text-ink-3 mb-6">Empieza con un mini-audit gratis o suscríbete y recibe tu primer informe completo en 5 minutos.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button size="lg" asChild><a href="#planes">Ver planes <ArrowRight className="w-4 h-4 ml-1" /></a></Button>
           <Button size="lg" variant="outline" asChild><Link to="/auth">Crear cuenta</Link></Button>

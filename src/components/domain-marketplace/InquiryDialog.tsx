@@ -105,11 +105,11 @@ export function InquiryDialog({ open, onOpenChange, domain }: InquiryDialogProps
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-md">
           <div className="text-center py-6">
-            <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <div className="w-16 h-16 bg-paper rounded-xl flex items-center justify-center mx-auto mb-4">
+              <CheckCircle aria-hidden className="w-8 h-8 text-ink-2" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">¡Gracias por tu interés!</h2>
-            <p className="text-muted-foreground mb-6">
+            <h2 className="t-h3 text-ink mb-2">¡Gracias por tu interés!</h2>
+            <p className="text-ink-3 mb-6">
               Hemos recibido tu consulta sobre <strong>{domain.domain_name}</strong>.
               Nos pondremos en contacto contigo a la brevedad.
             </p>
@@ -125,7 +125,7 @@ export function InquiryDialog({ open, onOpenChange, domain }: InquiryDialogProps
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Globe className="w-5 h-5 text-primary" />
+            <Globe className="w-5 h-5 text-ink" />
             Consulta por {domain.domain_name}
           </DialogTitle>
           <DialogDescription>

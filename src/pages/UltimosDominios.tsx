@@ -1,129 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { RefreshCw } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Globe, Search, RefreshCw, AlertCircle, Calendar, Server, Cpu, Shield, House, Clock, ExternalLink, Copy, Check, TrendingUp, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useToast } from '@/hooks/use-toast';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCaption } from "@/components/ui/table";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import UltimasBusquedas from '@/components/UltimasBusquedas';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
+import { ProvenanceTag } from '@/components/data/Provenance';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import DomainAnalysisSearch from '@/components/DomainAnalysisSearch';
 import DomainListFilter from '@/components/DomainListFilter';
+import NicDomainList from '@/components/herramientas/NicDomainList';
+import NicDomainPagination from '@/components/herramientas/NicDomainPagination';
+import UltimosDominiosInfo from '@/components/herramientas/UltimosDominiosInfo';
+import { useNicLatestDomains } from '@/components/herramientas/useNicLatestDomains';
+import { formatToolDateTime, isoDateTime } from '@/components/herramientas/dataTime';
 
-// Fallback domains for when API is not available
-const fallbackDomains = [{
-  d: "ejemplo-dominio-cl.cl",
-  date: "2025-05-05T12:00:00Z"
-}, {
-  d: "nuevodominio2025.cl",
-  date: "2025-05-05T11:30:00Z"
-}, {
-  d: "tiendaonlinechile.cl",
-  date: "2025-05-04T15:45:00Z"
-}];
+const DOMAINS_PER_PAGE = 50;
 
-interface Domain {
-  d: string;
-  date: string;
-}
-
-interface ApiResponse {
-  updated: string;
-  domains: Domain[];
-}
+const faqItems = [
+  {
+    question: "¿Cuántos dominios .cl se registran por día en Chile?",
+    answer: "En promedio se registran entre 300 y 600 dominios .cl nuevos cada día hábil en Chile, según datos públicos de NIC Chile. Los lunes y martes suelen ser los días con mayor actividad de registro."
+  },
+  {
+    question: "¿Cómo puedo saber si un dominio .cl está disponible?",
+    answer: "Puedes verificar la disponibilidad de un dominio .cl directamente en NIC Chile (nic.cl) o usando nuestra herramienta de análisis WHOIS. Si el dominio no aparece en el registro de NIC, está disponible para ser inscrito."
+  },
+  {
+    question: "¿Cuánto cuesta registrar un dominio .cl?",
+    answer: "NIC Chile cobra la inscripción de un dominio .cl por periodos de dos años; el valor vigente se publica en nic.cl (con IVA aparte). Algunos proveedores de hosting incluyen el dominio al contratar un plan de alojamiento."
+  },
+  {
+    question: "¿De dónde provienen los datos de esta página?",
+    answer: "Los datos se obtienen directamente del registro público de NIC Chile (nic.cl), el organismo oficial que administra los dominios .cl. Nuestro sistema automatizado actualiza la información cada hora mediante GitHub Actions."
+  },
+  {
+    question: "¿Puedo recibir alertas de nuevos dominios registrados?",
+    answer: "Sí, puedes suscribirte a nuestro feed RSS en formato XML o JSON para recibir notificaciones automáticas de nuevos dominios .cl registrados. Los enlaces están disponibles en esta página."
+  }
+];
 
 const UltimosDominios = () => {
-  const [domains, setDomains] = useState<Domain[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { domains, updated, status, refreshing, notice, refresh, retry } = useNicLatestDomains();
   const [searchTerm, setSearchTerm] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [domainsPerPage] = useState(50);
-  const [error, setError] = useState<string | null>(null);
-  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [copiedDomain, setCopiedDomain] = useState<string | null>(null);
-  const { toast } = useToast();
+  const listRef = useRef<HTMLDivElement>(null);
+  const isLoading = status === 'loading';
 
-  // Check if domain is "new" (registered in last hour)
-  const isNewDomain = (dateString: string) => {
-    const domainDate = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - domainDate.getTime();
-    const diffHours = diffMs / (1000 * 60 * 60);
-    return diffHours <= 1;
+  const filteredDomains = domains.filter((domain) => domain.d.toLowerCase().includes(searchTerm.toLowerCase()));
+  const totalPages = Math.ceil(filteredDomains.length / DOMAINS_PER_PAGE);
+  const page = Math.min(currentPage, Math.max(1, totalPages));
+  const offset = (page - 1) * DOMAINS_PER_PAGE;
+  const currentDomains = filteredDomains.slice(offset, offset + DOMAINS_PER_PAGE);
+
+  const changeSearch = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
   };
-
-  // Check if domain is "recent" (registered today)
-  const isRecentDomain = (dateString: string) => {
-    const domainDate = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - domainDate.getTime();
-    const diffHours = diffMs / (1000 * 60 * 60);
-    return diffHours <= 6 && diffHours > 1;
-  };
-
-  // Get time ago string
-  const getTimeAgo = (dateString: string) => {
-    const domainDate = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - domainDate.getTime();
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    
-    if (diffMinutes < 60) return `hace ${diffMinutes}m`;
-    if (diffHours < 24) return `hace ${diffHours}h`;
-    return `hace ${Math.floor(diffHours / 24)}d`;
-  };
-
-  const formatDateString = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      return `${day}-${month}-${year} ${hours}:${minutes}`;
-    } catch (e) {
-      return dateString;
-    }
-  };
-
-  const formatTableDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      return `${year}-${month}-${day} ${hours}:${minutes}`;
-    } catch (e) {
-      return dateString;
-    }
-  };
-
-  // Copy domain to clipboard
-  const copyToClipboard = async (domain: string) => {
-    try {
-      await navigator.clipboard.writeText(domain);
-      setCopiedDomain(domain);
-      toast({
-        title: "Copiado",
-        description: `${domain} copiado al portapapeles`,
-      });
-      setTimeout(() => setCopiedDomain(null), 2000);
-    } catch (err) {
-      console.error('Error copying:', err);
-    }
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    listRef.current?.scrollIntoView({ block: 'start' });
   };
 
   const generateSchemaData = () => {
@@ -147,127 +86,49 @@ const UltimosDominios = () => {
     });
   };
 
-  const generateWebPageSchema = () => {
-    return JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Últimos Dominios .CL Registrados en Chile",
-      "description": "Monitoreo en tiempo real de los dominios .cl registrados en NIC Chile. Datos actualizados cada hora.",
-      "url": "https://eligetuhosting.cl/ultimos-dominios/",
-      "inLanguage": "es-CL",
-      "isPartOf": {
-        "@type": "WebSite",
-        "name": "EligeTuHosting.cl",
-        "url": "https://eligetuhosting.cl"
-      },
-      "speakable": {
-        "@type": "SpeakableSpecification",
-        "cssSelector": ["#geo-editorial", "#geo-faq"]
-      }
-    });
-  };
-
-  const faqItems = [
-    {
-      question: "¿Cuántos dominios .cl se registran por día en Chile?",
-      answer: "En promedio se registran entre 300 y 600 dominios .cl nuevos cada día hábil en Chile, según datos públicos de NIC Chile. Los lunes y martes suelen ser los días con mayor actividad de registro."
+  const generateWebPageSchema = () => JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Últimos Dominios .CL Registrados en Chile",
+    "description": "Monitoreo en tiempo real de los dominios .cl registrados en NIC Chile. Datos actualizados cada hora.",
+    "url": "https://eligetuhosting.cl/ultimos-dominios/",
+    "inLanguage": "es-CL",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "EligeTuHosting.cl",
+      "url": "https://eligetuhosting.cl"
     },
-    {
-      question: "¿Cómo puedo saber si un dominio .cl está disponible?",
-      answer: "Puedes verificar la disponibilidad de un dominio .cl directamente en NIC Chile (nic.cl) o usando nuestra herramienta de análisis WHOIS. Si el dominio no aparece en el registro de NIC, está disponible para ser inscrito."
-    },
-    {
-      question: "¿Cuánto cuesta registrar un dominio .cl?",
-      answer: "NIC Chile cobra la inscripción de un dominio .cl por periodos de dos años; el valor vigente se publica en nic.cl (con IVA aparte). Algunos proveedores de hosting incluyen el dominio al contratar un plan de alojamiento."
-    },
-    {
-      question: "¿De dónde provienen los datos de esta página?",
-      answer: "Los datos se obtienen directamente del registro público de NIC Chile (nic.cl), el organismo oficial que administra los dominios .cl. Nuestro sistema automatizado actualiza la información cada hora mediante GitHub Actions."
-    },
-    {
-      question: "¿Puedo recibir alertas de nuevos dominios registrados?",
-      answer: "Sí, puedes suscribirte a nuestro feed RSS en formato XML o JSON para recibir notificaciones automáticas de nuevos dominios .cl registrados. Los enlaces están disponibles en esta página."
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["#geo-editorial", "#geo-faq"]
     }
-  ];
+  });
 
-  const generateFAQSchema = () => {
-    return JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer
-        }
-      }))
-    });
-  };
-
-  const loadDomains = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch('/data/latest.json', {
-        headers: { 'Cache-Control': 'no-cache' }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
+  const generateFAQSchema = () => JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
       }
-      
-      const data: ApiResponse = await response.json();
-      if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
-        const sortedDomains = [...data.domains].sort((a, b) => 
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setDomains(sortedDomains);
-        setLastUpdated(data.updated);
-        toast({
-          title: "Dominios actualizados",
-          description: `Se han cargado ${data.domains.length} dominios recientes.`,
-        });
-      } else {
-        throw new Error('Datos de dominios inválidos o vacíos');
-      }
-    } catch (error) {
-      console.error('Error loading domains:', error);
-      setDomains(fallbackDomains);
-      setError('No pudimos cargar los últimos dominios en este momento.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    }))
+  });
 
-  useEffect(() => {
-    loadDomains();
-  }, []);
-
-  const filteredDomains = domains.filter(domain => 
-    domain.d.toLowerCase().includes(searchTerm.toLowerCase())
+  const meta = (
+    <>
+      <ProvenanceTag kind="measured" />
+      <span>
+        Lista pública de NIC Chile, se actualiza cada hora; última lectura:{' '}
+        {updated ? <time dateTime={isoDateTime(updated)}>{formatToolDateTime(updated)}</time> : isLoading ? 'cargando…' : 'sin dato'}
+      </span>
+    </>
   );
 
-  const indexOfLastDomain = currentPage * domainsPerPage;
-  const indexOfFirstDomain = indexOfLastDomain - domainsPerPage;
-  const currentDomains = filteredDomains.slice(indexOfFirstDomain, indexOfLastDomain);
-  const totalPages = Math.ceil(filteredDomains.length / domainsPerPage);
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
-  // Count new domains (last hour)
-  const newDomainsCount = domains.filter(d => isNewDomain(d.date)).length;
-
-  const servicios = [
-    { icon: House, title: "Hosting", path: "/guia-elegir-hosting", color: "from-blue-500 to-blue-600", description: "Alojamiento web" },
-    { icon: Cpu, title: "VPS", path: "/guia-elegir-vps", color: "from-emerald-500 to-emerald-600", description: "Servidor virtual" },
-    { icon: Server, title: "Dedicado", path: "/guia-elegir-servidor-dedicado", color: "from-orange-500 to-orange-600", description: "Máximo rendimiento" },
-    { icon: Shield, title: "SSL", path: "/guia-elegir-ssl", color: "from-purple-500 to-purple-600", description: "Certificado seguro" }
-  ];
-
-  const breadcrumbItems: { name: string; href: string }[] = [];
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 font-montserrat text-slate-900">
+    <div className="min-h-screen bg-white text-ink">
       <Helmet>
         <title>Últimos Dominios .CL | EligeTuHosting.cl</title>
         <meta name="description" content="Monitoreo en tiempo real de los dominios .cl más recientes registrados en NIC.cl. Consulta los últimos sitios web creados en Chile." />
@@ -281,450 +142,79 @@ const UltimosDominios = () => {
         <script type="application/ld+json">{generateFAQSchema()}</script>
         <link rel="alternate" type="application/rss+xml" title="Últimos dominios registrados en Chile" href="/feeds/latest-domains.xml" />
       </Helmet>
-      
+
       <Navbar />
-      
-      <main className="container mx-auto px-4 py-8">
-        <SEOBreadcrumbs items={breadcrumbItems} pageName="Últimos Dominios" />
-        
-        {/* Hero Section with Gradient */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-8 md:p-12 mb-8">
-          {/* Background pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 25px 25px, white 2%, transparent 0%)', backgroundSize: '50px 50px' }} />
-          </div>
-          
-          <div className="relative z-10">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/30">
-                    <Zap className="w-3 h-3 mr-1" />
-                    Actualización automática
-                  </Badge>
-                  {newDomainsCount > 0 && (
-                    <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 animate-pulse">
-                      {newDomainsCount} nuevos esta hora
-                    </Badge>
-                  )}
-                </div>
-                
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-                  Últimos dominios .CL
-                </h1>
-                <p className="text-slate-300 text-lg mb-4 max-w-2xl">
-                  Monitorea en tiempo real los dominios registrados en NIC Chile. 
-                  Analiza WHOIS, DNS y más información de cualquier dominio.
-                </p>
-                
-                {lastUpdated && (
-                  <div className="flex items-center gap-2 text-slate-400 text-sm">
-                    <Clock className="h-4 w-4" />
-                    <span>Última actualización: {formatDateString(lastUpdated)}</span>
-                  </div>
-                )}
-              </div>
-              
-              {/* Stats Cards */}
-              <div className="grid grid-cols-3 gap-3 w-full lg:w-auto">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:bg-white/15 transition-colors">
-                  <div className="text-2xl md:text-3xl font-bold text-white">{domains.length}</div>
-                  <div className="text-xs text-slate-400">Dominios</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:bg-white/15 transition-colors">
-                  <div className="text-2xl md:text-3xl font-bold text-emerald-400">24h</div>
-                  <div className="text-xs text-slate-400">Período</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10 hover:bg-white/15 transition-colors">
-                  <div className="text-2xl md:text-3xl font-bold text-amber-400">
-                    <TrendingUp className="h-6 w-6 md:h-8 md:w-8 mx-auto" />
-                  </div>
-                  <div className="text-xs text-slate-400">En vivo</div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Action Button */}
-            <div className="mt-6">
-              <Button 
-                onClick={loadDomains} 
-                disabled={refreshing || isLoading}
-                size="lg"
-                className="bg-white text-slate-900 hover:bg-slate-100 font-semibold"
-              >
-                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                {isLoading ? 'Cargando...' : 'Actualizar ahora'}
+
+      <main>
+        <PageHeader
+          breadcrumbs={<SEOBreadcrumbs items={[]} pageName="Últimos Dominios" />}
+          title="Últimos dominios .CL"
+          lead="Los dominios .cl recién inscritos en NIC Chile. Abre cualquiera para ver su WHOIS, DNS, SSL e IP."
+          actions={
+            <>
+              <Button variant="outline" onClick={refresh} disabled={refreshing || isLoading}>
+                <RefreshCw aria-hidden className={refreshing ? 'animate-spin' : undefined} />
+                {refreshing ? 'Leyendo la lista…' : 'Actualizar ahora'}
               </Button>
-            </div>
-          </div>
-        </div>
-        
-        {error && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        
-        {/* Domain Analysis Search */}
-        <DomainAnalysisSearch />
+              <p className="t-small text-ink-2" role="status" aria-live="polite">
+                {notice}
+              </p>
+            </>
+          }
+          meta={meta}
+        />
 
-        {/* Service Recommendations - Improved Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {servicios.map((servicio, index) => {
-            const IconComponent = servicio.icon;
-            return (
-              <Link
-                key={index}
-                to={servicio.path}
-                className="group relative overflow-hidden rounded-xl bg-white border border-slate-200 p-6 hover:shadow-lg hover:border-slate-300 transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${servicio.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
-                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${servicio.color} text-white mb-3`}>
-                  <IconComponent className="h-5 w-5" />
-                </div>
-                <h3 className="font-semibold text-slate-900 group-hover:text-slate-700">{servicio.title}</h3>
-                <p className="text-sm text-slate-500 mt-1">{servicio.description}</p>
-              </Link>
-            );
-          })}
-        </div>
-        
-        <UltimasBusquedas />
-        
-        {/* Domain Filter */}
-        {!isLoading && domains.length > 0 && (
-          <DomainListFilter
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            totalDomains={domains.length}
-            filteredCount={filteredDomains.length}
-          />
-        )}
-        
-        {/* Loading State */}
-        {isLoading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-8 w-48" />
-            <div className="grid grid-cols-1 gap-4">
-              {Array.from({ length: 10 }).map((_, index) => (
-                <Skeleton key={index} className="h-20 w-full rounded-xl" />
-              ))}
-            </div>
-          </div>
-        ) : filteredDomains.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
-            <Globe className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-xl font-medium text-slate-700">No se encontraron dominios</p>
-            <p className="text-slate-500 mt-2">Intenta con otro término de búsqueda.</p>
-          </div>
-        ) : (
-          <>
-            {/* Desktop Table View */}
-            <div className="hidden md:block">
-              <Card className="overflow-hidden border-slate-200 shadow-sm">
-                <CardHeader className="bg-slate-50 border-b border-slate-200">
-                  <CardTitle className="flex items-center gap-2 text-slate-800">
-                    <Globe className="h-5 w-5 text-blue-600" />
-                    Últimos dominios registrados
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableCaption className="text-xs text-slate-500 py-4">
-                      Listado de últimos dominios .CL registrados en las últimas 24h
-                    </TableCaption>
-                    <TableHeader>
-                      <TableRow className="bg-slate-50 hover:bg-slate-50">
-                        <TableHead className="w-16 font-semibold text-slate-700">N°</TableHead>
-                        <TableHead className="font-semibold text-slate-700">Dominio</TableHead>
-                        <TableHead className="font-semibold text-slate-700">Registrado</TableHead>
-                        <TableHead className="w-32 text-right font-semibold text-slate-700">Acciones</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {currentDomains.map((domain, index) => (
-                        <TableRow 
-                          key={domain.d} 
-                          className="group hover:bg-blue-50/50 transition-colors cursor-pointer"
-                        >
-                          <TableCell className="font-medium text-slate-500">
-                            {indexOfFirstDomain + index + 1}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-                                <Globe className="h-4 w-4" />
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-medium text-slate-800 group-hover:text-blue-600 transition-colors">
-                                    {domain.d}
-                                  </span>
-                                  {isNewDomain(domain.date) && (
-                                    <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-xs">
-                                      Nuevo
-                                    </Badge>
-                                  )}
-                                  {isRecentDomain(domain.date) && (
-                                    <Badge variant="outline" className="text-amber-600 border-amber-300 text-xs">
-                                      Reciente
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex flex-col">
-                              <span className="text-slate-700">{formatTableDate(domain.date)}</span>
-                              <span className="text-xs text-slate-400">{getTimeAgo(domain.date)}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => copyToClipboard(domain.d)}
-                                className="h-8 w-8 p-0"
-                                title="Copiar dominio"
-                              >
-                                {copiedDomain === domain.d ? (
-                                  <Check className="h-4 w-4 text-emerald-600" />
-                                ) : (
-                                  <Copy className="h-4 w-4 text-slate-500" />
-                                )}
-                              </Button>
-                              <Link 
-                                to={`/domain/${domain.d.replace(/\./g, '-')}/`}
-                                className="inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-blue-100 text-blue-600"
-                                title="Analizar dominio"
-                              >
-                                <Search className="h-4 w-4" />
-                              </Link>
-                              <a 
-                                href={`https://${domain.d}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-slate-100 text-slate-500"
-                                title="Visitar sitio"
-                              >
-                                <ExternalLink className="h-4 w-4" />
-                              </a>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </div>
+        <Section title="Analiza cualquier dominio" lead="Escribe un dominio y te mostramos su WHOIS, DNS, SSL e IP en una ficha." density="tight">
+          <DomainAnalysisSearch />
+        </Section>
 
-            {/* Mobile Card View */}
-            <div className="md:hidden space-y-3">
-              {currentDomains.map((domain, index) => (
-                <div 
-                  key={domain.d}
-                  className="bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-shadow"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-                        <Globe className="h-5 w-5" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-semibold text-slate-800 truncate">
-                            {domain.d}
-                          </span>
-                          {isNewDomain(domain.date) && (
-                            <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-xs flex-shrink-0">
-                              Nuevo
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
-                          <Clock className="h-3 w-3" />
-                          <span>{getTimeAgo(domain.date)}</span>
-                          <span className="text-slate-300">•</span>
-                          <span className="text-xs">{formatTableDate(domain.date)}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <span className="text-xs text-slate-400 font-medium">
-                      #{indexOfFirstDomain + index + 1}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => copyToClipboard(domain.d)}
-                      className="flex-1 h-9"
-                    >
-                      {copiedDomain === domain.d ? (
-                        <Check className="h-4 w-4 mr-2 text-emerald-600" />
-                      ) : (
-                        <Copy className="h-4 w-4 mr-2" />
-                      )}
-                      Copiar
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      asChild
-                      className="flex-1 h-9"
-                    >
-                      <Link to={`/domain/${domain.d.replace(/\./g, '-')}/`}>
-                        <Search className="h-4 w-4 mr-2" />
-                        Analizar
-                      </Link>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                      className="h-9 w-9 p-0"
-                    >
-                      <a 
-                        href={`https://${domain.d}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
+        <Section tone="white" title="Dominios inscritos" density="tight" className="border-t border-rule">
+          <div ref={listRef} className="scroll-mt-24">
+            {isLoading ? (
+              <div aria-busy="true" className="space-y-3">
+                <p className="sr-only" role="status">Cargando la lista de dominios…</p>
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <Skeleton key={index} className="h-14 w-full rounded-lg bg-paper-deep" />
+                ))}
+              </div>
+            ) : status === 'error' ? (
+              <Callout tone="caution" title="No pudimos cargar los últimos dominios" className="my-0 max-w-[62ch]">
+                <p>El archivo con la lista de NIC Chile no respondió. No mostramos dominios de ejemplo para no confundirte.</p>
+                <Button variant="default" onClick={retry} className="mt-3">
+                  <RefreshCw aria-hidden />
+                  Reintentar
+                </Button>
+              </Callout>
+            ) : (
+              <>
+                <DomainListFilter
+                  searchTerm={searchTerm}
+                  onSearchChange={changeSearch}
+                  totalDomains={domains.length}
+                  filteredCount={filteredDomains.length}
+                />
+                {filteredDomains.length === 0 ? (
+                  <div className="rounded-xl border border-rule bg-paper p-6">
+                    <p className="t-h3 text-ink">Ningún dominio contiene «{searchTerm}»</p>
+                    <p className="t-small mt-1 text-ink-2">Prueba con otra parte del nombre o borra el filtro para ver la lista completa.</p>
+                    <Button variant="outline" className="mt-4" onClick={() => changeSearch('')}>
+                      Borrar el filtro
                     </Button>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <Pagination className="my-8">
-              <PaginationContent>
-                {currentPage > 1 && (
-                  <PaginationItem>
-                    <PaginationPrevious onClick={() => paginate(currentPage - 1)} />
-                  </PaginationItem>
+                ) : (
+                  <>
+                    <NicDomainList domains={currentDomains} offset={offset} />
+                    <NicDomainPagination currentPage={page} totalPages={totalPages} onChange={paginate} />
+                  </>
                 )}
-                
-                {Array.from({ length: Math.min(5, totalPages) }).map((_, index) => {
-                  let pageNumber;
-                  if (totalPages <= 5) {
-                    pageNumber = index + 1;
-                  } else if (currentPage <= 3) {
-                    pageNumber = index + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNumber = totalPages - 4 + index;
-                  } else {
-                    pageNumber = currentPage - 2 + index;
-                  }
-                  return (
-                    <PaginationItem key={pageNumber}>
-                      <PaginationLink 
-                        onClick={() => paginate(pageNumber)} 
-                        isActive={currentPage === pageNumber}
-                        className={currentPage === pageNumber ? 'bg-blue-600 text-white hover:bg-blue-700' : ''}
-                      >
-                        {pageNumber}
-                      </PaginationLink>
-                    </PaginationItem>
-                  );
-                })}
-                
-                {currentPage < totalPages && (
-                  <PaginationItem>
-                    <PaginationNext onClick={() => paginate(currentPage + 1)} />
-                  </PaginationItem>
-                )}
-              </PaginationContent>
-            </Pagination>
-          </>
-        )}
-        
-        {/* GEO: Editorial Content Block - citable by AI */}
-        <section id="geo-editorial" className="bg-white rounded-2xl border border-slate-200 p-8 md:p-10 mt-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-            Registro de dominios .cl en Chile: datos en tiempo real
-          </h2>
-          <div className="prose prose-slate max-w-none">
-            <p className="text-slate-700 text-lg leading-relaxed mb-4">
-              Chile cuenta con más de <strong>600.000 dominios .cl activos</strong>, administrados por NIC Chile, 
-              el organismo dependiente de la Universidad de Chile que gestiona el registro de nombres de dominio 
-              del país desde 1987. En promedio, se registran entre <strong>300 y 600 nuevos dominios .cl cada día hábil</strong>, 
-              con picos de actividad los lunes y martes.
-            </p>
-            <p className="text-slate-700 leading-relaxed mb-4">
-              Esta página monitorea en tiempo real los últimos dominios inscritos en NIC Chile, actualizándose 
-              automáticamente cada hora mediante un sistema de scraping que procesa el registro público de 
-              <a href="https://www.nic.cl/registry/Ultimos.do?t=1d" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline"> nic.cl</a>. 
-              Los datos están disponibles como <strong>Open Data</strong> en formato JSON y RSS para investigadores, 
-              desarrolladores y analistas del ecosistema digital chileno.
-            </p>
-            <p className="text-slate-600 text-sm">
-              <strong>Fuente:</strong> Datos obtenidos del registro público de NIC Chile (nic.cl). 
-              Última actualización: {lastUpdated ? formatDateString(lastUpdated) : 'cargando...'}. 
-              Frecuencia: cada hora vía GitHub Actions.
-            </p>
+              </>
+            )}
           </div>
-        </section>
+        </Section>
 
-        {/* GEO: FAQ Section */}
-        <section id="geo-faq" className="bg-white rounded-2xl border border-slate-200 p-8 md:p-10 mt-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-            Preguntas frecuentes sobre dominios .cl
-          </h2>
-          <div className="space-y-6">
-            {faqItems.map((item, index) => (
-              <details key={index} className="group border-b border-slate-100 pb-4 last:border-0">
-                <summary className="flex items-start gap-3 cursor-pointer list-none font-semibold text-slate-800 hover:text-blue-600 transition-colors">
-                  <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold mt-0.5">
-                    {index + 1}
-                  </span>
-                  <span>{item.question}</span>
-                </summary>
-                <p className="mt-3 ml-9 text-slate-600 leading-relaxed">
-                  {item.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8 md:p-12 mt-8">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 25px 25px, white 2%, transparent 0%)', backgroundSize: '50px 50px' }} />
-          </div>
-          <div className="relative z-10 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              ¿Quieres registrar tu propio dominio .cl?
-            </h2>
-            <p className="text-blue-100 mb-6 max-w-xl mx-auto">
-              Registra tu dominio con los mejores proveedores de hosting en Chile
-            </p>
-            <Button 
-              size="lg" 
-              asChild
-              className="bg-white text-blue-600 hover:bg-blue-50 font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              <a 
-                href="https://www.hostingplus.cl/dominios" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Globe className="h-5 w-5 mr-2" />
-                Registrar un dominio
-              </a>
-            </Button>
-          </div>
-        </div>
+        <UltimosDominiosInfo faqItems={faqItems} updated={updated} />
       </main>
-      
+
       <Footer />
     </div>
   );

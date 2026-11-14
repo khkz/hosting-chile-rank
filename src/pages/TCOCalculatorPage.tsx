@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TCOCalculator from '@/components/TCOCalculator';
+import PageHeader from '@/components/system/PageHeader';
 
 const TCOCalculatorPage = () => {
   return (
@@ -65,9 +66,14 @@ const TCOCalculatorPage = () => {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
+      <div className="min-h-screen bg-white text-ink">
         <Navbar />
-        <main className="pt-20">
+        <main>
+          <PageHeader
+            title="Calculadora de TCO de Hosting"
+            lead="Calcula cuánto pagarás en 1, 3 y 5 años, renovación incluida."
+            meta={<span>Escribe los precios que te dé cada proveedor. No precargamos precios porque estamos reverificando el catálogo.</span>}
+          />
           <TCOCalculator />
         </main>
         <Footer />

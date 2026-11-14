@@ -1,76 +1,65 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { History, Search } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowRight } from 'lucide-react';
 
-// Fallback data for when the GitHub API request fails
-const fallbackDomains = ["hostingplus.cl", "ecohosting.cl", "fullhosting.cl", "webhosting.cl", "planetahosting.cl", "hostgator.cl", "hosting24.cl", "nethosting.cl", "hn.cl", "ziphosting.cl"];
-
+/**
+ * Últimos dominios .cl de la lista pública de NIC Chile (archivo /data/latest.json).
+ * Si el archivo no responde, no se muestra nada: nunca una lista inventada.
+ */
 const RecentSearches = () => {
   const [domains, setDomains] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let alive = true;
     const loadDomains = async () => {
       try {
-        const response = await fetch('/data/latest.json', {
-          headers: { 'Cache-Control': 'no-cache' }
-        });
-        
-        if (!response.ok) {
-          throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
-        }
-        
+        const response = await fetch('/data/latest.json', { headers: { 'Cache-Control': 'no-cache' } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
-        if (data.domains && Array.isArray(data.domains) && data.domains.length > 0) {
-          // Sort domains by date in descending order and take first 10
-          const sortedDomains = [...data.domains]
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            .slice(0, 10)
-            .map(item => item.d);
-          setDomains(sortedDomains);
-        } else {
-          throw new Error('Datos de dominios inválidos o vacíos');
-        }
+        if (!Array.isArray(data?.domains)) throw new Error('Formato inesperado');
+        const latest = [...data.domains]
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          .slice(0, 10)
+          .map((item) => item.d as string);
+        if (alive) setDomains(latest);
       } catch (error) {
         console.error('Error loading domains:', error);
-        setDomains(fallbackDomains);
-      } finally {
-        setIsLoading(false);
       }
     };
-    
     loadDomains();
+    return () => {
+      alive = false;
+    };
   }, []);
 
-  if (isLoading || domains.length === 0) {
-    return null;
-  }
+  if (domains.length === 0) return null;
 
   return (
-    <Card className="bg-white shadow-sm mt-4">
-      <CardHeader className="pb-2 pt-4">
-        <CardTitle className="text-xl font-semibold flex items-center">
-          <History className="h-5 w-5 mr-2 text-brand" />
-          Búsquedas recientes
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="flex flex-wrap gap-2">
-          {domains.map((domain, index) => (
-            <Link 
-              key={index} 
-              to={`/domain/${domain.replace(/\./g, '-')}/`} 
-              className="text-sm px-3 py-1 bg-paper-deep hover:bg-gray-200 rounded-full text-ink transition-colors flex items-center"
+    <section aria-labelledby="recien-inscritos-titulo" className="rounded-xl border border-rule bg-white p-5">
+      <h2 id="recien-inscritos-titulo" className="t-h3 text-ink">
+        Dominios .cl recién inscritos
+      </h2>
+      <p className="t-meta mt-1">De la lista pública de NIC Chile.</p>
+      <ul className="mt-3 divide-y divide-rule border-y border-rule">
+        {domains.map((domain) => (
+          <li key={domain}>
+            <Link
+              to={`/domain/${domain.replace(/\./g, '-')}/`}
+              className="t-small flex min-h-11 items-center break-all py-2 text-ink underline decoration-ink/20 underline-offset-4 hover:decoration-ink"
             >
-              <Search className="h-4 w-4 mr-1 text-gray-500" />
               {domain}
             </Link>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          </li>
+        ))}
+      </ul>
+      <Link
+        to="/ultimos-dominios/"
+        className="t-small mt-3 inline-flex min-h-11 items-center gap-1 font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+      >
+        Ver los últimos dominios
+        <ArrowRight aria-hidden className="h-3.5 w-3.5" />
+      </Link>
+    </section>
   );
 };
 

@@ -53,7 +53,7 @@ export function ReverseIpLookup({ prefix }: ReverseIpLookupProps) {
         <Button
           variant="ghost"
           size="sm"
-          className="p-1 h-auto text-xs text-muted-foreground hover:text-foreground"
+          className="p-1 h-auto text-xs text-ink-3 hover:text-ink"
         >
           <Globe className="h-3 w-3 mr-1" />
           {loading ? 'Cargando...' : 'Ver sitios'}
@@ -62,12 +62,12 @@ export function ReverseIpLookup({ prefix }: ReverseIpLookupProps) {
       </CollapsibleTrigger>
       <CollapsibleContent className="mt-2">
         {loading ? (
-          <div className="text-xs text-muted-foreground">Buscando sitios web en este rango...</div>
+          <div className="text-xs text-ink-3">Buscando sitios web en este rango...</div>
         ) : domains.length > 0 ? (
-          <Card className="border-l-4 border-l-primary/20">
+          <Card className="border-rule">
             <CardContent className="p-3">
               <div className="space-y-2">
-                <div className="text-xs font-medium text-muted-foreground mb-2">
+                <div className="text-xs font-medium text-ink-3 mb-2">
                   {domains.length} sitio{domains.length !== 1 ? 's' : ''} encontrado{domains.length !== 1 ? 's' : ''}
                 </div>
                 {domains.slice(0, 10).map((domain, index) => (
@@ -75,7 +75,7 @@ export function ReverseIpLookup({ prefix }: ReverseIpLookupProps) {
                     <div className="flex items-center space-x-2 flex-1 min-w-0">
                       <a
                         href={`/whois/${domain.domain}`}
-                        className="text-primary hover:underline truncate"
+                        className="text-ink underline decoration-ink/20 underline-offset-4 hover:decoration-ink truncate"
                         title={domain.domain}
                       >
                         {domain.domain}
@@ -88,7 +88,7 @@ export function ReverseIpLookup({ prefix }: ReverseIpLookupProps) {
                       href={`https://${domain.domain}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-foreground ml-2 shrink-0"
+                      className="text-ink-3 hover:text-ink ml-2 shrink-0"
                       title="Visitar sitio"
                     >
                       <ExternalLink className="h-3 w-3" />
@@ -96,7 +96,7 @@ export function ReverseIpLookup({ prefix }: ReverseIpLookupProps) {
                   </div>
                 ))}
                 {domains.length > 10 && (
-                  <div className="text-xs text-muted-foreground text-center pt-2 border-t">
+                  <div className="text-xs text-ink-3 text-center pt-2 border-t">
                     +{domains.length - 10} sitios más
                   </div>
                 )}
@@ -104,7 +104,7 @@ export function ReverseIpLookup({ prefix }: ReverseIpLookupProps) {
             </CardContent>
           </Card>
         ) : (
-          <div className="text-xs text-muted-foreground space-y-1">
+          <div className="text-xs text-ink-3 space-y-1">
             <div>No se encontraron sitios web en este rango de IPs</div>
             <div className="text-xs opacity-75">
               Es posible que estas IPs no tengan sitios web activos o sean utilizadas para otros servicios de red.

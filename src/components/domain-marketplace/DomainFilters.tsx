@@ -30,12 +30,13 @@ export function DomainFilters({
   onSearchChange,
   availableTlds,
 }: DomainFiltersProps) {
+  // Precio corto en formato chileno: «$1,5 M», «$500 mil».
   const formatPrice = (value: number) => {
     if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(1)}M`;
+      return `$${(value / 1000000).toLocaleString("es-CL", { maximumFractionDigits: 1 })} M`;
     }
     if (value >= 1000) {
-      return `$${(value / 1000).toFixed(0)}K`;
+      return `$${Math.round(value / 1000).toLocaleString("es-CL")} mil`;
     }
     return `$${value}`;
   };
@@ -47,7 +48,7 @@ export function DomainFilters({
         <div className="space-y-2">
           <Label htmlFor="search">Buscar dominio</Label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-3" />
             <Input
               id="search"
               placeholder="ejemplo.cl"
@@ -60,9 +61,9 @@ export function DomainFilters({
 
         {/* TLD Filter */}
         <div className="space-y-2">
-          <Label>Extensión</Label>
+          <Label id="filtro-extension">Extensión</Label>
           <Select value={tldFilter} onValueChange={onTldChange}>
-            <SelectTrigger>
+            <SelectTrigger aria-labelledby="filtro-extension">
               <SelectValue placeholder="Todas las extensiones" />
             </SelectTrigger>
             <SelectContent>
@@ -79,9 +80,9 @@ export function DomainFilters({
         {/* Price Range */}
         <div className="md:col-span-2 space-y-2">
           <div className="flex items-center justify-between">
-            <Label>Rango de precio</Label>
-            <span className="text-sm text-muted-foreground">
-              {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+            <Label id="filtro-precio">Rango de precio</Label>
+            <span className="text-sm text-ink-3">
+              {formatPrice(priceRange[0])} a {formatPrice(priceRange[1])}
             </span>
           </div>
           <Slider
@@ -91,6 +92,7 @@ export function DomainFilters({
             max={10000000}
             step={50000}
             className="mt-2"
+            aria-labelledby="filtro-precio"
           />
         </div>
       </div>

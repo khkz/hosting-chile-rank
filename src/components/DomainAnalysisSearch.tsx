@@ -1,105 +1,87 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AlertCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, AlertCircle, ArrowRight } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
+const EXAMPLES = ['google.cl', 'mercadolibre.cl', 'falabella.cl'];
+
+/** Formulario «Analizar cualquier dominio»: lleva a la ficha /domain/{slug}/. */
 const DomainAnalysisSearch = () => {
   const [domainInput, setDomainInput] = useState('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const validateDomain = (domain: string): boolean => {
-    const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/;
-    return domainRegex.test(domain.trim());
-  };
+  const validateDomain = (domain: string): boolean =>
+    /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/.test(domain.trim());
 
-  const handleAnalyzeDomain = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     const trimmedDomain = domainInput.trim().toLowerCase();
-    
     if (!trimmedDomain) {
-      setError('Por favor ingresa un dominio');
+      setError('Escribe un dominio, por ejemplo ejemplo.cl.');
       return;
     }
-
     if (!validateDomain(trimmedDomain)) {
-      setError('Por favor ingresa un dominio válido (ej: ejemplo.cl)');
+      setError('Ese dominio no parece válido: escríbelo sin https:// ni barras, por ejemplo ejemplo.cl.');
       return;
     }
-
     setError(null);
-    const domainSlug = trimmedDomain.replace(/\./g, '-');
-    navigate(`/domain/${domainSlug}/`);
+    navigate(`/domain/${trimmedDomain.replace(/\./g, '-')}/`);
   };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleAnalyzeDomain();
-    }
-  };
-
-  const exampleDomains = ['google.cl', 'mercadolibre.cl', 'falabella.cl'];
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8 shadow-sm">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 text-white">
-          <Search className="h-5 w-5" />
-        </div>
-        <div>
-          <h2 className="text-lg font-semibold text-slate-800">Analizar cualquier dominio</h2>
-          <p className="text-sm text-slate-500">Obtén información WHOIS, DNS, SSL y más</p>
-        </div>
-      </div>
-      
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="flex-1 relative">
-          <Input
-            type="text"
-            placeholder="Ingresa un dominio (ej: ejemplo.cl)"
-            value={domainInput}
-            onChange={(e) => {
-              setDomainInput(e.target.value);
-              setError(null);
-            }}
-            onKeyPress={handleKeyPress}
-            className={`h-12 text-base bg-slate-50 border-slate-200 focus:bg-white transition-colors ${error ? 'border-red-300 focus:border-red-500' : ''}`}
-          />
-        </div>
-        <Button 
-          onClick={handleAnalyzeDomain}
-          size="lg"
-          className="h-12 px-6 bg-slate-900 hover:bg-slate-800 text-white font-medium"
-        >
+    <form onSubmit={handleSubmit} noValidate className="max-w-2xl">
+      <label htmlFor="analizar-dominio" className="t-label">
+        Dominio
+      </label>
+      <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+        <Input
+          id="analizar-dominio"
+          type="text"
+          inputMode="url"
+          autoComplete="off"
+          spellCheck={false}
+          placeholder="ejemplo.cl"
+          value={domainInput}
+          aria-invalid={!!error}
+          aria-describedby={error ? 'analizar-dominio-error' : undefined}
+          onChange={(e) => {
+            setDomainInput(e.target.value);
+            setError(null);
+          }}
+          className="sm:flex-1"
+        />
+        <Button type="submit" variant="default">
           Analizar
-          <ArrowRight className="h-4 w-4 ml-2" />
+          <ArrowRight aria-hidden />
         </Button>
       </div>
-      
       {error && (
-        <Alert variant="destructive" className="mt-3">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <p id="analizar-dominio-error" role="alert" className="t-small mt-2 flex items-start gap-2 text-ink">
+          <AlertCircle aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-ink-2" />
+          {error}
+        </p>
       )}
-      
-      <div className="flex flex-wrap items-center gap-2 mt-4">
-        <span className="text-xs text-slate-400">Ejemplos:</span>
-        {exampleDomains.map((domain) => (
-          <button
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <span className="t-meta">Prueba con:</span>
+        {EXAMPLES.map((domain) => (
+          <Button
             key={domain}
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-11 sm:h-9"
             onClick={() => {
               setDomainInput(domain);
               setError(null);
             }}
-            className="text-xs px-2 py-1 rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
           >
             {domain}
-          </button>
+          </Button>
         ))}
       </div>
-    </div>
+    </form>
   );
 };
 

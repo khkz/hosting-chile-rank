@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Check, ExternalLink, RefreshCw } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Check, RefreshCw, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Helmet } from 'react-helmet-async';
+import PageHeader from '@/components/system/PageHeader';
+import Callout from '@/components/system/Callout';
 import RecentSearches from '@/components/RecentSearches';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import WhoisTabs from '@/components/WhoisTabs';
 import SitePreview from '@/components/SitePreview';
+import HostingCountryNote from '@/components/herramientas/HostingCountryNote';
+import { formatToolDateTime, isoDateTime } from '@/components/herramientas/dataTime';
 import { analyzeDomain, loadCachedAnalysis, type DomainAnalysisResult } from '@/services/domainAnalysis';
-import { hasValidIP } from '@/lib/utils';
 import { DomainUniqueContent } from '@/components/DomainUniqueContent';
 
 // Function to capitalize the first letter of a string
-const capitalizeFirstLetter = (string: string): string => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
+const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1);
 
 // Helper function to calculate domain age (for meta robots)
 const calculateDomainAge = (createdDate: string) => {
   if (!createdDate || createdDate === 'No disponible') {
     return { days: 0, years: 0, isNew: false, isEstablished: false };
   }
-  
   const created = new Date(createdDate);
-  const now = new Date();
-  const ageInDays = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
-  const ageInYears = parseFloat((ageInDays / 365).toFixed(1));
-  
-  return {
-    days: ageInDays,
-    years: ageInYears,
-    isNew: ageInDays < 30,
-    isEstablished: ageInDays > 365
-  };
+  const ageInDays = Math.floor((Date.now() - created.getTime()) / (1000 * 60 * 60 * 24));
+  return { days: ageInDays, years: parseFloat((ageInDays / 365).toFixed(1)), isNew: ageInDays < 30, isEstablished: ageInDays > 365 };
+};
+
+/** Fecha más reciente entre las consultas que respondieron. */
+const latestProbe = (data: DomainAnalysisResult): string | null => {
+  const stamps = Object.values(data.probes ?? {})
+    .map((p) => p.checked_at)
+    .filter((d): d is string => !!d)
+    .sort();
+  return stamps.length ? stamps[stamps.length - 1] : null;
 };
 
 const WhoisDomain = () => {
@@ -48,9 +47,65 @@ const WhoisDomain = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [usingLiveData, setUsingLiveData] = useState(false);
-  const [debugInfo, setDebugInfo] = useState<string>('');
+  const [fromCache, setFromCache] = useState(false);
   const { toast } = useToast();
+
+  // Format domain name from slug
+  const domainName = slug ? slug.replace(/-/g, '.') : '';
+  const capitalizedDomainName = capitalizeFirstLetter(domainName);
+  const pageTitle = `${capitalizedDomainName} - Análisis completo`;
+
+  const performAnalysis = async (domain: string, forceRefresh = false) => {
+    setRefreshing(forceRefresh);
+    setError(null);
+    try {
+      if (!forceRefresh) {
+        const cached = await loadCachedAnalysis(domain);
+        if (cached) {
+          setDomainData(cached);
+          setFromCache(true);
+          return;
+        }
+      }
+      const live = await analyzeDomain(domain);
+      setDomainData(live);
+      setFromCache(false);
+      if (forceRefresh) {
+        toast({ title: 'Análisis actualizado', description: `Volvimos a consultar ${domain}.` });
+      }
+    } catch (err) {
+      console.error('Error performing domain analysis:', err);
+      setError('No pudimos completar el análisis de este dominio');
+    } finally {
+      setIsLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (needsSlugRedirect) return;
+    if (!slug) {
+      setError('No se encontró información para este dominio');
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    performAnalysis(domainName);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, domainName, needsSlugRedirect]);
+
+  // Add page-specific SEO metadata
+  useEffect(() => {
+    if (!domainName || needsSlugRedirect) return;
+    document.title = `${capitalizedDomainName} - Análisis | EligeTuHosting.cl`;
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', `Análisis completo de ${domainName}: DNS, WHOIS, SSL, rendimiento, tecnología y más información para optimizar tu presencia en línea.`);
+  }, [domainName, capitalizedDomainName, needsSlugRedirect]);
 
   // Si el slug llega con puntos (formato intuitivo /domain/example.com), redirigimos
   // al formato canónico con guiones para evitar 404.
@@ -59,183 +114,53 @@ const WhoisDomain = () => {
     return <Navigate to={`/domain/${normalized}/`} replace />;
   }
 
-  // Format domain name from slug
-  const domainName = slug ? slug.replace(/-/g, '.') : '';
-  const capitalizedDomainName = capitalizeFirstLetter(domainName);
-
   // Generate structured data for Schema.org
   const generateSchemaData = () => {
     if (!domainData) return null;
-    const schemaData = {
+    const country = domainData.basic.hosting_country?.status;
+    return JSON.stringify({
       "@context": "https://schema.org",
       "@type": "TechArticle",
       "headline": `${capitalizedDomainName} - Análisis completo de dominio`,
       "description": `Análisis técnico completo de ${domainName}: DNS, WHOIS, SSL, rendimiento, tecnología y más información para optimizar tu presencia en línea.`,
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `https://eligetuhosting.cl/domain/${slug}/`
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "eligetuhosting.cl"
-      },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": `https://eligetuhosting.cl/domain/${slug}/` },
+      "author": { "@type": "Organization", "name": "eligetuhosting.cl" },
       "publisher": {
         "@type": "Organization",
         "name": "eligetuhosting.cl",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://eligetuhosting.cl/favicon-logo.svg",
-          "width": "512",
-          "height": "512"
-        }
+        "logo": { "@type": "ImageObject", "url": "https://eligetuhosting.cl/favicon-logo.svg", "width": "512", "height": "512" }
       },
       "datePublished": new Date().toISOString(),
       "dateModified": new Date().toISOString(),
-      "about": {
-        "@type": "WebSite",
-        "name": domainName,
-        "url": `https://${domainName}`
-      },
-      "isBasedOn": {
-        "@type": "Dataset",
-        "name": "NIC Chile WHOIS Database",
-        "url": "https://www.nic.cl"
-      },
+      "about": { "@type": "WebSite", "name": domainName, "url": `https://${domainName}` },
+      "isBasedOn": { "@type": "Dataset", "name": "NIC Chile WHOIS Database", "url": "https://www.nic.cl" },
       "technicalSpecifications": {
         "ip": domainData.basic.ip,
         "nameservers": domainData.basic.nameservers.join(", "),
         "provider": domainData.basic.provider,
-        "location": domainData.basic.ip_chile ? "Chile" : "Internacional",
+        // Sin país medido no se declara ninguno (antes salía «Internacional» por descarte).
+        "location": country === 'chile' ? "Chile" : country === 'foreign' ? "Internacional" : undefined,
         "ssl": domainData.ssl.ssl_enabled ? "Habilitado" : "Deshabilitado"
       }
-    };
-    return JSON.stringify(schemaData);
+    });
   };
 
-  // Enhanced analysis function with comprehensive debugging
-  const performAnalysis = async (domain: string, forceRefresh = false) => {
-    console.log(`🎯 PERFORMING ANALYSIS: ${domain} (forceRefresh: ${forceRefresh})`);
-    setRefreshing(forceRefresh);
-    setDebugInfo('Iniciando análisis...');
-    
-    try {
-      let analysisResult: DomainAnalysisResult | null = null;
-
-      // Try to load cached data first unless forcing refresh
-      if (!forceRefresh) {
-        console.log('🔍 Checking for cached data...');
-        setDebugInfo('Verificando datos en caché...');
-        analysisResult = await loadCachedAnalysis(domain);
-        if (analysisResult) {
-          console.log('✅ Using cached analysis data');
-          setDebugInfo('Usando datos en caché');
-          setDomainData(analysisResult);
-          setUsingLiveData(false);
-          setIsLoading(false);
-          
-          // Show cache info to user
-          toast({
-            title: "Datos cargados desde caché",
-            description: "Usando datos almacenados previamente. Usa 'Actualizar análisis' para obtener datos frescos.",
-            variant: "default"
-          });
-          return;
-        } else {
-          console.log('❌ No valid cached data found');
-          setDebugInfo('No se encontraron datos en caché válidos');
-        }
-      } else {
-        setDebugInfo('Forzando análisis en vivo...');
-      }
-
-      // Perform live analysis
-      console.log('🔄 Performing live domain analysis');
-      setDebugInfo('Realizando análisis en vivo...');
-      analysisResult = await analyzeDomain(domain);
-      
-      console.log('📊 Live analysis completed:', {
-        domain: analysisResult.basic.domain,
-        whois_registrar: analysisResult.whois.registrar,
-        whois_created: analysisResult.whois.created_date,
-        whois_owner: analysisResult.whois.owner_name,
-        has_real_data: analysisResult.whois.created_date !== 'No disponible'
-      });
-      
-      setDomainData(analysisResult);
-      setUsingLiveData(true);
-      setDebugInfo('Análisis completado exitosamente');
-
-      // Enhanced success message based on data quality
-      const hasRealWhoisData = analysisResult.whois.created_date !== 'No disponible' && 
-                               analysisResult.whois.owner_name !== 'No disponible' &&
-                               analysisResult.whois.owner_name.indexOf('Información privada') === -1;
-
-      toast({
-        title: hasRealWhoisData ? "Análisis completado con datos reales" : "Análisis completado",
-        description: hasRealWhoisData 
-          ? "Se obtuvieron datos WHOIS reales del dominio." 
-          : "Se completó el análisis pero algunos datos WHOIS no están disponibles públicamente.",
-        variant: "default"
-      });
-
-    } catch (error) {
-      console.error('💥 Error performing domain analysis:', error);
-      setError('No se pudo completar el análisis del dominio');
-      setDebugInfo(`Error: ${error instanceof Error ? error.message : 'Error desconocido'}`);
-      toast({
-        title: "Error en el análisis",
-        description: "No se pudo obtener información completa para este dominio.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!slug) {
-      setError('No se encontró información para este dominio');
-      setIsLoading(false);
-      return;
-    }
-
-    performAnalysis(domainName);
-  }, [slug, domainName]);
-
-  // Add page-specific SEO metadata
-  React.useEffect(() => {
-    if (domainName) {
-      document.title = `${capitalizedDomainName} - Análisis | EligeTuHosting.cl`;
-
-      // Create meta description
-      let metaDescription = document.querySelector('meta[name="description"]');
-      if (!metaDescription) {
-        metaDescription = document.createElement('meta');
-        metaDescription.setAttribute('name', 'description');
-        document.head.appendChild(metaDescription);
-      }
-      metaDescription.setAttribute('content', `Análisis completo de ${domainName}: DNS, WHOIS, SSL, rendimiento, tecnología y más información para optimizar tu presencia en línea.`);
-    }
-  }, [domainName, capitalizedDomainName]);
-
-  // Prepare breadcrumbs for this page
-  const breadcrumbItems = [
-    {
-      name: 'Dominios',
-      href: '/ultimos-dominios/'
-    }
-  ];
-
+  const breadcrumbItems = [{ name: 'Dominios', href: '/ultimos-dominios/' }];
   const handleRefresh = () => {
-    if (domainName) {
-      console.log('🔄 Manual refresh triggered');
-      performAnalysis(domainName, true);
-    }
+    if (domainName) performAnalysis(domainName, true);
   };
+  const stamp = domainData ? (fromCache ? domainData.probes?.whois.checked_at ?? null : latestProbe(domainData)) : null;
+
+  const meta = domainData ? (
+    <span>
+      {fromCache ? 'Copia guardada del ' : 'Análisis hecho desde tu navegador el '}
+      {stamp ? <time dateTime={isoDateTime(stamp)}>{formatToolDateTime(stamp)}</time> : 'día de hoy, sin respuesta de las consultas'}
+      {fromCache ? '. Usa «Actualizar análisis» para consultar de nuevo.' : '.'}
+    </span>
+  ) : null;
 
   return (
-    <div className="min-h-screen bg-paper font-montserrat text-[#333]">
+    <div className="min-h-screen bg-white text-ink">
       <Helmet>
         <title>{capitalizedDomainName} - Análisis | EligeTuHosting.cl</title>
         <meta name="description" content={`Análisis técnico completo de ${domainName}: DNS, WHOIS, SSL, rendimiento, tecnología y más información para optimizar tu presencia en línea.`} />
@@ -257,159 +182,97 @@ const WhoisDomain = () => {
         )}
         <meta property="article:modified_time" content={new Date().toISOString()} />
       </Helmet>
-      
-      <Navbar />
-      
-      <main className="container mx-auto px-4 py-12">
-        {/* Breadcrumbs */}
-        {!isLoading && !error && domainData && <SEOBreadcrumbs items={breadcrumbItems} pageName={capitalizedDomainName} />}
-        
-        {isLoading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-10 w-3/4" />
-            <Skeleton className="h-6 w-1/2" />
-            <div className="grid md:grid-cols-2 gap-8 mt-8">
-              <div className="space-y-4">
-                <Skeleton className="h-40 w-full" />
-              </div>
-              <Skeleton className="h-60 w-full" />
-            </div>
-            {/* Debug info during loading */}
-            {debugInfo && (
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-700">Estado: {debugInfo}</p>
-              </div>
-            )}
-          </div>
-        ) : error ? (
-          <div className="text-center py-12">
-            <h1 className="text-2xl font-bold text-red-600 mb-2">Error</h1>
-            <p>{error}</p>
-            <p className="mt-4">
-              Puedes buscar información sobre este dominio utilizando nuestro buscador en la{' '}
-              <Link to="/" className="text-blue-600 underline">
-                página principal
-              </Link>.
-            </p>
-          </div>
-        ) : domainData ? (
-          <div>
-          <div className="flex justify-between items-center mb-6 animate-fade-in-up">
-            <h1 className="text-3xl md:text-4xl font-bold">
-              <span className="text-gradient">{capitalizedDomainName}</span>{' '}
-              <span className="text-muted-foreground">- Análisis completo</span>
-            </h1>
-            
-            <Button 
-              onClick={handleRefresh} 
-              variant="gradient" 
-              disabled={refreshing} 
-              className={`flex items-center gap-2 ${refreshing ? 'animate-pulse' : ''}`}
-            >
-              <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-              {refreshing ? 'Analizando...' : 'Actualizar'}
-            </Button>
-          </div>
-            
-            {/* Enhanced status indicators */}
-            {usingLiveData && (
-              <div className="mb-6 relative overflow-hidden bg-gradient-to-br from-green-50 via-emerald-50 to-green-50 border-2 border-green-200 rounded-xl p-5 shadow-md animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                <div className="absolute inset-0 bg-gradient-to-r from-green-100/30 to-transparent animate-shimmer" />
-                <p className="text-sm text-green-800 flex items-center gap-2 relative z-10 font-medium">
-                  <Check className="h-5 w-5 animate-scale-in" />
-                  Análisis en vivo completado. Esta información fue obtenida en tiempo real.
-                </p>
-                {domainData.whois.created_date !== 'No disponible' && (
-                  <p className="text-xs text-green-700 mt-2 relative z-10 flex items-center gap-1">
-                    <Check className="h-3 w-3" />
-                    Datos WHOIS reales obtenidos desde NIC Chile
-                  </p>
-                )}
-              </div>
-            )}
-            
-            {/* New warning for non-Chilean IPs - Fixed condition */}
-            {hasValidIP(domainData.basic.ip) && !domainData.basic.ip_chile && (
-              <Alert variant="destructive" className="mb-6 relative overflow-hidden bg-gradient-to-br from-red-50 via-orange-50 to-red-50 border-2 border-red-200 shadow-md animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                <div className="absolute inset-0 bg-gradient-to-r from-red-100/30 to-transparent animate-shimmer" />
-                <AlertTriangle className="h-5 w-5 text-red-600 animate-pulse relative z-10" />
-                <AlertTitle className="text-red-700 font-semibold relative z-10">Alojamiento fuera de Chile</AlertTitle>
-                <AlertDescription className="text-red-700 relative z-10">
-                  Este sitio web tiene una IP extranjera, lo que puede representar riesgos para la soberanía de 
-                  datos chilenos, afectar velocidad de carga en Chile y podría estar sujeto a leyes de privacidad 
-                  diferentes. Se recomienda alojar contenido chileno en servidores locales.
-                </AlertDescription>
-              </Alert>
-            )}
-            
-            <div className="grid lg:grid-cols-3 gap-8 mt-8 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-              {/* Main analysis tabs */}
-              <div className="lg:col-span-2 space-y-6">
-                <WhoisTabs data={domainData} isLoading={refreshing} />
-              </div>
-              
-              {/* Sidebar with preview and recommendations */}
-              <div className="space-y-6">
-                {/* Website preview with new enhanced component */}
-                <SitePreview domain={domainName} />
 
-                {/* Recent searches */}
-                <RecentSearches />
-              </div>
-            </div>
-            
-            {/* Debug info panel (only show in development or when there are issues) */}
-            {import.meta.env.DEV && debugInfo && (
-              <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                <h4 className="font-medium text-gray-800 mb-2">Debug Info</h4>
-                <p className="text-sm text-gray-600">{debugInfo}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Usando datos: {usingLiveData ? 'En vivo' : 'Caché'}
-                </p>
-              </div>
-            )}
-            
-            {/* Unique SEO Content Section */}
-            <DomainUniqueContent domainName={domainName} domainData={domainData} />
-            
-            {/* Recommendation section */}
-            <div className="mt-12 bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4">Recomendación de hosting</h2>
-              <p className="mb-4">
-                Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:
+      <Navbar />
+
+      <main>
+        <PageHeader
+          breadcrumbs={<SEOBreadcrumbs items={breadcrumbItems} pageName={capitalizedDomainName} />}
+          title={pageTitle}
+          lead="WHOIS de NIC Chile, DNS, SSL e IP de este dominio, con la fecha de cada consulta."
+          actions={
+            <Button variant="outline" onClick={handleRefresh} disabled={isLoading || refreshing}>
+              <RefreshCw aria-hidden className={refreshing ? 'animate-spin' : undefined} />
+              {refreshing ? 'Actualizando…' : 'Actualizar análisis'}
+            </Button>
+          }
+          meta={meta}
+        />
+
+        <div className="container py-10 md:py-12">
+          {isLoading ? (
+            <div aria-busy="true">
+              <p className="t-small text-ink-2" role="status">
+                Consultando WHOIS, DNS, SSL e IP de {domainName}. Puede tardar unos segundos.
               </p>
-              <div className="flex items-center gap-4 border p-4 rounded-lg hover:border-blue-200 transition-all">
-                <img 
-                  alt="HostingPlus.cl" 
-                  className="h-12" 
-                  src="/logo-hostingplus.svg"
-                />
-                <div className="flex-1">
-                  <p className="font-medium text-lg">HostingPlus.cl - Nº1 en Chile</p>
-                  <p className="text-sm text-gray-600">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>
-                  <ul className="mt-2 text-sm space-y-1">
-                    <li className="flex items-center gap-1">
-                      <Check className="h-4 w-4 text-green-500" /> Mejor velocidad en sitios chilenos
-                    </li>
-                    <li className="flex items-center gap-1">
-                      <Check className="h-4 w-4 text-green-500" /> Soporte técnico local 24/7
-                    </li>
-                    <li className="flex items-center gap-1">
-                      <Check className="h-4 w-4 text-green-500" /> Migración gratuita
-                    </li>
-                  </ul>
+              <div className="mt-6 grid gap-10 lg:grid-cols-3">
+                <div className="space-y-4 lg:col-span-2">
+                  <Skeleton className="h-11 w-full rounded-lg bg-paper-deep" />
+                  <Skeleton className="h-64 w-full rounded-xl bg-paper-deep" />
                 </div>
-                <Button asChild className="bg-brand hover:bg-brand-ink text-white px-6">
-                  <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
-                    Contratar
-                  </a>
-                </Button>
+                <Skeleton className="h-72 w-full rounded-xl bg-paper-deep" />
               </div>
             </div>
-          </div>
-        ) : null}
+          ) : error || !domainData ? (
+            <Callout tone="caution" title="No pudimos analizar este dominio" className="my-0 max-w-[62ch]">
+              <p>{error ?? 'No se encontró información para este dominio'}. Revisa que el nombre esté bien escrito y vuelve a intentarlo en unos minutos.</p>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <Button variant="default" onClick={handleRefresh}>
+                  <RefreshCw aria-hidden />
+                  Reintentar
+                </Button>
+                <Link to="/" className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+                  Ir a la página principal
+                </Link>
+              </div>
+            </Callout>
+          ) : (
+            <>
+              <HostingCountryNote data={domainData} />
+
+              <div className="mt-10 grid gap-10 lg:grid-cols-3">
+                <section aria-labelledby="resultados-titulo" className="min-w-0 lg:col-span-2">
+                  <h2 id="resultados-titulo" className="t-h2 mb-5 text-ink">Resultados del análisis</h2>
+                  <WhoisTabs data={domainData} isLoading={refreshing} />
+                </section>
+                <aside className="min-w-0 space-y-6" aria-label="Más sobre este dominio">
+                  <SitePreview domain={domainName} />
+                  <RecentSearches />
+                </aside>
+              </div>
+
+              <DomainUniqueContent domainName={domainName} domainData={domainData} />
+
+              <section aria-labelledby="recomendacion-titulo" className="border-t border-rule py-10">
+                <h2 id="recomendacion-titulo" className="t-h2 text-ink">Recomendación de hosting</h2>
+                <p className="t-body mt-3 text-ink-2">Para obtener el mejor rendimiento y soporte en Chile, te recomendamos:</p>
+                <div className="mt-5 flex flex-col gap-5 rounded-xl border border-rule bg-white p-5 md:flex-row md:items-center">
+                  <img alt="HostingPlus.cl" className="h-12 w-auto self-start md:self-center" src="/logo-hostingplus.svg" />
+                  <div className="min-w-0 flex-1">
+                    <p className="t-h3 text-ink">HostingPlus.cl - Nº1 en Chile</p>
+                    <p className="t-small text-ink-2">IP chilena, soporte 24/7 y LiteSpeed Enterprise</p>
+                    <ul className="t-small mt-2 space-y-1 text-ink-2">
+                      {['Mejor velocidad en sitios chilenos', 'Soporte técnico local 24/7', 'Migración gratuita'].map((t) => (
+                        <li key={t} className="flex items-center gap-2">
+                          <Check aria-hidden className="h-4 w-4 shrink-0 text-ink-2" />
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <Button asChild variant="brand" className="self-start md:self-center">
+                    <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
+                      Contratar
+                      <ExternalLink aria-hidden />
+                    </a>
+                  </Button>
+                </div>
+              </section>
+            </>
+          )}
+        </div>
       </main>
-      
+
       <Footer />
     </div>
   );

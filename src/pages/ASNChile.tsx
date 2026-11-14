@@ -1,128 +1,103 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { RefreshCw } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { searchASN, ASNSearchResult } from '@/services/asnApi';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Loader2, MapPin, Network, Building } from 'lucide-react';
-import UltimasBusquedas from '@/components/UltimasBusquedas';
 import { isChileanASN } from '@/utils/ipDetection';
+import { formatInteger } from '@/lib/format';
+import { AsnResultsTable, AsnSourceLine } from '@/components/herramientas/AsnShared';
+
+// Búsquedas que arman el directorio chileno.
+const CHILEAN_PROVIDERS = [
+  'chile', 'claro', 'entel', 'movistar', 'vtr', 'gtd', 'mundo', 'tie', 'netline',
+  'hosting.cl', 'netuno', 'rdc', 'redvoiss', 'solucionhost', 'hostingplus',
+  'ecohosting', 'pluschile', 'webhost', 'gigas'
+];
+
+const TELECOM = /claro|entel|movistar|vtr|wom|virgin|simple|telefon|telecom|movil/i;
+const HOSTING = /hosting|host|server|datacenter|cloud|netuno|solucion|eco.*host|plus.*chile|webhost|gigas/i;
+const ISP = /gtd|mundo|tie|netline|rdc|redvoiss|internet|isp|provider|banda|fibra/i;
+const NOT_HOSTING = /hosting|host|server|datacenter|cloud/i;
+
+type Status = 'loading' | 'ready' | 'error';
 
 const ASNChile: React.FC = () => {
   const [chileanASNs, setChileanASNs] = useState<ASNSearchResult[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState<Status>('loading');
+  const [failed, setFailed] = useState(0);
 
-  useEffect(() => {
-    const loadChileanASNs = async () => {
-      setLoading(true);
-      try {
-        // Search for common Chilean providers with parallel requests for better performance
-        const chileanProviders = [
-          'chile', 'claro', 'entel', 'movistar', 'vtr', 'gtd', 'mundo', 'tie', 'netline',
-          'hosting.cl', 'netuno', 'rdc', 'redvoiss', 'solucionhost', 'hostingplus',
-          'ecohosting', 'pluschile', 'webhost', 'gigas'
-        ];
-        
-        console.log('🚀 Starting ASN search with caching...');
-        const startTime = Date.now();
-        
-        // Make all searches in parallel for much better performance
-        const searchPromises = chileanProviders.map(async (provider) => {
-          try {
-            const results = await searchASN(provider);
-            // Filter Chilean ASNs with more inclusive criteria
-            const filtered = results.filter(r => 
-              r.country_code === 'CL' || 
-              isChileanASN(`AS${r.asn}`) ||
-              (r.name && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile|hosting\.cl/i.test(r.name)) ||
-              (r.description && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile/i.test(r.description))
-            );
-            return filtered;
-          } catch (e) {
-            console.warn(`Error searching for ${provider}:`, e);
-            return [];
-          }
-        });
-        
-        const allResultArrays = await Promise.all(searchPromises);
-        const allResults: ASNSearchResult[] = allResultArrays.flat();
-        
-        console.log(`✅ ASN searches completed in ${Date.now() - startTime}ms`);
-
-        // Remove duplicates and sort by ASN
-        const uniqueASNs = allResults.filter((asn, index, arr) => 
-          arr.findIndex(a => a.asn === asn.asn) === index
-        ).sort((a, b) => a.asn - b.asn);
-
-        setChileanASNs(uniqueASNs);
-        console.log(`📊 Total unique Chilean ASNs found: ${uniqueASNs.length}`);
-      } catch (e) {
-        console.error('Error loading Chilean ASNs:', e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadChileanASNs();
+  const loadChileanASNs = useCallback(async () => {
+    setStatus('loading');
+    // Cada búsqueda informa si respondió: un fallo no se suma como «0 ASN».
+    const outcomes = await Promise.all(
+      CHILEAN_PROVIDERS.map(async (provider) => {
+        try {
+          const results = await searchASN(provider);
+          const filtered = results.filter(r =>
+            r.country_code === 'CL' ||
+            isChileanASN(`AS${r.asn}`) ||
+            (r.name && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile|hosting\.cl/i.test(r.name)) ||
+            (r.description && /chile|claro|entel|movistar|vtr|gtd|ecohosting|pluschile/i.test(r.description))
+          );
+          return { ok: true, results: filtered };
+        } catch (e) {
+          console.warn(`Error searching for ${provider}:`, e);
+          return { ok: false, results: [] as ASNSearchResult[] };
+        }
+      })
+    );
+    const failures = outcomes.filter((o) => !o.ok).length;
+    const unique = outcomes
+      .flatMap((o) => o.results)
+      .filter((asn, index, arr) => arr.findIndex(a => a.asn === asn.asn) === index)
+      .sort((a, b) => a.asn - b.asn);
+    setFailed(failures);
+    setChileanASNs(unique);
+    setStatus(failures === CHILEAN_PROVIDERS.length ? 'error' : 'ready');
   }, []);
 
-  // Categorize ASNs by type with more inclusive patterns
-  const categorizedASNs = {
-    telecom: chileanASNs.filter(asn => 
-      asn.name && /claro|entel|movistar|vtr|wom|virgin|simple|telefon|telecom|movil/i.test(asn.name)
-    ),
-    hosting: chileanASNs.filter(asn => 
-      asn.name && /hosting|host|server|datacenter|cloud|netuno|solucion|eco.*host|plus.*chile|webhost|gigas/i.test(asn.name)
-    ),
-    isp: chileanASNs.filter(asn => 
-      asn.name && /gtd|mundo|tie|netline|rdc|redvoiss|internet|isp|provider|banda|fibra/i.test(asn.name) &&
-      !/hosting|host|server|datacenter|cloud/i.test(asn.name)
-    ),
+  useEffect(() => {
+    loadChileanASNs();
+  }, [loadChileanASNs]);
+
+  const categorized = {
+    telecom: chileanASNs.filter(asn => asn.name && TELECOM.test(asn.name)),
+    hosting: chileanASNs.filter(asn => asn.name && HOSTING.test(asn.name)),
+    isp: chileanASNs.filter(asn => asn.name && ISP.test(asn.name) && !NOT_HOSTING.test(asn.name)),
     others: chileanASNs.filter(asn => {
       const name = asn.name || '';
       const desc = asn.description || '';
-      return !(
-        /claro|entel|movistar|vtr|wom|virgin|simple|telefon|telecom|movil/i.test(name) ||
-        /hosting|host|server|datacenter|cloud|netuno|solucion|eco.*host|plus.*chile|webhost|gigas/i.test(name) ||
-        (/gtd|mundo|tie|netline|rdc|redvoiss|internet|isp|provider|banda|fibra/i.test(name) && !/hosting|host|server|datacenter|cloud/i.test(name))
-      ) && (name.includes('chile') || desc.includes('chile') || asn.country_code === 'CL');
-    })
+      return !(TELECOM.test(name) || HOSTING.test(name) || (ISP.test(name) && !NOT_HOSTING.test(name))) &&
+        (name.includes('chile') || desc.includes('chile') || asn.country_code === 'CL');
+    }),
   };
 
-  const renderASNCard = (asn: ASNSearchResult) => (
-    <Card key={asn.asn} className="hover:shadow-md transition-shadow">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Link to={`/asn/AS${asn.asn}`} className="hover:underline">
-            AS{asn.asn}
-          </Link>
-          <Badge variant="secondary" className="gap-1">
-            <MapPin className="h-3 w-3" />
-            🇨🇱
-          </Badge>
-        </CardTitle>
-        <p className="text-sm font-medium text-foreground">{asn.name || 'Sin nombre'}</p>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <p className="text-sm text-muted-foreground mb-3">{asn.description || 'Proveedor chileno'}</p>
-        <div className="flex flex-wrap gap-2 text-xs">
-          {asn.country_code && (
-            <Badge variant="outline">País: {asn.country_code}</Badge>
-          )}
-          <Badge variant="outline">ASN: {asn.asn}</Badge>
-        </div>
-      </CardContent>
-    </Card>
+  const groups = [
+    { id: 'telecomunicaciones', title: 'Telecomunicaciones', items: categorized.telecom },
+    { id: 'hosting', title: 'Hosting y servidores', items: categorized.hosting },
+    { id: 'isp', title: 'Proveedores de internet (ISP)', items: categorized.isp },
+    { id: 'otros', title: 'Otros proveedores', items: categorized.others },
+  ];
+
+  const retry = (
+    <Button variant="default" onClick={loadChileanASNs} className="mt-3">
+      <RefreshCw aria-hidden />
+      Reintentar
+    </Button>
   );
 
   return (
     <>
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
       <Helmet>
         <title>ASN Chile: Sistemas Autónomos | EligeTuHosting.cl</title>
         <meta name="description" content="Directorio completo de ASNs chilenos: Claro, Entel, Movistar, VTR, GTD, empresas de hosting y más proveedores de internet de Chile." />
@@ -133,111 +108,84 @@ const ASNChile: React.FC = () => {
         <meta property="og:description" content="Directorio completo de ASNs chilenos: Claro, Entel, Movistar, VTR, GTD y más." />
         <meta property="og:url" content={`${window.location.origin}/asn/chile`} />
       </Helmet>
+      <main>
+        <PageHeader
+          breadcrumbs={<SEOBreadcrumbs items={[{ name: 'ASN', href: '/asn' }]} pageName="Chile" />}
+          title="ASN Chile"
+          lead="Directorio de sistemas autónomos (ASN) de proveedores chilenos: telecomunicaciones, hosting, ISPs y más."
+          meta={<AsnSourceLine cacheDays={7} />}
+        />
 
-      <SEOBreadcrumbs 
-        items={[{ name: 'ASN', href: '/asn' }]} 
-        pageName="Chile" 
-      />
-
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold flex items-center gap-3">
-          <MapPin className="h-8 w-8 text-blue-600" />
-          ASN Chile
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          Directorio de sistemas autónomos (ASN) de proveedores chilenos: telecomunicaciones, hosting, ISPs y más.
-        </p>
-      </header>
-
-      {loading && (
-        <div className="flex items-center gap-2 text-sm mb-8">
-          <Loader2 className="h-4 w-4 animate-spin" /> 
-          Cargando ASNs chilenos…
-        </div>
-      )}
-
-      {!loading && (
-        <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600">{chileanASNs.length}</p>
-              <p className="text-muted-foreground">Total ASNs</p>
+        <Section density="tight" aria-label="Directorio de ASN chilenos">
+          {status === 'loading' && (
+            <div aria-busy="true" className="space-y-3">
+              <p className="t-small text-ink-2" role="status">Buscando ASN chilenos en BGPView…</p>
+              <Skeleton className="h-20 w-full rounded-xl bg-paper-deep" />
+              <Skeleton className="h-64 w-full rounded-xl bg-paper-deep" />
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-600">{categorizedASNs.telecom.length}</p>
-              <p className="text-muted-foreground">Telecomunicaciones</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-purple-600">{categorizedASNs.hosting.length}</p>
-              <p className="text-muted-foreground">Hosting</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-orange-600">{categorizedASNs.isp.length}</p>
-              <p className="text-muted-foreground">ISPs</p>
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Telecomunicaciones */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-          <Network className="h-6 w-6 text-green-600" />
-          Telecomunicaciones
-        </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {categorizedASNs.telecom.slice(0, 24).map(renderASNCard)}
-        </div>
-      </section>
+          {status === 'error' && (
+            <Callout tone="caution" title="No pudimos consultar la base de ASN en este momento" className="my-0 max-w-[62ch]">
+              <p>Ninguna de las {CHILEAN_PROVIDERS.length} búsquedas en BGPView respondió, así que no mostramos cifras. Vuelve a intentarlo en unos minutos.</p>
+              {retry}
+            </Callout>
+          )}
 
-      {/* Hosting */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-          <Building className="h-6 w-6 text-purple-600" />
-          Hosting y Servidores
-        </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {categorizedASNs.hosting.slice(0, 24).map(renderASNCard)}
-        </div>
-      </section>
+          {status === 'ready' && (
+            <>
+              {failed > 0 && (
+                <Callout title="Lista incompleta" className="mb-8 mt-0 max-w-[62ch]">
+                  <p>
+                    {formatInteger(failed)} de {CHILEAN_PROVIDERS.length} búsquedas no respondieron. Los números de abajo cuentan solo lo que sí
+                    encontramos.
+                  </p>
+                  {retry}
+                </Callout>
+              )}
+              <dl className="grid grid-cols-2 gap-x-8 gap-y-4 border-y border-rule py-5 md:grid-cols-4">
+                {[
+                  { label: 'ASN encontrados', value: chileanASNs.length },
+                  { label: 'Telecomunicaciones', value: categorized.telecom.length },
+                  { label: 'Hosting', value: categorized.hosting.length },
+                  { label: 'ISP', value: categorized.isp.length },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <dt className="t-label">{s.label}</dt>
+                    <dd className="tabular mt-1 text-3xl font-extrabold leading-none text-ink">{formatInteger(s.value)}</dd>
+                  </div>
+                ))}
+              </dl>
 
-      {/* ISPs */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-          <Network className="h-6 w-6 text-orange-600" />
-          Proveedores de Internet (ISP)
-        </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {categorizedASNs.isp.slice(0, 24).map(renderASNCard)}
-        </div>
-      </section>
+              {chileanASNs.length === 0 && (
+                <p className="t-body mt-8 text-ink-2">Las búsquedas respondieron, pero no encontraron ASN chilenos.</p>
+              )}
 
-      {/* Otros */}
-      {categorizedASNs.others.length > 0 && (
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Otros Proveedores</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {categorizedASNs.others.slice(0, 24).map(renderASNCard)}
-          </div>
-        </section>
-      )}
+              {groups.filter((g) => g.items.length > 0).map((g) => (
+                <section key={g.id} aria-labelledby={`asn-${g.id}`} className="mt-12">
+                  <h2 id={`asn-${g.id}`} className="t-h2 text-ink">
+                    {g.title} <span className="tabular text-ink-3">({formatInteger(g.items.length)})</span>
+                  </h2>
+                  <div className="mt-5">
+                    <AsnResultsTable results={g.items.slice(0, 24)} caption={`ASN de ${g.title.toLowerCase()} en Chile`} />
+                  </div>
+                  {g.items.length > 24 && <p className="t-meta mt-2">Mostrando los primeros 24.</p>}
+                </section>
+              ))}
 
-      {chileanASNs.length > 0 && (
-        <div className="text-center py-4">
-          <p className="text-muted-foreground mb-4">
-            ¿Buscas un ASN específico? Usa el{' '}
-            <Link to="/asn" className="text-blue-600 hover:underline">directorio general de ASN</Link>
-          </p>
-        </div>
-      )}
-
-      {/* Últimas búsquedas para SEO */}
-      <div className="mt-12">
-        <UltimasBusquedas />
-      </div>
-    </main>
-    <StickyCTA />
-    <Footer />
+              <p className="t-body mt-12 text-ink-2">
+                ¿Buscas un ASN específico? Usa el{' '}
+                <Link to="/asn" className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+                  directorio general de ASN
+                </Link>
+                .
+              </p>
+            </>
+          )}
+        </Section>
+      </main>
+      <StickyCTA />
+      <Footer />
     </>
   );
 };

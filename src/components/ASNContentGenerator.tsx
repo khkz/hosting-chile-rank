@@ -24,14 +24,14 @@ export const ASNContentGenerator = ({ asn, asnName, description }: ASNContentGen
     setMetadata(null);
 
     try {
-      console.log('🚀 Generating content for ASN:', asn);
+      console.log('Generating content for ASN:', asn);
 
       const { data, error } = await supabase.functions.invoke('asn-content-generator', {
         body: { asn, asnName, description },
       });
 
       if (error) {
-        console.error('❌ Error:', error);
+        console.error('Error:', error);
         throw error;
       }
 
@@ -39,7 +39,7 @@ export const ASNContentGenerator = ({ asn, asnName, description }: ASNContentGen
         throw new Error(data.error || 'Error al generar contenido');
       }
 
-      console.log('✅ Content generated');
+      console.log('Content generated');
       setContent(data.content);
       setMetadata(data.metadata);
 
