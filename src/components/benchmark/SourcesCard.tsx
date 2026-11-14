@@ -1,64 +1,71 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Activity, Gauge, Server, Calculator, ExternalLink, FileCode2 } from "lucide-react";
+import { Activity, Gauge, Server, Calculator, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const sources = [
+interface Source {
+  icon: typeof Server;
+  title: string;
+  desc: string;
+  tool: string;
+  link: string | null;
+}
+
+const sourcesFor = (version: string): Source[] => [
   {
     icon: Server,
-    title: "TTFB y headers HTTP",
-    desc: "Medición propia: 5 GET secuenciales con 2s de espera, mediana y p95 reportadas. Captura encabezados Server y Content-Encoding.",
-    tool: "Edge Function run-benchmark (Supabase Deno)",
+    title: "TTFB y encabezados HTTP",
+    desc: "Medición propia: 5 GET seguidos con 2 s de espera; reportamos la mediana y el p95. También guardamos los encabezados Server y Content-Encoding.",
+    tool: "función run-benchmark (Supabase Edge)",
     link: null,
   },
   {
     icon: Gauge,
-    title: "Lighthouse (Performance, SEO, Accesibilidad, LCP, CLS, FCP)",
-    desc: "Google PageSpeed Insights API v5, strategy=mobile. Reproducible públicamente desde el botón de cada fila.",
+    title: "Lighthouse (rendimiento, SEO, accesibilidad, LCP, CLS, FCP)",
+    desc: "API de Google PageSpeed Insights v5, estrategia móvil. Puedes repetirlo tú con el enlace «Reproducir» de cada fila.",
     tool: "pagespeed.web.dev",
     link: "https://pagespeed.web.dev",
   },
   {
     icon: Activity,
     title: "Uptime 30 días",
-    desc: "Pings HEAD (fallback GET) cada hora desde Edge Functions. Calculado como % de respuestas 2xx/3xx en los últimos 30 días.",
-    tool: "Edge Function uptime-monitor + tabla uptime_pings",
+    desc: "Pings HEAD (o GET si falla) cada hora desde funciones Edge. Es el porcentaje de respuestas 2xx/3xx de los últimos 30 días.",
+    tool: "función uptime-monitor y tabla uptime_pings",
     link: null,
   },
   {
     icon: Calculator,
-    title: "Score compuesto",
-    desc: "0,35·LighthousePerf + 0,25·TTFBscore + 0,25·Uptime + 0,15·LighthouseSEO. TTFBscore = max(0, 100 − TTFBms/10).",
-    tool: "Documentado en metodología v1.0",
+    title: "Puntaje compuesto",
+    desc: "0,35 × Lighthouse rendimiento + 0,25 × puntaje TTFB + 0,25 × uptime + 0,15 × Lighthouse SEO. Puntaje TTFB = máx(0, 100 − TTFB en ms ÷ 10).",
+    tool: `documentado en la metodología ${version}`,
     link: null,
   },
 ];
 
-const SourcesCard: React.FC = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center gap-2">
-        <FileCode2 className="w-5 h-5 text-primary" />
-        De dónde vienen estos datos
-      </CardTitle>
-      <CardDescription>
-        Cada número que ves en esta tabla proviene de una herramienta pública o de un script propio
-        que cualquier persona puede auditar. No usamos cifras inventadas ni "marketing claims" del proveedor.
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <ul className="grid md:grid-cols-2 gap-4">
-        {sources.map((s) => (
-          <li key={s.title} className="flex gap-3 p-4 rounded-lg border bg-muted/30">
-            <s.icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-            <div className="text-sm">
-              <p className="font-semibold text-foreground">{s.title}</p>
-              <p className="text-muted-foreground mt-1">{s.desc}</p>
-              <p className="text-xs mt-2 text-muted-foreground">
-                Fuente: <span className="font-mono">{s.tool}</span>
+/**
+ * De dónde sale cada cifra del benchmark. Va dentro de una <Section> que pone
+ * el título; aquí solo la lista y el enlace a la metodología.
+ */
+const SourcesCard: React.FC<{ version?: string | null }> = ({ version }) => {
+  const v = version ? `v${version.replace(/^v/i, "")}` : "vigente";
+  return (
+    <>
+      <ul className="grid gap-px overflow-hidden rounded-xl border border-rule bg-rule md:grid-cols-2">
+        {sourcesFor(v).map((s) => (
+          <li key={s.title} className="flex gap-3 bg-white p-5">
+            <s.icon aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-ink-2" />
+            <div className="min-w-0">
+              <p className="font-semibold text-ink">{s.title}</p>
+              <p className="t-small mt-1 text-ink-2">{s.desc}</p>
+              <p className="t-meta mt-2">
+                Fuente: {s.tool}
                 {s.link && (
-                  <a href={s.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center ml-2 text-primary hover:underline">
-                    abrir <ExternalLink className="w-3 h-3 ml-0.5" />
+                  <a
+                    href={s.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-2 inline-flex items-center gap-1 font-medium text-ink underline underline-offset-4"
+                  >
+                    Abrir <ExternalLink aria-hidden className="h-3.5 w-3.5" />
                   </a>
                 )}
               </p>
@@ -66,12 +73,15 @@ const SourcesCard: React.FC = () => (
           </li>
         ))}
       </ul>
-      <p className="text-xs text-muted-foreground mt-4">
+      <p className="t-small mt-5 text-ink-2">
         ¿Quieres ver la fórmula completa, los pesos y los criterios de exclusión?{" "}
-        <Link to="/metodologia-benchmark" className="text-primary hover:underline">Lee la metodología v1.0 →</Link>
+        <Link to="/metodologia-benchmark" className="font-medium text-ink underline underline-offset-4">
+          Lee la metodología {v}
+        </Link>
+        .
       </p>
-    </CardContent>
-  </Card>
-);
+    </>
+  );
+};
 
 export default SourcesCard;

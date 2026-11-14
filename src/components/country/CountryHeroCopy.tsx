@@ -1,73 +1,146 @@
 import React from 'react';
+import { Check } from 'lucide-react';
 import { COUNTRY_CONTENT, type CountryCopy } from '@/data/countryContent';
+import PageHeader from '@/components/system/PageHeader';
+import EditorialImage from '@/components/media/EditorialImage';
+import Flag from '@/components/data/Flag';
+import { Button } from '@/components/ui/button';
+import FaqList from '@/components/ranking/pais/FaqList';
+import { formatDataDate, formatInteger, isoDate } from '@/lib/format';
+import type { CountryCode } from '@/lib/countries';
+import type { EditorialImageKey } from '@/lib/editorialImages';
 
-type Props = {
-  slug: 'pe' | 'mx' | 'co' | 'ar';
-  /** Fecha real de los datos del país, ya formateada. Sin ella no se muestra fecha. */
-  updated?: string | null;
+type Slug = 'pe' | 'mx' | 'co' | 'ar';
+
+const EDITION: Record<Slug, { code: CountryCode; name: string; image: EditorialImageKey }> = {
+  pe: { code: 'PE', name: 'Perú', image: 'pe-edition' },
+  mx: { code: 'MX', name: 'México', image: 'mx-edition' },
+  co: { code: 'CO', name: 'Colombia', image: 'co-edition' },
+  ar: { code: 'AR', name: 'Argentina', image: 'ar-edition' },
 };
 
-export const CountryHeroCopy: React.FC<Props> = ({ slug, updated }) => {
+type Props = {
+  slug: Slug;
+  /** Migas (SEOBreadcrumbs o CountryCrumbs). */
+  breadcrumbs?: React.ReactNode;
+  /** Fecha real de los datos (ISO desde la base). Sin ella no se muestra fecha. */
+  updatedIso?: string | null;
+  /** Compatibilidad: fecha ya formateada. Se prefiere `updatedIso`. */
+  updated?: string | null;
+  /** Proveedores verificados, contados en la base. */
+  providerCount?: number | null;
+  /** Ancla del ranking en la página («#tabla», «#ranking»). */
+  rankingHref?: string;
+  /** Ancla de la metodología y su rótulo. */
+  methodHref?: string;
+  methodLabel?: string;
+  /** Metadatos extra (procedencia de las notas, fecha de precios). */
+  extraMeta?: React.ReactNode;
+  /** Qué mostrar mientras la imagen editorial no esté publicada. */
+  imageFallback?: React.ReactNode;
+};
+
+/**
+ * Cabecera de los rankings por país con el sistema: migas, bandera SVG y
+ * edición, H1 (texto de countryContent, sin cambios), bajada, acción principal
+ * y fecha real de los datos.
+ */
+export const CountryHeroCopy: React.FC<Props> = ({
+  slug,
+  breadcrumbs,
+  updatedIso,
+  updated,
+  providerCount,
+  rankingHref = '#tabla',
+  methodHref = '#metodologia',
+  methodLabel = 'Cómo ordenamos',
+  extraMeta,
+  imageFallback,
+}) => {
   const c: CountryCopy = COUNTRY_CONTENT[slug];
   if (!c) return null;
+  const ed = EDITION[slug];
+  const dateText = updatedIso ? formatDataDate(updatedIso) : updated ?? null;
   return (
-    <>
-      <section
-        className="rounded-xl text-white p-6 md:p-8 mb-6 shadow-lg"
-        style={{ background: 'linear-gradient(135deg,#2B2D42,#3a3d5c)' }}
-      >
-        <div className="text-xs uppercase tracking-wide text-white/85 mb-2">{c.kicker}</div>
-        <h1 className="text-2xl md:text-3xl font-bold leading-tight text-white">{c.title}</h1>
-        <p className="mt-3 text-white/85 max-w-3xl leading-relaxed">{c.subtitle}</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {c.chips.map((ch) => (
-            <span
-              key={ch}
-              className="text-xs bg-white/10 border border-white/25 text-white rounded-full px-3 py-1"
-            >
-              {ch}
+    <PageHeader
+      breadcrumbs={
+        <>
+          {breadcrumbs}
+          <p className={`t-label flex items-center gap-2 ${breadcrumbs ? 'mt-4' : ''}`}>
+            <Flag code={ed.code} size={22} />
+            Edición {ed.name}
+          </p>
+        </>
+      }
+      title={c.title}
+      lead={c.subtitle}
+      actions={
+        <>
+          <Button asChild variant="brand" size="lg">
+            <a href={rankingHref}>Ver el ranking</a>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <a href={methodHref}>{methodLabel}</a>
+          </Button>
+        </>
+      }
+      meta={
+        <>
+          {dateText && (
+            <span>
+              Datos actualizados el{' '}
+              {updatedIso ? <time dateTime={isoDate(updatedIso)}>{dateText}</time> : dateText}
             </span>
-          ))}
-        </div>
-        <div className="mt-5 flex flex-wrap items-center gap-3">
-          <a
-            href="#tabla"
-            className="inline-flex items-center gap-2 bg-brand hover:bg-[#c41e3a] text-white font-semibold px-4 py-2 rounded-md text-sm"
-          >
-            Ver ranking ↓
-          </a>
-          <span className="text-xs text-white/70">
-            Verificado por el equipo editorial de EligeTuHosting · Metodología pública
-            {updated ? ` · Datos actualizados el ${updated}` : ''}
-          </span>
-        </div>
-      </section>
-
-      <section className="prose prose-slate max-w-none mb-6">
-        {c.intro.map((p, i) => (
-          <p key={i} className="text-ink/85 leading-relaxed">{p}</p>
-        ))}
-      </section>
-    </>
+          )}
+          {providerCount != null && <span>{formatInteger(providerCount)} proveedores verificados</span>}
+          {extraMeta}
+        </>
+      }
+      aside={
+        <EditorialImage
+          name={ed.image}
+          className="aspect-[4/3]"
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          priority
+          fallback={imageFallback}
+        />
+      }
+    />
   );
 };
 
-export const CountryFaqCopy: React.FC<Props> = ({ slug }) => {
+/** Introducción de la edición y lo que trae la comparación (antes, píldoras). */
+export const CountryIntroCopy: React.FC<{ slug: Slug; children?: React.ReactNode }> = ({ slug, children }) => {
   const c = COUNTRY_CONTENT[slug];
   if (!c) return null;
   return (
-    <section className="mb-8">
-      <h2 className="text-xl font-semibold mb-3 text-ink">Preguntas frecuentes</h2>
-      <div className="space-y-3">
-        {c.faq.map((f, i) => (
-          <div key={i} className="border rounded-lg p-4 bg-white">
-            <h3 className="font-semibold text-ink mb-1">{f.q}</h3>
-            <p className="text-sm text-ink/80 leading-relaxed">{f.a}</p>
-          </div>
+    <div className="grid gap-10 lg:grid-cols-12">
+      <div className="prose lg:col-span-7">
+        {c.intro.map((p, i) => (
+          <p key={i}>{p}</p>
         ))}
       </div>
-    </section>
+      <div className="lg:col-span-4 lg:col-start-9">
+        <p className="t-label">En esta comparación</p>
+        <ul className="mt-3 divide-y divide-rule border-y border-rule">
+          {c.chips.map((ch) => (
+            <li key={ch} className="flex items-start gap-2.5 py-3 text-[15px] text-ink">
+              <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-ink-3" />
+              {ch}
+            </li>
+          ))}
+        </ul>
+        {children}
+      </div>
+    </div>
   );
+};
+
+/** Preguntas frecuentes de la edición (sin título: lo pone la sección). */
+export const CountryFaqCopy: React.FC<{ slug: Slug }> = ({ slug }) => {
+  const c = COUNTRY_CONTENT[slug];
+  if (!c) return null;
+  return <FaqList items={c.faq} />;
 };
 
 export default CountryHeroCopy;

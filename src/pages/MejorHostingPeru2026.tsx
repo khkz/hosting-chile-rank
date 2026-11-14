@@ -1,50 +1,32 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  Check, X, Star, Zap, Shield, Clock, Headphones, MapPin, AlertTriangle,
-  ShieldCheck, ArrowRight,
-} from 'lucide-react';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import ItemListSchema from '@/components/SEO/ItemListSchema';
-import { track } from '@/lib/track';
+import Section from '@/components/system/Section';
+import { ProvenanceTag } from '@/components/data/Provenance';
 import { COUNTRY_CONTENT } from '@/data/countryContent';
-import { CountryHeroCopy, CountryFaqCopy } from '@/components/country/CountryHeroCopy';
+import { CountryHeroCopy, CountryIntroCopy } from '@/components/country/CountryHeroCopy';
+import FaqList from '@/components/ranking/pais/FaqList';
+import PeShortAnswer from '@/components/ranking/pais/PeShortAnswer';
+import PeRanking from '@/components/ranking/pais/PeRanking';
+import PeComparisonTable from '@/components/ranking/pais/PeComparisonTable';
+import { PeChileLink, PeDatacenterTest, PeFinalCta, PeMethodology, PeUseCases } from '@/components/ranking/pais/PeSections';
+import { displayText, type PeProvider } from '@/components/ranking/pais/peTypes';
 
 const LAST_UPDATED = new Date().toISOString().slice(0, 10);
 const CURRENT_YEAR = 2026;
 
-type Provider = {
-  name: string;
-  slug?: string;
-  rating: number;
-  precio: string;         // display price
-  precioNota: string;     // short caveat
-  moneda: 'PEN' | 'USD';
-  datacenter: string;
-  soporteLocal: boolean;
-  facturaLocal: boolean;
-  litespeed: boolean;
-  ssd: boolean;
-  destacado?: boolean;
-  url: string;
-  pros: string[];
-  contras: string[];
-};
-
-const providers: Provider[] = [
+// Notas, precios y textos de Perú: pendiente 6 (no cambiarlos). precioNota y
+// datacenter alimentan el JSON-LD tal cual; el formato visible se arma al mostrar.
+const providers: PeProvider[] = [
   {
     name: 'HostingPlus.pe',
     slug: 'hostingplus-pe',
     rating: 9.8,
-    precio: 'S/.70/año',
+    price: { amount: 70, currency: 'PEN', period: 'año' },
     precioNota: 'Oferta SSD · sin sorpresas al renovar',
-    moneda: 'PEN',
     datacenter: 'GTD Lima, Perú — Tier III certificado',
     soporteLocal: true,
     facturaLocal: true,
@@ -68,9 +50,8 @@ const providers: Provider[] = [
   {
     name: 'Hostinger',
     rating: 9.0,
-    precio: 'desde USD 2,99/mes',
+    price: { amount: 2.99, currency: 'USD', period: 'mes', from: true },
     precioNota: 'Buena oferta de entrada · renovación sube fuerte',
-    moneda: 'USD',
     datacenter: 'São Paulo (Brasil)',
     soporteLocal: false,
     facturaLocal: false,
@@ -90,9 +71,8 @@ const providers: Provider[] = [
   {
     name: 'BanaHosting',
     rating: 8.7,
-    precio: 'desde USD 3,95/mes',
+    price: { amount: 3.95, currency: 'USD', period: 'mes', from: true },
     precioNota: 'LiteSpeed · renovaciones estables',
-    moneda: 'USD',
     datacenter: 'Miami / Toronto',
     soporteLocal: false,
     facturaLocal: false,
@@ -110,9 +90,8 @@ const providers: Provider[] = [
   {
     name: 'SiteGround',
     rating: 8.4,
-    precio: 'desde USD 3,99/mes',
+    price: { amount: 3.99, currency: 'USD', period: 'mes', from: true },
     precioNota: 'Premium WordPress · el más caro',
-    moneda: 'USD',
     datacenter: 'Google Cloud (São Paulo / Iowa)',
     soporteLocal: false,
     facturaLocal: false,
@@ -131,9 +110,8 @@ const providers: Provider[] = [
   {
     name: 'Locales tradicionales (Hosting Perú, InkaHosting, PlanetaHosting.pe)',
     rating: 8.1,
-    precio: 'desde S/. 90–150/año',
+    price: { amount: 90, max: 150, currency: 'PEN', period: 'año', from: true },
     precioNota: 'Factura local · stack heterogéneo',
-    moneda: 'PEN',
     datacenter: 'Perú / EE.UU. según proveedor',
     soporteLocal: true,
     facturaLocal: true,
@@ -149,14 +127,6 @@ const providers: Provider[] = [
       'Planes equivalentes suelen ser más caros que HostingPlus',
     ],
   },
-];
-
-const criterios = [
-  { icon: <AlertTriangle className="w-6 h-6" />, title: 'Reclamos verificados (30%)', description: 'Cantidad, gravedad y recurrencia de reclamos públicos verificados en nuestro registro y en fuentes externas (Indecopi, redes, foros).' },
-  { icon: <Clock className="w-6 h-6" />, title: 'Servicio post-venta (25%)', description: 'Tiempo real de primera respuesta, canales en español y presencia de equipo en Perú.' },
-  { icon: <Zap className="w-6 h-6" />, title: 'Velocidad y tecnología (20%)', description: 'LiteSpeed Enterprise, SSD/NVMe, caché, HTTP/3 y TTFB observado desde Lima.' },
-  { icon: <Shield className="w-6 h-6" />, title: 'Seguridad y datacenter (15%)', description: 'Certificación del datacenter (TÜV/Uptime/ICREA), WAF, SSL, backups automáticos y anti-DDoS.' },
-  { icon: <MapPin className="w-6 h-6" />, title: 'Precio vs. valor (10%)', description: 'Precio inicial vs. renovación, factura local en soles y garantía de devolución.' },
 ];
 
 const faqs = [
@@ -184,14 +154,6 @@ const faqs = [
     q: '¿Puedo migrar mi web sin perderla?',
     a: 'Sí. HostingPlus.pe incluye migración asistida gratuita desde tu proveedor actual y 30 días de garantía de devolución, así puedes probar sin riesgo.',
   },
-];
-
-const casosDeUso = [
-  { need: 'WordPress', pick: 'Plan WordPress · S/.389', why: 'LiteSpeed + LSCache + NVMe con soporte local.' },
-  { need: 'Presupuesto ajustado', pick: 'Oferta SSD · S/.70/año', why: 'Precio de entrada más bajo con factura peruana.' },
-  { need: 'Tienda online', pick: 'eCommerce · S/.479', why: 'Recursos y optimizaciones para WooCommerce / PrestaShop.' },
-  { need: 'Empresa con RUC', pick: 'Cualquier plan HostingPlus.pe', why: 'S.A.C. peruana emite factura en soles.' },
-  { need: 'VPS', pick: 'VPS desde S/.289/mes', why: 'Recursos dedicados, ideal para proyectos que crecen.' },
 ];
 
 const canonical = 'https://eligetuhosting.com/pe/mejor-hosting-peru-2026';
@@ -269,307 +231,69 @@ const MejorHostingPeru2026: React.FC = () => {
       />
 
       <Navbar />
-      <SEOBreadcrumbs
-        items={[{ name: 'Hosting en Perú', href: '/pe' }]}
-        pageName={`Mejor hosting Perú ${CURRENT_YEAR}`}
-      />
 
-      <main className="min-h-screen bg-white">
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-          <CountryHeroCopy slug="pe" />
-          <CountryFaqCopy slug="pe" />
+      <main className="bg-white">
+        <CountryHeroCopy
+          slug="pe"
+          breadcrumbs={
+            <SEOBreadcrumbs items={[{ name: 'Hosting en Perú', href: '/pe' }]} pageName={`Mejor hosting Perú ${CURRENT_YEAR}`} />
+          }
+          rankingHref="#ranking"
+          methodLabel="Cómo ponderamos"
+          extraMeta={
+            <>
+              <span className="inline-flex items-center gap-2">
+                Notas <ProvenanceTag kind="editorial" />
+              </span>
+              <span>Precios de HostingPlus.pe verificados en julio de {CURRENT_YEAR}</span>
+            </>
+          }
+        />
 
-          {/* Respuesta directa (AEO) */}
-          <section className="mb-10">
-            <Card className="border-l-4 border-l-brand shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-ink flex items-center gap-2">
-                  <Star className="w-6 h-6 text-brand" />
-                  Respuesta corta
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-gray-700 leading-relaxed">
-                <p>
-                  El mejor hosting de Perú {CURRENT_YEAR} es{' '}
-                  <strong className="text-brand">HostingPlus.pe (9,8/10)</strong>: es el{' '}
-                  <strong>único proveedor del directorio PE con datacenter local Tier III certificado</strong>{' '}
-                  (<strong>GTD Lima, Perú</strong>), <strong>0 reclamos INDECOPI</strong> en «Mira a Quién le Compras»,
-                  razón social peruana <strong>Hostingplus Datacenter S.A.C. (RUC 20611867108)</strong>, soporte 24/7 desde Lima{' '}
-                  (<a href="tel:+5116409409" className="underline">(01) 640 9409</a>),{' '}
-                  <strong>NVMe RAID 10 + LiteSpeed Enterprise</strong>, planes desde <strong>S/.70/año</strong>,
-                  10 días de prueba y 30 días de garantía.
-                </p>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">Datacenter GTD Tier III (Lima)</Badge>
-                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">0 Reclamos INDECOPI</Badge>
-                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 border">NVMe</Badge>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Divulgación honesta: para servidores <strong>dedicados</strong> opcionales HostingPlus declara datacenter{' '}
-                  <strong>Hivelocity en Tampa, FL (EE.UU.)</strong>. El grupo opera además Ascenty Santiago (Tier III) como
-                  respaldo regional y es Google Cloud Partner con instancias en São Paulo.
-                </p>
-                <p className="text-xs text-gray-500">
-                  Divulgación de comisión: podemos recibir una comisión si contratas por nuestros enlaces. No altera el orden del ranking.
-                </p>
-              </CardContent>
-            </Card>
-          </section>
+        <Section density="tight" aria-label="Cómo leer la edición Perú">
+          <CountryIntroCopy slug="pe" />
+        </Section>
 
-          {/* Ranking */}
-          <section className="mb-12">
-            <h2 className="text-3xl font-bold text-ink mb-6">Ranking {CURRENT_YEAR}</h2>
-            <div className="space-y-4">
-              {providers.map((p, i) => (
-                <Card key={p.name} className={p.destacado ? 'border-brand border-2 shadow-md' : ''}>
-                  <CardContent className="p-5">
-                    <div className="flex flex-col md:flex-row md:items-center gap-4">
-                      <div className="flex items-center gap-3 md:w-2/3">
-                        <div className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center font-bold shrink-0">
-                          {i + 1}
-                        </div>
-                        <div>
-                          <div className="font-bold text-lg text-ink flex items-center gap-2 flex-wrap">
-                            {p.name}
-                            {p.destacado && (
-                              <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                                <Star className="w-3 h-3 mr-1" /> Recomendado editorial
-                              </Badge>
-                            )}
-                          </div>
-                          <div className="text-sm text-gray-600">
-                            {p.precio} · <span className="text-gray-500">{p.precioNota}</span>
-                          </div>
-                          <div className="text-xs text-gray-500 mt-1">
-                            Datacenter: {p.datacenter}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="md:w-1/3 flex flex-col items-start md:items-end gap-2">
-                        <div className="text-3xl font-bold text-brand">{p.rating.toFixed(1)}/10</div>
-                        <Button
-                          asChild
-                          size="sm"
-                          className="bg-brand hover:bg-[#c41e3a]"
-                          onClick={() => track('click_visitar_sitio', { slug: p.slug || p.name.toLowerCase(), location: 'pe_ranking' })}
-                        >
-                          <a href={p.url} target="_blank" rel="nofollow sponsored noopener noreferrer">
-                            Ver planes y precios
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
+        <Section id="respuesta" tone="paper" title="Respuesta corta">
+          <PeShortAnswer year={CURRENT_YEAR} rating={top.rating} />
+        </Section>
 
-                    <div className="grid md:grid-cols-2 gap-4 mt-4">
-                      <div>
-                        <div className="text-xs font-semibold text-green-700 uppercase mb-1">A favor</div>
-                        <ul className="text-sm text-gray-700 space-y-1">
-                          {p.pros.map((x, k) => (
-                            <li key={k} className="flex gap-2"><Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" /><span>{x}</span></li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-red-700 uppercase mb-1">En contra</div>
-                        <ul className="text-sm text-gray-700 space-y-1">
-                          {p.contras.map((x, k) => (
-                            <li key={k} className="flex gap-2"><X className="w-4 h-4 text-red-500 shrink-0 mt-0.5" /><span>{x}</span></li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
+        <Section id="ranking" title={`Ranking ${CURRENT_YEAR}`} lead="Cinco opciones con su nota editorial, lo que declara cada proveedor y lo que pesa a favor y en contra.">
+          <PeRanking providers={providers} />
+        </Section>
 
-          {/* Tabla comparativa */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-ink mb-4">Tabla comparativa</h2>
-            <div className="overflow-x-auto border rounded-lg">
-              <table className="w-full text-sm">
-                <thead className="bg-muted/50 text-left">
-                  <tr>
-                    <th className="px-3 py-2 font-medium">#</th>
-                    <th className="px-3 py-2 font-medium">Proveedor</th>
-                    <th className="px-3 py-2 font-medium">Puntaje</th>
-                    <th className="px-3 py-2 font-medium">Precio</th>
-                    <th className="px-3 py-2 font-medium">Moneda</th>
-                    <th className="px-3 py-2 font-medium">Datacenter</th>
-                    <th className="px-3 py-2 font-medium">Factura PE</th>
-                    <th className="px-3 py-2 font-medium">LiteSpeed</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {providers.map((p, i) => (
-                    <tr key={p.name} className="border-t">
-                      <td className="px-3 py-2 text-muted-foreground">{i + 1}</td>
-                      <td className="px-3 py-2 font-medium">{p.name}</td>
-                      <td className="px-3 py-2 font-semibold text-brand">{p.rating.toFixed(1)}</td>
-                      <td className="px-3 py-2">{p.precio}</td>
-                      <td className="px-3 py-2">{p.moneda}</td>
-                      <td className="px-3 py-2 text-xs">{p.datacenter}</td>
-                      <td className="px-3 py-2">{p.facturaLocal ? <Check className="w-4 h-4 text-green-600" /> : <X className="w-4 h-4 text-red-500" />}</td>
-                      <td className="px-3 py-2">{p.litespeed ? <Check className="w-4 h-4 text-green-600" /> : <X className="w-4 h-4 text-red-500" />}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+        <Section id="tabla" tone="paper" title="Tabla comparativa">
+          <PeComparisonTable providers={providers} />
+        </Section>
 
-          {/* Casos de uso */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-ink mb-4">¿Qué plan de HostingPlus.pe conviene según tu proyecto?</h2>
-            <div className="grid md:grid-cols-2 gap-3">
-              {casosDeUso.map((c) => (
-                <Card key={c.need}>
-                  <CardContent className="p-4">
-                    <div className="text-sm text-gray-500">{c.need}</div>
-                    <div className="font-semibold text-ink">{c.pick}</div>
-                    <div className="text-sm text-gray-600 mt-1">{c.why}</div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            <p className="text-xs text-gray-500 mt-3">Precios de HostingPlus.pe verificados en julio de {CURRENT_YEAR}.</p>
-          </section>
+        <Section id="planes" title="¿Qué plan de HostingPlus.pe conviene según tu proyecto?">
+          <PeUseCases year={CURRENT_YEAR} />
+        </Section>
 
-          {/* Metodología */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-ink mb-4">Metodología (mismas 5 ponderaciones que Chile)</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              {criterios.map((c) => (
-                <Card key={c.title}>
-                  <CardContent className="p-5">
-                    <div className="flex items-start gap-3">
-                      <div className="text-brand">{c.icon}</div>
-                      <div>
-                        <div className="font-semibold text-ink">{c.title}</div>
-                        <p className="text-sm text-gray-600 mt-1">{c.description}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            <p className="text-xs text-gray-500 mt-3">
-              Ver también{' '}
-              <Link to="/pe/hosting-con-datacenter-local" className="underline">proveedores con datacenter en Perú</Link>{' '}
-              y{' '}
-              <Link to="/pe/benchmark" className="underline">benchmark PE</Link>.
-            </p>
-          </section>
+        <Section
+          id="metodologia"
+          tone="paper"
+          title="Cómo ponderamos en Perú"
+          lead="Cinco factores con su peso en la nota editorial de cada proveedor peruano."
+        >
+          <PeMethodology />
+        </Section>
 
-          {/* Sección educativa: DC certificado vs autodeclarado */}
-          <section className="mb-12">
-            <Card className="border-l-4 border-l-emerald-600 bg-emerald-50/40">
-              <CardContent className="p-6">
-                <h2 className="text-2xl font-bold text-ink mb-3">
-                  ¿Datacenter certificado o solo «autodeclarado»? El test que ningún proveedor peruano quiere que hagas
-                </h2>
-                <p className="text-sm text-gray-700 mb-4">
-                  En el mercado peruano abundan frases como «datacenter propio», «clase mundial» o «Tier III homologable».
-                  Ninguna es una certificación. Un <strong>Tier III real</strong> exige redundancia N+1, generadores de respaldo,
-                  rutas duales de energía y refrigeración, y <strong>mantenimiento sin apagado</strong>, verificados por un
-                  emisor independiente (Uptime Institute, TÜV Rheinland o ICREA). Una «sala acondicionada» no cumple ninguno
-                  de esos requisitos y no es equivalente.
-                </p>
-                <div className="grid md:grid-cols-3 gap-3 mb-4">
-                  {[
-                    {
-                      q: '1) ¿En qué datacenter están físicamente?',
-                      hp: 'GTD Lima, Perú (nombre del operador identificable y ubicación real).',
-                    },
-                    {
-                      q: '2) ¿Qué certificación tiene y quién la emite?',
-                      hp: 'Tier III certificado del datacenter GTD Lima (operador reconocido en el mercado peruano).',
-                    },
-                    {
-                      q: '3) ¿Puedo verificarlo yo mismo?',
-                      hp: 'Sí: RUC 20611867108 en SUNAT, 0 reclamos en «Mira a Quién le Compras» de INDECOPI y teléfono Lima (01) 640 9409.',
-                    },
-                  ].map((row) => (
-                    <div key={row.q} className="rounded-lg border border-emerald-200 bg-white p-3">
-                      <div className="text-sm font-semibold text-ink mb-1">{row.q}</div>
-                      <div className="text-xs text-gray-500 mb-1 uppercase tracking-wide">HostingPlus responde</div>
-                      <div className="text-sm text-gray-700">{row.hp}</div>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-xs text-gray-600">
-                  Aplícale las mismas 3 preguntas a cualquier otro proveedor peruano antes de contratar. Si no puede nombrar el
-                  operador del datacenter, mostrar la certificación con emisor identificable ni entregarte un RUC verificable en
-                  SUNAT, no está a la altura.
-                </p>
-              </CardContent>
-            </Card>
-          </section>
+        <Section id="datacenter" title="¿Datacenter certificado o solo «autodeclarado»? El test que ningún proveedor peruano quiere que hagas">
+          <PeDatacenterTest />
+        </Section>
 
+        <Section id="preguntas" tone="paper" title="Preguntas frecuentes">
+          <FaqList items={[...c.faq, ...faqs]} renderAnswer={displayText} />
+        </Section>
 
+        <Section density="tight" aria-label="Ranking de Chile">
+          <PeChileLink />
+        </Section>
 
-          {/* FAQ */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-ink mb-4">Preguntas frecuentes</h2>
-            <div className="space-y-3">
-              {faqs.map((f, i) => (
-                <Card key={i}>
-                  <CardContent className="p-5">
-                    <h3 className="font-semibold text-ink mb-1">{f.q}</h3>
-                    <p className="text-sm text-gray-700">{f.a}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* Cross-link a Chile */}
-          <section className="mb-12">
-            <Card className="bg-gray-50">
-              <CardContent className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div>
-                  <div className="font-semibold text-ink">¿Buscas hosting en Chile?</div>
-                  <div className="text-sm text-gray-600">
-                    Revisa nuestro ranking auditado para el mercado chileno.
-                  </div>
-                </div>
-                <Button asChild variant="outline">
-                  <a href="https://eligetuhosting.cl/mejor-hosting-chile-2026" rel="noopener">
-                    Ver ranking Chile <ArrowRight className="w-4 h-4 ml-1" />
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-          </section>
-
-          {/* CTA final */}
-          <section className="text-center">
-            <Card className="bg-gradient-to-r from-brand to-[#c41e3a] text-white shadow-xl">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-3 flex items-center justify-center gap-2">
-                  <ShieldCheck className="w-6 h-6" /> Contrata HostingPlus.pe
-                </h3>
-                <p className="text-lg mb-4 opacity-95">
-                  Empresa peruana, factura en soles, soporte 24/7 en Lima. Planes desde <strong>S/.70/año</strong>, 30 días de garantía.
-                </p>
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-white text-brand hover:bg-gray-100 font-semibold px-8 py-3"
-                  onClick={() => track('click_visitar_sitio', { slug: 'hostingplus-pe', location: 'pe_ranking_cta' })}
-                >
-                  <a href={top.url} target="_blank" rel="nofollow sponsored noopener noreferrer">
-                    Ver planes y precios
-                  </a>
-                </Button>
-                <div className="text-xs text-white/80 mt-3">
-                  Divulgación: podemos recibir una comisión si contratas por este enlace. No altera el orden del ranking.
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-        </div>
+        <Section tone="paper" aria-label="Contratar HostingPlus.pe">
+          <PeFinalCta top={top} />
+        </Section>
       </main>
       <Footer />
     </>

@@ -4,8 +4,10 @@
 import asnMap from '@/data/asnMap.json';
 
 type Cc = 'PE' | 'MX' | 'CO' | 'AR' | 'CDN' | string;
-type AsnEntry = { cc: Cc; asn: string; org: string };
+export type AsnEntry = { cc: Cc; asn: string; org: string };
 export const ASN_MAP = (asnMap as { providers: Record<string, AsnEntry> }).providers;
+/** Fecha en que se consultó el ASN de cada IP (AAAA-MM-DD). null si el mapa no la trae. */
+export const ASN_CHECKED_AT: string | null = (asnMap as { _generated?: string })._generated ?? null;
 
 const TIER_CERTIFIED_SLUGS = new Set<string>([
   'hostdime-co',     // Tocancipá Tier IV Uptime Institute (verificable)
@@ -39,6 +41,10 @@ export interface DcClass {
   evidence: string;
   rankQuality: number;
   rankLatency: number;
+  /** Declaración pública del proveedor (texto tal cual), '' si no declara. */
+  declaration: string;
+  /** Entrada del mapa de IP a ASN, si existe. */
+  asn: AsnEntry | null;
 }
 
 export function classifyDc(
@@ -99,7 +105,60 @@ export function classifyDc(
     foreign_verified: 3,
   }[location];
 
-  return { location, quality, label, evidence, rankQuality, rankLatency };
+  return { location, quality, label, evidence, rankQuality, rankLatency, declaration: dcl, asn };
+}
+
+// ── Presentación (solo lectura; no altera el orden) ─────────────────────
+
+const CC_NAME: Record<string, string> = {
+  US: 'EE.UU.', PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina', CL: 'Chile', BR: 'Brasil',
+  CA: 'Canadá', DE: 'Alemania', NL: 'Países Bajos', ZA: 'Sudáfrica', GB: 'Reino Unido', FR: 'Francia',
+};
+const ccName = (cc: string) => CC_NAME[cc] ?? cc;
+
+export interface DcLocationView {
+  /** Resumen corto: «En México», «Fuera de México», «Declara Colombia; IP fuera», «Sin dato». */
+  status: string;
+  /** Texto declarado por el proveedor (procedencia: Declarado). null si no declara. */
+  declared: string | null;
+  /** Lo que medimos de la IP (procedencia: Medido). null si no hay entrada de ASN. */
+  measured: string | null;
+}
+
+/** Ubicación del datacenter separada por procedencia: lo declarado y lo medido (IP a ASN). */
+export function dcLocationView(dc: DcClass, countryName: string): DcLocationView {
+  const declared = dc.declaration || null;
+  let measured: string | null = null;
+  if (dc.asn) {
+    measured = dc.asn.cc === 'CDN'
+      ? `IP de ${dc.asn.org} (CDN): no muestra el origen`
+      : `IP en ${dc.asn.org} (${dc.asn.asn}), ${ccName(dc.asn.cc)}`;
+  }
+  const status: Record<DcLocation, string> = {
+    local_verified: `En ${countryName}`,
+    local_declared: `En ${countryName}`,
+    foreign_verified: `Fuera de ${countryName}`,
+    foreign_declared: `Fuera de ${countryName}`,
+    mismatch: `Declara ${countryName}; IP fuera`,
+    unknown: 'Sin dato',
+  };
+  return { status: status[dc.location], declared, measured };
+}
+
+/** Las cuatro categorías de calidad, con el mismo nombre que usa el orden de la tabla. */
+export const DC_QUALITY_TEXT: Record<DcQuality, string> = {
+  tier_certified: 'Tier certificado',
+  self_declared: 'Autodeclarado',
+  foreign_infra: 'Infraestructura externa',
+  unknown: 'Sin certificación conocida',
+};
+
+const ISSUER_RE = /uptime\s+institute|icrea|t[üu]v(?:\s+rheinland)?/i;
+
+/** Emisor de la certificación solo si aparece literalmente en la declaración; si no, null. */
+export function dcIssuer(dc: DcClass): string | null {
+  const m = dc.declaration.match(ISSUER_RE);
+  return m ? m[0].replace(/\s+/g, ' ') : null;
 }
 
 export function rankProvidersByDcTier<T extends {

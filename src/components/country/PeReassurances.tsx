@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { ProvenanceTag } from '@/components/data/Provenance';
 import { ShieldCheck, FileText, Phone, Headphones, Building2, ExternalLink } from 'lucide-react';
 import { track } from '@/lib/track';
 
@@ -11,6 +12,9 @@ import { track } from '@/lib/track';
  *
  * CTA: "Ver planes y precios" con trackEvent y rel="sponsored" para divulgación.
  * Divulgación de comisión visible.
+ *
+ * Nota (rediseño «Cercano y confiable»): hoy no se dibuja en ninguna ruta, porque
+ * /pe/mejor-hosting-peru-2026 usa MejorHostingPeru2026. Se limpió solo la forma.
  */
 export default function PeReassurances({ variant = 'landing' }: { variant?: 'landing' | 'best' }) {
   const bullets = [
@@ -27,7 +31,7 @@ export default function PeReassurances({ variant = 'landing' }: { variant?: 'lan
     {
       icon: Headphones,
       label: 'Soporte en español',
-      value: 'Ticket 24/7 · Lun–Vie 9:00–17:00 hora local',
+      value: 'Ticket 24/7, lunes a viernes 9:00–17:00 hora local',
     },
     {
       icon: Building2,
@@ -39,66 +43,57 @@ export default function PeReassurances({ variant = 'landing' }: { variant?: 'lan
   const onCta = () => track('click_afiliado', { provider: 'hostingplus-pe', country: 'PE', position: variant });
 
   return (
-    <section
-      aria-labelledby="pe-curated-heading"
-      className="mb-10 rounded-2xl border border-brand/40 bg-gradient-to-br from-brand/5 via-white to-brand/10 shadow-sm overflow-hidden"
-    >
-      <div className="p-5 md:p-7">
-        <div className="flex items-start gap-3 mb-4">
-          <div className="rounded-full bg-brand/10 p-2 shrink-0">
-            <ShieldCheck className="h-5 w-5 text-brand" aria-hidden />
-          </div>
-          <div>
-            <div className="text-[11px] uppercase tracking-wider text-brand font-semibold">
-              Recomendado editorial · Perú
-            </div>
-            <h2 id="pe-curated-heading" className="text-xl md:text-2xl font-bold text-ink leading-tight">
-              HostingPlus Perú
-            </h2>
-            <p className="text-sm text-ink/75 mt-1">
-              Operador regional con razón social peruana, soporte hispano y teléfono
-              local. Datos verificables por WHOIS, registro mercantil y sitio oficial.
-            </p>
-          </div>
+    <section aria-labelledby="pe-curated-heading" className="mb-10 rounded-xl border border-rule bg-paper p-5 md:p-7">
+      <div className="mb-5 flex items-start gap-3">
+        <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-ink-2" aria-hidden />
+        <div>
+          <p className="t-label flex flex-wrap items-center gap-2">
+            <span>Recomendado editorial en Perú</span>
+            <ProvenanceTag kind="editorial" />
+          </p>
+          <h2 id="pe-curated-heading" className="t-h3 mt-1 text-ink">
+            HostingPlus Perú
+          </h2>
+          <p className="t-small mt-1 text-ink-2">
+            Operador regional con razón social peruana, soporte hispano y teléfono
+            local. Datos verificables por WHOIS, registro mercantil y sitio oficial.
+          </p>
         </div>
-
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
-          {bullets.map(({ icon: Icon, label, value }) => (
-            <li key={label} className="flex items-start gap-2.5 rounded-lg bg-white/70 border border-ink/10 p-3">
-              <Icon className="h-4 w-4 text-ink/70 mt-0.5 shrink-0" aria-hidden />
-              <div className="text-xs leading-snug">
-                <div className="text-ink/60">{label}</div>
-                <div className="text-ink font-medium">{value}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <Button asChild size="lg" className="cta-primary">
-            <a
-              href="https://www.hostingplus.pe/"
-              target="_blank"
-              rel="sponsored noopener"
-              referrerPolicy="no-referrer"
-              onClick={onCta}
-              className="inline-flex items-center gap-2"
-            >
-              Ver planes y precios <ExternalLink className="h-4 w-4" aria-hidden />
-            </a>
-          </Button>
-          <span className="text-xs text-ink/60">
-            Sin compromiso · atención en español
-          </span>
-        </div>
-
-        <p className="text-[11px] text-ink/60 mt-4 leading-snug">
-          <strong>Divulgación:</strong> podemos recibir una comisión si contratas por este enlace.
-          La recomendación se basa en trayectoria verificable del grupo en LATAM y no altera el
-          orden objetivo del ranking de más abajo. Datacenter declarado por el proveedor: Orlando,
-          Florida (EE.UU.).
-        </p>
       </div>
+
+      <ul className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2">
+        {bullets.map(({ icon: Icon, label, value }) => (
+          <li key={label} className="flex items-start gap-2.5 rounded-xl border border-rule bg-white p-3">
+            <Icon className="mt-0.5 h-4 w-4 shrink-0 text-ink-3" aria-hidden />
+            <div className="text-sm leading-snug">
+              <div className="text-ink-3">{label}</div>
+              <div className="font-medium text-ink">{value}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+        <Button asChild size="lg" variant="brand">
+          <a
+            href="https://www.hostingplus.pe/"
+            target="_blank"
+            rel="sponsored noopener"
+            referrerPolicy="no-referrer"
+            onClick={onCta}
+          >
+            Ver planes y precios <ExternalLink aria-hidden />
+          </a>
+        </Button>
+        <span className="t-meta">Sin compromiso, atención en español</span>
+      </div>
+
+      <p className="t-meta mt-4">
+        <strong className="font-semibold text-ink-2">Divulgación:</strong> podemos recibir una comisión si contratas por este enlace.
+        La recomendación se basa en trayectoria verificable del grupo en LATAM y no altera el
+        orden objetivo del ranking de más abajo. Datacenter declarado por el proveedor: Orlando,
+        Florida (EE.UU.).
+      </p>
     </section>
   );
 }

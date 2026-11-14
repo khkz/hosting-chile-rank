@@ -1,38 +1,46 @@
 import { useLocation, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
+import { Download, Server } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import Section from '@/components/system/Section';
 import { Button } from '@/components/ui/button';
-import { ShieldCheck, ExternalLink, ArrowRight, Server, FileText, Calendar, Building2 } from 'lucide-react';
 import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
-import { classifyDc } from '@/lib/dcTier';
-import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
+import { ASN_MAP, classifyDc } from '@/lib/dcTier';
+import { hasLocalDatacenter } from '@/lib/dcLocal';
+import { isHiddenProvider } from '@/lib/providerLinks';
 import PeReassurances from '@/components/country/PeReassurances';
-import { CountryHeroCopy, CountryFaqCopy } from '@/components/country/CountryHeroCopy';
-import { getEdition } from '@/lib/countries';
+import { CountryHeroCopy, CountryIntroCopy } from '@/components/country/CountryHeroCopy';
 import { COUNTRY_CONTENT } from '@/data/countryContent';
+import CountryCrumbs from '@/components/ranking/pais/CountryCrumbs';
+import CountrySummary from '@/components/ranking/pais/CountrySummary';
+import CountryDcTable from '@/components/ranking/pais/CountryDcTable';
+import CuratedNote from '@/components/ranking/pais/CuratedNote';
+import FaqList from '@/components/ranking/pais/FaqList';
 
 const CountryBestHosting = () => {
   const location = useLocation();
   const first = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
-  if (!isLatamSlug(first)) return <Navigate to="/latam" replace />;
-  const slug = first as LatamSlug;
+  const valid = isLatamSlug(first);
+  // Si la ruta no es de un país publicado se redirige (más abajo, después de los hooks).
+  const slug = (valid ? first : 'mx') as LatamSlug;
   const meta = LATAM_META[slug];
 
-  const { data: providers } = useQuery({
+  const { data: providers, isLoading, isError, refetch } = useQuery({
     queryKey: ['country-best-hosting', slug],
+    enabled: valid,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('hosting_companies')
         .select('id, slug, name, website, legal_name, corporate_group, datacenter_location, year_founded, technologies, is_curated, updated_at')
         .eq('country', meta.code)
         .eq('is_verified', true)
         .range(0, 999);
-      return (data ?? []).filter((c: any) => !isHiddenProvider(c.slug, c.website));
+      // Un error de lectura no es un país vacío: se muestra como error.
+      if (error) throw error;
+      return (data ?? []).filter((c) => !isHiddenProvider(c.slug, c.website));
     },
   });
 
@@ -40,18 +48,17 @@ const CountryBestHosting = () => {
   const list = rankProviders(providers ?? [], slug);
   // Fecha de los datos: la última actualización de un proveedor del país, no el reloj del visitante.
   const latestIso = (providers ?? []).reduce<string | null>(
-    (max, p: any) => (p.updated_at && (!max || p.updated_at > max) ? p.updated_at : max),
+    (max, p) => (p.updated_at && (!max || p.updated_at > max) ? p.updated_at : max),
     null
   );
-  const updatedHuman = latestIso
-    ? new Date(latestIso).toLocaleDateString(getEdition(meta.code).locale, { day: 'numeric', month: 'long', year: 'numeric' })
-    : null;
   const canonical = `https://eligetuhosting.com/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`;
   const title = `${c.title} | EligeTuHosting`;
   const description = c.subtitle;
-  const lastUpdated = new Date().toISOString().slice(0, 10);
 
-  const curated = list.find((p: any) => p.is_curated);
+  const curated = list.find((p) => p.is_curated);
+  const declaredLocal = providers ? list.filter((p) => hasLocalDatacenter(slug, p.datacenter_location)).length : undefined;
+  const measuredLocal = providers ? list.filter((p) => classifyDc(p, slug).location === 'local_verified').length : undefined;
+  const measuredTotal = providers ? list.filter((p) => Boolean(ASN_MAP[p.slug])).length : undefined;
 
   const peFaqs = slug === 'pe' ? [
     { q: '¿HostingPlus Perú tiene datacenter en Perú?', a: 'No. Su ficha técnica declara datacenter en Orlando, Florida (EE.UU.). Lo que sí tiene en Perú es razón social registrada (Hostingplus Datacenter S.A.C.), teléfono local (+51 1 640 9409) y soporte en español. Si necesitas datacenter físicamente en Perú, revisa nuestra lista de /pe/hosting-con-datacenter-local.' },
@@ -73,7 +80,7 @@ const CountryBestHosting = () => {
     name: title,
     itemListOrder: 'https://schema.org/ItemListOrderAscending',
     numberOfItems: list.length,
-    itemListElement: list.map((p: any, i: number) => ({
+    itemListElement: list.map((p, i: number) => ({
       '@type': 'ListItem',
       position: i + 1,
       url: `https://eligetuhosting.com/${slug}/${p.slug}`,
@@ -93,6 +100,8 @@ const CountryBestHosting = () => {
     '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
+
+  if (!valid) return <Navigate to="/latam" replace />;
 
   return (
     <>
@@ -116,113 +125,103 @@ const CountryBestHosting = () => {
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
       </Helmet>
       <Navbar />
-      <main className="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
-        <nav className="text-sm text-muted-foreground mb-4" aria-label="breadcrumb">
-          <Link to="/" className="hover:underline">Inicio</Link><span className="mx-2">/</span>
-          <Link to={`/${slug}`} className="hover:underline">Hosting en {meta.name}</Link><span className="mx-2">/</span>
-          <span className="text-foreground font-medium">Mejor hosting {meta.name} 2026</span>
-        </nav>
+      <main>
+        <CountryHeroCopy
+          slug={slug}
+          breadcrumbs={
+            <CountryCrumbs
+              items={[
+                { name: 'Inicio', href: '/' },
+                { name: `Hosting en ${meta.name}`, href: `/${slug}` },
+                { name: `Mejor hosting ${meta.name} 2026` },
+              ]}
+            />
+          }
+          updatedIso={latestIso}
+          imageFallback={
+            <CountrySummary
+              countryName={meta.name}
+              total={providers ? list.length : undefined}
+              declaredLocal={declaredLocal}
+              measuredLocal={measuredLocal}
+              measuredTotal={measuredTotal}
+            />
+          }
+        />
 
-        <CountryHeroCopy slug={slug} updated={updatedHuman} />
-        <p className="mt-2 mb-6 text-xs text-muted-foreground">
-          Última actualización de datos: <time dateTime={lastUpdated}>{lastUpdated}</time> · {list.length} proveedores verificados
-        </p>
-        <CountryFaqCopy slug={slug} />
-
-        {slug === 'pe' && curated ? (
-          <PeReassurances variant="best" />
-        ) : curated && (
-          <Card className="mb-8 border-brand/40 bg-brand/5">
-            <CardContent className="pt-5">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="h-6 w-6 text-brand mt-0.5 shrink-0" />
-                <div className="flex-1">
-                  <div className="text-xs uppercase tracking-wide text-brand font-semibold mb-1">Recomendado editorial</div>
-                  <div className="text-lg font-bold text-ink mb-1">{curated.name}</div>
-                  <p className="text-sm text-ink/80">
-                    Operador regional con soporte en español en {meta.name}. Dónde están sus servidores y qué entidad factura, en su{' '}
-                    <Link to={`/${slug}/${curated.slug}`} className="underline">ficha</Link>.
-                  </p>
-                  <p className="text-[11px] text-ink/60 mt-2 leading-snug">
-                    <strong>Divulgación:</strong> tenemos una relación comercial con este proveedor y podemos recibir una comisión si contratas por este enlace. La recomendación se basa en trayectoria verificable y no altera el orden objetivo del ranking.
-                  </p>
-                </div>
+        <Section density="tight" aria-label={`Cómo leer la edición ${meta.name}`}>
+          <CountryIntroCopy slug={slug}>
+            {slug !== 'pe' && curated && (
+              <div className="mt-8">
+                <CuratedNote name={curated.name} slug={curated.slug} countrySlug={slug} countryName={meta.name} />
               </div>
-            </CardContent>
-          </Card>
-        )}
+            )}
+          </CountryIntroCopy>
+          {slug === 'pe' && curated && (
+            <div className="mt-10">
+              <PeReassurances variant="best" />
+            </div>
+          )}
+        </Section>
 
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 text-ink">Tabla comparativa (datos verificables)</h2>
-          <div className="overflow-x-auto border rounded-lg">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/50">
-                <tr className="text-left">
-                  <th className="px-3 py-2 font-medium">#</th>
-                  <th className="px-3 py-2 font-medium">Proveedor</th>
-                  <th className="px-3 py-2 font-medium">Datacenter: ubicación + calidad</th>
-                  <th className="px-3 py-2 font-medium">Razón social</th>
-                  <th className="px-3 py-2 font-medium">Antigüedad</th>
-                  <th className="px-3 py-2 font-medium">Ficha</th>
-                </tr>
-              </thead>
-              <tbody>
-                {list.map((p: any, i: number) => {
-                  const dc = classifyDc(p, slug);
-                  const tone =
-                    dc.quality === 'tier_certified' ? 'bg-signal-declared-bg text-signal-declared ring-1 ring-inset ring-signal-declared/40' :
-                    dc.quality === 'self_declared' ? 'bg-amber-100 text-amber-800' :
-                    dc.quality === 'foreign_infra' ? 'bg-red-50 text-red-700' :
-                    'bg-muted text-muted-foreground';
-                  return (
-                    <tr key={p.id} className="border-t">
-                      <td className="px-3 py-2 text-muted-foreground">{i + 1}</td>
-                      <td className="px-3 py-2 font-medium">{p.name}</td>
-                      <td className="px-3 py-2">
-                        <span className={`inline-block px-2 py-0.5 rounded text-[11px] ${tone}`} title={dc.evidence}>
-                          {dc.label}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 text-xs">{p.legal_name || <span className="text-muted-foreground">—</span>}</td>
-                      <td className="px-3 py-2 text-xs">{p.year_founded || <span className="text-muted-foreground">—</span>}</td>
-                      <td className="px-3 py-2">
-                        <Link to={`/${slug}/${p.slug}`} className="text-primary hover:underline inline-flex items-center gap-1">
-                          Ver <ArrowRight className="h-3 w-3" />
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <Section
+          id="tabla"
+          title="Tabla comparativa"
+          lead={`${providers ? `${list.length} proveedores verificados. ` : ''}Cada fila separa lo que declara el proveedor de lo que medimos nosotros, para que puedas citar cada dato.`}
+        >
+          {isLoading ? (
+            <p className="border-y-2 border-ink py-10 text-ink-2">Cargando proveedores…</p>
+          ) : isError ? (
+            <div role="alert" className="rounded-xl border border-rule bg-paper p-6 text-ink-2">
+              <p>
+                No pudimos cargar la tabla de {meta.name}. Los proveedores siguen publicados: es un problema de conexión con
+                nuestra base de datos.
+              </p>
+              <Button variant="outline" className="mt-4" onClick={() => refetch()}>
+                Reintentar
+              </Button>
+            </div>
+          ) : list.length === 0 ? (
+            <div className="rounded-xl border border-rule bg-paper p-6 text-ink-2">
+              <p className="t-h3 text-ink">Todavía no hay proveedores verificados en {meta.name}</p>
+              <p className="t-small mt-2 measure">
+                Publicamos un proveedor cuando su razón social y su datacenter se pueden comprobar. ¿Conoces uno que falte?
+              </p>
+              <Button asChild variant="outline" className="mt-4">
+                <Link to="/contacto">Sugerir un proveedor</Link>
+              </Button>
+            </div>
+          ) : (
+            <CountryDcTable rows={list} slug={slug} countryName={meta.name} />
+          )}
+        </Section>
 
-        <section className="mb-8 bg-white border border-ink/10 rounded-xl p-5">
-          <h2 className="text-xl font-semibold mb-2 text-ink">Metodología y por qué aún no publicamos puntajes</h2>
-          <p className="text-sm text-ink/75 leading-relaxed">
-            En {meta.name} estamos en fase pre-benchmark. Publicar notas de 1–10 sin haber medido TTFB, uptime, tiempo real de soporte y reclamos verificados es exactamente lo que hacen los rankings falsos. Este directorio se ordena solo por datos objetivos declarados: presencia real de datacenter en el país (verificable con ASN + BGP), razón social local registrada, y años de operación declarados por el propio proveedor. Cuando completemos benchmarks propios reproducibles y un ciclo de reclamos verificados por email, publicaremos rankings numéricos con la misma metodología usada en Chile.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2 text-xs">
-            <Link to={`/${slug}/hosting-con-datacenter-local`} className="px-3 py-1.5 rounded bg-muted hover:bg-muted/70">
-              <Server className="inline h-3 w-3 mr-1" /> Proveedores con datacenter local
-            </Link>
-            <Link to="/metodologia" className="px-3 py-1.5 rounded bg-muted hover:bg-muted/70">Metodología completa</Link>
-            <a href={`/data/proveedores-${slug}.json`} target="_blank" rel="noopener" className="px-3 py-1.5 rounded bg-muted hover:bg-muted/70">Descargar datos JSON</a>
+        <Section id="metodologia" tone="paper" title="Metodología y por qué aún no publicamos puntajes">
+          <div className="prose">
+            <p>
+              En {meta.name} estamos en fase pre-benchmark. Publicar notas de 1–10 sin haber medido TTFB, uptime, tiempo real de soporte y reclamos verificados es exactamente lo que hacen los rankings falsos. Este directorio se ordena solo por datos objetivos declarados: presencia real de datacenter en el país (verificable con ASN + BGP), razón social local registrada, y años de operación declarados por el propio proveedor. Cuando completemos benchmarks propios reproducibles y un ciclo de reclamos verificados por email, publicaremos rankings numéricos con la misma metodología usada en Chile.
+            </p>
           </div>
-        </section>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button asChild variant="outline">
+              <Link to={`/${slug}/hosting-con-datacenter-local`}>
+                <Server aria-hidden /> Proveedores con datacenter local
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/metodologia">Metodología completa</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <a href={`/data/proveedores-${slug}.json`} target="_blank" rel="noopener">
+                <Download aria-hidden /> Descargar datos JSON
+              </a>
+            </Button>
+          </div>
+        </Section>
 
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-3 text-ink">Preguntas frecuentes</h2>
-          <div className="space-y-3">
-            {faqs.map((f, i) => (
-              <Card key={i}><CardContent className="pt-5 pb-5">
-                <h3 className="font-semibold text-sm mb-1">{f.q}</h3>
-                <p className="text-sm text-ink/80">{f.a}</p>
-              </CardContent></Card>
-            ))}
-          </div>
-        </section>
+        <Section id="preguntas" title="Preguntas frecuentes">
+          <FaqList items={faqs} />
+        </Section>
       </main>
       <Footer />
     </>
