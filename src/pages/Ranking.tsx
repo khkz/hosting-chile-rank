@@ -133,6 +133,7 @@ const RankingPage = () => {
 
       <main>
         <RankingHeader
+          breadcrumbSchema={false}
           crumbs={[]}
           pageName="Ranking"
           title="Ranking Hosting Chile 2026"
