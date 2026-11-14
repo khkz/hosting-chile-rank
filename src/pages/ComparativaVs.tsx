@@ -1,12 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
-import { ExternalLink, Star, Trophy } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { getActiveCountryCode } from '@/lib/country';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import { ProvenanceLegend } from '@/components/data/Provenance';
+import Crumbs from '@/components/comparar/Crumbs';
+import CompareTable from '@/components/comparar/CompareTable';
+import VsVerdict from '@/components/comparar/VsVerdict';
+import VsRecommendation from '@/components/comparar/VsRecommendation';
+import FaqList from '@/components/comparar/FaqList';
+import { buildVsRows } from '@/components/comparar/vsRows';
+import { useCompaniesBySlug, type CompareCompany } from '@/components/comparar/useCompareData';
+import { useLatestBenchmarkForCompany, useProviderScore } from '@/hooks/useProviderScore';
+import { useCompanyReputation } from '@/hooks/useCompanyReputation';
+import { formatDataDate, formatScore } from '@/lib/format';
 import {
   parsePair, canonicalPair, isValidSlug, isAnchorSlug,
   ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING,
@@ -14,77 +24,89 @@ import {
 
 const ORIGIN = 'https://eligetuhosting.cl';
 
-interface Company {
-  slug: string;
-  name: string;
-  logo_url: string | null;
-  overall_rating: number | null;
-  promo_price: number | null;
-  foundation_year: number | null;
-  datacenter_location: string | null;
-  corporate_group: string | null;
-  total_reviews: number | null;
-}
+/** Datos medidos y subpuntajes de un lado (hooks existentes, sin consultas nuevas). */
+const useSide = (c: CompareCompany | null) => {
+  const score = useProviderScore({
+    companyId: c?.id,
+    supportRating: c?.support_rating ?? null,
+    priceRating: c?.price_rating ?? null,
+  });
+  const bench = useLatestBenchmarkForCompany(c?.id);
+  const rep = useCompanyReputation(c?.id);
+  return {
+    subScores: score.subScores,
+    bench: bench.data,
+    verifiedReviews: rep.data?.verified_reviews_count ?? c?.verified_reviews ?? null,
+    loading: !!c && (score.isLoading || bench.isLoading || rep.isLoading),
+  };
+};
 
-const formatPrice = (_p: number | null) => 'Consultar';
+const LoadingShell = () => (
+  <>
+    <Navbar />
+    <main className="container py-16">
+      <p role="status" className="t-body text-ink-2">Cargando la comparativa…</p>
+    </main>
+    <Footer />
+  </>
+);
 
 const ComparativaVs: React.FC = () => {
   const { rival } = useParams<{ rival: string }>();
   const parsed = rival ? parsePair(rival) : null;
+  const valid = !!parsed && isValidSlug(parsed.a) && isValidSlug(parsed.b) && parsed.a !== parsed.b;
 
-  const [a, setA] = useState<Company | null>(null);
-  const [b, setB] = useState<Company | null>(null);
-  const [leaders, setLeaders] = useState<Company[]>([]);
-  const [loading, setLoading] = useState(true);
+  const slugs = valid && parsed
+    ? Array.from(new Set([parsed.a, parsed.b, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING]))
+    : [];
+  const { data: companies, isLoading } = useCompaniesBySlug(slugs, valid);
+  const a = (parsed && companies?.find((d) => d.slug === parsed.a)) || null;
+  const b = (parsed && companies?.find((d) => d.slug === parsed.b)) || null;
+  const sideA = useSide(a);
+  const sideB = useSide(b);
 
-  const involvesAnchor = parsed ? (isAnchorSlug(parsed.a) || isAnchorSlug(parsed.b)) : false;
+  if (!parsed || !valid) return <Navigate to="/comparativa" replace />;
 
-  useEffect(() => {
-    if (!parsed) { setLoading(false); return; }
-    (async () => {
-      const { data } = await supabase
-        .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,foundation_year,datacenter_location,corporate_group,total_reviews')
-        .eq('country', getActiveCountryCode())
-        .in('slug', [parsed.a, parsed.b]);
-      setA(data?.find(d => d.slug === parsed.a) || null);
-      setB(data?.find(d => d.slug === parsed.b) || null);
-
-      // Leaders (HostingPlus + EcoHosting) for the recommendation block
-      const { data: ldr } = await supabase
-        .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,foundation_year,datacenter_location,corporate_group,total_reviews')
-        .eq('country', getActiveCountryCode())
-        .in('slug', [ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING]);
-      setLeaders((ldr || []) as Company[]);
-      setLoading(false);
-    })();
-  }, [parsed?.a, parsed?.b]);
-
-  if (!parsed) return <Navigate to="/comparativa" replace />;
-  if (!isValidSlug(parsed.a) || !isValidSlug(parsed.b) || parsed.a === parsed.b) {
-    return <Navigate to="/comparativa" replace />;
-  }
+  const involvesAnchor = isAnchorSlug(parsed.a) || isAnchorSlug(parsed.b);
 
   // Canonical URL — if user landed on a non-canonical ordering, render the canonical url tag.
   const canonicalPairStr = canonicalPair(parsed.a, parsed.b);
   const canonical = `${ORIGIN}/comparativa/${canonicalPairStr}`;
 
-  if (loading) return <div className="p-10 text-center text-gray-500">Cargando comparativa…</div>;
+  if (isLoading) return <LoadingShell />;
   if (!a || !b) return <Navigate to="/comparativa" replace />;
 
-  const hostingplus = leaders.find(l => l.slug === ANCHOR_HOSTINGPLUS);
-  const ecohosting = leaders.find(l => l.slug === ANCHOR_ECOHOSTING);
+  const hostingplus = companies?.find((l) => l.slug === ANCHOR_HOSTINGPLUS);
+  const ecohosting = companies?.find((l) => l.slug === ANCHOR_ECOHOSTING);
 
   const title = `${a.name} vs ${b.name}: ¿cuál es mejor en 2026?`;
   const description = `Comparativa ${a.name} vs ${b.name} 2026 con datos verificables: nota, precio, datacenter, año de fundación, grupo corporativo y reseñas.`;
+  const lead = `Te mostramos en qué se parecen y en qué difieren ${a.name} y ${b.name}, con la procedencia de cada dato. Las filas marcadas «Difieren» son las que más pesan al decidir.`;
 
+  // Solo para las preguntas frecuentes (mismo texto que el JSON-LD FAQPage).
   const winner = (a.overall_rating ?? 0) >= (b.overall_rating ?? 0) ? a : b;
   const cheaper = a.promo_price && b.promo_price ? (a.promo_price < b.promo_price ? a : b) : null;
 
-  const verdict = involvesAnchor
-    ? `Según mediciones verificables, ${winner.name} obtiene la mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10) frente a su rival. ${cheaper ? `En precio, ${cheaper.name} publica el plan de entrada más económico de los dos; consulta el valor vigente en su sitio.` : ''}`
-    : `Comparando ${a.name} y ${b.name} con datos verificables, ${winner.name} obtiene mejor nota global (${Number(winner.overall_rating ?? 0).toFixed(1)}/10). ${cheaper ? `${cheaper.name} es el más económico de los dos en su plan de entrada. ` : ''}Sin embargo, ninguno alcanza al líder del ranking: HostingPlus.cl (9.9/10).`;
+  // Veredicto visible: la nota se llama nota editorial y no hay ganador sin las dos notas.
+  const scoreOf = (c: CompareCompany) => `${formatScore(c.overall_rating)}/10`;
+  const missing = [a, b].filter((c) => c.overall_rating == null).map((c) => c.name);
+  let noteSentence: string;
+  if (missing.length > 0) {
+    noteSentence = `Aún no hay nota editorial para ${missing.join(' ni para ')}, así que no te diremos cuál queda por encima.`;
+  } else if (Number(a.overall_rating) === Number(b.overall_rating)) {
+    noteSentence = `${a.name} y ${b.name} tienen la misma nota editorial (${scoreOf(a)}).`;
+  } else if (involvesAnchor) {
+    noteSentence = `Según nuestra nota editorial, ${winner.name} obtiene la nota más alta (${scoreOf(winner)}) frente a su rival.`;
+  } else {
+    noteSentence = `Comparando la nota editorial de ${a.name} y ${b.name}, ${winner.name} queda por encima (${scoreOf(winner)}).`;
+  }
+  const priceSentence = cheaper
+    ? involvesAnchor
+      ? `En precio, ${cheaper.name} publica el plan de entrada más económico de los dos; consulta el valor vigente en su sitio.`
+      : `${cheaper.name} es el más económico de los dos en su plan de entrada.`
+    : '';
+  const leaderSentence = involvesAnchor ? '' : 'Sin embargo, ninguno alcanza al líder del ranking: HostingPlus.cl (9,9/10).';
+  const verdict = [noteSentence, priceSentence, leaderSentence].filter(Boolean).join(' ');
 
   const faqs = [
     {
@@ -120,13 +142,14 @@ const ComparativaVs: React.FC = () => {
     },
   ];
 
-  const renderCell = (label: string, av: React.ReactNode, bv: React.ReactNode) => (
-    <tr className="border-t">
-      <th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">{label}</th>
-      <td className="py-3 px-3 text-sm">{av}</td>
-      <td className="py-3 px-3 text-sm">{bv}</td>
-    </tr>
+  const rows = buildVsRows(
+    [
+      { company: a, bench: sideA.bench, subScores: sideA.subScores, verifiedReviews: sideA.verifiedReviews },
+      { company: b, bench: sideB.bench, subScores: sideB.subScores, verifiedReviews: sideB.verifiedReviews },
+    ],
+    sideA.loading || sideB.loading,
   );
+  const updated = [a.updated_at, b.updated_at].filter(Boolean).sort().pop() ?? null;
 
   return (
     <>
@@ -144,129 +167,64 @@ const ComparativaVs: React.FC = () => {
       </Helmet>
 
       <Navbar />
-      <main className="bg-gradient-to-b from-paper to-white">
-        <section className="container mx-auto px-4 py-10 max-w-4xl">
-          <nav aria-label="breadcrumbs" className="text-xs text-gray-500 mb-3">
-            <Link to="/" className="hover:underline">Inicio</Link> /{' '}
-            <Link to="/comparativa" className="hover:underline">Comparativa</Link> /{' '}
-            <span>{a.name} vs {b.name}</span>
-          </nav>
-          <h1 className="text-2xl md:text-4xl font-bold text-ink">{title}</h1>
-          <p className="mt-3 text-gray-600 text-base md:text-lg">{description}</p>
-        </section>
+      <main>
+        <PageHeader
+          breadcrumbs={
+            <Crumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Comparativa', href: '/comparativa' }, { name: `${a.name} vs ${b.name}` }]} />
+          }
+          title={title}
+          lead={lead}
+          meta={
+            <>
+              {updated && <span>Fichas actualizadas al {formatDataDate(updated)}</span>}
+              <Link to="/metodologia" className="underline decoration-ink/30 underline-offset-4 hover:text-ink">
+                Cómo evaluamos
+              </Link>
+            </>
+          }
+        />
 
-        <section className="container mx-auto px-4 pb-8 max-w-4xl">
-          <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-paper">
-                  <th className="text-left py-3 px-3 text-xs uppercase text-gray-500">Característica</th>
-                  <th className="text-left py-3 px-3">
-                    <div className={`font-bold ${winner.slug === a.slug ? 'text-brand flex items-center gap-1' : 'text-ink'}`}>
-                      {winner.slug === a.slug && <Trophy className="h-4 w-4" />} {a.name}
-                    </div>
-                  </th>
-                  <th className="text-left py-3 px-3">
-                    <div className={`font-bold ${winner.slug === b.slug ? 'text-brand flex items-center gap-1' : 'text-ink'}`}>
-                      {winner.slug === b.slug && <Trophy className="h-4 w-4" />} {b.name}
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {renderCell('Nota global', (
-                  <span className="flex items-center gap-1 font-semibold"><Star className="h-4 w-4 text-amber-500 fill-amber-500" />{Number(a.overall_rating ?? 0).toFixed(1)}/10</span>
-                ), (
-                  <span className="flex items-center gap-1 font-semibold"><Star className="h-4 w-4 text-amber-500 fill-amber-500" />{Number(b.overall_rating ?? 0).toFixed(1)}/10</span>
-                ))}
-                {renderCell('Precio desde', formatPrice(a.promo_price), formatPrice(b.promo_price))}
-                {renderCell('Datacenter', a.datacenter_location || 'No informado', b.datacenter_location || 'No informado')}
-                {renderCell('Año de fundación', a.foundation_year || '—', b.foundation_year || '—')}
-                {renderCell('Grupo corporativo', a.corporate_group || 'No declarado', b.corporate_group || 'No declarado')}
-                {renderCell('Reseñas verificadas', a.total_reviews ?? 0, b.total_reviews ?? 0)}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <Section id="lado-a-lado" title="Lado a lado" density="tight">
+          <CompareTable
+            caption={`Comparación de ${a.name} y ${b.name}`}
+            columns={[
+              { key: a.slug, name: a.name, href: `/catalogo/${a.slug}` },
+              { key: b.slug, name: b.name, href: `/catalogo/${b.slug}` },
+            ]}
+            rows={rows}
+          />
+          <p className="t-meta mt-4 measure">
+            Marcamos «Difieren» solo cuando los dos tienen el dato y no coincide. «Sin medir» y «Sin dato» significan
+            que aún no lo tenemos: nunca lo rellenamos.
+          </p>
+          <ProvenanceLegend compact className="mt-8 max-w-4xl" />
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Veredicto editorial</h2>
-          <p className="text-gray-700 leading-relaxed">{verdict}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to={`/catalogo/${a.slug}`} className="px-4 py-2 rounded border border-gray-300 text-sm hover:bg-gray-50">Ver ficha {a.name}</Link>
-            <Link to={`/catalogo/${b.slug}`} className="px-4 py-2 rounded border border-gray-300 text-sm hover:bg-gray-50">Ver ficha {b.name}</Link>
-          </div>
-        </section>
+        <Section id="veredicto" title="Veredicto editorial" tone="paper" density="tight">
+          <p className="t-lead mb-8">{verdict}</p>
+          <VsVerdict
+            a={{ slug: a.slug, name: a.name, pros: a.pros ?? [], cons: a.cons ?? [] }}
+            b={{ slug: b.slug, name: b.name, pros: b.pros ?? [], cons: b.cons ?? [] }}
+          />
+        </Section>
 
-        {/* Recomendación editorial */}
-        {involvesAnchor ? (
-          <section className="container mx-auto px-4 pb-8 max-w-3xl">
-            <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Nuestra recomendación</h2>
-            <p className="text-gray-700">
-              Si buscas equilibrio entre rendimiento, soporte y datacenter local, recomendamos{' '}
-              <Link to="/catalogo/hostingplus" className="text-brand font-semibold hover:underline">HostingPlus.cl</Link>{' '}
-              (9.9/10), líder verificado del ranking 2026.{' '}
-              <Link to="/catalogo/ecohosting" className="text-brand font-semibold hover:underline">EcoHosting.cl</Link>{' '}
-              (9.6/10) es la alternativa recomendada por relación precio-rendimiento.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded bg-brand text-white text-sm hover:bg-red-700 flex items-center gap-1">
-                Visitar HostingPlus.cl <ExternalLink className="h-3 w-3" />
-              </a>
-              <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="px-4 py-2 rounded border border-brand text-brand text-sm hover:bg-brand hover:text-white flex items-center gap-1">
-                Visitar EcoHosting.cl <ExternalLink className="h-3 w-3" />
-              </a>
-            </div>
-          </section>
-        ) : (
-          <section className="container mx-auto px-4 pb-8 max-w-3xl">
-            <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Nuestra recomendación</h2>
-            <p className="text-gray-700">
-              Ni {a.name} ni {b.name} alcanzan al líder del ranking en métricas medibles. Recomendamos{' '}
-              <Link to="/catalogo/hostingplus" className="text-brand font-semibold hover:underline">HostingPlus.cl</Link>{' '}
-              <strong>(9.9/10)</strong>: datacenter en Santiago, LiteSpeed Enterprise, soporte 24/7 y cero reclamos visibles.
-              Para presupuestos ajustados,{' '}
-              <Link to="/catalogo/ecohosting" className="text-brand font-semibold hover:underline">EcoHosting.cl</Link>{' '}
-              <strong>(9.6/10)</strong> mantiene la mejor relación precio-rendimiento.
-            </p>
-            <div className="mt-4 grid sm:grid-cols-2 gap-3">
-              {hostingplus && (
-                <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener" className="rounded-xl border-2 border-brand p-4 bg-white hover:bg-brand/5 transition">
-                  <div className="font-bold text-brand">🥇 HostingPlus.cl <span className="text-xs">9.9/10</span></div>
-                  <div className="text-xs text-gray-600 mt-1">Líder verificado · {hostingplus.datacenter_location || 'Datacenter Chile'}</div>
-                  <div className="text-sm text-ink mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
-                </a>
-              )}
-              {ecohosting && (
-                <a href="https://www.ecohosting.cl/" target="_blank" rel="noopener" className="rounded-xl border border-gray-300 p-4 bg-white hover:border-brand transition">
-                  <div className="font-bold text-ink">🥈 EcoHosting.cl <span className="text-xs">9.6/10</span></div>
-                  <div className="text-xs text-gray-600 mt-1">Mejor precio-rendimiento</div>
-                  <div className="text-sm text-ink mt-2 flex items-center gap-1">Ir al sitio oficial <ExternalLink className="h-3 w-3" /></div>
-                </a>
-              )}
-            </div>
-            <div className="mt-3 flex flex-wrap gap-3 text-sm">
-              <Link to={`/alternativas-a/${a.slug}`} className="text-brand hover:underline">Alternativas a {a.name} →</Link>
-              <Link to={`/alternativas-a/${b.slug}`} className="text-brand hover:underline">Alternativas a {b.name} →</Link>
-            </div>
-          </section>
-        )}
+        <Section id="recomendacion" title="Nuestra recomendación" density="tight">
+          <VsRecommendation
+            a={a}
+            b={b}
+            involvesAnchor={involvesAnchor}
+            hostingplus={hostingplus}
+            ecohosting={ecohosting}
+          />
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Preguntas frecuentes</h2>
-          <div className="space-y-3">
-            {faqs.map((f, i) => (
-              <details key={i} className="border rounded-lg p-4 bg-white">
-                <summary className="font-semibold cursor-pointer text-ink">{f.q}</summary>
-                <p className="mt-2 text-sm text-gray-700">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
+        <Section id="preguntas" title="Preguntas frecuentes" density="tight" className="border-t border-rule">
+          <FaqList items={faqs} />
+        </Section>
 
-        <section className="container mx-auto px-4 pb-12 max-w-3xl">
-          <RecommendedByData />
-        </section>
+        <div className="container pb-16">
+          <RecommendedByData className="max-w-4xl" />
+        </div>
       </main>
       <Footer />
     </>

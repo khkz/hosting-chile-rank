@@ -1,117 +1,74 @@
-
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Check, X } from 'lucide-react';
-import { track } from '@/lib/track';
+import { Link } from 'react-router-dom';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ProvenanceTag, type Provenance } from '@/components/data/Provenance';
 import DatacenterBadge from '@/components/DatacenterBadge';
+import { track } from '@/lib/track';
+import type { HubProvider } from '@/components/comparar/hubTypes';
+import {
+  BackupValue, DatacenterValue, NotaValue, PriceValue, ReclamosValue, TechValue,
+} from '@/components/comparar/hubCells';
 
 interface HostingProviderCardProps {
-  provider: {
-    id: string;
-    name: string;
-    logo: string;
-    asn: string;
-    datacenter: string;
-    backups: string;
-    reclamos: string;
-    hasLiteSpeed: boolean;
-    hasWAF: boolean;
-    hasBackups: boolean;
-    priceLabel: string;
-    reseñaUrl: string;
-  };
+  provider: HubProvider;
+  /** Nota editorial leída de la base (null = sin nota). */
+  nota: number | null;
+  /** id de hosting_companies, para los reclamos verificados. */
+  companyId?: string;
+  notaLoading?: boolean;
+  /** Fila destacada del hub (decisión pendiente 3): fondo papel, sin borde rojo. */
   isHighlighted?: boolean;
 }
 
-const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, isHighlighted = false }) => {
-  return (
-    <Card className={`mb-4 overflow-hidden ${isHighlighted ? 'border-2 border-brand' : ''}`}>
-      <CardContent className="p-0">
-        <div className={`p-4 ${isHighlighted ? 'bg-paper-deep' : ''}`}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center">
-              <div className="w-16 h-12 mr-3 flex items-center justify-center bg-white rounded p-1">
-                <img 
-                  src={provider.logo} 
-                  alt={provider.name} 
-                  className="max-h-full max-w-full object-contain"
-                  loading="lazy"
-                />
-              </div>
-              <h3 className="font-medium text-lg">{provider.name}</h3>
-            </div>
-            {isHighlighted && (
-              <Badge variant="outline" className="bg-brand text-white border-0">
-                Recomendado
-              </Badge>
-            )}
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3 text-sm mb-4">
-            <div>
-              <span className="text-gray-500">ASN:</span>
-              <div className="font-medium">{provider.asn}</div>
-            </div>
-            <div>
-              <span className="text-gray-500">Datacenter:</span>
-              <div className="font-medium">{provider.datacenter}</div>
-            </div>
-            <div>
-              <span className="text-gray-500">Backups:</span>
-              <div className="font-medium">{provider.backups}</div>
-            </div>
-            <div>
-              <span className="text-gray-500">Reclamos:</span>
-              <div className="font-medium">{provider.reclamos}</div>
-            </div>
-            <div className="col-span-2">
-              <span className="text-gray-500">Precio:</span>
-              <div className="font-medium">{provider.priceLabel}</div>
-            </div>
-          </div>
-          
-          <DatacenterBadge providerName={provider.name} variant="row" className="mb-3" />
+const Row: React.FC<{ label: string; kind?: Provenance; children: React.ReactNode }> = ({ label, kind, children }) => (
+  <div className="flex items-start justify-between gap-4 py-2.5">
+    <dt className="t-small flex shrink-0 items-center gap-1.5 text-ink-2">
+      {label}
+      {kind && <ProvenanceTag kind={kind} variant="glyph" />}
+    </dt>
+    <dd className="min-w-0 text-right text-[15px]">{children}</dd>
+  </div>
+);
 
-          <div className="grid grid-cols-3 gap-1 text-xs mb-4">
-            <div className="flex items-center">
-              {provider.hasLiteSpeed ? (
-                <Check size={16} className="text-green-500 mr-1" />
-              ) : (
-                <X size={16} className="text-red-500 mr-1" />
-              )}
-              LiteSpeed
-            </div>
-            <div className="flex items-center">
-              {provider.hasWAF ? (
-                <Check size={16} className="text-green-500 mr-1" />
-              ) : (
-                <X size={16} className="text-red-500 mr-1" />
-              )}
-              WAF
-            </div>
-            <div className="flex items-center">
-              {provider.hasBackups ? (
-                <Check size={16} className="text-green-500 mr-1" />
-              ) : (
-                <X size={16} className="text-red-500 mr-1" />
-              )}
-              Backups
-            </div>
-          </div>
-          
-          <Button 
-            asChild
-            variant="outline" 
-            className="w-full border-brand text-brand hover:bg-brand hover:text-white"
-          >
-            <a href={provider.reseñaUrl} onClick={() => track('click_ver_ficha', { slug: provider.id, location: 'provider_card' })}>Ver ficha completa</a>
-          </Button>
+/** Tarjeta del hub /comparativa bajo 1024 px: mismas columnas que la tabla. */
+const HostingProviderCard: React.FC<HostingProviderCardProps> = ({ provider, nota, companyId, notaLoading, isHighlighted = false }) => (
+  <article className={`rounded-xl border border-rule p-5 ${isHighlighted ? 'bg-paper-deep' : 'bg-white'}`}>
+    <header className="flex items-start justify-between gap-3">
+      <div className="min-w-0">
+        <h3 className="t-h3 text-ink">{provider.name}</h3>
+        {isHighlighted && (
+          <Badge variant="ink" className="mt-1.5">Recomendado</Badge>
+        )}
+      </div>
+      <div className="shrink-0 text-right">
+        <NotaValue nota={nota} loading={notaLoading} />
+        <div className="mt-1 flex justify-end">
+          <ProvenanceTag kind="editorial" variant="glyph" />
         </div>
-      </CardContent>
-    </Card>
-  );
-};
+      </div>
+    </header>
+
+    <dl className="mt-4 divide-y divide-rule border-y border-rule">
+      <Row label="ASN" kind="measured"><span className="tabular text-ink">{provider.asn}</span></Row>
+      <Row label="Datacenter" kind="declared"><DatacenterValue provider={provider} /></Row>
+      <Row label="Backups" kind="declared"><BackupValue provider={provider} /></Row>
+      <Row label="Reclamos (12 meses)" kind="measured"><ReclamosValue companyId={companyId} /></Row>
+      <Row label="Precio al año" kind="declared"><PriceValue provider={provider} /></Row>
+      <Row label="Tecnologías" kind="declared"><TechValue provider={provider} /></Row>
+    </dl>
+
+    <DatacenterBadge providerName={provider.name} variant="row" className="mt-3" />
+
+    <Button asChild variant="outline" className="mt-4 w-full">
+      <Link
+        to={`/catalogo/${provider.catalogSlug}`}
+        onClick={() => track('click_ver_ficha', { slug: provider.id, location: 'provider_card' })}
+      >
+        Ver ficha
+      </Link>
+    </Button>
+  </article>
+);
 
 export default HostingProviderCard;

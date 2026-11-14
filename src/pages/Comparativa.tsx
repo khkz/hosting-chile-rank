@@ -1,151 +1,106 @@
-
 import React, { useState } from 'react';
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { 
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from "@/components/ui/table";
+import { Helmet } from 'react-helmet-async';
+import { ExternalLink, Filter } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import StickyCTA from '../components/StickyCTA';
-import { Helmet } from 'react-helmet-async';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import BreadcrumbSchema from '@/components/SEO/BreadcrumbSchema';
-import { useIsMobile } from '../hooks/use-mobile';
 import HostingProviderCard from '../components/HostingProviderCard';
-import { Check, X, Filter } from 'lucide-react';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import EvidenceCard from '@/components/system/EvidenceCard';
+import EditorialImage from '@/components/media/EditorialImage';
+import { ProvenanceLegend } from '@/components/data/Provenance';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { getAllVsPairs, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING, getCompetitorPairsGroupedByCompany } from '@/lib/vsPairs';
-import { VERIFIED_PRICING, PRICING_FOOTNOTE, COMMERCIAL_DISCLOSURE, VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
-
-interface HostingProvider {
-  id: string;
-  name: string;
-  logo: string;
-  asn: string;
-  datacenter: string;
-  backups: string;
-  reclamos: string;
-  hasLiteSpeed: boolean;
-  hasWAF: boolean;
-  hasBackups: boolean;
-  priceLabel: string;
-  priceCLP: number | null; // anual CLP, null si "Consultar"
-  reseñaUrl: string;
-}
+import Crumbs from '@/components/comparar/Crumbs';
+import HubTable from '@/components/comparar/HubTable';
+import PairDirectory from '@/components/comparar/PairDirectory';
+import type { HubProvider } from '@/components/comparar/hubTypes';
+import { choiceControl, choiceLabel, choiceRow } from '@/components/formularios/formStyles';
+import { useRankingProviders } from '@/features/ranking';
+import { ALL_CATALOG_SLUGS, getAllVsPairs } from '@/lib/vsPairs';
+import { useCompaniesBySlug } from '@/components/comparar/useCompareData';
+import { formatDataDate, formatInteger, formatShortDate } from '@/lib/format';
+import { cn } from '@/lib/utils';
+import {
+  VERIFIED_PRICING, PRICING_FOOTNOTE, COMMERCIAL_DISCLOSURE, VERIFICATION_DATE_HUMAN, VERIFICATION_DATE_ISO,
+} from '@/data/verified2026';
 
 // Datos revisados el 28-08-2026 (LACNIC RDAP, RIPEstat, PeeringDB, bgp.tools y webs oficiales).
-// Precios de entrada anualizados, netos salvo indicación expresa.
-const hostingProviders: HostingProvider[] = [
+// Precios de entrada anualizados, netos salvo indicación expresa. El orden es una
+// decisión pendiente (3) y alimenta las posiciones del JSON-LD ItemList: no lo cambies.
+// La nota y los reclamos no se escriben aquí: se leen de la base.
+const hostingProviders: HubProvider[] = [
   {
-    id: 'hostingplus',
-    name: 'HostingPlus.cl',
-    logo: '/logo-hostingplus-official.png',
-    asn: 'AS266879',
-    datacenter: 'Colocation Ascenty SCL2 · Quilicura',
-    backups: 'Diarios (JetBackup)',
-    reclamos: '0 visibles',
-    hasLiteSpeed: true,
-    hasWAF: true,
-    hasBackups: true,
-    priceLabel: VERIFIED_PRICING.hostingplus.label,
-    priceCLP: VERIFIED_PRICING.hostingplus.annualNetCLP,
+    id: 'hostingplus', catalogSlug: 'hostingplus', name: 'HostingPlus.cl', logo: '/logo-hostingplus-official.png',
+    asn: 'AS266879', datacenter: 'Colocation Ascenty SCL2', datacenterPlace: 'Quilicura',
+    backups: 'Diarios (JetBackup)', backupFreq: 'Diaria',
+    hasLiteSpeed: true, hasWAF: true, hasBackups: true,
+    priceLabel: VERIFIED_PRICING.hostingplus.label, priceCLP: VERIFIED_PRICING.hostingplus.annualNetCLP,
     reseñaUrl: '/reseñas/hostingplus',
   },
   {
-    id: 'ecohosting',
-    name: 'EcoHosting.cl',
-    logo: '/logo-ecohosting.png',
-    asn: 'AS266855',
-    datacenter: 'Declarado propio · Chile',
-    backups: 'RAID 10 SSD',
-    reclamos: '0 en reclamos.cl',
-    hasLiteSpeed: false,
-    hasWAF: true,
-    hasBackups: true,
-    priceLabel: VERIFIED_PRICING.ecohosting.label,
-    priceCLP: VERIFIED_PRICING.ecohosting.annualNetCLP,
+    id: 'ecohosting', catalogSlug: 'ecohosting', name: 'EcoHosting.cl', logo: '/logo-ecohosting.png',
+    asn: 'AS266855', datacenter: 'Declarado propio', datacenterPlace: 'Chile',
+    backups: 'RAID 10 SSD', backupFreq: null,
+    hasLiteSpeed: false, hasWAF: true, hasBackups: true,
+    priceLabel: VERIFIED_PRICING.ecohosting.label, priceCLP: VERIFIED_PRICING.ecohosting.annualNetCLP,
     reseñaUrl: '/reseñas/ecohosting',
   },
   {
-    id: 'powerhost',
-    name: 'PowerHost / IxMetro',
-    logo: 'https://logo.clearbit.com/powerhost.cl',
-    asn: 'AS263237',
-    datacenter: 'DC propio · Santiago (+ NY, MOW, AMS)',
-    backups: 'Tier III',
-    reclamos: '1 no-técnico',
-    hasLiteSpeed: false,
-    hasWAF: true,
-    hasBackups: true,
-    priceLabel: VERIFIED_PRICING.powerhost.label,
-    priceCLP: null,
+    id: 'powerhost', catalogSlug: 'powerhost', name: 'PowerHost / IxMetro', logo: 'https://logo.clearbit.com/powerhost.cl',
+    asn: 'AS263237', datacenter: 'DC propio', datacenterPlace: 'Santiago (+ NY, MOW, AMS)',
+    backups: 'Tier III', backupFreq: null,
+    hasLiteSpeed: false, hasWAF: true, hasBackups: true,
+    priceLabel: VERIFIED_PRICING.powerhost.label, priceCLP: null,
     reseñaUrl: '/reseñas/powerhost',
   },
   {
-    id: 'hostname',
-    name: 'Hostname.cl',
-    logo: '/logo-hostname.png',
-    asn: 'AS262256',
-    datacenter: 'HN DC propio · Ñuñoa',
-    backups: 'Sí',
-    reclamos: 'Perfil bajo',
-    hasLiteSpeed: false,
-    hasWAF: true,
-    hasBackups: true,
-    priceLabel: VERIFIED_PRICING.hostname.label,
-    priceCLP: null,
+    id: 'hostname', catalogSlug: 'hn', name: 'Hostname.cl', logo: '/logo-hostname.png',
+    asn: 'AS262256', datacenter: 'HN DC propio', datacenterPlace: 'Ñuñoa',
+    backups: 'Sí', backupFreq: null,
+    hasLiteSpeed: false, hasWAF: true, hasBackups: true,
+    priceLabel: VERIFIED_PRICING.hostname.label, priceCLP: null,
     reseñaUrl: '/reseñas/hostname',
   },
   {
-    id: 'hostingcl',
-    name: 'Hosting.cl',
-    logo: 'https://logo.clearbit.com/hosting.cl',
-    asn: 'AS265839',
-    datacenter: 'Declarado propio · Santiago',
-    backups: 'Sí',
-    reclamos: 'Varios 2012-2025',
-    hasLiteSpeed: true,
-    hasWAF: true,
-    hasBackups: true,
-    priceLabel: VERIFIED_PRICING.hostingcl.label,
-    priceCLP: VERIFIED_PRICING.hostingcl.annualNetCLP,
+    id: 'hostingcl', catalogSlug: 'hostingcl', name: 'Hosting.cl', logo: 'https://logo.clearbit.com/hosting.cl',
+    asn: 'AS265839', datacenter: 'Declarado propio', datacenterPlace: 'Santiago',
+    backups: 'Sí', backupFreq: null,
+    hasLiteSpeed: true, hasWAF: true, hasBackups: true,
+    priceLabel: VERIFIED_PRICING.hostingcl.label, priceCLP: VERIFIED_PRICING.hostingcl.annualNetCLP,
     reseñaUrl: '/reseñas/hostingcl',
   },
   {
-    id: 'bluehosting',
-    name: 'BlueHosting.cl',
-    logo: 'https://logo.clearbit.com/bluehosting.cl',
-    asn: 'AS64111',
-    datacenter: 'Infraestructura gestionada con Haulmer · Curicó',
-    backups: 'Sí',
-    reclamos: 'Mixto',
-    hasLiteSpeed: false,
-    hasWAF: true,
-    hasBackups: true,
-    priceLabel: VERIFIED_PRICING.bluehosting.label,
-    priceCLP: VERIFIED_PRICING.bluehosting.annualNetCLP,
+    id: 'bluehosting', catalogSlug: 'bluehost', name: 'BlueHosting.cl', logo: 'https://logo.clearbit.com/bluehosting.cl',
+    asn: 'AS64111', datacenter: 'Infraestructura gestionada con Haulmer', datacenterPlace: 'Curicó',
+    backups: 'Sí', backupFreq: null,
+    hasLiteSpeed: false, hasWAF: true, hasBackups: true,
+    priceLabel: VERIFIED_PRICING.bluehosting.label, priceCLP: VERIFIED_PRICING.bluehosting.annualNetCLP,
     reseñaUrl: '/reseñas/bluehosting',
   },
 ];
 
+const FILTERS = [
+  { key: 'liteSpeed', id: 'filtro-litespeed', label: 'LiteSpeed' },
+  { key: 'waf', id: 'filtro-waf', label: 'WAF (firewall)' },
+  { key: 'backups', id: 'filtro-backups', label: 'Declara backups' },
+] as const;
 
 const ComparativaPage = () => {
-  const [filters, setFilters] = useState({
-    liteSpeed: false,
-    waf: false,
-    backups: false,
-  });
-
+  const [filters, setFilters] = useState({ liteSpeed: false, waf: false, backups: false });
   const [showFilters, setShowFilters] = useState(false);
-  const isMobile = useIsMobile();
+
+  // Nota editorial e id: de la base (hook del ranking). Nombres de marca de las
+  // 171 parejas: de la base también, incluidos proveedores que el ranking oculta.
+  const { data: ranking, isLoading: rankingLoading } = useRankingProviders(40);
+  const bySlug = new Map((ranking ?? []).map((r) => [r.slug, r]));
+  const { data: catalog } = useCompaniesBySlug([...ALL_CATALOG_SLUGS]);
+  const names = new Map((catalog ?? []).map((c) => [c.slug, c.name]));
+  const nameOf = (slug: string) => names.get(slug) ?? bySlug.get(slug)?.name ?? slug;
 
   const filteredProviders = hostingProviders.filter((provider) => {
     if (filters.liteSpeed && !provider.hasLiteSpeed) return false;
@@ -153,16 +108,24 @@ const ComparativaPage = () => {
     if (filters.backups && !provider.hasBackups) return false;
     return true;
   });
+  const rows = filteredProviders.map((provider) => {
+    const db = bySlug.get(provider.catalogSlug);
+    return { provider, nota: db?.overall_rating ?? null, companyId: db?.id };
+  });
 
   const handleFilterChange = (filter: keyof typeof filters) => {
     setFilters((prev) => ({ ...prev, [filter]: !prev[filter] }));
   };
+  const resetFilters = () => setFilters({ liteSpeed: false, waf: false, backups: false });
+  const activeCount = Object.values(filters).filter(Boolean).length;
+  const totalPairs = getAllVsPairs().length;
 
-  const resetFilters = () => {
-    setFilters({ liteSpeed: false, waf: false, backups: false });
-  };
-
-  const anyFilterActive = Object.values(filters).some(Boolean);
+  const empty = (
+    <div className="rounded-xl border border-rule bg-paper p-6">
+      <p className="t-body text-ink">Ningún proveedor de la tabla cumple todos los filtros que marcaste.</p>
+      <Button variant="outline" className="mt-4" onClick={resetFilters}>Quitar todos los filtros</Button>
+    </div>
+  );
 
   return (
     <>
@@ -192,278 +155,128 @@ const ComparativaPage = () => {
 
       <Navbar />
 
-      {/* Hero */}
-      <section className="bg-paper py-8 md:py-16 text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-ink">
-            Comparativa Hosting Chile 2026
-          </h1>
-          <p className="mt-4 text-base md:text-lg text-[#555] max-w-2xl mx-auto">
-            Orden y datos basados en el{' '}
-            <a href="/estudio-hosting-chile-2026" className="text-brand underline">
-              Estudio Hosting Chile 2026
-            </a>
-            . Solo información verificable: ASN, datacenter, reclamos públicos y tecnologías.
-          </p>
-        </div>
-      </section>
+      <main>
+        <PageHeader
+          breadcrumbs={<Crumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Comparativa' }]} />}
+          title="Comparativa Hosting Chile 2026"
+          lead={
+            <>
+              {hostingProviders.length} proveedores lado a lado, con una unidad por columna y la procedencia de cada
+              dato. Orden y datos basados en el{' '}
+              <a href="/estudio-hosting-chile-2026" className="font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+                Estudio Hosting Chile 2026
+              </a>
+              .
+            </>
+          }
+          meta={<span>Revisado el {formatDataDate(VERIFICATION_DATE_ISO)}</span>}
+          aside={
+            <EditorialImage
+              name="comparar"
+              className="aspect-[4/3]"
+              sizes="(min-width:1024px) 45vw, 100vw"
+              priority
+              fallback={
+                <EvidenceCard
+                  title="Qué hay en esta página"
+                  subtitle="Hosting en Chile"
+                  rows={[
+                    { label: 'Proveedores en la tabla', value: formatInteger(hostingProviders.length) },
+                    { label: 'Comparativas 1 a 1', value: formatInteger(totalPairs) },
+                    { label: 'Datos revisados', value: formatShortDate(VERIFICATION_DATE_ISO) },
+                  ]}
+                />
+              }
+            />
+          }
+        />
 
-      {/* Filters */}
-      <section className="py-8 bg-white border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Filtra por características</h2>
+        <Section
+          id="lado-a-lado"
+          title="Proveedores lado a lado"
+          lead="La nota y los reclamos se leen de la base. Lo demás se revisó a mano; si un dato no calza con la unidad de su columna, te mandamos a la ficha."
+          density="tight"
+        >
+          <div className="mb-8">
             <Button
+              type="button"
               variant="outline"
-              size="sm"
-              className={`md:hidden flex items-center gap-2 ${anyFilterActive ? 'bg-paper-deep border-brand text-brand' : ''}`}
+              className="md:hidden"
+              aria-expanded={showFilters}
+              aria-controls="filtros-comparativa"
               onClick={() => setShowFilters(!showFilters)}
             >
-              <Filter size={16} />
-              {anyFilterActive ? `Filtros (${Object.values(filters).filter(Boolean).length})` : 'Filtros'}
+              <Filter aria-hidden />
+              {activeCount > 0 ? `Filtros (${activeCount})` : 'Filtros'}
             </Button>
+            <fieldset id="filtros-comparativa" className={cn(showFilters ? 'block' : 'hidden', 'mt-3 md:mt-0 md:block')}>
+              <legend className="t-label">Filtra por características</legend>
+              <div className="mt-2 flex flex-wrap items-center gap-x-6">
+                {FILTERS.map((f) => (
+                  <div key={f.key} className={choiceRow}>
+                    <Checkbox id={f.id} className={choiceControl} checked={filters[f.key]} onCheckedChange={() => handleFilterChange(f.key)} />
+                    <Label htmlFor={f.id} className={choiceLabel}>{f.label}</Label>
+                  </div>
+                ))}
+                {activeCount > 0 && (
+                  <Button type="button" variant="ghost" onClick={resetFilters}>Quitar filtros</Button>
+                )}
+              </div>
+            </fieldset>
           </div>
 
-          <div className={`${isMobile && !showFilters ? 'hidden' : 'block'}`}>
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="litespeed" checked={filters.liteSpeed} onCheckedChange={() => handleFilterChange('liteSpeed')} />
-                <Label htmlFor="litespeed" className="cursor-pointer">LiteSpeed</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="waf" checked={filters.waf} onCheckedChange={() => handleFilterChange('waf')} />
-                <Label htmlFor="waf" className="cursor-pointer">WAF (Firewall)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="backups" checked={filters.backups} onCheckedChange={() => handleFilterChange('backups')} />
-                <Label htmlFor="backups" className="cursor-pointer">Backups diarios</Label>
-              </div>
-              {anyFilterActive && (
-                <button onClick={resetFilters} className="text-brand underline text-sm hover:text-red-700">
-                  Quitar filtros
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Table / Cards */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4">
-          {isMobile ? (
-            <div>
-              {filteredProviders.length > 0 ? (
-                filteredProviders.map((provider) => (
+          <div className="space-y-4 lg:hidden">
+            {rows.length > 0
+              ? rows.map((r) => (
                   <HostingProviderCard
-                    key={provider.id}
-                    provider={provider}
-                    isHighlighted={provider.id === 'hostingplus'}
+                    key={r.provider.id}
+                    provider={r.provider}
+                    nota={r.nota}
+                    companyId={r.companyId}
+                    notaLoading={rankingLoading}
+                    isHighlighted={r.provider.id === 'hostingplus'}
                   />
                 ))
-              ) : (
-                <div className="text-center p-8 bg-paper rounded-lg shadow-sm">
-                  <p className="mb-4">No hay resultados que coincidan con los filtros seleccionados.</p>
-                  <button onClick={resetFilters} className="text-brand underline hover:text-red-700">
-                    Quitar todos los filtros
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="overflow-x-auto rounded-lg border">
-              <Table>
-                <TableCaption>
-                  Estudio Hosting Chile 2026 · datos revisados el {VERIFICATION_DATE_HUMAN}. {PRICING_FOOTNOTE}{' '}
-                  {COMMERCIAL_DISCLOSURE}
-                </TableCaption>
-                <TableHeader className="bg-paper">
-                  <TableRow className="border-b-2 border-gray-300">
-                    <TableHead className="w-[200px] font-semibold">Proveedor</TableHead>
-                    <TableHead className="w-[110px] font-semibold">ASN</TableHead>
-                    <TableHead className="w-[200px] font-semibold">Datacenter</TableHead>
-                    <TableHead className="w-[140px] font-semibold">Backups</TableHead>
-                    <TableHead className="w-[150px] font-semibold">Reclamos</TableHead>
-                    <TableHead className="text-right font-semibold w-[120px]">Precio</TableHead>
-                    <TableHead className="w-[140px] font-semibold">Tecnologías</TableHead>
-                    <TableHead className="w-[110px] font-semibold text-center">Acción</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredProviders.length > 0 ? (
-                    filteredProviders.map((provider, index) => (
-                      <TableRow
-                        key={provider.id}
-                        className={`
-                          ${provider.id === 'hostingplus' ? 'bg-paper-deep hover:bg-paper-deep' : ''}
-                          ${provider.id === 'hostingplus' ? 'border border-brand' : ''}
-                          ${index % 2 === 0 && provider.id !== 'hostingplus' ? 'bg-white' : ''}
-                          ${index % 2 === 1 && provider.id !== 'hostingplus' ? 'bg-gray-50' : ''}
-                        `}
-                      >
-                        <TableCell className="font-medium sticky left-0 z-10 bg-inherit">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-12 h-10 flex items-center justify-center bg-white rounded p-1 border">
-                              <img
-                                src={provider.logo}
-                                alt={provider.name}
-                                className="max-h-full max-w-full object-contain"
-                                loading="lazy"
-                                onError={(e) => {
-                                  // Fallback cuando Clearbit u otro CDN externo falla.
-                                  const img = e.currentTarget;
-                                  if (img.dataset.fallback) return;
-                                  img.dataset.fallback = '1';
-                                  img.src =
-                                    'data:image/svg+xml;utf8,' +
-                                    encodeURIComponent(
-                                      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="6" fill="#e5e7eb"/><text x="50%" y="55%" font-family="sans-serif" font-size="14" font-weight="700" fill="#374151" text-anchor="middle">${(provider.name || '?').slice(0, 2).toUpperCase()}</text></svg>`
-                                    );
-                                }}
-                              />
-                            </div>
-                            <span>{provider.name}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="font-mono text-xs">{provider.asn}</TableCell>
-                        <TableCell className="text-sm">{provider.datacenter}</TableCell>
-                        <TableCell>{provider.backups}</TableCell>
-                        <TableCell>{provider.reclamos}</TableCell>
-                        <TableCell className="text-right font-medium">{provider.priceLabel}</TableCell>
-                        <TableCell>
-                          <div className="flex gap-3">
-                            <div className="flex items-center gap-1">
-                              {provider.hasLiteSpeed ? (
-                                <Check size={16} className="text-green-500" />
-                              ) : (
-                                <X size={16} className="text-red-500" />
-                              )}
-                              <span className="text-xs">LiteSpeed</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              {provider.hasWAF ? (
-                                <Check size={16} className="text-green-500" />
-                              ) : (
-                                <X size={16} className="text-red-500" />
-                              )}
-                              <span className="text-xs">WAF</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <Link
-                            to={provider.reseñaUrl}
-                            className="inline-block px-3 py-1 bg-white border border-brand text-brand rounded hover:bg-brand hover:text-white transition-colors text-sm"
-                          >
-                            Ver ficha
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={8} className="text-center py-8">
-                        No hay resultados que coincidan con los filtros seleccionados.
-                        <br />
-                        <button onClick={resetFilters} className="mt-2 text-brand underline">
-                          Quitar todos los filtros
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </div>
-      </section>
+              : empty}
+          </div>
+          <div className="hidden lg:block">
+            {rows.length > 0 ? <HubTable rows={rows} highlightId="hostingplus" notaLoading={rankingLoading} /> : empty}
+          </div>
 
-      {/* Recommendation */}
-      <section className="py-12 bg-paper">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold mb-4">¿Por qué HostingPlus encabeza el ranking?</h2>
-          <p className="text-lg max-w-3xl mx-auto mb-8">
+          <p className="t-meta measure mt-5">
+            Estudio Hosting Chile 2026. Datos revisados el {VERIFICATION_DATE_HUMAN}. {PRICING_FOOTNOTE}{' '}
+            {COMMERCIAL_DISCLOSURE}
+          </p>
+          <ProvenanceLegend compact className="mt-8 max-w-4xl" />
+        </Section>
+
+        <Section id="por-que-lidera" tone="paper" title="¿Por qué HostingPlus encabeza el ranking?" density="tight">
+          <p className="t-body measure text-ink-2">
             Según el Estudio Hosting Chile 2026, HostingPlus tiene RUT vigente, infraestructura en
             Ascenty SCL2 bajo modalidad de colocation y 0 prefijos IPv4 originados / 1 IPv6 en AS266879.
             El orden de la comparativa se calcula con la metodología y los pesos publicados.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <a
-              href="/estudio-hosting-chile-2026"
-              className="inline-block bg-white border border-brand text-brand px-6 py-3 rounded-lg hover:bg-brand hover:text-white transition-colors"
-            >
-              Ver el estudio completo
-            </a>
-            <a
-              href="https://www.hostingplus.cl/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-brand text-white px-6 py-3 rounded-lg hover:bg-red-700"
-            >
-              Visitar HostingPlus
-            </a>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild variant="outline">
+              <a href="/estudio-hosting-chile-2026">Ver el estudio completo</a>
+            </Button>
+            <Button asChild variant="brand">
+              <a href="https://www.hostingplus.cl/" target="_blank" rel="noopener noreferrer">
+                Ir al sitio de HostingPlus <ExternalLink aria-hidden />
+              </a>
+            </Button>
           </div>
-        </div>
-      </section>
+        </Section>
 
-      {/* Comparativas de marcas (programmatic VS) — agrupadas */}
-      <section className="py-12 bg-white border-t">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <h2 className="text-2xl font-bold text-ink mb-2">Comparativas 1-a-1</h2>
-          <p className="text-sm text-gray-600 mb-6">Todas las parejas del catálogo, con datos verificables.</p>
-
-          {(() => {
-            const all = getAllVsPairs();
-            const vsHp = all.filter(p => p.anchor === ANCHOR_HOSTINGPLUS);
-            const vsEh = all.filter(p => p.anchor === ANCHOR_ECOHOSTING);
-            const grouped = getCompetitorPairsGroupedByCompany();
-            const groupKeys = Object.keys(grouped).sort();
-
-            const PairLink = ({ pair }: { pair: string }) => (
-              <Link
-                key={pair}
-                to={`/comparativa/${pair}`}
-                className="text-sm px-3 py-2 rounded border border-gray-200 hover:border-brand hover:text-brand transition truncate"
-              >
-                {pair.replace('-vs-', ' vs ')}
-              </Link>
-            );
-
-            return (
-              <div className="space-y-8">
-                <div>
-                  <h3 className="font-semibold text-brand mb-3">VS HostingPlus.cl (líder del ranking)</h3>
-                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
-                    {vsHp.map(p => <PairLink key={p.pair} pair={p.pair} />)}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-brand mb-3">VS EcoHosting.cl</h3>
-                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
-                    {vsEh.map(p => <PairLink key={p.pair} pair={p.pair} />)}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-ink mb-3">Entre otros proveedores</h3>
-                  <div className="space-y-4">
-                    {groupKeys.map(key => (
-                      <details key={key} className="border rounded-lg bg-white p-3">
-                        <summary className="cursor-pointer font-medium text-ink capitalize">
-                          {key.replace(/-/g, ' ')} ({grouped[key].length})
-                        </summary>
-                        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2 mt-3">
-                          {grouped[key].map(p => <PairLink key={p.pair} pair={p.pair} />)}
-                        </div>
-                      </details>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-      </section>
-
+        <Section
+          id="uno-a-uno"
+          title="Comparativas 1 a 1"
+          lead={`Todas las parejas del catálogo (${formatInteger(totalPairs)}), con datos verificables. Elige dos y míralos lado a lado.`}
+          density="tight"
+        >
+          <PairDirectory nameOf={nameOf} />
+        </Section>
+      </main>
 
       <StickyCTA />
       <Footer />

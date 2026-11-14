@@ -1,54 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { ArrowRight, Check, ExternalLink } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
-import { ExternalLink, CheckCircle2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { getActiveCountryCode } from '@/lib/country';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import EvidenceCard from '@/components/system/EvidenceCard';
+import EditorialImage from '@/components/media/EditorialImage';
+import { Button } from '@/components/ui/button';
+import { ProvenanceLegend } from '@/components/data/Provenance';
+import Crumbs from '@/components/comparar/Crumbs';
+import CompareTable, { type CompareRow } from '@/components/comparar/CompareTable';
+import FaqList from '@/components/comparar/FaqList';
+import { useCompaniesBySlug, type CompareCompany } from '@/components/comparar/useCompareData';
+import { formatScore } from '@/lib/format';
 import { MIGRATION_COMPETITORS, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING } from '@/lib/vsPairs';
 
 const ORIGIN = 'https://eligetuhosting.cl';
 
-interface Company {
-  slug: string;
-  name: string;
-  overall_rating: number | null;
-  promo_price: number | null;
-  datacenter_location: string | null;
-  has_migration_free: boolean | null;
-}
+const INCLUYE = [
+  'Traspaso completo de archivos y base de datos',
+  'Migración de buzones de correo y reglas de filtrado',
+  'Configuración de SSL gratuito (Let\'s Encrypt o equivalente)',
+  'Validación de URLs, formularios y SEO',
+  'Coordinación del cambio de DNS sin downtime',
+  'Soporte 24/7 en español durante el traspaso',
+];
 
-/** No publicamos precios mientras dura la reverificación del catálogo. */
-const fmt = (_p: number | null) => 'Consultar';
+/** «1. Respaldo completo» → «Respaldo completo» (el número lo dibuja la lista). */
+const stepTitle = (t: string) => t.replace(/^\d+\.\s*/, '');
+const scoreText = (c: CompareCompany) => (c.overall_rating != null ? `${formatScore(c.overall_rating)}/10` : null);
+
+const LoadingShell = () => (
+  <>
+    <Navbar />
+    <main className="container py-16">
+      <p role="status" className="t-body text-ink-2">Cargando…</p>
+    </main>
+    <Footer />
+  </>
+);
 
 const MigrarDe: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [target, setTarget] = useState<Company | null>(null);
-  const [hp, setHp] = useState<Company | null>(null);
-  const [eh, setEh] = useState<Company | null>(null);
-  const [loading, setLoading] = useState(true);
-
   const isValid = !!slug && (MIGRATION_COMPETITORS as readonly string[]).includes(slug);
-
-  useEffect(() => {
-    if (!isValid) return;
-    (async () => {
-      const { data } = await supabase
-        .from('hosting_companies')
-        .select('slug,name,overall_rating,promo_price,datacenter_location,has_migration_free')
-        .eq('country', getActiveCountryCode())
-        .in('slug', [slug!, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING]);
-      setTarget((data?.find(d => d.slug === slug) as Company) || null);
-      setHp((data?.find(d => d.slug === ANCHOR_HOSTINGPLUS) as Company) || null);
-      setEh((data?.find(d => d.slug === ANCHOR_ECOHOSTING) as Company) || null);
-      setLoading(false);
-    })();
-  }, [slug, isValid]);
+  const { data, isLoading } = useCompaniesBySlug(slug ? [slug, ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING] : [], isValid);
 
   if (!isValid) return <Navigate to="/catalogo" replace />;
-  if (loading) return <div className="p-10 text-center text-gray-500">Cargando…</div>;
+  if (isLoading) return <LoadingShell />;
+  const target = data?.find(d => d.slug === slug) ?? null;
+  const hp = data?.find(d => d.slug === ANCHOR_HOSTINGPLUS) ?? null;
+  const eh = data?.find(d => d.slug === ANCHOR_ECOHOSTING) ?? null;
   if (!target) return <Navigate to="/catalogo" replace />;
 
   const canonical = `${ORIGIN}/migrar-de/${slug}`;
@@ -102,6 +106,17 @@ const MigrarDe: React.FC = () => {
     ],
   };
 
+  const sides = [target, hp, eh].filter(Boolean) as CompareCompany[];
+  const rows: CompareRow[] = [
+    { id: 'nota', label: 'Nota editorial', kind: 'editorial', empty: 'Sin nota', cells: sides.map((c) => ({ value: scoreText(c), raw: c.overall_rating })) },
+    { id: 'precio', label: 'Precio desde', note: 'En reverificación: consulta el valor vigente en su sitio.', cells: sides.map(() => ({ value: 'Consultar', raw: null })) },
+    { id: 'datacenter', label: 'Datacenter', kind: 'declared', cells: sides.map((c) => ({ value: c.datacenter_location, raw: c.datacenter_location })) },
+    {
+      id: 'migracion', label: 'Migración gratuita',
+      cells: sides.map((c) => ({ value: c.slug === slug ? (c.has_migration_free ? 'Sí' : 'Consultar') : 'Sí, asistida', raw: null })),
+    },
+  ];
+
   return (
     <>
       <Helmet>
@@ -118,131 +133,103 @@ const MigrarDe: React.FC = () => {
       </Helmet>
 
       <Navbar />
-      <main className="bg-gradient-to-b from-paper to-white">
-        <section className="container mx-auto px-4 py-10 max-w-4xl">
-          <nav aria-label="breadcrumbs" className="text-xs text-gray-500 mb-3">
-            <Link to="/" className="hover:underline">Inicio</Link> /{' '}
-            <Link to="/guia-migrar-hosting" className="hover:underline">Migrar hosting</Link> /{' '}
-            <span>Migrar de {target.name}</span>
-          </nav>
-          <h1 className="text-2xl md:text-4xl font-bold text-ink">{title}</h1>
-          <p className="mt-4 text-gray-700 text-base md:text-lg leading-relaxed">
-            Si tu sitio está en {target.name} y notas lentitud, soporte tardío o quieres datacenter local en Chile, esta guía te muestra cómo migrar sin downtime a un proveedor verificado del ranking: <strong>HostingPlus.cl (9.9/10)</strong> o <strong>EcoHosting.cl (9.6/10)</strong>. Ambos ofrecen migración gratuita asistida.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <a href="/ir/hostingplus" className="px-5 py-3 rounded bg-brand text-white text-sm hover:bg-red-700 flex items-center gap-1">
-              Solicitar migración gratuita a HostingPlus <ExternalLink className="h-3 w-3" />
-            </a>
-            <Link to="/cotiza-hosting" className="px-5 py-3 rounded border-2 border-brand text-brand text-sm hover:bg-brand hover:text-white">
-              Cotizar primero
-            </Link>
-          </div>
-        </section>
+      <main>
+        <PageHeader
+          breadcrumbs={<Crumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Migrar hosting', href: '/guia-migrar-hosting' }, { name: `Migrar de ${target.name}` }]} />}
+          title={title}
+          lead={
+            <>
+              Si tu sitio está en {target.name} y notas lentitud, soporte tardío o quieres datacenter local en Chile, esta
+              guía te muestra cómo migrar sin downtime a un proveedor verificado del ranking:{' '}
+              <strong className="tabular font-semibold text-ink">HostingPlus.cl (9,9/10)</strong> o{' '}
+              <strong className="tabular font-semibold text-ink">EcoHosting.cl (9,6/10)</strong>. Ambos ofrecen migración
+              gratuita asistida.
+            </>
+          }
+          actions={
+            <>
+              <Button asChild variant="brand" size="lg">
+                <a href="/ir/hostingplus">Solicitar migración gratuita a HostingPlus <ExternalLink aria-hidden /></a>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link to="/cotiza-hosting">Cotizar primero</Link>
+              </Button>
+            </>
+          }
+          aside={
+            <EditorialImage
+              name="migracion"
+              className="aspect-[4/3]"
+              sizes="(min-width:1024px) 45vw, 100vw"
+              priority
+              fallback={
+                <EvidenceCard
+                  title="Tu migración en 4 pasos"
+                  subtitle={`Desde ${target.name}`}
+                  rows={checklist.map((c, i) => ({ label: `Paso ${i + 1}`, value: stepTitle(c.t) }))}
+                />
+              }
+            />
+          }
+        />
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-5">Checklist de migración en 4 pasos</h2>
-          <ol className="space-y-4">
-            {checklist.map(s => (
-              <li key={s.t} className="rounded-xl border bg-white p-5">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-6 w-6 text-brand mt-0.5 flex-shrink-0" />
-                  <div>
-                    <div className="font-semibold text-ink">{s.t}</div>
-                    <p className="text-sm text-gray-700 mt-1">{s.d}</p>
-                  </div>
+        <Section id="pasos" title="Checklist de migración en 4 pasos" density="tight">
+          <ol className="max-w-3xl divide-y divide-rule border-y border-rule">
+            {checklist.map((s, i) => (
+              <li key={s.t} className="flex gap-4 py-5">
+                <span aria-hidden className="tabular flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-paper-deep font-bold text-ink">
+                  {i + 1}
+                </span>
+                <div className="min-w-0">
+                  <h3 className="t-h3 text-ink"><span className="sr-only">Paso {i + 1}: </span>{stepTitle(s.t)}</h3>
+                  <p className="t-body mt-1 text-ink-2">{s.d}</p>
                 </div>
               </li>
             ))}
           </ol>
-        </section>
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Qué incluye la migración gratuita</h2>
-          <ul className="grid sm:grid-cols-2 gap-3 text-sm text-gray-700">
-            {[
-              'Traspaso completo de archivos y base de datos',
-              'Migración de buzones de correo y reglas de filtrado',
-              'Configuración de SSL gratuito (Let\'s Encrypt o equivalente)',
-              'Validación de URLs, formularios y SEO',
-              'Coordinación del cambio de DNS sin downtime',
-              'Soporte 24/7 en español durante el traspaso',
-            ].map(x => (
-              <li key={x} className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" /> {x}</li>
+        <Section id="incluye" title="Qué incluye la migración gratuita" tone="paper" density="tight">
+          <ul className="grid max-w-4xl gap-x-8 gap-y-3 sm:grid-cols-2">
+            {INCLUYE.map((x) => (
+              <li key={x} className="t-body flex items-start gap-2.5 text-ink">
+                <Check aria-hidden className="mt-1 h-4 w-4 shrink-0 text-ink-2" />
+                {x}
+              </li>
             ))}
           </ul>
-        </section>
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Comparativa breve</h2>
-          <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
-            <table className="w-full">
-              <thead className="bg-paper text-xs uppercase text-gray-500">
-                <tr>
-                  <th className="text-left py-3 px-3">Característica</th>
-                  <th className="text-left py-3 px-3">{target.name}</th>
-                  {hp && <th className="text-left py-3 px-3">HostingPlus.cl</th>}
-                  {eh && <th className="text-left py-3 px-3">EcoHosting.cl</th>}
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Nota</th>
-                  <td className="py-3 px-3">{Number(target.overall_rating ?? 0).toFixed(1)}/10</td>
-                  {hp && <td className="py-3 px-3 font-semibold">{Number(hp.overall_rating ?? 0).toFixed(1)}/10</td>}
-                  {eh && <td className="py-3 px-3 font-semibold">{Number(eh.overall_rating ?? 0).toFixed(1)}/10</td>}
-                </tr>
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Precio desde</th>
-                  <td className="py-3 px-3">{fmt(target.promo_price)}</td>
-                  {hp && <td className="py-3 px-3">{fmt(hp.promo_price)}</td>}
-                  {eh && <td className="py-3 px-3">{fmt(eh.promo_price)}</td>}
-                </tr>
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Datacenter</th>
-                  <td className="py-3 px-3">{target.datacenter_location || '—'}</td>
-                  {hp && <td className="py-3 px-3">{hp.datacenter_location || 'Chile'}</td>}
-                  {eh && <td className="py-3 px-3">{eh.datacenter_location || 'Chile'}</td>}
-                </tr>
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Migración gratuita</th>
-                  <td className="py-3 px-3">{target.has_migration_free ? 'Sí' : 'Consultar'}</td>
-                  {hp && <td className="py-3 px-3 font-semibold">Sí, asistida</td>}
-                  {eh && <td className="py-3 px-3 font-semibold">Sí, asistida</td>}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-3 text-sm">
-            <Link to={`/comparativa/${slug}-vs-hostingplus`} className="text-brand hover:underline">Ver comparativa completa {target.name} vs HostingPlus →</Link>
-          </div>
-        </section>
+        <Section id="comparativa" title="Comparativa breve" density="tight">
+          <CompareTable caption={`${target.name} frente a HostingPlus.cl y EcoHosting.cl`} columns={sides.map((c) => ({ key: c.slug, name: c.name, href: `/catalogo/${c.slug}` }))} rows={rows} />
+          <Link
+            to={`/comparativa/${slug}-vs-hostingplus`}
+            className="t-small mt-5 inline-flex min-h-[44px] items-center gap-1.5 font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+          >
+            Ver comparativa completa {target.name} vs HostingPlus <ArrowRight aria-hidden className="h-4 w-4" />
+          </Link>
+          <ProvenanceLegend compact className="mt-8 max-w-4xl" />
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <div className="rounded-xl border-2 border-brand bg-gradient-to-br from-brand/5 to-white p-6 text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-ink">Solicita tu migración gratuita</h2>
-            <p className="text-gray-700 mt-2">Sin downtime, 100% asistida por el equipo técnico.</p>
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
-              <Link to="/cotiza-hosting" className="px-5 py-3 rounded bg-brand text-white text-sm hover:bg-red-700">
-                Solicitar migración gratuita
-              </Link>
-              <a href="/ir/hostingplus" className="px-5 py-3 rounded border-2 border-brand text-brand text-sm hover:bg-brand hover:text-white flex items-center gap-1">
-                Ir a HostingPlus.cl <ExternalLink className="h-3 w-3" />
-              </a>
-            </div>
+        <Section id="solicitar" title="Solicita tu migración gratuita" tone="paper" density="tight">
+          <p className="t-body measure text-ink-2">Sin downtime, 100% asistida por el equipo técnico.</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild variant="brand">
+              <Link to="/cotiza-hosting">Solicitar migración gratuita</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <a href="/ir/hostingplus">Ir al sitio de HostingPlus.cl <ExternalLink aria-hidden /></a>
+            </Button>
           </div>
-        </section>
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Preguntas frecuentes</h2>
-          <div className="space-y-3">
-            {faqs.map((f, i) => (
-              <details key={i} className="border rounded-lg p-4 bg-white">
-                <summary className="font-semibold cursor-pointer text-ink">{f.q}</summary>
-                <p className="mt-2 text-sm text-gray-700">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
+        <Section id="preguntas" title="Preguntas frecuentes" density="tight">
+          <FaqList items={faqs} />
+        </Section>
 
-        <section className="container mx-auto px-4 pb-12 max-w-3xl">
-          <RecommendedByData />
-        </section>
+        <div className="container pb-16">
+          <RecommendedByData className="max-w-4xl" />
+        </div>
       </main>
       <Footer />
     </>

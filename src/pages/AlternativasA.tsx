@@ -1,73 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import RecommendedByData from '@/components/RecommendedByData';
-import { ExternalLink, Star } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { getActiveCountryCode } from '@/lib/country';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import { Button } from '@/components/ui/button';
+import { ProvenanceLegend, ProvenanceTag } from '@/components/data/Provenance';
+import Crumbs from '@/components/comparar/Crumbs';
+import CompareTable, { type CompareRow } from '@/components/comparar/CompareTable';
+import FaqList from '@/components/comparar/FaqList';
+import { useCompaniesBySlug, useCuratedLeaders, type CompareCompany } from '@/components/comparar/useCompareData';
+import { formatScore } from '@/lib/format';
 import {
   isValidSlug, isAnchorSlug,
   ANCHOR_HOSTINGPLUS, ANCHOR_ECOHOSTING, MIGRATION_COMPETITORS,
 } from '@/lib/vsPairs';
-import { getProviderLink, filterVisibleProviders } from '@/lib/providerLinks';
+import { getProviderLink } from '@/lib/providerLinks';
 
 const ORIGIN = 'https://eligetuhosting.cl';
 
-interface Company {
-  slug: string;
-  name: string;
-  logo_url: string | null;
-  overall_rating: number | null;
-  promo_price: number | null;
-  datacenter_location: string | null;
-  corporate_group: string | null;
-  foundation_year: number | null;
-  total_reviews: number | null;
-  website: string | null;
-}
+const scoreText = (c: CompareCompany) => (c.overall_rating != null ? `${formatScore(c.overall_rating)}/10` : null);
 
-/** No publicamos precios mientras dura la reverificación del catálogo. */
-const fmtPrice = (_p: number | null) => 'Consultar';
+const LoadingShell = () => (
+  <>
+    <Navbar />
+    <main className="container py-16">
+      <p role="status" className="t-body text-ink-2">Cargando…</p>
+    </main>
+    <Footer />
+  </>
+);
 
 const AlternativasA: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [target, setTarget] = useState<Company | null>(null);
-  const [top, setTop] = useState<Company[]>([]);
-  const [loading, setLoading] = useState(true);
+  const valid = !!slug && isValidSlug(slug) && !isAnchorSlug(slug);
+  const targetQ = useCompaniesBySlug(slug ? [slug] : [], valid);
+  const leadersQ = useCuratedLeaders(valid);
 
-  useEffect(() => {
-    if (!slug) return;
-    (async () => {
-      const { data: t } = await supabase
-        .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews,website')
-        .eq('country', getActiveCountryCode())
-        .eq('slug', slug)
-        .maybeSingle();
-      setTarget((t as Company) || null);
-
-      const { data: leaders } = await supabase
-        .from('hosting_companies')
-        .select('slug,name,logo_url,overall_rating,promo_price,datacenter_location,corporate_group,foundation_year,total_reviews,website')
-        .eq('country', getActiveCountryCode())
-        .eq('is_verified', true)
-        .eq('is_curated', true)
-        .order('overall_rating', { ascending: false })
-        .limit(6);
-      const ranked = filterVisibleProviders((leaders || []) as Company[]);
-      const hp = ranked.find(c => c.slug === ANCHOR_HOSTINGPLUS);
-      const eh = ranked.find(c => c.slug === ANCHOR_ECOHOSTING);
-      const third = ranked.find(c => c.slug !== ANCHOR_HOSTINGPLUS && c.slug !== ANCHOR_ECOHOSTING && c.slug !== slug);
-      setTop([hp, eh, third].filter(Boolean) as Company[]);
-      setLoading(false);
-    })();
-  }, [slug]);
-
-  if (!slug || !isValidSlug(slug) || isAnchorSlug(slug)) return <Navigate to="/catalogo" replace />;
-  if (loading) return <div className="p-10 text-center text-gray-500">Cargando…</div>;
+  if (!slug || !valid) return <Navigate to="/catalogo" replace />;
+  if (targetQ.isLoading || leadersQ.isLoading) return <LoadingShell />;
+  const target = targetQ.data?.find((c) => c.slug === slug) ?? null;
   if (!target) return <Navigate to="/catalogo" replace />;
+
+  const ranked = leadersQ.data ?? [];
+  const hp = ranked.find(c => c.slug === ANCHOR_HOSTINGPLUS);
+  const eh = ranked.find(c => c.slug === ANCHOR_ECOHOSTING);
+  const third = ranked.find(c => c.slug !== ANCHOR_HOSTINGPLUS && c.slug !== ANCHOR_ECOHOSTING && c.slug !== slug);
+  const top = [hp, eh, third].filter(Boolean) as CompareCompany[];
 
   const canonical = `${ORIGIN}/alternativas-a/${slug}`;
   const title = `Mejores alternativas a ${target.name} en Chile 2026`;
@@ -75,16 +57,25 @@ const AlternativasA: React.FC = () => {
 
   const canMigrate = (MIGRATION_COMPETITORS as readonly string[]).includes(slug);
 
+  // Texto del JSON-LD FAQPage (no cambia con el diseño).
   const reasonsToSwitch: string[] = [];
   if ((target.overall_rating ?? 0) < 9) reasonsToSwitch.push(`nota global ${Number(target.overall_rating ?? 0).toFixed(1)}/10 inferior al líder del ranking`);
   if (target.corporate_group) reasonsToSwitch.push(`pertenece al grupo corporativo ${target.corporate_group}, lo que reduce la independencia operativa`);
   if (!target.datacenter_location || !/chile|santiago/i.test(target.datacenter_location)) reasonsToSwitch.push('datacenter no local (mayor latencia para visitas chilenas)');
   if (reasonsToSwitch.length === 0) reasonsToSwitch.push('busca mejor relación precio-rendimiento o un soporte 24/7 más rápido');
 
+  // Versión visible: nota editorial con coma decimal y sin afirmar «no local» cuando falta el dato.
+  const motivos: string[] = [];
+  if (target.overall_rating != null && target.overall_rating < 9) motivos.push(`Su nota editorial (${scoreText(target)}) está por debajo del líder del ranking.`);
+  if (target.corporate_group) motivos.push(`Pertenece al grupo corporativo ${target.corporate_group}, lo que reduce la independencia operativa.`);
+  if (!target.datacenter_location) motivos.push('No informa dónde está su datacenter.');
+  else if (!/chile|santiago/i.test(target.datacenter_location)) motivos.push('Su datacenter declarado no está en Chile: más latencia para visitas desde Chile.');
+  if (motivos.length === 0) motivos.push('Buscas mejor relación precio-rendimiento o un soporte 24/7 más rápido.');
+
   const faqs = [
     {
       q: `¿Cuál es la mejor alternativa a ${target.name} en Chile?`,
-      a: `Según mediciones verificables (ASN, benchmark y reputación pública), la mejor alternativa a ${target.name} es HostingPlus.cl (9.9/10): datacenter en Santiago, LiteSpeed Enterprise y soporte 24/7. EcoHosting.cl (9.6/10) es una segunda alternativa con mejor relación precio-rendimiento.`,
+      a: `Según nuestra nota editorial (ASN, benchmark y reputación pública), la mejor alternativa a ${target.name} es HostingPlus.cl (9.9/10): datacenter en Santiago, LiteSpeed Enterprise y soporte 24/7. EcoHosting.cl (9.6/10) es una segunda alternativa con mejor relación precio-rendimiento.`,
     },
     {
       q: `¿Cómo migro mi sitio desde ${target.name}?`,
@@ -124,6 +115,20 @@ const AlternativasA: React.FC = () => {
     ],
   };
 
+  const columns = [target, ...top].map((c) => ({ key: c.slug, name: c.name, href: `/catalogo/${c.slug}` }));
+  const rows: CompareRow[] = [
+    { id: 'nota', label: 'Nota editorial', kind: 'editorial', empty: 'Sin nota', cells: [target, ...top].map((c) => ({ value: scoreText(c), raw: c.overall_rating })) },
+    { id: 'precio', label: 'Precio desde', note: 'En reverificación: consulta el valor vigente en su sitio.', cells: [target, ...top].map(() => ({ value: 'Consultar', raw: null })) },
+    { id: 'datacenter', label: 'Datacenter', kind: 'declared', cells: [target, ...top].map((c) => ({ value: c.datacenter_location, raw: c.datacenter_location })) },
+    { id: 'migracion', label: 'Migración gratuita', cells: [{ value: 'Consultar', raw: null }, ...top.map(() => ({ value: 'Sí, asistida', raw: null }))] },
+  ];
+
+  const datosTarget = [
+    target.foundation_year ? `opera desde ${target.foundation_year}` : null,
+    target.datacenter_location ? `datacenter ${target.datacenter_location}` : null,
+    target.corporate_group ? `parte del grupo ${target.corporate_group}` : null,
+  ].filter(Boolean).join(', ');
+
   return (
     <>
       <Helmet>
@@ -140,116 +145,102 @@ const AlternativasA: React.FC = () => {
       </Helmet>
 
       <Navbar />
-      <main className="bg-gradient-to-b from-paper to-white">
-        <section className="container mx-auto px-4 py-10 max-w-4xl">
-          <nav aria-label="breadcrumbs" className="text-xs text-gray-500 mb-3">
-            <Link to="/" className="hover:underline">Inicio</Link> /{' '}
-            <Link to="/catalogo" className="hover:underline">Catálogo</Link> /{' '}
-            <span>Alternativas a {target.name}</span>
-          </nav>
-          <h1 className="text-2xl md:text-4xl font-bold text-ink">{title}</h1>
-          <p className="mt-4 text-gray-700 text-base md:text-lg leading-relaxed">
-            {target.name}{target.foundation_year ? ` (opera desde ${target.foundation_year})` : ''}{target.datacenter_location ? `, datacenter ${target.datacenter_location}` : ''}{target.corporate_group ? `, parte del grupo ${target.corporate_group}` : ''}, obtiene una nota global de <strong>{Number(target.overall_rating ?? 0).toFixed(1)}/10</strong> en nuestro ranking verificable.
-            {' '}Hay alternativas mejor evaluadas en el mercado chileno: si {reasonsToSwitch.join(', ')}, los proveedores listados abajo superan a {target.name} en métricas medibles (velocidad, soporte, reputación pública). Todos cuentan con datacenter local y migración gratuita asistida.
-          </p>
-        </section>
+      <main>
+        <PageHeader
+          breadcrumbs={<Crumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Catálogo', href: '/catalogo' }, { name: `Alternativas a ${target.name}` }]} />}
+          title={title}
+          lead={
+            <>
+              {target.name}
+              {datosTarget ? ` (${datosTarget})` : ''}{' '}
+              {target.overall_rating != null ? (
+                <>tiene una nota editorial de <strong className="tabular font-semibold text-ink">{scoreText(target)}</strong> en nuestro ranking.</>
+              ) : (
+                'aún no tiene nota editorial en nuestro ranking.'
+              )}{' '}
+              Los proveedores de abajo lo superan en métricas medibles (velocidad, soporte, reputación pública). Todos cuentan con datacenter local y migración gratuita asistida.
+            </>
+          }
+        />
 
-        <section className="container mx-auto px-4 pb-8 max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-5">Top 3 alternativas a {target.name}</h2>
-          <ol className="space-y-4">
-            {top.map((p, i) => (
-              <li key={p.slug} className={`rounded-xl border p-4 md:p-5 bg-white shadow-sm ${i === 0 ? 'border-brand border-2' : 'border-gray-200'}`}>
-                <div className="flex flex-wrap items-center gap-4 justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className={`text-2xl font-bold ${i === 0 ? 'text-brand' : 'text-gray-400'}`}>#{i + 1}</span>
-                    <div>
-                      <div className="font-semibold text-ink">{p.name}</div>
-                      <div className="text-xs text-gray-500">{p.datacenter_location || 'Chile'}</div>
-                    </div>
-                  </div>
-                  <div className="text-sm">
-                    <div className="flex items-center gap-1 text-amber-500 font-semibold">
-                      <Star className="h-4 w-4 fill-amber-500" />{Number(p.overall_rating ?? 0).toFixed(1)}/10
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">{fmtPrice(p.promo_price)}</div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Link to={`/catalogo/${p.slug}`} className="text-sm px-3 py-2 rounded border border-brand text-brand hover:bg-brand hover:text-white">Ver ficha</Link>
-                    {(() => { const link = getProviderLink(p.slug, p.website); return (
-                      <a href={link.href} target="_blank" rel={link.rel} className="text-sm px-3 py-2 rounded bg-brand text-white hover:bg-red-700 flex items-center gap-1">Visitar <ExternalLink className="h-3 w-3" /></a>
-                    ); })()}
-                  </div>
-                </div>
+        <Section id="motivos" title="Motivos para mirar alternativas" density="tight">
+          <ul className="measure space-y-2">
+            {motivos.map((m) => (
+              <li key={m} className="t-body flex gap-2.5 text-ink-2">
+                <span aria-hidden className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-sm bg-ink-3" />
+                {m}
               </li>
             ))}
-          </ol>
-        </section>
+          </ul>
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-4xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Comparativa vs {target.name}</h2>
-          <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
-            <table className="w-full">
-              <thead className="bg-paper text-xs uppercase text-gray-500">
-                <tr>
-                  <th className="text-left py-3 px-3">Característica</th>
-                  <th className="text-left py-3 px-3">{target.name}</th>
-                  {top.map(p => <th key={p.slug} className="text-left py-3 px-3">{p.name}</th>)}
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Nota</th>
-                  <td className="py-3 px-3 text-sm">{Number(target.overall_rating ?? 0).toFixed(1)}/10</td>
-                  {top.map(p => <td key={p.slug} className="py-3 px-3 text-sm font-semibold">{Number(p.overall_rating ?? 0).toFixed(1)}/10</td>)}
-                </tr>
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Precio desde</th>
-                  <td className="py-3 px-3 text-sm">{fmtPrice(target.promo_price)}</td>
-                  {top.map(p => <td key={p.slug} className="py-3 px-3 text-sm">{fmtPrice(p.promo_price)}</td>)}
-                </tr>
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Datacenter</th>
-                  <td className="py-3 px-3 text-sm">{target.datacenter_location || '—'}</td>
-                  {top.map(p => <td key={p.slug} className="py-3 px-3 text-sm">{p.datacenter_location || '—'}</td>)}
-                </tr>
-                <tr className="border-t"><th scope="row" className="text-left py-3 px-3 text-xs uppercase text-gray-500 font-medium">Migración gratuita</th>
-                  <td className="py-3 px-3 text-sm">Consultar</td>
-                  {top.map(p => <td key={p.slug} className="py-3 px-3 text-sm">Sí, asistida</td>)}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <div className="rounded-xl border-2 border-brand bg-gradient-to-br from-brand/5 to-white p-6 text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-ink">¿Quieres migrar desde {target.name}?</h2>
-            <p className="text-gray-700 mt-2">HostingPlus.cl y EcoHosting.cl te migran gratis y sin downtime.</p>
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
-              {canMigrate && (
-                <Link to={`/migrar-de/${slug}`} className="px-5 py-3 rounded bg-brand text-white text-sm hover:bg-red-700">
-                  Guía: Migrar de {target.name} →
-                </Link>
-              )}
-              <Link to="/cotiza-hosting" className="px-5 py-3 rounded border-2 border-brand text-brand text-sm hover:bg-brand hover:text-white">
-                Solicitar migración gratuita
-              </Link>
+        <Section id="top" title={`Top 3 alternativas a ${target.name}`} tone="paper" density="tight">
+          {top.length === 0 ? (
+            <div className="max-w-[62ch] rounded-xl border border-rule bg-white p-6">
+              <p className="t-body text-ink">Aún no tenemos alternativas curadas para mostrarte aquí.</p>
+              <p className="t-small mt-1 text-ink-2">Mientras tanto, revisa el ranking completo: ahí está el orden con su metodología.</p>
+              <Button asChild variant="outline" className="mt-4"><Link to="/ranking">Ver el ranking</Link></Button>
             </div>
-          </div>
-        </section>
+          ) : (
+            <ol className="divide-y divide-rule border-y border-rule bg-white">
+              {top.map((p, i) => {
+                const link = getProviderLink(p.slug, p.website);
+                return (
+                  <li key={p.slug} className="flex flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 md:px-5">
+                    <span className="tabular w-6 text-xl font-bold text-ink-3"><span className="sr-only">Puesto </span>{i + 1}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="t-h3 text-ink">{p.name}</p>
+                      <p className="t-meta flex items-center gap-1.5">
+                        <ProvenanceTag kind="declared" variant="glyph" />
+                        {p.datacenter_location || 'Datacenter sin dato'}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="flex items-center justify-end gap-1.5">
+                        <span className="tabular text-lg font-bold text-ink">{scoreText(p) ?? 'Sin nota'}</span>
+                        <ProvenanceTag kind="editorial" variant="glyph" />
+                      </p>
+                      <p className="t-meta">Precio: consultar</p>
+                    </div>
+                    <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+                      <Button asChild variant="outline"><Link to={`/catalogo/${p.slug}`}>Ver ficha</Link></Button>
+                      <Button asChild variant="ghost">
+                        <a href={link.href} target="_blank" rel={link.rel}>Ir al sitio de {p.name} <ExternalLink aria-hidden /></a>
+                      </Button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+        </Section>
 
-        <section className="container mx-auto px-4 pb-8 max-w-3xl">
-          <h2 className="text-xl md:text-2xl font-semibold text-ink mb-3">Preguntas frecuentes</h2>
-          <div className="space-y-3">
-            {faqs.map((f, i) => (
-              <details key={i} className="border rounded-lg p-4 bg-white">
-                <summary className="font-semibold cursor-pointer text-ink">{f.q}</summary>
-                <p className="mt-2 text-sm text-gray-700">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
+        <Section id="comparativa" title={`Comparativa vs ${target.name}`} density="tight">
+          <CompareTable caption={`${target.name} frente a sus alternativas`} columns={columns} rows={rows} />
+          <ProvenanceLegend compact className="mt-8 max-w-4xl" />
+        </Section>
 
-        <section className="container mx-auto px-4 pb-12 max-w-3xl">
-          <RecommendedByData />
-        </section>
+        <Section id="migrar" tone="paper" density="tight" title={`¿Quieres migrar desde ${target.name}?`}>
+          <p className="t-body measure text-ink-2">HostingPlus.cl y EcoHosting.cl te migran gratis y sin downtime.</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {canMigrate && (
+              <Button asChild variant="brand">
+                <Link to={`/migrar-de/${slug}`}>Guía para migrar de {target.name} <ArrowRight aria-hidden /></Link>
+              </Button>
+            )}
+            <Button asChild variant={canMigrate ? 'outline' : 'brand'}>
+              <Link to="/cotiza-hosting">Solicitar migración gratuita</Link>
+            </Button>
+          </div>
+        </Section>
+
+        <Section id="preguntas" title="Preguntas frecuentes" density="tight">
+          <FaqList items={faqs} />
+        </Section>
+
+        <div className="container pb-16">
+          <RecommendedByData className="max-w-4xl" />
+        </div>
       </main>
       <Footer />
     </>
