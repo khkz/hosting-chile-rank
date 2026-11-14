@@ -62,7 +62,7 @@ const HubTable: React.FC<{ rows: HubRowData[]; highlightId: string; notaLoading?
         rows.map(({ provider, nota, companyId }) => {
           const highlighted = provider.id === highlightId;
           return (
-            <tr key={provider.id} className={cn('border-b border-rule align-top', highlighted && 'bg-paper-deep')}>
+            <tr key={provider.id} className={cn('border-b border-rule align-top', highlighted && 'bg-paper')}>
               <th scope="row" className="py-3.5 pl-3 pr-4 font-semibold text-ink">
                 {provider.name}
               </th>
