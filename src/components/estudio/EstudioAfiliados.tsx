@@ -13,9 +13,9 @@ import { AFFILIATE_CASES, SELF_PROMO } from '@/data/estudio2026';
  * quedan idénticos y solo cambia el estilo (sin rojo, que es del puesto 1).
  */
 const EstudioAfiliados: React.FC = () => (
-  <section aria-labelledby="alerta" className="scroll-mt-24">
+  <section aria-labelledby="alerta">
     <div className="prose">
-      <h2 id="alerta" className="flex scroll-mt-24 items-center gap-3">
+      <h2 id="alerta" className="flex items-center gap-3">
         <AlertTriangle className="h-6 w-6 shrink-0 text-ink-2" aria-hidden />
         6. Comparadores con vínculo comercial
       </h2>

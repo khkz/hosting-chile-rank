@@ -37,7 +37,7 @@ const docLink = 'h-auto min-h-11 justify-start whitespace-normal py-2.5 text-lef
 /** Secciones 6 a 10 de /metodologia: versiones, documentos, límites y correcciones. */
 const MetodologiaAnexos: React.FC<Props> = ({ version, changelog, changelogLoading, unavailable, markdown, exportUrl }) => (
   <>
-    <h2 id="frecuencia" className="scroll-mt-24">6. Frecuencia y versionado</h2>
+    <h2 id="frecuencia">6. Frecuencia y versionado</h2>
     <ul>
       <li>
         <strong>Uptime:</strong> ping cada hora (cron pg_cron + pg_net).
@@ -53,7 +53,7 @@ const MetodologiaAnexos: React.FC<Props> = ({ version, changelog, changelogLoadi
       </li>
     </ul>
 
-    <h2 id="changelog" className="scroll-mt-24">7. Cambios y changelog</h2>
+    <h2 id="changelog">7. Cambios y changelog</h2>
     {changelogLoading ? (
       <p role="status">Cargando el historial de versiones…</p>
     ) : changelog && changelog.length > 0 ? (
@@ -76,7 +76,7 @@ const MetodologiaAnexos: React.FC<Props> = ({ version, changelog, changelogLoadi
       </p>
     )}
 
-    <h2 id="documentos" className="scroll-mt-24">8. Documentos y descargas</h2>
+    <h2 id="documentos">8. Documentos y descargas</h2>
     <div className="not-prose grid gap-3 sm:grid-cols-2">
       <Button asChild variant="outline" className={docLink}>
         <a href={exportUrl} target="_blank" rel="noopener noreferrer">
@@ -115,7 +115,7 @@ const MetodologiaAnexos: React.FC<Props> = ({ version, changelog, changelogLoadi
       </>
     )}
 
-    <h2 id="limitaciones" className="scroll-mt-24">9. Limitaciones</h2>
+    <h2 id="limitaciones">9. Limitaciones</h2>
     <ul>
       <li>Uptime se mide desde edge de Supabase, no replica latencia desde todos los ISP chilenos.</li>
       <li>Benchmarks Lighthouse son sintéticos; no reemplazan medición real de usuarios (RUM).</li>
@@ -123,7 +123,7 @@ const MetodologiaAnexos: React.FC<Props> = ({ version, changelog, changelogLoadi
       <li>Precio se calcula sobre planes de entrada publicados; no cubre negociaciones privadas.</li>
     </ul>
 
-    <h2 id="contacto" className="scroll-mt-24">10. Correcciones</h2>
+    <h2 id="contacto">10. Correcciones</h2>
     <p>¿Detectaste un error o tienes evidencia adicional? Escríbenos y revisaremos en menos de 5 días hábiles.</p>
     <div className="not-prose">
       <Button asChild>

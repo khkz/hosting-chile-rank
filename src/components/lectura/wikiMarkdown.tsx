@@ -14,7 +14,7 @@ const heading = (Tag: Level) => {
     const { clean, id } = splitHeading(textOf(children).trim());
     if (!clean) return null;
     return (
-      <Tag id={id} className="scroll-mt-24">
+      <Tag id={id}>
         {clean}
       </Tag>
     );

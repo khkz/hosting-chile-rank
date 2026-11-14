@@ -52,7 +52,7 @@ const MetodologiaSecciones: React.FC<Props> = ({ lastReviewed, exportUrl }) => {
 
   return (
     <>
-      <h2 id="resumen" className="scroll-mt-24">1. Resumen ejecutivo</h2>
+      <h2 id="resumen">1. Resumen ejecutivo</h2>
       <p>
         Evaluamos proveedores de hosting en Chile combinando <strong>mediciones automatizadas</strong> (uptime cada
         hora, benchmarks Lighthouse mensuales), <strong>reputación pública</strong> (Reclamos.cl, reseñas verificadas)
@@ -60,7 +60,7 @@ const MetodologiaSecciones: React.FC<Props> = ({ lastReviewed, exportUrl }) => {
         empresas marcadas como verificadas y curadas, con un score de 7,0 o más.
       </p>
 
-      <h2 id="autoria" className="scroll-mt-24">2. Autoría y responsabilidad editorial</h2>
+      <h2 id="autoria">2. Autoría y responsabilidad editorial</h2>
       <dl className="not-prose divide-y divide-rule border-y border-rule">
         <div className="grid gap-1 py-3 sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-4">
           <dt className="t-label">Editor responsable</dt>
@@ -87,7 +87,7 @@ const MetodologiaSecciones: React.FC<Props> = ({ lastReviewed, exportUrl }) => {
         </div>
       </dl>
 
-      <h2 id="fuentes" className="scroll-mt-24">3. Fuentes de datos y evidencias</h2>
+      <h2 id="fuentes">3. Fuentes de datos y evidencias</h2>
       <p>Cada dato del ranking sale de una de estas fuentes, y cada una se puede revisar por fuera.</p>
       <table className="hidden sm:table">
         <thead>
@@ -121,7 +121,7 @@ const MetodologiaSecciones: React.FC<Props> = ({ lastReviewed, exportUrl }) => {
         ))}
       </ul>
 
-      <h3 id="reputacion" className="scroll-mt-24">Criterios de reputación verificada</h3>
+      <h3 id="reputacion">Criterios de reputación verificada</h3>
       <ul>
         <li>
           <strong>Reseña verificada:</strong> usuario autenticado + email confirmado + marcado{' '}
@@ -141,7 +141,7 @@ const MetodologiaSecciones: React.FC<Props> = ({ lastReviewed, exportUrl }) => {
         </li>
       </ul>
 
-      <h2 id="calculo" className="scroll-mt-24">4. Cómo se calcula el ranking</h2>
+      <h2 id="calculo">4. Cómo se calcula el ranking</h2>
       <RankingFormulaBlock variant="full" />
     </>
   );

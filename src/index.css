@@ -395,6 +395,11 @@ html {
   }
 
 
+}
+
+/* Roles del sistema en la capa de componentes: una utilidad explícita
+   (color, tamaño) siempre puede ajustarlos. */
+@layer components {
   /* ── Sistema «Cercano y confiable»: roles tipográficos ────────────────
      Una sola familia (Archivo). Los titulares usan el eje de ancho; el
      cuerpo va a 16 px en móvil. Mayúscula solo inicial; sin antetítulos. */

@@ -169,7 +169,7 @@ const UltimosDominios = () => {
         </Section>
 
         <Section tone="white" title="Dominios inscritos" density="tight" className="border-t border-rule">
-          <div ref={listRef} className="scroll-mt-24">
+          <div ref={listRef}>
             {isLoading ? (
               <div aria-busy="true" className="space-y-3">
                 <p className="sr-only" role="status">Cargando la lista de dominios…</p>

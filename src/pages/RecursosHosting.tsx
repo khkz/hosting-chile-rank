@@ -185,7 +185,7 @@ const RecursosHosting = () => {
         prose={false}
       >
         <section aria-labelledby="herramientas" className="max-w-[46rem]">
-          <h2 id="herramientas" className="t-h2 scroll-mt-24 text-ink">
+          <h2 id="herramientas" className="t-h2 text-ink">
             Herramientas gratuitas
           </h2>
           <ul className="mt-6 divide-y divide-rule border-y border-rule">
@@ -196,7 +196,7 @@ const RecursosHosting = () => {
         </section>
 
         <section aria-labelledby="guias" className="mt-14 max-w-[46rem]">
-          <h2 id="guias" className="t-h2 scroll-mt-24 text-ink">
+          <h2 id="guias" className="t-h2 text-ink">
             Guías completas
           </h2>
           {CATEGORIAS.map((c) => (
@@ -212,7 +212,7 @@ const RecursosHosting = () => {
         </section>
 
         <section aria-labelledby="ayuda" className="mt-14 max-w-[46rem] rounded-xl border border-rule bg-paper p-6 md:p-8">
-          <h2 id="ayuda" className="t-h2 scroll-mt-24 text-ink">
+          <h2 id="ayuda" className="t-h2 text-ink">
             ¿Necesitas ayuda personalizada?
           </h2>
           <p className="t-body mt-3 text-ink-2">

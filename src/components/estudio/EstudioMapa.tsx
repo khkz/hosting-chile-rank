@@ -13,9 +13,9 @@ const pit = (asn: string) => {
 
 /** Sección 3 del estudio: hosting con ASN asignado y revendedores sin ASN propio. */
 const EstudioMapa: React.FC = () => (
-  <section aria-labelledby="mapa" className="scroll-mt-24">
+  <section aria-labelledby="mapa">
     <div className="prose">
-      <h2 id="mapa" className="scroll-mt-24">3. Mapa del mercado: ASN asignado vs revendedores</h2>
+      <h2 id="mapa">3. Mapa del mercado: ASN asignado vs revendedores</h2>
       <h3 className="flex items-center gap-2">
         <Network className="h-5 w-5 text-ink-2" aria-hidden />
         Hosting chileno con ASN asignado en LACNIC

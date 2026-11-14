@@ -180,7 +180,7 @@ const WikiTerm: React.FC = () => {
                 </div>
               )}
 
-              <h2 id="termino-que-es" className="scroll-mt-24">¿Qué es {term.title}?</h2>
+              <h2 id="termino-que-es">¿Qué es {term.title}?</h2>
               {markdown ? (
                 <ReactMarkdown remarkPlugins={[remarkGfm]} components={WIKI_MD_COMPONENTS}>
                   {markdown}
@@ -199,7 +199,7 @@ const WikiTerm: React.FC = () => {
 
               {reqs.length > 0 && (
                 <>
-                  <h2 id="termino-requisitos" className="scroll-mt-24">Requisitos de hosting</h2>
+                  <h2 id="termino-requisitos">Requisitos de hosting</h2>
                   <ul>
                     {reqs.map((req, i) => (
                       <li key={`${i}-${req}`}>{req}</li>
@@ -210,7 +210,7 @@ const WikiTerm: React.FC = () => {
 
               {faqs.length > 0 && (
                 <>
-                  <h2 id="termino-preguntas" className="scroll-mt-24">Preguntas frecuentes</h2>
+                  <h2 id="termino-preguntas">Preguntas frecuentes</h2>
                   <div className="not-prose">
                     <SimpleFAQ faqs={faqs} termSlug={term.slug} termTitle={term.title} />
                   </div>
@@ -219,7 +219,7 @@ const WikiTerm: React.FC = () => {
 
               {errors.length > 0 && (
                 <>
-                  <h2 id="termino-errores" className="scroll-mt-24">Errores comunes</h2>
+                  <h2 id="termino-errores">Errores comunes</h2>
                   <ul>
                     {errors.map((e, i) => (
                       <li key={`${i}-${e.error}`}>
@@ -232,7 +232,7 @@ const WikiTerm: React.FC = () => {
 
               {links.length > 0 && (
                 <>
-                  <h2 id="termino-enlaces" className="scroll-mt-24">Enlaces oficiales y descargas</h2>
+                  <h2 id="termino-enlaces">Enlaces oficiales y descargas</h2>
                   <ul>
                     {links.map((link, i) => (
                       <li key={`${i}-${link.url}`}>

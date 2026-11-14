@@ -194,7 +194,7 @@ const EstudioHostingChile2026: React.FC = () => {
             </Callout>
 
             <section aria-labelledby="resumen" className="prose">
-              <h2 id="resumen" className="scroll-mt-24">1. Resumen ejecutivo</h2>
+              <h2 id="resumen">1. Resumen ejecutivo</h2>
               <p>
                 El mercado chileno de hosting está fragmentado en cuatro capas. En la cima, empresas con{' '}
                 <strong>ASN asignado en LACNIC</strong> e infraestructura en datacenters nacionales; de ellas, solo dos están
@@ -223,7 +223,7 @@ const EstudioHostingChile2026: React.FC = () => {
             </section>
 
             <section aria-labelledby="metodologia" className="prose">
-              <h2 id="metodologia" className="scroll-mt-24">2. Metodología y criterios</h2>
+              <h2 id="metodologia">2. Metodología y criterios</h2>
               <p>
                 Para cada proveedor se cruzaron las siguientes fuentes públicas. Los pesos del puntaje compuesto se publican
                 en <Link to="/metodologia">/metodologia</Link>.
@@ -242,7 +242,7 @@ const EstudioHostingChile2026: React.FC = () => {
 
             <section aria-labelledby="fichas">
               <div className="prose">
-                <h2 id="fichas" className="scroll-mt-24">4. Top 11 proveedores — fichas detalladas</h2>
+                <h2 id="fichas">4. Top 11 proveedores — fichas detalladas</h2>
                 <p>
                   Este estudio cubre 11 proveedores; el ranking de portada muestra el Top 10 y no incluye a{' '}
                   <strong>DonWeb / Dattatec</strong>, que aquí se lista por su relevancia regional aunque aloja en Argentina.
@@ -255,7 +255,7 @@ const EstudioHostingChile2026: React.FC = () => {
 
             <section aria-labelledby="tabla">
               <div className="prose">
-                <h2 id="tabla" className="scroll-mt-24">5. Tabla comparativa general</h2>
+                <h2 id="tabla">5. Tabla comparativa general</h2>
                 <p>
                   Precios de entrada anualizados en CLP, observados el {VERIFICATION_DATE_HUMAN}. PowerHost aparece con su
                   catálogo VPS porque no comercializa hosting compartido, por lo que no es comparable en precio.
@@ -269,7 +269,7 @@ const EstudioHostingChile2026: React.FC = () => {
             <EstudioAfiliados />
 
             <section aria-labelledby="conclusiones" className="prose">
-              <h2 id="conclusiones" className="scroll-mt-24">7. Conclusiones y recomendaciones editoriales</h2>
+              <h2 id="conclusiones">7. Conclusiones y recomendaciones editoriales</h2>
               <p>
                 Por <strong>red efectivamente desplegada</strong> (prefijos originados y peering), el orden es:{' '}
                 <strong>Hostname.cl (23 prefijos, PIT Chile) · PowerHost (15 prefijos, PIT Chile + 9 IXP
@@ -292,7 +292,7 @@ const EstudioHostingChile2026: React.FC = () => {
             </section>
 
             <section aria-labelledby="fuentes" className="prose">
-              <h2 id="fuentes" className="scroll-mt-24">8. Anexo: fuentes consultadas</h2>
+              <h2 id="fuentes">8. Anexo: fuentes consultadas</h2>
               {(Object.entries(SOURCES) as [keyof typeof SOURCES, (typeof SOURCES)['tech']][]).map(([key, items]) => (
                 <React.Fragment key={key}>
                   <h3>{SOURCE_GROUP[key]}</h3>

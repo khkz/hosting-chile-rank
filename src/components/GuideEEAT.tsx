@@ -47,7 +47,7 @@ const GuideEEAT: React.FC<GuideEEATProps> = ({
   const headingId = `${id}-titulo`;
   const iso = isoDate(reviewedAt);
   return (
-    <section id={id} aria-labelledby={headingId} className={cn('scroll-mt-24', className)}>
+    <section id={id} aria-labelledby={headingId} className={cn(className)}>
       <h2 id={headingId} className="t-h3 text-ink">
         Sobre esta guía
       </h2>

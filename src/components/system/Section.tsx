@@ -47,7 +47,7 @@ const Section: React.FC<SectionProps> = ({
       id={id}
       aria-labelledby={headingId}
       aria-label={rest['aria-label']}
-      className={cn(TONE[tone], density === 'tight' ? 'py-10 md:py-14' : 'py-14 md:py-20', 'scroll-mt-24', className)}
+      className={cn(TONE[tone], density === 'tight' ? 'py-10 md:py-14' : 'py-14 md:py-20', className)}
     >
       <div className={cn('container', containerClassName)}>
         {(title || lead || action) && (

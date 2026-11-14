@@ -151,7 +151,7 @@ const Metodologia: React.FC = () => {
         >
           <MetodologiaSecciones lastReviewed={reviewedValue} exportUrl={exportUrl} />
 
-          <h2 id="ejemplo" className="scroll-mt-24">5. Ejemplo trabajado</h2>
+          <h2 id="ejemplo">5. Ejemplo trabajado</h2>
           <div className="not-prose">
             <MetodologiaEjemplo data={topQ.data} isLoading={topQ.isLoading} exportUrl={exportUrl} />
           </div>

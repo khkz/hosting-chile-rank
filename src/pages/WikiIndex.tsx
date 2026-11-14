@@ -153,7 +153,7 @@ const WikiIndex: React.FC = () => {
                 </section>
               )}
 
-              <section id="search-results" aria-labelledby="resultados" className="scroll-mt-24">
+              <section id="search-results" aria-labelledby="resultados">
                 <h2 id="resultados" className="t-h2 mb-6 text-ink">
                   {filtering ? 'Resultados de búsqueda' : 'Todos los términos'}
                 </h2>

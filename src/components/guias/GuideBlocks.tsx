@@ -13,7 +13,7 @@ export const RICH =
 
 /** Título de sección del cuerpo, con ancla para el índice «En esta página». */
 export const H2: React.FC<{ id: string; children: React.ReactNode }> = ({ id, children }) => (
-  <h2 id={id} className="scroll-mt-24">
+  <h2 id={id}>
     {children}
   </h2>
 );

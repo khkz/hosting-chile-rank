@@ -50,7 +50,7 @@ const QuienesSomos: React.FC = () => {
           }
           toc={TOC}
         >
-          <h2 id="por-que" className="scroll-mt-24">Por qué existimos</h2>
+          <h2 id="por-que">Por qué existimos</h2>
           <p>
             Cuando alguien busca "mejor hosting Chile" hoy, encuentra casi puro afiliado disfrazado de review. Nosotros
             queríamos un sitio que le sirviera de verdad a una PyME o a un desarrollador: qué proveedor es real, dónde está su
@@ -62,7 +62,7 @@ const QuienesSomos: React.FC = () => {
             Chile, WHOIS, ASN, registros mercantiles) o reclamos verificados. Cuando no tenemos evidencia, lo decimos.
           </p>
 
-          <h2 id="quien" className="scroll-mt-24">Quién está detrás</h2>
+          <h2 id="quien">Quién está detrás</h2>
           <p>
             Somos un equipo editorial pequeño con experiencia real administrando servidores Linux, cPanel/WHM, WordPress y
             stacks LAMP/LEMP, además de trabajo con WAFs (ModSecurity, BitNinja, Imunify360) y análisis OSINT. No vamos a
@@ -73,7 +73,7 @@ const QuienesSomos: React.FC = () => {
             Ver también la <Link to="/metodologia">metodología completa</Link>.
           </p>
 
-          <h2 id="financiamiento" className="scroll-mt-24">Cómo nos financiamos</h2>
+          <h2 id="financiamiento">Cómo nos financiamos</h2>
           <p>
             Con comisiones de afiliado: si alguien contrata hosting a través de uno de nuestros enlaces, el proveedor nos paga
             una comisión. Además, el editor de este sitio mantiene relación comercial con algunos de los proveedores listados.
@@ -90,7 +90,7 @@ const QuienesSomos: React.FC = () => {
             soporte, y eso se verá en los datos que publicamos.
           </p>
 
-          <h2 id="verificamos" className="scroll-mt-24">Cómo verificamos</h2>
+          <h2 id="verificamos">Cómo verificamos</h2>
           <ul>
             <li>
               <strong>Existencia real:</strong> razón social, RUT/RFC/NIT/CUIT, sitio oficial y WHOIS. Si no podemos confirmar
@@ -113,7 +113,7 @@ const QuienesSomos: React.FC = () => {
             </li>
           </ul>
 
-          <h2 id="contacto" className="scroll-mt-24">Cómo contactarnos</h2>
+          <h2 id="contacto">Cómo contactarnos</h2>
           <p>
             Si encontraste un error, tienes evidencia que contradice algún dato o quieres proponer una corrección, escríbenos.
             Publicamos actualizaciones con fecha cuando la evidencia lo justifica.

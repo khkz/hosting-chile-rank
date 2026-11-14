@@ -170,7 +170,7 @@ const LatamIndex = () => {
           )}
           {data && <IndexTable rows={data.rows} />}
 
-          <div id="cobertura" className="mt-10 grid scroll-mt-24 gap-10 lg:grid-cols-12">
+          <div id="cobertura" className="mt-10 grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <h3 className="t-h3 text-ink">Países en verificación</h3>
               <p className="t-small mt-1 max-w-[62ch] text-ink-2">
