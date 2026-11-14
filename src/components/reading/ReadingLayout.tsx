@@ -60,7 +60,12 @@ const ReadingLayout: React.FC<ReadingLayoutProps> = ({
             {lead && <p className="t-lead mt-5">{lead}</p>}
             {meta && <div className="t-meta mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">{meta}</div>}
           </div>
-          {image && !isEmptyEditorial(image) && <div className="mt-8 max-w-5xl">{image}</div>}
+          {image && !isEmptyEditorial(image) && (
+            <figure className="mt-8 max-w-5xl">
+              {image}
+              <figcaption className="t-meta mt-2">Imagen ilustrativa.</figcaption>
+            </figure>
+          )}
         </div>
       </header>
 
@@ -72,8 +77,8 @@ const ReadingLayout: React.FC<ReadingLayoutProps> = ({
                 {toc && toc.length > 0 && (
                   <>
                     <details className="rounded-xl border border-rule p-4 lg:hidden">
-                      <summary className="cursor-pointer font-semibold text-ink">En esta página</summary>
-                      <TocList items={toc} className="mt-3" />
+                      <summary className="flex min-h-11 cursor-pointer items-center font-semibold text-ink">En esta página</summary>
+                      <TocList items={toc} className="mt-2" touch />
                     </details>
                     <nav aria-label="En esta página" className="hidden lg:block">
                       <p className="t-label mb-3">En esta página</p>
@@ -95,13 +100,16 @@ const ReadingLayout: React.FC<ReadingLayoutProps> = ({
   );
 };
 
-const TocList: React.FC<{ items: TocItem[]; className?: string }> = ({ items, className }) => (
+const TocList: React.FC<{ items: TocItem[]; className?: string; touch?: boolean }> = ({ items, className, touch }) => (
   <ol className={cn('space-y-1', className)}>
     {items.map((it) => (
       <li key={it.id}>
         <a
           href={`#${it.id}`}
-          className="block rounded-md px-2 py-1.5 text-sm text-ink-2 hover:bg-paper hover:text-ink"
+          className={cn(
+            'rounded-md px-2 text-ink-2 hover:bg-paper hover:text-ink',
+            touch ? 'flex min-h-11 items-center text-[15px]' : 'block py-1.5 text-sm',
+          )}
         >
           {it.label}
         </a>
