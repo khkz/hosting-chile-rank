@@ -97,7 +97,7 @@ const DatosAbiertos = () => {
                 <li key={e.path} className="grid gap-3 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-8">
                   <div className="min-w-0">
                     <h3 className="t-h3 text-ink">{e.title}</h3>
-                    <code className="t-meta mt-1 block break-all">https://eligetuhosting.com{e.path}</code>
+                    <code className="t-meta mt-1 block break-all font-sans">https://eligetuhosting.com{e.path}</code>
                     <p className="t-small mt-2 text-ink-2">{e.desc}</p>
                     <p className="t-meta mt-1 flex flex-wrap gap-x-4 gap-y-1">
                       {m?.status === 'loading' && <span>Leyendo la fecha del archivo…</span>}
@@ -127,7 +127,7 @@ const DatosAbiertos = () => {
               <li key={m.path}>
                 <a href={m.path} className={`${linkClass} inline-flex min-h-11 flex-col justify-center`}>
                   <span className="font-semibold">{m.title}</span>
-                  <code className="t-meta no-underline">{m.path}</code>
+                  <code className="t-meta font-sans no-underline">{m.path}</code>
                 </a>
               </li>
             ))}
@@ -152,7 +152,7 @@ const DatosAbiertos = () => {
             </ul>
             <h3>Cómo citar</h3>
           </div>
-          <pre className="measure mt-3 overflow-x-auto whitespace-pre-wrap rounded-xl border border-rule bg-white p-4 text-sm text-ink">
+          <pre className="measure mt-3 overflow-x-auto whitespace-pre-wrap rounded-xl border border-rule bg-white p-4 font-sans text-sm text-ink">
             <code>{`EligeTuHosting (${citeYear ?? 's. f.'}). Directorio de hosting LATAM [Dataset].
 Recuperado de https://eligetuhosting.com/datos — CC-BY-4.0.`}</code>
           </pre>

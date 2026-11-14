@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import Callout from '@/components/system/Callout';
 import FactList, { type Fact } from '@/components/herramientas/FactList';
-import { asnPath, hasRealOwner, hasValidNameservers, isIsoLike, isKnown, probeOf } from '@/components/herramientas/domainFacts';
-import { formatDataDate, formatInteger, formatScore } from '@/lib/format';
+import { asnPath, dateOnly, hasRealOwner, hasValidNameservers, isIsoLike, isKnown, probeOf } from '@/components/herramientas/domainFacts';
+import { formatDataDate, formatInteger, formatScore, parseDataDate } from '@/lib/format';
 import type { DomainAnalysisResult } from '@/services/domainAnalysis';
 
 interface DomainUniqueContentProps {
@@ -24,14 +24,16 @@ const DAY = 1000 * 60 * 60 * 24;
 
 // Antigüedad respecto de hoy (cálculo de la persona que mira, no una fecha de datos).
 const calculateDomainAge = (createdDate: string) => {
-  if (!isIsoLike(createdDate)) return { days: 0, years: 0, isNew: false, isEstablished: false };
-  const ageInDays = Math.floor((Date.now() - new Date(createdDate).getTime()) / DAY);
+  const created = isIsoLike(createdDate) ? parseDataDate(dateOnly(createdDate)) : null;
+  if (!created) return { days: 0, years: 0, isNew: false, isEstablished: false };
+  const ageInDays = Math.floor((Date.now() - created.getTime()) / DAY);
   return { days: ageInDays, years: ageInDays / 365, isNew: ageInDays < 30, isEstablished: ageInDays > 365 };
 };
 
 const calculateExpirationDays = (expiresDate: string) => {
-  if (!isIsoLike(expiresDate)) return { days: 0, isExpiringSoon: false };
-  const days = Math.floor((new Date(expiresDate).getTime() - Date.now()) / DAY);
+  const expires = isIsoLike(expiresDate) ? parseDataDate(dateOnly(expiresDate)) : null;
+  if (!expires) return { days: 0, isExpiringSoon: false };
+  const days = Math.floor((expires.getTime() - Date.now()) / DAY);
   return { days, isExpiringSoon: days < 90 };
 };
 
@@ -81,7 +83,7 @@ export const DomainUniqueContent: React.FC<DomainUniqueContentProps> = ({ domain
   const timeFacts: Fact[] = [
     {
       label: 'Fecha de registro',
-      value: isIsoLike(whois.created_date) ? formatDataDate(whois.created_date) : 'Sin dato',
+      value: isIsoLike(whois.created_date) ? formatDataDate(dateOnly(whois.created_date)) : 'Sin dato',
     },
     {
       label: 'Antigüedad',
@@ -89,7 +91,7 @@ export const DomainUniqueContent: React.FC<DomainUniqueContentProps> = ({ domain
     },
     {
       label: 'Fecha de expiración',
-      value: isIsoLike(whois.expires_date) ? formatDataDate(whois.expires_date) : 'Sin dato',
+      value: isIsoLike(whois.expires_date) ? formatDataDate(dateOnly(whois.expires_date)) : 'Sin dato',
     },
   ];
   if (expiration.days > 0) timeFacts.push({ label: 'Días para expirar', value: formatInteger(expiration.days) });

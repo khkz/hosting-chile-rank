@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Check, ExternalLink, Server } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Callout from '@/components/system/Callout';
+import { ProvenanceTag } from '@/components/data/Provenance';
 import { hasValidIP } from '@/lib/utils';
-import { getComplaintBadge } from '@/services/hostingComplaints';
 import type { DomainAnalysisResult } from '@/services/domainAnalysis';
 import FactList, { type Fact } from './FactList';
 import { countryName } from './dataTime';
@@ -21,7 +20,6 @@ const DomainOverviewTab: React.FC<{ data: DomainAnalysisResult }> = ({ data }) =
   const validNs = hasValidNameservers(basic.nameservers);
   const asnHref = asnPath(basic.asn);
   const complaint = basic.complaintInfo;
-  const complaintText = complaint ? getComplaintBadge(complaint.level).text : null;
 
   const facts: Fact[] = [
     { label: 'Dominio', value: basic.domain },
@@ -49,15 +47,7 @@ const DomainOverviewTab: React.FC<{ data: DomainAnalysisResult }> = ({ data }) =
       kind: asnHref ? 'measured' : undefined,
       date: asnHref ? ipProbe.checked_at : null,
     },
-    {
-      label: 'Proveedor',
-      value: (
-        <div className="flex flex-wrap items-center gap-2">
-          {isKnown(basic.provider) ? basic.provider : 'No identificado'}
-          {complaintText && <Badge variant="outline">{complaintText}</Badge>}
-        </div>
-      ),
-    },
+    { label: 'Proveedor', value: isKnown(basic.provider) ? basic.provider : 'No identificado' },
   ];
   if (isKnown(basic.location)) facts.push({ label: 'Ubicación de la IP', value: placeName(basic.location), kind: 'measured', date: ipProbe.checked_at });
   if (isKnown(basic.isp) && basic.isp !== basic.provider) facts.push({ label: 'ISP', value: basic.isp });
@@ -115,6 +105,10 @@ const DomainOverviewTab: React.FC<{ data: DomainAnalysisResult }> = ({ data }) =
           </p>
           {complaint.description && <p>{complaint.description}</p>}
           {complaint.recommendation && <p className="font-semibold text-ink">{complaint.recommendation}</p>}
+          <p className="t-meta flex flex-wrap items-center gap-2">
+            <ProvenanceTag kind="editorial" />
+            <span>Recuento hecho a mano a partir de reclamos.cl, sin fecha de corte.</span>
+          </p>
           {complaint.reclamosUrl && (
             <p>
               <a

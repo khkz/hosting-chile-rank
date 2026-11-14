@@ -137,7 +137,8 @@ const TCOCalculator = () => {
               </div>
             </div>
 
-            <fieldset className="border-t border-rule pt-6">
+            <div className="border-t border-rule pt-6">
+            <fieldset>
               <legend className="t-label text-ink">Servicios adicionales (CLP al mes)</legend>
               <p className="t-small mt-1 text-ink-2">Deja en 0 lo que no contrates o lo que venga incluido.</p>
               <div className="mt-4 divide-y divide-rule border-y border-rule">
@@ -160,6 +161,7 @@ const TCOCalculator = () => {
                 ))}
               </div>
             </fieldset>
+            </div>
           </form>
 
           <section aria-labelledby="tco-resultado" className="rounded-xl border border-rule bg-paper p-5 md:p-6" aria-live="polite">

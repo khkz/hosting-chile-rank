@@ -29,7 +29,8 @@ export function useOpenDataMeta(paths: string[]): Record<string, OpenDataMeta> {
           const json = await res.json();
           next = {
             status: 'ok',
-            date: typeof json?.fecha_generacion === 'string' ? json.fecha_generacion : null,
+            // Solo el día (UTC): una hora completa cambiaría de día según el huso de quien visita.
+            date: typeof json?.fecha_generacion === 'string' ? json.fecha_generacion.slice(0, 10) : null,
             total: typeof json?.total_proveedores === 'number' ? json.total_proveedores : null,
           };
         }

@@ -90,13 +90,13 @@ export const DomainSecurityTab: React.FC<{ data: DomainAnalysisResult }> = ({ da
 /** Rendimiento: esta herramienta no lo mide, así que no muestra cifras. */
 export const DomainPerformanceTab: React.FC = () => (
   <div className="rounded-xl border border-rule bg-paper p-5">
-    <Badge variant="outline">Sin medir</Badge>
-    <p className="t-body mt-3 text-ink">Esta herramienta no mide el rendimiento. Usa PageSpeed Insights para medirlo.</p>
-    <p className="t-small mt-2">
+    <p className="t-body text-ink-2">
+      <strong className="text-ink">Sin medir:</strong> esta herramienta no mide el rendimiento. Usa{' '}
       <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener noreferrer" className={linkClass}>
-        Abrir PageSpeed Insights
+        PageSpeed Insights
         <ExternalLink aria-hidden className="h-3.5 w-3.5" />
-      </a>
+      </a>{' '}
+      para medirlo.
     </p>
   </div>
 );

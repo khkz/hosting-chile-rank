@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/system/PageHeader";
@@ -10,6 +8,7 @@ import { DomainFilters } from "@/components/domain-marketplace/DomainFilters";
 import { MarketplaceFAQ } from "@/components/domain-marketplace/MarketplaceFAQ";
 import { Globe, Shield, Headset } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { useMarketplaceDomains } from "@/components/herramientas/useMarketplaceDomains";
 
 const MAX_PRICE = 10000000;
 
@@ -18,19 +17,7 @@ export default function DominiosPremium() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, MAX_PRICE]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { data: domains, isLoading, isError, refetch } = useQuery({
-    queryKey: ["marketplace-domains"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("my_domain_portfolio")
-        .select("id,domain_name,tld,listing_price,is_for_sale,sale_status,page_views,inquiries_count,created_at")
-        .eq("is_for_sale", true)
-        .order("listing_price", { ascending: true });
-
-      if (error) throw error;
-      return data;
-    },
-  });
+  const { data: domains, isLoading, isError, refetch } = useMarketplaceDomains();
 
   const filteredDomains = domains?.filter((domain) => {
     if (tldFilter !== "all" && domain.tld !== tldFilter) return false;

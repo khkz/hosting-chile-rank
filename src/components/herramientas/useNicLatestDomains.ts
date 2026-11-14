@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { formatInteger } from '@/lib/format';
-import { formatToolDateTime } from './dataTime';
+import { formatToolDateTime, nicInstant } from './dataTime';
 
 export interface NicDomain {
   d: string;
+  /** Fecha tal como viene en latest.json (la usa el JSON-LD de la página). */
   date: string;
+  /** Instante real de la inscripción (ver nicInstant): para mostrar y calcular «hace…». */
+  at: string;
 }
 
 type Status = 'loading' | 'ready' | 'error';
@@ -15,7 +18,9 @@ async function fetchLatest(): Promise<{ domains: NicDomain[]; updated: string | 
   if (!response.ok) throw new Error(`No se pudieron cargar los dominios: ${response.status}`);
   const data = await response.json();
   if (!Array.isArray(data?.domains) || data.domains.length === 0) throw new Error('Datos de dominios inválidos o vacíos');
-  const domains = [...data.domains].sort((a: NicDomain, b: NicDomain) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const domains: NicDomain[] = [...data.domains]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .map((row) => ({ d: row.d, date: row.date, at: nicInstant(row.date) }));
   return { domains, updated: typeof data.updated === 'string' ? data.updated : null };
 }
 

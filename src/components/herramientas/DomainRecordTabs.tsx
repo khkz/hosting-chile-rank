@@ -6,7 +6,7 @@ import { formatDataDate } from '@/lib/format';
 import type { DomainAnalysisResult } from '@/services/domainAnalysis';
 import FactList, { type Fact } from './FactList';
 import { formatToolDate, formatToolDateTime, isoDateTime } from './dataTime';
-import { hasRealOwner, isIsoLike, isKnown, probeOf } from './domainFacts';
+import { dateOnly, hasRealOwner, isIsoLike, isKnown, probeOf } from './domainFacts';
 
 const linkClass = 'inline-flex items-center gap-1 text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
@@ -61,7 +61,7 @@ export const DomainDnsTab: React.FC<{ data: DomainAnalysisResult }> = ({ data })
   );
 };
 
-const showDate = (v: string) => (isIsoLike(v) ? formatDataDate(v) : v);
+const showDate = (v: string) => (isIsoLike(v) ? formatDataDate(dateOnly(v)) : v);
 
 /** WHOIS público de NIC Chile. */
 export const DomainWhoisTab: React.FC<{ data: DomainAnalysisResult }> = ({ data }) => {

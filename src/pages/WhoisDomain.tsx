@@ -89,6 +89,9 @@ const WhoisDomain = () => {
       setIsLoading(false);
       return;
     }
+    // Al pasar de un dominio a otro, no mostrar los datos del anterior mientras carga.
+    setDomainData(null);
+    setFromCache(false);
     setIsLoading(true);
     performAnalysis(domainName);
     // eslint-disable-next-line react-hooks/exhaustive-deps

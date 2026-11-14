@@ -71,7 +71,7 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
 
       <ol className="divide-y divide-rule border-y border-rule md:hidden">
         {domains.map((domain, i) => {
-          const tag = freshness(domain.date);
+          const tag = freshness(domain.at);
           return (
             <li key={domain.d} className="py-3">
               <div className="flex items-baseline justify-between gap-3">
@@ -79,8 +79,8 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
                 <span className="t-meta tabular shrink-0">{formatInteger(offset + i + 1)}</span>
               </div>
               <div className="t-meta mt-0.5 flex flex-wrap items-center gap-2">
-                <time dateTime={isoDateTime(domain.date)}>{formatToolDateTime(domain.date)}</time>
-                <span>({timeAgo(domain.date)})</span>
+                <time dateTime={isoDateTime(domain.at)}>{formatToolDateTime(domain.at)}</time>
+                <span>({timeAgo(domain.at)})</span>
                 {tag && <Badge variant="outline">{tag}</Badge>}
               </div>
               <div className="mt-1 flex items-center gap-1">
@@ -111,7 +111,7 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
           </TableHeader>
           <TableBody>
             {domains.map((domain, i) => {
-              const tag = freshness(domain.date);
+              const tag = freshness(domain.at);
               return (
                 <TableRow key={domain.d}>
                   <TableCell className="text-ink-3">{formatInteger(offset + i + 1)}</TableCell>
@@ -124,10 +124,10 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <time dateTime={isoDateTime(domain.date)} className="block text-ink">
-                      {formatToolDateTime(domain.date)}
+                    <time dateTime={isoDateTime(domain.at)} className="block text-ink">
+                      {formatToolDateTime(domain.at)}
                     </time>
-                    <span className="t-meta">{timeAgo(domain.date)}</span>
+                    <span className="t-meta">{timeAgo(domain.at)}</span>
                   </TableCell>
                   <TableCell className="text-right">
                     <span className="inline-flex items-center justify-end gap-1">

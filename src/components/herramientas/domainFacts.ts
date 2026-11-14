@@ -48,6 +48,11 @@ export function isIsoLike(value: string | undefined): boolean {
   return !!value && /^\d{4}-\d{2}-\d{2}/.test(value.trim());
 }
 
+/** Solo el día de una fecha WHOIS («2004-03-15 14:22:11» → «2004-03-15»). */
+export function dateOnly(value: string): string {
+  return value.trim().slice(0, 10);
+}
+
 /** «Santiago, CL» → «Santiago, Chile». */
 export function placeName(value: string): string {
   return value.replace(/, ([A-Z]{2})$/, (_m, code: string) => `, ${countryName(code)}`);
