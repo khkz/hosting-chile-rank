@@ -100,7 +100,13 @@ const CountryDatacenterLocal = () => {
     { label: 'Con ASN medido', kind: 'measured', value: providers ? formatInteger(withAsn) : pending, emphasis: 'figure' },
     {
       label: 'Última medición',
-      value: lastCheck ? <time dateTime={isoDate(lastCheck)}>{formatShortDate(lastCheck)}</time> : providers ? 'sin medir' : pending,
+      value: lastCheck ? (
+        <time dateTime={isoDate(lastCheck)}>{formatShortDate(lastCheck)}</time>
+      ) : providers ? (
+        dcList.some((p) => checks?.has(p.id)) ? 'sin fecha' : 'sin medir'
+      ) : (
+        pending
+      ),
     },
   ];
   const image = <EditorialImage name="datacenter" className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />;

@@ -40,8 +40,8 @@ const DirectoryRow: React.FC<DirectoryRowProps> = ({ company: c, countrySlug, co
     : [];
   const local = hasLocalDatacenter(dcSlug, c.datacenter_location);
   return (
-    <li className="grid gap-4 py-6 md:grid-cols-12 md:gap-6">
-      <div className="min-w-0 md:col-span-4">
+    <li className="grid gap-4 py-6 lg:grid-cols-12 lg:gap-6">
+      <div className="min-w-0 lg:col-span-3">
         <h3 className="t-h3 text-ink">
           {c.slug ? (
             <Link to={`/${countrySlug}/${c.slug}`} className="underline-offset-4 hover:underline">
@@ -54,7 +54,7 @@ const DirectoryRow: React.FC<DirectoryRowProps> = ({ company: c, countrySlug, co
         {c.legal_name && <p className="t-small mt-1 text-ink-2">{c.legal_name}</p>}
         {c.corporate_group && <p className="t-meta mt-0.5">{formatCorporateGroup(c.corporate_group)}</p>}
       </div>
-      <dl className="t-small grid min-w-0 gap-x-6 gap-y-3 md:col-span-5 md:grid-cols-2 lg:col-span-5">
+      <dl className="t-small grid min-w-0 gap-x-6 gap-y-3 sm:grid-cols-2 lg:col-span-6">
         <div className="min-w-0">
           <Term icon={Server}>
             Datacenter
@@ -89,7 +89,7 @@ const DirectoryRow: React.FC<DirectoryRowProps> = ({ company: c, countrySlug, co
           </div>
         )}
       </dl>
-      <div className="flex flex-col gap-2 md:col-span-3 md:items-stretch">
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:col-span-3 lg:flex-col lg:flex-nowrap lg:items-stretch">
         {c.slug && (
           <Button asChild variant="outline">
             <Link to={`/${countrySlug}/${c.slug}`}>Ver ficha</Link>

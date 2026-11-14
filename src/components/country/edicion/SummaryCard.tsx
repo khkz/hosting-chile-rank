@@ -22,6 +22,21 @@ interface SummaryCardProps {
   className?: string;
 }
 
+/** Rótulo con su glifo de procedencia pegado a la última palabra (nunca queda solo en una línea). */
+const LabelWithKind: React.FC<{ label: string; kind?: Provenance }> = ({ label, kind }) => {
+  if (!kind) return <>{label}</>;
+  const cut = label.lastIndexOf(' ');
+  return (
+    <>
+      {cut > 0 ? label.slice(0, cut + 1) : ''}
+      <span className="whitespace-nowrap">
+        {cut > 0 ? label.slice(cut + 1) : label}
+        <ProvenanceTag kind={kind} variant="glyph" className="ml-1.5 align-middle" />
+      </span>
+    </>
+  );
+};
+
 /**
  * Resumen en cifras de una edición o del índice regional. Cada fila dice qué
  * es el dato y, cuando corresponde, su procedencia y lo que cubre su fecha.
@@ -48,9 +63,8 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ label, items, layout = 'card'
             key={it.label}
             className={card ? 'flex items-baseline justify-between gap-4 py-3' : 'min-w-0 border-t border-rule pt-3'}
           >
-            <dt className={cn('t-small flex items-center gap-1.5 text-ink-2', card && 'shrink-0')}>
-              {it.label}
-              {it.kind && <ProvenanceTag kind={it.kind} variant="glyph" />}
+            <dt className={cn('t-small text-ink-2', card && 'shrink-0')}>
+              <LabelWithKind label={it.label} kind={it.kind} />
             </dt>
             <dd className={cn('min-w-0', card && 'text-right')}>
               <span

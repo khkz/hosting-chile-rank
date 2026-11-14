@@ -45,7 +45,7 @@ const CountryVerifying = () => {
           aside={
             <SummaryCard
               label="Estado de verificación"
-              className="lg:ml-auto lg:max-w-[26rem]"
+              className="max-w-md lg:ml-auto lg:max-w-[26rem]"
               items={[
                 { label: 'Estado', value: 'En verificación' },
                 { label: `Ranking de ${edition.name}`, value: 'Sin publicar' },
