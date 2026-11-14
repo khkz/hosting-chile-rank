@@ -1,33 +1,29 @@
 import React, { Suspense } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import HostingRanking from '@/components/HostingRanking';
-import TLDRVerdict from '@/components/TLDRVerdict';
-import StatsTicker from '@/components/StatsTicker';
 import ScrollProgress from '@/components/ScrollProgress';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
 import SEOFAQSchema from '@/components/SEO/SEOFAQSchema';
 import DatasetSchema from '@/components/SEO/DatasetSchema';
 import DatacenterEducation from '@/components/DatacenterEducation';
 
-
-
 const HostingQuiz = React.lazy(() => import('@/components/HostingQuiz'));
 const StoryBrandGuide = React.lazy(() => import('@/components/home/StoryBrandGuide'));
 const BuyerJourneys = React.lazy(() => import('@/components/home/BuyerJourneys'));
 const Objections = React.lazy(() => import('@/components/home/Objections'));
-const WhyTrustUs = React.lazy(() => import('@/components/WhyTrustUs'));
 const Testimonial = React.lazy(() => import('@/components/Testimonial'));
 const Categories = React.lazy(() => import('@/components/Categories'));
 const FAQ = React.lazy(() => import('@/components/FAQ'));
 const Footer = React.lazy(() => import('@/components/Footer'));
 const StickyCTA = React.lazy(() => import('@/components/StickyCTA'));
-const MiniNav = React.lazy(() => import('@/components/MiniNav'));
+const LatamEditions = React.lazy(() => import('@/components/home/LatamEditions'));
 
 const Index = () => {
+  // overflow-x-clip donde se admite: hidden crea un contenedor de scroll y anula la cabecera sticky.
+  // Safari < 16 no admite clip y se queda con hidden (recorte sin sticky).
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F7F9FC] to-white font-montserrat text-[#333] overflow-x-hidden">
+    <div className="min-h-screen bg-white text-ink overflow-x-hidden supports-[overflow:clip]:overflow-x-clip">
       <ScrollProgress />
 
       <DynamicMetaTags
@@ -71,16 +67,7 @@ const Index = () => {
         <HostingRanking />
 
         {/* Educación sobre datacenters (Chile) */}
-        <section className="py-8 px-4">
-          <DatacenterEducation />
-        </section>
-
-
-        {/* Veredicto breve */}
-        <TLDRVerdict />
-
-        {/* Stats */}
-        <StatsTicker />
+        <DatacenterEducation />
 
         <Suspense fallback={null}>
           {/* StoryBrand: la pyme protagonista, nosotros la guía */}
@@ -95,9 +82,6 @@ const Index = () => {
           {/* Objeciones frecuentes con respuestas verificables */}
           <Objections />
 
-          {/* Sección compacta de confianza (fusión) */}
-          <WhyTrustUs />
-
           {/* Opiniones */}
           <Testimonial />
 
@@ -107,62 +91,9 @@ const Index = () => {
           {/* FAQ */}
           <FAQ />
 
-          <section className="py-12 px-4 text-center">
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-xl md:text-2xl font-bold mb-3">Explora todos los proveedores verificados</h2>
-              <p className="text-muted-foreground mb-5 text-sm md:text-base">
-                Revisa el catálogo completo con fichas, reputación y precios.
-              </p>
-              <Link
-                to="/catalogo"
-                className="inline-flex items-center justify-center min-h-[44px] px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition"
-              >
-                Ver catálogo completo
-              </Link>
-            </div>
-          </section>
+          {/* Ediciones del .com: enlaces con cifras desde la base */}
+          <LatamEditions />
 
-          {/* LATAM cross-link — autoridad .cl → .com */}
-          <section aria-labelledby="latam-crosslink" className="py-8 md:py-12 bg-[#EDF2F4]/60 border-y border-[#2B2D42]/10">
-            <div className="container mx-auto px-4 max-w-5xl">
-              <h2 id="latam-crosslink" className="text-2xl md:text-3xl font-bold text-[#2B2D42] mb-2">
-                🌎 ¿Buscas hosting en otro país de Latinoamérica?
-              </h2>
-              <p className="text-[#2B2D42]/70 mb-5">
-                Publicamos directorios independientes con la misma metodología verificable (razón social, ASN, datacenter y reclamos) en Perú, México, Colombia y Argentina.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <a href="https://eligetuhosting.com/pe/mejor-hosting-peru-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
-                  <div className="text-2xl mb-1">🇵🇪</div>
-                  <div className="font-semibold text-[#2B2D42]">Mejor hosting Perú 2026</div>
-                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 18 proveedores</div>
-                </a>
-                <a href="https://eligetuhosting.com/mx/mejor-hosting-mexico-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
-                  <div className="text-2xl mb-1">🇲🇽</div>
-                  <div className="font-semibold text-[#2B2D42]">Mejor hosting México 2026</div>
-                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 15 proveedores</div>
-                </a>
-                <a href="https://eligetuhosting.com/co/mejor-hosting-colombia-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
-                  <div className="text-2xl mb-1">🇨🇴</div>
-                  <div className="font-semibold text-[#2B2D42]">Mejor hosting Colombia 2026</div>
-                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 11 proveedores</div>
-                </a>
-                <a href="https://eligetuhosting.com/ar/mejor-hosting-argentina-2026" rel="noopener" className="p-4 rounded-lg bg-white border border-[#2B2D42]/10 hover:border-[#EF233C] transition">
-                  <div className="text-2xl mb-1">🇦🇷</div>
-                  <div className="font-semibold text-[#2B2D42]">Mejor hosting Argentina 2026</div>
-                  <div className="text-xs text-[#2B2D42]/60 mt-1">Ranking auditado · 11 proveedores</div>
-                </a>
-              </div>
-              <p className="mt-4 text-sm">
-                <a href="https://eligetuhosting.com/latam" rel="noopener" className="text-[#EF233C] font-medium hover:underline">
-                  Ver el hub LATAM completo →
-                </a>
-              </p>
-            </div>
-          </section>
-
-
-          <MiniNav />
           <StickyCTA />
         </Suspense>
       </main>

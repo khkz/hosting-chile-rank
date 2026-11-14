@@ -12,11 +12,11 @@ const TransparencyNotice = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mb-6 shadow-lg">
               <Shield className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2B2D42] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-ink mb-4">
               Transparencia Total
             </h2>
             <p className="text-xl text-gray-600">
-              Conoce nuestra metodología de evaluación independiente
+              Cómo evaluamos y de dónde sale cada dato
             </p>
           </div>
 
@@ -29,11 +29,12 @@ const TransparencyNotice = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
                   <Eye className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-[#2B2D42]">Análisis Independiente</h3>
+                <h3 className="text-xl font-bold text-ink">Relación comercial declarada</h3>
               </div>
               <p className="text-gray-600 leading-relaxed">
-                No recibimos pagos por posicionamiento en rankings. Nuestras evaluaciones se basan únicamente en 
-                métricas técnicas verificables: velocidad, uptime, seguridad y soporte técnico.
+                El ranking es editorial, con pesos publicados. Algunos enlaces son de afiliado y el editor mantiene
+                relación comercial con algunos proveedores listados. Cada dato indica si lo medimos, si lo declara el
+                proveedor o si es criterio editorial.
               </p>
             </div>
 
@@ -43,7 +44,7 @@ const TransparencyNotice = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center mr-4">
                   <Award className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-[#2B2D42]">Metodología Rigurosa</h3>
+                <h3 className="text-xl font-bold text-ink">Metodología Rigurosa</h3>
               </div>
               <p className="text-gray-600 leading-relaxed">
                 Probamos cada hosting durante 30 días mínimo, monitoreamos uptime 24/7, 
@@ -53,14 +54,14 @@ const TransparencyNotice = () => {
           </div>
 
           {/* Metrics */}
-          <div className="bg-gradient-to-r from-[#2B2D42] to-gray-800 rounded-3xl p-8 md:p-12 text-white">
+          <div className="bg-gradient-to-r from-ink to-gray-800 rounded-3xl p-8 md:p-12 text-white">
             <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
               Nuestros Criterios de Evaluación
             </h3>
             
             <div className="grid md:grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#EF233C] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-brand rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="w-8 h-8" />
                 </div>
                 <h4 className="font-semibold mb-2">Velocidad</h4>

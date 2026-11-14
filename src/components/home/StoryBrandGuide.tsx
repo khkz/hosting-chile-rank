@@ -1,77 +1,84 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, Target, ShieldCheck } from 'lucide-react';
+import Section from '@/components/system/Section';
 
 /**
  * StoryBrand honesto: la pyme chilena es la protagonista, nosotros somos la guía.
- * Nada inventado: solo la promesa editorial verificable del sitio.
+ * Solo afirma lo que el sitio puede respaldar: cada dato lleva su procedencia y
+ * la nota es editorial, con pesos publicados.
  */
-const StoryBrandGuide: React.FC = () => {
-  return (
-    <section
-      aria-labelledby="storybrand-title"
-      className="py-14 bg-gradient-to-b from-white to-warm-cream/40 border-y border-border/50"
-    >
-      <div className="container mx-auto px-4 max-w-5xl">
-        <div className="max-w-3xl mb-8">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand-red mb-2">
-            Cómo te ayudamos a decidir
-          </p>
-          <h2 id="storybrand-title" className="font-poppins text-2xl md:text-3xl font-bold text-[#2B2D42] mb-3">
-            Tú tienes un proyecto que crecer. Nosotros hicimos la tarea aburrida.
-          </h2>
-          <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-            Sabemos lo que se siente elegir hosting a ciegas: decenas de planes que parecen iguales,
-            promesas de "ilimitado" que no lo son, y el miedo a migrar el sitio de tu pyme y
-            que se caiga justo cuando llega un cliente. Por eso auditamos <strong>los proveedores
-            chilenos del directorio</strong> con métricas reales — no con reviews compradas.
-          </p>
-        </div>
+const textLink = 'font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
 
-        <div className="grid md:grid-cols-3 gap-5">
-          <div className="bg-white rounded-xl p-5 border border-border shadow-sm">
-            <Compass className="h-6 w-6 text-brand-red mb-3" aria-hidden />
-            <h3 className="font-semibold text-[#2B2D42] mb-2">1. Entiende tu caso</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Un blog personal necesita algo muy distinto a una tienda con carrito. Tenemos rutas
-              claras para blog, pyme y e-commerce — sin venderte "el plan enterprise" si no lo necesitas.
-            </p>
-          </div>
+const STEPS: { title: string; body: React.ReactNode }[] = [
+  {
+    title: '1. Entiende tu caso',
+    body: (
+      <>
+        Un blog personal necesita algo muy distinto a una tienda con carrito. Tenemos rutas para blog, pyme y
+        e-commerce, sin empujarte a un plan que no necesitas.
+      </>
+    ),
+  },
+  {
+    title: '2. Compara con datos que puedes revisar',
+    body: (
+      <>
+        Datacenter, antigüedad, dominios .CL alojados, mediciones de uptime y velocidad, y reclamos públicos. Los
+        criterios y sus pesos están en la{' '}
+        <Link to="/metodologia" className={textLink}>
+          metodología
+        </Link>
+        .
+      </>
+    ),
+  },
+  {
+    title: '3. Decide sin arrepentirte',
+    body: (
+      <>
+        Cada ficha reúne datacenter, antigüedad, ASN y reclamos. Si te equivocas, muchos proveedores ayudan con la
+        migración: revisa sus condiciones y nuestra{' '}
+        <Link to="/guia-migrar-hosting" className={textLink}>
+          guía de migración
+        </Link>
+        .
+      </>
+    ),
+  },
+];
 
-          <div className="bg-white rounded-xl p-5 border border-border shadow-sm">
-            <Target className="h-6 w-6 text-brand-red mb-3" aria-hidden />
-            <h3 className="font-semibold text-[#2B2D42] mb-2">2. Compara con datos reales</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Dominios .CL analizados, ping desde Santiago, uptime medido y reclamos verificados
-              en Reclamos.cl. Toda la metodología está publicada en{' '}
-              <Link to="/metodologia" className="text-primary font-medium hover:underline">
-                /metodologia
-              </Link>.
-            </p>
-          </div>
+const StoryBrandGuide: React.FC = () => (
+  <Section
+    id="como-te-ayudamos"
+    title="Tú tienes un proyecto que crecer. Nosotros hicimos la tarea aburrida."
+    lead={
+      <>
+        Sabemos lo que se siente elegir hosting a ciegas: decenas de planes que parecen iguales, promesas de «ilimitado»
+        que no lo son y el miedo a migrar el sitio de tu pyme justo cuando llega un cliente. Por eso revisamos los
+        proveedores chilenos del directorio y marcamos de dónde sale cada dato: medido por nosotros, declarado por el
+        proveedor o editorial.
+      </>
+    }
+  >
+    <ol className="grid gap-8 md:grid-cols-3">
+      {STEPS.map((s) => (
+        <li key={s.title} className="border-t-2 border-ink pt-4">
+          <h3 className="t-h3 text-ink">{s.title}</h3>
+          <p className="mt-2 text-base leading-relaxed text-ink-2 md:text-[15px]">{s.body}</p>
+        </li>
+      ))}
+    </ol>
 
-          <div className="bg-white rounded-xl p-5 border border-border shadow-sm">
-            <ShieldCheck className="h-6 w-6 text-brand-red mb-3" aria-hidden />
-            <h3 className="font-semibold text-[#2B2D42] mb-2">3. Decide sin arrepentirte</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Cada ficha muestra precio real vigente, datacenter, antigüedad, ASN y reclamos.
-              Si te equivocas, casi todos ofrecen migración gratis — mira nuestra{' '}
-              <Link to="/guia-migrar-hosting" className="text-primary font-medium hover:underline">
-                guía de migración
-              </Link>.
-            </p>
-          </div>
-        </div>
-
-        <p className="text-xs text-muted-foreground mt-6 max-w-3xl leading-relaxed">
-          <strong>Divulgación honesta:</strong> algunos enlaces a proveedores son afiliados y podemos
-          recibir una comisión sin costo adicional para ti. Eso <em>no</em> altera el ranking:
-          los puntajes salen de mediciones técnicas, no de comisiones. Detalle en{' '}
-          <Link to="/acerca-de" className="underline hover:text-foreground">acerca-de</Link>.
-        </p>
-      </div>
-    </section>
-  );
-};
+    <p className="measure mt-10 border-t border-rule pt-4 text-base leading-relaxed text-ink-2 md:text-sm">
+      <strong className="font-semibold text-ink">Divulgación:</strong> la nota de cada proveedor es editorial, con pesos
+      publicados en la metodología. El editor mantiene relación comercial con algunos de los proveedores listados, y
+      podemos recibir una comisión si contratas por sus enlaces, sin costo adicional para ti. Más detalle en{' '}
+      <Link to="/quienes-somos" className={textLink}>
+        Quiénes somos
+      </Link>
+      .
+    </p>
+  </Section>
+);
 
 export default StoryBrandGuide;

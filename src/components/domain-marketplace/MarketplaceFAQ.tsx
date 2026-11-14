@@ -4,8 +4,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Card } from "@/components/ui/card";
-import { HelpCircle } from "lucide-react";
 
 const faqs = [
   {
@@ -42,31 +40,21 @@ const faqs = [
 
 export function MarketplaceFAQ() {
   return (
-    <Card className="p-6 md:p-8">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-primary/10 rounded-lg">
-          <HelpCircle className="w-6 h-6 text-primary" />
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold">Preguntas Frecuentes</h2>
-          <p className="text-muted-foreground">
-            Todo lo que necesitas saber sobre la compra de dominios
-          </p>
-        </div>
-      </div>
-
-      <Accordion type="single" collapsible className="w-full">
+    <div className="measure">
+      <h2 className="t-h2 text-ink">Preguntas frecuentes</h2>
+      <p className="t-lead mt-3">Todo lo que necesitas saber sobre la compra de dominios</p>
+      <Accordion type="single" collapsible className="mt-6 w-full border-t border-rule">
         {faqs.map((faq, index) => (
-          <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="text-left">
+          <AccordionItem key={index} value={`item-${index}`} className="border-rule">
+            <AccordionTrigger className="min-h-11 text-left font-semibold text-ink">
               {faq.question}
             </AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">
+            <AccordionContent className="t-body text-ink-2">
               {faq.answer}
             </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
-    </Card>
+    </div>
   );
 }

@@ -7,29 +7,14 @@ interface WikiImageProps {
   className?: string;
 }
 
-const WikiImage: React.FC<WikiImageProps> = ({ 
-  src, 
-  alt, 
-  caption, 
-  className = "" 
-}) => {
-  return (
-    <figure className={`my-8 ${className}`}>
-      <div className="rounded-lg overflow-hidden border border-border bg-card">
-        <img 
-          src={src}
-          alt={alt}
-          className="w-full h-auto object-cover"
-          loading="lazy"
-        />
-      </div>
-      {caption && (
-        <figcaption className="text-sm text-muted-foreground mt-3 text-center italic">
-          {caption}
-        </figcaption>
-      )}
-    </figure>
-  );
-};
+/** Imagen dentro de un artículo de la wiki, con pie alineado a la izquierda. */
+const WikiImage: React.FC<WikiImageProps> = ({ src, alt, caption, className = '' }) => (
+  <figure className={`my-8 ${className}`}>
+    <div className="overflow-hidden rounded-xl border border-rule bg-paper">
+      <img src={src} alt={alt} className="h-auto w-full object-cover" loading="lazy" />
+    </div>
+    {caption && <figcaption className="t-meta mt-3">{caption}</figcaption>}
+  </figure>
+);
 
 export default WikiImage;

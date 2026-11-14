@@ -8,7 +8,7 @@ const BeforeAfter = () => {
         
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2B2D42] mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-ink mb-4">
             De hosting <span className="text-gray-400 line-through">prometedor</span> → 
             <span className="text-brand-red"> Hosting que cumple</span>
           </h2>
@@ -115,7 +115,7 @@ const BeforeAfter = () => {
           <div className="inline-flex items-center gap-2 bg-white border border-gray-200 px-6 py-3 rounded-full shadow-sm">
             <CheckCircle2 className="w-5 h-5 text-green-500" />
             <span className="text-sm font-medium text-gray-700">
-              Todos nuestros datos son verificados con herramientas independientes
+              Cada dato indica si es medido, declarado por el proveedor o editorial
             </span>
           </div>
         </div>

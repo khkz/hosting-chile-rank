@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
-import { supabase } from '@/integrations/supabase/client';
+import { insertPublicReview } from '@/components/ficha/providerQueries';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,6 +9,9 @@ import { Label } from '@/components/ui/label';
 import { Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+
+/** Error con un mensaje propio, ya en español, que se puede mostrar tal cual. */
+class ReviewFormError extends Error {}
 
 interface PublicReviewFormProps {
   providerSlug: string;
@@ -42,19 +45,18 @@ export function PublicReviewForm({ providerSlug, providerName, onSuccess }: Publ
         comment,
       });
       if (!parsed.success) {
-        throw new Error(parsed.error.errors[0]?.message ?? 'Datos inválidos');
+        throw new ReviewFormError(parsed.error.errors[0]?.message ?? 'Revisa los datos del formulario y vuelve a intentarlo.');
       }
-      const { error } = await supabase.from('reviews').insert({
+      const { error } = await insertPublicReview({
         provider_slug: providerSlug,
         author_name: parsed.data.author_name,
         author_email: parsed.data.author_email.toLowerCase(),
         rating: parsed.data.rating,
         comment: parsed.data.comment,
-        status: 'pending',
       });
       if (error) {
         if (error.code === '23505') {
-          throw new Error('Ya enviaste una reseña para este proveedor.');
+          throw new ReviewFormError('Ya enviaste una reseña para este proveedor.');
         }
         throw error;
       }
@@ -64,7 +66,12 @@ export function PublicReviewForm({ providerSlug, providerName, onSuccess }: Publ
       toast.success('¡Gracias! Tu reseña será publicada tras ser revisada por nuestro equipo.');
       onSuccess?.();
     },
-    onError: (e: any) => toast.error(e.message ?? 'Error al enviar reseña'),
+    onError: (e: unknown) =>
+      toast.error(
+        e instanceof ReviewFormError
+          ? e.message
+          : 'No pudimos enviar tu reseña. Revisa tu conexión y vuelve a intentarlo en unos minutos.',
+      ),
   });
 
   if (done) {
@@ -127,7 +134,7 @@ export function PublicReviewForm({ providerSlug, providerName, onSuccess }: Publ
               <Star
                 className={cn(
                   'w-7 h-7 transition',
-                  (hover || rating) >= n ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'
+                  (hover || rating) >= n ? 'fill-ink text-ink' : 'text-ink-3'
                 )}
               />
             </button>

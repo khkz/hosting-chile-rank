@@ -13,25 +13,101 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '1.25rem',
 			screens: {
-				'2xl': '1400px'
+				'2xl': '1280px'
 			}
 		},
 		extend: {
 			fontFamily: {
-				montserrat: ["Montserrat", "sans-serif"],
-				poppins: ["Poppins", "sans-serif"],
+				sans: ['Archivo', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+				display: ['Archivo', 'system-ui', 'sans-serif'],
+				// Alias heredados: las clases font-montserrat / font-poppins ya
+				// usadas en el sitio pasan a la tipografía del sistema.
+				montserrat: ['Archivo', 'system-ui', 'sans-serif'],
+				poppins: ['Archivo', 'system-ui', 'sans-serif'],
+			},
+			fontSize: {
+				// Escala tipográfica del sistema (≈ 1.25, Elements of Typographic Style)
+				'2xs': ['0.75rem', { lineHeight: '1.1rem' }],
+			},
+			boxShadow: {
+				overlay: '0 16px 40px -16px rgb(15 34 56 / 0.28)',
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						'--tw-prose-body': 'rgb(var(--ink-2))',
+						'--tw-prose-headings': 'rgb(var(--ink))',
+						'--tw-prose-lead': 'rgb(var(--ink-2))',
+						'--tw-prose-links': 'rgb(var(--ink))',
+						'--tw-prose-bold': 'rgb(var(--ink))',
+						'--tw-prose-counters': 'rgb(var(--ink-3))',
+						'--tw-prose-bullets': 'rgb(var(--ink-3))',
+						'--tw-prose-hr': 'rgb(var(--rule))',
+						'--tw-prose-quotes': 'rgb(var(--ink))',
+						'--tw-prose-quote-borders': 'rgb(var(--rule))',
+						'--tw-prose-captions': 'rgb(var(--ink-3))',
+						'--tw-prose-code': 'rgb(var(--ink))',
+						'--tw-prose-pre-code': 'rgb(var(--ink))',
+						'--tw-prose-pre-bg': 'rgb(var(--paper))',
+						'--tw-prose-th-borders': 'rgb(var(--ink))',
+						'--tw-prose-td-borders': 'rgb(var(--rule))',
+						maxWidth: '62ch',
+						fontSize: '1.0625rem',
+						lineHeight: '1.7',
+						a: {
+							textDecorationColor: 'rgb(var(--ink) / 0.3)',
+							textUnderlineOffset: '3px',
+							fontWeight: '500',
+							'&:hover': { textDecorationColor: 'rgb(var(--ink))' },
+						},
+						'h1, h2': { fontStretch: '112%', letterSpacing: '-0.014em' },
+						h2: { fontWeight: '720', marginTop: '2em' },
+						h3: { fontWeight: '650' },
+						'code::before': { content: 'none' },
+						'code::after': { content: 'none' },
+						'blockquote p:first-of-type::before': { content: 'none' },
+						'blockquote p:last-of-type::after': { content: 'none' },
+						'thead th': { fontWeight: '600', fontSize: '0.8125rem' },
+					},
+				},
 			},
 			colors: {
-      'brand-red': {
-        DEFAULT: '#EF233C',
-        light: '#FF4D61',
-        dark: '#D01F35',
-      },
-      'warm-cream': '#FFF8F0',
-      'warm-peach': '#FFE5D9',
-      'warm-yellow': '#FFC107',
+				ink: {
+					DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
+					2: 'rgb(var(--ink-2) / <alpha-value>)',
+					3: 'rgb(var(--ink-3) / <alpha-value>)',
+					soft: 'rgb(var(--ink-soft) / <alpha-value>)',
+				},
+				paper: {
+					DEFAULT: 'rgb(var(--paper) / <alpha-value>)',
+					deep: 'rgb(var(--paper-deep) / <alpha-value>)',
+				},
+				rule: 'rgb(var(--rule) / <alpha-value>)',
+				brand: {
+					DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
+					ink: 'rgb(var(--brand-ink) / <alpha-value>)',
+					'on-dark': 'rgb(var(--brand-on-dark) / <alpha-value>)',
+				},
+				signal: {
+					measured: 'rgb(var(--signal-measured) / <alpha-value>)',
+					'measured-bg': 'rgb(var(--signal-measured-bg) / <alpha-value>)',
+					declared: 'rgb(var(--signal-declared) / <alpha-value>)',
+					'declared-bg': 'rgb(var(--signal-declared-bg) / <alpha-value>)',
+					editorial: 'rgb(var(--signal-editorial) / <alpha-value>)',
+					'editorial-bg': 'rgb(var(--signal-editorial-bg) / <alpha-value>)',
+				},
+				ok: 'rgb(var(--ok) / <alpha-value>)',
+				// Alias heredados → tokens del sistema
+				'brand-red': {
+					DEFAULT: 'rgb(var(--brand) / <alpha-value>)',
+					light: 'rgb(var(--brand-on-dark) / <alpha-value>)',
+					dark: 'rgb(var(--brand-ink) / <alpha-value>)',
+				},
+				'warm-cream': 'rgb(var(--paper) / <alpha-value>)',
+				'warm-peach': 'rgb(var(--paper-deep) / <alpha-value>)',
+				'warm-yellow': 'rgb(var(--signal-declared) / <alpha-value>)',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -182,5 +258,5 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;

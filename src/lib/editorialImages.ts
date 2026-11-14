@@ -1,0 +1,120 @@
+/**
+ * Imágenes editoriales del sitio (generadas con IA, ilustrativas).
+ * Cada imagen vive en /img/editorial/<clave>-<ancho>.webp.
+ * `available` pasa a true solo cuando los archivos existen en public/:
+ * mientras sea false, <EditorialImage> muestra su respaldo (o nada).
+ *
+ * Reglas: nunca se usan como foto de «nuestro equipo» ni junto a testimonios
+ * o nombres; son escenas ilustrativas. El pie del sitio lo declara.
+ */
+
+export type EditorialImageKey =
+  | 'home-hero'
+  | 'latam-hero'
+  | 'cl-edition'
+  | 'pe-edition'
+  | 'mx-edition'
+  | 'co-edition'
+  | 'ar-edition'
+  | 'datacenter'
+  | 'soporte'
+  | 'metodologia'
+  | 'migracion'
+  | 'comparar'
+  | 'ecommerce'
+  | 'wordpress'
+  | 'vps'
+  | 'guias'
+  | 'sin-resultados';
+
+export interface EditorialImageMeta {
+  alt: string;
+  /** Proporción del archivo original (ancho / alto). */
+  ratio: number;
+  /** Anchos disponibles en /img/editorial/<clave>-<ancho>.webp */
+  widths: number[];
+  /** object-position para recortes en móvil. */
+  position?: string;
+  available: boolean;
+}
+
+const W = [640, 1024, 1600];
+
+export const EDITORIAL_IMAGES: Record<EditorialImageKey, EditorialImageMeta> = {
+  'home-hero': {
+    alt: 'Dueña de una panadería de barrio en Valparaíso revisa en su notebook el estado de su sitio web, junto al mostrador.',
+    ratio: 16 / 9, widths: W, position: '60% 50%', available: true,
+  },
+  'latam-hero': {
+    alt: 'Puertas de colores en una calle de casco antiguo latinoamericano, una de ellas entreabierta.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  'cl-edition': {
+    alt: 'Mostrador de una ferretería de barrio en Santiago con un notebook abierto y la cordillera al fondo.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  'pe-edition': {
+    alt: 'Café de barrio en Barranco, Lima, con la dueña ordenando tazas junto a una laptop.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  'mx-edition': {
+    alt: 'Papelería en Coyoacán, Ciudad de México, con una laptop sobre la mesa de corte.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  'co-edition': {
+    alt: 'Tostadora de café en su taller de Bogotá pesa granos recién tostados junto a un portátil con gráficos.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  'ar-edition': {
+    alt: 'Librería de barrio en Buenos Aires vista desde el mostrador, con un notebook abierto.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  datacenter: {
+    alt: 'Pasillo de un datacenter con racks de servidores y una técnica revisando una tablet.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  soporte: {
+    alt: 'Persona de soporte técnico con audífonos atendiendo una consulta en su escritorio.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  metodologia: {
+    alt: 'Escritorio visto desde arriba con cuaderno de notas, cronómetro y un notebook con gráficos de líneas.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  migracion: {
+    alt: 'Manos cargando una caja con un notebook y una planta hacia una oficina nueva.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  comparar: {
+    alt: 'Dos notebooks lado a lado sobre una mesa de madera mostrando gráficos distintos.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  ecommerce: {
+    alt: 'Manos empacando un pedido en una caja de cartón junto a un notebook con la tienda en línea.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  wordpress: {
+    alt: 'Escritorio de una persona que escribe un blog, con borradores impresos y un notebook.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  vps: {
+    alt: 'Escritorio de desarrollo con teclado mecánico y un monitor con líneas de código abstractas.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  guias: {
+    alt: 'Mesa con libreta, café y notebook abierto, lista para estudiar opciones de hosting.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+  'sin-resultados': {
+    alt: 'Calle tranquila con luz de tarde y una puerta abierta.',
+    ratio: 16 / 9, widths: W, available: true,
+  },
+};
+
+export const editorialSrc = (key: EditorialImageKey, width: number) => `/img/editorial/${key}-${width}.webp`;
+
+/** true si la imagen está publicada en public/img/editorial. */
+export const isEditorialAvailable = (key: EditorialImageKey): boolean => Boolean(EDITORIAL_IMAGES[key]?.available);
+
+/** true si al menos una imagen editorial está publicada (para la nota del pie). */
+export const hasEditorialImages = (): boolean => Object.values(EDITORIAL_IMAGES).some((i) => i.available);

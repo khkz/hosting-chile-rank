@@ -26,7 +26,7 @@ export const buildCatalogoSeo = ({ company, slug, minPrice, userReviews }: Param
   const grpShort = group ? `, ${group}` : '';
 
   const title = `${name}: Opiniones, Precios y Review 2026 ⭐ ${rating.toFixed(1)}/10 | EligeTuHosting.cl`;
-  const description = `Review independiente de ${name} para Chile 2026: nota ${rating.toFixed(1)}/10, ${priceTxt}${dcShort}${yrShort}${grpShort}. Opiniones reales, pros, contras y datos verificados.`.slice(0, 158);
+  const description = `Análisis de ${name} para Chile 2026: nota ${rating.toFixed(1)}/10, ${priceTxt}${dcShort}${yrShort}${grpShort}. Opiniones reales, pros, contras y datos verificados.`.slice(0, 158);
 
   const canonical = `${SITE}/catalogo/${slug}`;
   const ogImage = company.logo_url ? (company.logo_url.startsWith('http') ? company.logo_url : `${SITE}${company.logo_url}`) : `${SITE}/images/ranking-comparison.png`;

@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 interface MedalBadgeProps {
   position: number;
   categoryName: string;
+  /** Heredado: ya no se dibuja (los íconos son de lucide, nunca emojis). */
   categoryIcon?: string;
   year?: string;
   size?: 'tiny' | 'small' | 'medium' | 'large';
@@ -20,56 +21,31 @@ const getMedalImage = (position: number) => {
   }
 };
 
-const sizeMap = {
-  tiny: { container: 56, text: { position: 'text-sm', category: 'text-[7px]', year: 'text-[6px]' } },
-  small: { container: 120, text: { position: 'text-lg', category: 'text-[9px]', year: 'text-[9px]' } },
-  medium: { container: 180, text: { position: 'text-2xl', category: 'text-xs', year: 'text-[10px]' } },
-  large: { container: 240, text: { position: 'text-4xl', category: 'text-sm', year: 'text-xs' } }
-};
+const ICON_PX = { tiny: 20, small: 28, medium: 36, large: 44 } as const;
 
-const MedalBadge = ({ 
-  position, 
-  categoryName, 
-  categoryIcon = '🏆',
-  year = '2026',
+/**
+ * Sello de certificación: medalla pequeña como ícono y el texto al lado, legible
+ * (nada de texto sobre la imagen ni letra bajo 12 px).
+ */
+const MedalBadge = ({
+  position,
+  categoryName,
   size = 'medium',
-  showCategoryName = false,
-  className 
+  className,
 }: MedalBadgeProps) => {
-  const medalImage = getMedalImage(position);
-  const dimensions = sizeMap[size];
-
+  const px = ICON_PX[size];
   return (
-    <div 
-      className={cn("relative inline-flex items-center justify-center", className)}
-      style={{ width: dimensions.container, height: dimensions.container }}
+    <span
+      className={cn(
+        "inline-flex items-center gap-2 rounded-sm border border-rule bg-white py-1 pl-1 pr-2.5 text-ink",
+        className,
+      )}
     >
-      {/* Medal background image */}
-      <img 
-        src={medalImage} 
-        alt={`Medalla posición ${position}`}
-        className="absolute inset-0 w-full h-full object-contain"
-      />
-      
-      {/* Text overlay */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-white font-bold text-center px-2">
-        {/* Position number */}
-        <div className={cn(
-          dimensions.text.position,
-          "font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-        )}>
-          #{position}
-        </div>
-        
-        {/* Category name */}
-        <div className={cn(
-          dimensions.text.category,
-          "font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] mt-0.5 leading-tight break-words max-w-[90%] text-center"
-        )}>
-          {categoryName.toUpperCase()}
-        </div>
-      </div>
-    </div>
+      <img src={getMedalImage(position)} alt="" width={px} height={px} className="shrink-0 object-contain" />
+      <span className="text-sm font-semibold leading-tight">
+        Puesto {position} en {categoryName}
+      </span>
+    </span>
   );
 };
 

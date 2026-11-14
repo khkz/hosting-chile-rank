@@ -1,82 +1,91 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card } from '@/components/ui/card';
-import { ArrowRight, Server, ShoppingCart, Building2, Cpu } from 'lucide-react';
-import type { LatamDcSlug } from '@/lib/dcLocal';
+import { ArrowRight, Building2, List, MessageSquare, Server, type LucideIcon } from 'lucide-react';
+import Section from '@/components/system/Section';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import { RANKING_YEAR, getEditionBySlug, rankingPath } from '@/lib/countries';
+import { registryName, routesTitle, voiceFor, type ComSlug } from '@/components/country/edicion/editionVoice';
 
 /**
- * "Rutas por proyecto" — buyer journeys por país. Enlaza a páginas
- * ya existentes bajo /{pais}. NADA inventado: son solo rutas útiles.
+ * Rutas por proyecto de cada edición. Enlazan a páginas que ya existen bajo
+ * /{país} y describen lo que esas páginas muestran, con su procedencia:
+ * la lista de datacenter local sale de lo que declara cada proveedor.
  */
-export default function BuyerRoutes({
-  country,
-  countryName,
-}: {
-  country: Exclude<LatamDcSlug, 'cl'>;
-  countryName: string;
-}) {
-  const longSlug = ({ pe: 'peru', mx: 'mexico', co: 'colombia', ar: 'argentina' } as const)[country];
-  const routes = [
+interface Route {
+  icon: LucideIcon;
+  title: string;
+  desc: React.ReactNode;
+  to: string;
+}
+
+export default function BuyerRoutes({ country, countryName }: { country: ComSlug; countryName: string }) {
+  const edition = getEditionBySlug(country);
+  const registry = registryName(voiceFor(country).registry);
+  const routes: Route[] = [
     {
       icon: Server,
       title: 'Necesito latencia mínima dentro del país',
-      desc: 'Solo proveedores con datacenter dentro de ' + countryName + ' (verificado por IP/ASN).',
+      desc: (
+        <>
+          Proveedores que declaran datacenter en{' '}
+          <span className="whitespace-nowrap">
+            {countryName} <ProvenanceTag kind="declared" variant="glyph" />
+          </span>
+        </>
+      ),
       to: `/${country}/hosting-con-datacenter-local`,
-      cta: 'Ver DC local',
     },
     {
       icon: Building2,
-      title: 'Quiero comparar el top verificado ' + countryName + ' 2026',
+      title: `Quiero comparar el ranking de ${countryName} ${RANKING_YEAR}`,
       desc: 'Ranking ordenado por calidad del datacenter, latencia, entidad local y antigüedad.',
-      to: `/${country}/mejor-hosting-${longSlug}-2026`,
-      cta: 'Ver top 2026',
+      to: edition ? rankingPath(edition) : `/${country}`,
     },
     {
-      icon: Cpu,
-      title: 'Quiero ver benchmarks reales (uptime + TTFB)',
-      desc: 'Monitoreo continuo de los sitios oficiales. Sin puntajes inventados.',
+      icon: MessageSquare,
+      title: 'Quiero ver la reputación de cada proveedor',
+      desc: `Reseñas de usuarios moderadas y el enlace a ${registry}, el registro oficial de consumo.`,
       to: `/${country}/benchmark`,
-      cta: 'Ver benchmark',
     },
     {
-      icon: ShoppingCart,
-      title: 'Quiero ver las comparativas 1-a-1',
-      desc: 'Fichas comparadas por pares con los datos verificables lado a lado.',
-      to: `/${country}#directorio`,
-      cta: 'Ver directorio',
+      icon: List,
+      title: 'Quiero ver todos los proveedores',
+      desc: `El directorio completo de ${countryName}, con filtros por datacenter local y soporte.`,
+      to: '#directorio',
     },
   ];
 
   return (
-    <section className="mb-10" aria-label={`Rutas por proyecto en ${countryName}`}>
-      <h2 className="text-lg md:text-xl font-bold text-[#2B2D42] mb-3">
-        ¿Qué necesitas para tu proyecto en {countryName}?
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <Section id="rutas" title={routesTitle(country, countryName)} density="tight">
+      <ul className="grid border-t border-rule md:grid-cols-2 md:gap-x-10">
         {routes.map((r) => {
           const Icon = r.icon;
+          const body = (
+            <>
+              <Icon className="mt-0.5 h-5 w-5 shrink-0 text-ink-2" aria-hidden />
+              <span className="min-w-0 flex-1">
+                <span className="block font-semibold text-ink underline-offset-4 group-hover:underline">{r.title}</span>
+                <span className="t-small mt-0.5 block text-ink-2">{r.desc}</span>
+              </span>
+              <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-ink-3" aria-hidden />
+            </>
+          );
+          const cls = 'group flex min-h-[44px] items-start gap-3 py-4';
           return (
-            <Card key={r.title} className="p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-3">
-                <div className="rounded-lg bg-[#EF233C]/10 p-2 shrink-0">
-                  <Icon className="h-4 w-4 text-[#EF233C]" aria-hidden />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-semibold text-[#2B2D42] leading-snug">
-                    {r.title}
-                  </h3>
-                  <p className="text-xs text-[#2B2D42]/70 mt-1">{r.desc}</p>
-                  <Link
-                    to={r.to}
-                    className="mt-2 inline-flex items-center gap-1 text-sm text-[#EF233C] font-medium hover:underline"
-                  >
-                    {r.cta} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                  </Link>
-                </div>
-              </div>
-            </Card>
+            <li key={r.title} className="border-b border-rule">
+              {r.to.startsWith('#') ? (
+                <a href={r.to} className={cls}>
+                  {body}
+                </a>
+              ) : (
+                <Link to={r.to} className={cls}>
+                  {body}
+                </Link>
+              )}
+            </li>
           );
         })}
-      </div>
-    </section>
+      </ul>
+    </Section>
   );
 }

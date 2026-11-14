@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDataDate, isoDate } from '@/lib/format';
 
 interface SourcesConsultedProps {
   fuentes?: string | null;
@@ -12,15 +13,16 @@ interface SourcesConsultedProps {
  */
 const SourcesConsulted: React.FC<SourcesConsultedProps> = ({ fuentes, fechaVerificacion }) => {
   if (!fuentes) return null;
-  const fecha = fechaVerificacion ? String(fechaVerificacion).slice(0, 10) : null;
   return (
-    <section className="mt-10">
-      <h3 className="text-lg font-semibold mb-2">Fuentes consultadas</h3>
-      <p className="text-sm text-muted-foreground whitespace-pre-line break-words">{fuentes}</p>
-      {fecha && (
-        <p className="text-xs text-muted-foreground mt-2">Datos verificados el {fecha}</p>
+    <div className="mt-8 max-w-[72ch]">
+      <h3 className="t-h3 text-ink">Fuentes consultadas</h3>
+      <p className="mt-2 whitespace-pre-line break-words t-small text-ink-2">{fuentes}</p>
+      {fechaVerificacion && (
+        <p className="mt-2 t-meta">
+          Revisadas el <time dateTime={isoDate(fechaVerificacion)}>{formatDataDate(fechaVerificacion)}</time>
+        </p>
       )}
-    </section>
+    </div>
   );
 };
 

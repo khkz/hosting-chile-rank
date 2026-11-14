@@ -1,43 +1,39 @@
 // Helpers compartidos para páginas SEO por país (LATAM, .com).
-// NO tocar Chile: estas utilidades solo se usan bajo /pe /mx /co /ar.
+// Derivan del registro único (src/lib/countries.ts). Solo cubren los países
+// publicados bajo eligetuhosting.com/<slug>; Chile vive en el .cl.
 
-import type { CountryCode } from './country';
+import { COM_PUBLISHED_EDITIONS, COM_ORIGIN } from './countries';
+import type { CountryCode } from './countries';
 
-export const LATAM_META: Record<'pe' | 'mx' | 'co' | 'ar', {
+export type LatamSlug = 'pe' | 'mx' | 'co' | 'ar';
+
+type LatamMeta = {
   code: CountryCode;
   name: string;
   flag: string;
   locale: string;
   regex: RegExp; // detecta "datacenter local" en la cadena datacenter_location
-}> = {
-  pe: { code: 'PE', name: 'Perú',      flag: '🇵🇪', locale: 'es-PE', regex: /per[uú]/i },
-  mx: { code: 'MX', name: 'México',    flag: '🇲🇽', locale: 'es-MX', regex: /m[eé]xico/i },
-  co: { code: 'CO', name: 'Colombia',  flag: '🇨🇴', locale: 'es-CO', regex: /colombia/i },
-  ar: { code: 'AR', name: 'Argentina', flag: '🇦🇷', locale: 'es-AR', regex: /argentina/i },
 };
 
-export type LatamSlug = keyof typeof LATAM_META;
+const PUBLISHED_COM = COM_PUBLISHED_EDITIONS as readonly { slug: string; code: string; name: string; flag: string; locale: string; dcPattern: RegExp; longSlug: string }[];
+
+export const LATAM_META = Object.fromEntries(
+  PUBLISHED_COM.map((e) => [e.slug, { code: e.code as CountryCode, name: e.name, flag: e.flag, locale: e.locale, regex: e.dcPattern }])
+) as Record<LatamSlug, LatamMeta>;
 
 export const isLatamSlug = (s: string | undefined): s is LatamSlug =>
-  !!s && ['pe', 'mx', 'co', 'ar'].includes(s.toLowerCase());
+  !!s && Object.prototype.hasOwnProperty.call(LATAM_META, s.toLowerCase());
 
 // Slug del nombre largo del país sin acentos, usado en rutas como
-// /pe/mejor-hosting-peru-2026. Las rutas registradas en App.tsx NO llevan
-// acentos, así que aquí normalizamos con NFD para eliminar diacríticos.
-export const LATAM_LONG_SLUG: Record<LatamSlug, string> = {
-  pe: 'peru',
-  mx: 'mexico',
-  co: 'colombia',
-  ar: 'argentina',
-};
+// /pe/mejor-hosting-peru-2026.
+export const LATAM_LONG_SLUG = Object.fromEntries(
+  PUBLISHED_COM.map((e) => [e.slug, e.longSlug])
+) as Record<LatamSlug, string>;
 
 // OG image por país (imagen propia bajo public/og/).
-export const LATAM_OG_IMAGE: Record<LatamSlug, string> = {
-  pe: 'https://eligetuhosting.com/og/pe.png',
-  mx: 'https://eligetuhosting.com/og/mx.png',
-  co: 'https://eligetuhosting.com/og/co.png',
-  ar: 'https://eligetuhosting.com/og/ar.png',
-};
+export const LATAM_OG_IMAGE = Object.fromEntries(
+  PUBLISHED_COM.map((e) => [e.slug, `${COM_ORIGIN}/og/${e.slug}.png`])
+) as Record<LatamSlug, string>;
 
 // Phrases that flip a country mention into a "NO local DC" statement.
 // We strip them from the string before testing for the country name so

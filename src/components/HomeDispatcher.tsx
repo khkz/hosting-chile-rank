@@ -1,28 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Index from '@/pages/Index';
-import LatamHub from '@/pages/LatamHub';
+import LatamIndex from '@/pages/LatamIndex';
 import { isDotCom } from '@/lib/country';
 
 /**
  * Despachador del "/". Puramente aditivo:
- * - eligetuhosting.cl  → renderiza <Index/> (home de Chile, IDÉNTICA a hoy).
- * - eligetuhosting.com → renderiza <LatamHub/> (selector de país, sin tocar Chile).
+ * - eligetuhosting.cl: renderiza <Index/> (home de Chile, IDÉNTICA a hoy).
+ * - eligetuhosting.com: renderiza <LatamIndex/> (índice regional por país).
  *
- * Durante SSR/prerender (sin window) defaultea a Chile para preservar el HTML
- * estático actual del .cl.
+ * Decide en el primer render: la app monta con createRoot (no hay hidratación
+ * que respetar), así que el .com nunca monta la portada de Chile antes del
+ * índice. Sin window (prerender) queda en Chile para preservar el HTML del .cl.
  */
 const HomeDispatcher = () => {
-  const [showHub, setShowHub] = useState(false);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setShowHub(isDotCom());
-    setReady(true);
-  }, []);
-
-  // Antes de hidratar, renderiza Chile (comportamiento por defecto = CL).
-  if (!ready) return <Index />;
-  return showHub ? <LatamHub /> : <Index />;
+  const [showHub] = useState(() => typeof window !== 'undefined' && isDotCom());
+  return showHub ? <LatamIndex /> : <Index />;
 };
 
 export default HomeDispatcher;

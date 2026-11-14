@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Shield, AlertTriangle, CheckCircle2, RotateCcw, ArrowRight } from 'lucide-react';
+import { Check, ExternalLink, RotateCcw } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
 
 type Option = { label: string; risk: 0 | 1 | 2 | 3 };
@@ -125,8 +126,8 @@ const MAX_SCORE = questions.length * 3;
 
 type Tier = {
   level: 'Bajo' | 'Medio' | 'Alto' | 'Crítico';
-  color: string;
-  bg: string;
+  /** Posición del nivel (1 a 4) para el medidor; sin colores: el texto dice el nivel. */
+  step: 1 | 2 | 3 | 4;
   headline: string;
   summary: string;
   features: string[];
@@ -137,8 +138,7 @@ const getTier = (score: number): Tier => {
   if (pct < 25) {
     return {
       level: 'Bajo',
-      color: 'text-green-700',
-      bg: 'bg-green-50 border-green-200',
+      step: 1,
       headline: 'Riesgo bajo: vas bien',
       summary:
         'Tu postura de seguridad es sólida. Mantén lo que tienes y agrega capas extra solo si tu sitio crece o cambia de naturaleza.',
@@ -153,15 +153,14 @@ const getTier = (score: number): Tier => {
   if (pct < 50) {
     return {
       level: 'Medio',
-      color: 'text-yellow-700',
-      bg: 'bg-yellow-50 border-yellow-200',
+      step: 2,
       headline: 'Riesgo medio: te falta una o dos capas',
       summary:
         'Estás expuesto a ataques automatizados. Reforzar el hosting es la inversión con mejor retorno antes de tocar el CMS.',
       features: [
         'WAF con BitNinja o ModSecurity con OWASP CRS',
         'Escaneo de malware automático (Imunify AV+ o similar)',
-        'Backups diarios fuera del servidor, retención 14-30 días',
+        'Backups diarios fuera del servidor, retención 14–30 días',
         '2FA obligatorio en el panel del cliente',
         'Aislamiento por cuenta (CageFS o equivalente)',
       ],
@@ -170,8 +169,7 @@ const getTier = (score: number): Tier => {
   if (pct < 75) {
     return {
       level: 'Alto',
-      color: 'text-orange-700',
-      bg: 'bg-orange-50 border-orange-200',
+      step: 3,
       headline: 'Riesgo alto: actúa esta semana',
       summary:
         'Tu sitio es un blanco fácil para bots y exploits. Necesitas un hosting con seguridad gestionada de inmediato.',
@@ -187,8 +185,7 @@ const getTier = (score: number): Tier => {
   }
   return {
     level: 'Crítico',
-    color: 'text-red-700',
-    bg: 'bg-red-50 border-red-200',
+    step: 4,
     headline: 'Riesgo crítico: migra ya',
     summary:
       'Tu combinación de exposición y falta de defensa es la receta para un hackeo grave. Mover el sitio a un hosting con seguridad enterprise no es opcional.',
@@ -204,6 +201,24 @@ const getTier = (score: number): Tier => {
   };
 };
 
+const LEVELS: Tier['level'][] = ['Bajo', 'Medio', 'Alto', 'Crítico'];
+
+/** Medidor de 4 tramos en tinta: la forma y el texto dicen el nivel, no el color. */
+const RiskMeter: React.FC<{ step: Tier['step'] }> = ({ step }) => (
+  <div aria-hidden className="mt-3 grid max-w-xs grid-cols-4 gap-1">
+    {LEVELS.map((l, i) => (
+      <div key={l}>
+        <div className={cn('h-1.5 rounded-sm', i < step ? 'bg-ink' : 'bg-paper-deep')} />
+        <p className={cn('mt-1 text-xs', i + 1 === step ? 'font-semibold text-ink' : 'text-ink-3')}>{l}</p>
+      </div>
+    ))}
+  </div>
+);
+
+/**
+ * Test de riesgo de seguridad (10 preguntas). Preguntas, niveles y
+ * recomendación sin cambios (pendiente 7 del dueño); solo presentación.
+ */
 const SecurityRiskQuiz: React.FC = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -237,89 +252,71 @@ const SecurityRiskQuiz: React.FC = () => {
   const score = Object.values(answers).reduce((a, b) => a + b, 0);
   const tier = getTier(score);
 
-  if (done) {
-    return (
-      <Card className={`border-2 ${tier.bg}`}>
-        <CardHeader>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 rounded-full bg-background flex items-center justify-center shadow-sm">
-              <Shield className={`w-6 h-6 ${tier.color}`} />
-            </div>
-            <div>
-              <CardDescription className="text-xs uppercase tracking-wider">
-                Tu nivel de riesgo
-              </CardDescription>
-              <CardTitle className={`text-2xl ${tier.color}`}>
-                {tier.level} · {score}/{MAX_SCORE} puntos
-              </CardTitle>
-            </div>
-          </div>
-          <p className="text-base font-medium">{tier.headline}</p>
-          <p className="text-sm text-muted-foreground mt-2">{tier.summary}</p>
-        </CardHeader>
-        <CardContent>
-          <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-muted-foreground">
-            Funciones de seguridad que tu hosting debe tener
+  return (
+    <div aria-live="polite" className="rounded-xl border border-rule bg-white p-5 md:p-6">
+      {done ? (
+        <>
+          <p className="t-label">Tu nivel de riesgo</p>
+          <h3 className="t-h3 mt-1 text-ink">
+            {tier.level}: {score} de {MAX_SCORE} puntos
           </h3>
-          <ul className="space-y-2 mb-6">
+          <RiskMeter step={tier.step} />
+          <p className="mt-5 font-semibold text-ink">{tier.headline}</p>
+          <p className="t-body mt-2 text-ink-2">{tier.summary}</p>
+
+          <h4 className="t-label mt-6">Funciones de seguridad que tu hosting debe tener</h4>
+          <ul className="mt-3 space-y-2">
             {tier.features.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-sm">
-                <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
+              <li key={f} className="t-body flex items-start gap-2 text-ink-2">
+                <Check aria-hidden className="mt-1 h-4 w-4 shrink-0 text-ink-3" />
                 <span>{f}</span>
               </li>
             ))}
           </ul>
 
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="https://www.hostingplus.cl/hosting/?utm_source=eligetuhosting&utm_medium=quiz&utm_campaign=hosting-seguro"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button className="min-h-[44px]">
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild>
+              <a
+                href="https://www.hostingplus.cl/hosting/?utm_source=eligetuhosting&utm_medium=quiz&utm_campaign=hosting-seguro"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Ver hosting que cumple este nivel
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-            <Button variant="outline" onClick={reset} className="min-h-[44px]">
-              <RotateCcw className="w-4 h-4 mr-2" />
+                <ExternalLink aria-hidden />
+                <span className="sr-only"> (se abre en una pestaña nueva)</span>
+              </a>
+            </Button>
+            <Button variant="outline" onClick={reset}>
+              <RotateCcw aria-hidden />
               Repetir test
             </Button>
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="border-primary/20">
-      <CardHeader>
-        <div className="flex items-center justify-between mb-3">
-          <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded bg-primary/10 text-primary">
-            <AlertTriangle className="w-3 h-3" />
-            {current.tag}
-          </span>
-          <span className="text-xs text-muted-foreground">
-            Pregunta {step + 1} de {questions.length}
-          </span>
-        </div>
-        <Progress value={progress} className="h-2 mb-4" />
-        <CardTitle className="text-xl leading-snug">{current.question}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-2">
-          {current.options.map((opt) => (
-            <button
-              key={opt.label}
-              onClick={() => handleAnswer(opt.risk)}
-              className="text-left min-h-[44px] px-4 py-3 rounded-lg border border-border bg-background hover:bg-primary/5 hover:border-primary/40 transition-colors text-sm"
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+        </>
+      ) : (
+        <>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <Badge variant="secondary">{current.tag}</Badge>
+            <span className="t-meta">
+              Pregunta {step + 1} de {questions.length}
+            </span>
+          </div>
+          <Progress value={progress} aria-label="Avance del test" className="mt-3 h-1.5 bg-paper-deep" />
+          <h3 className="t-h3 mt-5 text-ink">{current.question}</h3>
+          <div className="mt-4 grid gap-2">
+            {current.options.map((opt) => (
+              <button
+                key={opt.label}
+                type="button"
+                onClick={() => handleAnswer(opt.risk)}
+                className="min-h-11 rounded-lg border border-rule bg-white px-4 py-3 text-left text-[15px] text-ink transition-colors hover:border-ink/40 hover:bg-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 

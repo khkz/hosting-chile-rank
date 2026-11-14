@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Check, X, AlertTriangle, Shield, Eye, Server, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useProviderHasFicha } from '@/components/comparar/useCompareData';
 
 interface Competitor {
   slug: string;
@@ -87,6 +88,9 @@ const VsComparison = () => {
   // Normalize slug: lowercase + strip trailing slash/whitespace to avoid duplicates
   const normalizedRival = rival?.toLowerCase().trim().replace(/\/+$/, '') ?? '';
   const competitor = normalizedRival ? competitors[normalizedRival] : null;
+  // /vs/ es para otros comparadores. Un slug de proveedor va a su ficha
+  // (mismos filtros que /catalogo/:slug); cualquier otro valor, al hub /comparativa.
+  const ficha = useProviderHasFicha(competitor ? null : normalizedRival || null);
 
   // If slug differs after normalization, 301-style client redirect to canonical
   if (rival && normalizedRival && rival !== normalizedRival && competitors[normalizedRival]) {
@@ -94,7 +98,9 @@ const VsComparison = () => {
   }
 
   if (!competitor) {
-    return <Navigate to="/transparencia-hosting-chile" replace />;
+    if (normalizedRival && ficha.isLoading) return null;
+    if (ficha.data) return <Navigate to={`/catalogo/${normalizedRival}`} replace />;
+    return <Navigate to="/comparativa" replace />;
   }
 
   const canonicalUrl = `https://eligetuhosting.cl/vs/${competitor.slug}`;
@@ -173,11 +179,11 @@ const VsComparison = () => {
       {/* Veredicto rápido */}
       <section className="py-10 bg-destructive/5 border-b border-destructive/20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-card rounded-xl shadow-lg p-6 md:p-8 border border-destructive/30">
+          <div className="max-w-4xl mx-auto bg-card rounded-xl p-6 md:p-8 border border-destructive/30">
             <div className="flex items-start gap-4">
               <AlertTriangle className="w-8 h-8 text-destructive flex-shrink-0 mt-1" />
               <div>
-                <h2 className="text-xl font-bold text-destructive mb-2">⚠️ Conflicto de interés detectado</h2>
+                <h2 className="text-xl font-bold text-destructive mb-2">Conflicto de interés detectado</h2>
                 <p className="text-foreground text-base leading-relaxed">
                   {competitor.whyFake}
                 </p>
@@ -244,7 +250,7 @@ const VsComparison = () => {
           </h2>
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
             {/* Info del competidor */}
-            <div className="bg-card rounded-xl p-6 border border-destructive/30 shadow">
+            <div className="bg-card rounded-xl p-6 border border-destructive/30">
               <h3 className="font-bold text-lg text-destructive mb-4 flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5" />
                 {competitor.name}
@@ -256,11 +262,11 @@ const VsComparison = () => {
                 </div>
                 <div>
                   <dt className="text-muted-foreground">ASN</dt>
-                  <dd className="font-mono text-foreground">{competitor.asn}</dd>
+                  <dd className="tabular text-foreground">{competitor.asn}</dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Rango IP</dt>
-                  <dd className="font-mono text-foreground">{competitor.ipRange}</dd>
+                  <dd className="tabular text-foreground">{competitor.ipRange}</dd>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Sitios relacionados</dt>
@@ -274,7 +280,7 @@ const VsComparison = () => {
             </div>
 
             {/* Info EligeTuHosting */}
-            <div className="bg-card rounded-xl p-6 border border-primary/30 shadow">
+            <div className="bg-card rounded-xl p-6 border border-primary/30">
               <h3 className="font-bold text-lg text-primary mb-4 flex items-center gap-2">
                 <Shield className="w-5 h-5" />
                 EligeTuHosting.cl
@@ -319,7 +325,7 @@ const VsComparison = () => {
             <ul className="space-y-3">
               {competitor.evidencePoints.map((point, i) => (
                 <li key={i} className="flex items-start gap-3 bg-destructive/5 border border-destructive/20 rounded-lg p-4">
-                  <span className="bg-destructive text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                  <span className="bg-paper-deep text-ink rounded-sm w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 tabular">
                     {i + 1}
                   </span>
                   <span className="text-foreground">{point}</span>

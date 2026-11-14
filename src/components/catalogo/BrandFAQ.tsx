@@ -13,30 +13,22 @@ interface BrandFAQProps {
 }
 
 /**
- * Acordeón visible con las 4 FAQs propias de la ficha de empresa.
- * El JSON-LD FAQPage correspondiente se emite por separado en el <Helmet> de la página.
+ * Acordeón visible con las 4 FAQs propias de la ficha de empresa. La sección
+ * que lo contiene pone el título. El JSON-LD FAQPage se emite aparte en la
+ * página con estos mismos textos: no se reescriben aquí.
  */
-const BrandFAQ: React.FC<BrandFAQProps> = ({ companyName, items }) => {
-  return (
-    <section className="mt-12" aria-labelledby={`faq-${companyName}`}>
-      <h2 id={`faq-${companyName}`} className="text-2xl font-bold mb-6">
-        Preguntas frecuentes sobre {companyName}
-      </h2>
-      <Accordion type="single" collapsible className="space-y-3">
-        {items.map((item, i) => (
-          <AccordionItem key={i} value={`item-${i}`} className="border rounded-lg px-4">
-            <AccordionTrigger className="text-left font-semibold">
-              {item.question}
-            </AccordionTrigger>
-            <AccordionContent className="text-muted-foreground leading-relaxed">
-              {item.answer}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </section>
-  );
-};
+const BrandFAQ: React.FC<BrandFAQProps> = ({ items }) => (
+  <Accordion type="single" collapsible className="max-w-[72ch] border-t-2 border-ink">
+    {items.map((item, i) => (
+      <AccordionItem key={i} value={`item-${i}`} className="border-b border-rule">
+        <AccordionTrigger className="min-h-[44px] gap-4 py-4 text-left text-base font-semibold text-ink hover:no-underline [&>svg]:h-5 [&>svg]:w-5 [&>svg]:text-ink-2">
+          {item.question}
+        </AccordionTrigger>
+        <AccordionContent className="t-body max-w-[62ch] pb-5 text-ink-2">{item.answer}</AccordionContent>
+      </AccordionItem>
+    ))}
+  </Accordion>
+);
 
 export default BrandFAQ;
 

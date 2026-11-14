@@ -1,4 +1,8 @@
 import { useEffect } from 'react';
+import { COM_SLUGS } from '@/lib/countries';
+
+// Rutas que viven en eligetuhosting.com: ediciones por país y el índice LATAM.
+const COM_PATH_RE = new RegExp(`^/(${[...COM_SLUGS, 'latam'].join('|')})(/|$)`, 'i');
 
 const DomainRedirect = () => {
   useEffect(() => {
@@ -19,10 +23,10 @@ const DomainRedirect = () => {
       const currentSearch = window.location.search;
       const currentHash = window.location.hash || '';
 
-      // 0) Cross-domain: if we're on .cl but the path is a LATAM country
-      //    (/pe, /mx, /co, /ar y subrutas) → redirigir a .com que es donde vive ese contenido.
+      // 0) Cross-domain: en el .cl, las ediciones por país (/pe, /mx… y las
+      //    que estén en verificación) y el índice /latam viven en el .com.
       const isCl = currentHost === targetDomain || currentHost === `www.${targetDomain}`;
-      if (isCl && /^\/(pe|mx|co|ar)(\/|$)/.test(currentPath)) {
+      if (isCl && COM_PATH_RE.test(currentPath)) {
         window.location.replace(
           `https://eligetuhosting.com${currentPath}${currentSearch}${currentHash}`
         );

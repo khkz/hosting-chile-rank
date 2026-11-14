@@ -1,151 +1,175 @@
 import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Server } from 'lucide-react';
-import { PROVIDERS } from '@/data/estudio2026';
+import { Badge } from '@/components/ui/badge';
+import Callout from '@/components/system/Callout';
+import { ProvenanceTag } from '@/components/data/Provenance';
+import { PROVIDERS, type Provider } from '@/data/estudio2026';
 import { PRICING_FOOTNOTE } from '@/data/verified2026';
+
+const TYPE_LABEL: Record<Provider['type'], string> = {
+  'cl-asn': 'ASN chileno asignado',
+  'cl-no-asn': 'Sin ASN propio',
+  intl: 'Internacional',
+};
+
+const TENANCY_LABEL = (t: Provider['dcTenancy']) =>
+  t === 'propio' ? 'Propio' : t === 'colocation' ? 'Colocation (terceros)' : t === 'declarado' ? 'Declarada por el proveedor' : 'No (extranjero)';
+
+const SHORT_TYPE: Record<Provider['type'], string> = {
+  'cl-asn': 'Chileno c/ASN',
+  'cl-no-asn': 'Chileno s/ASN',
+  intl: 'Internacional',
+};
+
+const Row: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
+  <div className="grid gap-1 py-2.5 sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-4">
+    <dt className="t-label">{label}</dt>
+    <dd className="t-small min-w-0 text-ink">{children}</dd>
+  </div>
+);
 
 /** Fichas detalladas de los 11 proveedores del estudio. */
 export const EstudioFichas: React.FC = () => (
   <div className="space-y-6">
+    <p className="t-meta flex flex-wrap items-center gap-x-4 gap-y-1">
+      <span className="inline-flex items-center gap-1.5">
+        ASN y prefijos <ProvenanceTag kind="measured" />
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        Precio de entrada <ProvenanceTag kind="declared" />
+      </span>
+    </p>
     {PROVIDERS.map((p) => (
-      <Card key={p.rank} className="p-6">
-        <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-          <div>
-            <h3 className="text-xl font-bold">
-              <span className="text-muted-foreground mr-2">#{p.rank}</span>
+      <article key={p.rank} className="rounded-xl border border-rule bg-white p-5 md:p-6">
+        <header className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="t-h3 text-ink">
+              <span className="tabular mr-2 text-ink-3">#{p.rank}</span>
               {p.name}
             </h3>
             {p.legal && (
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="t-meta mt-1">
                 {p.legal}
-                {p.rut && ` · RUT ${p.rut}`}
+                {p.rut && <span className="ml-3">RUT {p.rut}</span>}
               </p>
             )}
           </div>
-          <div className="flex flex-wrap gap-2">
-            {p.type === 'cl-asn' && (
-              <Badge className="bg-green-600 hover:bg-green-700">
-                <Server className="w-3 h-3 mr-1" /> ASN chileno asignado
-              </Badge>
-            )}
-            {p.type === 'cl-no-asn' && <Badge variant="destructive">Sin ASN propio</Badge>}
-            {p.type === 'intl' && <Badge variant="secondary">Internacional</Badge>}
-          </div>
-        </div>
+          <Badge variant="outline">
+            {p.type === 'cl-asn' && <Server className="h-3.5 w-3.5" aria-hidden />}
+            {TYPE_LABEL[p.type]}
+          </Badge>
+        </header>
 
-        <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm mb-4">
+        <dl className="mt-4 divide-y divide-rule border-y border-rule">
           {p.asn && (
-            <>
-              <dt className="font-semibold">ASN</dt>
-              <dd className="font-mono text-xs">
-                {p.asn} {p.asnPrefixes && `· ${p.asnPrefixes}`}
-              </dd>
-            </>
+            <Row label="ASN">
+              <span className="inline-flex items-center gap-1.5 tabular">
+                {p.asn}
+                <ProvenanceTag kind="measured" variant="glyph" />
+              </span>
+              {p.asnPrefixes && <span className="mt-0.5 block text-ink-2">{p.asnPrefixes}</span>}
+            </Row>
           )}
-          <dt className="font-semibold">Instalación</dt>
-          <dd>{p.dc}</dd>
-          {p.panel && (
-            <>
-              <dt className="font-semibold">Panel</dt>
-              <dd>{p.panel}</dd>
-            </>
-          )}
+          <Row label="Instalación">{p.dc}</Row>
+          {p.panel && <Row label="Panel">{p.panel}</Row>}
           {p.shared && (
-            <>
-              <dt className="font-semibold">Precio de entrada (anualizado)</dt>
-              <dd>
+            <Row label="Precio de entrada (anualizado)">
+              <span className="inline-flex items-center gap-1.5">
                 {p.shared}
-                {p.sharedNote && (
-                  <span className="block text-xs text-muted-foreground mt-0.5">{p.sharedNote}</span>
-                )}
-              </dd>
-            </>
+                <ProvenanceTag kind="declared" variant="glyph" />
+              </span>
+              {p.sharedNote && <span className="t-meta mt-0.5 block">{p.sharedNote}</span>}
+            </Row>
           )}
-          {p.phone && (
-            <>
-              <dt className="font-semibold">Soporte</dt>
-              <dd>{p.phone}</dd>
-            </>
-          )}
-          <dt className="font-semibold">Diferenciadores</dt>
-          <dd>{p.diff}</dd>
-          <dt className="font-semibold">Reputación pública</dt>
-          <dd>{p.reputation}</dd>
+          {p.phone && <Row label="Soporte">{p.phone}</Row>}
+          <Row label="Diferenciadores">{p.diff}</Row>
+          <Row label="Reputación pública">{p.reputation}</Row>
         </dl>
 
         {p.affiliateNote && (
-          <div className="mb-3 p-3 bg-amber-50 dark:bg-amber-950/30 border-l-4 border-l-amber-500 rounded-r text-sm">
-            <strong className="text-amber-700 dark:text-amber-400">⚠ Canal afiliado relacionado:</strong>{' '}
-            {p.affiliateNote}
-          </div>
+          <Callout tone="caution" title="Canal afiliado relacionado">
+            <p>{p.affiliateNote}</p>
+          </Callout>
         )}
 
         {p.innovations && (
-          <div className="mb-3 p-3 bg-primary/5 border-l-4 border-l-primary rounded-r text-sm">
-            <strong className="text-primary">{p.innovations.title}:</strong>
-            <ul className="mt-2 space-y-1.5">
+          <Callout tone="note" title={p.innovations.title}>
+            <ul className="space-y-1.5">
               {p.innovations.items.map((it) => (
                 <li key={it.label}>
-                  <a href={it.url} target="_blank" rel="noopener noreferrer nofollow" className="font-semibold underline">
+                  <a
+                    href={it.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="font-semibold text-ink underline underline-offset-2"
+                  >
                     {it.label}
                   </a>{' '}
                   — {it.desc}
                 </li>
               ))}
             </ul>
-          </div>
+          </Callout>
         )}
 
-        <p className="text-sm italic text-muted-foreground border-t pt-3">
-          <strong className="not-italic text-foreground">Nota crítica:</strong> {p.critical}
+        <p className="t-small mt-4 text-ink-2">
+          <strong className="text-ink">Nota crítica:</strong> {p.critical}
         </p>
-      </Card>
+      </article>
     ))}
-    <p className="text-xs text-muted-foreground">{PRICING_FOOTNOTE}</p>
+    <p className="t-meta">{PRICING_FOOTNOTE}</p>
   </div>
 );
 
-/** Tabla comparativa general del estudio. */
+/** Tabla comparativa general del estudio (lista en móvil, tabla en escritorio). */
 export const EstudioTablaGeneral: React.FC = () => (
   <>
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm border-collapse">
-        <thead className="bg-muted">
-          <tr>
-            <th className="text-left p-3 border-b">#</th>
-            <th className="text-left p-3 border-b">Proveedor</th>
-            <th className="text-left p-3 border-b">ASN</th>
-            <th className="text-left p-3 border-b">Instalación en Chile</th>
-            <th className="text-left p-3 border-b">Precio de entrada (anualizado)</th>
-            <th className="text-left p-3 border-b">Tipo</th>
+    <table className="hidden w-full border-collapse text-left text-[15px] lg:table">
+      <thead>
+        <tr className="border-b-2 border-ink text-[13px] text-ink-2">
+          <th scope="col" className="w-10 py-2.5 pr-3 font-semibold">#</th>
+          <th scope="col" className="py-2.5 pr-3 font-semibold">Proveedor</th>
+          <th scope="col" className="py-2.5 pr-3 font-semibold">ASN</th>
+          <th scope="col" className="py-2.5 pr-3 font-semibold">Instalación en Chile</th>
+          <th scope="col" className="py-2.5 pr-3 font-semibold">Precio de entrada (anualizado)</th>
+          <th scope="col" className="py-2.5 font-semibold">Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {PROVIDERS.map((p) => (
+          <tr key={p.rank} className="border-b border-rule align-top">
+            <td className="tabular py-3 pr-3 text-ink-3">{p.rank}</td>
+            <th scope="row" className="py-3 pr-3 font-semibold text-ink">{p.name}</th>
+            <td className="tabular py-3 pr-3 text-ink">{p.asn ?? 'sin ASN'}</td>
+            <td className="py-3 pr-3 text-ink-2">{TENANCY_LABEL(p.dcTenancy)}</td>
+            <td className="py-3 pr-3 text-ink">{p.shared ?? 'sin dato'}</td>
+            <td className="py-3 text-ink-2">{SHORT_TYPE[p.type]}</td>
           </tr>
-        </thead>
-        <tbody className="[&>tr:nth-child(even)]:bg-muted/30">
-          {PROVIDERS.map((p) => (
-            <tr key={p.rank}>
-              <td className="p-3">{p.rank}</td>
-              <td className="p-3 font-medium">{p.name}</td>
-              <td className="p-3 font-mono text-xs">{p.asn ?? '—'}</td>
-              <td className="p-3">
-                {p.dcTenancy === 'propio'
-                  ? 'Propio'
-                  : p.dcTenancy === 'colocation'
-                  ? 'Colocation (terceros)'
-                  : p.dcTenancy === 'declarado'
-                  ? 'Declarada por el proveedor'
-                  : 'No (extranjero)'}
-              </td>
-              <td className="p-3">{p.shared ?? '—'}</td>
-              <td className="p-3 text-xs">
-                {p.type === 'cl-asn' ? 'Chileno c/ASN' : p.type === 'cl-no-asn' ? 'Chileno s/ASN' : 'Internacional'}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <p className="text-xs text-muted-foreground mt-3">{PRICING_FOOTNOTE}</p>
+        ))}
+      </tbody>
+    </table>
+
+    <ol className="divide-y divide-rule border-y-2 border-ink lg:hidden">
+      {PROVIDERS.map((p) => (
+        <li key={p.rank} className="py-4">
+          <p className="flex items-baseline gap-3">
+            <span className="tabular w-6 text-ink-3">{p.rank}</span>
+            <span className="font-semibold text-ink">{p.name}</span>
+          </p>
+          <dl className="t-small ml-9 mt-2 grid grid-cols-[8rem_minmax(0,1fr)] gap-x-3 gap-y-1">
+            <dt className="text-ink-3">ASN</dt>
+            <dd className="tabular text-ink">{p.asn ?? 'sin ASN'}</dd>
+            <dt className="text-ink-3">Instalación</dt>
+            <dd className="text-ink">{TENANCY_LABEL(p.dcTenancy)}</dd>
+            <dt className="text-ink-3">Precio de entrada</dt>
+            <dd className="text-ink">{p.shared ?? 'sin dato'}</dd>
+            <dt className="text-ink-3">Tipo</dt>
+            <dd className="text-ink">{SHORT_TYPE[p.type]}</dd>
+          </dl>
+        </li>
+      ))}
+    </ol>
+    <p className="t-meta mt-3">{PRICING_FOOTNOTE}</p>
   </>
 );
 

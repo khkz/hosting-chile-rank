@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getActiveCountryCode } from '@/lib/country';
+import { ExternalLink, Star } from 'lucide-react';
+import { ProvenanceTag } from './data/Provenance';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, ArrowRight, Star } from 'lucide-react';
 import { useReviewStats } from '@/hooks/useReviewStats';
 import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
 import { track } from '@/lib/track';
+import { formatScore } from '@/lib/format';
 
 // Orden y notas oficiales (4–10). Fuente única de verdad para el ranking extendido.
 export const EXTRA_RANKING: Array<{
@@ -26,25 +28,16 @@ export const EXTRA_RANKING: Array<{
   { position: 10, slug: 'prohosting', displayName: 'ProHosting.cl', rating: 7.9, keyFeature: 'Hosting económico para pymes' },
 ];
 
-const getMinPrice = (db: any): number | null => {
-  if (db?.promo_price && db.promo_price > 0) return db.promo_price;
-  const plans = db?.hosting_plans as Array<{ price_monthly: number }> | undefined;
-  if (plans && plans.length > 0) {
-    const prices = plans.map((p) => p.price_monthly).filter((p) => typeof p === 'number' && p > 0);
-    if (prices.length > 0) return Math.min(...prices);
-  }
-  return null;
-};
-
-const formatPrice = (_price: number | null | undefined) => 'Consultar';
-
 const VISIBLE_RANKING = EXTRA_RANKING
   .filter((p) => !isHiddenProvider(p.slug))
   .map((p, i) => ({ ...p, position: i + 4 }));
 
+/**
+ * Puestos 4 a 10: tabla en escritorio y lista en móvil. «Ver ficha» es la
+ * acción principal; «Ir al sitio» queda como enlace secundario de salida.
+ */
 const RankingPositions4to10: React.FC = () => {
   const slugs = VISIBLE_RANKING.map((p) => p.slug);
-
 
   const { data } = useQuery({
     queryKey: ['ranking-4-10', slugs],
@@ -63,137 +56,116 @@ const RankingPositions4to10: React.FC = () => {
   const bySlug = new Map((data ?? []).map((d) => [d.slug, d]));
   const { data: reviewStats } = useReviewStats(slugs);
 
-  return (
-    <section
-      aria-label="Puestos 4 a 10 del ranking de hosting Chile 2026"
-      className="mt-10 max-w-5xl mx-auto"
-    >
-      <h3 className="text-xl md:text-2xl font-bold text-foreground text-center mb-2">
-        Puestos 4 a 10 del ranking
-      </h3>
-      <p className="text-sm text-muted-foreground text-center mb-6">
-        Resto de proveedores verificados con nota igual o inferior a 8.5
-      </p>
+  const visitLink = (slug: string, name: string, website: string | null | undefined, position: number, location: string) => {
+    if (!website) return null;
+    const link = getProviderLink(slug, website);
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel={link.rel}
+        onClick={() => track('click_visitar_sitio', { slug, location, position })}
+        className="inline-flex min-h-[44px] items-center gap-1.5 text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink md:min-h-[36px]"
+      >
+        Ir al sitio<span className="sr-only"> de {name} (se abre en otra pestaña)</span>
+        <ExternalLink className="h-3.5 w-3.5 text-ink-2" aria-hidden />
+      </a>
+    );
+  };
 
-      {/* Tabla en desktop */}
-      <div className="hidden md:block bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-muted-foreground">
-            <tr>
-              <th className="text-left p-3 w-12">#</th>
-              <th className="text-left p-3">Proveedor</th>
-              <th className="text-left p-3 w-20">Nota</th>
-              <th className="text-left p-3 w-32">Desde</th>
-              <th className="text-left p-3">Característica clave</th>
-              <th className="text-right p-3 w-64">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {VISIBLE_RANKING.map((row) => {
-              const db = bySlug.get(row.slug);
-              return (
-                <tr key={row.slug} className="border-t border-border hover:bg-muted/30">
-                  <td className="p-3 font-bold text-foreground">{row.position}</td>
-                  <td className="p-3 font-semibold text-foreground">{row.displayName}</td>
-                  <td className="p-3">
-                    <span className="inline-block bg-primary/10 text-primary font-bold px-2 py-1 rounded">
-                      {row.rating.toFixed(1)}
-                    </span>
-                    {reviewStats?.[row.slug] && (
-                      <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
-                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                        {reviewStats[row.slug].avg.toFixed(1)} · {reviewStats[row.slug].count}
-                      </span>
-                    )}
-                  </td>
-                  <td className="p-3 text-foreground">{formatPrice(getMinPrice(db))}</td>
-                  <td className="p-3 text-muted-foreground">{row.keyFeature}</td>
-                  <td className="p-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button asChild variant="outline" size="sm" className="min-h-[44px]">
-                        <Link to={`/catalogo/${row.slug}`} onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10', position: row.position })}>Ver detalles</Link>
-                      </Button>
-                      {db?.website && (() => {
-                        const link = getProviderLink(row.slug, db.website);
-                        return (
-                          <Button asChild size="sm" className="min-h-[44px]">
-                            <a
-                              href={link.href}
-                              target="_blank"
-                              rel={link.rel}
-                              onClick={() => track('click_visitar_sitio', { slug: row.slug, location: 'ranking_4_10', position: row.position })}
-                            >
-                              Visitar sitio
-                              <ExternalLink className="ml-1 h-3 w-3" />
-                            </a>
-                          </Button>
-                        );
-                      })()}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+  const reviews = (slug: string) =>
+    reviewStats?.[slug] ? (
+      <span className="t-meta mt-0.5 flex items-center gap-1 font-normal tabular">
+        <Star className="h-3 w-3 fill-current" aria-hidden />
+        {reviewStats[slug].avg.toFixed(1).replace('.', ',')} de 5 en {reviewStats[slug].count} reseña
+        {reviewStats[slug].count === 1 ? '' : 's'}
+      </span>
+    ) : null;
+
+  return (
+    <section aria-labelledby="puestos-4-10" className="mt-12">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
+        <h3 id="puestos-4-10" className="t-h3 text-ink">
+          Puestos 4 a {3 + VISIBLE_RANKING.length}
+        </h3>
+        <p className="t-meta flex items-center gap-2">
+          Notas <ProvenanceTag kind="editorial" />
+        </p>
       </div>
 
-      {/* Cards en mobile */}
-      <div className="md:hidden space-y-3">
+      {/* Escritorio: tabla */}
+      <table className="hidden w-full border-collapse text-left text-[15px] md:table">
+        <thead>
+          <tr className="border-b-2 border-ink text-[13px] text-ink-2">
+            <th scope="col" className="w-16 py-2.5 pr-3 font-semibold">Puesto</th>
+            <th scope="col" className="py-2.5 pr-3 font-semibold">Proveedor</th>
+            <th scope="col" className="w-20 py-2.5 pr-4 text-right font-semibold">Nota</th>
+            <th scope="col" className="py-2.5 pr-3 font-semibold">Lo que lo distingue</th>
+            <th scope="col" className="py-2.5 text-right font-semibold"><span className="sr-only">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {VISIBLE_RANKING.map((row) => {
+            const db = bySlug.get(row.slug);
+            return (
+              <tr key={row.slug} className="border-b border-rule align-middle">
+                <td className="py-3 pr-3 text-xl font-bold text-ink-3 tabular">{row.position}</td>
+                <th scope="row" className="py-3 pr-3 font-semibold text-ink">
+                  {row.displayName}
+                  {reviews(row.slug)}
+                </th>
+                <td className="py-3 pr-4 text-right text-lg font-bold text-ink tabular">{formatScore(row.rating)}</td>
+                <td className="py-3 pr-3 text-ink-2">{row.keyFeature}</td>
+                <td className="py-3 text-right">
+                  <div className="flex items-center justify-end gap-4">
+                    <Button asChild size="sm">
+                      <Link
+                        to={`/catalogo/${row.slug}`}
+                        aria-label={`Ver ficha de ${row.displayName}`}
+                        onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10', position: row.position })}
+                      >
+                        Ver ficha
+                      </Link>
+                    </Button>
+                    <span className="w-[104px] text-left">
+                      {visitLink(row.slug, row.displayName, db?.website, row.position, 'ranking_4_10')}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {/* Móvil: filas apiladas */}
+      <ol className="divide-y divide-rule border-y-2 border-ink md:hidden">
         {VISIBLE_RANKING.map((row) => {
           const db = bySlug.get(row.slug);
           return (
-            <div
-              key={row.slug}
-              className="bg-card border border-border rounded-xl p-4 shadow-sm"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center w-9 h-9 bg-foreground text-background rounded-full font-bold text-sm">
-                    {row.position}
-                  </span>
-                  <h4 className="font-bold text-foreground">{row.displayName}</h4>
-                </div>
-                <span className="bg-primary/10 text-primary font-bold px-2 py-1 rounded text-sm">
-                  {row.rating.toFixed(1)}
-                </span>
+            <li key={row.slug} className="py-4">
+              <div className="flex items-baseline gap-3">
+                <span className="w-6 shrink-0 text-xl font-bold text-ink-3 tabular">{row.position}</span>
+                <span className="min-w-0 font-semibold text-ink">{row.displayName}</span>
+                <span className="ml-auto text-lg font-bold text-ink tabular">{formatScore(row.rating)}</span>
               </div>
-              {reviewStats?.[row.slug] && (
-                <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold text-foreground">{reviewStats[row.slug].avg.toFixed(1)}</span>
-                  · {reviewStats[row.slug].count} reseña{reviewStats[row.slug].count === 1 ? '' : 's'}
-                </p>
-              )}
-              <p className="text-sm text-muted-foreground mb-1">{row.keyFeature}</p>
-              <p className="text-sm text-foreground mb-3">
-                Desde <strong>{formatPrice(getMinPrice(db))}</strong>
-              </p>
-              <div className="flex gap-2">
-                <Button asChild variant="outline" size="sm" className="flex-1 min-h-[44px]">
-                  <Link to={`/catalogo/${row.slug}`} onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}>Ver detalles</Link>
+              <p className="ml-9 mt-1 text-base text-ink-2">{row.keyFeature}</p>
+              <div className="ml-9 mt-3 flex items-center gap-5">
+                <Button asChild>
+                  <Link
+                    to={`/catalogo/${row.slug}`}
+                    aria-label={`Ver ficha de ${row.displayName}`}
+                    onClick={() => track('click_ver_ficha', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}
+                  >
+                    Ver ficha
+                  </Link>
                 </Button>
-                {db?.website && (() => {
-                  const link = getProviderLink(row.slug, db.website);
-                  return (
-                    <Button asChild size="sm" className="flex-1 min-h-[44px]">
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel={link.rel}
-                        onClick={() => track('click_visitar_sitio', { slug: row.slug, location: 'ranking_4_10_mobile', position: row.position })}
-                      >
-                        Visitar
-                        <ArrowRight className="ml-1 h-3 w-3" />
-                      </a>
-                    </Button>
-                  );
-                })()}
+                {visitLink(row.slug, row.displayName, db?.website, row.position, 'ranking_4_10_mobile')}
               </div>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ol>
     </section>
   );
 };

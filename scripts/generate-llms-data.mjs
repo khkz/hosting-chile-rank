@@ -288,7 +288,7 @@ Cluster hreflang activo: es-CL, es-PE, es-MX, es-CO, es-AR (x-default = https://
 - Precio desde: Consultar en el sitio oficial
 - Datacenter: ${p.datacenter || 'N/D'}
 - Fundado: ${p.fundado || 'N/D'}
-- Grupo corporativo: ${p.grupo_corporativo || 'Independiente'}
+- Grupo corporativo: ${p.grupo_corporativo || 'No declarado'}
 - Sitio oficial: ${p.url_sitio || 'N/D'}
 - Ficha en EligeTuHosting.cl: ${p.url_ficha}
 - Tecnologías: ${(company.technologies || []).join(', ') || 'N/D'}

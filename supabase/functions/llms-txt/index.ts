@@ -173,7 +173,7 @@ Deno.serve(async (req) => {
 
     // ── LATAM: resumen por país + listado de fichas ──
     md += `## LATAM — Directorios verificados por país\n\n`;
-    md += `Publicamos directorios independientes en Perú, México, Colombia y Argentina, con la misma metodología (WHOIS, ASN, registros mercantiles).\n`;
+    md += `Publicamos directorios en Perú, México, Colombia y Argentina, con la misma metodología (WHOIS, ASN, registros mercantiles).\n`;
     md += `- Hub LATAM: https://eligetuhosting.com/latam\n`;
     md += `- Dataset unificado: https://eligetuhosting.com/data/proveedores-latam.json\n\n`;
 

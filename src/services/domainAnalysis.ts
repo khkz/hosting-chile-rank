@@ -1,6 +1,40 @@
 import { supabase } from '@/integrations/supabase/client';
-import { lookupASN, isChileanIPEnhanced, type ASNInfo } from './asnLookup';
+import { lookupASN, type ASNInfo } from './asnLookup';
 import type { ComplaintInfo } from './hostingComplaints';
+
+/**
+ * Estado de cada consulta del análisis. `answered` es false cuando la consulta
+ * falló o no hubo respuesta: la ficha no debe leer los valores por defecto
+ * (listas vacías, ssl_enabled=false…) como si fueran hallazgos.
+ * `checked_at` es el momento en que respondió la consulta en vivo o, si viene
+ * de la caché, la fecha guardada en la base.
+ */
+export interface ProbeStatus {
+  answered: boolean;
+  checked_at: string | null;
+}
+
+export type ProbeKey = 'dns' | 'whois' | 'ssl' | 'ip' | 'site';
+
+/**
+ * País del alojamiento. Solo se afirma cuando la consulta de la IP (ipinfo.io)
+ * respondió con un código de país; si no, queda en 'unknown'.
+ */
+export interface HostingCountry {
+  status: 'chile' | 'foreign' | 'unknown';
+  country_code: string | null;
+  checked_at: string | null;
+}
+
+/** Métricas de rendimiento. Esta herramienta no las mide: hoy siempre es null. */
+export interface DomainPerformance {
+  load_time_ms: number;
+  page_size_kb: number;
+  pagespeed_score: number;
+  first_contentful_paint_ms: number;
+  largest_contentful_paint_ms: number;
+  cumulative_layout_shift: number;
+}
 
 export interface DomainAnalysisResult {
   basic: {
@@ -14,6 +48,7 @@ export interface DomainAnalysisResult {
     isp?: string;
     complaintInfo?: ComplaintInfo | null;
     detectedProvider?: string | null;
+    hosting_country?: HostingCountry;
   };
   dns: {
     a_records: string[];
@@ -41,14 +76,10 @@ export interface DomainAnalysisResult {
     https_redirect: boolean;
     security_headers: Record<string, any>;
   };
-  performance: {
-    load_time_ms: number;
-    page_size_kb: number;
-    pagespeed_score: number;
-    first_contentful_paint_ms: number;
-    largest_contentful_paint_ms: number;
-    cumulative_layout_shift: number;
-  };
+  /** null: la herramienta no mide el rendimiento (antes eran cifras al azar). */
+  performance: DomainPerformance | null;
+  /** Qué consultas respondieron y cuándo. */
+  probes?: Record<ProbeKey, ProbeStatus>;
   tech_stack: {
     server_software: string;
     cms_detected: string;
@@ -99,15 +130,30 @@ const ensureSecurityHeaders = (value: any): Record<string, any> => {
   return {};
 };
 
-// Enhanced Chilean IP detection
-const isChileanIP = (ip: string): boolean => {
-  const chileanRanges = [
-    '200.27', '200.6', '190.98', '200.14', '200.29', '200.54', '190.196', '186.67',
-    '190.95', '190.114', '190.151', '190.160', '190.121', '190.110', '190.101', '190.82',
-    '186.64', '186.10', '191.98', '191.101', '191.102', '152.139', '152.172', '152.231'
-  ];
-  return chileanRanges.some(range => ip.startsWith(range));
+/** Marca de tiempo de una consulta en vivo: el momento en que respondió. */
+const probeStamp = (): string => new Date().toISOString();
+
+const UNKNOWN_IP_INFO: ASNInfo = {
+  asn: 'Desconocido',
+  isp: 'Desconocido',
+  country: 'Desconocido',
+  city: 'Desconocido',
+  isChilean: false,
+  complaintInfo: null,
+  detectedProvider: null,
 };
+
+/**
+ * La consulta de la IP respondió solo si trae un código de país ISO-2
+ * (ipinfo.io). Los respaldos de lookupASN devuelven 'Chile' o 'Desconocido'
+ * a partir de listas fijas de prefijos: eso no es una medición.
+ */
+const ipLookupAnswered = (info: ASNInfo): boolean => /^[A-Z]{2}$/.test(info.country || '');
+
+const hostingCountryFrom = (info: ASNInfo, answered: boolean, checkedAt: string | null): HostingCountry =>
+  answered
+    ? { status: info.country === 'CL' ? 'chile' : 'foreign', country_code: info.country, checked_at: checkedAt }
+    : { status: 'unknown', country_code: null, checked_at: null };
 
 // Enhanced WHOIS data fetching with comprehensive retry logic
 const fetchWhoisData = async (domain: string, retries = 3) => {
@@ -115,23 +161,23 @@ const fetchWhoisData = async (domain: string, retries = 3) => {
   
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      console.log(`🔍 WHOIS attempt ${attempt}/${retries} for: ${domain}`);
+      console.log(`WHOIS attempt ${attempt}/${retries} for: ${domain}`);
       
       const { data, error } = await supabase.functions.invoke('whois-lookup', {
         body: { domain }
       });
 
       if (error) {
-        console.error(`❌ WHOIS error (attempt ${attempt}):`, error);
+        console.error(`WHOIS error (attempt ${attempt}):`, error);
         if (attempt === retries) {
-          console.log(`💀 All WHOIS attempts failed for: ${domain}`);
+          console.log(`All WHOIS attempts failed for: ${domain}`);
           return null;
         }
         await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
         continue;
       }
 
-      console.log(`📦 WHOIS raw response (attempt ${attempt}):`, JSON.stringify(data, null, 2));
+      console.log(`WHOIS raw response (attempt ${attempt}):`, JSON.stringify(data, null, 2));
       
       // Enhanced validation for meaningful data
       if (data && typeof data === 'object') {
@@ -143,7 +189,7 @@ const fetchWhoisData = async (domain: string, retries = 3) => {
         );
         
         if (hasRealData) {
-          console.log(`✅ VALID WHOIS data found for ${domain}:`, {
+          console.log(`VALID WHOIS data found for ${domain}:`, {
             registrar: data.registrar,
             created_date: data.created_date,
             expires_date: data.expires_date,
@@ -151,10 +197,10 @@ const fetchWhoisData = async (domain: string, retries = 3) => {
           });
           return data;
         } else {
-          console.log(`⚠️ WHOIS data is default/empty for ${domain}, retrying...`);
+          console.log(`WHOIS data is default/empty for ${domain}, retrying...`);
         }
       } else {
-        console.log(`⚠️ Invalid WHOIS response structure for ${domain}:`, data);
+        console.log(`Invalid WHOIS response structure for ${domain}:`, data);
       }
       
       if (attempt < retries) {
@@ -162,22 +208,46 @@ const fetchWhoisData = async (domain: string, retries = 3) => {
         await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
       }
     } catch (error) {
-      console.error(`💥 WHOIS function call error (attempt ${attempt}):`, error);
+      console.error(`WHOIS function call error (attempt ${attempt}):`, error);
       if (attempt === retries) {
-        console.log(`💀 All WHOIS attempts failed with errors for: ${domain}`);
+        console.log(`All WHOIS attempts failed with errors for: ${domain}`);
         return null;
       }
       await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
     }
   }
   
-  console.log(`❌ No valid WHOIS data found after ${retries} attempts for: ${domain}`);
+  console.log(`No valid WHOIS data found after ${retries} attempts for: ${domain}`);
   return null;
 };
 
+interface DnsAnswer {
+  type?: number;
+  data: string;
+}
+
+// Consulta un tipo de registro en dns.google. null si la consulta no respondió.
+const queryDns = async (domain: string, type: 'A' | 'MX' | 'TXT' | 'NS', typeCode: number): Promise<DnsAnswer[] | null> => {
+  try {
+    const res = await fetch(`https://dns.google/resolve?name=${domain}&type=${type}`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (typeof json?.Status !== 'number') return null;
+    const answer: unknown[] = Array.isArray(json.Answer) ? json.Answer : [];
+    // Solo registros del tipo pedido (una consulta A puede traer CNAME intermedios).
+    return answer.filter((r): r is DnsAnswer => {
+      const rec = r as Partial<DnsAnswer> | null;
+      return !!rec && typeof rec.data === 'string' && (rec.type == null || rec.type === typeCode);
+    });
+  } catch (error) {
+    console.error(`Error fetching DNS ${type} records:`, error);
+    return null;
+  }
+};
+
 // Fetch comprehensive DNS records
-const fetchDNSRecords = async (domain: string) => {
-  const dnsData = {
+const fetchDNSRecords = async (domain: string): Promise<{ records: DomainAnalysisResult['dns']; probe: ProbeStatus }> => {
+  const records: DomainAnalysisResult['dns'] = {
     a_records: [],
     aaaa_records: [],
     mx_records: [],
@@ -186,48 +256,35 @@ const fetchDNSRecords = async (domain: string) => {
     ns_records: []
   };
 
-  try {
-    // Fetch A records
-    const aRes = await fetch(`https://dns.google/resolve?name=${domain}&type=A`);
-    const aData = await aRes.json();
-    if (aData.Answer) {
-      dnsData.a_records = aData.Answer.map((record: any) => record.data);
-    }
+  const [a, mx, txt, ns] = await Promise.all([
+    queryDns(domain, 'A', 1),
+    queryDns(domain, 'MX', 15),
+    queryDns(domain, 'TXT', 16),
+    queryDns(domain, 'NS', 2),
+  ]);
 
-    // Fetch MX records
-    const mxRes = await fetch(`https://dns.google/resolve?name=${domain}&type=MX`);
-    const mxData = await mxRes.json();
-    if (mxData.Answer) {
-      dnsData.mx_records = mxData.Answer.map((record: any) => {
-        const parts = record.data.split(' ');
-        return { priority: parseInt(parts[0]), exchange: parts[1] };
-      });
-    }
-
-    // Fetch TXT records
-    const txtRes = await fetch(`https://dns.google/resolve?name=${domain}&type=TXT`);
-    const txtData = await txtRes.json();
-    if (txtData.Answer) {
-      dnsData.txt_records = txtData.Answer.map((record: any) => record.data.replace(/"/g, ''));
-    }
-
-    // Fetch NS records
-    const nsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=NS`);
-    const nsData = await nsRes.json();
-    if (nsData.Answer) {
-      dnsData.ns_records = nsData.Answer.map((record: any) => record.data);
-    }
-
-  } catch (error) {
-    console.error('Error fetching DNS records:', error);
+  if (a) records.a_records = a.map((record) => record.data);
+  if (mx) {
+    records.mx_records = mx.map((record) => {
+      const parts = record.data.split(' ');
+      return { priority: parseInt(parts[0]), exchange: parts[1] };
+    });
   }
+  if (txt) records.txt_records = txt.map((record) => record.data.replace(/"/g, ''));
+  if (ns) records.ns_records = ns.map((record) => record.data);
 
-  return dnsData;
+  const answered = [a, mx, txt, ns].some((r) => r !== null);
+  return { records, probe: { answered, checked_at: answered ? probeStamp() : null } };
 };
 
 // Enhanced technology detection with real analysis and improved hosting provider detection
-const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
-  console.log(`🔍 Starting technology detection for: ${domain}`);
+const detectTechStack = async (
+  domain: string,
+  asnInfo: ASNInfo,
+  nameservers: string[],
+): Promise<{ techStack: DomainAnalysisResult['tech_stack']; siteRead: boolean }> => {
+  let siteRead = false;
+  console.log(`Starting technology detection for: ${domain}`);
   
   const techStack = {
     server_software: 'No detectado',
@@ -238,7 +295,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
     programming_language: 'No detectado',
     database_type: 'No detectado',
     hosting_provider: asnInfo.detectedProvider || asnInfo.isp || 'No detectado',
-    country_location: asnInfo.country || 'No detectado'
+    country_location: 'No detectado'
   };
 
   try {
@@ -249,7 +306,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
     
     for (const protocol of protocols) {
       try {
-        console.log(`🌐 Trying ${protocol}://${domain}`);
+        console.log(`Trying ${protocol}://${domain}`);
         response = await fetch(`${protocol}://${domain}`, {
           method: 'GET',
           headers: {
@@ -261,28 +318,29 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
         
         if (response.ok) {
           htmlContent = await response.text();
-          console.log(`✅ Successfully fetched content via ${protocol}`);
+          console.log(`Successfully fetched content via ${protocol}`);
           break;
         }
       } catch (error) {
-        console.log(`❌ Failed to fetch via ${protocol}:`, error.message);
+        console.log(`Failed to fetch via ${protocol}:`, error.message);
         continue;
       }
     }
 
     if (!response || !response.ok) {
-      console.log(`❌ Could not fetch content for ${domain}`);
-      return techStack;
+      console.log(`Could not fetch content for ${domain}`);
+      throw new Error('site-not-readable');
     }
+    siteRead = true;
 
     // Analyze HTTP headers
-    console.log('🔍 Analyzing HTTP headers...');
+    console.log('Analyzing HTTP headers...');
     const headers = response.headers;
     
     // Server detection
     const server = headers.get('server');
     if (server) {
-      console.log(`🖥️ Server header found: ${server}`);
+      console.log(`Server header found: ${server}`);
       if (server.toLowerCase().includes('nginx')) {
         techStack.server_software = 'Nginx';
       } else if (server.toLowerCase().includes('apache')) {
@@ -300,7 +358,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
     // X-Powered-By detection
     const poweredBy = headers.get('x-powered-by');
     if (poweredBy) {
-      console.log(`⚡ X-Powered-By header found: ${poweredBy}`);
+      console.log(`X-Powered-By header found: ${poweredBy}`);
       if (poweredBy.toLowerCase().includes('php')) {
         techStack.programming_language = 'PHP';
       } else if (poweredBy.toLowerCase().includes('asp.net')) {
@@ -316,7 +374,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
     }
 
     // Analyze HTML content
-    console.log('🔍 Analyzing HTML content...');
+    console.log('Analyzing HTML content...');
     const htmlLower = htmlContent.toLowerCase();
     
     // WordPress detection
@@ -326,7 +384,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
         htmlContent.includes('wp-json')) {
       techStack.cms_detected = 'WordPress';
       techStack.programming_language = 'PHP';
-      console.log('✅ WordPress detected');
+      console.log('WordPress detected');
     }
     
     // Joomla detection
@@ -335,7 +393,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
         htmlLower.includes('joomla.css')) {
       techStack.cms_detected = 'Joomla';
       techStack.programming_language = 'PHP';
-      console.log('✅ Joomla detected');
+      console.log('Joomla detected');
     }
     
     // Drupal detection
@@ -344,7 +402,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
         htmlLower.includes('drupal.js')) {
       techStack.cms_detected = 'Drupal';
       techStack.programming_language = 'PHP';
-      console.log('✅ Drupal detected');
+      console.log('Drupal detected');
     }
 
     // React detection
@@ -353,7 +411,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
         htmlLower.includes('react-dom')) {
       techStack.framework_detected = 'React';
       techStack.programming_language = 'JavaScript';
-      console.log('✅ React detected');
+      console.log('React detected');
     }
     
     // Vue.js detection
@@ -362,7 +420,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
         htmlLower.includes('__vue__')) {
       techStack.framework_detected = 'Vue.js';
       techStack.programming_language = 'JavaScript';
-      console.log('✅ Vue.js detected');
+      console.log('Vue.js detected');
     }
     
     // Angular detection
@@ -371,22 +429,22 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
         htmlLower.includes('angular.js')) {
       techStack.framework_detected = 'Angular';
       techStack.programming_language = 'JavaScript';
-      console.log('✅ Angular detected');
+      console.log('Angular detected');
     }
 
     // Analytics detection
     const analyticsTools = [];
     if (htmlLower.includes('google-analytics') || htmlLower.includes('gtag') || htmlLower.includes('ga(')) {
       analyticsTools.push('Google Analytics');
-      console.log('✅ Google Analytics detected');
+      console.log('Google Analytics detected');
     }
     if (htmlLower.includes('facebook.net') || htmlLower.includes('fbevents.js')) {
       analyticsTools.push('Facebook Pixel');
-      console.log('✅ Facebook Pixel detected');
+      console.log('Facebook Pixel detected');
     }
     if (htmlLower.includes('hotjar')) {
       analyticsTools.push('Hotjar');
-      console.log('✅ Hotjar detected');
+      console.log('Hotjar detected');
     }
     techStack.analytics_tools = analyticsTools;
 
@@ -395,7 +453,7 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
       if (techStack.framework_detected === 'No detectado') {
         techStack.framework_detected = 'Bootstrap';
       }
-      console.log('✅ Bootstrap detected');
+      console.log('Bootstrap detected');
     }
 
     // jQuery detection
@@ -403,27 +461,25 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
       if (techStack.framework_detected === 'No detectado') {
         techStack.framework_detected = 'jQuery';
       }
-      console.log('✅ jQuery detected');
+      console.log('jQuery detected');
     }
 
   } catch (error) {
-    console.error(`❌ Error in technology detection for ${domain}:`, error);
+    console.error(`Error in technology detection for ${domain}:`, error);
   }
 
   // Enhanced provider detection based on nameservers and ASN info
   try {
-    const dnsRecords = await fetchDNSRecords(domain);
-    const nameservers = dnsRecords.ns_records;
     
-    console.log(`🔍 Analyzing nameservers for hosting provider:`, nameservers);
+    console.log(`Analyzing nameservers for hosting provider:`, nameservers);
     
     // First priority: Use ASN-detected provider if it's reliable
     if (asnInfo.detectedProvider) {
       techStack.hosting_provider = asnInfo.detectedProvider;
-      console.log(`✅ Using ASN-detected hosting provider: ${asnInfo.detectedProvider}`);
+      console.log(`Using ASN-detected hosting provider: ${asnInfo.detectedProvider}`);
     } else if (asnInfo.isp && asnInfo.isp !== 'Desconocido') {
       techStack.hosting_provider = asnInfo.isp;
-      console.log(`✅ Using ASN-detected ISP: ${asnInfo.isp}`);
+      console.log(`Using ASN-detected ISP: ${asnInfo.isp}`);
     }
     
     // Override with nameserver-specific detection if available
@@ -445,23 +501,23 @@ const detectTechStack = async (domain: string, asnInfo: ASNInfo) => {
     }
 
     // Set location based on ASN info
-    if (asnInfo.city && asnInfo.city !== 'Desconocido') {
-      techStack.country_location = asnInfo.isChilean ? 
-        `${asnInfo.city}, Chile` : 
-        `${asnInfo.city}, ${asnInfo.country}`;
+    // Solo con una consulta de IP que respondió (ver ipLookupAnswered).
+    if (asnInfo.city && asnInfo.city !== 'Desconocido' && ipLookupAnswered(asnInfo)) {
+      techStack.country_location = `${asnInfo.city}, ${asnInfo.country}`;
     }
 
   } catch (error) {
     console.error('Error analyzing nameservers:', error);
   }
 
-  console.log(`📊 Technology detection completed for ${domain}:`, techStack);
-  return techStack;
+  console.log(`Technology detection completed for ${domain}:`, techStack);
+  return { techStack, siteRead };
 };
 
 // Enhanced SSL status checking with multiple validation methods
-const checkSSLStatus = async (domain: string) => {
-  console.log(`🔒 Starting comprehensive SSL analysis for: ${domain}`);
+const checkSSLStatus = async (domain: string): Promise<{ sslInfo: DomainAnalysisResult['ssl']; probe: ProbeStatus }> => {
+  let answered = false;
+  console.log(`Starting comprehensive SSL analysis for: ${domain}`);
   
   const sslInfo = {
     ssl_enabled: false,
@@ -474,7 +530,7 @@ const checkSSLStatus = async (domain: string) => {
 
   // Method 1: Direct HTTPS test with comprehensive checks
   try {
-    console.log(`🔍 Method 1: Testing direct HTTPS connection for ${domain}`);
+    console.log(`Method 1: Testing direct HTTPS connection for ${domain}`);
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
@@ -486,9 +542,10 @@ const checkSSLStatus = async (domain: string) => {
     });
     
     clearTimeout(timeoutId);
+    answered = true;
     
     if (response.ok || response.status === 301 || response.status === 302) {
-      console.log(`✅ HTTPS connection successful for ${domain}`);
+      console.log(`HTTPS connection successful for ${domain}`);
       sslInfo.ssl_enabled = true;
       
       // Check for HTTPS redirect if we got a redirect response
@@ -509,17 +566,17 @@ const checkSSLStatus = async (domain: string) => {
       });
       
     } else {
-      console.log(`⚠️ HTTPS connection returned status ${response.status} for ${domain}`);
+      console.log(`HTTPS connection returned status ${response.status} for ${domain}`);
     }
     
   } catch (error) {
-    console.log(`❌ Method 1 failed for ${domain}:`, error.message);
+    console.log(`Method 1 failed for ${domain}:`, error.message);
   }
 
   // Method 2: Test HTTP to HTTPS redirect if SSL wasn't detected
   if (!sslInfo.ssl_enabled) {
     try {
-      console.log(`🔍 Method 2: Testing HTTP to HTTPS redirect for ${domain}`);
+      console.log(`Method 2: Testing HTTP to HTTPS redirect for ${domain}`);
       
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 8000);
@@ -531,25 +588,26 @@ const checkSSLStatus = async (domain: string) => {
       });
       
       clearTimeout(timeoutId);
+      answered = true;
       
       if (httpResponse.status === 301 || httpResponse.status === 302) {
         const location = httpResponse.headers.get('location');
         if (location && location.startsWith('https://')) {
-          console.log(`✅ HTTP to HTTPS redirect detected for ${domain}`);
+          console.log(`HTTP to HTTPS redirect detected for ${domain}`);
           sslInfo.ssl_enabled = true;
           sslInfo.https_redirect = true;
         }
       }
       
     } catch (error) {
-      console.log(`❌ Method 2 failed for ${domain}:`, error.message);
+      console.log(`Method 2 failed for ${domain}:`, error.message);
     }
   }
 
   // Method 3: Try alternative HTTPS test with different approach
   if (!sslInfo.ssl_enabled) {
     try {
-      console.log(`🔍 Method 3: Alternative HTTPS test for ${domain}`);
+      console.log(`Method 3: Alternative HTTPS test for ${domain}`);
       
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 12000);
@@ -562,22 +620,23 @@ const checkSSLStatus = async (domain: string) => {
       });
       
       clearTimeout(timeoutId);
+      answered = true;
       
       // Even if favicon doesn't exist, if we get a response, SSL is working
       if (response.status < 500) {
-        console.log(`✅ Alternative HTTPS test successful for ${domain} (status: ${response.status})`);
+        console.log(`Alternative HTTPS test successful for ${domain} (status: ${response.status})`);
         sslInfo.ssl_enabled = true;
       }
       
     } catch (error) {
-      console.log(`❌ Method 3 failed for ${domain}:`, error.message);
+      console.log(`Method 3 failed for ${domain}:`, error.message);
     }
   }
 
   // Method 4: Use SSL Labs API for additional verification (optional, for critical cases)
   if (!sslInfo.ssl_enabled && domain.includes('hostingplus')) {
     try {
-      console.log(`🔍 Method 4: SSL Labs verification for critical domain ${domain}`);
+      console.log(`Method 4: SSL Labs verification for critical domain ${domain}`);
       
       const sslLabsResponse = await fetch(`https://api.ssllabs.com/api/v3/analyze?host=${domain}&publish=off&all=done`, {
         signal: AbortSignal.timeout(15000)
@@ -588,7 +647,8 @@ const checkSSLStatus = async (domain: string) => {
         if (sslData.status === 'READY' && sslData.endpoints && sslData.endpoints.length > 0) {
           const endpoint = sslData.endpoints[0];
           if (endpoint.grade) {
-            console.log(`✅ SSL Labs confirms SSL for ${domain} with grade ${endpoint.grade}`);
+            answered = true;
+            console.log(`SSL Labs confirms SSL for ${domain} with grade ${endpoint.grade}`);
             sslInfo.ssl_enabled = true;
             sslInfo.ssl_grade = endpoint.grade;
           }
@@ -596,24 +656,24 @@ const checkSSLStatus = async (domain: string) => {
       }
       
     } catch (error) {
-      console.log(`❌ Method 4 (SSL Labs) failed for ${domain}:`, error.message);
+      console.log(`Method 4 (SSL Labs) failed for ${domain}:`, error.message);
     }
   }
 
-  console.log(`🔒 SSL analysis completed for ${domain}:`, {
+  console.log(`SSL analysis completed for ${domain}:`, {
     ssl_enabled: sslInfo.ssl_enabled,
     https_redirect: sslInfo.https_redirect,
     security_headers_count: Object.keys(sslInfo.security_headers).length
   });
 
-  return sslInfo;
+  return { sslInfo, probe: { answered, checked_at: answered ? probeStamp() : null } };
 };
 
 // Enhanced save function with detailed logging and error handling
 const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResult) => {
   try {
-    console.log(`💾 STARTING database save for: ${domain}`);
-    console.log(`📋 WHOIS data to save:`, JSON.stringify(analysisResult.whois, null, 2));
+    console.log(`STARTING database save for: ${domain}`);
+    console.log(`WHOIS data to save:`, JSON.stringify(analysisResult.whois, null, 2));
     
     // First, find or create the domain record
     let { data: domainRecord, error: domainError } = await supabase
@@ -623,12 +683,12 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
       .maybeSingle();
 
     if (domainError) {
-      console.error('❌ Error fetching domain:', domainError);
+      console.error('Error fetching domain:', domainError);
       throw domainError;
     }
 
     if (!domainRecord) {
-      console.log('➕ Creating new domain record');
+      console.log('Creating new domain record');
       const { data: newDomain, error: insertError } = await supabase
         .from('domains')
         .insert([{ domain }])
@@ -636,19 +696,19 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
         .single();
 
       if (insertError) {
-        console.error('❌ Error creating domain:', insertError);
+        console.error('Error creating domain:', insertError);
         throw insertError;
       }
       domainRecord = newDomain;
-      console.log('✅ Domain record created with ID:', domainRecord.id);
+      console.log('Domain record created with ID:', domainRecord.id);
     } else {
-      console.log('✅ Found existing domain record with ID:', domainRecord.id);
+      console.log('Found existing domain record with ID:', domainRecord.id);
     }
 
     const domainId = domainRecord.id;
 
     // Save WHOIS info with enhanced error handling and logging
-    console.log(`💾 Saving WHOIS data for domain ID: ${domainId}`);
+    console.log(`Saving WHOIS data for domain ID: ${domainId}`);
     
     const whoisDataToSave = {
       domain_id: domainId,
@@ -664,7 +724,7 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
       cached_at: new Date().toISOString()
     };
     
-    console.log(`📝 WHOIS data prepared for save:`, JSON.stringify(whoisDataToSave, null, 2));
+    console.log(`WHOIS data prepared for save:`, JSON.stringify(whoisDataToSave, null, 2));
     
     const { data: whoisData, error: whoisError } = await supabase
       .from('whois_info')
@@ -672,14 +732,14 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
       .select();
 
     if (whoisError) {
-      console.error('❌ Error saving WHOIS info:', whoisError);
-      console.error('❌ Failed data structure:', whoisDataToSave);
+      console.error('Error saving WHOIS info:', whoisError);
+      console.error('Failed data structure:', whoisDataToSave);
     } else {
-      console.log('✅ WHOIS info saved successfully:', whoisData);
+      console.log('WHOIS info saved successfully:', whoisData);
     }
 
     // Save DNS info with improved error handling
-    console.log('💾 Saving DNS data...');
+    console.log('Saving DNS data...');
     const { error: dnsError } = await supabase
       .from('dns_info')
       .upsert({
@@ -694,9 +754,9 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
       }, { onConflict: 'domain_id' });
 
     if (dnsError) {
-      console.error('❌ Error saving DNS info:', dnsError);
+      console.error('Error saving DNS info:', dnsError);
     } else {
-      console.log('✅ DNS info saved successfully');
+      console.log('DNS info saved successfully');
     }
 
     // Save SSL info
@@ -713,7 +773,7 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
       }, { onConflict: 'domain_id' });
 
     // Save tech stack info
-    console.log('💾 Saving tech stack data...');
+    console.log('Saving tech stack data...');
     const { error: techError } = await supabase
       .from('tech_stack')
       .upsert({
@@ -731,43 +791,51 @@ const saveDomainData = async (domain: string, analysisResult: DomainAnalysisResu
       }, { onConflict: 'domain_id' });
 
     if (techError) {
-      console.error('❌ Error saving tech stack info:', techError);
+      console.error('Error saving tech stack info:', techError);
     } else {
-      console.log('✅ Tech stack info saved successfully');
+      console.log('Tech stack info saved successfully');
     }
 
-    console.log(`✅ All data saved successfully for: ${domain}`);
+    console.log(`All data saved successfully for: ${domain}`);
 
   } catch (error) {
-    console.error('💥 Critical error saving domain data:', error);
+    console.error('Critical error saving domain data:', error);
     throw error;
   }
 };
 
 // Main analysis function with enhanced ASN lookup and complaint information
 export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResult> => {
-  console.log(`🚀 STARTING comprehensive analysis for: ${domain}`);
+  console.log(`STARTING comprehensive analysis for: ${domain}`);
 
   // Fetch DNS records first as they're needed for other analyses
-  console.log('🔍 Fetching DNS records...');
-  const dnsRecords = await fetchDNSRecords(domain);
+  console.log('Fetching DNS records...');
+  const { records: dnsRecords, probe: dnsProbe } = await fetchDNSRecords(domain);
   const primaryIP = dnsRecords.a_records[0] || '–';
-  console.log(`📍 Primary IP found: ${primaryIP}`);
+  console.log(`Primary IP found: ${primaryIP}`);
 
   // Perform ASN lookup for real IP information with complaint data
-  console.log('🔍 Performing ASN lookup with complaint detection...');
-  const asnInfo = await lookupASN(primaryIP);
-  console.log(`📊 ASN Info with complaints:`, asnInfo);
+  console.log('Performing ASN lookup with complaint detection...');
+  const rawIpInfo = await lookupASN(primaryIP);
+  const ipAnswered = ipLookupAnswered(rawIpInfo);
+  const ipCheckedAt = ipAnswered ? probeStamp() : null;
+  // Si la consulta de la IP no respondió, nada derivado de ella se usa (ASN, ISP, ciudad, reclamos).
+  const asnInfo = ipAnswered ? rawIpInfo : UNKNOWN_IP_INFO;
+  console.log(`ASN Info (answered: ${ipAnswered}):`, asnInfo);
 
   // Run parallel analyses with enhanced information
-  console.log('⚡ Starting parallel analyses...');
-  const [sslInfo, techStack, whoisInfo] = await Promise.all([
+  console.log('Starting parallel analyses...');
+  const [sslResult, techResult, whoisInfo] = await Promise.all([
     checkSSLStatus(domain),
-    detectTechStack(domain, asnInfo),
+    detectTechStack(domain, asnInfo, dnsRecords.ns_records),
     fetchWhoisData(domain, 3) // Increased to 3 retries
   ]);
+  const { sslInfo, probe: sslProbe } = sslResult;
+  const { techStack, siteRead } = techResult;
+  const whoisCheckedAt = whoisInfo ? probeStamp() : null;
+  const hostingCountry = hostingCountryFrom(asnInfo, ipAnswered, ipCheckedAt);
 
-  console.log('📊 Analysis results summary:');
+  console.log('Analysis results summary:');
   console.log('  - SSL Info:', sslInfo?.ssl_enabled ? 'SSL Enabled' : 'No SSL');
   console.log('  - Tech Stack:', techStack?.hosting_provider || 'Unknown provider');
   console.log('  - WHOIS Info:', whoisInfo ? 'Real data found' : 'Using fallback data');
@@ -779,14 +847,15 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
     basic: {
       domain,
       ip: primaryIP,
-      ip_chile: asnInfo.isChilean || isChileanIPEnhanced(primaryIP),
+      ip_chile: hostingCountry.status === 'chile',
       provider: asnInfo.detectedProvider || techStack.hosting_provider,
       asn: asnInfo.asn !== 'Desconocido' ? `${asnInfo.asn} (${asnInfo.isp})` : 'ASN no disponible',
       nameservers: dnsRecords.ns_records,
       location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : undefined,
       isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined,
       complaintInfo: asnInfo.complaintInfo,
-      detectedProvider: asnInfo.detectedProvider
+      detectedProvider: asnInfo.detectedProvider,
+      hosting_country: hostingCountry
     },
     dns: dnsRecords,
     whois: whoisInfo || {
@@ -800,18 +869,18 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
       dnssec_status: 'No configurado'
     },
     ssl: sslInfo,
-    performance: {
-      load_time_ms: Math.floor(Math.random() * 3000) + 500,
-      page_size_kb: Math.floor(Math.random() * 2000) + 200,
-      pagespeed_score: Math.floor(Math.random() * 40) + 60,
-      first_contentful_paint_ms: Math.floor(Math.random() * 2000) + 800,
-      largest_contentful_paint_ms: Math.floor(Math.random() * 3000) + 1200,
-      cumulative_layout_shift: Math.random() * 0.3
+    performance: null,
+    probes: {
+      dns: dnsProbe,
+      whois: { answered: !!whoisInfo, checked_at: whoisCheckedAt },
+      ssl: sslProbe,
+      ip: { answered: ipAnswered, checked_at: ipCheckedAt },
+      site: { answered: siteRead, checked_at: siteRead ? probeStamp() : null }
     },
     tech_stack: techStack
   };
 
-  console.log(`📋 Final analysis result for ${domain}:`, {
+  console.log(`Final analysis result for ${domain}:`, {
     whois_has_real_data: whoisInfo ? 'YES' : 'NO',
     whois_registrar: analysisResult.whois.registrar,
     whois_created: analysisResult.whois.created_date,
@@ -826,20 +895,20 @@ export const analyzeDomain = async (domain: string): Promise<DomainAnalysisResul
   // Save to database for caching with enhanced error handling
   try {
     await saveDomainData(domain, analysisResult);
-    console.log(`✅ Domain data saved successfully for: ${domain}`);
+    console.log(`Domain data saved successfully for: ${domain}`);
   } catch (error) {
-    console.error(`❌ Failed to save domain data for ${domain}:`, error);
+    console.error(`Failed to save domain data for ${domain}:`, error);
     // Continue even if saving fails, but log the error
   }
 
-  console.log(`🏁 Analysis completed for: ${domain}`);
+  console.log(`Analysis completed for: ${domain}`);
   return analysisResult;
 };
 
 // Enhanced cache loading with improved data validation and complaint info
 export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysisResult | null> => {
   try {
-    console.log(`🔍 Loading cached analysis for: ${domain}`);
+    console.log(`Loading cached analysis for: ${domain}`);
     
     const { data: domainData, error } = await supabase
       .from('domains')
@@ -854,7 +923,7 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
       .single();
 
     if (error || !domainData) {
-      console.log(`📭 No cached data found for: ${domain}`);
+      console.log(`No cached data found for: ${domain}`);
       return null;
     }
 
@@ -864,7 +933,7 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
     const techInfo = domainData.tech_stack?.[0];
 
     if (!dnsInfo || !whoisInfo) {
-      console.log(`📭 Incomplete cached data for: ${domain}`);
+      console.log(`Incomplete cached data for: ${domain}`);
       return null;
     }
 
@@ -879,32 +948,44 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
     const isCacheOld = cacheAge > (24 * 60 * 60 * 1000); // 24 hours
 
     if (!hasRealWhoisData || isCacheOld) {
-      console.log(`🔄 Cached data is old or incomplete for ${domain}, will fetch fresh data`);
+      console.log(`Cached data is old or incomplete for ${domain}, will fetch fresh data`);
       return null;
     }
 
-    console.log(`✅ Using valid cached analysis for: ${domain}`);
-    console.log(`📋 Cached WHOIS data:`, {
+    console.log(`Using valid cached analysis for: ${domain}`);
+    console.log(`Cached WHOIS data:`, {
       registrar: whoisInfo.registrar,
       created_date: whoisInfo.created_date,
       owner_name: whoisInfo.owner_name
     });
 
     // For cached data, we'll perform a quick ASN lookup to get current complaint info
-    const asnInfo = await lookupASN(dnsInfo.ip || '');
+    const rawIpInfo = await lookupASN(dnsInfo.ip || '');
+    const ipAnswered = ipLookupAnswered(rawIpInfo);
+    const ipCheckedAt = ipAnswered ? probeStamp() : null;
+    const asnInfo = ipAnswered ? rawIpInfo : UNKNOWN_IP_INFO;
+    const hostingCountry = hostingCountryFrom(asnInfo, ipAnswered, ipCheckedAt);
+    const cachedNs = ensureArray(dnsInfo.ns);
+    const cachedIp = dnsInfo.ip || '';
+    // En caché no se guardó si cada consulta respondió: solo se confía en hallazgos positivos.
+    const dnsAnswered = cachedNs.length > 0 || /^\d{1,3}(\.\d{1,3}){3}$/.test(cachedIp);
+    const sslAnswered = !!sslInfo?.ssl_enabled;
+    const siteRead = !!techInfo && ['server_software', 'cms_detected', 'framework_detected']
+      .some((k) => techInfo[k] && !['No detectado', 'Desconocido'].includes(techInfo[k]));
 
     return {
       basic: {
         domain,
         ip: dnsInfo.ip || '–',
-        ip_chile: asnInfo.isChilean || isChileanIPEnhanced(dnsInfo.ip || ''),
+        ip_chile: hostingCountry.status === 'chile',
         provider: asnInfo.detectedProvider || techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
-        asn: asnInfo.asn !== 'Desconocido' ? `${asnInfo.asn} (${asnInfo.isp})` : techInfo?.hosting_provider || 'ASN no disponible',
+        asn: asnInfo.asn !== 'Desconocido' ? `${asnInfo.asn} (${asnInfo.isp})` : 'ASN no disponible',
         nameservers: ensureArray(dnsInfo.ns),
-        location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : techInfo?.country_location,
+        location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : undefined,
         isp: asnInfo.isp !== 'Desconocido' ? asnInfo.isp : undefined,
         complaintInfo: asnInfo.complaintInfo,
-        detectedProvider: asnInfo.detectedProvider
+        detectedProvider: asnInfo.detectedProvider,
+        hosting_country: hostingCountry
       },
       dns: {
         a_records: [dnsInfo.ip || ''],
@@ -932,13 +1013,13 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         https_redirect: sslInfo?.https_redirect || false,
         security_headers: ensureSecurityHeaders(sslInfo?.security_headers)
       },
-      performance: {
-        load_time_ms: Math.floor(Math.random() * 3000) + 500,
-        page_size_kb: Math.floor(Math.random() * 2000) + 200,
-        pagespeed_score: Math.floor(Math.random() * 40) + 60,
-        first_contentful_paint_ms: Math.floor(Math.random() * 2000) + 800,
-        largest_contentful_paint_ms: Math.floor(Math.random() * 3000) + 1200,
-        cumulative_layout_shift: Math.random() * 0.3
+      performance: null,
+      probes: {
+        dns: { answered: dnsAnswered, checked_at: dnsAnswered ? (dnsInfo.updated_at || whoisInfo.cached_at || null) : null },
+        whois: { answered: true, checked_at: whoisInfo.cached_at || whoisInfo.updated_at || null },
+        ssl: { answered: sslAnswered, checked_at: sslAnswered ? (sslInfo?.updated_at || null) : null },
+        ip: { answered: ipAnswered, checked_at: ipCheckedAt },
+        site: { answered: siteRead, checked_at: siteRead ? (techInfo?.detected_at || null) : null }
       },
       tech_stack: {
         server_software: techInfo?.server_software || 'Desconocido',
@@ -949,12 +1030,12 @@ export const loadCachedAnalysis = async (domain: string): Promise<DomainAnalysis
         programming_language: techInfo?.programming_language || 'Desconocido',
         database_type: techInfo?.database_type || 'Desconocido',
         hosting_provider: asnInfo.detectedProvider || techInfo?.hosting_provider || asnInfo.isp || 'Desconocido',
-        country_location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : techInfo?.country_location || 'Desconocido'
+        country_location: asnInfo.city !== 'Desconocido' ? `${asnInfo.city}, ${asnInfo.country}` : 'Desconocido'
       }
     };
 
   } catch (error) {
-    console.error(`❌ Error loading cached analysis for ${domain}:`, error);
+    console.error(`Error loading cached analysis for ${domain}:`, error);
     return null;
   }
 };

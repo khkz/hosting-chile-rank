@@ -1,23 +1,52 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { ExternalLink, RefreshCw } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import Callout from '@/components/system/Callout';
 import { getASNDetails, estimatePrefixSize, normalizeASN } from '@/services/asnApi';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, ExternalLink, MapPin, Calendar, Database, Network, Building, Globe } from 'lucide-react';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { Skeleton } from '@/components/ui/skeleton';
 import { isChileanASN } from '@/utils/ipDetection';
-import { getHostingCompanyFromASN, classifyASN, isHostingASN } from '@/services/hostingASNService';
-import { ReverseIpLookup } from '@/components/ReverseIpLookup';
-import { ASNContentGenerator } from '@/components/ASNContentGenerator';
+import { getHostingCompanyFromASN, classifyASN } from '@/services/hostingASNService';
+import { formatInteger } from '@/lib/format';
+import { AsnSourceLine } from '@/components/herramientas/AsnShared';
+import { fixMojibake } from '@/components/herramientas/asnText';
+import { AsnPrefixChart, AsnPrefixTable, AsnProviderPanel, AsnRelatedLinks } from '@/components/herramientas/AsnDetailParts';
+
+const CLASS_LABEL: Record<string, string> = {
+  telecom: 'Telecomunicaciones',
+  hosting: 'Hosting',
+  isp: 'ISP',
+  enterprise: 'Empresa',
+  academic: 'Académico',
+  government: 'Gobierno',
+};
+
+const tabTrigger = 'h-11 rounded-none border-b-2 border-transparent px-3 text-[15px] font-semibold text-ink-2 hover:text-ink data-[state=active]:border-ink data-[state=active]:bg-transparent data-[state=active]:text-ink data-[state=active]:shadow-none';
+
+// Muestra el RIR aunque llegue como objeto, como JSON en texto o como texto simple.
+const getRirDisplay = (rir: unknown): string => {
+  if (!rir) return 'Sin dato';
+  if (typeof rir === 'object' && (rir as { rir_name?: string }).rir_name) return (rir as { rir_name: string }).rir_name;
+  if (typeof rir === 'string') {
+    try {
+      const parsed = JSON.parse(rir);
+      if (parsed?.rir_name) return parsed.rir_name;
+    } catch {
+      return rir;
+    }
+  }
+  if (typeof rir === 'number') return rir.toString();
+  return 'Sin dato';
+};
 
 const ASNDetail: React.FC = () => {
   const { asn: asnParam } = useParams();
@@ -32,88 +61,48 @@ const ASNDetail: React.FC = () => {
     const n = normalizeASN(asnParam);
     if (!n) return;
     const canonicalParam = `AS${n}`;
-    if (asnParam.toUpperCase() !== canonicalParam) {
-      navigate(`/asn/${canonicalParam}`, { replace: true });
-    }
+    if (asnParam.toUpperCase() !== canonicalParam) navigate(`/asn/${canonicalParam}`, { replace: true });
   }, [asnParam, navigate]);
 
-  useEffect(() => {
-    const load = async () => {
-      if (!asnParam) return;
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await getASNDetails(asnParam);
-        console.log('ASN Data loaded:', res);
-        console.log('RIR Allocation value:', res.overview.rir_allocation, 'Type:', typeof res.overview.rir_allocation);
-        setData(res);
-      } catch (e: any) {
-        setError(e?.message || 'Error al cargar datos del ASN');
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+  const load = useCallback(async () => {
+    if (!asnParam) return;
+    setLoading(true);
+    setError(null);
+    try {
+      setData(await getASNDetails(asnParam));
+    } catch (e) {
+      console.error('Error loading ASN:', e);
+      setError(e instanceof Error && e.message === 'ASN inválido' ? 'invalid' : 'failed');
+    } finally {
+      setLoading(false);
+    }
   }, [asnParam]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const asnNum = useMemo(() => normalizeASN(asnParam || '') || 0, [asnParam]);
   const pageTitle = data ? `AS${data.overview.asn} ${data.overview.name || ''} – Prefijos IP y Peers` : `AS${asnNum} – ASN`;
   const canonical = `${window.location.origin}/asn/AS${asnNum}`;
-  
-  // Enhanced ASN classification and hosting company detection
   const asnClassification = data ? classifyASN(data.overview.name || '', data.overview.description) : 'unknown';
   const hostingCompany = data ? getHostingCompanyFromASN(`AS${data.overview.asn}`) : null;
   const isChilean = data ? isChileanASN(`AS${data.overview.asn}`) : false;
 
   const chartData = useMemo(() => {
     if (!data) return [];
-    const rows = data.ipv4_prefixes.map((p) => ({
-      prefix: p.prefix,
-      size: estimatePrefixSize(p.prefix),
-    }))
-    .sort((a, b) => b.size - a.size)
-    .slice(0, 10);
-    return rows;
+    return data.ipv4_prefixes
+      .map((p) => ({ prefix: p.prefix, size: estimatePrefixSize(p.prefix) }))
+      .sort((a, b) => b.size - a.size)
+      .slice(0, 10);
   }, [data]);
 
-  // Helper function to safely get RIR allocation display
-  const getRirDisplay = (rir: any): string => {
-    if (!rir) return 'N/A';
-    
-    // If it's already an object, extract rir_name
-    if (typeof rir === 'object' && rir.rir_name) {
-      return rir.rir_name;
-    }
-    
-    // If it's a string, check if it's JSON
-    if (typeof rir === 'string') {
-      // Try to parse as JSON to extract rir_name
-      try {
-        const parsed = JSON.parse(rir);
-        if (parsed && parsed.rir_name) {
-          return parsed.rir_name;
-        }
-      } catch (e) {
-        // If parsing fails, return the string as-is (simple string)
-        return rir;
-      }
-    }
-    
-    // If it's a number, convert to string
-    if (typeof rir === 'number') return rir.toString();
-    
-    return 'N/A';
-  };
-
-  const handleReviewClick = (companySlug: string) => {
-    console.log('Navigating to review page:', `/resena/${companySlug}`);
-    navigate(`/resena/${companySlug}`);
-  };
+  const h1 = data ? `AS${data.overview.asn} ${fixMojibake(data.overview.name)}`.trim() : `AS${asnNum}`;
+  const total = data ? data.ipv4_prefixes.length + data.ipv6_prefixes.length : 0;
 
   return (
     <>
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={`Detalle del ASN AS${asnNum}: prefijos IPv4/IPv6, tamaño de rangos y peers.`} />
@@ -142,373 +131,121 @@ const ASNDetail: React.FC = () => {
         )}
       </Helmet>
 
-      <SEOBreadcrumbs items={[{ name: 'ASN', href: '/asn' }]} pageName={`AS${asnNum}`} />
+      <main>
+        <PageHeader
+          breadcrumbs={<SEOBreadcrumbs items={[{ name: 'ASN', href: '/asn' }]} pageName={`AS${asnNum}`} />}
+          title={h1}
+          lead={data ? fixMojibake(data.overview.description) || 'Proveedor de red / Sistema autónomo' : undefined}
+          actions={data ? (
+            <>
+              <Button variant="outline" size="sm" asChild className="h-11 sm:h-9">
+                <a href={`https://bgpview.io/asn/${data.overview.asn}`} target="_blank" rel="noopener noreferrer">BGPView<ExternalLink aria-hidden /></a>
+              </Button>
+              <Button variant="outline" size="sm" asChild className="h-11 sm:h-9">
+                <a href={`https://bgp.he.net/AS${data.overview.asn}`} target="_blank" rel="noopener noreferrer">Hurricane Electric<ExternalLink aria-hidden /></a>
+              </Button>
+            </>
+          ) : undefined}
+          meta={<AsnSourceLine cacheDays={30} />}
+        />
 
-      {loading && (
-        <div className="flex items-center gap-2 text-sm"><Loader2 className="h-4 w-4 animate-spin" /> Cargando datos del ASN…</div>
-      )}
-
-      {error && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      {data && (
-        <section className="space-y-6">
-          <header>
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <h1 className="text-3xl font-bold flex items-center gap-3">
-                  AS{data.overview.asn} {data.overview.name ? data.overview.name.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}
-                  {isChilean && (
-                    <Badge variant="secondary" className="gap-1">
-                      <MapPin className="h-3 w-3" />
-                      Chileno
-                    </Badge>
-                  )}
-                  {hostingCompany && (
-                    <Badge variant="outline" className="gap-1">
-                      <Building className="h-3 w-3" />
-                      Hosting
-                    </Badge>
-                  )}
-                </h1>
-                <p className="text-muted-foreground mt-2">{data.overview.description ? data.overview.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : 'Proveedor de red / Sistema autónomo'}</p>
-                
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {data.overview.country_code && (
-                    <Badge variant="outline" className="gap-1">
-                      <MapPin className="h-3 w-3" />
-                      {data.overview.country_code}
-                    </Badge>
-                  )}
-                  <Badge variant="outline" className="gap-1">
-                    <Database className="h-3 w-3" />
-                    RIR: {getRirDisplay(data.overview.rir_allocation)}
-                  </Badge>
-                  <Badge variant="outline" className="gap-1">
-                    <Network className="h-3 w-3" />
-                    {data.ipv4_prefixes.length} IPv4 + {data.ipv6_prefixes.length} IPv6
-                  </Badge>
-                  {data.peers && (
-                    <Badge variant="outline" className="gap-1">
-                      🔗 {data.peers.length} peers
-                    </Badge>
-                  )}
-                  {asnClassification !== 'unknown' && (
-                    <Badge variant="outline" className="gap-1">
-                      <Globe className="h-3 w-3" />
-                      {asnClassification === 'telecom' && 'Telecomunicaciones'}
-                      {asnClassification === 'hosting' && 'Hosting'}
-                      {asnClassification === 'isp' && 'ISP'}
-                      {asnClassification === 'enterprise' && 'Empresa'}
-                      {asnClassification === 'academic' && 'Académico'}
-                      {asnClassification === 'government' && 'Gobierno'}
-                    </Badge>
-                  )}
-                </div>
-              </div>
-              
-              {/* Enlaces externos */}
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" asChild>
-                  <a 
-                    href={`https://bgpview.io/asn/${data.overview.asn}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="gap-1"
-                  >
-                    <ExternalLink className="h-3 w-3" />
-                    BGPView
-                  </a>
-                </Button>
-                <Button variant="outline" size="sm" asChild>
-                  <a 
-                    href={`https://bgp.he.net/AS${data.overview.asn}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="gap-1"
-                  >
-                    <ExternalLink className="h-3 w-3" />
-                    Hurricane Electric
-                  </a>
-                </Button>
-              </div>
+        <Section density="tight" aria-label={`Datos de AS${asnNum}`}>
+          {loading && (
+            <div aria-busy="true" className="space-y-4">
+              <p className="t-small text-ink-2" role="status">Cargando datos del ASN…</p>
+              <Skeleton className="h-24 w-full rounded-xl bg-paper-deep" />
+              <Skeleton className="h-80 w-full rounded-xl bg-paper-deep" />
             </div>
-            
-            {/* Panel del proveedor de hosting */}
-            {hostingCompany ? (
-              <Card className="mt-4 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Building className="h-5 w-5" />
-                    Panel del Proveedor
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col md:flex-row md:items-center gap-4">
-                    {hostingCompany.companyLogo && (
-                      <img 
-                        src={hostingCompany.companyLogo} 
-                        alt={`Logo de ${hostingCompany.hostingCompany}`}
-                        className="h-12 w-auto object-contain"
-                      />
-                    )}
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold">{hostingCompany.hostingCompany}</h3>
-                      {hostingCompany.companyRating && (
-                        <p className="text-sm text-muted-foreground flex items-center gap-1">
-                          ⭐ {hostingCompany.companyRating}/5.0 - Proveedor verificado
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      {hostingCompany.companySlug && (
-                        <Button 
-                          variant="secondary" 
-                          className="bg-blue-600 text-white hover:bg-blue-700 border-0"
-                          onClick={() => handleReviewClick(hostingCompany.companySlug)}
-                        >
-                          Ver reseña
-                        </Button>
-                      )}
-                      <Button asChild variant="outline">
-                        <Link 
-                          to={`/cotiza-hosting?utm_source=asn&utm_campaign=${data.overview.asn}&provider=${hostingCompany.companySlug || hostingCompany.hostingCompany}`}
-                        >
-                          Cotizar
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : asnClassification === 'hosting' ? (
-              <Card className="mt-4 border-blue-200 bg-blue-50">
-                <CardContent className="pt-4">
-                  <div className="text-center">
-                    <h3 className="font-semibold text-blue-900 mb-2">¿Buscas hosting?</h3>
-                    <p className="text-sm text-blue-700 mb-3">
-                      Este ASN pertenece a un proveedor de hosting. Encuentra la mejor opción para tu proyecto.
-                    </p>
-                    <Button asChild variant="secondary" size="sm" className="bg-white text-blue-900 border border-blue-200 hover:bg-blue-50">
-                      <Link to={`/cotiza-hosting?utm_source=asn&utm_campaign=${data.overview.asn}`}>
-                        Cotiza gratis
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : null}
-
-            <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <span className="text-muted-foreground">Total de prefijos:</span>
-                  <p className="font-medium">{data.ipv4_prefixes.length + data.ipv6_prefixes.length}</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Prefijos IPv4:</span>
-                  <p className="font-medium">{data.ipv4_prefixes.length}</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Prefijos IPv6:</span>
-                  <p className="font-medium">{data.ipv6_prefixes.length}</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground flex items-center gap-1">
-                    <Calendar className="h-3 w-3" />
-                    Datos actualizados:
-                  </span>
-                  <p className="font-medium">{new Date().toLocaleDateString('es-CL')}</p>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Top 10 rangos IPv4 por tamaño</CardTitle>
-            </CardHeader>
-            <CardContent style={{ height: 320 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="prefix" hide />
-                  <YAxis tickFormatter={(v) => Intl.NumberFormat('es-CL').format(v)} width={80} />
-                  <Tooltip formatter={(v: any) => Intl.NumberFormat('es-CL').format(v as number)} labelFormatter={() => ''} />
-                  <Bar dataKey="size" name="IPs" fill="#EF233C" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Tabs defaultValue="ipv4">
-            <TabsList>
-              <TabsTrigger value="ipv4">Prefijos IPv4 ({data.ipv4_prefixes.length})</TabsTrigger>
-              <TabsTrigger value="ipv6">Prefijos IPv6 ({data.ipv6_prefixes.length})</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="ipv4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Prefijos IPv4</CardTitle>
-                </CardHeader>
-                <CardContent className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Prefijo</TableHead>
-                        <TableHead>Descripción</TableHead>
-                        <TableHead>País</TableHead>
-                        <TableHead>Sitios Web</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {data.ipv4_prefixes.slice(0, 100).map((p, idx) => (
-                        <TableRow key={idx}>
-                          <TableCell>{p.prefix}</TableCell>
-                          <TableCell className="max-w-[480px] truncate" title={p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}>{p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : '-'}</TableCell>
-                          <TableCell>{p.country_code || '-'}</TableCell>
-                          <TableCell>
-                            <ReverseIpLookup prefix={p.prefix} />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  {data.ipv4_prefixes.length > 100 && (
-                    <p className="text-xs text-muted-foreground mt-2">Mostrando primeros 100 prefijos.</p>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="ipv6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Prefijos IPv6</CardTitle>
-                </CardHeader>
-                <CardContent className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Prefijo</TableHead>
-                        <TableHead>Descripción</TableHead>
-                        <TableHead>País</TableHead>
-                        <TableHead>Sitios Web</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {data.ipv6_prefixes.slice(0, 100).map((p, idx) => (
-                        <TableRow key={idx}>
-                          <TableCell>{p.prefix}</TableCell>
-                          <TableCell className="max-w-[480px] truncate" title={p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : ''}>{p.description ? p.description.replace(/AÂ¡/g, 'á').replace(/AÂ­/g, 'í').replace(/AÂ³/g, 'ó').replace(/AÂº/g, 'ú').replace(/AÂ©/g, 'é') : '-'}</TableCell>
-                          <TableCell>{p.country_code || '-'}</TableCell>
-                          <TableCell>
-                            <ReverseIpLookup prefix={p.prefix} />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  {data.ipv6_prefixes.length > 100 && (
-                    <p className="text-xs text-muted-foreground mt-2">Mostrando primeros 100 prefijos.</p>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          {data.peers && data.peers.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Peers (vínculos)</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
-                  {data.peers.slice(0, 24).map((p) => (
-                    <li key={p.asn}>
-                      <Link to={`/asn/AS${p.asn}`} className="hover:underline">AS{p.asn} {p.name || ''}</Link>
-                    </li>
-                  ))}
-                </ul>
-                {data.peers.length > 24 && (
-                  <p className="text-xs text-muted-foreground mt-2">Mostrando primeros 24 peers.</p>
-                )}
-              </CardContent>
-            </Card>
           )}
-          
-          {/* AI Content Generator Section - DESACTIVADO TEMPORALMENTE */}
-          {/* <div className="mt-8">
-            <ASNContentGenerator 
-              asn={`AS${data.overview.asn}`}
-              asnName={data.overview.name || undefined}
-              description={data.overview.description || undefined}
-            />
-          </div> */}
 
-          {/* Strategic Internal Linking Section */}
-          <section className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200">
-            <h3 className="text-lg font-bold mb-3">📚 Aprende Más sobre Hosting en Chile</h3>
-            <p className="text-sm text-gray-700 mb-4">
-              Descubre las mejores opciones de hosting y aprende conceptos clave para optimizar tu presencia web.
-            </p>
-            <div className="grid md:grid-cols-3 gap-3">
-              <Link 
-                to="/ranking" 
-                className="flex items-center gap-2 p-3 bg-white rounded hover:bg-blue-50 transition-colors border hover:border-blue-300"
-              >
-                <span>📊</span>
-                <span className="text-sm font-medium">Ver Ranking de Hosting Chile</span>
-              </Link>
-              <Link 
-                to="/wiki/asn" 
-                className="flex items-center gap-2 p-3 bg-white rounded hover:bg-blue-50 transition-colors border hover:border-blue-300"
-              >
-                <span>📖</span>
-                <span className="text-sm font-medium">¿Qué es un ASN?</span>
-              </Link>
-              <Link 
-                to="/mejor-hosting-chile-2025" 
-                className="flex items-center gap-2 p-3 bg-white rounded hover:bg-blue-50 transition-colors border hover:border-blue-300"
-              >
-                <span>🏆</span>
-                <span className="text-sm font-medium">Mejor Hosting Chile 2025</span>
-              </Link>
-              {isChilean && (
-                <Link 
-                  to="/asn/chile" 
-                  className="flex items-center gap-2 p-3 bg-white rounded hover:bg-blue-50 transition-colors border hover:border-blue-300"
-                >
-                  <span>🇨🇱</span>
-                  <span className="text-sm font-medium">Ver todos los ASN Chilenos</span>
-                </Link>
+          {!loading && error && (
+            <Callout tone="caution" title={error === 'invalid' ? 'Ese número de ASN no es válido' : 'No pudimos cargar este ASN'} className="my-0 max-w-[62ch]">
+              <p>{error === 'invalid'
+                ? 'Escribe el ASN como AS27651 o solo el número.'
+                : 'BGPView no respondió. No es que el ASN no exista: vuelve a intentarlo en unos minutos.'}</p>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                {error !== 'invalid' && (
+                  <Button variant="default" onClick={load}><RefreshCw aria-hidden />Reintentar</Button>
+                )}
+                <Link to="/asn" className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">Buscar otro ASN</Link>
+              </div>
+            </Callout>
+          )}
+
+          {!loading && data && (
+            <div className="space-y-12">
+              <div className="space-y-6">
+                <div className="flex flex-wrap gap-2">
+                  {isChilean && <Badge variant="outline">Chile</Badge>}
+                  {hostingCompany && <Badge variant="outline">Hosting</Badge>}
+                  {asnClassification !== 'unknown' && <Badge variant="outline">{CLASS_LABEL[asnClassification]}</Badge>}
+                </div>
+                <dl className="grid grid-cols-2 gap-x-8 gap-y-4 border-y border-rule py-5 md:grid-cols-3 lg:grid-cols-6">
+                  {[
+                    { label: 'País', value: data.overview.country_code || 'Sin dato' },
+                    { label: 'RIR', value: getRirDisplay(data.overview.rir_allocation) },
+                    { label: 'Prefijos en total', value: formatInteger(total) },
+                    { label: 'Prefijos IPv4', value: formatInteger(data.ipv4_prefixes.length) },
+                    { label: 'Prefijos IPv6', value: formatInteger(data.ipv6_prefixes.length) },
+                    { label: 'Peers', value: data.peers ? formatInteger(data.peers.length) : 'Sin dato' },
+                  ].map((s) => (
+                    <div key={s.label}>
+                      <dt className="t-label">{s.label}</dt>
+                      <dd className="tabular mt-1 text-xl font-bold text-ink">{s.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <AsnProviderPanel
+                  asn={data.overview.asn}
+                  company={hostingCompany}
+                  isHostingClass={asnClassification === 'hosting'}
+                  onReview={(slug) => navigate(`/resena/${slug}`)}
+                />
+              </div>
+
+              {chartData.length > 0 && (
+                <section aria-labelledby="top-rangos">
+                  <h2 id="top-rangos" className="t-h2 text-ink">Los 10 rangos IPv4 más grandes</h2>
+                  <p className="t-meta mt-2">Cantidad de direcciones IP de cada prefijo. Pasa el cursor sobre una barra para ver el prefijo.</p>
+                  <div className="mt-5"><AsnPrefixChart data={chartData} /></div>
+                </section>
               )}
-              <Link 
-                to="/guia-elegir-hosting" 
-                className="flex items-center gap-2 p-3 bg-white rounded hover:bg-blue-50 transition-colors border hover:border-blue-300"
-              >
-                <span>📚</span>
-                <span className="text-sm font-medium">Guía para Elegir Hosting</span>
-              </Link>
-              <Link 
-                to="/wiki" 
-                className="flex items-center gap-2 p-3 bg-white rounded hover:bg-blue-50 transition-colors border hover:border-blue-300"
-              >
-                <span>📝</span>
-                <span className="text-sm font-medium">Wiki de Términos Técnicos</span>
-              </Link>
+
+              <section aria-labelledby="prefijos">
+                <h2 id="prefijos" className="t-h2 text-ink">Prefijos anunciados</h2>
+                <Tabs defaultValue="ipv4" className="mt-5">
+                  <TabsList className="flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-none border-b border-rule bg-transparent p-0">
+                    <TabsTrigger value="ipv4" className={tabTrigger}>IPv4 ({formatInteger(data.ipv4_prefixes.length)})</TabsTrigger>
+                    <TabsTrigger value="ipv6" className={tabTrigger}>IPv6 ({formatInteger(data.ipv6_prefixes.length)})</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="ipv4" className="mt-4"><AsnPrefixTable prefixes={data.ipv4_prefixes} label="Prefijos IPv4" /></TabsContent>
+                  <TabsContent value="ipv6" className="mt-4"><AsnPrefixTable prefixes={data.ipv6_prefixes} label="Prefijos IPv6" /></TabsContent>
+                </Tabs>
+              </section>
+
+              {data.peers && data.peers.length > 0 && (
+                <section aria-labelledby="peers">
+                  <h2 id="peers" className="t-h2 text-ink">Peers (vínculos)</h2>
+                  <ul className="mt-5 grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
+                    {data.peers.slice(0, 24).map((p) => (
+                      <li key={p.asn}>
+                        <Link to={`/asn/AS${p.asn}`} className="t-small inline-flex min-h-11 items-center text-ink underline decoration-ink/20 underline-offset-4 hover:decoration-ink">
+                          AS{p.asn} {p.name || ''}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  {data.peers.length > 24 && <p className="t-meta mt-2">Mostrando los primeros 24 peers.</p>}
+                </section>
+              )}
+
+              <AsnRelatedLinks isChilean={isChilean} />
             </div>
-          </section>
-        </section>
-      )}
-    </main>
-    <StickyCTA />
-    <Footer />
+          )}
+        </Section>
+      </main>
+      <StickyCTA />
+      <Footer />
     </>
   );
 };

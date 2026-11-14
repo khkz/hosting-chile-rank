@@ -6,44 +6,35 @@ import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import {
-  ArrowRight,
-  Globe,
-  ExternalLink,
-  Phone,
-  MapPin,
-  Clock,
-  Server,
-  Building2,
-  FileText,
-  Cpu,
-  
-} from 'lucide-react';
+import Section from '@/components/system/Section';
 import { COUNTRIES, getCountryFromPath } from '@/lib/country';
+import { getEdition, hreflangAlternates, rankingPath } from '@/lib/countries';
+import { formatDataDate } from '@/lib/format';
+import { ProvenanceTag } from '@/components/data/Provenance';
 import AdvisorEmbed from '@/components/advisor/AdvisorEmbed';
 import DirectoryFilterBar, { type SortMode } from '@/components/DirectoryFilterBar';
 import { hasLocalDatacenter, has247Support, type LatamDcSlug } from '@/lib/dcLocal';
-
-
-import { getProviderLink, isHiddenProvider } from '@/lib/providerLinks';
-import { formatCorporateGroup } from '@/lib/formatGroup';
+import { isHiddenProvider } from '@/lib/providerLinks';
 import CountryReassurances from '@/components/country/CountryReassurances';
 import BuyerRoutes from '@/components/country/BuyerRoutes';
+import DirectoryRow from '@/components/country/DirectoryRow';
+import EditionHeader from '@/components/country/edicion/EditionHeader';
+import { fewerFiltersHint, isComSlug, sameMethodLine, type ComSlug } from '@/components/country/edicion/editionVoice';
 
 const CountryLanding = () => {
   const location = useLocation();
   const info = getCountryFromPath(location.pathname) ?? COUNTRIES.PE;
+  const edition = getEdition(info.code);
+  const slug: ComSlug = isComSlug(info.slug) ? info.slug : 'pe';
 
-  const { data: companies, isLoading } = useQuery({
+  const { data: companies, isLoading, isError, refetch } = useQuery({
     queryKey: ['country-directory', info.code],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('hosting_companies')
         .select(
-          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, foundation_year, is_verified, is_curated'
+          'id, slug, name, website, contact_phone, contact_address, contact_hours, datacenter_location, corporate_group, legal_name, technologies, foundation_year, is_verified, is_curated, updated_at'
         )
         .eq('country', info.code)
         .eq('is_verified', true)
@@ -58,6 +49,7 @@ const CountryLanding = () => {
   const [only247, setOnly247] = useState(false);
   const [sort, setSort] = useState<SortMode>('default');
   const dcSlug = info.slug as LatamDcSlug;
+  const localDcCount = (companies ?? []).filter((c: any) => hasLocalDatacenter(dcSlug, c.datacenter_location)).length;
   const filteredCompanies = useMemo(() => {
     const base = companies ?? [];
     let out = base.filter((c: any) => {
@@ -85,7 +77,13 @@ const CountryLanding = () => {
   const curatedCompany = (companies || []).find((c: any) => c.is_curated === true) || null;
   const hasRecommended = !!curatedCompany;
 
-  const lastUpdated = new Date().toISOString().slice(0, 10);
+  // Fecha real de los datos: la última modificación de un proveedor del país.
+  // Sin datos no se publica fecha (nunca la del reloj del visitante).
+  const latestIso = (companies || []).reduce<string | null>(
+    (max, c: any) => (c.updated_at && (!max || c.updated_at > max) ? c.updated_at : max),
+    null
+  );
+  const lastUpdated = latestIso ? new Date(latestIso).toISOString().slice(0, 10) : undefined;
 
   // JSON-LD: BreadcrumbList
   const breadcrumbLd = {
@@ -128,11 +126,11 @@ const CountryLanding = () => {
   const faqs = [
     {
       q: `¿Qué es este directorio de hosting en ${info.name}?`,
-      a: `Es un listado independiente de proveedores de hosting con presencia en ${info.name}, publicado por Elige Tu Hosting. Mostramos únicamente datos comprobables (razón social, contacto, datacenter, tecnología) sin puntajes inventados.`,
+      a: `Es un listado de proveedores de hosting con presencia en ${info.name}, publicado por Elige Tu Hosting. Mostramos únicamente datos comprobables (razón social, contacto, datacenter, tecnología) sin puntajes inventados.`,
     },
     {
       q: '¿Cómo se verifican los datos?',
-      a: 'Contrastamos WHOIS, ASN, registros mercantiles, sitios oficiales y respuestas de soporte. No publicamos ranking hasta tener reclamos, benchmarks y trayectoria confirmados con la misma metodología usada en Chile.',
+      a: `Contrastamos WHOIS, ASN, registros mercantiles, sitios oficiales y respuestas de soporte. No publicamos ranking hasta tener reclamos, benchmarks y trayectoria confirmados ${sameMethodLine()}.`,
     },
     {
       q: `¿Por qué HostingPlus aparece como recomendado en ${info.name}?`,
@@ -153,6 +151,11 @@ const CountryLanding = () => {
     })),
   };
 
+  const clearFilters = () => {
+    setOnlyDcLocal(false);
+    setOnly247(false);
+  };
+
   return (
     <>
       <Helmet>
@@ -170,12 +173,9 @@ const CountryLanding = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={`https://eligetuhosting.com/og/${info.slug}.png`} />
         <meta name="robots" content="index,follow" />
-        <link rel="alternate" hrefLang="es-CL" href="https://eligetuhosting.cl/" />
-        <link rel="alternate" hrefLang="es-PE" href="https://eligetuhosting.com/pe" />
-        <link rel="alternate" hrefLang="es-MX" href="https://eligetuhosting.com/mx" />
-        <link rel="alternate" hrefLang="es-CO" href="https://eligetuhosting.com/co" />
-        <link rel="alternate" hrefLang="es-AR" href="https://eligetuhosting.com/ar" />
-        <link rel="alternate" hrefLang="x-default" href="https://eligetuhosting.com/latam" />
+        {hreflangAlternates().map((a) => (
+          <link key={a.hrefLang} rel="alternate" hrefLang={a.hrefLang} href={a.href} />
+        ))}
         <link rel="alternate" type="text/markdown" href={`/${info.slug}.md`} title={`${info.name} — datos en Markdown (CC-BY-4.0)`} />
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
         <script type="application/ld+json">{JSON.stringify(collectionLd)}</script>
@@ -184,60 +184,55 @@ const CountryLanding = () => {
 
       <Navbar />
 
-      <main className="min-h-[60vh] container mx-auto px-4 py-12">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EF233C]/10 text-[#EF233C] text-sm font-medium mb-4">
-              <Globe className="h-4 w-4" />
-              {info.flag} Versión {info.name}
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-[#2B2D42] mb-3">
-              Hosting en {info.name}
-            </h1>
-            <p className="text-base md:text-lg text-[#2B2D42]/70 max-w-2xl mx-auto">
-              Directorio independiente con datos comprobables (contacto, datacenter,
-              razón social, tecnología). No publicamos puntajes hasta verificar
-              reclamos, ASN y trayectoria con la misma metodología que en Chile.
-            </p>
-            <div className="flex flex-wrap justify-center gap-2 mt-5 text-sm">
-              <Link
-                to={`/${info.slug}/mejor-hosting-${({pe:'peru',mx:'mexico',co:'colombia',ar:'argentina'} as const)[info.slug as 'pe'|'mx'|'co'|'ar']}-2026`}
-                className="px-4 py-2 rounded-md bg-[#2B2D42] text-white hover:bg-[#2B2D42]/90"
-              >
-                🏆 Mejor hosting {info.name} 2026
-              </Link>
-              <Link
-                to={`/${info.slug}/hosting-con-datacenter-local`}
-                className="px-4 py-2 rounded-md bg-white border border-[#2B2D42]/15 text-[#2B2D42] hover:bg-muted"
-              >
-                🖥️ Datacenter local en {info.name}
-              </Link>
-            </div>
+      <main>
+        <EditionHeader
+          code={info.code}
+          slug={slug}
+          name={info.name}
+          rankingTo={rankingPath(edition)}
+          loading={isLoading}
+          total={companies ? companies.length : null}
+          localDc={companies ? localDcCount : null}
+          latestIso={latestIso}
+        />
+
+        {hasRecommended && (
+          <div className="container pt-10 md:pt-14">
+            <CountryReassurances country={slug} countryName={info.name} variant="landing" />
           </div>
+        )}
 
-          {hasRecommended && (
-            <CountryReassurances
-              country={info.slug as 'pe' | 'mx' | 'co' | 'ar'}
-              countryName={info.name}
-              variant="landing"
-            />
-          )}
+        <BuyerRoutes country={slug} countryName={info.name} />
 
-          <BuyerRoutes
-            country={info.slug as 'pe' | 'mx' | 'co' | 'ar'}
-            countryName={info.name}
-          />
-
+        <div className="container">
           <AdvisorEmbed />
+        </div>
 
-
-
-
-          {isLoading ? (
-            <p className="text-center text-muted-foreground py-10">
-              Cargando proveedores…
+        <Section
+          id="directorio"
+          title={`Proveedores de ${info.name}`}
+          density="tight"
+          action={
+            <p className="t-small flex flex-wrap items-center gap-2 text-ink-2">
+              <ProvenanceTag kind="declared" />
+              El datacenter es el que declara cada proveedor.
             </p>
-          ) : (companies && companies.length > 0) ? (
+          }
+        >
+          {isLoading ? (
+            <p className="border-y-2 border-ink py-10 t-body text-ink-2">Cargando proveedores…</p>
+          ) : isError ? (
+            // Un error de lectura no es una edición vacía: nunca mostrar "Estamos verificando" aquí.
+            <div role="alert" className="t-small rounded-xl border border-rule bg-paper p-5 text-ink-2 md:p-6">
+              <p className="max-w-[62ch]">
+                No pudimos cargar el directorio de {info.name}. Los proveedores siguen publicados; es un problema de
+                conexión con nuestra base de datos.
+              </p>
+              <Button type="button" variant="outline" size="sm" className="mt-3" onClick={() => refetch()}>
+                Reintentar
+              </Button>
+            </div>
+          ) : companies && companies.length > 0 ? (
             <>
               <DirectoryFilterBar
                 onlyDcLocal={onlyDcLocal}
@@ -251,170 +246,62 @@ const CountryLanding = () => {
                 visibleCount={filteredCompanies.length}
               />
               {filteredCompanies.length === 0 ? (
-                <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 text-center text-sm text-[#2B2D42]/70">
-                  Ningún proveedor cumple con esos filtros. Ajusta la selección arriba.
+                <div className="rounded-xl border border-rule bg-paper p-5 md:p-6">
+                  <p className="t-body text-ink">Ningún proveedor cumple esos filtros.</p>
+                  <p className="t-small text-ink-2">{fewerFiltersHint(slug)}</p>
+                  <Button type="button" variant="outline" className="mt-4" onClick={clearFilters}>
+                    Quitar filtros
+                  </Button>
                 </div>
               ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredCompanies.map((c: any) => {
-                const link = c.slug && c.website ? getProviderLink(c.slug, c.website) : null;
-                const techs: string[] = Array.isArray(c.technologies)
-                  ? c.technologies.filter((t: any) => typeof t === 'string')
-                  : [];
-                return (
-                  <Card key={c.id} className="flex flex-col hover:shadow-md transition-shadow">
-                    <CardContent className="pt-5 flex-grow space-y-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <h2 className="text-lg font-semibold leading-tight">
-                          {c.name}
-                        </h2>
-                        <Badge variant="outline" className="text-[10px] shrink-0">
-                          Datos verificables
-                        </Badge>
-                      </div>
-                      <ul className="text-sm text-muted-foreground space-y-1.5">
-                        {c.legal_name && (
-                          <li className="flex items-start gap-2">
-                            <FileText className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.legal_name}</span>
-                          </li>
-                        )}
-                        {c.corporate_group && (
-                          <li className="flex items-start gap-2">
-                            <Building2 className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{formatCorporateGroup(c.corporate_group)}</span>
-                          </li>
-                        )}
-                        {c.datacenter_location && (
-                          <li className="flex items-start gap-2">
-                            <Server className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.datacenter_location}</span>
-                          </li>
-                        )}
-                        {c.contact_phone && (
-                          <li className="flex items-start gap-2">
-                            <Phone className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.contact_phone}</span>
-                          </li>
-                        )}
-                        {c.contact_address && (
-                          <li className="flex items-start gap-2">
-                            <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.contact_address}</span>
-                          </li>
-                        )}
-                        {c.contact_hours && (
-                          <li className="flex items-start gap-2">
-                            <Clock className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{c.contact_hours}</span>
-                          </li>
-                        )}
-                        {techs.length > 0 && (
-                          <li className="flex items-start gap-2">
-                            <Cpu className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                            <span>{techs.slice(0, 6).join(', ')}</span>
-                          </li>
-                        )}
-                      </ul>
-                    </CardContent>
-                    <div className="border-t bg-muted/40 p-3 flex flex-col sm:flex-row gap-2">
-                      {c.slug && (
-                        <Button asChild size="sm" variant="default" className="flex-1 gap-1">
-                          <Link to={`/${info.slug}/${c.slug}`}>
-                            Ver ficha <ArrowRight size={14} />
-                          </Link>
-                        </Button>
-                      )}
-                      {link && (
-                        <Button asChild size="sm" variant="outline" className="flex-1 gap-1">
-                          <a
-                            href={link.href}
-                            target="_blank"
-                            rel={link.rel}
-                            referrerPolicy="no-referrer"
-                          >
-                            Visitar sitio <ExternalLink size={14} />
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-                  </Card>
-                );
-              })}
-            </div>
+                <ul className="divide-y divide-rule border-y-2 border-ink">
+                  {filteredCompanies.map((c: any) => (
+                    <DirectoryRow key={c.id} company={c} countrySlug={info.slug} countryName={info.name} dcSlug={dcSlug} />
+                  ))}
+                </ul>
               )}
             </>
           ) : (
-            <div className="bg-white border border-[#2B2D42]/10 rounded-xl p-6 md:p-8 text-center">
-              <h2 className="text-xl font-semibold text-[#2B2D42] mb-2">
-                Próximamente: estamos verificando los proveedores de {info.name}
-              </h2>
-              <p className="text-sm text-[#2B2D42]/70 mb-5 max-w-xl mx-auto">
-                No publicamos rankings sin datos verificables. Estamos auditando
-                ASN, datacenter, reclamos y trayectoria con la misma metodología
-                que aplicamos en Chile.
+            <div className="rounded-xl border border-rule bg-paper p-6 md:p-8">
+              <h3 className="t-h3 text-ink">Estamos verificando a los proveedores de {info.name}</h3>
+              <p className="t-small mt-2 max-w-[62ch] text-ink-2">
+                No publicamos rankings sin datos comprobables. Estamos revisando red, datacenter, reclamos y
+                trayectoria {sameMethodLine()}.
               </p>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <Button asChild variant="outline">
-                  <a href="https://eligetuhosting.cl/ranking" className="flex items-center gap-2">
-                    Ver metodología (Chile) <ArrowRight className="h-4 w-4" />
-                  </a>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link to="/contacto">Sugerir un proveedor</Link>
-                </Button>
-              </div>
+              <Button asChild className="mt-4">
+                <Link to="/contacto">Sugerir un proveedor</Link>
+              </Button>
             </div>
           )}
+        </Section>
 
-          {/* Metodología y transparencia */}
-          <section className="mt-14 bg-white border border-[#2B2D42]/10 rounded-xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-3">
-              Metodología y transparencia
-            </h2>
-            <p className="text-sm text-[#2B2D42]/75 leading-relaxed mb-3">
-              Este directorio de {info.name} está <strong>ordenado por calidad
-              certificada de la infraestructura del operador y transparencia
-              verificable</strong>, no por puntajes autoasignados. Priorizamos
-              en este orden: (1) calidad certificada del datacenter — Tier III
-              certificado con operador identificado, aunque esté en otro país
-              de la región cuando el grupo lo opera; (2) transparencia
-              verificable — entidad legal identificable, registros públicos de
-              reclamos (INDECOPI, Reclamos.cl), teléfono y soporte 24/7 en
-              español; (3) presencia y latencia al país (ASN/red); (4)
-              antigüedad. Datos públicos comprobables: razón social,
-              identificador fiscal, sitio oficial, datacenter declarado,
-              tecnología del stack y canales de contacto.
+        <Section id="como-ordenamos" tone="paper" title="Cómo ordenamos este directorio" density="tight">
+          <div className="t-body measure space-y-4 text-ink-2">
+            <p>
+              El directorio de {info.name} se ordena por la calidad comprobable de la infraestructura del operador y
+              por transparencia verificable, no por puntajes autoasignados. En este orden: (1) calidad certificada
+              del datacenter, con operador identificado; (2) entidad legal identificable, registros públicos de
+              reclamos, teléfono y soporte en español; (3) presencia y latencia al país (ASN y red); (4) antigüedad.
             </p>
-            <p className="text-xs text-[#2B2D42]/60">
-              Última actualización de datos: <strong>{lastUpdated}</strong>. Los
-              datos se publican bajo licencia CC-BY-4.0 y son de acceso libre.
+            <p className="t-meta">
+              Última edición de los datos de {info.name}: {latestIso ? formatDataDate(latestIso) : isLoading ? '…' : 'sin dato'}.
+              Datos bajo licencia CC-BY-4.0, de acceso libre.
             </p>
-          </section>
+          </div>
+        </Section>
 
-          {/* FAQ */}
-          <section className="mt-10">
-            <h2 className="text-2xl font-bold text-[#2B2D42] mb-4">
-              Preguntas frecuentes
-            </h2>
-            <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((f, i) => (
-                <AccordionItem
-                  key={i}
-                  value={`faq-${i}`}
-                  className="bg-white border border-[#2B2D42]/10 rounded-lg px-4"
-                >
-                  <AccordionTrigger className="text-left font-medium">
-                    {f.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-[#2B2D42]/75">
-                    {f.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </section>
-        </div>
+        <Section id="preguntas" title="Preguntas frecuentes" density="tight">
+          <Accordion type="single" collapsible className="max-w-3xl border-t border-rule">
+            {faqs.map((f, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="border-rule">
+                <AccordionTrigger className="min-h-[44px] text-left font-semibold text-ink hover:no-underline">
+                  {f.q}
+                </AccordionTrigger>
+                <AccordionContent className="t-body measure text-ink-2">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Section>
       </main>
 
       <Footer />

@@ -1,67 +1,78 @@
 import { useLocation, useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card, CardContent } from '@/components/ui/card';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import { ProvenanceLegend } from '@/components/data/Provenance';
+import Crumbs from '@/components/comparar/Crumbs';
+import CompareTable, { type CompareRow } from '@/components/comparar/CompareTable';
+import { useCountryPair } from '@/components/comparar/useCompareData';
+import { formatDataDate } from '@/lib/format';
 import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, hasLocalDatacenter, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 
-// /pe/comparativa/:pair  ·  :pair debe tener la forma slug-a-vs-slug-b
+const textLink =
+  't-small inline-flex min-h-[44px] items-center gap-1.5 font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink';
+
+// /pe/comparativa/:pair, donde :pair tiene la forma slug-a-vs-slug-b
 const CountryComparativa = () => {
   const location = useLocation();
   const { pair } = useParams<{ pair: string }>();
   const first = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
-  if (!isLatamSlug(first)) return <Navigate to="/latam" replace />;
-  const slug = first as LatamSlug;
+  const isCountry = isLatamSlug(first);
+  const slug = (isCountry ? first : 'pe') as LatamSlug;
   const meta = LATAM_META[slug];
 
   const parts = (pair ?? '').split('-vs-');
-  if (parts.length !== 2) return <Navigate to={`/${slug}`} replace />;
-  const [a, b] = parts;
+  const okPair = parts.length === 2 && !!parts[0] && !!parts[1];
+  const [a, b] = okPair ? parts : ['', ''];
 
-  const { data: providers, isLoading } = useQuery({
-    queryKey: ['country-comparativa', slug, a, b],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('hosting_companies')
-        .select('*')
-        .eq('country', meta.code)
-        .in('slug', [a, b]);
-      return data ?? [];
-    },
-  });
+  const { data: providers, isLoading } = useCountryPair(isCountry && okPair ? meta.code : null, a, b);
 
+  if (!isCountry) return <Navigate to="/latam" replace />;
+  if (!okPair) return <Navigate to={`/${slug}`} replace />;
   if (!isLoading && (!providers || providers.length !== 2)) return <Navigate to={`/${slug}`} replace />;
   if (isLoading || !providers) {
     return (
-      <><Navbar />
-        <div className="container mx-auto px-4 py-12 text-center text-muted-foreground">Cargando comparativa…</div>
-      <Footer /></>
+      <>
+        <Navbar />
+        <main className="container py-16">
+          <p role="status" className="t-body text-ink-2">Cargando comparativa…</p>
+        </main>
+        <Footer />
+      </>
     );
   }
 
-  const [p1, p2] = a < b ? [providers.find(p => p.slug === a)!, providers.find(p => p.slug === b)!]
-                          : [providers.find(p => p.slug === a)!, providers.find(p => p.slug === b)!];
+  const p1 = providers.find((p) => p.slug === a)!;
+  const p2 = providers.find((p) => p.slug === b)!;
 
   const canonicalSlug = a < b ? `${a}-vs-${b}` : `${b}-vs-${a}`;
   const canonical = `https://eligetuhosting.com/${slug}/comparativa/${canonicalSlug}`;
   const title = `${p1.name} vs ${p2.name} — Comparativa hosting ${meta.name} | EligeTuHosting`;
   const description = `Comparativa objetiva entre ${p1.name} y ${p2.name} para hosting en ${meta.name}: datacenter, razón social, antigüedad, tecnologías. Datos verificables, sin puntajes inventados.`;
 
-  const localA = hasLocalDatacenter(slug, (p1 as any).datacenter_location);
-  const localB = hasLocalDatacenter(slug, (p2 as any).datacenter_location);
-
-  const rows: Array<{ label: string; a: React.ReactNode; b: React.ReactNode }> = [
-    { label: 'Razón social', a: (p1 as any).legal_name || '—', b: (p2 as any).legal_name || '—' },
-    { label: 'Datacenter declarado', a: (p1 as any).datacenter_location || '—', b: (p2 as any).datacenter_location || '—' },
-    { label: `Datacenter en ${meta.name}`, a: localA ? 'Sí' : 'No', b: localB ? 'Sí' : 'No' },
-    { label: 'Año de fundación', a: (p1 as any).year_founded ?? '—', b: (p2 as any).year_founded ?? '—' },
-    { label: 'Grupo corporativo', a: (p1 as any).corporate_group || '—', b: (p2 as any).corporate_group || '—' },
-    { label: 'Teléfono', a: (p1 as any).contact_phone || '—', b: (p2 as any).contact_phone || '—' },
-    { label: 'Dirección', a: (p1 as any).contact_address || '—', b: (p2 as any).contact_address || '—' },
-    { label: 'Tecnologías declaradas', a: Array.isArray((p1 as any).technologies) ? (p1 as any).technologies.slice(0, 6).join(', ') || '—' : '—', b: Array.isArray((p2 as any).technologies) ? (p2 as any).technologies.slice(0, 6).join(', ') || '—' : '—' },
+  const sides = [p1, p2];
+  const text = (v: string | null | undefined) => (v && v.trim() ? v : null);
+  const tech = (v: string[] | null) => (v && v.length > 0 ? v.slice(0, 6).join(', ') : null);
+  const rows: CompareRow[] = [
+    { id: 'razon', label: 'Razón social', kind: 'declared', cells: sides.map((p) => ({ value: text(p.legal_name), raw: null })) },
+    { id: 'dc', label: 'Datacenter declarado', kind: 'declared', cells: sides.map((p) => ({ value: text(p.datacenter_location), raw: text(p.datacenter_location) })) },
+    {
+      id: 'dc-local', label: `Datacenter en ${meta.name}`, kind: 'declared',
+      cells: sides.map((p) => {
+        const local = hasLocalDatacenter(slug, p.datacenter_location);
+        return { value: local ? 'Sí' : 'No', raw: local };
+      }),
+    },
+    { id: 'fundacion', label: 'Año de fundación', kind: 'declared', cells: sides.map((p) => ({ value: p.year_founded != null ? String(p.year_founded) : null, raw: p.year_founded })) },
+    { id: 'grupo', label: 'Grupo corporativo', kind: 'declared', cells: sides.map((p) => ({ value: text(p.corporate_group), raw: text(p.corporate_group) })) },
+    { id: 'telefono', label: 'Teléfono', kind: 'declared', cells: sides.map((p) => ({ value: text(p.contact_phone), raw: null })) },
+    { id: 'direccion', label: 'Dirección', kind: 'declared', cells: sides.map((p) => ({ value: text(p.contact_address), raw: null })) },
+    { id: 'tecnologias', label: 'Tecnologías declaradas', kind: 'declared', cells: sides.map((p) => ({ value: tech(p.technologies), raw: null })) },
   ];
+  const updated = sides.map((p) => p.updated_at).filter(Boolean).sort().pop() ?? null;
 
   const breadcrumbLd = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -92,53 +103,37 @@ const CountryComparativa = () => {
         <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
       </Helmet>
       <Navbar />
-      <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
-        <nav className="text-sm text-muted-foreground mb-4" aria-label="breadcrumb">
-          <Link to="/" className="hover:underline">Inicio</Link><span className="mx-2">/</span>
-          <Link to={`/${slug}`} className="hover:underline">Hosting en {meta.name}</Link><span className="mx-2">/</span>
-          <span className="text-foreground font-medium">{p1.name} vs {p2.name}</span>
-        </nav>
+      <main>
+        <PageHeader
+          breadcrumbs={
+            <Crumbs items={[{ name: 'Inicio', href: '/' }, { name: `Hosting en ${meta.name}`, href: `/${slug}` }, { name: `${p1.name} vs ${p2.name}` }]} />
+          }
+          title={`${p1.name} vs ${p2.name}`}
+          lead={`Comparativa lado a lado con datos verificables en ${meta.name}. Sin puntajes inventados: solo lo que declara cada proveedor y se puede auditar.`}
+          meta={updated ? <span>Fichas actualizadas al {formatDataDate(updated, meta.locale)}</span> : undefined}
+        />
 
-        <header className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#2B2D42]">
-            {p1.name} vs {p2.name}
-          </h1>
-          <p className="mt-2 text-[#2B2D42]/75">
-            Comparativa lado a lado con datos verificables en {meta.name}. Sin puntajes inventados: solo lo que declara cada proveedor y se puede auditar.
+        <Section id="lado-a-lado" title="Lado a lado" density="tight">
+          <CompareTable
+            caption={`Comparación de ${p1.name} y ${p2.name} en ${meta.name}`}
+            labelHeader="Criterio"
+            columns={sides.map((p) => ({ key: p.slug, name: p.name, href: `/${slug}/${p.slug}` }))}
+            rows={rows}
+          />
+          <p className="t-meta measure mt-4">
+            «Difieren» marca las filas en que los dos proveedores declaran un dato distinto. «Sin dato» significa que el
+            proveedor no lo publica.
           </p>
-        </header>
-
-        <Card className="mb-6">
-          <CardContent className="pt-6 overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left border-b">
-                  <th className="py-2 pr-3 font-medium">Criterio</th>
-                  <th className="py-2 px-3 font-medium">
-                    <Link to={`/${slug}/${p1.slug}`} className="hover:underline text-primary">{p1.name}</Link>
-                  </th>
-                  <th className="py-2 px-3 font-medium">
-                    <Link to={`/${slug}/${p2.slug}`} className="hover:underline text-primary">{p2.name}</Link>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r, i) => (
-                  <tr key={i} className="border-b last:border-b-0">
-                    <td className="py-2 pr-3 font-medium text-[#2B2D42]/80">{r.label}</td>
-                    <td className="py-2 px-3">{r.a}</td>
-                    <td className="py-2 px-3">{r.b}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </CardContent>
-        </Card>
-
-        <div className="text-sm space-x-3">
-          <Link to={`/${slug}`} className="text-primary hover:underline">← Directorio {meta.name}</Link>
-          <Link to={`/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`} className="text-primary hover:underline">Mejor hosting {meta.name} 2026</Link>
-        </div>
+          <ProvenanceLegend compact className="mt-8 max-w-4xl" />
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+            <Link to={`/${slug}`} className={textLink}>
+              <ArrowLeft aria-hidden className="h-4 w-4" /> Directorio {meta.name}
+            </Link>
+            <Link to={`/${slug}/mejor-hosting-${LATAM_LONG_SLUG[slug]}-2026`} className={textLink}>
+              Mejor hosting {meta.name} 2026 <ArrowRight aria-hidden className="h-4 w-4" />
+            </Link>
+          </div>
+        </Section>
       </main>
       <Footer />
     </>

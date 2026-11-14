@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from 'react-router-dom';
 
-// Legacy singular → canonical plural reseñas redirect (replace-true ≈ 301 for client navs)
+// Legacy singular a canonical plural: redirección de reseñas (replace-true ≈ 301 for client navs)
 const ResenaSingularRedirect: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   return <Navigate to={`/resenas/${slug ?? ''}`} replace />;
@@ -17,13 +17,16 @@ import StaticRobots from './components/StaticRobots';
 import StaticRSSFeed from './components/StaticRSSFeed';
 import LlmsTxt from './components/LlmsTxt';
 import { Toaster } from '@/components/ui/toaster';
-import { Toaster as Sonner } from 'sonner';
+import { Toaster as Sonner } from '@/components/ui/sonner';
 import { AuthProvider } from './providers/AuthProvider';
 import ComparativaRouteDispatcher from './components/ComparativaRouteDispatcher';
 import DirectorioRedirect from './components/DirectorioRedirect';
 import SEOOrganization from './components/SEOOrganization';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomeDispatcher from './components/HomeDispatcher';
+import RouteErrorBoundary from './components/RouteErrorBoundary';
+import SkipLink from './components/marco/SkipLink';
+import { COM_PUBLISHED_EDITIONS, VERIFYING_EDITIONS, RANKING_YEAR } from './lib/countries';
 
 const HostingAdvisorFab = React.lazy(() => import('./components/advisor/HostingAdvisorFab'));
 const Ranking = React.lazy(() => import('./pages/Ranking'));
@@ -112,22 +115,23 @@ const CountryDatacenterLocal = React.lazy(() => import('./pages/CountryDatacente
 const CountryComparativa = React.lazy(() => import('./pages/CountryComparativa'));
 const CountryBenchmark = React.lazy(() => import('./pages/CountryBenchmark'));
 const DatosAbiertos = React.lazy(() => import('./pages/DatosAbiertos'));
-const Latam = React.lazy(() => import('./pages/Latam'));
+const LatamIndex = React.lazy(() => import('./pages/LatamIndex'));
+const CountryVerifying = React.lazy(() => import('./pages/CountryVerifying'));
 const HostDimePePilot = React.lazy(() => import('./pages/pilot/HostDimePePilot'));
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        {/* Primera parada de Tab en todo el sitio. */}
+        <SkipLink />
         <DomainRedirect />
         <CanonicalRedirect />
         <ScrollToTop />
         <Toaster />
         <Sonner />
         <SEOOrganization />
-        <React.Suspense fallback={null}>
-          <HostingAdvisorFab />
-        </React.Suspense>
+        <RouteErrorBoundary>
         <React.Suspense fallback={null}>
         <Routes>
         {/* Rutas para archivos estáticos */}
@@ -138,7 +142,7 @@ function App() {
         
         {/* Rutas normales de la aplicación */}
         <Route path="/" element={<HomeDispatcher />} />
-        <Route path="/latam" element={<Latam />} />
+        <Route path="/latam" element={<LatamIndex />} />
         <Route path="/datos" element={<DatosAbiertos />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/ir/:slug" element={<OutboundRedirect />} />
@@ -177,7 +181,7 @@ function App() {
         <Route path="/recursos-hosting-chile" element={<RecursosHosting />} />
         <Route path="/reseñas/:slug" element={<Resena />} />
         <Route path="/resenas/:slug" element={<Resena />} />
-        {/* Redirect legacy singular /resena/:slug → canonical plural /resenas/:slug */}
+        {/* Redirect legacy singular /resena/:slug a canonical plural /resenas/:slug */}
         <Route path="/resena/:slug" element={<ResenaSingularRedirect />} />
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/catalogo/:slug" element={<CatalogoDetalle />} />
@@ -320,43 +324,44 @@ function App() {
                 <SeoDashboard />
               </ProtectedRoute>
             } />
-            {/* Canonical → /catalogo + noindex,follow + redirect cliente */}
+            {/* Canonical: /catalogo + noindex,follow + redirect cliente */}
             <Route path="/directorio-hosting-chile" element={<DirectorioRedirect />} />
-            {/* Country shells on .com (additive — .cl no navega aquí) */}
-            {/* Rutas específicas por país (deben ir ANTES de /:slug para ganar el match) */}
+            {/* Ediciones por país en eligetuhosting.com.
+                Rutas generadas desde el registro único (src/lib/countries.ts):
+                sumar un país es agregarlo allí, no copiar rutas aquí. */}
             <Route path="/pe/mejor-hosting-peru-2026" element={<MejorHostingPeru2026 />} />
             <Route path="/pe/mejor-hosting-peru" element={<Navigate to="/pe/mejor-hosting-peru-2026" replace />} />
-            <Route path="/mx/mejor-hosting-mexico-2026" element={<CountryBestHosting />} />
-            <Route path="/co/mejor-hosting-colombia-2026" element={<CountryBestHosting />} />
-            <Route path="/ar/mejor-hosting-argentina-2026" element={<CountryBestHosting />} />
-            <Route path="/pe/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
-            <Route path="/mx/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
-            <Route path="/co/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
-            <Route path="/ar/hosting-con-datacenter-local" element={<CountryDatacenterLocal />} />
-            <Route path="/pe/comparativa/:pair" element={<CountryComparativa />} />
-            <Route path="/mx/comparativa/:pair" element={<CountryComparativa />} />
-            <Route path="/co/comparativa/:pair" element={<CountryComparativa />} />
-            <Route path="/ar/comparativa/:pair" element={<CountryComparativa />} />
-            <Route path="/pe/benchmark" element={<CountryBenchmark />} />
-            <Route path="/mx/benchmark" element={<CountryBenchmark />} />
-            <Route path="/co/benchmark" element={<CountryBenchmark />} />
-            <Route path="/ar/benchmark" element={<CountryBenchmark />} />
-            <Route path="/pe" element={<CountryLanding />} />
             <Route path="/pe/hostdime-pe" element={<HostDimePePilot />} />
-            <Route path="/pe/:slug" element={<CountryProviderDetail />} />
-            <Route path="/pe/*" element={<CountryLanding />} />
-            <Route path="/mx" element={<CountryLanding />} />
-            <Route path="/mx/:slug" element={<CountryProviderDetail />} />
-            <Route path="/mx/*" element={<CountryLanding />} />
-            <Route path="/co" element={<CountryLanding />} />
-            <Route path="/co/:slug" element={<CountryProviderDetail />} />
-            <Route path="/co/*" element={<CountryLanding />} />
-            <Route path="/ar" element={<CountryLanding />} />
-            <Route path="/ar/:slug" element={<CountryProviderDetail />} />
-            <Route path="/ar/*" element={<CountryLanding />} />
+            {COM_PUBLISHED_EDITIONS.map((e) => (
+              <React.Fragment key={e.code}>
+                {e.code !== 'PE' && (
+                  <Route path={`/${e.slug}/mejor-hosting-${e.longSlug}-${RANKING_YEAR}`} element={<CountryBestHosting />} />
+                )}
+                <Route path={`/${e.slug}/hosting-con-datacenter-local`} element={<CountryDatacenterLocal />} />
+                <Route path={`/${e.slug}/comparativa/:pair`} element={<CountryComparativa />} />
+                <Route path={`/${e.slug}/benchmark`} element={<CountryBenchmark />} />
+                <Route path={`/${e.slug}`} element={<CountryLanding />} />
+                <Route path={`/${e.slug}/:slug`} element={<CountryProviderDetail />} />
+                <Route path={`/${e.slug}/*`} element={<CountryLanding />} />
+              </React.Fragment>
+            ))}
+            {/* Países en verificación: página informativa con noindex */}
+            {VERIFYING_EDITIONS.map((e) => (
+              <React.Fragment key={e.code}>
+                <Route path={`/${e.slug}`} element={<CountryVerifying />} />
+                <Route path={`/${e.slug}/*`} element={<CountryVerifying />} />
+              </React.Fragment>
+            ))}
             <Route path="*" element={<NotFound />} />
       </Routes>
       </React.Suspense>
+      </RouteErrorBoundary>
+        {/* El asesor flotante va después de la página: es la última parada de Tab, no la primera. */}
+        <RouteErrorBoundary silent>
+          <React.Suspense fallback={null}>
+            <HostingAdvisorFab />
+          </React.Suspense>
+        </RouteErrorBoundary>
     </Router>
     </AuthProvider>
   );
