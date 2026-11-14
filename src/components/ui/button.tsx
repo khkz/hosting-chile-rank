@@ -5,26 +5,30 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  // Sistema «Cercano y confiable»: sin escalas ni sombras al pasar el cursor;
+  // el foco usa el anillo global. Alturas: sm 36 px, default 44 px, lg 48 px.
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-[15px] font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:scale-105",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-lg",
-        outline:
-          "border border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-secondary hover:shadow-md",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        gradient: "bg-gradient-to-r from-primary via-primary/90 to-primary bg-[length:200%_100%] text-primary-foreground hover:bg-[length:100%_100%] hover:shadow-xl hover:shadow-primary/50 hover:scale-105",
+        /** Acción secundaria sólida (tinta). */
+        default: "bg-ink text-white hover:bg-ink-soft",
+        /** Acción principal: una por vista. Rojo de marca. */
+        brand: "bg-brand text-white hover:bg-brand-ink",
+        destructive: "bg-brand-ink text-white hover:bg-brand",
+        /** Acción terciaria con borde. */
+        outline: "border border-ink/25 bg-white text-ink hover:border-ink hover:bg-paper",
+        secondary: "bg-paper text-ink hover:bg-paper-deep",
+        ghost: "text-ink hover:bg-paper",
+        link: "h-auto px-0 text-ink underline underline-offset-4 decoration-ink/30 hover:decoration-ink",
+        /** Alias heredado: se dibuja como la acción principal. */
+        gradient: "bg-brand text-white hover:bg-brand-ink",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        default: "h-11 px-5",
+        sm: "h-9 px-3 text-sm",
+        lg: "h-12 px-6 text-base",
+        icon: "h-11 w-11",
       },
     },
     defaultVariants: {

@@ -7,9 +7,10 @@ import React from 'react';
  */
 export type Provenance = 'measured' | 'declared' | 'editorial';
 
-export const PROVENANCE: Record<Provenance, { label: string; description: string; text: string; bg: string; fill: string }> = {
+export const PROVENANCE: Record<Provenance, { label: string; spoken: string; description: string; text: string; bg: string; fill: string }> = {
   measured: {
     label: 'Medido',
+    spoken: 'dato medido por EligeTuHosting',
     description: 'Lo medimos nosotros con herramientas propias: TTFB, uptime, SSL o ASN de la IP.',
     text: 'text-signal-measured',
     bg: 'bg-signal-measured-bg',
@@ -17,6 +18,7 @@ export const PROVENANCE: Record<Provenance, { label: string; description: string
   },
   declared: {
     label: 'Declarado',
+    spoken: 'dato declarado por el proveedor',
     description: 'Lo informa el propio proveedor en su sitio o ficha. No lo hemos comprobado.',
     text: 'text-signal-declared',
     bg: 'bg-signal-declared-bg',
@@ -24,6 +26,7 @@ export const PROVENANCE: Record<Provenance, { label: string; description: string
   },
   editorial: {
     label: 'Editorial',
+    spoken: 'criterio editorial',
     description: 'Juicio del equipo editorial, con pesos publicados en la metodología.',
     text: 'text-signal-editorial',
     bg: 'bg-signal-editorial-bg',
@@ -54,17 +57,17 @@ export const ProvenanceTag: React.FC<ProvenanceTagProps> = ({ kind, variant = 't
   if (variant === 'glyph') {
     return (
       <span className={`inline-flex items-center ${className}`} title={`${p.label}: ${p.description}`}>
-        <ProvenanceGlyph kind={kind} />
-        <span className="sr-only">{p.label}</span>
+        <ProvenanceGlyph kind={kind} size={9} />
+        <span className="sr-only">({p.spoken})</span>
       </span>
     );
   }
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-[4px] px-1.5 py-[1px] text-[11px] font-semibold leading-4 ${p.text} ${p.bg} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-xs font-semibold leading-4 ${p.text} ${p.bg} ${className}`}
       title={p.description}
     >
-      <ProvenanceGlyph kind={kind} size={7} />
+      <ProvenanceGlyph kind={kind} size={8} />
       {p.label}
     </span>
   );

@@ -31,6 +31,48 @@ export default {
 				// Escala tipográfica del sistema (≈ 1.25, Elements of Typographic Style)
 				'2xs': ['0.75rem', { lineHeight: '1.1rem' }],
 			},
+			boxShadow: {
+				overlay: '0 16px 40px -16px rgb(15 34 56 / 0.28)',
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						'--tw-prose-body': 'rgb(var(--ink-2))',
+						'--tw-prose-headings': 'rgb(var(--ink))',
+						'--tw-prose-lead': 'rgb(var(--ink-2))',
+						'--tw-prose-links': 'rgb(var(--ink))',
+						'--tw-prose-bold': 'rgb(var(--ink))',
+						'--tw-prose-counters': 'rgb(var(--ink-3))',
+						'--tw-prose-bullets': 'rgb(var(--ink-3))',
+						'--tw-prose-hr': 'rgb(var(--rule))',
+						'--tw-prose-quotes': 'rgb(var(--ink))',
+						'--tw-prose-quote-borders': 'rgb(var(--rule))',
+						'--tw-prose-captions': 'rgb(var(--ink-3))',
+						'--tw-prose-code': 'rgb(var(--ink))',
+						'--tw-prose-pre-code': 'rgb(var(--ink))',
+						'--tw-prose-pre-bg': 'rgb(var(--paper))',
+						'--tw-prose-th-borders': 'rgb(var(--ink))',
+						'--tw-prose-td-borders': 'rgb(var(--rule))',
+						maxWidth: '62ch',
+						fontSize: '1.0625rem',
+						lineHeight: '1.7',
+						a: {
+							textDecorationColor: 'rgb(var(--ink) / 0.3)',
+							textUnderlineOffset: '3px',
+							fontWeight: '500',
+							'&:hover': { textDecorationColor: 'rgb(var(--ink))' },
+						},
+						'h1, h2': { fontStretch: '112%', letterSpacing: '-0.014em' },
+						h2: { fontWeight: '720', marginTop: '2em' },
+						h3: { fontWeight: '650' },
+						'code::before': { content: 'none' },
+						'code::after': { content: 'none' },
+						'blockquote p:first-of-type::before': { content: 'none' },
+						'blockquote p:last-of-type::after': { content: 'none' },
+						'thead th': { fontWeight: '600', fontSize: '0.8125rem' },
+					},
+				},
+			},
 			colors: {
 				ink: {
 					DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
@@ -216,5 +258,5 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;

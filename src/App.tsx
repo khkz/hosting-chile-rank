@@ -17,7 +17,7 @@ import StaticRobots from './components/StaticRobots';
 import StaticRSSFeed from './components/StaticRSSFeed';
 import LlmsTxt from './components/LlmsTxt';
 import { Toaster } from '@/components/ui/toaster';
-import { Toaster as Sonner } from 'sonner';
+import { Toaster as Sonner } from '@/components/ui/sonner';
 import { AuthProvider } from './providers/AuthProvider';
 import ComparativaRouteDispatcher from './components/ComparativaRouteDispatcher';
 import DirectorioRedirect from './components/DirectorioRedirect';

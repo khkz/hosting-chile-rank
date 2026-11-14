@@ -91,20 +91,20 @@
     --secondary: 213.3 25.7% 93.1%;
     --secondary-foreground: 212.2 57.7% 13.9%;
 
-    --muted: 214.3 25.9% 94.7%;
-    --muted-foreground: 214.3 15.6% 44.1%;
+    --muted: 216 29.4% 96.7%;
+    --muted-foreground: 214.6 15.7% 44.1%;
 
-    --accent: 214.3 25.9% 94.7%;
+    --accent: 216 29.4% 96.7%;
     --accent-foreground: 212.2 57.7% 13.9%;
 
     --destructive: 352.3 78.1% 42.9%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 214.3 21.9% 87.5%;
-    --input: 214.3 21.9% 87.5%;
+    --input: 213 13.6% 58.2%;   /* borde de campos: 3,1:1 sobre blanco */
     --ring: 212.2 57.7% 13.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.625rem;
 
     --sidebar-background: 216 29.4% 96.7%;
     --sidebar-foreground: 214.7 21.8% 34.1%;
@@ -164,6 +164,13 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+    /* El foco y los anclas no quedan bajo la cabecera fija. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  /* Con la barra fija móvil visible, tampoco bajo la barra. */
+  html[data-sticky-cta='on'] {
+    scroll-padding-bottom: 5.5rem;
   }
 
   body {
@@ -306,7 +313,7 @@ html {
   }
   
   .section-py {
-    @apply py-8 md:py-12 lg:py-16;
+    @apply py-14 md:py-20;
   }
   
   .section-px {
@@ -387,6 +394,93 @@ html {
     font-stretch: 88%;
   }
 
+
+  /* ── Sistema «Cercano y confiable»: roles tipográficos ────────────────
+     Una sola familia (Archivo). Los titulares usan el eje de ancho; el
+     cuerpo va a 16 px en móvil. Mayúscula solo inicial; sin antetítulos. */
+  .t-display {
+    font-stretch: 118%;
+    font-weight: 800;
+    letter-spacing: -0.022em;
+    line-height: 1.02;
+    font-size: clamp(2.5rem, 1.55rem + 3.4vw, 4.25rem);
+    text-wrap: balance;
+  }
+
+  .t-h1 {
+    font-stretch: 112%;
+    font-weight: 780;
+    letter-spacing: -0.018em;
+    line-height: 1.06;
+    font-size: clamp(2rem, 1.45rem + 2.1vw, 3rem);
+    text-wrap: balance;
+  }
+
+  .t-h2 {
+    font-stretch: 112%;
+    font-weight: 720;
+    letter-spacing: -0.014em;
+    line-height: 1.12;
+    font-size: clamp(1.5rem, 1.22rem + 1.05vw, 2.125rem);
+    text-wrap: balance;
+  }
+
+  .t-h3 {
+    font-weight: 650;
+    letter-spacing: -0.006em;
+    line-height: 1.25;
+    font-size: 1.1875rem;
+  }
+
+  .t-lead {
+    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+    line-height: 1.55;
+    color: rgb(var(--ink-2));
+    max-width: 62ch;
+  }
+
+  .t-body {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .t-small {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  /* Metadatos: piso de 13 px; nada del sitio va bajo 12 px. */
+  .t-meta {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: rgb(var(--ink-3));
+  }
+
+  .t-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: rgb(var(--ink-2));
+  }
+
+  /* Medida de lectura: ~62 caracteres con Archivo. */
+  .measure {
+    max-width: 62ch;
+  }
+
+  /* Ritmo vertical único para secciones de primer nivel. */
+  .section {
+    @apply py-14 md:py-20;
+  }
+
+  .section-tight {
+    @apply py-10 md:py-14;
+  }
+
+  .band {
+    @apply bg-paper;
+  }
+
   /* Separador de secciones */
   .section-separator {
     @apply w-full h-px bg-rule my-12;
@@ -396,6 +490,10 @@ html {
 /* En móvil, con la barra fija "Cotiza tu hosting" visible, el asesor se abre
    desde esa barra: un solo elemento fijo que no tapa contenido. */
 @media (max-width: 767.98px) {
+  html[data-sticky-cta='on'] [data-site-footer] {
+    padding-bottom: 5.5rem;
+  }
+
   html[data-sticky-cta='on'] .advisor-fab {
     opacity: 0;
     pointer-events: none;

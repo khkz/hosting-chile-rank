@@ -5,21 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  // Etiqueta del sistema: radio 6 px, 12 px, sin animaciones ni degradados.
+  "inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-semibold leading-5 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80 hover:shadow-lg hover:shadow-primary/30",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground border-border hover:bg-accent",
-        gradient:
-          "border-transparent bg-gradient-to-r from-primary via-primary/90 to-primary text-primary-foreground hover:shadow-lg hover:shadow-primary/40 animate-gradient bg-[length:200%_100%]",
-        glow:
-          "border-transparent bg-primary text-primary-foreground animate-glow",
+        default: "border-transparent bg-paper-deep text-ink-2",
+        secondary: "border-rule bg-paper text-ink-2",
+        destructive: "border-brand-ink/30 bg-white text-brand-ink",
+        outline: "border-rule bg-white text-ink-2",
+        /** Tinta sólida, para fondos claros que necesitan peso. */
+        ink: "border-transparent bg-ink text-white",
+        /** Solo para el puesto 1. */
+        brand: "border-transparent bg-brand text-white",
+        /** Alias heredados: neutros. */
+        gradient: "border-transparent bg-paper-deep text-ink-2",
+        glow: "border-transparent bg-paper-deep text-ink-2",
       },
     },
     defaultVariants: {

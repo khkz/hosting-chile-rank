@@ -133,7 +133,7 @@ const Flag: React.FC<FlagProps> = ({ code, size = 18, className = '', title }) =
     aria-label={title}
   >
     {FLAGS[code]}
-    <rect x={0.25} y={0.25} width={29.5} height={19.5} fill="none" stroke="rgb(15 34 56 / 0.18)" strokeWidth={0.5} rx={0.6} />
+    <rect x={0.25} y={0.25} width={29.5} height={19.5} fill="none" stroke="rgb(15 34 56 / 0.28)" strokeWidth={1} vectorEffect="non-scaling-stroke" rx={0.6} />
   </svg>
 );
 
