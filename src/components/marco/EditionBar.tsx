@@ -46,7 +46,7 @@ const EditionBar: React.FC<{ active: EditionKey; pathname: string }> = ({ active
   }, [active]);
 
   return (
-    <div className="bg-ink text-white/75">
+    <div role="region" aria-label="Ediciones de EligeTuHosting" className="bg-ink text-white/75">
       <div className="container flex h-11 items-center justify-between gap-6 lg:h-9">
         <div className="relative min-w-0">
           <nav

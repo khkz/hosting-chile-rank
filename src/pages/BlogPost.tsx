@@ -196,7 +196,7 @@ const BlogPost = () => {
             </div>
           }
         >
-          <div className="[&_h2]:scroll-mt-24" dangerouslySetInnerHTML={{ __html: html }} />
+          <div dangerouslySetInnerHTML={{ __html: html }} />
         </ReadingLayout>
       </main>
 

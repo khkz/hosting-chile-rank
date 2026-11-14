@@ -21,7 +21,7 @@ const Detail: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 /** Nota editorial leída de la base. */
 export const NotaValue: React.FC<{ nota: number | null; loading?: boolean }> = ({ nota, loading }) =>
   nota != null ? (
-    <span className="tabular font-semibold text-ink">{formatScore(nota)}<span className="font-normal text-ink-3">/10</span></span>
+    <span className="tabular font-semibold text-ink">{formatScore(nota)}<span className="font-normal text-ink-2">/10</span></span>
   ) : (
     <Muted>{loading ? '…' : 'Sin nota'}</Muted>
   );

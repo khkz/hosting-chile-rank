@@ -49,14 +49,12 @@ const CotizaAside: React.FC = () => (
       />
       <dl className="mt-5 space-y-4">
         {NOTAS_DESTACADA.map((n) => (
-          <div key={n.label}>
-            <div className="flex items-baseline justify-between gap-3">
-              <dt className="t-small text-ink-2">{n.label}</dt>
-              <dd className="tabular font-semibold text-ink">{formatScore(n.value)}/10</dd>
-            </div>
-            <div aria-hidden className="mt-1.5 h-1.5 w-full rounded-sm bg-paper-deep">
+          <div key={n.label} className="grid grid-cols-[1fr_auto] items-baseline gap-x-3">
+            <dt className="t-small text-ink-2">{n.label}</dt>
+            <dd className="tabular font-semibold text-ink">{formatScore(n.value)}/10</dd>
+            <dd aria-hidden className="col-span-2 mt-1.5 h-1.5 w-full rounded-sm bg-paper-deep">
               <div className="h-1.5 rounded-sm bg-ink-2" style={{ width: `${n.value * 10}%` }} />
-            </div>
+            </dd>
           </div>
         ))}
       </dl>

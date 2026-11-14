@@ -38,6 +38,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', variant = 'full', darkBackg
         >
           EligeTuHosting
         </span>
+        {edition && ' '}
         {edition && (
           <span
             className={`mt-1 text-xs font-medium sm:mt-0 sm:border-l sm:pl-2.5 sm:text-sm ${
