@@ -154,7 +154,7 @@ const HostingRanking = () => {
         </header>
 
         <RankingDisclosure className="mt-3" />
-        <div className="mt-3 flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+        <div className="mt-3 flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between xl:gap-8">
           <p className="text-base text-ink-2 md:text-sm">Criterios: velocidad, uptime, soporte y reputación.</p>
           <ProvenanceKey />
         </div>

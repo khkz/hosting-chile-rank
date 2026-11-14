@@ -2,6 +2,7 @@ import React from 'react';
 import { Building2, House } from 'lucide-react';
 import Section from '@/components/system/Section';
 import EditorialImage from '@/components/media/EditorialImage';
+import { isEditorialAvailable } from '@/lib/editorialImages';
 import { HostsFold, OperatorsFold } from '@/components/home/DatacenterRegistry';
 import { VERIFICATION_DATE_HUMAN } from '@/data/verified2026';
 
@@ -60,7 +61,7 @@ const Comparison: React.FC<{ Icon: React.ComponentType<{ className?: string }>; 
 
 const DatacenterEducation: React.FC = () => (
   <Section
-    id="dc-education"
+    id="dc-education-heading"
     tone="paper"
     title="¿Dónde vive realmente tu sitio?"
     lead="No todo lo que se llama «datacenter» lo es. La diferencia clave está en la construcción: un datacenter real se diseña desde los cimientos para alojar servidores; una oficina o casa adaptada conserva los riesgos de una vivienda u oficina común."
@@ -88,6 +89,8 @@ const DatacenterEducation: React.FC = () => (
             </>
           }
         />
+        {/* La foto publicada es ilustrativa: que no se lea como una instalación concreta. */}
+        {isEditorialAvailable('datacenter') && <figcaption className="t-meta mt-2">Imagen ilustrativa.</figcaption>}
       </figure>
     </div>
 
