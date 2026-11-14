@@ -73,18 +73,28 @@ export const ProvenanceTag: React.FC<ProvenanceTagProps> = ({ kind, variant = 't
   );
 };
 
-/** Leyenda: qué significa cada procedencia. */
-export const ProvenanceLegend: React.FC<{ className?: string; compact?: boolean }> = ({ className = '', compact = false }) => (
-  <dl className={`grid gap-x-8 gap-y-4 ${compact ? 'sm:grid-cols-3' : 'md:grid-cols-3'} ${className}`}>
-    {(Object.keys(PROVENANCE) as Provenance[]).map((k) => (
-      <div key={k} className="min-w-0">
-        <dt>
-          <ProvenanceTag kind={k} />
-        </dt>
-        <dd className={`mt-1.5 text-ink-2 ${compact ? 'text-xs leading-snug' : 'text-sm leading-relaxed'}`}>
-          {PROVENANCE[k].description}
-        </dd>
-      </div>
-    ))}
-  </dl>
-);
+/** Leyenda: qué significa cada procedencia. `compact` la deja en una sola fila. */
+export const ProvenanceLegend: React.FC<{ className?: string; compact?: boolean }> = ({ className = '', compact = false }) =>
+  compact ? (
+    <dl className={`flex flex-wrap items-center gap-x-6 gap-y-2 ${className}`}>
+      {(Object.keys(PROVENANCE) as Provenance[]).map((k) => (
+        <div key={k} className="flex min-w-0 items-center gap-2">
+          <dt>
+            <ProvenanceTag kind={k} />
+          </dt>
+          <dd className="t-meta">{PROVENANCE[k].spoken}</dd>
+        </div>
+      ))}
+    </dl>
+  ) : (
+    <dl className={`grid gap-x-8 gap-y-4 md:grid-cols-3 ${className}`}>
+      {(Object.keys(PROVENANCE) as Provenance[]).map((k) => (
+        <div key={k} className="min-w-0">
+          <dt>
+            <ProvenanceTag kind={k} />
+          </dt>
+          <dd className="mt-1.5 text-sm leading-relaxed text-ink-2">{PROVENANCE[k].description}</dd>
+        </div>
+      ))}
+    </dl>
+  );

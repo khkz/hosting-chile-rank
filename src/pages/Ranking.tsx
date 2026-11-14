@@ -152,6 +152,7 @@ const RankingPage = () => {
 
         <Section
           id="ranking"
+          density="tight"
           title="Top 3 proveedores de hosting"
           lead={
             <>
