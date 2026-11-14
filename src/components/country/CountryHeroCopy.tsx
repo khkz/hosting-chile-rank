@@ -36,8 +36,6 @@ type Props = {
   methodLabel?: string;
   /** Metadatos extra (procedencia de las notas, fecha de precios). */
   extraMeta?: React.ReactNode;
-  /** Qué mostrar mientras la imagen editorial no esté publicada. */
-  imageFallback?: React.ReactNode;
 };
 
 /**
@@ -55,7 +53,6 @@ export const CountryHeroCopy: React.FC<Props> = ({
   methodHref = '#metodologia',
   methodLabel = 'Cómo ordenamos',
   extraMeta,
-  imageFallback,
 }) => {
   const c: CountryCopy = COUNTRY_CONTENT[slug];
   if (!c) return null;
@@ -97,20 +94,21 @@ export const CountryHeroCopy: React.FC<Props> = ({
         </>
       }
       aside={
-        <EditorialImage
-          name={ed.image}
-          className="aspect-[4/3]"
-          sizes="(min-width: 1024px) 45vw, 100vw"
-          priority
-          fallback={imageFallback}
-        />
+        <EditorialImage name={ed.image} className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />
       }
     />
   );
 };
 
-/** Introducción de la edición y lo que trae la comparación (antes, píldoras). */
-export const CountryIntroCopy: React.FC<{ slug: Slug; children?: React.ReactNode }> = ({ slug, children }) => {
+/**
+ * Introducción de la edición. A la derecha, `aside` (p. ej. el resumen de
+ * datos leídos de la base) o, si no hay, lo que trae la comparación (antes, píldoras).
+ */
+export const CountryIntroCopy: React.FC<{ slug: Slug; aside?: React.ReactNode; children?: React.ReactNode }> = ({
+  slug,
+  aside,
+  children,
+}) => {
   const c = COUNTRY_CONTENT[slug];
   if (!c) return null;
   return (
@@ -121,15 +119,19 @@ export const CountryIntroCopy: React.FC<{ slug: Slug; children?: React.ReactNode
         ))}
       </div>
       <div className="lg:col-span-4 lg:col-start-9">
-        <p className="t-label">En esta comparación</p>
-        <ul className="mt-3 divide-y divide-rule border-y border-rule">
-          {c.chips.map((ch) => (
-            <li key={ch} className="flex items-start gap-2.5 py-3 text-[15px] text-ink">
-              <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-ink-3" />
-              {ch}
-            </li>
-          ))}
-        </ul>
+        {aside ?? (
+          <>
+            <p className="t-label">En esta comparación</p>
+            <ul className="mt-3 divide-y divide-rule border-y border-rule">
+              {c.chips.map((ch) => (
+                <li key={ch} className="flex items-start gap-2.5 py-3 text-[15px] text-ink">
+                  <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-ink-3" />
+                  {ch}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
         {children}
       </div>
     </div>

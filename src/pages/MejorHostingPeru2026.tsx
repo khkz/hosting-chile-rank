@@ -274,7 +274,7 @@ const MejorHostingPeru2026: React.FC = () => {
           id="metodologia"
           tone="paper"
           title="Cómo ponderamos en Perú"
-          lead="Cinco factores con su peso en la nota editorial de cada proveedor peruano."
+          lead="Cinco factores, con su peso, para la nota editorial de este ranking."
         >
           <PeMethodology />
         </Section>

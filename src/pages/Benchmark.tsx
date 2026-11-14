@@ -114,7 +114,7 @@ const Benchmark: React.FC = () => {
               </>
             ) : undefined
           }
-          aside={<EditorialImage name="metodologia" className="aspect-[4/3]" sizes="(min-width: 1024px) 45vw, 100vw" priority />}
+          aside={<EditorialImage name="metodologia" className="aspect-[16/9]" sizes="(min-width: 1024px) 45vw, 100vw" priority />}
         />
 
         {isLoading && (

@@ -117,7 +117,7 @@ const CC_NAME: Record<string, string> = {
 const ccName = (cc: string) => CC_NAME[cc] ?? cc;
 
 export interface DcLocationView {
-  /** Resumen corto: «En México», «Fuera de México», «Declara Colombia; IP fuera», «Sin dato». */
+  /** Resumen: «En México» (IP medida), «Declara México» (solo declarado), «Fuera de México», «Sin dato». */
   status: string;
   /** Texto declarado por el proveedor (procedencia: Declarado). null si no declara. */
   declared: string | null;
@@ -136,7 +136,7 @@ export function dcLocationView(dc: DcClass, countryName: string): DcLocationView
   }
   const status: Record<DcLocation, string> = {
     local_verified: `En ${countryName}`,
-    local_declared: `En ${countryName}`,
+    local_declared: `Declara ${countryName}`,
     foreign_verified: `Fuera de ${countryName}`,
     foreign_declared: `Fuera de ${countryName}`,
     mismatch: `Declara ${countryName}; IP fuera`,

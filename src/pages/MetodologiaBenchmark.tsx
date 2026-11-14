@@ -1,8 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ReadingLayout from "@/components/reading/ReadingLayout";
@@ -11,24 +9,14 @@ import { Button } from "@/components/ui/button";
 import CountryCrumbs from "@/components/ranking/pais/CountryCrumbs";
 import MethodologyMarkdown from "@/components/benchmark/MethodologyMarkdown";
 import { markdownToc } from "@/components/benchmark/markdownUtils";
+import { useBenchmarkMethodologies } from "@/components/benchmark/useMethodologies";
 import { formatDataDate, isoDate } from "@/lib/format";
 
 /** «v1.0» o «1.0» se muestran como «1.0» (la base ya trae la «v»). */
 const plainVersion = (v: string) => v.replace(/^v/i, "");
 
 const MetodologiaBenchmark: React.FC = () => {
-  const { data: methodologies, isLoading, isError, refetch, isFetching } = useQuery({
-    queryKey: ["benchmark-methodologies-all"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("benchmark_methodology")
-        .select("*")
-        .order("published_at", { ascending: false });
-      // Un error no es «sin metodología»: se muestra como error.
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
+  const { data: methodologies, isLoading, isError, refetch, isFetching } = useBenchmarkMethodologies();
 
   const current = methodologies?.find((m) => m.is_current);
   const previous = methodologies?.filter((m) => !m.is_current) ?? [];
@@ -72,7 +60,7 @@ const MetodologiaBenchmark: React.FC = () => {
               </>
             ) : undefined
           }
-          image={<EditorialImage name="metodologia" sizes="(min-width: 1024px) 64rem, 100vw" />}
+          image={<EditorialImage name="metodologia" className="aspect-[16/9] md:aspect-[2/1]" sizes="(min-width: 1024px) 64rem, 100vw" priority />}
           toc={current ? markdownToc(current.markdown) : undefined}
           prose={false}
           footer={

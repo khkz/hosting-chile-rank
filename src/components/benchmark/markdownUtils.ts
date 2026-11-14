@@ -15,6 +15,7 @@ export const slugify = (s: string) =>
 /** Índice a partir de los «## …» del Markdown. */
 export const markdownToc = (md: string) =>
   [...stripLeadingH1(md).matchAll(/^##\s+(.+)$/gm)].map((m) => {
-    const label = m[1].replace(/[*_`]/g, '').trim();
+    // Quita marcas de énfasis y código, pero conserva «_» dentro de identificadores.
+    const label = m[1].replace(/[*`]/g, '').replace(/(^|\s)_+|_+(?=\s|$)/g, '$1').trim();
     return { id: slugify(label), label };
   });

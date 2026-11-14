@@ -13,9 +13,7 @@ const heading = (level: number, withIds: boolean): Components['h2'] =>
     const Tag = `h${Math.min(level, 6)}` as 'h2';
     const id = withIds ? slugify(textOf(node as HastNode)) : undefined;
     return (
-      <Tag id={id} className={withIds ? 'scroll-mt-24' : undefined}>
-        {children}
-      </Tag>
+      <Tag id={id}>{children}</Tag>
     );
   };
 

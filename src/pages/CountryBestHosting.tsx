@@ -1,8 +1,6 @@
 import { useLocation, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useQuery } from '@tanstack/react-query';
 import { Download, Server } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Section from '@/components/system/Section';
@@ -10,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { LATAM_META, LATAM_LONG_SLUG, LATAM_OG_IMAGE, rankProviders, isLatamSlug, type LatamSlug } from '@/lib/latamCountry';
 import { ASN_MAP, classifyDc } from '@/lib/dcTier';
 import { hasLocalDatacenter } from '@/lib/dcLocal';
-import { isHiddenProvider } from '@/lib/providerLinks';
 import PeReassurances from '@/components/country/PeReassurances';
 import { CountryHeroCopy, CountryIntroCopy } from '@/components/country/CountryHeroCopy';
 import { COUNTRY_CONTENT } from '@/data/countryContent';
@@ -19,6 +16,7 @@ import CountrySummary from '@/components/ranking/pais/CountrySummary';
 import CountryDcTable from '@/components/ranking/pais/CountryDcTable';
 import CuratedNote from '@/components/ranking/pais/CuratedNote';
 import FaqList from '@/components/ranking/pais/FaqList';
+import { useCountryProviders } from '@/components/ranking/pais/useCountryProviders';
 
 const CountryBestHosting = () => {
   const location = useLocation();
@@ -28,21 +26,7 @@ const CountryBestHosting = () => {
   const slug = (valid ? first : 'mx') as LatamSlug;
   const meta = LATAM_META[slug];
 
-  const { data: providers, isLoading, isError, refetch } = useQuery({
-    queryKey: ['country-best-hosting', slug],
-    enabled: valid,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('hosting_companies')
-        .select('id, slug, name, website, legal_name, corporate_group, datacenter_location, year_founded, technologies, is_curated, updated_at')
-        .eq('country', meta.code)
-        .eq('is_verified', true)
-        .range(0, 999);
-      // Un error de lectura no es un país vacío: se muestra como error.
-      if (error) throw error;
-      return (data ?? []).filter((c) => !isHiddenProvider(c.slug, c.website));
-    },
-  });
+  const { data: providers, isLoading, isError, refetch } = useCountryProviders(slug, meta.code, valid);
 
   const c = COUNTRY_CONTENT[slug];
   const list = rankProviders(providers ?? [], slug);
@@ -58,7 +42,8 @@ const CountryBestHosting = () => {
   const curated = list.find((p) => p.is_curated);
   const declaredLocal = providers ? list.filter((p) => hasLocalDatacenter(slug, p.datacenter_location)).length : undefined;
   const measuredLocal = providers ? list.filter((p) => classifyDc(p, slug).location === 'local_verified').length : undefined;
-  const measuredTotal = providers ? list.filter((p) => Boolean(ASN_MAP[p.slug])).length : undefined;
+  const measuredVisible = providers ? list.filter((p) => ASN_MAP[p.slug] && ASN_MAP[p.slug].cc !== 'CDN').length : undefined;
+  const measuredCdn = providers ? list.filter((p) => ASN_MAP[p.slug]?.cc === 'CDN').length : undefined;
 
   const peFaqs = slug === 'pe' ? [
     { q: '¿HostingPlus Perú tiene datacenter en Perú?', a: 'No. Su ficha técnica declara datacenter en Orlando, Florida (EE.UU.). Lo que sí tiene en Perú es razón social registrada (Hostingplus Datacenter S.A.C.), teléfono local (+51 1 640 9409) y soporte en español. Si necesitas datacenter físicamente en Perú, revisa nuestra lista de /pe/hosting-con-datacenter-local.' },
@@ -138,19 +123,24 @@ const CountryBestHosting = () => {
             />
           }
           updatedIso={latestIso}
-          imageFallback={
-            <CountrySummary
-              countryName={meta.name}
-              total={providers ? list.length : undefined}
-              declaredLocal={declaredLocal}
-              measuredLocal={measuredLocal}
-              measuredTotal={measuredTotal}
-            />
-          }
         />
 
         <Section density="tight" aria-label={`Cómo leer la edición ${meta.name}`}>
-          <CountryIntroCopy slug={slug}>
+          <CountryIntroCopy
+            slug={slug}
+            aside={
+              isError ? undefined : (
+              <CountrySummary
+                countryName={meta.name}
+                total={providers ? list.length : undefined}
+                declaredLocal={declaredLocal}
+                measuredLocal={measuredLocal}
+                measuredVisible={measuredVisible}
+                measuredCdn={measuredCdn}
+              />
+              )
+            }
+          >
             {slug !== 'pe' && curated && (
               <div className="mt-8">
                 <CuratedNote name={curated.name} slug={curated.slug} countrySlug={slug} countryName={meta.name} />
@@ -185,7 +175,8 @@ const CountryBestHosting = () => {
             <div className="rounded-xl border border-rule bg-paper p-6 text-ink-2">
               <p className="t-h3 text-ink">Todavía no hay proveedores verificados en {meta.name}</p>
               <p className="t-small mt-2 measure">
-                Publicamos un proveedor cuando su razón social y su datacenter se pueden comprobar. ¿Conoces uno que falte?
+                Publicamos un proveedor cuando su razón social y su datacenter se pueden comprobar.{' '}
+                {slug === 'ar' ? '¿Conocés uno que falte?' : '¿Conoces uno que falte?'}
               </p>
               <Button asChild variant="outline" className="mt-4">
                 <Link to="/contacto">Sugerir un proveedor</Link>
