@@ -1,6 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrendingUp, Clock, Users, Shield } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 interface TLDRData {
   title: string;
@@ -20,64 +19,55 @@ interface TLDRSummaryProps {
   data: TLDRData;
 }
 
-const TLDRSummary: React.FC<TLDRSummaryProps> = ({ data }) => {
-  return (
-    <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 mb-8">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-blue-900">
-          <Clock className="h-5 w-5" />
-          TL;DR - {data.title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Key Points */}
-        <div>
-          <h4 className="font-semibold text-blue-800 mb-2">Puntos clave:</h4>
-          <ul className="space-y-1">
-            {data.keyPoints.map((point, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm text-blue-700">
-                <span className="text-blue-500 mt-1">•</span>
-                {point}
-              </li>
-            ))}
-          </ul>
-        </div>
+/** Resumen al inicio de un término: puntos clave, cifras que trae el contenido y sus fuentes. */
+const TLDRSummary: React.FC<TLDRSummaryProps> = ({ data }) => (
+  <section aria-label="En resumen" className="rounded-xl border border-rule bg-paper p-5 md:p-6">
+    <p className="t-label">En resumen</p>
+    <p className="t-h3 mt-1 text-ink">{data.title}</p>
 
-        {/* Stats */}
-        {data.stats && (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {data.stats.map((stat, index) => (
-              <div key={index} className="bg-white/60 p-3 rounded-lg text-center">
-                <div className="flex justify-center mb-1">{stat.icon}</div>
-                <div className="text-lg font-bold text-blue-900">{stat.value}</div>
-                <div className="text-xs text-blue-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
+    <ul className="t-body mt-4 list-disc space-y-1.5 pl-5 text-ink-2 marker:text-ink-3">
+      {data.keyPoints.map((point, index) => (
+        <li key={index}>{point}</li>
+      ))}
+    </ul>
 
-        {/* Sources */}
-        {data.sources && (
-          <div>
-            <h4 className="font-semibold text-blue-800 mb-2">Fuentes:</h4>
-            <div className="space-y-1">
-              {data.sources.map((source, index) => (
-                <a
-                  key={index}
-                  href={source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-blue-600 hover:text-blue-800 underline block"
-                >
-                  {source.title}
-                </a>
-              ))}
-            </div>
+    {data.stats && data.stats.length > 0 && (
+      <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {data.stats.map((stat, index) => (
+          <div key={index} className="rounded-lg border border-rule bg-white p-3">
+            <dt className="t-meta flex items-center gap-1.5 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:text-ink-3">
+              <span aria-hidden className="inline-flex">
+                {stat.icon}
+              </span>
+              {stat.label}
+            </dt>
+            <dd className="tabular mt-1 text-lg font-bold text-ink">{stat.value}</dd>
           </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
+        ))}
+      </dl>
+    )}
+
+    {data.sources && data.sources.length > 0 && (
+      <div className="mt-5">
+        <p className="t-label">Fuentes</p>
+        <ul className="mt-1.5 space-y-1">
+          {data.sources.map((source, index) => (
+            <li key={index}>
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="t-small inline-flex items-center gap-1 text-ink underline decoration-ink/30 underline-offset-[3px] hover:decoration-ink"
+              >
+                {source.title}
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+);
 
 export default TLDRSummary;

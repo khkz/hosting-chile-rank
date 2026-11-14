@@ -1,63 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GlossarySearch from '@/components/GlossarySearch';
 import TermCard from '@/components/TermCard';
 import RightRailOffer from '@/components/RightRailOffer';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
+import PageHeader from '@/components/system/PageHeader';
+import { WikiCategoryIcon } from '@/components/lectura/wiki';
 import { wikiTerms, wikiCategories, WikiTerm } from '@/data/wiki/terms';
-import { BookOpen, TrendingUp, Zap } from 'lucide-react';
+import { formatInteger } from '@/lib/format';
+
+const FEATURED = ['wordpress', 'elementor', 'woocommerce', 'litespeed-cache', 'moodle', 'ai-wordpress', 'http3-quic'];
+
+const countIn = (categoryId: string) => wikiTerms.filter((t) => t.category === categoryId).length;
 
 const WikiIndex: React.FC = () => {
   const [searchResults, setSearchResults] = useState<WikiTerm[]>(wikiTerms);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [featuredTerms] = useState<WikiTerm[]>(
-    wikiTerms.filter(term => 
-      ['wordpress', 'elementor', 'woocommerce', 'litespeed-cache', 'moodle', 'ai-wordpress', 'http3-quic'].includes(term.slug)
-    ).slice(0, 6)
-  );
+  const handleSearchResults = useCallback((results: WikiTerm[]) => setSearchResults(results), []);
 
-  const handleSearchResults = (results: WikiTerm[]) => {
-    setSearchResults(results);
-    setSelectedCategory(null); // Clear category when searching
-  };
+  const featuredTerms = wikiTerms.filter((term) => FEATURED.includes(term.slug)).slice(0, 6);
+  const trendingTerms = wikiTerms.filter((term) => term.category === 'trends-2026').slice(0, 4);
+  const filtering = searchResults.length !== wikiTerms.length;
 
-  const handleCategoryClick = (categoryId: string) => {
-    const categoryResults = wikiTerms.filter(t => t.category === categoryId);
-    setSearchResults(categoryResults);
-    setSelectedCategory(categoryId);
-    // Scroll to results section
-    document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const clearFilters = () => {
-    setSearchResults(wikiTerms);
-    setSelectedCategory(null);
-  };
-
-  const trendingTerms = wikiTerms.filter(term => term.category === 'trends-2026').slice(0, 4);
-  const performanceTerms = wikiTerms.filter(term => term.category === 'performance').slice(0, 4);
-
-  const breadcrumbItems = [
-    { name: 'Inicio', href: '/' }
-  ];
+  const breadcrumbItems = [{ name: 'Inicio', href: '/' }];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Helmet>
         <title>Wiki Hosting 2026 | EligeTuHosting.cl</title>
-        <meta 
-          name="description" 
-          content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026. Guías técnicas para elegir el mejor hosting en Chile." 
+        <meta
+          name="description"
+          content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026. Guías técnicas para elegir el mejor hosting en Chile."
         />
         <meta name="keywords" content="wiki hosting, wordpress, moodle, joomla, elementor, woocommerce, litespeed, cache, seguridad, hosting chile" />
         <link rel="canonical" href="https://eligetuhosting.cl/wiki" />
-        
+
         {/* Open Graph */}
         <meta property="og:title" content="Wiki Hosting 2026 | EligeTuHosting.cl" />
         <meta property="og:description" content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026. Guías técnicas para elegir el mejor hosting en Chile." />
@@ -66,13 +46,13 @@ const WikiIndex: React.FC = () => {
         <meta property="og:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
         <meta property="og:site_name" content="EligeTuHosting.cl" />
         <meta property="og:locale" content="es_CL" />
-        
+
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Wiki Hosting 2026 | EligeTuHosting.cl" />
         <meta name="twitter:description" content="Glosario completo de hosting, WordPress, Moodle, Joomla, Elementor, WooCommerce y tendencias 2026." />
         <meta name="twitter:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
-        
+
         {/* Schema.org DefinedTermSet */}
         <script type="application/ld+json">
           {JSON.stringify({
@@ -99,168 +79,123 @@ const WikiIndex: React.FC = () => {
 
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8">
-        <SEOBreadcrumbs items={breadcrumbItems} pageName="Wiki de Hosting" />
+      <main>
+        <PageHeader
+          breadcrumbs={<SEOBreadcrumbs items={breadcrumbItems} pageName="Wiki de Hosting" />}
+          title="Glosario Completo de Hosting"
+          lead="Términos de hosting, WordPress, Moodle, Joomla, Elementor y WooCommerce explicados en simple: qué son, cuándo te sirven y qué pedirle a tu hosting."
+          meta={
+            <span>
+              {formatInteger(wikiTerms.length)} términos en {formatInteger(wikiCategories.length)} categorías
+            </span>
+          }
+        />
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">
-          {/* Contenido principal */}
-          <div className="lg:col-span-3 space-y-8">
-            {/* Hero Section */}
-            <div className="text-center space-y-4">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                <BookOpen className="h-4 w-4" />
-                Wiki de Hosting Chile
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold">
-                Glosario Completo de Hosting
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Todo sobre WordPress, Moodle, Joomla, Elementor, WooCommerce y las últimas tendencias tecnológicas 2026. 
-                Encuentra el hosting perfecto para cada tecnología.
-              </p>
+        <div className="container py-10 md:py-14">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14">
+            <div className="min-w-0 space-y-14">
+              <section aria-labelledby="buscar" className="rounded-xl border border-rule bg-paper p-5 md:p-6">
+                <h2 id="buscar" className="t-h3 mb-4 text-ink">
+                  Buscar en la wiki
+                </h2>
+                <GlossarySearch onResults={handleSearchResults} />
+              </section>
+
+              {!filtering && (
+                <section aria-labelledby="destacados">
+                  <h2 id="destacados" className="t-h2 mb-6 text-ink">
+                    Términos destacados
+                  </h2>
+                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    {featuredTerms.map((term, i) => (
+                      <TermCard key={`${term.id}-${i}`} term={term} variant="compact" />
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {!filtering && (
+                <section aria-labelledby="categorias">
+                  <h2 id="categorias" className="t-h2 mb-6 text-ink">
+                    Explorar por categorías
+                  </h2>
+                  <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    {wikiCategories.map((category) => (
+                      <li key={category.id}>
+                        <Link
+                          to={`/wiki/categoria/${category.id}`}
+                          className="flex h-full gap-3 rounded-xl border border-rule p-4 transition-colors hover:border-ink/40"
+                        >
+                          <WikiCategoryIcon name={category.icon} className="mt-0.5" />
+                          <span className="min-w-0">
+                            <span className="block font-semibold text-ink">{category.name}</span>
+                            <span className="t-small mt-0.5 block text-ink-2">{category.description}</span>
+                            <span className="t-meta mt-2 block tabular">{formatInteger(countIn(category.id))} términos</span>
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {!filtering && trendingTerms.length > 0 && (
+                <section aria-labelledby="tendencias">
+                  <h2 id="tendencias" className="t-h2 mb-6 text-ink">
+                    Tendencias 2026
+                  </h2>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {trendingTerms.map((term, i) => (
+                      <TermCard key={`${term.id}-${i}`} term={term} variant="compact" />
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              <section id="search-results" aria-labelledby="resultados" className="scroll-mt-24">
+                <h2 id="resultados" className="t-h2 mb-6 text-ink">
+                  {filtering ? 'Resultados de búsqueda' : 'Todos los términos'}
+                </h2>
+                {searchResults.length === 0 ? (
+                  <div className="rounded-xl border border-rule bg-paper p-6 md:p-8">
+                    <p className="t-h3 text-ink">No encontramos términos con esa búsqueda</p>
+                    <p className="t-body mt-2 max-w-[62ch] text-ink-2">
+                      Prueba con otra palabra, revisa la ortografía o usa «Limpiar filtros» para volver a ver los{' '}
+                      {formatInteger(wikiTerms.length)} términos.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {searchResults.map((term, i) => (
+                      <TermCard key={`${term.id}-${i}`} term={term} />
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              <section aria-labelledby="ayuda" className="rounded-xl border border-rule bg-paper p-6 md:p-8">
+                <h2 id="ayuda" className="t-h3 text-ink">
+                  ¿Necesitas ayuda eligiendo hosting?
+                </h2>
+                <p className="t-body mt-2 max-w-[62ch] text-ink-2">
+                  Nuestro equipo especializado te ayuda a encontrar el plan perfecto según tu tecnología y requerimientos.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Button asChild variant="brand">
+                    <Link to="/cotiza-hosting">Cotizar hosting</Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link to="/ranking">Ver el ranking</Link>
+                  </Button>
+                </div>
+              </section>
             </div>
 
-            {/* Búsqueda */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5" />
-                  Buscar en la Wiki
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <GlossarySearch onResults={handleSearchResults} />
-              </CardContent>
-            </Card>
-
-            {/* Términos destacados (si no hay búsqueda activa) */}
-            {searchResults.length === wikiTerms.length && !selectedCategory && (
-              <section className="space-y-6">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-2xl font-bold">Términos Destacados</h2>
-                  <Badge variant="secondary">{featuredTerms.length}</Badge>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {featuredTerms.map(term => (
-                    <TermCard key={term.id} term={term} variant="compact" />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Categorías populares (si no hay búsqueda activa) */}
-            {searchResults.length === wikiTerms.length && !selectedCategory && (
-              <section className="space-y-6">
-                <h2 className="text-2xl font-bold">Explorar por Categorías</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {wikiCategories.map(category => (
-                    <Link key={category.id} to={`/wiki/categoria/${category.id}`}>
-                      <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
-                        <CardContent className="p-4 text-center">
-                          <div className="text-2xl mb-2">{category.icon}</div>
-                          <h3 className="font-semibold mb-1">{category.name}</h3>
-                          <p className="text-sm text-muted-foreground mb-2">{category.description}</p>
-                          <Badge variant="outline" className="text-xs">
-                            {wikiTerms.filter(t => t.category === category.id).length} términos
-                          </Badge>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Tendencias 2026 (si no hay búsqueda activa) */}
-            {searchResults.length === wikiTerms.length && !selectedCategory && (
-              <section className="space-y-6">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  <h2 className="text-2xl font-bold">Tendencias 2026</h2>
-                  <Badge variant="default">Nuevo</Badge>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {trendingTerms.map(term => (
-                    <TermCard key={term.id} term={term} variant="compact" />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Resultados de búsqueda */}
-            <section id="search-results" className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-2xl font-bold">
-                    {selectedCategory 
-                      ? `${wikiCategories.find(c => c.id === selectedCategory)?.name || 'Categoría'}` 
-                      : searchResults.length === wikiTerms.length 
-                        ? 'Todos los Términos' 
-                        : 'Resultados de Búsqueda'}
-                  </h2>
-                  {selectedCategory && (
-                    <Badge variant="secondary" className="text-xs">
-                      {wikiCategories.find(c => c.id === selectedCategory)?.icon} Categoría
-                    </Badge>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline">
-                    {searchResults.length} término{searchResults.length !== 1 ? 's' : ''}
-                  </Badge>
-                  {(selectedCategory || searchResults.length !== wikiTerms.length) && (
-                    <Button variant="outline" size="sm" onClick={clearFilters}>
-                      Ver todos
-                    </Button>
-                  )}
-                </div>
+            <div className="min-w-0">
+              <div className="lg:sticky lg:top-24">
+                <RightRailOffer termSlug="wiki-index" />
               </div>
-
-              {searchResults.length === 0 ? (
-                <Card>
-                  <CardContent className="p-8 text-center">
-                    <div className="space-y-3">
-                      <div className="text-4xl">🔍</div>
-                      <h3 className="text-lg font-semibold">No se encontraron resultados</h3>
-                      <p className="text-muted-foreground">
-                        Intenta con otros términos o explora las categorías disponibles.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid grid-cols-1 gap-6">
-                  {searchResults.map(term => (
-                    <TermCard key={term.id} term={term} />
-                  ))}
-                </div>
-              )}
-            </section>
-
-            {/* CTA Final */}
-            <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-              <CardContent className="p-8 text-center">
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">¿Necesitas ayuda eligiendo hosting?</h3>
-                  <p className="text-muted-foreground max-w-md mx-auto">
-                    Nuestro equipo especializado te ayuda a encontrar el plan perfecto según tu tecnología y requerimientos.
-                  </p>
-                  <div className="flex gap-3 justify-center">
-                    <Button asChild>
-                      <Link to="/cotiza-hosting">Cotizar mi proyecto</Link>
-                    </Button>
-                    <Button variant="outline" asChild>
-                      <Link to="/ranking">Ver ranking completo</Link>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sidebar derecho */}
-          <div className="lg:col-span-1">
-            <RightRailOffer termSlug="wiki-index" />
+            </div>
           </div>
         </div>
       </main>

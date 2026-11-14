@@ -61,11 +61,26 @@ export interface WikiTerm {
   }>;
 }
 
+/** Nombre del ícono lucide de cada categoría (se dibuja con WikiCategoryIcon). */
+export type WikiCategoryIconName =
+  | 'Wrench'
+  | 'Palette'
+  | 'Search'
+  | 'Zap'
+  | 'ShieldCheck'
+  | 'ShoppingCart'
+  | 'GraduationCap'
+  | 'LayoutTemplate'
+  | 'TrendingUp'
+  | 'Server'
+  | 'Globe'
+  | 'Lock';
+
 export interface WikiCategory {
   id: string;
   name: string;
   description: string;
-  icon: string;
+  icon: WikiCategoryIconName;
   termCount: number;
 }
 
@@ -74,84 +89,84 @@ export const wikiCategories: WikiCategory[] = [
     id: 'wordpress',
     name: 'WordPress Core',
     description: 'Conceptos fundamentales de WordPress',
-    icon: '🔧',
+    icon: 'Wrench',
     termCount: 7
   },
   {
     id: 'builders',
     name: 'Page Builders', 
     description: 'Constructores visuales para WordPress',
-    icon: '🎨',
+    icon: 'Palette',
     termCount: 4
   },
   {
     id: 'seo',
     name: 'SEO',
     description: 'Optimización para motores de búsqueda',
-    icon: '🔍',
+    icon: 'Search',
     termCount: 5
   },
   {
     id: 'performance',
     name: 'Performance',
     description: 'Optimización de velocidad y caché',
-    icon: '⚡',
+    icon: 'Zap',
     termCount: 5
   },
   {
     id: 'security',
     name: 'Seguridad',
     description: 'Protección y hardening web',
-    icon: '🛡️',
+    icon: 'ShieldCheck',
     termCount: 4
   },
   {
     id: 'woocommerce',
     name: 'WooCommerce',
     description: 'E-commerce con WordPress',
-    icon: '🛒',
+    icon: 'ShoppingCart',
     termCount: 3
   },
   {
     id: 'lms',
     name: 'LMS',
     description: 'Sistemas de gestión de aprendizaje',
-    icon: '🎓',
+    icon: 'GraduationCap',
     termCount: 3
   },
   {
     id: 'cms',
     name: 'CMS Alternativos',
     description: 'Joomla, Drupal y otros CMS',
-    icon: '🌐',
+    icon: 'LayoutTemplate',
     termCount: 2
   },
   {
     id: 'trends-2026',
     name: 'Tendencias 2026',
     description: 'IA, nuevas tecnologías y el futuro del hosting',
-    icon: '🚀',
+    icon: 'TrendingUp',
     termCount: 12
   },
   {
     id: 'hosting-fundamentals',
     name: 'Hosting Fundamentals',
     description: 'Conceptos básicos de hosting web',
-    icon: '🖥️',
+    icon: 'Server',
     termCount: 8
   },
   {
     id: 'domains',
     name: 'Dominios',
     description: 'Gestión y configuración de dominios',
-    icon: '🌐',
+    icon: 'Globe',
     termCount: 5
   },
   {
     id: 'ssl-security',
     name: 'SSL y Certificados',
     description: 'Seguridad con certificados SSL/TLS',
-    icon: '🔒',
+    icon: 'Lock',
     termCount: 4
   }
 ];

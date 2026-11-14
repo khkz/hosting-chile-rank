@@ -1,92 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import DynamicMetaTags from '@/components/SEO/DynamicMetaTags';
+import PageHeader from '@/components/system/PageHeader';
+import Section from '@/components/system/Section';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import Migas from '@/components/lectura/Migas';
+import { BLOG_POSTS, blogCategories, type BlogPostData } from '@/components/lectura/blogPosts';
+import { formatDataDate, formatInteger, isoDate } from '@/lib/format';
 
-// Datos simulados de posts del blog
-const blogPosts = [
-  {
-    id: 1,
-    slug: 'mejores-servidores-web-2025',
-    title: 'Los 5 mejores servidores web en 2025',
-    excerpt: 'Una comparativa detallada de los servidores web más eficientes y seguros para tu sitio. Analizamos LiteSpeed, Nginx, Apache y alternativas emergentes.',
-    date: '2 de mayo, 2025',
-    author: 'Ana Martínez',
-    category: 'Tecnología',
-    image: '/blog/mejores-servidores-web-2025.svg',
-    readTime: '8 min'
-  },
-  {
-    id: 2,
-    slug: 'optimizacion-wordpress-hosting',
-    title: 'Cómo optimizar tu WordPress en cualquier hosting',
-    excerpt: 'Guía paso a paso para mejorar el rendimiento de tu sitio WordPress independientemente del proveedor de hosting que utilices.',
-    date: '28 de abril, 2025',
-    author: 'Carlos Vega',
-    category: 'WordPress',
-    image: '/blog/optimizacion-wordpress-hosting.svg',
-    readTime: '12 min'
-  },
-  {
-    id: 3,
-    slug: 'hosting-ecologico-tendencia',
-    title: 'Hosting ecológico: La tendencia que está cambiando la industria',
-    excerpt: 'Conoce cómo los proveedores de hosting están adoptando prácticas sostenibles y por qué deberías considerarlo para tu próximo proyecto.',
-    date: '15 de abril, 2025',
-    author: 'María González',
-    category: 'Sostenibilidad',
-    image: '/blog/hosting-ecologico-tendencia.svg',
-    readTime: '6 min'
-  },
-  {
-    id: 4,
-    slug: 'seguridad-sitio-web-hosting',
-    title: '10 medidas de seguridad esenciales para tu sitio web',
-    excerpt: 'Protege tu sitio web de amenazas con estas estrategias de seguridad fundamentales que todo administrador web debería implementar.',
-    date: '5 de abril, 2025',
-    author: 'Diego Rojas',
-    category: 'Seguridad',
-    image: '/blog/seguridad-sitio-web-hosting.svg',
-    readTime: '9 min'
-  },
-  {
-    id: 5,
-    slug: 'migracion-hosting-sin-problemas',
-    title: 'Cómo migrar de hosting sin perder SEO ni visitas',
-    excerpt: 'Guía completa para cambiar de proveedor de hosting manteniendo intacto tu posicionamiento en buscadores y evitando tiempos de inactividad.',
-    date: '22 de marzo, 2025',
-    author: 'Laura Castro',
-    category: 'SEO',
-    image: '/blog/migracion-hosting-sin-problemas.svg',
-    readTime: '10 min'
-  },
-  {
-    id: 6,
-    slug: 'crecimiento-hosting-latinoamerica',
-    title: 'El crecimiento del mercado de hosting en Latinoamérica',
-    excerpt: 'Análisis del rápido desarrollo de la industria de hosting web en la región y las oportunidades que presenta para emprendedores digitales.',
-    date: '10 de marzo, 2025',
-    author: 'Roberto Sánchez',
-    category: 'Mercado',
-    image: '/blog/crecimiento-hosting-latinoamerica.svg',
-    readTime: '7 min'
-  }
-];
-
-// Categorías populares
-const popularCategories = [
-  { name: 'WordPress', count: 12 },
-  { name: 'Seguridad', count: 9 },
-  { name: 'Rendimiento', count: 8 },
-  { name: 'SEO', count: 7 },
-  { name: 'Tecnología', count: 6 },
-  { name: 'Mercado', count: 5 },
-  { name: 'Sostenibilidad', count: 4 },
-];
+const ArticleRow: React.FC<{ post: BlogPostData }> = ({ post }) => (
+  <article className="grid gap-5 py-8 first:pt-0 md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] md:gap-8">
+    <img
+      src={post.image}
+      alt=""
+      width={1200}
+      height={630}
+      loading="lazy"
+      className="aspect-[40/21] w-full rounded-xl border border-rule object-cover"
+    />
+    <div className="min-w-0">
+      <div className="t-meta flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Badge variant="outline">{post.category}</Badge>
+        <time dateTime={isoDate(post.date)}>{formatDataDate(post.date)}</time>
+        <span>{post.readTime} de lectura</span>
+      </div>
+      <h3 className="t-h3 mt-3 text-ink">
+        <Link to={`/blog/${post.slug}`} className="hover:underline hover:decoration-ink/40 hover:underline-offset-4">
+          {post.title}
+        </Link>
+      </h3>
+      <p className="t-body mt-2 max-w-[62ch] text-ink-2">{post.excerpt}</p>
+      <p className="t-meta mt-3">
+        Por <span className="font-semibold text-ink-2">{post.author}</span>
+      </p>
+      <Link
+        to={`/blog/${post.slug}`}
+        className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+      >
+        Leer el artículo
+        <span className="sr-only">: {post.title}</span>
+        <ArrowRight className="h-4 w-4" aria-hidden />
+      </Link>
+    </div>
+  </article>
+);
 
 const Blog = () => {
+  const [category, setCategory] = useState<string | null>(null);
+  const categories = blogCategories();
+  const posts = category ? BLOG_POSTS.filter((p) => p.category === category) : BLOG_POSTS;
+  const total = BLOG_POSTS.length;
+
+  const chip = (active: boolean) =>
+    cn(
+      'inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 text-sm font-semibold transition-colors',
+      active ? 'border-ink bg-ink text-white' : 'border-rule bg-white text-ink hover:border-ink',
+    );
+
   return (
     <>
       <DynamicMetaTags
@@ -94,200 +68,49 @@ const Blog = () => {
         description="Información actualizada sobre hosting, WordPress, seguridad web y tecnologías para tu sitio. Guías, tutoriales y consejos de expertos."
         keywords="blog hosting, wordpress chile, seguridad web, tutoriales hosting, guías web"
       />
-      
+
       <Navbar />
-      
-      <main className="bg-paper">
-        {/* Hero section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-3xl md:text-4xl font-bold text-ink mb-6">
-                Blog de eligetuhosting.cl
-              </h1>
-              <p className="text-lg text-[#555]">
-                Guías, tutoriales y consejos sobre hosting, WordPress y desarrollo web para ayudarte a 
-                mejorar tu presencia online.
-              </p>
-            </div>
+
+      <main>
+        <PageHeader
+          breadcrumbs={<Migas items={[{ name: 'Inicio', href: '/' }, { name: 'Blog' }]} />}
+          title="Blog de eligetuhosting.cl"
+          lead="Guías, tutoriales y consejos sobre hosting, WordPress y desarrollo web para ayudarte a mejorar tu presencia online."
+          meta={
+            <span>
+              {formatInteger(total)} {total === 1 ? 'artículo publicado' : 'artículos publicados'}
+            </span>
+          }
+        />
+
+        <Section title="Artículos recientes" density="tight">
+          <div role="group" aria-label="Filtrar por categoría" className="mb-8 flex flex-wrap gap-2">
+            <button type="button" aria-pressed={category === null} onClick={() => setCategory(null)} className={chip(category === null)}>
+              Todas
+              <span className="tabular opacity-75">{formatInteger(total)}</span>
+            </button>
+            {categories.map((c) => (
+              <button
+                key={c.name}
+                type="button"
+                aria-pressed={category === c.name}
+                onClick={() => setCategory(c.name)}
+                className={chip(category === c.name)}
+              >
+                {c.name}
+                <span className="tabular opacity-75">{formatInteger(c.count)}</span>
+              </button>
+            ))}
           </div>
-        </section>
-        
-        {/* Blog posts grid */}
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Main content - Posts */}
-              <div className="md:col-span-2 space-y-8">
-                <h2 className="text-2xl font-bold mb-6">Artículos recientes</h2>
-                
-                {blogPosts.map(post => (
-                  <Card key={post.id} className="overflow-hidden">
-                    <div className="md:flex">
-                      <div className="md:w-1/3">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="md:w-2/3">
-                        <CardHeader>
-                          <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
-                            <span className="bg-paper-deep px-2 py-0.5 rounded">{post.category}</span>
-                            <span>•</span>
-                            <span>{post.date}</span>
-                          </div>
-                          <CardTitle className="text-xl">
-                            <Link to={`/blog/${post.slug}`} className="hover:text-brand">
-                              {post.title}
-                            </Link>
-                          </CardTitle>
-                          <CardDescription>
-                            {post.excerpt}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardFooter className="flex justify-between items-center">
-                          <div className="text-sm text-gray-500">
-                            Por {post.author} • {post.readTime} de lectura
-                          </div>
-                          <Link
-                            to={`/blog/${post.slug}`}
-                            className="text-brand text-sm font-medium hover:underline"
-                          >
-                            Leer más →
-                          </Link>
-                        </CardFooter>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-                
-                {/* Paginación */}
-                <div className="flex justify-center pt-6">
-                  <nav className="flex items-center gap-1">
-                    <button className="w-10 h-10 flex items-center justify-center rounded-md border hover:bg-gray-100">
-                      <span className="sr-only">Anterior</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="m15 18-6-6 6-6"/>
-                      </svg>
-                    </button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-md border bg-brand text-white">1</button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-md border hover:bg-gray-100">2</button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-md border hover:bg-gray-100">3</button>
-                    <span className="w-10 h-10 flex items-center justify-center">...</span>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-md border hover:bg-gray-100">8</button>
-                    <button className="w-10 h-10 flex items-center justify-center rounded-md border hover:bg-gray-100">
-                      <span className="sr-only">Siguiente</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="m9 18 6-6-6-6"/>
-                      </svg>
-                    </button>
-                  </nav>
-                </div>
-              </div>
-              
-              {/* Sidebar */}
-              <div className="space-y-8">
-                {/* Search */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Buscar</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        placeholder="Buscar artículos..."
-                        className="w-full py-2 px-4 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand"
-                      />
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute right-3 top-2.5">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="m21 21-4.3-4.3"/>
-                      </svg>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Categories */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Categorías</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {popularCategories.map((category, index) => (
-                        <li key={index}>
-                          <Link 
-                            to={`/blog/categoria/${category.name.toLowerCase()}`}
-                            className="flex justify-between items-center py-1.5 hover:text-brand"
-                          >
-                            <span>{category.name}</span>
-                            <span className="bg-paper-deep text-gray-600 text-xs px-2 py-0.5 rounded-full">{category.count}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-                
-                {/* Popular posts */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Artículos populares</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {blogPosts.slice(0, 3).map(post => (
-                      <div key={post.id} className="flex gap-3">
-                        <div className="w-16 h-16 flex-shrink-0">
-                          <img
-                            src={post.image}
-                            alt={post.title}
-                            className="w-full h-full object-cover rounded"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-sm line-clamp-2">
-                            <Link to={`/blog/${post.slug}`} className="hover:text-brand">
-                              {post.title}
-                            </Link>
-                          </h3>
-                          <p className="text-xs text-gray-500 mt-1">{post.date}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-                
-                {/* Newsletter */}
-                <Card className="bg-paper-deep border-0">
-                  <CardHeader>
-                    <CardTitle>¿Quieres recibir noticias?</CardTitle>
-                    <CardDescription>
-                      Suscríbete a nuestro boletín y recibe las últimas noticias y consejos sobre hosting y desarrollo web.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <input
-                        type="email"
-                        placeholder="Tu correo electrónico"
-                        className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand"
-                      />
-                      <button className="w-full bg-brand text-white py-2 rounded-md hover:bg-red-700 transition-colors">
-                        Suscribirme
-                      </button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+
+          <div className="divide-y divide-rule" aria-live="polite">
+            {posts.map((post) => (
+              <ArticleRow key={post.slug} post={post} />
+            ))}
           </div>
-        </section>
+        </Section>
       </main>
-      
+
       <Footer />
     </>
   );

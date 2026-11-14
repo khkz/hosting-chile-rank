@@ -1,30 +1,19 @@
-
 import React from 'react';
 import BlogCard from './BlogCard';
+import { BLOG_POSTS } from '@/components/lectura/blogPosts';
 
-const BlogTeaser = () => {
-  return (
-    <section id="blog" className="container mx-auto py-16 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-8 text-ink">Últimos artículos</h2>
-      <div className="grid md:grid-cols-3 gap-6">
-        <BlogCard 
-          title="LiteSpeed vs Apache 2025" 
-          href="/blog/litespeed-vs-apache" 
-          imageSrc="/img/post1.webp" 
-        />
-        <BlogCard 
-          title="Cómo migrar tu web a un hosting chileno" 
-          href="/blog/migrar-web-chile" 
-          imageSrc="/img/post2.webp" 
-        />
-        <BlogCard 
-          title="5 errores al elegir hosting" 
-          href="/blog/errores-elegir-hosting" 
-          imageSrc="/img/post3.webp" 
-        />
-      </div>
-    </section>
-  );
-};
+/** Últimos artículos del blog: lee la misma lista que /blog, así que nunca enlaza a un artículo inexistente. */
+const BlogTeaser = () => (
+  <section id="blog" aria-labelledby="blog-teaser" className="container py-14 md:py-20">
+    <h2 id="blog-teaser" className="t-h2 mb-8 text-ink">
+      Últimos artículos
+    </h2>
+    <div className="grid gap-6 md:grid-cols-3">
+      {BLOG_POSTS.slice(0, 3).map((p) => (
+        <BlogCard key={p.slug} title={p.title} href={`/blog/${p.slug}`} imageSrc={p.image} />
+      ))}
+    </div>
+  </section>
+);
 
 export default BlogTeaser;

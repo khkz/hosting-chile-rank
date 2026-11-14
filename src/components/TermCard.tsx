@@ -1,132 +1,66 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ArrowRight } from 'lucide-react';
 import { WikiTerm, wikiCategories } from '@/data/wiki/terms';
-import HostingPlusCTA from '@/components/HostingPlusCTA';
+import { CmsTag, LevelTag, WikiCategoryIcon } from '@/components/lectura/wiki';
 
 interface TermCardProps {
   term: WikiTerm;
   variant?: 'default' | 'compact';
 }
 
+/** Toda la tarjeta lleva al término; el enlace es el título (un solo foco por tarjeta). */
+const cardClass =
+  'relative flex h-full flex-col rounded-xl border border-rule bg-white transition-colors hover:border-ink/40 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2';
+const stretched = 'after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none';
+
 const TermCard: React.FC<TermCardProps> = ({ term, variant = 'default' }) => {
-  const category = wikiCategories.find(c => c.id === term.category);
+  const href = `/wiki/${term.slug}`;
 
   if (variant === 'compact') {
     return (
-      <Card className="h-full hover:shadow-md transition-shadow">
-        <CardContent className="p-4">
-          <div className="space-y-3">
-            <div className="flex items-start justify-between gap-2">
-              <Link 
-                to={`/wiki/${term.slug}`}
-                className="font-semibold text-foreground hover:text-primary transition-colors line-clamp-2"
-              >
-                {term.title}
-              </Link>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                {category && (
-                  <span className="text-xs opacity-60">{category.icon}</span>
-                )}
-                <Badge variant="outline" className="text-xs capitalize">
-                  {term.level}
-                </Badge>
-              </div>
-            </div>
-            
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {term.shortDefinition}
-            </p>
-            
-            <div className="flex items-center justify-between gap-2">
-              <Badge variant="secondary" className="text-xs capitalize">
-                {term.cms}
-              </Badge>
-              <Link 
-                to={`/wiki/${term.slug}`}
-                className="text-xs text-primary hover:text-primary/80 inline-flex items-center gap-1"
-              >
-                Ver más <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <article className={`${cardClass} p-4`}>
+        <h3 className="font-semibold leading-snug text-ink">
+          <Link to={href} className={stretched}>
+            {term.title}
+          </Link>
+        </h3>
+        <p className="t-small mt-1.5 line-clamp-2 text-ink-2">{term.shortDefinition}</p>
+        <div className="mt-auto flex flex-wrap items-center gap-2 pt-3">
+          <CmsTag cms={term.cms} />
+          <LevelTag level={term.level} />
+        </div>
+      </article>
     );
   }
 
+  const category = wikiCategories.find((c) => c.id === term.category);
+  const reqs = term.hostingRequirements ?? [];
+
   return (
-    <Card className="h-full hover:shadow-lg transition-all duration-200">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1 flex-1">
-            <Link 
-              to={`/wiki/${term.slug}`}
-              className="font-bold text-xl text-foreground hover:text-primary transition-colors"
-            >
-              {term.title}
-            </Link>
-            <div className="flex items-center gap-2">
-              {category && (
-                <Badge variant="outline" className="text-xs">
-                  {category.icon} {category.name}
-                </Badge>
-              )}
-              <Badge variant="secondary" className="text-xs capitalize">
-                {term.cms}
-              </Badge>
-              <Badge 
-                variant={term.level === 'basico' ? 'default' : term.level === 'medio' ? 'secondary' : 'destructive'} 
-                className="text-xs capitalize"
-              >
-                {term.level}
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-4">
-        <p className="text-muted-foreground leading-relaxed">
-          {term.shortDefinition}
+    <article className={`${cardClass} p-5`}>
+      {category && (
+        <p className="t-meta flex items-center gap-1.5">
+          <WikiCategoryIcon name={category.icon} className="h-4 w-4 text-ink-3" />
+          {category.name}
         </p>
-
-        {term.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {term.tags.slice(0, 4).map(tag => (
-              <Badge key={tag} variant="outline" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-            {term.tags.length > 4 && (
-              <Badge variant="outline" className="text-xs">
-                +{term.tags.length - 4}
-              </Badge>
-            )}
-          </div>
-        )}
-
-
-        <div className="flex items-center justify-between pt-2">
-          <div className="text-xs text-muted-foreground">
-            {term.hostingRequirements && term.hostingRequirements.length > 0 && (
-              <span>
-                Requiere: {term.hostingRequirements.slice(0, 2).join(', ')}
-                {term.hostingRequirements.length > 2 && '...'}
-              </span>
-            )}
-          </div>
-          <Link 
-            to={`/wiki/${term.slug}`}
-            className="text-sm text-primary hover:text-primary/80 inline-flex items-center gap-1"
-          >
-            Leer más <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+      )}
+      <h3 className="t-h3 mt-2 text-ink">
+        <Link to={href} className={stretched}>
+          {term.title}
+        </Link>
+      </h3>
+      <p className="t-small mt-2 line-clamp-3 text-ink-2">{term.shortDefinition}</p>
+      {reqs.length > 0 && (
+        <p className="t-meta mt-3">
+          Requiere: {reqs.slice(0, 2).join(', ')}
+          {reqs.length > 2 && '…'}
+        </p>
+      )}
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
+        <CmsTag cms={term.cms} />
+        <LevelTag level={term.level} />
+      </div>
+    </article>
   );
 };
 

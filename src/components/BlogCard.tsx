@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { Card } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 interface BlogCardProps {
   title: string;
@@ -9,22 +8,29 @@ interface BlogCardProps {
   imageSrc: string;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ title, href, imageSrc }) => {
-  return (
-    <Link to={href}>
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-        <div className="aspect-video bg-gray-200 relative">
-          <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-            Imagen del artículo
-          </div>
-        </div>
-        <div className="p-4">
-          <h3 className="font-medium text-ink hover:text-brand">{title}</h3>
-          <p className="mt-2 text-sm text-[#555]">Leer más →</p>
-        </div>
-      </Card>
-    </Link>
-  );
-};
+/** Tarjeta de artículo: portada en su proporción (40/21, sin recorte) y título enlazado. */
+const BlogCard: React.FC<BlogCardProps> = ({ title, href, imageSrc }) => (
+  <article className="relative flex h-full flex-col overflow-hidden rounded-xl border border-rule bg-white transition-colors hover:border-ink/40 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+    <img
+      src={imageSrc}
+      alt=""
+      width={1200}
+      height={630}
+      loading="lazy"
+      className="aspect-[40/21] w-full border-b border-rule object-cover"
+    />
+    <div className="flex flex-1 flex-col p-4">
+      <h3 className="font-semibold leading-snug text-ink">
+        <Link to={href} className="after:absolute after:inset-0 focus-visible:outline-none">
+          {title}
+        </Link>
+      </h3>
+      <p className="t-small mt-auto inline-flex items-center gap-1.5 pt-3 font-semibold text-ink-2">
+        Leer el artículo
+        <ArrowRight className="h-4 w-4" aria-hidden />
+      </p>
+    </div>
+  </article>
+);
 
 export default BlogCard;

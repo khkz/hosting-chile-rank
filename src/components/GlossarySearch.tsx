@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ArrowUpDown } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useDebounce } from 'use-debounce';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -12,54 +11,47 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { searchTerms, wikiCategories, WikiTerm } from '@/data/wiki/terms.ts';
+import { CMS_LABEL, LEVEL_LABEL } from '@/components/lectura/wikiLabels';
+import { formatInteger } from '@/lib/format';
 
 interface GlossarySearchProps {
-  onResults: (results: any[]) => void;
+  onResults: (results: WikiTerm[]) => void;
   initialQuery?: string;
 }
 
-const GlossarySearch: React.FC<GlossarySearchProps> = ({ 
-  onResults, 
-  initialQuery = '' 
-}) => {
+type SortKey = 'relevance' | 'alphabetical' | 'level' | 'recent';
+
+const SORT_LABEL: Record<SortKey, string> = {
+  relevance: 'Relevancia',
+  alphabetical: 'A-Z',
+  level: 'Por nivel',
+  recent: 'Más recientes',
+};
+
+const LEVEL_ORDER: Record<WikiTerm['level'], number> = { basico: 1, medio: 2, avanzado: 3 };
+const trigger = 'h-11 w-full rounded-lg border-rule bg-white text-sm text-ink';
+
+const GlossarySearch: React.FC<GlossarySearchProps> = ({ onResults, initialQuery = '' }) => {
   const [query, setQuery] = useState(initialQuery);
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [cmsFilter, setCmsFilter] = useState<string>('all');
   const [levelFilter, setLevelFilter] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'relevance' | 'alphabetical' | 'level' | 'recent'>('relevance');
-  
-  // Debounce search query for smoother UX
+  const [sortBy, setSortBy] = useState<SortKey>('relevance');
+
+  // Debounce para no filtrar en cada tecla.
   const [debouncedQuery] = useDebounce(query, 150);
 
   const filteredResults = useMemo(() => {
-    const filters: any = {};
+    const filters: Record<string, string> = {};
     if (categoryFilter !== 'all') filters.category = categoryFilter;
     if (cmsFilter !== 'all') filters.cms = cmsFilter;
     if (levelFilter !== 'all') filters.level = levelFilter;
 
-    let results = searchTerms(debouncedQuery, filters);
-    
-    // Apply sorting
-    switch (sortBy) {
-      case 'alphabetical':
-        results.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case 'level':
-        const levelOrder = { 'basico': 1, 'medio': 2, 'avanzado': 3 };
-        results.sort((a, b) => levelOrder[a.level as keyof typeof levelOrder] - levelOrder[b.level as keyof typeof levelOrder]);
-        break;
-      case 'recent':
-        results.sort((a, b) => {
-          const dateA = new Date(a.lastUpdated || '2025-01-01');
-          const dateB = new Date(b.lastUpdated || '2025-01-01');
-          return dateB.getTime() - dateA.getTime();
-        });
-        break;
-      default: // relevance
-        // Keep the original search relevance order
-        break;
-    }
-    
+    const results = [...searchTerms(debouncedQuery, filters)];
+    if (sortBy === 'alphabetical') results.sort((a, b) => a.title.localeCompare(b.title, 'es'));
+    if (sortBy === 'level') results.sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level]);
+    // «Más recientes» ordena por la fecha de actualización que trae cada término.
+    if (sortBy === 'recent') results.sort((a, b) => (b.lastUpdated ?? '').localeCompare(a.lastUpdated ?? ''));
     return results;
   }, [debouncedQuery, categoryFilter, cmsFilter, levelFilter, sortBy]);
 
@@ -75,127 +67,92 @@ const GlossarySearch: React.FC<GlossarySearchProps> = ({
     setSortBy('relevance');
   };
 
-  const hasActiveFilters = query || categoryFilter !== 'all' || cmsFilter !== 'all' || levelFilter !== 'all' || sortBy !== 'relevance';
+  const hasActiveFilters =
+    query || categoryFilter !== 'all' || cmsFilter !== 'all' || levelFilter !== 'all' || sortBy !== 'relevance';
+  const n = filteredResults.length;
 
   return (
     <div className="space-y-4">
-      {/* Búsqueda principal */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <label htmlFor="wiki-buscar" className="sr-only">
+          Buscar en la wiki
+        </label>
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-3" aria-hidden />
         <Input
-          placeholder="Buscar términos... (ej: WordPress, cache, seguridad)"
+          id="wiki-buscar"
+          type="search"
+          placeholder="Busca un término: WordPress, caché, SSL…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="pl-10"
         />
       </div>
 
-      {/* Filtros y ordenamiento */}
-      <div className="flex flex-wrap gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className={trigger} aria-label="Filtrar por categoría">
             <SelectValue placeholder="Categoría" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todas las categorías</SelectItem>
-            {wikiCategories.map(cat => (
+            {wikiCategories.map((cat) => (
               <SelectItem key={cat.id} value={cat.id}>
-                {cat.icon} {cat.name}
+                {cat.name}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select value={cmsFilter} onValueChange={setCmsFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className={trigger} aria-label="Filtrar por CMS">
             <SelectValue placeholder="CMS" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos los CMS</SelectItem>
-            <SelectItem value="wordpress">WordPress</SelectItem>
-            <SelectItem value="joomla">Joomla</SelectItem>
-            <SelectItem value="drupal">Drupal</SelectItem>
-            <SelectItem value="prestashop">PrestaShop</SelectItem>
-            <SelectItem value="moodle">Moodle</SelectItem>
-            <SelectItem value="general">General</SelectItem>
+            {(Object.keys(CMS_LABEL) as WikiTerm['cms'][]).map((k) => (
+              <SelectItem key={k} value={k}>
+                {CMS_LABEL[k]}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
         <Select value={levelFilter} onValueChange={setLevelFilter}>
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className={trigger} aria-label="Filtrar por nivel">
             <SelectValue placeholder="Nivel" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos los niveles</SelectItem>
-            <SelectItem value="basico">Básico</SelectItem>
-            <SelectItem value="medio">Medio</SelectItem>
-            <SelectItem value="avanzado">Avanzado</SelectItem>
+            {(Object.keys(LEVEL_LABEL) as WikiTerm['level'][]).map((k) => (
+              <SelectItem key={k} value={k}>
+                {LEVEL_LABEL[k]}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
-        <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
-          <SelectTrigger className="w-[160px]">
+        <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortKey)}>
+          <SelectTrigger className={trigger} aria-label="Ordenar resultados">
             <SelectValue placeholder="Ordenar por" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="relevance">
-              <div className="flex items-center gap-2">
-                <ArrowUpDown className="h-4 w-4" />
-                Relevancia
-              </div>
-            </SelectItem>
-            <SelectItem value="alphabetical">A-Z</SelectItem>
-            <SelectItem value="level">Por nivel</SelectItem>
-            <SelectItem value="recent">Más recientes</SelectItem>
+            {(Object.keys(SORT_LABEL) as SortKey[]).map((k) => (
+              <SelectItem key={k} value={k}>
+                {SORT_LABEL[k]}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
-
-        {hasActiveFilters && (
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={clearFilters}
-            className="text-sm"
-          >
-            Limpiar filtros
-          </Button>
-        )}
       </div>
 
-      {/* Resultados count y tags */}
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          {filteredResults.length} término{filteredResults.length !== 1 ? 's' : ''} encontrado{filteredResults.length !== 1 ? 's' : ''}
-        </div>
-        
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="t-small text-ink-2" role="status" aria-live="polite">
+          {formatInteger(n)} {n === 1 ? 'término encontrado' : 'términos encontrados'}
+        </p>
         {hasActiveFilters && (
-          <div className="flex flex-wrap gap-1">
-            {query && (
-              <Badge variant="secondary" className="text-xs">
-                "{query}"
-              </Badge>
-            )}
-            {categoryFilter !== 'all' && (
-              <Badge variant="secondary" className="text-xs">
-                {wikiCategories.find(c => c.id === categoryFilter)?.name}
-              </Badge>
-            )}
-            {cmsFilter !== 'all' && (
-              <Badge variant="secondary" className="text-xs">
-                {cmsFilter}
-              </Badge>
-            )}
-            {levelFilter !== 'all' && (
-              <Badge variant="secondary" className="text-xs">
-                {levelFilter}
-              </Badge>
-            )}
-            {sortBy !== 'relevance' && (
-              <Badge variant="secondary" className="text-xs">
-                {sortBy === 'alphabetical' ? 'A-Z' : sortBy === 'level' ? 'Por nivel' : 'Recientes'}
-              </Badge>
-            )}
-          </div>
+          <Button variant="outline" onClick={clearFilters}>
+            Limpiar filtros
+          </Button>
         )}
       </div>
     </div>
