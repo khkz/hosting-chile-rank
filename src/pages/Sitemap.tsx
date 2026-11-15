@@ -17,7 +17,6 @@ const NAMES: Record<string, string> = {
   'sitemap-main.xml': 'Páginas principales',
   'sitemap-wiki.xml': 'Wiki de hosting',
   'sitemap-asn.xml': 'Redes (ASN)',
-  'sitemap-domains.xml': 'Dominios analizados',
   'sitemap-pe.xml': 'Edición Perú',
   'sitemap-mx.xml': 'Edición México',
   'sitemap-co.xml': 'Edición Colombia',

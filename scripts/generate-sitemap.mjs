@@ -1,11 +1,14 @@
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
-const providers = require('./providers.json');
+import { CL_PAGES, RESENAS_EN_SITEMAP, announceable, resenaSlugs } from './lib/cl-pages.mjs';
 
 // Slugs de comparativas vs/ rivales (sitios de comparación falsa)
 const VS_RIVALS = ['comparahosting', 'rankinghosting'];
+
+// Comparativas 1 a 1 (/comparativa/a-vs-b): por ahora solo se anuncia el hub /comparativa.
+// Las parejas son todas las combinaciones del catálogo y no hay todavía una regla de contenido
+// que diga cuáles valen la pena; cuando exista, se reactiva aquí.
+const INCLUDE_PAIR_COMPARISONS = false;
 
 // Anon key hardcoded fallback (mismo valor público de src/integrations/supabase/client.ts).
 // CRÍTICO: en el deploy real de Lovable NO están seteadas las envs SUPABASE_*, así que
@@ -15,14 +18,16 @@ const SUPABASE_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || SUPABASE_URL_FALLBACK;
 const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || SUPABASE_ANON_FALLBACK;
 
+// Solo empresas de Chile (country=CL, el mismo filtro de generate-llms-data.mjs): las fichas
+// LATAM viven en eligetuhosting.com y su /catalogo/:slug en .cl declara otro canonical.
 async function fetchVerifiedCompanySlugs() {
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug,updated_at&is_verified=eq.true`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/hosting_companies?select=slug,updated_at&is_verified=eq.true&country=eq.CL`, {
       headers: { apikey: ANON, Authorization: `Bearer ${ANON}` },
     });
     if (!res.ok) return [];
     const data = await res.json();
-    console.log(`📦 ${data.length} empresas verificadas para /catalogo/`);
+    console.log(`📦 ${data.length} empresas verificadas de Chile para /catalogo/`);
     return data;
   } catch (e) {
     console.log('⚠️  Error fetching companies:', e.message);
@@ -54,10 +59,9 @@ function extractWikiSlugs() {
   try {
     const content = readFileSync('src/data/wiki/terms.ts', 'utf8');
     const slugMatches = content.match(/slug:\s*['"]([^'"]+)['"]/g);
-    return slugMatches ? slugMatches.map(match => {
-      const slug = match.match(/slug:\s*['"]([^'"]+)['"]/)[1];
-      return { slug };
-    }) : [];
+    // Sin repetidos: terms.ts trae algunos slugs dos veces y el sitemap los duplicaba.
+    const unique = [...new Set((slugMatches || []).map(match => match.match(/slug:\s*['"]([^'"]+)['"]/)[1]))];
+    return unique.map(slug => ({ slug }));
   } catch (error) {
     console.log('⚠️  No se pudo leer términos wiki:', error.message);
     return [];
@@ -89,6 +93,7 @@ const ROOT = 'https://eligetuhosting.cl';
 const NOW = new Date().toISOString();
 
 /* ---------- helpers ---------------------------------------------------- */
+// LATAM (eligetuhosting.com): sin cambios.
 const urlTag = (loc, prio = '0.7', changefreq = 'weekly', lastmod = NOW) => `
   <url>
     <loc>${loc}</loc>
@@ -97,74 +102,38 @@ const urlTag = (loc, prio = '0.7', changefreq = 'weekly', lastmod = NOW) => `
     <priority>${prio}</priority>
   </url>`;
 
+// Chile (eligetuhosting.cl): <lastmod> solo cuando hay una fecha real del dato; nunca la hora del script.
+const clTag = (loc, prio = '0.7', changefreq = 'weekly', lastmod = null) => `
+  <url>
+    <loc>${loc}</loc>${lastmod ? `
+    <lastmod>${lastmod}</lastmod>` : ''}
+    <changefreq>${changefreq}</changefreq>
+    <priority>${prio}</priority>
+  </url>`;
+
+// Filtra rutas de Chile con la regla de lib/cl-pages.mjs y registra las que se omiten.
+const omitted = [];
+const announce = (path) => {
+  const { ok, reason } = announceable(path);
+  if (!ok) omitted.push(`${path} (${reason})`);
+  return ok;
+};
+let clCount = 0;
+const clUrls = (items) => {
+  const out = items.filter((it) => announce(it.path));
+  clCount += out.length;
+  return out.map((it) => clTag(`${ROOT}${it.path}`, it.prio, it.freq, it.lastmod)).join('');
+};
+
 /* ---------- SITEMAP 1: MAIN (páginas principales) ---------------------- */
 const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
-  const staticUrls = [
-    // Páginas de máxima prioridad
-    ['/mejor-hosting-chile-2026', '1.0', 'daily'],
-    ['/', '0.9', 'daily'],
-    ['/ranking', '0.9', 'daily'],
-    // /directorio-hosting-chile es noindex (canonical → /catalogo), no listar en sitemap
-
-    // Transparencia y comparativas anti-fake (CRÍTICO para SEO/GEO)
-    ['/transparencia-hosting-chile', '0.9', 'weekly'],
-    ['/reclamos', '0.9', 'daily'],
-
-    // Páginas de alta prioridad
-    ['/catalogo', '0.8', 'daily'],
-    ['/directorio', '0.8', 'daily'],
-    ['/mejor-hosting-wordpress-chile', '0.8', 'weekly'],
-    ['/mejor-hosting-ecommerce-chile', '0.8', 'weekly'],
-    ['/comparativa', '0.8', 'weekly'],
-    ['/cotiza-hosting', '0.8', 'weekly'],
-    ['/recursos-hosting-chile', '0.7', 'weekly'],
-    ['/dominios-premium', '0.7', 'weekly'],
-    ['/certificaciones', '0.7', 'monthly'],
-
-    // Guías (contenido de valor)
-    ['/guia-elegir-hosting', '0.8', 'weekly'],
-    ['/guia-completa-elegir-hosting', '0.8', 'weekly'],
-    ['/guia-hosting-wordpress', '0.8', 'weekly'],
-    ['/guia-elegir-vps', '0.8', 'weekly'],
-    ['/guia-elegir-ssl', '0.8', 'weekly'],
-    ['/guia-elegir-cdn', '0.8', 'weekly'],
-    ['/guia-elegir-servidor-dedicado', '0.8', 'weekly'],
-    ['/guia-migrar-hosting', '0.8', 'weekly'],
-    ['/guia-seguridad-web', '0.8', 'weekly'],
-    ['/errores-comunes-hosting', '0.7', 'monthly'],
-    ['/hosting-wordpress-blog-personal-chile', '0.7', 'weekly'],
-    ['/metodologia', '0.7', 'monthly'],
-    ['/blog', '0.7', 'daily'],
-
-    // Páginas secundarias
-    ['/ultimos-dominios', '0.7', 'daily'],
-    ['/contacto', '0.6', 'monthly'],
-    ['/quienes-somos', '0.7', 'monthly'],
-    ['/vota-hosting', '0.6', 'weekly'],
-    ['/calculadora-tco', '0.6', 'monthly'],
-    ['/benchmark', '0.6', 'weekly'],
-    ['/estudio-hosting-chile-2026', '0.9', 'yearly'],
-  ].map(([path, prio, freq]) => urlTag(`${ROOT}${path}`, prio, freq)).join('');
-
-  // Páginas "VS" de proveedores (comparativas internas anti-fake legacy)
-  const providerUrls = providers
-    .map(slug => urlTag(`${ROOT}/comparativa/${slug}`, '0.7', 'weekly'))
-    .join('');
+  // Páginas fijas y hubs de intención (lista única en lib/cl-pages.mjs)
+  const staticUrls = clUrls(CL_PAGES);
 
   // Comparativas VS rivales falsos
-  const vsRivalUrls = VS_RIVALS
-    .map(slug => urlTag(`${ROOT}/vs/${slug}`, '0.9', 'weekly'))
-    .join('');
+  const vsRivalUrls = clUrls(VS_RIVALS.map(slug => ({ path: `/vs/${slug}`, prio: '0.9', freq: 'weekly' })));
 
-  // Hubs de intención (alta prioridad)
-  const intentHubs = [
-    '/mejor-hosting-wordpress-chile',
-    '/mejor-hosting-ecommerce-chile',
-    '/mejor-hosting-pymes-chile',
-    '/mejor-vps-chile',
-  ].map(p => urlTag(`${ROOT}${p}`, '0.9', 'weekly')).join('');
-
-  // Comparativas programáticas: TODAS las parejas del catálogo (canonical)
+  // Comparativas programáticas (parejas): desactivadas, ver INCLUDE_PAIR_COMPARISONS
   const verifiedSlugs = companySlugs.map(c => c.slug);
   const ANCHORS = new Set(['hostingplus', 'ecohosting']);
   const isAnchor = (s) => ANCHORS.has(s);
@@ -175,39 +144,34 @@ const generateMainSitemap = (companySlugs = [], countryProviders = []) => {
     return x < y ? `${x}-vs-${y}` : `${y}-vs-${x}`;
   };
   const pairSet = new Set();
-  for (let i = 0; i < verifiedSlugs.length; i++) {
-    for (let j = i + 1; j < verifiedSlugs.length; j++) {
-      pairSet.add(`/comparativa/${canonicalPair(verifiedSlugs[i], verifiedSlugs[j])}`);
+  if (INCLUDE_PAIR_COMPARISONS) {
+    for (let i = 0; i < verifiedSlugs.length; i++) {
+      for (let j = i + 1; j < verifiedSlugs.length; j++) {
+        pairSet.add(`/comparativa/${canonicalPair(verifiedSlugs[i], verifiedSlugs[j])}`);
+      }
     }
   }
-  const programmaticVsUrls = [...pairSet].map(p => urlTag(`${ROOT}${p}`, '0.7', 'weekly')).join('');
+  const programmaticVsUrls = clUrls([...pairSet].map(p => ({ path: p, prio: '0.7', freq: 'weekly' })));
 
-  // Alternativas a X (todos los competidores excepto anchors)
-  const alternativasUrls = verifiedSlugs
+  // Alternativas a X (competidores de Chile excepto anchors)
+  const alternativasUrls = clUrls(verifiedSlugs
     .filter(s => !isAnchor(s))
-    .map(s => urlTag(`${ROOT}/alternativas-a/${s}`, '0.7', 'weekly'))
-    .join('');
+    .map(s => ({ path: `/alternativas-a/${s}`, prio: '0.7', freq: 'weekly' })));
 
   // Landings de migración (8 competidores objetivo)
   const migrationSlugs = ['hostgator','bluehost','godaddy','hostingcl','planetahosting','fasthosting','cloudhosting','webhosting'];
-  const migrarUrls = migrationSlugs
+  const migrarUrls = clUrls(migrationSlugs
     .filter(s => verifiedSlugs.includes(s))
-    .map(s => urlTag(`${ROOT}/migrar-de/${s}`, '0.8', 'weekly'))
-    .join('');
+    .map(s => ({ path: `/migrar-de/${s}`, prio: '0.8', freq: 'weekly' })));
 
+  // Reseñas editoriales: solo las que ya se anunciaban y que /resenas/:slug sí renderiza
+  const hostingReviews = clUrls(resenaSlugs()
+    .filter(slug => RESENAS_EN_SITEMAP.includes(slug))
+    .map(slug => ({ path: `/resenas/${slug}`, prio: '0.8', freq: 'weekly' })));
 
-
-  // Páginas de reseñas de hosting
-  const hostingReviews = [
-    'hostingplus', 'ecohosting', '1hosting', 'hostgator',
-    'bluehost', 'donweb', 'godaddy', 'siteground'
-  ].map(slug => urlTag(`${ROOT}/resenas/${slug}`, '0.8', 'weekly'))
-   .join('');
-
-  // Detalle de empresas verificadas (/catalogo/:slug) desde Supabase
-  const catalogoUrls = companySlugs
-    .map(c => urlTag(`${ROOT}/catalogo/${c.slug}`, '0.7', 'weekly', c.updated_at || NOW))
-    .join('');
+  // Detalle de empresas verificadas de Chile (/catalogo/:slug); lastmod = updated_at del registro
+  const catalogoUrls = clUrls(companySlugs
+    .map(c => ({ path: `/catalogo/${c.slug}`, prio: '0.7', freq: 'weekly', lastmod: c.updated_at || null })));
 
   // Multi-country .com URLs con alternates hreflang bidireccionales
   const HREFLANG_CLUSTER = [
@@ -249,8 +213,6 @@ ${alternatesXml}
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${staticUrls}
-${intentHubs}
-${providerUrls}
 ${vsRivalUrls}
 ${programmaticVsUrls}
 ${alternativasUrls}
@@ -265,11 +227,9 @@ ${countryProviderUrls}
 
 /* ---------- SITEMAP 2: WIKI -------------------------------------------- */
 const generateWikiSitemap = () => {
-  const wikiIndex = urlTag(`${ROOT}/wiki`, '0.8', 'weekly');
-  
-  const wikiUrls = wikiTerms
-    .map(term => urlTag(`${ROOT}/wiki/${term.slug}`, '0.7', 'weekly'))
-    .join('');
+  const wikiIndex = clUrls([{ path: '/wiki', prio: '0.8', freq: 'weekly' }]);
+
+  const wikiUrls = clUrls(wikiTerms.map(term => ({ path: `/wiki/${term.slug}`, prio: '0.7', freq: 'weekly' })));
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -281,10 +241,14 @@ ${wikiUrls}
 /* ---------- SITEMAP 3: ASN (NUEVO) ------------------------------------- */
 const generateASNSitemap = () => {
   // Páginas principales de ASN
+  // Sin el filtro de canonical: el HTML estático de estas dos rutas trae un canonical a
+  // 127.0.0.1 (artefacto del prerender, la página arma el canonical con window.location).
+  // En producción la app lo corrige al renderizar; el HTML se rehace en el prerender.
   const asnMainPages = [
-    urlTag(`${ROOT}/asn`, '0.8', 'weekly'),
-    urlTag(`${ROOT}/asn/chile`, '0.9', 'weekly'),
+    clTag(`${ROOT}/asn`, '0.8', 'weekly'),
+    clTag(`${ROOT}/asn/chile`, '0.9', 'weekly'),
   ].join('');
+  clCount += 2;
 
   // ASN por número (/asn/AS*) están bloqueados por robots.txt para Googlebot;
   // no los incluimos en el sitemap para no reportar URLs bloqueadas.
@@ -295,45 +259,8 @@ ${asnMainPages}
 </urlset>`.trimStart();
 };
 
-/* ---------- SITEMAP 4: DOMAINS (solo 100 más recientes <90 días) ---------- */
-const generateDomainsSitemap = () => {
-  let domainsArr = [];
-  try {
-    const raw = JSON.parse(readFileSync('public/data/latest.json', 'utf8'));
-    domainsArr = Array.isArray(raw) ? raw : (raw.domains || []);
-    console.log(`📊 Procesando ${domainsArr.length} dominios totales`);
-  } catch (error) {
-    console.log('⚠️  No se pudo leer latest.json:', error.message);
-  }
-
-  // Filtrar dominios con menos de 90 días y limitar a 100 más recientes
-  const domainUrls = domainsArr
-    .filter((domain) => {
-      // Solo dominios con menos de 90 días
-      if (!domain.date) return true; // Incluir si no tiene fecha (probablemente nuevo)
-      const createdDate = new Date(domain.date);
-      const ageInDays = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
-      return ageInDays <= 90;
-    })
-    .slice(0, 100) // Solo los 100 más recientes
-    .map((domain, index) => {
-      const { d, date } = domain;
-      // Los primeros 20 dominios tienen prioridad mayor
-      const priority = index < 20 ? '0.6' : '0.5';
-      const changefreq = 'daily';
-      const lastmod = date ? new Date(date).toISOString() : NOW;
-      
-      return urlTag(`${ROOT}/domain/${d.replace(/\./g, '-')}`, priority, changefreq, lastmod);
-    })
-    .join('');
-  
-  console.log(`✅ Generando sitemap con ${domainUrls.split('<url>').length - 1} dominios (<90 días, máx 100)`);
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${domainUrls}
-</urlset>`.trimStart();
-};
+/* Las fichas /domain/:slug ya no se anuncian: son resultados de la herramienta de análisis
+   (noindex) y no páginas para buscadores. Antes salían en sitemap-domains.xml. */
 
 /* ---------- SITEMAP PAÍS (LATAM: PE/MX/CO/AR) --------------------------- */
 const COUNTRY_LONG = { pe: 'peru', mx: 'mexico', co: 'colombia', ar: 'argentina' };
@@ -375,10 +302,6 @@ const generateSitemapIndex = () => {
   </sitemap>
   <sitemap>
     <loc>${ROOT}/sitemap-asn.xml</loc>
-    <lastmod>${NOW}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>${ROOT}/sitemap-domains.xml</loc>
     <lastmod>${NOW}</lastmod>
   </sitemap>
   <sitemap>
@@ -425,10 +348,8 @@ const asnSitemap = generateASNSitemap();
 await fs.writeFile('public/sitemap-asn.xml', asnSitemap, 'utf8');
 console.log('✅  sitemap-asn.xml generado (páginas ASN)');
 
-// Generar sitemap-domains.xml
-const domainsSitemap = generateDomainsSitemap();
-await fs.writeFile('public/sitemap-domains.xml', domainsSitemap, 'utf8');
-console.log('✅  sitemap-domains.xml generado (limitado a 500 dominios)');
+console.log(`✅  Chile: ${clCount} URL de eligetuhosting.cl anunciadas`);
+if (omitted.length) console.log(`ℹ️  Omitidas por la regla de canonical/noindex (${omitted.length}): ${omitted.join(', ')}`);
 
 // Generar sitemaps por país LATAM
 for (const cslug of ['pe','mx','co','ar']) {
