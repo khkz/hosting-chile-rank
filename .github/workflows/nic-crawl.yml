@@ -22,16 +22,12 @@ jobs:
       - name: Marcar el proyecto como ES Modules      # ← nuevo
         run: npm pkg set type=module
 
-      - name: Crear carpeta data y feeds
+      - name: Crear carpeta data
         run: |
           mkdir -p public/data
-          mkdir -p public/feed
 
       - name: Ejecutar scraper NIC.cl
         run: node scripts/nic-to-json.mjs
-
-      - name: Generar RSS feed
-        run: node scripts/generate-rss.mjs 
 
       - name: Verificar dominios capturados
         run: |
@@ -43,17 +39,17 @@ jobs:
             echo "❌ Archivo latest.json no encontrado"
           fi
 
-      - name: Commit feeds y datos
+      - name: Commit datos
         run: |
           git config user.name  "NIC Bot"
           git config user.email "bot@eligetuhosting.cl"
-          git add public/data/latest.json public/feed/latest-domains.xml
+          git add public/data/latest.json
           if ! git diff --cached --quiet; then
             git commit -m "chore(domains): update $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             git push
-            echo "✅ Feeds actualizados y subidos."
+            echo "✅ Datos actualizados y subidos."
           else
-            echo "ℹ️  Sin cambios en feeds."
+            echo "ℹ️  Sin cambios en los datos."
           fi
 
       # Sitemap deshabilitado en este workflow: se genera en el build de Lovable,

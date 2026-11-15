@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import PageHeader from '@/components/system/PageHeader';
 import Callout from '@/components/system/Callout';
-import RecentSearches from '@/components/RecentSearches';
 import SEOBreadcrumbs from '@/components/SEOBreadcrumbs';
 import WhoisTabs from '@/components/WhoisTabs';
 import SitePreview from '@/components/SitePreview';
@@ -21,15 +20,6 @@ import { DomainUniqueContent } from '@/components/DomainUniqueContent';
 // Function to capitalize the first letter of a string
 const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1);
 
-// Helper function to calculate domain age (for meta robots)
-const calculateDomainAge = (createdDate: string) => {
-  if (!createdDate || createdDate === 'No disponible') {
-    return { days: 0, years: 0, isNew: false, isEstablished: false };
-  }
-  const created = new Date(createdDate);
-  const ageInDays = Math.floor((Date.now() - created.getTime()) / (1000 * 60 * 60 * 24));
-  return { days: ageInDays, years: parseFloat((ageInDays / 365).toFixed(1)), isNew: ageInDays < 30, isEstablished: ageInDays > 365 };
-};
 
 /** Fecha más reciente entre las consultas que respondieron. */
 const latestProbe = (data: DomainAnalysisResult): string | null => {
@@ -176,13 +166,8 @@ const WhoisDomain = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${capitalizedDomainName} - Análisis | EligeTuHosting.cl`} />
         <meta name="twitter:description" content={`Análisis técnico completo de ${domainName}. Descubre DNS, WHOIS, SSL, rendimiento y tecnología.`} />
-        {/* Conditional noindex for domains older than 90 days */}
-        {domainData && calculateDomainAge(domainData.whois.created_date).days > 90 && (
-          <meta name="robots" content="noindex, follow" />
-        )}
-        {(!domainData || calculateDomainAge(domainData.whois.created_date).days <= 90) && (
-          <meta name="robots" content="index, follow" />
-        )}
+        {/* Resultado de la herramienta de análisis: nunca se indexa. */}
+        <meta name="robots" content="noindex, follow" />
         <meta property="article:modified_time" content={new Date().toISOString()} />
       </Helmet>
 
@@ -240,7 +225,6 @@ const WhoisDomain = () => {
                 </section>
                 <aside className="min-w-0 space-y-6" aria-label="Más sobre este dominio">
                   <SitePreview domain={domainName} />
-                  <RecentSearches />
                 </aside>
               </div>
 

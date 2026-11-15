@@ -41,8 +41,7 @@ const UltimosDominiosInfo: React.FC<UltimosDominiosInfoProps> = ({ faqItems, upd
           <a href="https://www.nic.cl/registry/Ultimos.do?t=1d" target="_blank" rel="noopener noreferrer">
             nic.cl
           </a>
-          , así que lo que ves puede tener hasta una hora de atraso. Los datos están disponibles como <strong>Open Data</strong> en
-          formato JSON y RSS para investigadores, desarrolladores y analistas del ecosistema digital chileno.
+          , así que lo que ves puede tener hasta una hora de atraso.
         </p>
         <p>
           <strong>Fuente:</strong> datos obtenidos del registro público de NIC Chile (nic.cl). Última lectura:{' '}

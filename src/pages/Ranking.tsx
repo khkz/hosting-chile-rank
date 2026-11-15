@@ -117,7 +117,6 @@ const RankingPage = () => {
         <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/ranking" />
         <meta property="og:url" content="https://eligetuhosting.cl/ranking" />
         <meta property="og:image" content="https://eligetuhosting.cl/images/ranking-comparison.png" />
-        <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <style type="text/css">{`

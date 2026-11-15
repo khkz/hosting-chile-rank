@@ -59,7 +59,6 @@ async function notifyBing() {
 async function notifyIndexNow() {
   try {
     const urls = [
-      `${SITE_URL}/ultimos-dominios/`,
       `${SITE_URL}/ranking/`,
       `${SITE_URL}/`
     ];

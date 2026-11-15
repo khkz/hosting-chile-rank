@@ -48,12 +48,7 @@ const SEOOrganization: React.FC = () => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "EligeTuHosting.cl",
-    url: "https://eligetuhosting.cl",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://eligetuhosting.cl/domain/{search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    url: "https://eligetuhosting.cl"
   };
 
   return (
