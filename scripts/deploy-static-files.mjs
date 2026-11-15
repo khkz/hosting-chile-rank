@@ -30,15 +30,7 @@ if (existsSync('public/robots.txt')) {
   process.exit(1);
 }
 
-// 3. Verificar que el feed RSS existe
-console.log('📡 Verificando RSS feed...');
-if (existsSync('public/feed/latest-domains.xml')) {
-  console.log('✅ RSS feed encontrado\n');
-} else {
-  console.warn('⚠️  RSS feed no encontrado, continuando...\n');
-}
-
-// 4. Notificar a motores de búsqueda
+// 3. Notificar a motores de búsqueda
 console.log('📢 Notificando a motores de búsqueda...');
 try {
   execSync('node scripts/notify-search-engines.mjs', { stdio: 'inherit' });
@@ -51,8 +43,6 @@ console.log('🎉 Despliegue de archivos estáticos completado');
 console.log('📋 Archivos disponibles:');
 console.log('   • https://eligetuhosting.cl/sitemap.xml');
 console.log('   • https://eligetuhosting.cl/robots.txt');
-console.log('   • https://eligetuhosting.cl/feed/latest-domains.xml');
 console.log('\n🔍 Para testear localmente:');
 console.log('   • http://localhost:8080/sitemap.xml');
 console.log('   • http://localhost:8080/robots.txt');
-console.log('   • http://localhost:8080/feed/latest-domains.xml');

@@ -25,12 +25,6 @@ const StaticSitemap: React.FC = () => {
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
-    <loc>https://eligetuhosting.cl/ultimos-dominios</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.9</priority>
-  </url>
 </urlset>`;
         setSitemapContent(fallbackSitemap);
       });

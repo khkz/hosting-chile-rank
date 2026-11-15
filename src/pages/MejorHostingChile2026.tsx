@@ -36,7 +36,6 @@ const MejorHostingChile2026 = () => {
         <meta name="keywords" content={`mejor hosting Chile, cuál es el mejor hosting en Chile, hosting rápido SSD en Chile, mejor hosting chileno ${CURRENT_YEAR}, hosting confiable Chile, hosting WordPress Chile`} />
         <link rel="canonical" href="https://eligetuhosting.cl/mejor-hosting-chile-2026" />
         <link rel="alternate" hrefLang="es-cl" href="https://eligetuhosting.cl/mejor-hosting-chile-2026" />
-        <link rel="alternate" type="application/rss+xml" href="/feed/latest-domains.xml" />
         <meta property="og:title" content={`¿Cuál es el mejor hosting en Chile en ${CURRENT_YEAR}? Guía definitiva`} />
         <meta property="og:description" content={`Comparativa exhaustiva del mejor hosting Chile ${CURRENT_YEAR}. Análisis de velocidad, uptime y precios de los principales proveedores.`} />
         <meta property="og:type" content="article" />

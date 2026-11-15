@@ -54,7 +54,6 @@ const ROUTES = [
   '/guia-completa-elegir-hosting-chile-2026',
   '/errores-comunes-elegir-hosting',
   '/recursos-hosting-chile',
-  '/ultimos-dominios',
   '/dominios-premium',
   '/calculadora-tco',
   '/acerca-de',

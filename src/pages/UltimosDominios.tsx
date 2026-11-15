@@ -36,10 +36,6 @@ const faqItems = [
   {
     question: "¿De dónde provienen los datos de esta página?",
     answer: "Los datos se obtienen directamente del registro público de NIC Chile (nic.cl), el organismo oficial que administra los dominios .cl. Nuestro sistema automatizado actualiza la información cada hora mediante GitHub Actions."
-  },
-  {
-    question: "¿Puedo recibir alertas de nuevos dominios registrados?",
-    answer: "Sí, puedes suscribirte a nuestro feed RSS en formato XML o JSON para recibir notificaciones automáticas de nuevos dominios .cl registrados. Los enlaces están disponibles en esta página."
   }
 ];
 
@@ -63,27 +59,6 @@ const UltimosDominios = () => {
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     listRef.current?.scrollIntoView({ block: 'start' });
-  };
-
-  const generateSchemaData = () => {
-    if (domains.length === 0 || isLoading) return null;
-    const listItems = filteredDomains.slice(0, 50).map((domain, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": {
-        "@type": "WebSite",
-        "name": domain.d,
-        "url": `https://${domain.d}`,
-        "dateCreated": domain.date
-      }
-    }));
-    return JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "itemListElement": listItems,
-      "numberOfItems": listItems.length,
-      "itemListOrder": "https://schema.org/ItemListOrderDescending"
-    });
   };
 
   const generateWebPageSchema = () => JSON.stringify({
@@ -137,10 +112,10 @@ const UltimosDominios = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://eligetuhosting.cl/ultimos-dominios/" />
         <link rel="canonical" href="https://eligetuhosting.cl/ultimos-dominios/" />
-        {!isLoading && domains.length > 0 && <script type="application/ld+json">{generateSchemaData()}</script>}
+        {/* Copia de la lista pública de NIC Chile: útil para quien la consulta, no para buscadores. */}
+        <meta name="robots" content="noindex, follow" />
         <script type="application/ld+json">{generateWebPageSchema()}</script>
         <script type="application/ld+json">{generateFAQSchema()}</script>
-        <link rel="alternate" type="application/rss+xml" title="Últimos dominios registrados en Chile" href="/feeds/latest-domains.xml" />
       </Helmet>
 
       <Navbar />

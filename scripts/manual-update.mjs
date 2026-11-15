@@ -30,13 +30,7 @@ async function main() {
     // 1. Ejecutar scraper de NIC.cl
     await runScript('node scripts/nic-to-json.mjs', 'Scrapeando dominios de NIC.cl');
     
-    // 2. Generar RSS feed
-    await runScript('node scripts/generate-rss.mjs', 'Generando RSS feed');
-    
-    // 3. Generar JSON feed
-    await runScript('node scripts/generate-json-feed.mjs', 'Generando JSON feed');
-    
-    // 4. Verificar resultados
+    // 2. Verificar resultados
     const { stdout } = await execAsync('head -3 public/data/latest.json');
     console.log('📊 Datos actualizados:');
     console.log(stdout);

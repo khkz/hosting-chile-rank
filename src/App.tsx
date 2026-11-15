@@ -14,7 +14,6 @@ import CanonicalRedirect from './components/CanonicalRedirect';
 import VsAliasRedirect from './components/VsAliasRedirect';
 import StaticSitemap from './components/StaticSitemap';
 import StaticRobots from './components/StaticRobots';
-import StaticRSSFeed from './components/StaticRSSFeed';
 import LlmsTxt from './components/LlmsTxt';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
@@ -137,7 +136,6 @@ function App() {
         {/* Rutas para archivos estáticos */}
         <Route path="/sitemap.xml" element={<StaticSitemap />} />
         <Route path="/robots.txt" element={<StaticRobots />} />
-        <Route path="/feed/latest-domains.xml" element={<StaticRSSFeed />} />
         <Route path="/llms.txt" element={<LlmsTxt />} />
         
         {/* Rutas normales de la aplicación */}

@@ -24,8 +24,7 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-Sitemap: https://eligetuhosting.cl/sitemap.xml
-Sitemap: https://eligetuhosting.cl/feed/latest-domains.xml`;
+Sitemap: https://eligetuhosting.cl/sitemap.xml`;
         setRobotsContent(fallbackRobots);
       });
 

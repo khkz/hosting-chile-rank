@@ -83,14 +83,9 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-# Sitemap (índice — incluye main/wiki/asn/domains)
+# Sitemap (índice — incluye main/wiki/asn)
 Sitemap: https://eligetuhosting.cl/sitemap.xml
-
-# RSS feeds para contenido fresco
-Sitemap: https://eligetuhosting.cl/feed/latest-domains.xml
 
 # Hints para crawlers sobre contenido que cambia frecuentemente
 # (comentarios informativos para administradores)
-# - /ultimos-dominios/ se actualiza cada hora
-# - /domain/ páginas individuales tienen contenido estático una vez creadas
 # - /ranking/ se actualiza diariamente

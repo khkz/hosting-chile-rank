@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Check, Copy, ExternalLink, Search } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -27,18 +27,20 @@ const freshness = (date: string): string | null => {
 };
 const slugOf = (d: string) => `/domain/${d.replace(/\./g, '-')}/`;
 
-const linkClass = 'text-ink underline decoration-ink/20 underline-offset-4 hover:decoration-ink';
-
 interface NicDomainListProps {
   domains: NicDomain[];
   /** Posición del primer dominio de la página (para numerar). */
   offset: number;
 }
 
-/** Lista en móvil y tabla en escritorio; acciones siempre visibles. */
+/**
+ * Lista en móvil y tabla en escritorio; acciones siempre visibles.
+ * Los dominios van como texto: «Analizar» navega con un botón, sin enlaces que siga un buscador.
+ */
 const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
   const [copied, setCopied] = useState<string | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const copy = async (domain: string) => {
     try {
@@ -57,7 +59,7 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
   );
   const OpenLink = ({ domain }: { domain: string }) => (
     <Button variant="ghost" size="icon" asChild>
-      <a href={`https://${domain}`} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${domain} en otra pestaña`} title="Abrir sitio">
+      <a href={`https://${domain}`} target="_blank" rel="nofollow noopener noreferrer" aria-label={`Abrir ${domain} en otra pestaña`} title="Abrir sitio">
         <ExternalLink aria-hidden className="text-ink-2" />
       </a>
     </Button>
@@ -84,11 +86,9 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
                 {tag && <Badge variant="outline">{tag}</Badge>}
               </div>
               <div className="mt-1 flex items-center gap-1">
-                <Button variant="outline" size="sm" asChild className="h-11">
-                  <Link to={slugOf(domain.d)}>
-                    <Search aria-hidden />
-                    Analizar
-                  </Link>
+                <Button variant="outline" size="sm" className="h-11" onClick={() => navigate(slugOf(domain.d))}>
+                  <Search aria-hidden />
+                  Analizar
                 </Button>
                 <CopyButton domain={domain.d} />
                 <OpenLink domain={domain.d} />
@@ -117,9 +117,7 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
                   <TableCell className="text-ink-3">{formatInteger(offset + i + 1)}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap items-center gap-2">
-                      <Link to={slugOf(domain.d)} className={`font-semibold ${linkClass}`}>
-                        {domain.d}
-                      </Link>
+                      <span className="font-semibold text-ink">{domain.d}</span>
                       {tag && <Badge variant="outline">{tag}</Badge>}
                     </div>
                   </TableCell>
@@ -131,11 +129,9 @@ const NicDomainList: React.FC<NicDomainListProps> = ({ domains, offset }) => {
                   </TableCell>
                   <TableCell className="text-right">
                     <span className="inline-flex items-center justify-end gap-1">
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to={slugOf(domain.d)} aria-label={`Analizar ${domain.d}`}>
-                          <Search aria-hidden />
-                          Analizar
-                        </Link>
+                      <Button variant="ghost" size="sm" onClick={() => navigate(slugOf(domain.d))} aria-label={`Analizar ${domain.d}`}>
+                        <Search aria-hidden />
+                        Analizar
                       </Button>
                       <CopyButton domain={domain.d} />
                       <OpenLink domain={domain.d} />
